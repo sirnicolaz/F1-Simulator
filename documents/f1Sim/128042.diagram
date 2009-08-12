@@ -1,0 +1,55 @@
+format 60
+
+subject 128042 ""
+  xyzwh 163 58 2000 413 272
+note 128298 "Competizione
+"
+  xyzwh 328 10 2005 93 37
+usecasecanvas 128426 usecase_ref 128042 // Avvia competizione
+  xyzwh 429 80 3005 113 48 label_xy 441 97
+end
+usecasecanvas 128554 usecase_ref 128170 // Configura competizione
+  xyzwh 196 80 3005 125 54 label_xy 201 99
+end
+usecasecanvas 128682 usecase_ref 128298 // Ottieni dati competizione
+  xyzwh 294 160 3005 133 58 label_xy 303 181
+end
+classcanvas 128810 class_ref 128042 // SistemaDiControllo
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 631 166 2000
+end
+usecasecanvas 129066 usecase_ref 128426 // Informazioni temporali
+  xyzwh 185 265 3005 112 48 label_xy 188 282
+end
+usecasecanvas 129194 usecase_ref 128554 // Informazioni meteo
+  xyzwh 316 266 3005 105 45 label_xy 324 282
+end
+usecasecanvas 129322 usecase_ref 128682 // Informazioni di gara
+  xyzwh 443 266 3005 109 44 label_xy 451 281
+end
+note 129450 "Circuito usato, numero concorrenti, griglia di partenza, miglior giro e altre lollosità"
+  xyzwh 606 258 2000 138 71
+classcanvas 130602 class_ref 128170 // AmministratoreDiSistema
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 10 149 3010
+end
+line 128938 ----
+  from ref 128810 z 1999 to ref 128682
+simplerelationcanvas 129962 simplerelation_ref 128042
+  from ref 128682 z 3004 to point 294 233
+  line 130090 z 3004 stereotype "<<using>>" xyz 243 228 3000 to point 275 249
+  line 130474 z 3004 to ref 129066
+end
+simplerelationcanvas 130218 simplerelation_ref 128170
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 366 242 3000 to ref 129194
+end
+simplerelationcanvas 130346 simplerelation_ref 128298
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 437 232 3000 to ref 129322
+end
+line 130858 ----
+  from ref 130602 z 3004 to ref 128426
+line 130986 ----
+  from ref 130602 z 3004 to ref 128554
+line 129706 -_-_
+  from ref 129450 z 1999 to ref 129322
+end

@@ -1,0 +1,49 @@
+format 62
+
+subject 128011 ""
+  xyzwh 128 59 2000 470 355
+usecasecanvas 128139 usecase_ref 130699 // Imposta caratteristiche
+  xyzwh 253 98 3005 155 46 label_xy 274 113
+end
+usecasecanvas 128267 usecase_ref 130827 // Imposta traiettorie
+  xyzwh 381 161 3005 117 43 label_xy 397 174
+end
+usecasecanvas 128779 usecase_ref 130955 // Imposta molteplicità
+  xyzwh 467 228 3005 121 32 label_xy 481 237
+end
+usecasecanvas 129035 usecase_ref 131083 // Attraversa
+  xyzwh 185 163 3005 113 37 label_xy 212 173
+end
+note 129291 "Tratto"
+  xyzwh 316 11 2005 56 35
+usecasecanvas 130443 usecase_ref 131211 // Controlla meteo
+  xyzwh 431 282 3005 109 50 label_xy 448 299
+end
+classcanvas 130571 class_ref 129419 // TempoAtrmosferico
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 613 358 2005
+end
+usecasecanvas 130699 usecase_ref 128523 // Ottieni informazioni traiettoria
+  xyzwh 158 358 3005 167 44 label_xy 171 371
+end
+usecasecanvas 131339 usecase_ref 133131 // Scegli traiettoria migliore disponibile
+  xyzwh 142 254 3010 205 60 label_xy 158 274
+end
+simplerelationcanvas 130187 simplerelation_ref 129931
+  from ref 128139 z 3004 stereotype "<<include>>" xyz 327 147 3000 to ref 128267
+end
+simplerelationcanvas 130315 simplerelation_ref 130059
+  from ref 128267 z 3004 stereotype "<<include>>" xyz 481 202 3000 to ref 128779
+end
+line 130827 --->
+  from ref 130443 z 2004 to ref 130571
+simplerelationcanvas 131467 simplerelation_ref 131851
+  from ref 129035 z 3004 stereotype "<<include>>" xyz 212 225 3000 to ref 131339
+end
+simplerelationcanvas 132107 simplerelation_ref 132235
+  from ref 131339 z 3004 stereotype "<<include>>" xyz 244 330 3000 to ref 130699
+end
+simplerelationcanvas 132235 simplerelation_ref 132363
+  from ref 129035 z 3004 stereotype "<<include>>" xyz 328 239 3000 to ref 130443
+end
+end

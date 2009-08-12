@@ -1,0 +1,25 @@
+window_sizes 1276 750 300 900 533 82
+diagrams
+  active  usecasediagram_ref 128004 // Interfaccia di controllo
+    711 435 100 4 0 0
+  usecasediagram_ref 128132 // Sistema di controllo
+    711 435 100 4 0 0
+  usecasediagram_ref 128042 // Competizione
+    711 435 100 4 0 0
+  usecasediagram_ref 128011 // Concorrente
+    711 435 100 4 0 0
+  usecasediagram_ref 128139 // Circuito
+    658 422 100 4 0 0
+  usecasediagram_ref 129291 // Pista
+    458 343 100 4 0 0
+  usecasediagram_ref 129419 // Tratto
+    775 475 100 4 0 0
+  usecasediagram_ref 129547 // Traiettoria
+    524 412 100 4 0 0
+end
+show_stereotypes
+selected usecasediagram_ref 129547 // Traiettoria
+open
+  usecaseview_ref 128004 // useCase
+end
+end

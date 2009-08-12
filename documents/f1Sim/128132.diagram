@@ -1,0 +1,17 @@
+format 49
+
+subject 128004 ""
+  xyzwh 123 47 2000 313 168
+note 128132 "Sistema di controllo"
+  xyzwh 208 6 2005 130 35
+usecasecanvas 128260 usecase_ref 128260 // Ottieni statistiche competizione
+  xyzwh 194 65 3005 169 45 label_xy 208 80
+classcanvas 128388 class_ref 128132 // InterfacciaDiControllo
+  xyz 37 112 3005 label_xy 6 152
+usecasecanvas 128644 usecase_ref 128388 // Ottieni statistiche concorrente
+  xyzwh 194 145 3005 182 45 label_xy 217 159
+line 128516 ----
+  from ref 128388 z 3004 to ref 128260
+line 128772 ----
+  from ref 128388 z 3004 to ref 128644
+end

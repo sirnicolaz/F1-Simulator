@@ -1,0 +1,16 @@
+format 62
+
+subject 128011 ""
+  xyzwh 75 50 2000 352 235
+usecasecanvas 128139 usecase_ref 130443 // Configura percorso
+  xyzwh 185 98 3005 150 43 label_xy 212 111
+end
+usecasecanvas 128523 usecase_ref 130571 // Imposta tratti
+  xyzwh 161 185 3005 104 40 label_xy 179 199
+end
+note 128779 "Pista"
+  xyzwh 218 10 2005 51 35
+simplerelationcanvas 128651 simplerelation_ref 129419
+  from ref 128523 z 3004 stereotype "<<include>>" xyz 203 162 3000 to ref 128139
+end
+end
