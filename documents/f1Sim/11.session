@@ -1,6 +1,6 @@
 window_sizes 1280 753 300 900 533 82
 diagrams
-  active  usecasediagram_ref 128004 // Interfaccia di monitoraggio
+  usecasediagram_ref 128004 // Interfaccia di monitoraggio
     974 597 100 4 0 0
   usecasediagram_ref 128132 // Sistema di controllo
     711 435 100 4 0 0
@@ -16,9 +16,11 @@ diagrams
     775 475 100 4 0 0
   usecasediagram_ref 129547 // Traiettoria
     524 412 100 4 0 0
+  active  usecasediagram_ref 136075 // Box
+    974 597 100 4 0 0
 end
 show_stereotypes
-selected usecasediagram_ref 128004 // Interfaccia di monitoraggio
+selected usecasediagram_ref 136075 // Box
 open
   usecaseview_ref 128004 // useCase
 end

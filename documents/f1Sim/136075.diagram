@@ -1,0 +1,60 @@
+format 67
+
+subject 128011 ""
+  xyzwh 164 58 2000 550 407
+note 128139 "Box"
+  xyzwh 402 13 2005 40 35
+usecasecanvas 128267 usecase_ref 139787 // Richiama concorrente
+  xyzwh 207 112 3005 129 39 label_xy 215 121
+end
+usecasecanvas 128395 usecase_ref 139915 // Rifornimento e cambio gomme
+  xyzwh 462 114 3005 183 39 label_xy 481 123
+end
+usecasecanvas 128523 usecase_ref 140043 // Monitora gara
+  xyzwh 481 286 3005 101 44 label_xy 493 298
+end
+usecasecanvas 128651 usecase_ref 140171 // Controlla posizionamento auto
+  xyzwh 203 221 3005 208 39 label_xy 235 230
+end
+usecasecanvas 128779 usecase_ref 140299 // Controlla tempo atmosferico e condizioni pista
+  xyzwh 400 184 3005 287 36 label_xy 431 195
+end
+usecasecanvas 129163 usecase_ref 140427 // (Ri)calcola strategia
+  xyzwh 514 410 3005 116 35 label_xy 523 418
+end
+classcanvas 129291 class_ref 128011 // Concorrente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 45 216 2000
+end
+usecasecanvas 129675 usecase_ref 140555 // Comunica nuova strategia
+  xyzwh 210 420 3005 166 33 label_xy 230 428
+end
+note 130187 "Include anche il ritiro"
+  xyzwh 724 383 2000 105 51
+usecasecanvas 130827 usecase_ref 140683 // Valuta stato gara
+  xyzwh 316 355 3011 147 39 label_xy 350 367
+end
+simplerelationcanvas 128907 simplerelation_ref 138891
+  from ref 128523 z 3006 stereotype "<<include>>" xyz 387 276.5 3000 to ref 128651
+end
+simplerelationcanvas 129035 simplerelation_ref 139019
+  from ref 128523 z 3006 stereotype "<<include>>" xyz 507.5 251.5 3000 to ref 128779
+end
+line 129419 --->
+  from ref 128267 z 3006 to ref 129291
+line 129547 --->
+  from ref 128395 z 3006 to ref 129291
+line 129931 --->
+  from ref 129675 z 3006 to ref 129291
+simplerelationcanvas 130955 simplerelation_ref 139403
+  from ref 130827 z 3012 stereotype "<<include>>" xyz 455.5 340.5 3000 to ref 128523
+end
+simplerelationcanvas 131083 simplerelation_ref 139531
+  from ref 130827 z 3012 stereotype "<<use>>" xyz 333.5 404.5 3000 to ref 129675
+end
+simplerelationcanvas 131979 simplerelation_ref 139659
+  from ref 130827 z 3012 stereotype "<<use>>" xyz 467 401 3000 to ref 129163
+end
+line 131851 -_-_
+  from ref 130187 z 3006 to ref 129163
+end
