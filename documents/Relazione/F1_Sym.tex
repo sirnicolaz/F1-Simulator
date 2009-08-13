@@ -1,0 +1,103 @@
+\documentclass[a4paper]{article}
+\let\subsubsubsection\paragraph
+\let\subsubsubsubsection\subparagraph
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\usepackage[latin1]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{marvosym}
+\usepackage{graphicx}
+\usepackage{lscape}
+\usepackage{fancyhdr}
+\usepackage{totpages}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{color}
+\usepackage[pdftex]{hyperref}
+\usepackage{listings}
+\usepackage{tabularx}
+\hypersetup{colorlinks,breaklinks,linkcolor=blue,urlcolor=black}
+
+\renewcommand{\baselinestretch}{1.25}
+
+\pagestyle{fancy} 
+
+\makeindex
+
+% Definizione di nuovi "tokens" (e valori che possono assumere)
+\newtoks\titolo
+\newtoks\sottotitolo
+\newtoks\filename
+\newtoks\data
+\newtoks\versione
+\newtoks\distribuzione
+
+% Titolo documento + titolo a pie' pagina e data (tokens)
+\titolo={F1 Symulator} 
+\sottotitolo={Progetto di Sistemi concorrenti e distribuiti} 
+\data={02 Luglio 2009}
+
+% Informazioni documento (tokens)
+\filename={Telemedicina.pdf}
+\versione={0.3}
+\distribuzione={Prof. Vardanega Tullio \\
+		     	& Miotto Nicola \\
+			& Nesello Lorenzo
+}
+
+% Header (left, center, right)
+\lhead{} 
+\chead{}
+\rhead{}
+\renewcommand{\headrulewidth}{0.4pt}
+% Footer (left, center, right)
+\lfoot{} \cfoot{} \rfoot{\thepage/\pageref{TotPages}}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Inizio documento LaTeX
+\begin{document} %produce il titolo a partire dai comandi \title, \author e \date
+
+\begin{center}
+\vspace*{1,0 cm}
+\huge\textbf{\the\titolo} \\ %LARGE != large
+\vspace{0,2 cm}
+\large\the\sottotitolo \\
+\vspace{0,4 cm}
+\large\the\data
+\end{center}
+\begin{center}
+\vspace{1,75 cm}
+
+% Sommario
+\begin{abstract} 
+\begin{center}
+Descrizione del progetto di telemedicina per il corso di Sviluppo e Gestione di Progetti.
+\end{center}
+\end{abstract}
+\vspace{1,50 cm}
+
+% Informazioni documento
+\textbf{Informazioni documento} \\ \vspace{0.5cm}
+\begin{tabular}{r | l }
+\textbf{Nome file}      & \the\filename         \\
+\textbf{Versione}       & \the\versione         \\
+\textbf{Distribuzione}  & \the\distribuzione    \\ \\
+\end{tabular}
+\vspace{0,3cm}
+\end{center}
+
+\newpage
+
+\tableofcontents
+
+\section{Competizione}
+\section{Circuito}
+\section{Pista}
+\section{Box}
+\section{Tratto}
+\section{Traiettoria}
+\section{Concorrente}
+\section{Sistema di controllo}
+\section{Interfaccia di monitoraggio}
+
+\end{document}

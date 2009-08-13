@@ -1,7 +1,7 @@
-window_sizes 1276 750 300 900 533 82
+window_sizes 1280 753 300 900 533 82
 diagrams
-  active  usecasediagram_ref 128004 // Interfaccia di controllo
-    711 435 100 4 0 0
+  active  usecasediagram_ref 128004 // Interfaccia di monitoraggio
+    974 597 100 4 0 0
   usecasediagram_ref 128132 // Sistema di controllo
     711 435 100 4 0 0
   usecasediagram_ref 128042 // Competizione
@@ -18,7 +18,7 @@ diagrams
     524 412 100 4 0 0
 end
 show_stereotypes
-selected usecasediagram_ref 129547 // Traiettoria
+selected usecasediagram_ref 128004 // Interfaccia di monitoraggio
 open
   usecaseview_ref 128004 // useCase
 end

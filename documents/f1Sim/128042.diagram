@@ -1,4 +1,4 @@
-format 60
+format 67
 
 subject 128042 ""
   xyzwh 163 58 2000 413 272
@@ -19,7 +19,7 @@ classcanvas 128810 class_ref 128042 // SistemaDiControllo
   xyz 631 166 2000
 end
 usecasecanvas 129066 usecase_ref 128426 // Informazioni temporali
-  xyzwh 185 265 3005 112 48 label_xy 188 282
+  xyzwh 187 264 3005 120 50 label_xy 190 281
 end
 usecasecanvas 129194 usecase_ref 128554 // Informazioni meteo
   xyzwh 316 266 3005 105 45 label_xy 324 282
@@ -28,7 +28,7 @@ usecasecanvas 129322 usecase_ref 128682 // Informazioni di gara
   xyzwh 443 266 3005 109 44 label_xy 451 281
 end
 note 129450 "Circuito usato, numero concorrenti, griglia di partenza, miglior giro e altre lollosità"
-  xyzwh 606 258 2000 138 71
+  xyzwh 606 258 2000 138 78
 classcanvas 130602 class_ref 128170 // AmministratoreDiSistema
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 10 149 3010
