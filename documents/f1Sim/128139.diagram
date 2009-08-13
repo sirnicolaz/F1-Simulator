@@ -1,30 +1,25 @@
-format 62
+format 67
 
 subject 128011 ""
-  xyzwh 154 79 2000 350 285
+  xyzwh 152 75 2000 350 285
 usecasecanvas 128139 usecase_ref 128651 // Configura pista
-  xyzwh 170 143 3005 107 43 label_xy 183 155
+  xyzwh 168 139 3005 107 43 label_xy 181 151
 end
-usecasecanvas 128267 usecase_ref 128779 // Configura meteo
-  xyzwh 394 136 3005 100 45 label_xy 402 151
-end
-note 128395 "Quindi stato pista"
-  xyzwh 520 79 2000 107 35
 usecasecanvas 128651 usecase_ref 128907 // Ottieni dati circuito
-  xyzwh 282 293 3005 113 44 label_xy 293 307
+  xyzwh 280 289 3005 113 44 label_xy 291 303
 end
 usecasecanvas 128779 usecase_ref 129035 // Configura box
-  xyzwh 276 93 3005 105 42 label_xy 294 105
+  xyzwh 274 89 3005 105 42 label_xy 292 101
 end
 usecasecanvas 128907 usecase_ref 129163 // Usa pista
-  xyzwh 288 206 3005 92 33 label_xy 308 216
+  xyzwh 286 202 3005 92 33 label_xy 306 212
 end
 classcanvas 129035 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 16 149 2000
 end
 usecasecanvas 129291 usecase_ref 129291 // Usa box
-  xyzwh 186 233 3010 88 32 label_xy 210 242
+  xyzwh 184 229 3010 88 32 label_xy 208 238
 end
 classcanvas 129547 class_ref 128139 // SistemaStatistiche
   class_drawing_mode default show_context_mode default show_stereotype_properties default
@@ -38,6 +33,4 @@ line 129419 --->
   from ref 129035 z 1999 to ref 129291
 line 129675 --->
   from ref 129547 z 2004 to ref 128651
-line 128523 -_-_
-  from ref 128395 z 1999 to ref 128267
 end

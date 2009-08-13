@@ -1,34 +1,45 @@
 format 67
 
+usecasecanvas 128011 usecase_ref 128779 // Configura meteo
+  xyzwh 429.5 71.5 3005 100 45 label_xy 438.5 85.5
+end
 subject 128042 ""
-  xyzwh 163 58 2000 413 272
+  xyzwh 138 56 2000 430 356
+note 128139 "Quindi stato pista"
+  xyzwh 589.5 89.5 2000 107 35
 note 128298 "Competizione
 "
   xyzwh 328 10 2005 93 37
+usecasecanvas 128395 usecase_ref 147211 // Numero giri
+  xyzwh 187 76 3005 89 37 label_xy 206 86
+end
 usecasecanvas 128426 usecase_ref 128042 // Avvia competizione
-  xyzwh 429 80 3005 113 48 label_xy 441 97
+  xyzwh 174 196 3005 113 48 label_xy 186 213
 end
 usecasecanvas 128554 usecase_ref 128170 // Configura competizione
-  xyzwh 196 80 3005 125 54 label_xy 201 99
+  xyzwh 249 125 3005 125 54 label_xy 256 142
 end
 usecasecanvas 128682 usecase_ref 128298 // Ottieni dati competizione
-  xyzwh 294 160 3005 133 58 label_xy 303 181
+  xyzwh 291 231 3005 133 58 label_xy 300 252
+end
+usecasecanvas 128779 usecase_ref 147339 // Configura circuito
+  xyzwh 423 140 3005 98 53 label_xy 430 159
 end
 classcanvas 128810 class_ref 128042 // SistemaDiControllo
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 631 166 2000
 end
 usecasecanvas 129066 usecase_ref 128426 // Informazioni temporali
-  xyzwh 187 264 3005 120 50 label_xy 190 281
+  xyzwh 165 338 3005 120 50 label_xy 168 355
 end
 usecasecanvas 129194 usecase_ref 128554 // Informazioni meteo
-  xyzwh 316 266 3005 105 45 label_xy 324 282
+  xyzwh 316 343 3005 105 45 label_xy 324 359
 end
 usecasecanvas 129322 usecase_ref 128682 // Informazioni di gara
-  xyzwh 443 266 3005 109 44 label_xy 451 281
+  xyzwh 441 345 3005 109 44 label_xy 449 360
 end
 note 129450 "Circuito usato, numero concorrenti, griglia di partenza, miglior giro e altre lollosità"
-  xyzwh 606 258 2000 138 78
+  xyzwh 596 271 2000 138 78
 classcanvas 130602 class_ref 128170 // AmministratoreDiSistema
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 10 149 3010
@@ -36,20 +47,26 @@ end
 line 128938 ----
   from ref 128810 z 1999 to ref 128682
 simplerelationcanvas 129962 simplerelation_ref 128042
-  from ref 128682 z 3004 to point 294 233
-  line 130090 z 3004 stereotype "<<using>>" xyz 243 228 3000 to point 275 249
-  line 130474 z 3004 to ref 129066
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 258 312.5 3000 to ref 129066
 end
 simplerelationcanvas 130218 simplerelation_ref 128170
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 366 242 3000 to ref 129194
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 364 316 3000 to ref 129194
 end
 simplerelationcanvas 130346 simplerelation_ref 128298
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 437 232 3000 to ref 129322
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 434 307 3000 to ref 129322
 end
 line 130858 ----
   from ref 130602 z 3004 to ref 128426
 line 130986 ----
   from ref 130602 z 3004 to ref 128554
+line 128267 -_-_
+  from ref 128011 z 3006 to ref 128139
+line 128523 -_-_
+  from ref 128554 z 3006 to ref 128395
+line 128651 -_-_
+  from ref 128554 z 3006 to ref 128011
+line 128907 -_-_
+  from ref 128554 z 3006 to ref 128779
 line 129706 -_-_
   from ref 129450 z 1999 to ref 129322
 end

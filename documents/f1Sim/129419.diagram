@@ -1,4 +1,4 @@
-format 62
+format 67
 
 subject 128011 ""
   xyzwh 128 59 2000 470 355
@@ -17,7 +17,7 @@ end
 note 129291 "Tratto"
   xyzwh 316 11 2005 56 35
 usecasecanvas 130443 usecase_ref 131211 // Controlla meteo
-  xyzwh 431 282 3005 109 50 label_xy 448 299
+  xyzwh 429 281 3005 109 50 label_xy 446 298
 end
 classcanvas 130571 class_ref 129419 // TempoAtrmosferico
   class_drawing_mode default show_context_mode default show_stereotype_properties default
@@ -29,6 +29,8 @@ end
 usecasecanvas 131339 usecase_ref 133131 // Scegli traiettoria migliore disponibile
   xyzwh 142 254 3010 205 60 label_xy 158 274
 end
+note 132363 "Tempo atmosferico statico nel corso della gara"
+  xyzwh 635 253 2000 119 62
 simplerelationcanvas 130187 simplerelation_ref 129931
   from ref 128139 z 3004 stereotype "<<include>>" xyz 327 147 3000 to ref 128267
 end
@@ -44,6 +46,8 @@ simplerelationcanvas 132107 simplerelation_ref 132235
   from ref 131339 z 3004 stereotype "<<include>>" xyz 244 330 3000 to ref 130699
 end
 simplerelationcanvas 132235 simplerelation_ref 132363
-  from ref 129035 z 3004 stereotype "<<include>>" xyz 328 239 3000 to ref 130443
+  from ref 129035 z 3004 stereotype "<<include>>" xyz 327 238.5 3000 to ref 130443
 end
+line 132491 -_-_
+  from ref 132363 z 2006 to ref 130571
 end
