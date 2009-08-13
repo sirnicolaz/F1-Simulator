@@ -1,15 +1,15 @@
-format 62
+format 67
 
 subject 128011 ""
   xyzwh 164 44 2000 419 317
 usecasecanvas 128267 usecase_ref 128011 // Configura strategia
-  xyzwh 202 91 3005 125 43 label_xy 221 105
+  xyzwh 225 80 3005 125 43 label_xy 244 94
 end
 usecasecanvas 128395 usecase_ref 128139 // Configura auto
-  xyzwh 395 93 3005 116 42 label_xy 417 104
+  xyzwh 444 116 3005 116 42 label_xy 466 127
 end
 usecasecanvas 128523 usecase_ref 128267 // Ottieni dati concorrente
-  xyzwh 301 176 3005 127 44 label_xy 307 191
+  xyzwh 320 175 3005 127 44 label_xy 326 190
 end
 usecasecanvas 128651 usecase_ref 128395 // Ottieni informazioni statiche
   xyzwh 200 279 3005 175 43 label_xy 217 292
@@ -19,10 +19,18 @@ usecasecanvas 128779 usecase_ref 128523 // Ottieni informazioni traiettoria
 end
 note 129291 "Concorrente"
   xyzwh 328 5 2005 82 35
+classcanvas 129419 class_ref 128170 // AmministratoreDiSistema
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 22 105 2005
+end
 simplerelationcanvas 129035 simplerelation_ref 128139
-  from ref 128523 z 3004 stereotype "<<using>>" xyz 272 244 3000 to ref 128651
+  from ref 128523 z 3004 stereotype "<<using>>" xyz 282 243.5 3000 to ref 128651
 end
 simplerelationcanvas 129163 simplerelation_ref 128267
-  from ref 128523 z 3004 stereotype "<<using>>" xyz 388 246 3000 to ref 128779
+  from ref 128523 z 3004 stereotype "<<using>>" xyz 397.5 245.5 3000 to ref 128779
 end
+line 129547 --->
+  from ref 129419 z 3006 to ref 128267
+line 129675 --->
+  from ref 129419 z 3006 to ref 128395
 end
