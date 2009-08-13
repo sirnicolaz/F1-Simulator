@@ -35,13 +35,13 @@ usecasecanvas 130187 usecase_ref 147339 // Configura circuito
   xyzwh 360 158 3005 111 39 label_xy 372 170
 end
 usecasecanvas 130699 usecase_ref 147595 // Aggiorna tabella classifica
-  xyzwh 367 393 3005 187 43 label_xy 396 406
+  xyzwh 261 410 3005 187 43 label_xy 290 423
 end
 usecasecanvas 130827 usecase_ref 147723 // Ottieni classifica
-  xyzwh 198 373 3005 119 32 label_xy 218 380
+  xyzwh 396 334 3005 119 32 label_xy 416 341
 end
 note 130955 "Conccorrente | N° Giro | N° tratto | Tempo arrivo tratto "
-  xyzwh 605 318 2000 199 48
+  xyzwh 597 411 2000 199 48
 line 129163 --->
   from ref 129035 z 1999 to ref 128907
 line 129419 --->
@@ -56,6 +56,8 @@ end
 simplerelationcanvas 130571 simplerelation_ref 146699
   from ref 130187 z 3006 stereotype "<<include>>" xyz 378 143 3000 to ref 128779
 end
+line 131211 --->
+  from ref 129931 z 3006 to ref 130827
 line 131083 -_-_
   from ref 130699 z 3006 to ref 130955
 end
