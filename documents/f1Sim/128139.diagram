@@ -1,25 +1,25 @@
 format 67
 
 subject 128011 ""
-  xyzwh 152 75 2000 350 285
+  xyzwh 151 75 2000 430 408
 usecasecanvas 128139 usecase_ref 128651 // Configura pista
-  xyzwh 171 116 3005 107 43 label_xy 184 128
+  xyzwh 170 116 3005 107 43 label_xy 183 128
 end
 usecasecanvas 128651 usecase_ref 128907 // Ottieni dati circuito
-  xyzwh 280 289 3005 113 44 label_xy 291 303
+  xyzwh 279 289 3005 113 44 label_xy 290 303
 end
 usecasecanvas 128779 usecase_ref 129035 // Configura box
-  xyzwh 350 88 3005 105 42 label_xy 368 100
+  xyzwh 349 88 3005 105 42 label_xy 367 100
 end
 usecasecanvas 128907 usecase_ref 129163 // Usa pista
-  xyzwh 286 202 3005 92 33 label_xy 306 212
+  xyzwh 285 202 3005 92 33 label_xy 305 212
 end
 classcanvas 129035 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 16 149 2000
 end
 usecasecanvas 129291 usecase_ref 129291 // Usa box
-  xyzwh 184 229 3010 88 32 label_xy 208 238
+  xyzwh 183 229 3010 88 32 label_xy 207 238
 end
 classcanvas 129547 class_ref 128139 // SistemaStatistiche
   class_drawing_mode default show_context_mode default show_stereotype_properties default
@@ -29,11 +29,19 @@ note 129803 "Circuito"
   xyzwh 293 32 2000 56 35
 classcanvas 129931 class_ref 136075 // Competizione
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 536 189 2005
+  xyz 605 203 2005
 end
 usecasecanvas 130187 usecase_ref 147339 // Configura circuito
-  xyzwh 361 158 3005 111 39 label_xy 373 170
+  xyzwh 360 158 3005 111 39 label_xy 372 170
 end
+usecasecanvas 130699 usecase_ref 147595 // Aggiorna tabella classifica
+  xyzwh 367 393 3005 187 43 label_xy 396 406
+end
+usecasecanvas 130827 usecase_ref 147723 // Ottieni classifica
+  xyzwh 198 373 3005 119 32 label_xy 218 380
+end
+note 130955 "Conccorrente | N° Giro | N° tratto | Tempo arrivo tratto "
+  xyzwh 605 318 2000 199 48
 line 129163 --->
   from ref 129035 z 1999 to ref 128907
 line 129419 --->
@@ -43,9 +51,11 @@ line 129675 --->
 line 130315 --->
   from ref 129931 z 3006 to ref 130187
 simplerelationcanvas 130443 simplerelation_ref 146571
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 289 155 3000 to ref 128139
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 288 155 3000 to ref 128139
 end
 simplerelationcanvas 130571 simplerelation_ref 146699
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 379 143 3000 to ref 128779
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 378 143 3000 to ref 128779
 end
+line 131083 -_-_
+  from ref 130699 z 3006 to ref 130955
 end
