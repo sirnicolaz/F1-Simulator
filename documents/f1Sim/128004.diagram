@@ -2,20 +2,36 @@ format 67
 
 subject 128004 ""
   xyzwh 124 43 2000 257 172
+classcanvas 128011 class_ref 128042 // SistemaDiControllo
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 405 99 2000
+end
 usecasecanvas 128132 usecase_ref 128004 // Monitora stato gara
   xyzwh 177 65 3005 153 40 label_xy 204 78
 end
 usecasecanvas 128260 usecase_ref 128132 // Monitora stato concorrente
   xyzwh 171 140 3005 168 40 label_xy 191 152
 end
-note 128388 "Interfaccia di monitoraggio"
-  xyzwh 183 4 2005 146 36
+note 128388 "Monitor pubblico"
+  xyzwh 183 4 2005 99 35
 classcanvas 128516 class_ref 128004 // Spettatore
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 35 96 3005
 end
-line 128644 ----
-  from ref 128516 z 3004 to ref 128132
-line 128772 ----
-  from ref 128516 z 3004 to ref 128260
+note 128651 "Server remoto"
+  xyzwh 537 177 2000 92 35
+note 129291 "Client"
+  xyzwh 425 22 2000 55 35
+line 128139 --->
+  from ref 128132 z 3006 to ref 128011
+line 128267 --->
+  from ref 128260 z 3006 to ref 128011
+line 128395 --->
+  from ref 128516 z 3006 to ref 128132
+line 128523 --->
+  from ref 128516 z 3006 to ref 128260
+line 129163 -_-_
+  from ref 128011 z 2001 to ref 128651
+line 129419 -_-_
+  from ref 129291 z 2001 to ref 128004
 end

@@ -12,14 +12,14 @@ usecasecanvas 128779 usecase_ref 129035 // Configura box
   xyzwh 285 79 3005 105 42 label_xy 303 91
 end
 usecasecanvas 128907 usecase_ref 129163 // Usa pista
-  xyzwh 304 246 3005 95 40 label_xy 328 258
+  xyzwh 288 258 3005 95 40 label_xy 312 270
 end
 classcanvas 129035 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 16 149 2000
 end
 usecasecanvas 129291 usecase_ref 129291 // Usa box
-  xyzwh 168 254 3010 94 36 label_xy 192 263
+  xyzwh 157 269 3010 94 36 label_xy 181 278
 end
 note 129803 "Circuito"
   xyzwh 293 32 2000 56 35
@@ -28,24 +28,24 @@ classcanvas 129931 class_ref 136075 // Competizione
   xyz 656 184 2005
 end
 usecasecanvas 130187 usecase_ref 147339 // Configura circuito
-  xyzwh 221 171 3005 111 39 label_xy 234 181
+  xyzwh 235 188 3005 111 39 label_xy 248 198
 end
 usecasecanvas 130699 usecase_ref 147595 // Aggiorna tabella classifica
   xyzwh 219 428 3005 187 43 label_xy 248 441
 end
 usecasecanvas 130827 usecase_ref 147723 // Ottieni classifica
-  xyzwh 342 357 3005 119 32 label_xy 362 364
+  xyzwh 342 358 3005 119 32 label_xy 362 365
 end
 note 130955 "Conccorrente | N° Giro | N° tratto | Tempo arrivo tratto "
   xyzwh 620 421 2000 199 48
 note 131467 "Aggiornamento a intervalli regolari"
   xyzwh 638 324 3010 131 50
 usecasecanvas 131723 usecase_ref 155019 // Imposta periodo aggiornamento classifica
-  xyzwh 359 131 3005 228 37 label_xy 374 141
+  xyzwh 355 127 3005 228 37 label_xy 370 137
 end
 classcanvas 132107 class_ref 136331 // Box
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 39 406 2000
+  xyz 27 409 2000
 end
 line 129163 --->
   from ref 129035 z 1999 to ref 128907
@@ -54,17 +54,17 @@ line 129419 --->
 line 130315 --->
   from ref 129931 z 3006 to ref 130187
 simplerelationcanvas 130443 simplerelation_ref 146571
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 204.5 149 3000 to ref 128139
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 211 157.5 3000 to ref 128139
 end
 simplerelationcanvas 130571 simplerelation_ref 146699
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 274.5 145 3000 to ref 128779
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 282 153.5 3000 to ref 128779
 end
 line 131211 --->
   from ref 129931 z 3006 to ref 130827
 line 131339 --->
   from ref 129931 z 3006 to ref 128651
 simplerelationcanvas 131851 simplerelation_ref 153483
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 321 171 3000 to ref 131723
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 345.5 174.5 3000 to ref 131723
 end
 line 132235 --->
   from ref 132107 z 3006 to ref 130827

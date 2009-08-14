@@ -1,17 +1,21 @@
-format 49
+format 67
 
 subject 128004 ""
-  xyzwh 123 47 2000 313 168
+  xyzwh 134 45 2000 313 168
+classcanvas 128011 class_ref 136459 // MonitorPubblico
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 22 101 2005
+end
 note 128132 "Sistema di controllo"
   xyzwh 208 6 2005 130 35
 usecasecanvas 128260 usecase_ref 128260 // Ottieni statistiche competizione
-  xyzwh 194 65 3005 169 45 label_xy 208 80
-classcanvas 128388 class_ref 128132 // InterfacciaDiControllo
-  xyz 37 112 3005 label_xy 6 152
+  xyzwh 205 63 3005 178 48 label_xy 219 78
+end
 usecasecanvas 128644 usecase_ref 128388 // Ottieni statistiche concorrente
-  xyzwh 194 145 3005 182 45 label_xy 217 159
-line 128516 ----
-  from ref 128388 z 3004 to ref 128260
-line 128772 ----
-  from ref 128388 z 3004 to ref 128644
+  xyzwh 205 143 3005 182 45 label_xy 228 157
+end
+line 128139 --->
+  from ref 128011 z 3006 to ref 128260
+line 128267 --->
+  from ref 128011 z 3006 to ref 128644
 end

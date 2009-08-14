@@ -27,7 +27,7 @@ usecasecanvas 128779 usecase_ref 147339 // Configura circuito
 end
 classcanvas 128810 class_ref 128042 // SistemaDiControllo
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 666 193 2000
+  xyz 665 223 2000
 end
 note 129035 "Es: n° giri"
   xyzwh 27 30 2000 66 35
