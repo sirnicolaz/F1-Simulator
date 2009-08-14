@@ -1,4 +1,4 @@
-\documentclass[a4paper]{article}
+\documentclass[a4paper]{book}
 \let\subsubsubsection\paragraph
 \let\subsubsubsubsection\subparagraph
 \setcounter{secnumdepth}{4}
@@ -17,6 +17,13 @@
 \usepackage{listings}
 \usepackage{tabularx}
 \hypersetup{colorlinks,breaklinks,linkcolor=blue,urlcolor=black}
+
+\usepackage{fancyhdr}
+\newcommand{\fncyblank}{\fancyhf{}}
+\newenvironment{abstract}%
+{\fncyblank\null\vfill\begin{center}%
+\bfseries\abstractname\end{center}}%
+{\vfill\null}
 
 \renewcommand{\baselinestretch}{1.25}
 
@@ -90,6 +97,14 @@ Descrizione del progetto di telemedicina per il corso di Sviluppo e Gestione di 
 
 \tableofcontents
 
+\chapter{Descrizione del progetto}
+\chapter{Problematice}
+\section{Problematiche di concorrenza}
+\input{problematiche_concorrenza}
+\section{Problematiche di distribuzione}
+\input{problematiche_distribuzione}
+\chapter{Soluzione proposta}
+\input{soluzione_proposta}
 \section{Competizione}
 \section{Circuito}
 \section{Pista}
@@ -99,5 +114,8 @@ Descrizione del progetto di telemedicina per il corso di Sviluppo e Gestione di 
 \section{Concorrente}
 \section{Sistema di controllo}
 \section{Interfaccia di monitoraggio}
-
+\chapter{Analisi del supporto tecnologico}
+\input{analisi_supporto_tecnologico}
+\chapter{Glossario}
+\chapter{Bibliografia}
 \end{document}
