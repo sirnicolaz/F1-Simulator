@@ -1,63 +1,77 @@
 format 67
 
 subject 128011 ""
-  xyzwh 151 75 2000 430 408
+  xyzwh 115 71 2000 476 413
 usecasecanvas 128139 usecase_ref 128651 // Configura pista
-  xyzwh 170 116 3005 107 43 label_xy 183 128
+  xyzwh 138 86 3005 107 43 label_xy 151 98
 end
 usecasecanvas 128651 usecase_ref 128907 // Ottieni dati circuito
-  xyzwh 279 289 3005 113 44 label_xy 290 303
+  xyzwh 156 345 3005 113 44 label_xy 167 359
 end
 usecasecanvas 128779 usecase_ref 129035 // Configura box
-  xyzwh 349 88 3005 105 42 label_xy 367 100
+  xyzwh 285 79 3005 105 42 label_xy 303 91
 end
 usecasecanvas 128907 usecase_ref 129163 // Usa pista
-  xyzwh 285 202 3005 92 33 label_xy 305 212
+  xyzwh 304 246 3005 95 40 label_xy 328 258
 end
 classcanvas 129035 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 16 149 2000
 end
 usecasecanvas 129291 usecase_ref 129291 // Usa box
-  xyzwh 183 229 3010 88 32 label_xy 207 238
-end
-classcanvas 129547 class_ref 128139 // SistemaStatistiche
-  class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 23 270 2005
+  xyzwh 168 254 3010 94 36 label_xy 192 263
 end
 note 129803 "Circuito"
   xyzwh 293 32 2000 56 35
 classcanvas 129931 class_ref 136075 // Competizione
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 605 203 2005
+  xyz 656 184 2005
 end
 usecasecanvas 130187 usecase_ref 147339 // Configura circuito
-  xyzwh 360 158 3005 111 39 label_xy 372 170
+  xyzwh 221 171 3005 111 39 label_xy 234 181
 end
 usecasecanvas 130699 usecase_ref 147595 // Aggiorna tabella classifica
-  xyzwh 261 410 3005 187 43 label_xy 290 423
+  xyzwh 219 428 3005 187 43 label_xy 248 441
 end
 usecasecanvas 130827 usecase_ref 147723 // Ottieni classifica
-  xyzwh 396 334 3005 119 32 label_xy 416 341
+  xyzwh 342 357 3005 119 32 label_xy 362 364
 end
 note 130955 "Conccorrente | N° Giro | N° tratto | Tempo arrivo tratto "
-  xyzwh 597 411 2000 199 48
+  xyzwh 620 421 2000 199 48
+note 131467 "Aggiornamento a intervalli regolari"
+  xyzwh 638 324 3010 131 50
+usecasecanvas 131723 usecase_ref 155019 // Imposta periodo aggiornamento classifica
+  xyzwh 359 131 3005 228 37 label_xy 374 141
+end
+classcanvas 132107 class_ref 136331 // Box
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 39 406 2000
+end
 line 129163 --->
   from ref 129035 z 1999 to ref 128907
 line 129419 --->
   from ref 129035 z 1999 to ref 129291
-line 129675 --->
-  from ref 129547 z 2004 to ref 128651
 line 130315 --->
   from ref 129931 z 3006 to ref 130187
 simplerelationcanvas 130443 simplerelation_ref 146571
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 288 155 3000 to ref 128139
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 204.5 149 3000 to ref 128139
 end
 simplerelationcanvas 130571 simplerelation_ref 146699
-  from ref 130187 z 3006 stereotype "<<include>>" xyz 378 143 3000 to ref 128779
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 274.5 145 3000 to ref 128779
 end
 line 131211 --->
   from ref 129931 z 3006 to ref 130827
+line 131339 --->
+  from ref 129931 z 3006 to ref 128651
+simplerelationcanvas 131851 simplerelation_ref 153483
+  from ref 130187 z 3006 stereotype "<<include>>" xyz 321 171 3000 to ref 131723
+end
+line 132235 --->
+  from ref 132107 z 3006 to ref 130827
+line 132363 --->
+  from ref 132107 z 3006 to ref 128651
 line 131083 -_-_
   from ref 130699 z 3006 to ref 130955
+line 131595 -_-_
+  from ref 131467 z 3011 to ref 130699
 end

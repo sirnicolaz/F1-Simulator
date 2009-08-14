@@ -1,9 +1,9 @@
 format 67
 
 subject 128011 ""
-  xyzwh 138 52 2000 262 325
-note 128139 "Sistema monitoraggio concorrente"
-  xyzwh 203 2 2005 191 35
+  xyzwh 138 52 2000 260 270
+note 128139 "Info concorrente"
+  xyzwh 203 2 2005 106 35
 usecasecanvas 128267 usecase_ref 147851 // Aggiorna tabella
   xyzwh 202 76 3005 123 37 label_xy 220 84
 end

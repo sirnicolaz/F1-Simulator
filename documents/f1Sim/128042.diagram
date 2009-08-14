@@ -1,7 +1,7 @@
 format 67
 
 usecasecanvas 128011 usecase_ref 128779 // Configura meteo
-  xyzwh 429.5 71.5 3005 100 45 label_xy 438.5 85.5
+  xyzwh 429 71 3005 100 45 label_xy 438.5 85.5
 end
 subject 128042 ""
   xyzwh 138 56 2000 493 488
@@ -23,11 +23,11 @@ usecasecanvas 128682 usecase_ref 128298 // Ottieni dati competizione
   xyzwh 405 299 3005 133 58 label_xy 414 320
 end
 usecasecanvas 128779 usecase_ref 147339 // Configura circuito
-  xyzwh 455 157 3005 98 53 label_xy 462 176
+  xyzwh 455 157 3005 104 55 label_xy 462 176
 end
 classcanvas 128810 class_ref 128042 // SistemaDiControllo
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 631 166 2000
+  xyz 666 193 2000
 end
 note 129035 "Es: n° giri"
   xyzwh 27 30 2000 66 35
@@ -52,22 +52,22 @@ end
 line 128938 ----
   from ref 128810 z 1999 to ref 128682
 simplerelationcanvas 129419 simplerelation_ref 146187
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 209.5 120.5 3000 to ref 128395
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 209 120 3000 to ref 128395
 end
 simplerelationcanvas 129547 simplerelation_ref 146315
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 358 121.5 3000 to ref 128011
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 358 121 3000 to ref 128011
 end
 simplerelationcanvas 129675 simplerelation_ref 146443
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 371 171 3000 to ref 128779
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 371 170.5 3000 to ref 128779
 end
 simplerelationcanvas 129962 simplerelation_ref 128042
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 312 398.5 3000 to ref 129066
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 312 398 3000 to ref 129066
 end
 simplerelationcanvas 130218 simplerelation_ref 128170
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 423.5 404.5 3000 to ref 129194
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 423 404 3000 to ref 129194
 end
 simplerelationcanvas 130346 simplerelation_ref 128298
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 493 391.5 3000 to ref 129322
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 493 391 3000 to ref 129322
 end
 line 130858 ----
   from ref 130602 z 3004 to ref 128426

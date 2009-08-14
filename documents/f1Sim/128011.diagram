@@ -1,40 +1,45 @@
 format 67
 
 subject 128011 ""
-  xyzwh 164 44 2000 419 317
+  xyzwh 197 62 2000 419 317
 usecasecanvas 128267 usecase_ref 128011 // Configura strategia
-  xyzwh 225 80 3005 125 43 label_xy 244 94
+  xyzwh 258 98 3005 125 43 label_xy 277 112
 end
 usecasecanvas 128395 usecase_ref 128139 // Configura auto
-  xyzwh 444 116 3005 116 42 label_xy 466 127
-end
-usecasecanvas 128523 usecase_ref 128267 // Ottieni dati concorrente
-  xyzwh 309 152 3005 127 44 label_xy 315 167
+  xyzwh 288 158 3005 116 42 label_xy 310 169
 end
 usecasecanvas 128651 usecase_ref 128395 // Ottieni informazioni statiche
-  xyzwh 205 237 3005 175 43 label_xy 222 250
+  xyzwh 226 237 3005 175 43 label_xy 243 250
 end
-usecasecanvas 128779 usecase_ref 128523 // Ottieni informazioni traiettoria
-  xyzwh 404 245 3005 170 40 label_xy 420 256
+usecasecanvas 128779 usecase_ref 128523 // Gareggia
+  xyzwh 429 289 3005 170 40 label_xy 489 300
 end
 note 129291 "Concorrente"
   xyzwh 328 5 2005 82 35
 classcanvas 129419 class_ref 128170 // AmministratoreDiSistema
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 22 105 2005
+  xyz 27 119 2005
 end
 usecasecanvas 129803 usecase_ref 147851 // Aggiorna tabella
-  xyzwh 299 305 3005 163 40 label_xy 340 316
+  xyzwh 238 325 3005 163 40 label_xy 279 336
 end
-classcanvas 130059 class_ref 136203 // InfoConcorrente
+classcanvas 130059 class_ref 136203 // SistemaMonitoraggioConcorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 632 287 2000
+  xyz 10 260 2000
 end
-simplerelationcanvas 129035 simplerelation_ref 128139
-  from ref 128523 z 3004 stereotype "<<using>>" xyz 278.5 211 3000 to ref 128651
+classcanvas 130443 class_ref 143115 // Circuito
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 690 240 2000
 end
-simplerelationcanvas 129163 simplerelation_ref 128267
-  from ref 128523 z 3004 stereotype "<<using>>" xyz 393.5 216.5 3000 to ref 128779
+usecasecanvas 130699 usecase_ref 155275 // Richiama ai box
+  xyzwh 440 83 3011 119 43 label_xy 460 95
+end
+classcanvas 130827 class_ref 136331 // Box
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 696 116 2000
+end
+usecasecanvas 131211 usecase_ref 155403 // Interroga box
+  xyzwh 451 187 3005 111 42 label_xy 474 200
 end
 line 129547 --->
   from ref 129419 z 3006 to ref 128267
@@ -42,4 +47,12 @@ line 129675 --->
   from ref 129419 z 3006 to ref 128395
 line 130187 --->
   from ref 129803 z 3006 to ref 130059
+line 130315 --->
+  from ref 128651 z 3006 to ref 130059
+line 130571 --->
+  from ref 128779 z 3006 to ref 130443
+line 130955 --->
+  from ref 130827 z 3012 to ref 130699
+line 131339 --->
+  from ref 131211 z 3006 to ref 130827
 end

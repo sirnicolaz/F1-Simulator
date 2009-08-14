@@ -23,14 +23,22 @@ classcanvas 130571 class_ref 129419 // TempoAtrmosferico
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 613 358 2005
 end
-usecasecanvas 130699 usecase_ref 128523 // Ottieni informazioni traiettoria
-  xyzwh 158 358 3005 167 44 label_xy 171 371
-end
 usecasecanvas 131339 usecase_ref 133131 // Scegli traiettoria migliore disponibile
   xyzwh 142 254 3010 205 60 label_xy 158 274
 end
 note 132363 "Tempo atmosferico statico nel corso della gara"
   xyzwh 635 253 2000 119 62
+classcanvas 132619 class_ref 128011 // Concorrente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 10 150 2005
+end
+classcanvas 132875 class_ref 142987 // Pista
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 669 89 2000
+end
+usecasecanvas 133131 usecase_ref 155147 // Attraversa tratto
+  xyzwh 193 362 3005 102 44 label_xy 205 373
+end
 simplerelationcanvas 130187 simplerelation_ref 129931
   from ref 128139 z 3004 stereotype "<<include>>" xyz 327 147 3000 to ref 128267
 end
@@ -42,11 +50,15 @@ line 130827 --->
 simplerelationcanvas 131467 simplerelation_ref 131851
   from ref 129035 z 3004 stereotype "<<include>>" xyz 212 225 3000 to ref 131339
 end
-simplerelationcanvas 132107 simplerelation_ref 132235
-  from ref 131339 z 3004 stereotype "<<include>>" xyz 244 330 3000 to ref 130699
-end
 simplerelationcanvas 132235 simplerelation_ref 132363
-  from ref 129035 z 3004 stereotype "<<include>>" xyz 327 238.5 3000 to ref 130443
+  from ref 129035 z 3004 stereotype "<<include>>" xyz 327 238 3000 to ref 130443
+end
+line 132747 --->
+  from ref 132619 z 3006 to ref 129035
+line 133003 --->
+  from ref 132875 z 3006 to ref 128139
+simplerelationcanvas 133259 simplerelation_ref 153611
+  from ref 131339 z 3011 stereotype "<<include>>" xyz 214.5 324.5 3000 to ref 133131
 end
 line 132491 -_-_
   from ref 132363 z 2006 to ref 130571

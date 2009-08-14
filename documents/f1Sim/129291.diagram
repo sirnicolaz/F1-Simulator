@@ -1,16 +1,37 @@
-format 62
+format 67
 
 subject 128011 ""
-  xyzwh 75 50 2000 352 235
+  xyzwh 99 52 2000 360 308
 usecasecanvas 128139 usecase_ref 130443 // Configura percorso
-  xyzwh 185 98 3005 150 43 label_xy 212 111
-end
-usecasecanvas 128523 usecase_ref 130571 // Imposta tratti
-  xyzwh 161 185 3005 104 40 label_xy 179 199
+  xyzwh 205 188 3005 150 43 label_xy 232 201
 end
 note 128779 "Pista"
   xyzwh 218 10 2005 51 35
-simplerelationcanvas 128651 simplerelation_ref 129419
-  from ref 128523 z 3004 stereotype "<<include>>" xyz 203 162 3000 to ref 128139
+classcanvas 128907 class_ref 143115 // Circuito
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 469 180 2000
 end
+usecasecanvas 129163 usecase_ref 154763 // Configura tratti
+  xyzwh 301 290 3005 110 41 label_xy 321 303
+end
+usecasecanvas 129803 usecase_ref 154891 // Aggiungi tratti
+  xyzwh 136 293 3005 97 41 label_xy 147 304
+end
+usecasecanvas 130059 usecase_ref 131979 // Ottieni tratto
+  xyzwh 204 103 3005 120 45 label_xy 233 116
+end
+classcanvas 130187 class_ref 128011 // Concorrente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 17 168 2000
+end
+line 129419 --->
+  from ref 128907 z 3006 to ref 128139
+simplerelationcanvas 129675 simplerelation_ref 153227
+  from ref 128139 z 3006 stereotype "<<use>>" xyz 296 259 3000 to ref 129163
+end
+simplerelationcanvas 129931 simplerelation_ref 153355
+  from ref 128139 z 3006 stereotype "<<use>>" xyz 207.5 261 3000 to ref 129803
+end
+line 130315 --->
+  from ref 130187 z 3006 to ref 130059
 end
