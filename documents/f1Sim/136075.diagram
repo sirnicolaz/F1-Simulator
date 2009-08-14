@@ -26,8 +26,8 @@ classcanvas 129291 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
   xyz 45 216 2000
 end
-usecasecanvas 129675 usecase_ref 140555 // Comunica nuova strategia
-  xyzwh 191 414 3005 166 33 label_xy 211 422
+usecasecanvas 129675 usecase_ref 140555 // Comunica strategia
+  xyzwh 191 414 3005 166 33 label_xy 228 422
 end
 note 130187 "Include anche il ritiro"
   xyzwh 724 383 2000 105 51

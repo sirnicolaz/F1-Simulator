@@ -1,0 +1,29 @@
+format 67
+
+subject 128011 ""
+  xyzwh 135 51 2000 267 206
+note 128139 "Comunicazione radio"
+  xyzwh 189 8 2000 131 35
+usecasecanvas 128267 usecase_ref 140555 // Comunica strategia
+  xyzwh 187 89 3005 150 44 label_xy 217 103
+end
+usecasecanvas 128395 usecase_ref 155531 // Richiedi informazioni
+  xyzwh 193 172 3005 137 45 label_xy 213 186
+end
+classcanvas 128523 class_ref 136331 // Box
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 42 134 2000
+end
+classcanvas 129035 class_ref 128011 // Concorrente
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 471 126 2000
+end
+line 128651 --->
+  from ref 128523 z 3006 to ref 128267
+line 128907 --->
+  from ref 128395 z 3006 to ref 128523
+line 129163 --->
+  from ref 128267 z 3006 to ref 129035
+line 129291 --->
+  from ref 129035 z 3006 to ref 128395
+end

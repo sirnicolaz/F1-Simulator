@@ -16,7 +16,7 @@ note 128388 "Monitor pubblico"
   xyzwh 183 4 2005 99 35
 classcanvas 128516 class_ref 128004 // Spettatore
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 35 96 3005
+  xyz 10 91 3005
 end
 note 128651 "Server remoto"
   xyzwh 537 177 2000 92 35

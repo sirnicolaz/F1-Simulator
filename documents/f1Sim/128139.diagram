@@ -43,10 +43,6 @@ note 131467 "Aggiornamento a intervalli regolari"
 usecasecanvas 131723 usecase_ref 155019 // Imposta periodo aggiornamento classifica
   xyzwh 355 127 3005 228 37 label_xy 370 137
 end
-classcanvas 132107 class_ref 136331 // Box
-  class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 27 409 2000
-end
 line 129163 --->
   from ref 129035 z 1999 to ref 128907
 line 129419 --->
@@ -66,10 +62,6 @@ line 131339 --->
 simplerelationcanvas 131851 simplerelation_ref 153483
   from ref 130187 z 3006 stereotype "<<include>>" xyz 345.5 174.5 3000 to ref 131723
 end
-line 132235 --->
-  from ref 132107 z 3006 to ref 130827
-line 132363 --->
-  from ref 132107 z 3006 to ref 128651
 line 131083 -_-_
   from ref 130699 z 3006 to ref 130955
 line 131595 -_-_

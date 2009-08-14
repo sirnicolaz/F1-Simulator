@@ -1,21 +1,31 @@
 format 67
 
 subject 128004 ""
-  xyzwh 134 45 2000 313 168
+  xyzwh 129 39 2000 317 190
 classcanvas 128011 class_ref 136459 // MonitorPubblico
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 22 101 2005
+  xyz 13 55 2005
 end
 note 128132 "Sistema di controllo"
   xyzwh 208 6 2005 130 35
 usecasecanvas 128260 usecase_ref 128260 // Ottieni statistiche competizione
-  xyzwh 205 63 3005 178 48 label_xy 219 78
+  xyzwh 200 57 3005 182 70 label_xy 214 77
+end
+note 128395 "Il sistema deve soddisfare le richieste parallelamente"
+  xyzwh 500 71 2000 110 79
+classcanvas 128523 class_ref 136331 // Box
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 31 152 2000
 end
 usecasecanvas 128644 usecase_ref 128388 // Ottieni statistiche concorrente
-  xyzwh 205 143 3005 182 45 label_xy 228 157
+  xyzwh 200 137 3005 186 67 label_xy 221 161
 end
 line 128139 --->
   from ref 128011 z 3006 to ref 128260
 line 128267 --->
   from ref 128011 z 3006 to ref 128644
+line 128651 --->
+  from ref 128523 z 3006 to ref 128260
+line 128779 --->
+  from ref 128523 z 3006 to ref 128644
 end
