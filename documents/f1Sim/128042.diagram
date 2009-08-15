@@ -1,29 +1,29 @@
 format 67
 
 usecasecanvas 128011 usecase_ref 128779 // Configura meteo
-  xyzwh 428 71 3005 100 45 label_xy 437.5 85.5
+  xyzwh 771 140 3005 100 45 label_xy 780.5 154.5
 end
 subject 128042 ""
-  xyzwh 137 56 2000 493 488
+  xyzwh 480 125 2000 493 488
 note 128139 "Quindi stato pista"
   xyzwh 595.5 70.5 2000 107 35
 note 128298 "Competizione
 "
   xyzwh 328 10 2005 93 37
 usecasecanvas 128395 usecase_ref 147211 // Configura gara
-  xyzwh 156 72 3005 89 37 label_xy 164 82
+  xyzwh 499 141 3005 89 37 label_xy 507 151
 end
 usecasecanvas 128426 usecase_ref 128042 // Avvia competizione
-  xyzwh 176 291 3005 113 48 label_xy 185 306
+  xyzwh 519 360 3005 113 48 label_xy 528 375
 end
 usecasecanvas 128554 usecase_ref 128170 // Configura competizione
-  xyzwh 218 134 3005 129 52 label_xy 225 151
+  xyzwh 561 203 3005 129 52 label_xy 568 220
 end
 usecasecanvas 128682 usecase_ref 128298 // Ottieni dati competizione
-  xyzwh 404 299 3005 133 58 label_xy 413 320
+  xyzwh 747 368 3005 133 58 label_xy 756 389
 end
 usecasecanvas 128779 usecase_ref 147339 // Configura circuito
-  xyzwh 454 157 3005 104 55 label_xy 461 176
+  xyzwh 797 226 3005 104 55 label_xy 804 245
 end
 classcanvas 128810 class_ref 128042 // SistemaDiControllo
   class_drawing_mode default show_context_mode default show_stereotype_properties default
@@ -32,15 +32,15 @@ end
 note 129035 "Es: n° giri"
   xyzwh 27 30 2000 66 35
 usecasecanvas 129194 usecase_ref 128554 // Informazioni meteo
-  xyzwh 219 438 3005 117 49 label_xy 232 454
+  xyzwh 562 507 3005 117 49 label_xy 575 523
 end
 usecasecanvas 129322 usecase_ref 128682 // Informazioni di gara
-  xyzwh 466 455 3005 119 42 label_xy 478 466
+  xyzwh 809 524 3005 119 42 label_xy 821 535
 end
 note 129450 "Classifica, circuito usato, numero concorrenti, griglia di partenza, miglior giro e altre lollosità"
   xyzwh 647 454 2000 138 78
 usecasecanvas 129803 usecase_ref 147467 // Termina competizione
-  xyzwh 324 226 3005 135 37 label_xy 338 236
+  xyzwh 667 295 3005 135 37 label_xy 681 305
 end
 classcanvas 130602 class_ref 128170 // AmministratoreDiSistema
   class_drawing_mode default show_context_mode default show_stereotype_properties default
@@ -51,21 +51,21 @@ classcanvas 130827 class_ref 143115 // Circuito
   xyz 695 328 2000
 end
 simplerelationcanvas 129419 simplerelation_ref 146187
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 208 120 3000 to ref 128395
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 551 189 3000 to ref 128395
 end
 simplerelationcanvas 129547 simplerelation_ref 146315
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 357 121 3000 to ref 128011
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 700 190 3000 to ref 128011
 end
 simplerelationcanvas 129675 simplerelation_ref 146443
-  from ref 128554 z 3006 stereotype "<<include>>" xyz 370 170.5 3000 to ref 128779
+  from ref 128554 z 3006 stereotype "<<include>>" xyz 713 239.5 3000 to ref 128779
 end
 line 130187 --->
   from ref 128810 z 3006 to ref 128682
 simplerelationcanvas 130218 simplerelation_ref 128170
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 368 397 3000 to ref 129194
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 711 466 3000 to ref 129194
 end
 simplerelationcanvas 130346 simplerelation_ref 128298
-  from ref 128682 z 3004 stereotype "<<using>>" xyz 500 395.5 3000 to ref 129322
+  from ref 128682 z 3004 stereotype "<<using>>" xyz 843 464.5 3000 to ref 129322
 end
 line 130858 ----
   from ref 130602 z 3004 to ref 128426
