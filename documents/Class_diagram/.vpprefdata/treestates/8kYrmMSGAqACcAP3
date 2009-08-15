@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ProjectTreeState projectID="eIHLmMSGAqACcAPs" projectPath="C:\Users\Jack\Documents\University\Sistemi\f1_sym\documents\Class_diagram\f1_sym.vpp">
 	<TreeState name="ModelRepository" viewX="0" viewY="0"/>
-	<TreeState name="DiagramNavigator" viewX="0" viewY="0">
+	<TreeState name="DiagramNavigator" viewX="0" viewY="18">
 		<ExpandedPath>DiagramNavigator</ExpandedPath>
 		<ExpandedPath>DiagramNavigator,UML Diagrams</ExpandedPath>
-		<ExpandedPath>DiagramNavigator,Requirements Capturing</ExpandedPath>
-		<ExpandedPath>DiagramNavigator,Database Modeling</ExpandedPath>
-		<ExpandedPath>DiagramNavigator,Business Process Modeling</ExpandedPath>
-		<ExpandedPath>DiagramNavigator,Others</ExpandedPath>
+		<ExpandedPath>ClassDiagram</ExpandedPath>
+		<SelectedPath>ClassDiagram,x_NIuMSGAqACcAJx</SelectedPath>
 	</TreeState>
 	<TreeState name="ClassBrowser" viewX="0" viewY="0">
 		<ExpandedPath>ClassBrowser</ExpandedPath>
