@@ -1,70 +1,69 @@
 format 67
 
-subject 128011 ""
-  xyzwh 145 52 2000 550 407
-note 128139 "Box"
-  xyzwh 402 13 2005 40 35
-usecasecanvas 128267 usecase_ref 139787 // Richiama concorrente
-  xyzwh 188 106 3005 129 39 label_xy 196 115
+classcanvas 128002 class_ref 128042 // SistemaDiControllo
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 724.2 251.2 2000
 end
+subject 128011 ""
+  xyzwh 144.6 53 2000 536 406
+note 128139 "Box"
+  xyzwh 402.2 13 2005 40 35
 usecasecanvas 128395 usecase_ref 139915 // Rifornimento e cambio gomme
-  xyzwh 443 108 3005 183 39 label_xy 462 117
+  xyzwh 220.9 108.4 3005 183 39 label_xy 238 117
+end
+classcanvas 128514 class_ref 143371 // ComunicazioneRadio
+  class_drawing_mode default show_context_mode default show_stereotype_properties default
+  xyz 13.2 399.7 2005
 end
 usecasecanvas 128523 usecase_ref 140043 // Monitora gara
-  xyzwh 236 264 3005 101 44 label_xy 248 276
+  xyzwh 198.8 209.6 3005 101 44 label_xy 210 222
 end
-usecasecanvas 128651 usecase_ref 140171 // Controlla posizionamento auto
-  xyzwh 441 264 3005 208 39 label_xy 473 273
+usecasecanvas 128651 usecase_ref 140171 // Controlla stato auto
+  xyzwh 438.6 246 3005 153 42 label_xy 465 258
 end
 usecasecanvas 128779 usecase_ref 140299 // Controlla tempo atmosferico e condizioni pista
-  xyzwh 381 178 3005 287 36 label_xy 412 189
+  xyzwh 352.8 165.2 3005 287 36 label_xy 383 173
 end
 usecasecanvas 129163 usecase_ref 140427 // (Ri)calcola strategia
-  xyzwh 495 404 3005 116 35 label_xy 504 412
+  xyzwh 493.8 414.2 3005 116 35 label_xy 502 421
 end
 classcanvas 129291 class_ref 128011 // Concorrente
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 45 216 2000
+  xyz 28.4 96.3 2000
 end
 usecasecanvas 129675 usecase_ref 140555 // Comunica strategia
-  xyzwh 191 414 3005 166 33 label_xy 228 422
+  xyzwh 190.6 414 3005 166 33 label_xy 228 422
 end
 note 130187 "Include anche il ritiro"
-  xyzwh 724 383 2000 105 51
-usecasecanvas 130827 usecase_ref 140683 // Valuta stato gara
-  xyzwh 297 349 3011 147 39 label_xy 331 361
-end
-classcanvas 132107 class_ref 143115 // Circuito
-  class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 753 249 2000
+  xyzwh 693.6 408.6 2000 105 51
+usecasecanvas 130827 usecase_ref 140683 // Valuta situazione
+  xyzwh 289 315.8 3011 147 39 label_xy 319 327
 end
 classcanvas 132491 class_ref 129419 // TempoAtrmosferico
   class_drawing_mode default show_context_mode default show_stereotype_properties default
-  xyz 718 96 2000
+  xyz 718.8 96.4 2000
 end
+line 128386 --->
+  from ref 128651 z 3006 to ref 128002
+line 128642 --->
+  from ref 129675 z 3006 to ref 128514
 simplerelationcanvas 128907 simplerelation_ref 138891
-  from ref 128523 z 3006 stereotype "<<include>>" xyz 346 284.5 3000 to ref 128651
+  from ref 128523 z 3006 stereotype "<<include>>" xyz 326 246 3000 to ref 128651
 end
 simplerelationcanvas 129035 simplerelation_ref 139019
-  from ref 128523 z 3006 stereotype "<<include>>" xyz 374 237.5 3000 to ref 128779
+  from ref 128523 z 3006 stereotype "<<include>>" xyz 319.5 208 3000 to ref 128779
 end
-line 129419 --->
-  from ref 128267 z 3006 to ref 129291
 line 129547 --->
   from ref 128395 z 3006 to ref 129291
-line 129931 --->
-  from ref 129675 z 3006 to ref 129291
 simplerelationcanvas 130955 simplerelation_ref 139403
-  from ref 130827 z 3012 stereotype "<<include>>" xyz 331.5 326.5 3000 to ref 128523
+  from ref 130827 z 3012 stereotype "<<include>>" xyz 313.5 282.5 3000 to ref 128523
 end
 simplerelationcanvas 131083 simplerelation_ref 139531
-  from ref 130827 z 3012 stereotype "<<use>>" xyz 314 398 3000 to ref 129675
+  from ref 130827 z 3012 stereotype "<<use>>" xyz 318 376 3000 to ref 129675
 end
 simplerelationcanvas 131979 simplerelation_ref 139659
-  from ref 130827 z 3012 stereotype "<<use>>" xyz 448 395 3000 to ref 129163
+  from ref 130827 z 3012 stereotype "<<use>>" xyz 419.5 382.5 3000 to ref 129163
 end
-line 132363 --->
-  from ref 128651 z 3006 to ref 132107
 line 132619 --->
   from ref 128779 z 3006 to ref 132491
 line 131851 -_-_
