@@ -1,5 +1,5 @@
 -- The implementation body of class Competition
-with Competition_component.AdminWindow; use Competition_component.AdminWindow;with ControlPanel; use ControlPanel;with Circuit_Component.Circuit; use Circuit_Component.Circuit;with Competition_component.Competitor; use Competition_component.Competitor;
+with Competition_component.CompetitionAdminWindow; use Competition_component.CompetitionAdminWindow;with CompetitionMonitorPanel; use CompetitionMonitorPanel;with Competitor_component.MonitorSystem; use Competitor_component.MonitorSystem;with Circuit_Component.Circuit; use Circuit_Component.Circuit;with Competition_component.Competitor; use Competition_component.Competitor;
 package body Competition_component.Competition is
 	procedure waitCompetitors(pThis : CompetitionObject) is
 	begin
@@ -21,10 +21,10 @@ package body Competition_component.Competition is
 	begin
 		null;
 	end regCompetitor;
-	procedure regViewer(pThis : CompetitionObject) is
+	procedure __regViewer(pThis : CompetitionObject) is
 	begin
 		null;
-	end regViewer;
+	end __regViewer;
 	procedure start(pThis : CompetitionObject) is
 	begin
 		null;
@@ -33,4 +33,12 @@ package body Competition_component.Competition is
 	begin
 		null;
 	end stop;
+	function joinCompetition(pThis : CompetitionObject ; pconnectionInfo : String ; pcar : String ; pstrategy : String ; pcompetitorInfo : String) return int is
+	begin
+		null;
+	end joinCompetition;
+	function getCompetitorInfo(pThis : CompetitionObject ; pid : int) return CompetitorInfo is
+	begin
+		null;
+	end getCompetitorInfo;
 end Competition_component.Competition;
