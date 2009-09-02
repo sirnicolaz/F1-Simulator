@@ -1,2 +1,0 @@
-package Competition_component is
-end Competition_component;
