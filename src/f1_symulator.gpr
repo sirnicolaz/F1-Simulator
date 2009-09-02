@@ -1,7 +1,0 @@
-project F1_Symulator is
-
-   for Source_Dirs use ("/home/jack/Documents/University/SCD/Project/f1_sym/src");
-   for Object_Dir use "/home/jack/Documents/University/SCD/Project/f1_sym/src/obj";
-
-end F1_Symulator;
-
