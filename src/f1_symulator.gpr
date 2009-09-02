@@ -10,5 +10,7 @@ project F1_Symulator is
       for Dot_Replacement use "-";
    end Naming;
 
+   for Main use ("main.adb");
+
 end F1_Symulator;
 
