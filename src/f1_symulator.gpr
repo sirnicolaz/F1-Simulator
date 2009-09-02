@@ -1,0 +1,14 @@
+project F1_Symulator is
+
+   for Object_Dir use "obj";
+
+   package Naming is
+      for Specification_Suffix ("ada") use ".ads";
+      for Implementation_Suffix ("ada") use ".adb";
+      for Separate_Suffix use ".adse";
+      for Casing use "lowercase";
+      for Dot_Replacement use "-";
+   end Naming;
+
+end F1_Symulator;
+
