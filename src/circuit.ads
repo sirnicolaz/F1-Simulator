@@ -14,6 +14,7 @@ package Circuit is
    function Get_Grip(Path_In : PATH) return FLOAT;
    function Get_Difficulty(Path_In : PATH) return FLOAT;
 
+
    type PATHS is array(INTEGER range <>) of PATH;
 
    type SEGMENT(Paths_Qty : INTEGER) is tagged private;
@@ -21,7 +22,7 @@ package Circuit is
    procedure Set_Values(Segment_In : in out SEGMENT;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
-                        Paths_Qty : INTEGER);
+                        Length_In : FLOAT);
    procedure Go_Through(Segment_In : in out SEGMENT);
    procedure Enter_Segment_Queue(Segment_In : in out SEGMENT);
    procedure Exit_Segment_Queue(Segment_In : in out SEGMENT);
