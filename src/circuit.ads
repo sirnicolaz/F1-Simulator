@@ -26,9 +26,12 @@ package Circuit is
    procedure Go_Through(Segment_In : in out SEGMENT);
    procedure Enter_Segment_Queue(Segment_In : in out SEGMENT);
    procedure Exit_Segment_Queue(Segment_In : in out SEGMENT);
-   procedure Set_Arrival_Time(Segment_In : in out SEGMENT;
-                              Time_In : FLOAT;
-                              CompetitorID : INTEGER);
+
+   procedure Set_ArrivalTime(Segment_In : in out SEGMENT;
+                             ArrivalTime_In : FLOAT;
+                             CompetitorID_In : INTEGER;
+                             IsActive_In : BOOLEAN);
+
    function Get_Path(Segment_In : SEGMENT;
                      Path_Num : INTEGER ) return PATH;
    function Get_Next_Segment(Segment_In : SEGMENT) return SEGMENT;
@@ -36,6 +39,7 @@ package Circuit is
 private
 
    type SEGMENT(Paths_Qty : INTEGER) is tagged record
+      --Queue : SORTED_LIST;
       SectorID : INTEGER;
       IsGoal : BOOLEAN;
       Multiplicity : INTEGER := Paths_Qty;
