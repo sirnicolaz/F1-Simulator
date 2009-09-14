@@ -39,15 +39,19 @@ begin
 
    Queue.Init_Queue(SortQueueTest);
 
-   for Index in 1..TestQueue'LENGTH loop
+   for Index in TestQueue'Range loop
       Queue.Add_Competitor2Queue(SortQueueTest, Queue.Get_CompetitorID(TestQueue(Index)),Queue.Get_ArrivalTime(TestQueue(Index)),Queue.Get_IsActive(TestQueue(Index)));
+      Put("Competitor " & INTEGER'Image(Queue.Get_CompetitorID(TestQueue(Index))) & " inserted in position ");
+      Put_Line(Integer'Image(Queue.Get_Position(SortQueueTest,Queue.Get_CompetitorID(TestQueue(Index)))) & " with arrival time = " & FLOAT'Image(Queue.Get_ArrivalTime(TestQueue(Index))));
    end loop;
 
-   Queue.Add_Competitor2Queue(SortQueueTest,9,9.0,false);
+   Queue.Add_Competitor2Queue(SortQueueTest,9,6.0,false);
+   Put_Line("--------------------------");
 
-   Put_Line("Competitor 1 arrival time : " & Float'Image((Queue.Get_ArrivalTime(TestQueue,1))));
-   Put("Position for competitor 6 : ");
-   Put(Integer'Image(Queue.Get_Position(SortQueueTest,6)));
+   for Index in SortQueueTest'RANGE loop
+      Put("Position for competitor " & INTEGER'Image(Queue.Get_CompetitorID(SortQueueTest(Index))) & ": ");
+      Put_Line(Integer'Image(Queue.Get_Position(SortQueueTest,Queue.Get_CompetitorID(SortQueueTest(Index)))) & " with arrival time = " & FLOAT'Image(Queue.Get_ArrivalTime(SortQueueTest(Index))));
+   end loop;
 
    null;
 end Main;

@@ -33,7 +33,7 @@ package body Queue is
    function Get_ArrivalTime(Queue_In : QUEUE;
                             Position : INTEGER) return FLOAT is
    begin
-      if(Position <= Queue_In'LENGTH) then
+      if(Position <= Queue_In'LENGTH and Position > 0) then
          return Queue_In(Position).ArrivalTime;
       else
          return -1.0;
@@ -79,40 +79,43 @@ package body Queue is
                              	  ArrivalTime_In : FLOAT;
                                   IsActive_In : BOOLEAN) is
 
-      Position : INTEGER;
+      Position_Old : INTEGER;
+      Position_New : INTEGER := 1;
 
-      function SortedQueue_Lt(Op1, Op2 : NATURAL) return BOOLEAN is
       begin
-         if(Queue_In(Op1).ArrivalTime < Queue_In(Op2).ArrivalTime) then
-            return true;
-         else
-            return false;
-         end if;
-      end;
-
-      procedure SortedQueue_Xchg(Op1, Op2 : NATURAL) is
-         TmpCell : QUEUE_CELL_POINT;
-      begin
-         TmpCell := Queue_In(Op1);
-         Queue_In(Op1) := Queue_In(Op2);
-         Queue_In(Op2) := TmpCell;
-      end;
-
-      XchgPoint : access procedure(Op1, Op2 : NATURAL) := SortedQueue_Xchg'Access;
-      LtPoint : access function(Op1, Op2 : NATURAL) return BOOLEAN := SortedQueue_Lt'Access;
-      begin
-      Position := Get_Position(Queue_In,CompetitorID_In);
-      if(Position = 0) then
+      Position_Old := Get_Position(Queue_In,CompetitorID_In);
+      if(Position_Old = 0) then
          FindFreePos_Loop:
          for Index in Queue_In'Range loop
-            Position := Position + 1;
+            Position_Old := Position_Old + 1;
             exit FindFreePos_Loop when Queue_In(Index).CompetitorID = 0;
          end loop FindFreePos_Loop;
-
+         Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,IsActive_In,Position_Old);
       end if;
 
-      Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,IsActive_In,Position);
-      Sort(NATURAL(Queue_In'LENGTH),XchgPoint, LtPoint);
+      for Index in Queue_In'Range loop
+         if Queue_In(Index).ArrivalTime >= ArrivalTime_In then
+            if Index <= Position_Old then
+               Position_New := Index;
+            else
+               Position_New := Index -1;
+            end if;
+         elsif Queue_In'LENGTH = Index then
+            Position_New := Index;
+         end if;
+         exit when Queue_In(Index).ArrivalTime >= ArrivalTime_In;
+      end loop;
+
+      if Position_Old > Position_New then
+         for ShiftIndex in reverse Position_New+1..Position_Old loop
+                     Queue_In(ShiftIndex) := Queue_In(ShiftIndex-1);
+               end loop;
+      elsif Position_Old < Position_New then
+         for ShiftIndex in Position_Old..Position_New-1 loop
+                  Queue_In(ShiftIndex) := Queue_In(ShiftIndex+1);
+         end loop;
+      end if;
+      Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,IsActive_In,Position_New);
    end;
 
 end Queue;
