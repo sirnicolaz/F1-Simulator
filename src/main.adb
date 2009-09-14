@@ -11,7 +11,7 @@ with Queue;
 procedure Main is
    --Ferrari : CAR;
    --EngineString : STRING(1..20);
-   Segment_1 : SEGMENT(3);
+   Segment_1 : SEGMENT(5,3);
    Path_1_1 : PATH;
 
    TestQueue : Queue.QUEUE(1..5);

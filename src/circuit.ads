@@ -1,8 +1,12 @@
+with Queue;
+use Queue;
+
 package Circuit is
 
    subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
 
+   -- PATH Structure delaration
    type PATH is private;
    procedure Set_Values(Path_In : in out PATH;
                         Length_In : FLOAT;
@@ -17,7 +21,8 @@ package Circuit is
 
    type PATHS is array(INTEGER range <>) of PATH;
 
-   type SEGMENT(Paths_Qty : INTEGER) is tagged private;
+   --SEGMENT Structure delcaration
+   type SEGMENT(MaxCompetitors_Qty : INTEGER; Paths_Qty : INTEGER) is tagged private;
    type POINT_SEGMENT is access SEGMENT;
    procedure Set_Values(Segment_In : in out SEGMENT;
                         SectorID_In : INTEGER;
@@ -38,8 +43,14 @@ package Circuit is
 
 private
 
-   type SEGMENT(Paths_Qty : INTEGER) is tagged record
-      --Queue : SORTED_LIST;
+   -- MaxCompetitors_Qty è un po' una pezza perchè significa che se
+   -- per qualche motivo si iscrivono meno partecipanti di quelli
+   -- dichiarati inizialmente, si spreca memoria. Sarebbe bello
+   -- trovare un modo settare dinamicamente la grandezza dell'array.
+   -- Alla peggio i segmenti vengono inizializzati DOPO che viene dato
+   -- il via ufficiale alla gara.
+   type SEGMENT(MaxCompetitors_Qty : INTEGER; Paths_Qty : INTEGER) is tagged record
+      Queue : SORTED_QUEUE(1..MaxCompetitors_Qty);
       SectorID : INTEGER;
       IsGoal : BOOLEAN;
       Multiplicity : INTEGER := Paths_Qty;

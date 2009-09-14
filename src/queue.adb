@@ -4,6 +4,15 @@ with Ada.Text_IO; use Ada.Text_IO;
 
 package body Queue is
 
+
+   procedure Init_Queue(Queue_In : in out QUEUE) is
+   begin
+      for Index in Queue_In'RANGE loop
+         Queue_In(Index) := new QUEUE_CELL'(0,0.0,false);
+      end loop;
+   end;
+
+
    function Get_CompetitorID(Cell_In : QUEUE_CELL_POINT) return INTEGER is
    begin
       return Cell_In.CompetitorID;
@@ -65,14 +74,6 @@ package body Queue is
       end loop;
       return 0;
    end;
-
-   procedure Init_Queue(Queue_In : in out SORTED_QUEUE) is
-   begin
-      for Index in Queue_In'RANGE loop
-         Queue_In(Index) := new QUEUE_CELL'(0,0.0,false);
-      end loop;
-   end;
-
 
    procedure Add_Competitor2Queue(Queue_In : in out SORTED_QUEUE;
                                   CompetitorID_In : INTEGER;
