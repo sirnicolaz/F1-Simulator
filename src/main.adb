@@ -11,7 +11,7 @@ with Queue;
 procedure Main is
    --Ferrari : CAR;
    --EngineString : STRING(1..20);
-   Segment_1 : SEGMENT(5,3);
+   Segment_1 : SEGMENT(3);
    Path_1_1 : PATH;
 
    TestQueue : Queue.QUEUE(1..5);
@@ -24,7 +24,7 @@ begin
    --Put_Line(Float'Image(Get_MaxSpeed(Ferrari)));
    --Put("Engine = " & Get_Engine(Ferrari));
 
-   Set_Values(Segment_1,1,FALSE,42.00);
+   Set_Values(Segment_1,1,FALSE,42.00,45.00);
    Path_1_1 := Get_Path(Segment_1,1);
    Put_Line("Path 1 in Segment 1 has length = " & Float'Image(Get_Length(Path_1_1)));
 
