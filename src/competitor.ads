@@ -45,9 +45,9 @@ private
       end record;
    type COMPETITOR_INFO is
       record
-         Team : STRING;
-         FirstName : STRING;
-         LastName : STRING;
+         Team : STRING(1..20);
+         FirstName : STRING(1..20);
+         LastName : STRING(1..20);
       end record;
    type COMPETITOR is
       record
