@@ -25,9 +25,25 @@ package Competitor is
    function Get_Team(Competitor_In : COMPETITOR_INFO) return STRING;
    function Get_FirstName(Competitor_In : COMPETITOR_INFO) return STRING;
    function Get_LastName(Competitor_In : COMPETITOR_INFO) return STRING;
-   procedure Set_Team(Team_In : in STRING);
-   procedure Set_FirstName(FirstName_In : in STRING);
-   procedure Set_LastName(LastName_In : in STRING);
+   procedure Set_Team(Competitor_In: in out COMPETITOR_INFO;
+                      Team_In : in STRING);
+   procedure Set_FirstName(Competitor_In: in out COMPETITOR_INFO;
+                           FirstName_In : in STRING);
+   procedure Set_LastName(Competitor_In: in out COMPETITOR_INFO;
+                          LastName_In : in STRING);
+
+   type TYRE is private;
+   function Get_Mixture(Tyre_In : TYRE) return STRING;
+   function Get_TyreType(Tyre_In : TYRE) return STRING;
+   function Get_Model(Tyre_In : TYRE) return STRING;
+   procedure Set_Mixture(Tyre_In : in out TYRE;
+                         Mixture_In : in STRING);
+   procedure Set_TypeTyre(Tyre_In : in out TYRE;
+                          TypeTyre_In: in STRING);
+   procedure Set_Model(Tyre_In : in out TYRE;
+                       Model_In : in STRING);
+
+
 private
    type CAR is
       record
@@ -52,6 +68,13 @@ private
    type COMPETITOR is
       record
          Id_Competitor : INTEGER;
+      end record;
+
+   type TYRE is
+      record
+         Mixture : STRING(1..20);
+         Model : STRING(1..20);
+         Type_Tyre : STRING(1..20);
       end record;
 
 end Competitor;

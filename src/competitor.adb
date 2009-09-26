@@ -89,6 +89,25 @@ package body Competitor is
       Competitor_In.LastName := LastName_In;
    end Set_LastName;
 
+   function Get_Mixture(Tyre_In : TYRE) return STRING is
+   begin
+      return Tyre_In.Mixture;
+   end Get_Mixture;
+
+   function Get_TyreType(Tyre_In : TYRE) return STRING is
+   begin
+      return Tyre_In.Type_Tyre;
+   end Get_TyreType;
+
+   --function Get_Model(Tyre_In : TYRE) return STRING;
+  -- procedure Set_Mixture(Tyre_In : in out TYRE;
+                         --Mixture_In : in STRING);
+  -- procedure Set_TypeTyre(Tyre_In : in out TYRE;
+                         -- TypeTyre_In: in STRING);
+  -- procedure Set_Model(Tyre_In : in out TYRE;
+                     --  Model_In : in STRING);
+
+
    begin
       return Status_In.GasolineLevel;
    end Get_GasLevel;
