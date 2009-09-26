@@ -55,4 +55,41 @@ package body Competitor is
    begin
       return Status_In.GasolineLevel;
    end Get_GasLevel;
+
+   function Get_Team(Competitor_In : COMPETITOR_INFO) return STRING is
+   begin
+      return Competitor_In.Team;
+   end Get_Team;
+
+   function Get_FirstName(Competitor_In : COMPETITOR_INFO) return STRING is
+   begin
+      return Competitor_In.FirstName;
+   end Get_FirstName;
+
+   function Get_LastName(Competitor_In : COMPETITOR_INFO) return STRING is
+   begin
+      return Competitor_In.LastName;
+   end Get_LastName;
+
+   procedure Set_Team(Competitor_In: in out COMPETITOR_INFO;
+                      Team_In : in STRING) is
+   begin
+      Competitor_In.Team := Team_In;
+   end Set_Team;
+
+   procedure Set_FirstName(Competitor_In: in out COMPETITOR_INFO;
+                           FirstName_In : in STRING) is
+   begin
+      Competitor_In.FirstName := FirstName_In;
+   end Set_FirstName;
+
+   procedure Set_LastName(Competitor_In: in out COMPETITOR_INFO;
+                          LastName_In : in STRING) is
+   begin
+      Competitor_In.LastName := LastName_In;
+   end Set_LastName;
+
+   begin
+      return Status_In.GasolineLevel;
+   end Get_GasLevel;
 end Competitor;
