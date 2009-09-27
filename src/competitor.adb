@@ -99,16 +99,34 @@ package body Competitor is
       return Tyre_In.Type_Tyre;
    end Get_TyreType;
 
-   --function Get_Model(Tyre_In : TYRE) return STRING;
-  -- procedure Set_Mixture(Tyre_In : in out TYRE;
-                         --Mixture_In : in STRING);
-  -- procedure Set_TypeTyre(Tyre_In : in out TYRE;
-                         -- TypeTyre_In: in STRING);
-  -- procedure Set_Model(Tyre_In : in out TYRE;
-                     --  Model_In : in STRING);
-
-
+   function Get_Model(Tyre_In : TYRE) return STRING is
    begin
-      return Status_In.GasolineLevel;
-   end Get_GasLevel;
+      return Tyre_In.Model;
+   end Get_Model;
+
+
+
+   procedure Set_Mixture(Tyre_In : in out TYRE;
+                         Mixture_In : in STRING) is
+   begin
+      Tyre_In.Mixture := Mixture_In;
+   end Set_Mixture;
+
+
+
+
+  procedure Set_TypeTyre(Tyre_In : in out TYRE;
+                         TypeTyre_In: in STRING) is
+   begin
+      Tyre_In.Type_Tyre := TypeTyre_In;
+   end Set_TypeTyre;
+
+
+
+   procedure Set_Model(Tyre_In : in out TYRE;
+                    Model_In : in STRING)
+   begin
+      Tyre_In.Model := Model_In;
+   end Set_Model;
+
 end Competitor;
