@@ -124,7 +124,7 @@ package body Competitor is
 
 
    procedure Set_Model(Tyre_In : in out TYRE;
-                    Model_In : in STRING)
+                    Model_In : in STRING) is
    begin
       Tyre_In.Model := Model_In;
    end Set_Model;
