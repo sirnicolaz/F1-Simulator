@@ -37,6 +37,7 @@ package body Competitor is
       return Car_In.Engine;
    end Get_Engine;
 
+   -- Procedure for Calculate Status
    procedure Calculate_Status(infoLastSeg);
 
    -- Set function - STATUS USURY
