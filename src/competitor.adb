@@ -37,8 +37,26 @@ package body Competitor is
       return Car_In.Engine;
    end Get_Engine;
 
-   -- Procedure for Calculate Status
-   procedure Calculate_Status(infoLastSeg);
+   -- Functino for Calculate Status
+   procedure Calculate_Status(infoLastSeg : in out STATUS) is
+   begin
+     -- if infoLastSeg.TyreUsury <= 10.0 or infoLastSeg.GasolineLevel <= 10 then
+         -- i parametri si possono cambiare ovviamente
+         -- basta darci dei valori consistenti
+      --   return TRUE;
+      --else return FALSE;
+     -- end if;
+
+   end Calculate_Status;
+   -- procedure Calculate_Status(infoLastSeg);
+   -- questo metodo controlla tyre usury e gasoline level
+   -- se sono sotto una soglia critica richiede l'intervento dei box
+   -- per ora metto parametri a caso (cioè bisogna definire di preciso
+   -- quale dev'essere il limite per richiamare i box, bisogna evitare che
+   --la macchina non riesca più a girare nel caso il box non sia tempestivo
+   --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
+   -- almeno 2 direi.
+
 
    -- Set function - STATUS USURY
    procedure Set_Usury(Status_In : in out STATUS;
