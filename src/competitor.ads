@@ -1,3 +1,5 @@
+with Circuit;
+use Circuit;
 package Competitor is
 
    type CAR is private;
@@ -10,8 +12,6 @@ package Competitor is
    function Get_MaxAcceleration(Car_In : CAR) return FLOAT;
    function Get_GasTankCapacity(Car_In : CAR) return FLOAT;
    function Get_Engine(Car_In : CAR) return STRING;
-  -- procedure Calculate_Status(infoLastSeg);
-
 
    type STATUS is private;
    procedure Set_Usury(Status_In : in out STATUS;
@@ -34,7 +34,7 @@ package Competitor is
 
    type TYRE is private;
    function Get_Mixture(Tyre_In : TYRE) return STRING;
-   function Get_TyreType(Tyre_In : TYRE) return STRING;
+   function Get_TypeTyre(Tyre_In : TYRE) return STRING;
    function Get_Model(Tyre_In : TYRE) return STRING;
    procedure Set_Mixture(Tyre_In : in out TYRE;
                          Mixture_In : in STRING);
@@ -42,6 +42,16 @@ package Competitor is
                           TypeTyre_In: in STRING);
    procedure Set_Model(Tyre_In : in out TYRE;
                        Model_In : in STRING);
+
+    procedure Calculate_Status(infoLastSeg : in out STATUS);
+   -- procedure Calculate_Status(infoLastSeg);
+   -- questo metodo controlla tyre usury e gasoline level
+   -- se sono sotto una soglia critica richiede l'intervento dei box
+   -- per ora metto parametri a caso (cioè bisogna definire di preciso
+   -- quale dev'essere il limite per richiamare i box, bisogna evitare che
+   --la macchina non riesca più a girare nel caso il box non sia tempestivo
+   --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
+   -- almeno 2 direi.
 
 
 private
