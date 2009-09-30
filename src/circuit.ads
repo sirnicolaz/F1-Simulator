@@ -1,5 +1,16 @@
-with Queue;
-use Queue;
+with Queue; use Queue;
+with Input_Sources.File; use Input_Sources.File;
+with Sax.Readers; use Sax.Readers;
+with DOM.Readers; use DOM.Readers;
+with DOM.Core; use DOM.Core;
+with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Nodes; use DOM.Core.Nodes;
+with DOM.Core.Attrs; use DOM.Core.Attrs;
+with Ada.IO_Exceptions;
+
+with Ada.Text_IO;
+use Ada.Text_IO;
+
 
 package Circuit is
 
@@ -49,13 +60,19 @@ package Circuit is
    function Get_Path(Segment_In : SEGMENT;
                      Path_Num : INTEGER ) return PATH;
    function Get_Next_Segment(Segment_In : SEGMENT) return POINT_SEGMENT;
+   function Get_Length(Segment_In : SEGMENT) return FLOAT;
 
-   type RACETRACK is private;
-   procedure Init_Racetrack(Racetrack_In : in out RACETRACK);
+   type RACETRACK is array(POSITIVE range <>) of POINT_SEGMENT;
+   type RACETRACK_POINT is access RACETRACK;
+   procedure Init_Racetrack(Racetrack_In : in out RACETRACK_POINT;
+                            Document_In : DOCUMENT);
    procedure Set_Segment(Racetrack_In : in out RACETRACK;
                          Segment_In : SEGMENT;
                          Position_In : POSITIVE);
-
+   function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT;
+   function Get_Segment(Racetrack_In : RACETRACK;
+                        Position : POSITIVE) return POINT_SEGMENT;
+   function Print_Racetrack(Racetrack_In : RACETRACK) return INTEGER;
 private
 
    -- MaxCompetitors_Qty è un po' una pezza perchè significa che se
@@ -79,8 +96,5 @@ private
       Difficulty : FLOAT range 0.0..10.0;
       Angle : FLOAT range 0.0..360.0;
    end record;
-
-   type RACETRACK is array(POSITIVE range 1..Segments_Qty) of POINT_SEGMENT;
-
 
 end Circuit;

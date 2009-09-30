@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<racetrack>
+	<segment>
+		<length>50.00</length>
+		<mult>4</mult>
+		<angle>35.00</angle>
+	</segment>
+        <segment>
+                <length>23.00</length>
+                <mult>2</mult>
+		<angle>120.00</angle>
+        </segment>
+</racetrack>
+

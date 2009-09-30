@@ -1,3 +1,4 @@
+with "xmlada";
 project F1_Symulator is
 
    for Object_Dir use "obj";

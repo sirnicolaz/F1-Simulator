@@ -17,6 +17,8 @@ procedure Main is
    TestQueue : Queue.QUEUE(1..5);
    SortQueueTest : Queue.SORTED_QUEUE(1..5);
 
+   RacetrackTest : RACETRACK_POINT;
+   SegmentPointTest : POINT_SEGMENT;
 begin
    --EngineString := "Ferrari Engine      ";
    --Set_Values(Ferrari, 310.10, 50.00 , 20.00 , EngineString);
@@ -51,6 +53,15 @@ begin
    for Index in SortQueueTest'RANGE loop
       Put("Position for competitor " & INTEGER'Image(Queue.Get_CompetitorID(SortQueueTest(Index))) & ": ");
       Put_Line(Integer'Image(Queue.Get_Position(SortQueueTest,Queue.Get_CompetitorID(SortQueueTest(Index)))) & " with arrival time = " & FLOAT'Image(Queue.Get_ArrivalTime(SortQueueTest(Index))));
+   end loop;
+
+
+   Set_SegmentsQty(6);
+   RaceTrackTest := Get_Racetrack("racetrack.xml");
+
+   for Index in RaceTrackTest'RANGE loop
+      SegmentPointTest := Get_Segment(RaceTrackTest.all,Index);
+      Put_Line(Float'IMAGE(Get_Length(SegmentPointTest.all)));
    end loop;
 
    null;
