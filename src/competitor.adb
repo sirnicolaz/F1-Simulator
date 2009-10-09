@@ -1,3 +1,5 @@
+with Circuit;
+use Circuit;
 package body Competitor is
 
    -- Set function - CAR

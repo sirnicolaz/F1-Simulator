@@ -1,5 +1,6 @@
 with Queue; use Queue;
-with Input_Sources.File; use Input_Sources.File;
+with Input_Sources.File;
+use Input_Sources.File;
 with Sax.Readers; use Sax.Readers;
 with DOM.Readers; use DOM.Readers;
 with DOM.Core; use DOM.Core;

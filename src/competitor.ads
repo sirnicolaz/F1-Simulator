@@ -1,5 +1,4 @@
-with Circuit;
-use Circuit;
+
 package Competitor is
 
    type CAR is private;
