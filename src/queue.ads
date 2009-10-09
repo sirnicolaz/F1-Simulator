@@ -1,5 +1,12 @@
 package Queue is
 
+   protected type TEST is
+      entry TestFunc(TestPar : INTEGER);
+   private
+      TestField : INTEGER := 9;
+   end TEST;
+
+
    --QUEUE_CELL Structure definition
    type QUEUE_CELL is limited private;
    type QUEUE_CELL_POINT is access QUEUE_CELL;

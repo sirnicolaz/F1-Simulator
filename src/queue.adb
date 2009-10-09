@@ -5,6 +5,13 @@ with Ada.Text_IO; use Ada.Text_IO;
 package body Queue is
 
 
+   protected body TEST is
+      entry TestFunc(TestPar : INTEGER) when TestPar > 8 is
+      begin
+         null;
+      end TestFunc;
+   end TEST;
+
    procedure Init_Queue(Queue_In : in out QUEUE) is
    begin
       for Index in Queue_In'RANGE loop
