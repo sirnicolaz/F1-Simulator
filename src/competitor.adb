@@ -40,7 +40,11 @@ package body Competitor is
    end Get_Engine;
 
    -- Functino for Calculate Status
-   procedure Calculate_Status(infoLastSeg : in out STATUS);-- is
+   procedure Calculate_Status(infoLastSeg : in out STATUS) is
+   begin
+      null;
+   end Calculate_Status;
+   -- is
    --begin
      -- if infoLastSeg.TyreUsury <= 10.0 or infoLastSeg.GasolineLevel <= 10 then
          -- i parametri si possono cambiare ovviamente
