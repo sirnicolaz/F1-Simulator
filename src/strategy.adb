@@ -18,7 +18,7 @@ package body Strategy is
       --qua dentro va effettuata la valutazione della traiettoria migliore e calcolato il tempo di attraversamento
       -- da restituire poi a chi invoca questo metodo.
       --qua credo che vadano eseguite le operazioni per attraversare il tratto
-
+	return Ada.Calendar.Clock; -- per far compilare
    end evaluate;
 
 

@@ -78,6 +78,7 @@ package Circuit is
       changed : BOOLEAN := false;
    end CROSSING;
 
+   type CROSSING_POINT is access CROSSING;
    type CROSSING_ARRAY is array(POSITIVE range <>) of CROSSING;
 
    type RACETRACK is array(POSITIVE range <>) of POINT_SEGMENT;
