@@ -67,6 +67,10 @@ package Circuit is
    function Get_Length(Segment_In : SEGMENT) return FLOAT;
 
    protected type CROSSING is
+      procedure Set_Arrived(CompetitorID_In : INTEGER);
+      procedure Unset_Arrived(CompetitorID_In : INTEGER);
+      procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
+                                Time_In : FLOAT);
       entry Wait(CompetitorID_In : INTEGER;
                  NextSegment : in out POINT_SEGMENT);
    private
@@ -74,7 +78,7 @@ package Circuit is
       changed : BOOLEAN := false;
    end CROSSING;
 
-   type CROSSING_ARRAY is array(1..10) of CROSSING;
+   type CROSSING_ARRAY is array(POSITIVE range <>) of CROSSING;
 
    type RACETRACK is array(POSITIVE range <>) of POINT_SEGMENT;
    type RACETRACK_POINT is access RACETRACK;
