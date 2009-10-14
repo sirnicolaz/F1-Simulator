@@ -77,37 +77,6 @@ package body Circuit is
       Segment_In.NextSegment := NextSegment_In;
    end Set_Next;
 
-   procedure Go_Through(Segment_In : in out SEGMENT) is
-   begin
-      --Quando è implementato il Competitor, dovrà eseguire:
-      --	settare il competitor come attivo nella coda;
-      --	se non è primo nella coda, attendere;
-      null;
-   end Go_Through;
-
-   procedure Set_ArrivalTime(Segment_In : in out SEGMENT;
-                             ArrivalTime_In : FLOAT;
-                             CompetitorID_In : INTEGER
-                             ) is
-   begin
-      null;
-   end Set_ArrivalTime;
-
-   procedure Set_Arrived(Segment_In : in out SEGMENT;
-                         CompetitorID_In : INTEGER
-                        ) is
-   begin
-      null;
-   end Set_Arrived;
-
-   procedure Unset_Arrived(Segment_In : in out SEGMENT;
-                           CompetitorID_In : INTEGER
-                          ) is
-   begin
-      null;
-   end Unset_Arrived;
-
-
    function Get_Path(Segment_In : SEGMENT;
                      Path_Num : INTEGER ) return PATH is
    begin
@@ -125,26 +94,39 @@ package body Circuit is
    end Get_Length;
 
    protected body CROSSING is
-      procedure Set_Arrived(CompetitorID_In : INTEGER) is
+      procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
-         null;
-      end Set_Arrived;
+         Set_Arrived(F_Segment.Queue,CompetitorID_In,TRUE);
+         if Get_Position(F_Segment.Queue,CompetitorID_In) = 1 then
+            Changed := TRUE;
+         end if;
 
-      procedure Unset_Arrived(CompetitorID_In : INTEGER) is
+      end Signal_Arrival;
+
+      procedure Signal_Leaving(CompetitorID_In : INTEGER) is
       begin
-         null;
-      end Unset_Arrived;
+         Set_Arrived(F_Segment.Queue,CompetitorID_In,FALSE);
+      end Signal_Leaving;
 
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT) is
       begin
-         null;
+         Add_Competitor2Queue(F_Segment.Queue,CompetitorID_In,Time_In);
+         if Get_IsArrived(F_Segment.Queue,1) then
+            Changed := TRUE;
+            -- requeue quando ci sarà il metodo di attraversamento;
+         end if;
+
       end Set_ArrivalTime;
 
       entry Wait(CompetitorID_In : INTEGER;
-                 NextSegment : in out POINT_SEGMENT) when changed = true is
+                 IsCrossed : in out BOOLEAN) when Changed = TRUE is
       begin
-         null;
+         if Get_Position(F_Segment.Queue,CompetitorID_In) = 1 then
+            Changed := FALSE;
+            -- requeue quando ci sarà il metodo di attraversamento;
+         end if;
+
       end Wait;
    end CROSSING;
 

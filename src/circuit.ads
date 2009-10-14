@@ -49,33 +49,33 @@ package Circuit is
    procedure Set_Goal(Segment_In : in out SEGMENT);
    procedure Set_Next(Segment_In : in out SEGMENT;
                       NextSegment_In : POINT_SEGMENT);
-   procedure Go_Through(Segment_In : in out SEGMENT);
-   procedure Set_ArrivalTime(Segment_In : in out SEGMENT;
-                             ArrivalTime_In : FLOAT;
-                             CompetitorID_In : INTEGER
-                             );
+   --procedure Go_Through(Segment_In : in out SEGMENT);
+   --procedure Set_ArrivalTime(Segment_In : in out SEGMENT;
+   --+                          ArrivalTime_In : FLOAT;
+   --+                          CompetitorID_In : INTEGER
+   --+                          );
 
-   procedure Set_Arrived(Segment_In : in out SEGMENT;
-                         CompetitorID_In : INTEGER
-                        );
-   procedure Unset_Arrived(Segment_In : in out SEGMENT;
-                           CompetitorID_In : INTEGER
-                          );
+   --procedure Set_Arrived(Segment_In : in out SEGMENT;
+   --+                      CompetitorID_In : INTEGER
+   --+                     );
+   --procedure Unset_Arrived(Segment_In : in out SEGMENT;
+   --+                        CompetitorID_In : INTEGER
+   --+                       );
    function Get_Path(Segment_In : SEGMENT;
                      Path_Num : INTEGER ) return PATH;
    function Get_Next_Segment(Segment_In : SEGMENT) return POINT_SEGMENT;
    function Get_Length(Segment_In : SEGMENT) return FLOAT;
 
    protected type CROSSING is
-      procedure Set_Arrived(CompetitorID_In : INTEGER);
-      procedure Unset_Arrived(CompetitorID_In : INTEGER);
+      procedure Signal_Arrival(CompetitorID_In : INTEGER);
+      procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
       entry Wait(CompetitorID_In : INTEGER;
-                 NextSegment : in out POINT_SEGMENT);
+                 IsCrossed : in out BOOLEAN);
    private
       F_Segment : POINT_SEGMENT;
-      changed : BOOLEAN := false;
+      Changed : BOOLEAN := false;
    end CROSSING;
 
    type CROSSING_POINT is access CROSSING;

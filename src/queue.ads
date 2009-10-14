@@ -9,7 +9,7 @@ package Queue is
    --Functions to get the arrival time of a given cell
    function Get_ArrivalTime(Cell_In : QUEUE_CELL_POINT) return FLOAT;
    --Functions to get the flag "is active" of a given cell
-   function Get_IsActive(Cell_In : QUEUE_CELL_POINT) return BOOLEAN;
+   function Get_IsArrived(Cell_In : QUEUE_CELL_POINT) return BOOLEAN;
 
    -- QUEUE Structure definition. QUEUE is an array of QUEUE_CELL pointers.
    type QUEUE is array (POSITIVE range <>) of QUEUE_CELL_POINT;
@@ -17,8 +17,14 @@ package Queue is
    procedure Add_Competitor2Queue(Queue_In : in out QUEUE;
                                   CompetitorID_In : INTEGER;
                              	  ArrivalTime_In : FLOAT;
-                                  IsActive_In : BOOLEAN;
                                   Position : INTEGER);
+   procedure Set_Arrived(Queue_In : in out QUEUE;
+                         CompetitorID_In : INTEGER;
+                         IsArrived_In : BOOLEAN);
+   -- Get IsArrived of given position
+   function Get_IsArrived(Queue_In : QUEUE;
+                          Position : INTEGER) return BOOLEAN;
+
    -- Get Arrival time on a given position of the queue
    function Get_ArrivalTime(Queue_In : QUEUE;
                             Position : INTEGER) return FLOAT;
@@ -33,8 +39,7 @@ package Queue is
    subtype SORTED_QUEUE is QUEUE;
    procedure Add_Competitor2Queue(Queue_In : in out SORTED_QUEUE;
                                   CompetitorID_In : INTEGER;
-                             	  ArrivalTime_In : FLOAT;
-                                  IsActive_In : BOOLEAN);
+                             	  ArrivalTime_In : FLOAT);
 
 
 
@@ -42,6 +47,6 @@ private
    type QUEUE_CELL is record
       CompetitorID : INTEGER;
       ArrivalTime : FLOAT;
-      IsActive : BOOLEAN;
+      IsArrived : BOOLEAN;
    end record;
 end Queue;

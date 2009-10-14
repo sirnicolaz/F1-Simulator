@@ -22,21 +22,27 @@ package body Queue is
       return Cell_In.ArrivalTime;
    end;
 
-   function Get_IsActive(Cell_In : QUEUE_CELL_POINT) return BOOLEAN is
+   function Get_IsArrived(Cell_In : QUEUE_CELL_POINT) return BOOLEAN is
    begin
-      return Cell_In.IsActive;
+      return Cell_In.IsArrived;
    end;
 
    procedure Add_Competitor2Queue(Queue_In : in out QUEUE;
                                   CompetitorID_In : INTEGER;
-                             	  ArrivalTime_In : FLOAT;
-                                  IsActive_In : BOOLEAN;
+                                  ArrivalTime_In : FLOAT;
                                   Position : INTEGER) is
    begin
       if(Position <= Queue_In'LENGTH) then
-         Queue_In(Position) := new QUEUE_CELL'(CompetitorID_In, ArrivalTime_In, IsActive_In);
+         Queue_In(Position) := new QUEUE_CELL'(CompetitorID_In, ArrivalTime_In,FALSE);
       end if;
    end;
+
+   function Get_IsArrived(Queue_In : QUEUE;
+                          Position : INTEGER) return BOOLEAN is
+   begin
+      return Queue_In(Position).IsArrived;
+   end Get_IsArrived;
+
 
    function Get_ArrivalTime(Queue_In : QUEUE;
                             Position : INTEGER) return FLOAT is
@@ -74,10 +80,20 @@ package body Queue is
       return 0;
    end;
 
+   procedure Set_Arrived(Queue_In : in out QUEUE;
+                         CompetitorID_In : INTEGER;
+                         IsArrived_In : BOOLEAN) is
+      Position : INTEGER := -1;
+   begin
+      Position := Get_Position(Queue_In,CompetitorID_In);
+      if Position > -1 then
+         Queue_In(Position).IsArrived := IsArrived_In;
+      end if;
+   end Set_Arrived;
+
    procedure Add_Competitor2Queue(Queue_In : in out SORTED_QUEUE;
                                   CompetitorID_In : INTEGER;
-                             	  ArrivalTime_In : FLOAT;
-                                  IsActive_In : BOOLEAN) is
+                             	  ArrivalTime_In : FLOAT) is
 
       Position_Old : INTEGER;
       Position_New : INTEGER := 1;
@@ -90,7 +106,7 @@ package body Queue is
             Position_Old := Position_Old + 1;
             exit FindFreePos_Loop when Queue_In(Index).CompetitorID = 0;
          end loop FindFreePos_Loop;
-         Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,IsActive_In,Position_Old);
+         Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_Old);
       end if;
 
       for Index in Queue_In'Range loop
@@ -115,7 +131,7 @@ package body Queue is
                   Queue_In(ShiftIndex) := Queue_In(ShiftIndex+1);
          end loop;
       end if;
-      Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,IsActive_In,Position_New);
+      Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_New);
    end;
 
 end Queue;
