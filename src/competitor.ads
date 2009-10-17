@@ -51,6 +51,20 @@ package Competitor is
    --la macchina non riesca più a girare nel caso il box non sia tempestivo
    --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
    -- almeno 2 direi.
+    procedure Configure_Car(Car_In : in out CAR;
+                        MaxSpeed_In : FLOAT;
+                        MaxAcceleration_In : FLOAT;
+                        GasTankCapacity_In : FLOAT;
+                            Engine_In : STRING);
+
+
+   subtype str is Strategy.STRATEGY;
+   procedure Configure_Strategy(Strategy_In : in out str;
+                                pitstopGasolineLevel_In : INTEGER;
+                                pitstopLaps_In: INTEGER;
+                                pitstopCondition_In : BOOLEAN;
+                                trim_In : INTEGER;
+                                pitstop_In : BOOLEAN);
 
 
 private

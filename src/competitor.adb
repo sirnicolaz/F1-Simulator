@@ -1,7 +1,17 @@
 with Circuit;
 use Circuit;
+with Strategy;
+use Strategy;
 package body Competitor is
 
+   procedure Configure_Car(Car_In : in out CAR;
+                        MaxSpeed_In : FLOAT;
+                        MaxAcceleration_In : FLOAT;
+                        GasTankCapacity_In : FLOAT;
+                        Engine_In : STRING) is
+   begin
+     Set_Values(Car_In,MaxSpeed_In, MaxAcceleration_In, GasTankCapacity_In, Engine_In);
+   end Configure_Car;
    -- Set function - CAR
    procedure Set_Values(Car_In : in out CAR;
                         MaxSpeed_In : FLOAT;
@@ -167,4 +177,20 @@ package body Competitor is
       Tyre_In.Model := Model_In;
    end Set_Model;
 
+   --Configure Method of Strategy
+   procedure Configure_Strategy(Strategy_In : in out str;
+                                pitstopGasolineLevel_In : INTEGER;
+                                pitstopLaps_In: INTEGER;
+                                pitstopCondition_In : BOOLEAN;
+                                trim_In : INTEGER;
+                                pitstop_In : BOOLEAN) is
+   begin
+      Strategy.Configure(Strategy_In,
+                         pitstopGasolineLevel_In,
+                         pitstopLaps_In,
+                         Strategy_In.pitstopCondition_In,
+                         Strategy_In.trim_In,
+                         Strategy_In.pitstop_In);
+
+   end Configure_Strategy;
 end Competitor;
