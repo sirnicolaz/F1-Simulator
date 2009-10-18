@@ -177,7 +177,7 @@ package body Competitor is
       Tyre_In.Model := Model_In;
    end Set_Model;
 
-   --Configure Method of Strategy
+   --Configuration Method of Strategy
    procedure Configure_Strategy(Strategy_In : in out str;
                                 pitstopGasolineLevel_In : INTEGER;
                                 pitstopLaps_In: INTEGER;
