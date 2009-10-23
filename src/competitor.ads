@@ -42,7 +42,7 @@ package Competitor is
    procedure Set_Model(Tyre_In : in out TYRE;
                        Model_In : in STRING);
 
-    procedure Calculate_Status(infoLastSeg : in out STATUS);
+   procedure Calculate_Status(infoLastSeg : in out STATUS);
    -- procedure Calculate_Status(infoLastSeg);
    -- questo metodo controlla tyre usury e gasoline level
    -- se sono sotto una soglia critica richiede l'intervento dei box
