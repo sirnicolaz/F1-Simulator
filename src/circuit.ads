@@ -71,6 +71,7 @@ package Circuit is
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
+      procedure Choose_BestPath(CompetitorID_In : INTEGER);
       entry Wait(CompetitorID_In : INTEGER;
                  IsCrossed : in out BOOLEAN);
    private
@@ -114,6 +115,7 @@ private
       Grip : FLOAT;
       Difficulty : FLOAT range 0.0..10.0;
       Angle : FLOAT range 0.0..360.0;
+      LastTime : FLOAT;
    end record;
 
 end Circuit;

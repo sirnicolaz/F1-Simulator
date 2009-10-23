@@ -94,6 +94,7 @@ package body Circuit is
    end Get_Length;
 
    protected body CROSSING is
+
       procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
          Set_Arrived(F_Segment.Queue,CompetitorID_In,TRUE);
@@ -119,6 +120,38 @@ package body Circuit is
 
       end Set_ArrivalTime;
 
+      procedure Choose_BestPath(CompetitorID_In : INTEGER) is
+         StartingInstant : FLOAT := 0.0;
+         WaitingTime : FLOAT := 0.0;
+         PathTime : FLOAT;
+         CompArrivalTime : FLOAT := Get_ArrivalTime(F_Segment.Queue,1);
+         CrossingTime : FLOAT := 0.0;
+         TotalDelay : FLOAT := 0.0;
+         MinDelay : FLOAT := -1.0;
+      begin
+         -- loop on paths
+
+         for Index in F_Segment.PathsCollection'RANGE loop
+            PathTime := F_Segment.PathsCollection(Index).LastTime;
+            WaitingTime := PathTime - CompArrivalTime;
+            StartingInstant := PathTime;
+
+            if WaitingTime < 0.0 then
+               WaitingTime := 0.0;
+               StartingInstant := CompArrivalTime;
+            end if;
+
+            --CrossingTime := CalculateCrossingTime(F_Segment.PathsCollection(Index),Competitor_Status,Competitor_Strategy);
+            TotalDelay := StartingInstant + CrossingTime;
+            if TotalDelay < MinDelay or MinDelay < 0.0 then
+               MinDelay := TotalDelay;
+            end if;
+
+         end loop;
+
+      end Choose_BestPath;
+
+
       entry Wait(CompetitorID_In : INTEGER;
                  IsCrossed : in out BOOLEAN) when Changed = TRUE is
       begin
@@ -129,7 +162,6 @@ package body Circuit is
 
       end Wait;
    end CROSSING;
-
 
    --RACETRACK methods implementation
 
