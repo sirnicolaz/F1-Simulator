@@ -50,14 +50,14 @@ package body Strategy is
    procedure Configure(Strategy_In : in out STRATEGY;
                        pitstopGasolineLevel_In : INTEGER;
                        pitstopLaps_In: INTEGER;
-                       str.pitstopCondition_In : BOOLEAN;
-                       str.trim_In : INTEGER;
-                       str.pitstop_In : BOOLEAN) is
+                       pitstopCondition_In : BOOLEAN;
+                       trim_In : INTEGER;
+                       pitstop_In : BOOLEAN) is
    begin
       Strategy_In.pitstopGasolineLevel :=  pitstopGasolineLevel_In;
       Strategy_In.pitstopLaps := pitstopLaps_In;
       Strategy_In.pitstopCondition := pitstopCondition_In;
       Strategy_In.trim := trim_In;
       Strategy_In.pitstop := pitstop_In;
-   end Configure_Strategy;
+   end Configure;
 end Strategy;
