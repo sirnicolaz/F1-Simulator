@@ -46,7 +46,7 @@ package Circuit is
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE);
-   procedure Set_Goal(Segment_In : in out SEGMENT);
+   --procedure Set_Goal(Segment_In : in out SEGMENT);
    procedure Set_Next(Segment_In : in out SEGMENT;
                       NextSegment_In : POINT_SEGMENT);
    --procedure Go_Through(Segment_In : in out SEGMENT);
@@ -66,12 +66,18 @@ package Circuit is
    function Get_Next_Segment(Segment_In : SEGMENT) return POINT_SEGMENT;
    function Get_Length(Segment_In : SEGMENT) return FLOAT;
 
+   procedure Choose_BestPath(CompetitorID_In : INTEGER;
+                             CrossingTime_Out : out FLOAT;
+                             ChoosenPath_Out : out INTEGER;
+                             Segment_In : in out POINT_SEGMENT);
+
    protected type CROSSING is
-      procedure Signal_Arrival(CompetitorID_In : INTEGER);
+      procedure Signal_Arrival(CompetitorID_In : INTEGER;
+                               Segment_Out : out POINT_SEGMENT);
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
-      procedure Choose_BestPath(CompetitorID_In : INTEGER);
+
       entry Wait(CompetitorID_In : INTEGER;
                  IsCrossed : in out BOOLEAN);
    private
