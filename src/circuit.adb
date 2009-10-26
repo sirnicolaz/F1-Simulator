@@ -93,15 +93,59 @@ package body Circuit is
       return Segment_In.PathsCollection(1).Length;
    end Get_Length;
 
+   procedure Choose_BestPath(CompetitorID_In : INTEGER;
+                             CrossingTime_Out : out FLOAT;
+                             ChoosenPath_Out : out INTEGER;
+                             Segment_In : in out POINT_SEGMENT) is
+         StartingInstant : FLOAT := 0.0;
+         WaitingTime : FLOAT := 0.0;
+         PathTime : FLOAT;
+         CompArrivalTime : FLOAT := Get_ArrivalTime(Segment_In.Queue,1);
+         CrossingTime : FLOAT := 0.0;
+         TotalDelay : FLOAT := 0.0;
+         MinDelay : FLOAT := -1.0;
+         ChoosenPathIndex : INTEGER := 1;
+      begin
+         -- loop through paths
+
+         for Index in Segment_In.PathsCollection'RANGE loop
+            PathTime := Segment_In.PathsCollection(Index).LastTime;
+            WaitingTime := PathTime - CompArrivalTime;
+            StartingInstant := PathTime;
+	    CrossingTime_Out := WaitingTime;
+            if WaitingTime < 0.0 then
+               WaitingTime := 0.0;
+               StartingInstant := CompArrivalTime;
+               CrossingTime_Out := 0.0;
+            end if;
+
+            --CrossingTime := CalculateCrossingTime(F_Segment.PathsCollection(Index),Competitor_Status,Competitor_Strategy);
+            TotalDelay := StartingInstant + CrossingTime;
+            if TotalDelay < MinDelay or MinDelay < 0.0 then
+               MinDelay := TotalDelay;
+               ChoosenPathIndex := Index;
+               CrossingTime_Out := CrossingTime_Out + CrossingTime;
+            end if;
+         end loop;
+
+         Segment_In.PathsCollection(ChoosenPathIndex).LastTime := MinDelay;
+         ChoosenPath_Out := ChoosenPathIndex;
+
+   end Choose_BestPath;
+
    protected body CROSSING is
 
-      procedure Signal_Arrival(CompetitorID_In : INTEGER) is
+      procedure Signal_Arrival(CompetitorID_In : INTEGER;
+                               Segment_Out : out POINT_SEGMENT) is
       begin
          Set_Arrived(F_Segment.Queue,CompetitorID_In,TRUE);
          if Get_Position(F_Segment.Queue,CompetitorID_In) = 1 then
             Changed := TRUE;
+            --Choose_BestPath(CompetitorID_In,
+           --+                 CrossingTime_Out,
+           --+                 ChoosenPath_Out,
+           --+                 F_Segment);
          end if;
-
       end Signal_Arrival;
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
@@ -115,48 +159,16 @@ package body Circuit is
          Add_Competitor2Queue(F_Segment.Queue,CompetitorID_In,Time_In);
          if Get_IsArrived(F_Segment.Queue,1) then
             Changed := TRUE;
-            -- requeue quando ci sarà il metodo di attraversamento;
          end if;
 
       end Set_ArrivalTime;
-
-      procedure Choose_BestPath(CompetitorID_In : INTEGER) is
-         StartingInstant : FLOAT := 0.0;
-         WaitingTime : FLOAT := 0.0;
-         PathTime : FLOAT;
-         CompArrivalTime : FLOAT := Get_ArrivalTime(F_Segment.Queue,1);
-         CrossingTime : FLOAT := 0.0;
-         TotalDelay : FLOAT := 0.0;
-         MinDelay : FLOAT := -1.0;
-      begin
-         -- loop on paths
-
-         for Index in F_Segment.PathsCollection'RANGE loop
-            PathTime := F_Segment.PathsCollection(Index).LastTime;
-            WaitingTime := PathTime - CompArrivalTime;
-            StartingInstant := PathTime;
-
-            if WaitingTime < 0.0 then
-               WaitingTime := 0.0;
-               StartingInstant := CompArrivalTime;
-            end if;
-
-            --CrossingTime := CalculateCrossingTime(F_Segment.PathsCollection(Index),Competitor_Status,Competitor_Strategy);
-            TotalDelay := StartingInstant + CrossingTime;
-            if TotalDelay < MinDelay or MinDelay < 0.0 then
-               MinDelay := TotalDelay;
-            end if;
-
-         end loop;
-
-      end Choose_BestPath;
-
 
       entry Wait(CompetitorID_In : INTEGER;
                  IsCrossed : in out BOOLEAN) when Changed = TRUE is
       begin
          if Get_Position(F_Segment.Queue,CompetitorID_In) = 1 then
             Changed := FALSE;
+
             -- requeue quando ci sarà il metodo di attraversamento;
          end if;
 
