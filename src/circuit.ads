@@ -17,103 +17,97 @@ package Circuit is
 
    subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
-   Segments_Qty : INTEGER := 2;
-   MaxCompetitors_Qty : INTEGER := 2;
+   Checkpoints_Qty : POSITIVE := 2;
+   MaxCompetitors_Qty : POSITIVE := 2;
 
-   procedure Set_SegmentsQty (Qty_In : POSITIVE);
+   procedure Set_CheckpointsQty (Qty_In : POSITIVE);
    procedure Set_MaxCompetitorsQty ( Qty_In : POSITIVE);
 
    -- PATH Structure delaration
    type PATH is private;
-   procedure Set_Values(Path_In : in out PATH;
-                        Length_In : FLOAT;
-                        Angle_In : ANGLE_GRADE;
-                        Grip_In : FLOAT;
-                        Difficulty_In : DIFFICULTY_RANGE);
+
    function Get_Length(Path_In : PATH) return FLOAT;
    function Get_Angle(Path_In : PATH) return FLOAT;
    function Get_Grip(Path_In : PATH) return FLOAT;
    function Get_Difficulty(Path_In : PATH) return FLOAT;
 
-
+   --PATHS sould be private
    type PATHS is array(INTEGER range <>) of PATH;
+   type POINT_PATHS is access PATHS;
 
-   --SEGMENT Structure delcaration
-   type SEGMENT(Paths_Qty : POSITIVE) is tagged private;
-   type POINT_SEGMENT is access SEGMENT;
-   procedure Set_Values(Segment_In : in out SEGMENT;
+   --Checkpoint Structure delcaration
+   type Checkpoint is tagged private;
+   type POINT_Checkpoint is access Checkpoint;
+
+   --Init Segment. Probably it should be private
+   procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT;
-                        Angle_In : ANGLE_GRADE);
-   --procedure Set_Goal(Segment_In : in out SEGMENT);
-   procedure Set_Next(Segment_In : in out SEGMENT;
-                      NextSegment_In : POINT_SEGMENT);
-   --procedure Go_Through(Segment_In : in out SEGMENT);
-   --procedure Set_ArrivalTime(Segment_In : in out SEGMENT;
-   --+                          ArrivalTime_In : FLOAT;
-   --+                          CompetitorID_In : INTEGER
-   --+                          );
+                        Angle_In : ANGLE_GRADE;
+                        PathsQty_In : POSITIVE);
 
-   --procedure Set_Arrived(Segment_In : in out SEGMENT;
-   --+                      CompetitorID_In : INTEGER
-   --+                     );
-   --procedure Unset_Arrived(Segment_In : in out SEGMENT;
-   --+                        CompetitorID_In : INTEGER
-   --+                       );
-   function Get_Path(Segment_In : SEGMENT;
-                     Path_Num : INTEGER ) return PATH;
-   function Get_Next_Segment(Segment_In : SEGMENT) return POINT_SEGMENT;
-   function Get_Length(Segment_In : SEGMENT) return FLOAT;
+   --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
+   --                   NextCheckpoint_In : POINT_Checkpoint);
 
-   procedure Choose_BestPath(CompetitorID_In : INTEGER;
-                             CrossingTime_Out : out FLOAT;
-                             ChoosenPath_Out : out INTEGER;
-                             Segment_In : in out POINT_SEGMENT);
+   --function Get_Path(Checkpoint_In : POINT_Checkpoint;
+   --                  Path_Num : INTEGER ) return PATH;
+   --function Get_Next_Checkpoint(Checkpoint_In : POINT_Checkpoint) return POINT_Checkpoint;
+   --function Get_Length(Checkpoint_In : POINT_Checkpoint) return FLOAT;
 
-   protected type CROSSING is
+   protected type CROSSING(Paths_In : POINT_PATHS) is
+      procedure Choose_BestPath(CompetitorID_In : INTEGER;
+                                CrossingTime_Out : out FLOAT;
+                                ChoosenPath_Out : out INTEGER;
+                                ArrivalTime_In : FLOAT);
+
+   private
+      F_Paths : POINT_PATHS := Paths_In;
+   end CROSSING;
+
+   type CROSSING_POINT is access CROSSING;
+
+   protected type CHECKPOINT_SYNCH(Checkpoint_In : POINT_Checkpoint) is
+
       procedure Signal_Arrival(CompetitorID_In : INTEGER;
-                               Segment_Out : out POINT_SEGMENT);
+                               Paths2Cross : out CROSSING_POINT);
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
 
       entry Wait(CompetitorID_In : INTEGER;
-                 IsCrossed : in out BOOLEAN);
+                 Paths2Cross : out CROSSING_POINT);
    private
-      F_Segment : POINT_SEGMENT;
+      F_Checkpoint : POINT_Checkpoint := Checkpoint_In;
       Changed : BOOLEAN := false;
-   end CROSSING;
+   end CHECKPOINT_SYNCH;
 
-   type CROSSING_POINT is access CROSSING;
-   type CROSSING_ARRAY is array(POSITIVE range <>) of CROSSING;
+   type CHECKPOINT_SYNCH_POINT is access CHECKPOINT_SYNCH;
 
-   type RACETRACK is array(POSITIVE range <>) of POINT_SEGMENT;
+   type RACETRACK is array(POSITIVE range <>) of CHECKPOINT_SYNCH_POINT;
    type RACETRACK_POINT is access RACETRACK;
+
+   --The iterator is supposed to be used by the Competitor, in order
+   --to allow him to move in the "correct direction"
+   type RACETRACK_ITERATOR is private;
    procedure Init_Racetrack(Racetrack_In : in out RACETRACK_POINT;
                             Document_In : DOCUMENT);
-   procedure Set_Segment(Racetrack_In : in out RACETRACK;
-                         Segment_In : SEGMENT;
-                         Position_In : POSITIVE);
+   procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
+                         Checkpoint_In : CHECKPOINT_SYNCH_POINT;
+                            Position_In : POSITIVE);
+   function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT;
-   function Get_Segment(Racetrack_In : RACETRACK;
-                        Position : POSITIVE) return POINT_SEGMENT;
+   function Get_Checkpoint(Racetrack_In : RACETRACK;
+                        Position : POSITIVE) return CHECKPOINT_SYNCH_POINT;
    function Print_Racetrack(Racetrack_In : RACETRACK) return INTEGER;
 private
 
-   -- MaxCompetitors_Qty è un po' una pezza perchè significa che se
-   -- per qualche motivo si iscrivono meno partecipanti di quelli
-   -- dichiarati inizialmente, si spreca memoria. Sarebbe bello
-   -- trovare un modo settare dinamicamente la grandezza dell'array.
-   -- Alla peggio i segmenti vengono inizializzati DOPO che viene dato
-   -- il via ufficiale alla gara.
-   type SEGMENT(Paths_Qty : POSITIVE) is tagged record
+   type Checkpoint is tagged record
       Queue : SORTED_QUEUE(1..MaxCompetitors_Qty);
       SectorID : INTEGER;
       IsGoal : BOOLEAN;
-      Multiplicity : POSITIVE := Paths_Qty;
-      PathsCollection : PATHS(1..Paths_Qty);
-      NextSegment : POINT_SEGMENT;
+      Multiplicity : POSITIVE;
+      PathsCollection : CROSSING_POINT;
    end record;
 
    type PATH is record
@@ -123,5 +117,11 @@ private
       Angle : FLOAT range 0.0..360.0;
       LastTime : FLOAT;
    end record;
+
+   type RACETRACK_ITERATOR is record
+      Race_Point : RACETRACK_POINT;
+      Position : POSITIVE := 1;
+   end record;
+
 
 end Circuit;

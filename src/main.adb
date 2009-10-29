@@ -11,14 +11,12 @@ with Queue;
 procedure Main is
    --Ferrari : CAR;
    --EngineString : STRING(1..20);
-   Segment_1 : SEGMENT(3);
-   Path_1_1 : PATH;
 
    TestQueue : Queue.QUEUE(1..5);
    SortQueueTest : Queue.SORTED_QUEUE(1..5);
 
    RacetrackTest : RACETRACK_POINT;
-   SegmentPointTest : POINT_SEGMENT;
+   --CheckpointPointTest : POINT_Checkpoint;
 begin
    --EngineString := "Ferrari Engine      ";
    --Set_Values(Ferrari, 310.10, 50.00 , 20.00 , EngineString);
@@ -26,9 +24,6 @@ begin
    --Put_Line(Float'Image(Get_MaxSpeed(Ferrari)));
    --Put("Engine = " & Get_Engine(Ferrari));
 
-   Set_Values(Segment_1,1,FALSE,42.00,45.00);
-   Path_1_1 := Get_Path(Segment_1,1);
-   Put_Line("Path 1 in Segment 1 has length = " & Float'Image(Get_Length(Path_1_1)));
 
    Queue.Add_Competitor2Queue(TestQueue,5,6.0,1);
    Queue.Add_Competitor2Queue(TestQueue,6,1.0,2);
@@ -56,13 +51,13 @@ begin
    end loop;
 
 
-   Set_SegmentsQty(6);
+   Set_CheckpointsQty(6);
    RaceTrackTest := Get_Racetrack("racetrack.xml");
 
-   for Index in RaceTrackTest'RANGE loop
-      SegmentPointTest := Get_Segment(RaceTrackTest.all,Index);
-      Put_Line(Float'IMAGE(Get_Length(SegmentPointTest.all)));
-   end loop;
+   --for Index in RaceTrackTest'RANGE loop
+   --   CheckpointPointTest := Get_Checkpoint(RaceTrackTest.all,Index);
+   --   Put_Line(Float'IMAGE(Get_Length(CheckpointPointTest)));
+   --end loop;
 
    null;
 end Main;
