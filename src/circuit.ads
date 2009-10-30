@@ -96,6 +96,13 @@ package Circuit is
                          Checkpoint_In : CHECKPOINT_SYNCH_POINT;
                             Position_In : POSITIVE);
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
+   procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                               NextCheckpoint : out CHECKPOINT_SYNCH_POINT);
+   procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                    PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT);
+   function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER;
+   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return POSITIVE;
+   function Get_IsFinished(RaceIterator : RACETRACK_ITERATOR) return BOOLEAN;
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT;
    function Get_Checkpoint(Racetrack_In : RACETRACK;
                         Position : POSITIVE) return CHECKPOINT_SYNCH_POINT;

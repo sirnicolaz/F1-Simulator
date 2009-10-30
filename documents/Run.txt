@@ -1,0 +1,80 @@
+Campi di classe competitor
+RaceIterator : RACETRACK_ITERATOR := GetRaceIterator(Competition);
+ID : INTEGER := <l'id assegnato al competitor>
+
+Run is
+
+C_Checkpoint := NextCheckpoint(RaceIterator);
+PredictedTime : FLOAT := 0;
+DelayTime : FLOAT := 1.0;
+Paths2Cross : CROSSING_POINT;
+MinSegTime : FLOAT := <minima quantità di tempo per attraversare un tratto>
+
+--<minima quantità di tempo per attraversare la pista>
+MinRaceTime : FLOAT := MinSegTime * Get_RaceLength(RaceIterator); 
+
+Finished : BOOLEAN := FALSE;
+Index : INTEGER := 0;
+
+begin
+
+loop
+	      --Istante di tempo segnato nel checkpoint attuale per il competitor
+              ActualTime := C_Checkpoint.GetTime(ID);
+
+	      --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
+	      --viene subito assegnata la collezione  di path per la scelta della traiettoria
+              C_Checkpoint.SignalArrived(ID,Paths2Cross);
+
+ 	      --altrimenti si comincia ad attendere il proprio turno
+              while Paths2Cross == null loop
+                            C_Checkpoint.Wait(ID,Paths2Cross);
+              end loop
+
+	      --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
+	      --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino 
+              --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
+	      StartingPosition := Get_Position(RaceIterator);
+
+	      if StartingPosition = 1 then
+		Finished := Get_IsFinished(RaceIterator);
+	      end if;
+
+	      --Se la gara è finita non è necessario effettuare la valutazione della traiettoria
+   	      exit when Finished = true;
+
+	      --Inizio sezione dedicata alla scelta della traiettoria
+              --questa è la soluzione attuale. Il crossing time e il choosenpath 
+	      --sono valori restituiti dalla funzione
+
+              Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
+	      
+	      --Fine sezione  per la scelta della traiettoria
+
+	      --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
+	      --quindi può essere segnalato il passaggio del checkpoint per permettere agli
+	      --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli 
+	      --altri checkpoint
+
+              Checkpoint.SignalLeaving(ID); 
+
+	      --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono 
+	      --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il 
+              --procedere degli altri competitor 
+
+              PredictedTime := ActualTime + CrossingTime;
+
+              loop
+                            C_Checkpoint := Get_PreviousCheckpoint(RaceIterator);
+                            PredictedTime := PredictedTime + MinRaceTime - MinSegTime * Index;
+                            C_Checkpoint.SetArrivalTime(ID);
+			    Index := Index + 1;
+                            exit when GetPosition(RaceIterator) = StartingPosition+1;
+              end loop
+
+              Delay(DELAY_TIME);
+end loop;
+
+end Run;
+
+---------------------------------------------------------------------------------------------

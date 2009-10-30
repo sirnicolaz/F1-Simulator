@@ -355,6 +355,47 @@ package body Circuit is
       return Iterator;
    end Get_Iterator;
 
+   procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                NextCheckpoint : out CHECKPOINT_SYNCH_POINT) is
+   begin
+      if RaceIterator.Position /= RaceIterator.Race_Point'LENGTH then
+         RaceIterator.Position := RaceIterator.Position + 1;
+      else
+         RaceIterator.Position := 1;
+      end if;
+
+      NextCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
+   end Get_NextCheckpoint;
+
+   procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                    PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT) is
+      begin
+      if RaceIterator.Position /= 1 then
+         RaceIterator.Position := RaceIterator.Position - 1;
+      else
+         RaceIterator.Position := RaceIterator.Race_Point'LENGTH;
+      end if;
+
+      PreviousCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
+
+   end Get_PreviousCheckpoint;
+
+   function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER is
+   begin
+      return RaceIterator.Race_Point'LENGTH;
+   end Get_RaceLength;
+
+   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return POSITIVE is
+   begin
+      return RaceIterator.Position;
+   end Get_Position;
+
+   --The method verifies if someone has already reached the goal
+   function Get_IsFinished(RaceIterator : RACETRACK_ITERATOR) return BOOLEAN is
+   begin
+      return false;
+   end Get_IsFinished;
+
 
    function Get_Checkpoint(Racetrack_In : RACETRACK;
                         Position : POSITIVE) return CHECKPOINT_SYNCH_POINT is
@@ -366,7 +407,5 @@ package body Circuit is
    begin
       return 4;
    end Print_Racetrack;
-
-
 
 end Circuit;
