@@ -145,6 +145,39 @@ package body Circuit is
          ChoosenPath_Out := ChoosenPathIndex;
 
       end Choose_BestPath;
+
+      procedure Update_Time(Time_In : FLOAT;
+                            PathIndex : INTEGER) is
+      begin
+         F_Paths(PathIndex).LastTime := Time_In;
+      end Update_Time;
+
+
+      function Get_Size return INTEGER is
+      begin
+         return F_Paths'LENGTH;
+      end Get_Size;
+
+      function Get_Length(PathIndex : INTEGER) return FLOAT is
+      begin
+         return Get_Length(F_Paths(PathIndex));
+      end Get_Length;
+
+      function Get_Angle(PathIndex : INTEGER) return FLOAT is
+      begin
+         return Get_Angle(F_Paths(PathIndex));
+      end Get_Angle;
+
+      function Get_Grip(PathIndex : INTEGER) return FLOAT is
+      begin
+           return Get_Grip(F_Paths(PathIndex));
+      end Get_Grip;
+
+      function Get_Difficulty(PathIndex : INTEGER) return FLOAT is
+      begin
+         return Get_Difficulty(F_Paths(PathIndex));
+      end Get_Difficulty;
+
    end CROSSING;
 
    protected body CHECKPOINT_SYNCH is

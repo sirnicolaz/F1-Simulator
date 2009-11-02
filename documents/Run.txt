@@ -4,7 +4,7 @@ ID : INTEGER := <l'id assegnato al competitor>
 
 Run is
 
-C_Checkpoint := NextCheckpoint(RaceIterator);
+C_Checkpoint : CHECKPOINT_SYNCH_POINT;
 PredictedTime : FLOAT := 0;
 DelayTime : FLOAT := 1.0;
 Paths2Cross : CROSSING_POINT;
@@ -17,6 +17,8 @@ Finished : BOOLEAN := FALSE;
 Index : INTEGER := 0;
 
 begin
+
+Get_NextCheckPoint(RaceIterator,C_Checkpoint);
 
 loop
 	      --Istante di tempo segnato nel checkpoint attuale per il competitor

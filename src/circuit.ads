@@ -60,6 +60,13 @@ package Circuit is
                                 CrossingTime_Out : out FLOAT;
                                 ChoosenPath_Out : out INTEGER;
                                 ArrivalTime_In : FLOAT);
+      procedure Update_Time(Time_In : in FLOAT;
+                            PathIndex : in INTEGER);
+      function Get_Size return INTEGER;
+      function Get_Length(PathIndex : INTEGER) return FLOAT;
+      function Get_Angle(PathIndex : INTEGER) return FLOAT;
+      function Get_Grip(PathIndex : INTEGER) return FLOAT;
+      function Get_Difficulty(PathIndex : INTEGER) return FLOAT;
 
    private
       F_Paths : POINT_PATHS := Paths_In;
