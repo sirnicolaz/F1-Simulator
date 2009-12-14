@@ -1,0 +1,56 @@
+La componente che si occupa tenere traccia dei concorrenti registrati e attualmente in gara è la Competition.
+I vari competitor, per attraversare la pista, otterrano un RaceIterator, con cui potranno accedere ai checkpoint e attraversarli.
+Quindi, una volta iscritto, il competitor dovrà ottenere tale puntatore. Il puntatore verrà assegnato una volta iniziata la gara (il circuito potrebbe
+essere alterato in fase di configurazione).
+La competition è suddivisa in due parti:
+- la prima svolgerà il ruolo di inizializazione dei competitor e della race track. 
+- la seconda attenderà i richieste dalla rete.
+
+In questo modo sarà possibile inizializzare una gara sia localmente che da remoto.
+La competition ottiene informazioni riguardo al competitor. Sarà lei che successivamente creerà il competitor e si occuperà di avviarlo (il competitor è un task);
+Tali informazioni dovranno essere:
+	- Strategia da usare
+	- Informazioni sull'auto, ovvero:
+	- Informazioni  sul concorrente quali nome, gruppo...
+Il formato in cui tali informazioni vengono passate potrebbe essere di due tipologie:
+	- o un unico file xml che funga da descrittore del concorrente. Il file, se arriva dalla rete, viene passato come stringa. 
+	  Successivamente tale stringa viene salvata in un file XML il cui indirizzo verrà passato alla competition. A questo punto si diramano di nuovo due
+	  possibilita: o l'indirizzo del file viene a sua volta passato ad un costruttore per il competitor, oppure la competition si occupa di inizializzare.
+	- Vengono passati ogggetti car, strategy e competitorInfo, da usarsi per l'inizializzazione.
+Probabilmente un descrittore xml è l'ipotesi più adeguata. Permette di rendere più omogeneo la struttura del progetto (anche il race usa un file xml). Inoltre
+rende più semplice un eventuale ripristino della gara nel momento in cui vi sia un interruzione. O, più semplicemente, l'avvio di una gara preimpostata.
+
+Il secondo problema è come la competition gestisce i concorrenti e per quali scopi comunicherà con essi:
+	- l'inizializzazione ( o il ripristino)
+	- l'avvio 
+	- l'eventuale stop (o pausa, se verrà aggiunto come requisito)
+	
+Serve innanzitutto una lista di puntatori a ogni concorrente.
+Una volta impostato il numero di concorrenti massimo, verrà allocata una lista della grandezza opportuna.
+Man mano che gli utenti si iscriveranno alla gara, verra istanziato un concorre passandogli l'indirizzo del file XML per l'inizializzazione.
+
+L'inizializzazione della gara avviene così:
+	- Il box locale/remoto i invoca il metodo di Join -> il metodo join è ad accesso multiplo senza mutua esclusione
+	- Prima di invocare il join, sarà già stato inizializzata la CompetitorRadio, che verrà passata come parametro alla Join per inizializzare il concorrente
+	- la competition alloca il concorrente (oggetto) e gli assegna un id (il reperimento dell'id va invece fatta in modo mutuamente esclusivo). L'inizializzazione
+	  avviene passando l'indirizzo del file xml descrittore e un riferimento alla competitorRadio
+	- wait finchè o anche l'ultimo concorrente si è iscritto o viene dato il segnale di start. Per implementare questo, ogni volta che un utente si iscrive
+	  viene incrementato un contatore prima di mettersi in wait. La wait può essere implementata tramite una requeue
+	- una volta che la condizione di start è rispettata, i task in wait si risvegliano e ritornano, con il parametro (out) id settato con quello assegnato al concorrente
+	  in modo che il box sappia l'id univoco del concorrente che monitorerà. Dovrà inoltre essere ritornato (ma di questo non si occupera la competition)
+	  il numero di porta su cui è in ascolto la competitorRadio e il numero di porta in cui è in ascolto il sistema di monitoraggio (monitosystem)
+	- non è ancora il momento di iniziare la corsa. prima bisogna essere certi che tutti i box siano riusciti a mettersi in ascolto con le radio e i monitor.
+	  questo sarà compito dei box. Una volta che avranno finito di configurarsi:
+		o Se tutto il processo di configurazione ha avuto successo, viene invocato il metodo ok della competition
+		o Se un box ha fallito per qualche motivo (la radio o il monitor non sono in ascolto oppure è fallita la connessione), verrà invocato un metodo
+		  retry (passando l'id del box fallito) nel quale verranno effettuati ulteriori test sullo stato della radio e del monitor ed eventualmente verranno
+		  riallocati su porte differenti. Il metodo retry probabilmente sarebbe meglio inserirlo un livello più in su della Competition, ovvero dalla componente 
+		  che si occupera di allocare la radio e identificare il monitor. La competition dovrebbe limitarsi a raccogliere gli ok ed eventualmente
+		  dei cancel se un box per qualche motivo dichiara il proprio ritiro prima dell'inizio. 
+	-la procedura ok aggiorna un contatore che tiene conto del numero dei competitor che hanno dato l'ok. arrivato al numero dei competitor iscritti, la gara potrà avere inizio.
+	- l'invocazione di un metodo cancel decrementa di uno il numero di competitor iscritti e anche questo metodo può provocare l'inizio della gara.
+
+Precondizioni per la corretta inizializzazione:
+	- I box (se remoti) devono essere già in ascolto e pronti a raccogliere richieste -> rispettata poichè il box si mette in ascolto prima di invocare la Join
+	- il MonitorSystem deve essere disponibile nel momento in cui i box iniziano a richiedere informazioni -> il monitorSystem verrà inizializzato in fase di inizializzazione della Competition
+	- la competitorRadio deve essere già disponibile quando inizia la gara -> rispettata poichè la radio viene allocata alla richiesta del box. Quando il box dà l'ok, significa che ha già effettuato un test di connessione con la radio. la gara inizia quando sono stati dati tutti gli ok.

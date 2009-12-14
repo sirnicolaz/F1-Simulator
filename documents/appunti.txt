@@ -1,0 +1,3 @@
+Sulla richiesta di informazioni statistiche e classifica:
+	conviene che nella richiesta venga passato anche l'istante del quale si vuole l'informazione, o comunque a che intervallo temporale
+	si vuole fare riferimento, per permettere che vi sia uniformità negli output dei monitor
