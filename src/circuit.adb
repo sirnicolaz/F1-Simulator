@@ -76,6 +76,13 @@ package body Circuit is
       Checkpoint_In.IsGoal := TRUE;
    end Set_Goal;
 
+   function Get_Time(Checkpoint_In : POINT_Checkpoint;
+                     CompetitorID_In : INTEGER) return FLOAT is
+   begin
+      return Get_CompetitorArrivalTime(Checkpoint_In.Queue, CompetitorID_In);
+   end Get_Time;
+
+
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
     --                  NextCheckpoint_In : POINT_Checkpoint) is
    --begin
@@ -207,6 +214,11 @@ package body Circuit is
          end if;
 
       end Set_ArrivalTime;
+
+      function Get_Time(CompetitorID_In : INTEGER) return FLOAT is
+      begin
+         return Get_Time(F_Checkpoint, CompetitorID_In);
+      end Get_Time;
 
       --Method that allow the tasks Competitor to Wait til they reach
       --the 1st position in the checkpoint queue. Once one of them is first,

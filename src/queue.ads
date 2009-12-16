@@ -8,6 +8,7 @@ package Queue is
    function Get_CompetitorID(Cell_In : QUEUE_CELL_POINT) return INTEGER;
    --Functions to get the arrival time of a given cell
    function Get_ArrivalTime(Cell_In : QUEUE_CELL_POINT) return FLOAT;
+
    --Functions to get the flag "is active" of a given cell
    function Get_IsArrived(Cell_In : QUEUE_CELL_POINT) return BOOLEAN;
 
@@ -21,6 +22,10 @@ package Queue is
    procedure Set_Arrived(Queue_In : in out QUEUE;
                          CompetitorID_In : INTEGER;
                          IsArrived_In : BOOLEAN);
+
+   -- Get Arrival time of a given competitor
+   function Get_CompetitorArrivalTime(Queue_In : QUEUE;
+                                      CompetitorID_In : INTEGER) return FLOAT;
    -- Get IsArrived of given position
    function Get_IsArrived(Queue_In : QUEUE;
                           Position : INTEGER) return BOOLEAN;

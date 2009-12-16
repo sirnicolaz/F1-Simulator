@@ -22,6 +22,15 @@ package body Queue is
       return Cell_In.ArrivalTime;
    end;
 
+   -- Get Arrival time of a given competitor
+   function Get_CompetitorArrivalTime(Queue_In : QUEUE;
+                                      CompetitorID_In : INTEGER) return FLOAT is
+      Position : INTEGER;
+   begin
+      Position := Get_Position(Queue_In,CompetitorID_In);
+      return Get_ArrivalTime(Queue_In(Position));
+   end Get_CompetitorArrivalTime;
+
    function Get_IsArrived(Cell_In : QUEUE_CELL_POINT) return BOOLEAN is
    begin
       return Cell_In.IsArrived;

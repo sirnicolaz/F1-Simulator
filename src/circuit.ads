@@ -54,6 +54,9 @@ package Circuit is
    --                  Path_Num : INTEGER ) return PATH;
    --function Get_Next_Checkpoint(Checkpoint_In : POINT_Checkpoint) return POINT_Checkpoint;
    --function Get_Length(Checkpoint_In : POINT_Checkpoint) return FLOAT;
+   function Get_Time(Checkpoint_In : POINT_Checkpoint;
+                     CompetitorID_In : INTEGER) return FLOAT;
+
 
    protected type CROSSING(Paths_In : POINT_PATHS) is
       procedure Choose_BestPath(CompetitorID_In : INTEGER;
@@ -81,6 +84,7 @@ package Circuit is
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
+      function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT);
