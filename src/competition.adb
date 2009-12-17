@@ -64,6 +64,8 @@ package body Competition is
 
    end JOIN_UTILS;
 
+   -- Initialize Monitor System
+
    -- Method to set init the circuit
    procedure Configure_Circuit( ClassificRefreshRate_In : FLOAT;
                                CircuitName_In : STRING;
