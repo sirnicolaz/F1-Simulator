@@ -1,5 +1,17 @@
 with Circuit;
 use Circuit;
+with Input_Sources.File;
+use Input_Sources.File;
+with Sax.Readers; use Sax.Readers;
+with DOM.Readers; use DOM.Readers;
+with DOM.Core; use DOM.Core;
+with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Nodes; use DOM.Core.Nodes;
+with DOM.Core.Attrs; use DOM.Core.Attrs;
+with Ada.IO_Exceptions;
+
+with Ada.Text_IO;
+use Ada.Text_IO;
 
 
 package Competitor is
@@ -8,7 +20,6 @@ package Competitor is
       Team : STRING(1..20);
       FirstName : STRING(1..20);
       LastName : STRING(1..20);
-      ID : INTEGER;
       Vel_In : FLOAT := 0.0;
     end record;
 
@@ -23,6 +34,7 @@ package Competitor is
       Mixture : STRING(1..20);
       Model : STRING(1..20);
       Type_Tyre : STRING(1..20);
+
       --end record;
 
    end record;
@@ -39,6 +51,7 @@ package Competitor is
       pilota : DRIVER;
       strategia : STRATEGY_CAR;
       RaceIterator : RACETRACK_ITERATOR;
+      Id: INTEGER;
    end record;
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
 
