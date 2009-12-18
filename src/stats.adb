@@ -1,3 +1,5 @@
+with Ada.Text_IO;
+use Ada.Text_IO;
 package body Stats is
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
@@ -55,6 +57,9 @@ package body Stats is
          NullRow : STATS_ROW;
       begin
          NullRow.Competitor_Id := -1;
+         NullRow.Lap_Num := -1;
+         NullRow.Checkpoint_Num := -1;
+         NullRow.Time := -1.0;
          Statistics := new CLASSIFICATION_TABLE(1..NumRows);
          for index in Statistics'RANGE loop
             Statistics(index) := NullRow;
@@ -76,11 +81,12 @@ package body Stats is
          else
             for index in Statistics'RANGE loop
                if(Statistics(index) < Row_In ) then
-                  if(Find_RowIndex(Row_In.Competitor_Id)/=-1) then
+                  if(Find_RowIndex(Row_In.Competitor_Id) /= -1) then
                      Delete_Row(Find_RowIndex(Row_In.Competitor_Id));
                   end if;
                   Shift_Down(index);
                   Add_Row(Row_In,index);
+                  exit;
                end if;
             end loop;
          end if;
@@ -104,7 +110,7 @@ package body Stats is
       procedure Shift_Down(Index_In : INTEGER) is
          EmptyIndex : INTEGER := -1;
       begin
-         for index in Index_In..Statistics'LENGTH loop
+         for index in Index_In..Statistics'LAST loop
             if(Statistics(index).Competitor_Id = -1) then
                EmptyIndex := index;
                exit;
@@ -112,7 +118,7 @@ package body Stats is
          end loop;
 
          if(EmptyIndex /= -1) and (EmptyIndex /= 1) then
-            for index in reverse Index_In..EmptyIndex loop
+            for index in reverse Index_In+1..EmptyIndex loop
                Statistics(index) := Statistics(index-1);
             end loop;
          end if;
@@ -138,7 +144,7 @@ package body Stats is
       procedure Is_Full(Full_Out : out BOOLEAN) is
       begin
          if(not Full) then
-            if(Statistics(Statistics'LENGTH).Competitor_Id = 1) then
+            if(Statistics(Statistics'LENGTH).Competitor_Id /= -1) then
                Full := true; -- Table is packed, then it's sufficient to control the last row to verify if table is full or not
             end if;
          end if;
@@ -150,10 +156,18 @@ package body Stats is
          return Statistics'LENGTH;
       end Get_Size;
 
-      entry Wait_ClassificComplete when Full is
+      function Test_Get_Classific return CLASSIFICATION_TABLE is
       begin
-         null;
-      end Wait_ClassificComplete;
+         return Statistics.all;
+      end Test_Get_Classific;
+
+      -- Per mantenere il vincolo di sottotipo con la Get_Classific nel SYNCH_GLOBAL_STATS
+      -- e poter così utilizzare la requeue, si è dovuto tenere il primo parametro intero.
+      -- TODO: studiare un modo per ovviare a questo spreco di parametri formali.
+      entry Get_Classific(Garbage : INTEGER; Classific_Out : out CLASSIFICATION_TABLE) when Full is
+      begin
+         Classific_Out := Statistics.all;
+      end Get_Classific;
 
 
    end SYNCH_ORDERED_CLASSIFICATION_TABLE;
@@ -277,13 +291,17 @@ package body Stats is
       begin
          GlobStats.BestLap_Num := 0;
          GlobStats.BestLap_Time := 0.0;
+         -- Temp
+         GlobStats.BestSectors_Time := new BESTSECTORS_TIME(0..2);
          GlobStats.BestSectors_Time(0) := 0.0;
          GlobStats.BestSectors_Time(1) := 0.0;
          GlobStats.BestSectors_Time(2) := 0.0;
          GlobStats.BestLap_CompetitorId := 0;
+         GlobStats.BestTimePerSector_CompetitorId := new BESTSECTORS_TIME_COMPETITORSID(0..2);
          GlobStats.BestTimePerSector_CompetitorId(0) := 0;
          GlobStats.BestTimePerSector_CompetitorId(1) := 0;
          GlobStats.BestTimePerSector_CompetitorId(2) := 0;
+         -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
       end Init_GlobalStats;
 
@@ -291,6 +309,28 @@ package body Stats is
       begin
          GlobStats.Statistics_Table := Get_New_SOCT_NODE(CompetitorsQty);
       end Set_CompetitorsQty;
+
+      function Test_Get_Classific return CLASSIFICATION_TABLE is
+      begin
+         return GlobStats.Statistics_Table.This.Test_Get_Classific;
+      end Test_Get_Classific;
+
+      entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE) when true is
+         CurrentIndex : INTEGER := GlobStats.Statistics_Table.Index;
+         TempStatsTable : SOCT_NODE_POINT;
+      begin
+         if (CurrentIndex = RequestedIndex) then
+            requeue GlobStats.Statistics_Table.This.Get_Classific;
+         else
+            CurrentIndex := CurrentIndex - 1;
+            TempStatsTable := GlobStats.Statistics_Table.Previous;
+            while CurrentIndex /= RequestedIndex loop
+               TempStatsTable := TempStatsTable.Previous;
+               CurrentIndex := CurrentIndex - 1;
+            end loop;
+            requeue TempStatsTable.This.Get_Classific;
+         end if;
+      end Get_Classific;
 
       -- It adds e new row with the given information. If in the current table there are no
       -- rows with the given COmpetitor_ID, the insert there the new data.
@@ -310,6 +350,7 @@ package body Stats is
             Temp_NewTable : SOCT_NODE_POINT;
          begin
             Temp_NewTable := Get_New_SOCT_NODE(Previous.This.Get_Size);
+            Set_NextNode(Previous,Temp_NewTable);
 
             -- Every row that has time <= the time represented by the new table has to be
             -- inserted in the new table.
@@ -318,12 +359,11 @@ package body Stats is
                -- rappresentata dalla nuova tabella, allora va salvato. Infatti nel caso venga chiesta una
                -- classifica aggiornata dell'istante di tempo inerente a questa tabella, il concorrente
                -- sarà nella stessa posizione (ovvero tratto checkpoint e lap) di quella precedente.
-               if(Previous.This.Get_Row(index).Time >= FLOAT(Previous.Index) * GlobStats.Update_Interval) then
+               if(Previous.This.Get_Row(index).Time >= FLOAT(Temp_NewTable.Index) * GlobStats.Update_Interval) then
                   Temp_NewTable.This.Add_Row(Previous.This.Get_Row(index));
                end if;
             end loop;
 
-            Set_NextNode(Previous,Temp_NewTable);
          end Create_New;
 
       begin
@@ -340,11 +380,17 @@ package body Stats is
          end loop;
          Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Checkpoint_In,Time_In));
 
-         Current_Table.This.Is_Full(Control_Var);
+         -- Se la riga è stata aggiunta alla tabella attualmente riferita dal GlobStats, allora
+         -- bisogna verificare se è piena. In tal caso bisogna crearne una nuova vuota da far puntare
+         -- al globStats per mantere valida l'invariante secondo cui la tabella riferita dal GlobStat
+         -- è sempre quella non piena subito dopo l'utlima piena della lista.
+         GlobStats.Statistics_Table.This.Is_Full(Control_Var);
          if(Control_Var) then
-            Create_New(Current_Table);
+            if(Get_NextNode(GlobStats.Statistics_Table) = null) then
+               Create_New(GlobStats.Statistics_Table);
+            end if;
+            GlobStats.Statistics_Table := Get_NextNode(GlobStats.Statistics_Table);
          end if;
-
       end Update_Stats;
    end SYNCH_GLOBAL_STATS;
 

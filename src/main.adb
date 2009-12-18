@@ -19,6 +19,9 @@ procedure Main is
 
    Test_Row : STATS_ROW;
    Test_Node : SOCT_NODE_POINT;
+
+   Test_Stats : SYNCH_GLOBAL_STATS;
+   Test_Classific : CLASSIFICATION_TABLE(1..3);
 begin
    Init_Node(SynchOrdStatTabNode => Stat_Node_1);
    Set_Node(Stat_Node_1, SOCT_Point_1);
@@ -52,7 +55,25 @@ begin
       Test_Node := Get_NextNode(Stat_Node_1);
       Put(INTEGER'IMAGE(Get_CompetitorId(Get_NodeContent(Test_Node).Get_Row(1))));
    end if;
-   Put(INTEGER'IMAGE(Get_Index(Stat_node_1)));
+   Put_Line(INTEGER'IMAGE(Get_Index(Stat_node_1)));
+
+   Put_Line("New");
+
+   Test_Stats.Init_GlobalStats(10.0);
+   Test_Stats.Set_CompetitorsQty(3);
+   Test_Stats.Update_Stats(1,1,1,11.0);
+   Test_Stats.Update_Stats(2,1,1,17.0);
+   Test_Stats.Update_Stats(3,1,1,19.0);
+
+   Test_Stats.Update_Stats(1,1,1,24.0);
+   Test_Stats.Update_Stats(2,1,1,21.0);
+   Test_Stats.Update_Stats(3,1,1,29.0);
+
+   Test_Stats.Get_Classific(1,Test_Classific);
+   Put_Line(INTEGER'IMAGE(Get_CompetitorId(Test_Classific(1))));
+
+   Test_Stats.Get_Classific(2,Test_Classific);
+   Put_Line(INTEGER'IMAGE(Get_CompetitorId(Test_Classific(3))));
 
    Put("Finished");
 

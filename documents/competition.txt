@@ -1,0 +1,5 @@
+La componente "competition" è l'interfaccia verso la configurazione e lo sviluppo di tutta la corsa. Necessita di:
+
+- Componente di configurazione, da usare offline dall'admin locale per configurare i parametri di gara.
+- Componente di registrazione, usata online dai potenziali partecipanti per registrarsi alla gara -> la componente viene deallocata una volta che la gara è iniziata
+- Componente di monitoraggio, utilizzata dai box e dai teleschermi per avere un log continuo delle informazioni di gara

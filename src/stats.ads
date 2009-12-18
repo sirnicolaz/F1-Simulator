@@ -38,7 +38,8 @@ package Stats is
       function Find_RowIndex(CompetitorId_In : INTEGER) return INTEGER;
       procedure Is_Full(Full_Out : out BOOLEAN);
       function Get_Size return INTEGER;
-      entry Wait_ClassificComplete;
+      function Test_Get_Classific return CLASSIFICATION_TABLE;
+      entry Get_Classific(Garbage : INTEGER; Classific_Out : out CLASSIFICATION_TABLE);
    private
       Id : INTEGER;
       Statistics : CLASSIFICATION_TABLE_POINT;
@@ -101,9 +102,12 @@ package Stats is
                              Lap_In : INTEGER;
                              Checkpoint_In : INTEGER;
                              Time_In : FLOAT);
+      function Test_Get_Classific return CLASSIFICATION_TABLE;
+      entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE);
    private
       GlobStats : GLOBAL_STATS;
    end SYNCH_GLOBAL_STATS;
+
 
 private
 
