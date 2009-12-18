@@ -5,6 +5,17 @@ package Stats is
    type GLOBAL_STATS is new GENERIC_STATS with private;
 
    type STATS_ROW is private;
+   -- These functions is only for test purpose
+   function Get_StatsRow(Competitor_Id_In : INTEGER;
+                         Lap_Num_In : INTEGER;
+                         Checkpoint_Num_In : INTEGER;
+                         Time_In : FLOAT) return STATS_ROW;
+   function Get_CompetitorId(Row : STATS_ROW) return INTEGER;
+   function Get_Lap(Row : STATS_ROW) return INTEGER;
+   function Get_CheckPoint(Row : STATS_ROW) return INTEGER;
+   function Get_Time(Row : STATS_ROW) return FLOAT;
+   -- end test functions ----------------------------
+
    function "<" (Left, Right : STATS_ROW) return BOOLEAN;
 
    type STATS_TABLE is array(POSITIVE range <>) of STATS_ROW;
@@ -29,6 +40,9 @@ package Stats is
 
    type SOST_POINT is access SYNCH_ORDERED_STATS_TABLE;
 
+   type SOST_NODE is private;
+   type SOST_NODE_POINT is access SOST_NODE;
+
    type BESTSECTORS_TIME is array(INTEGER range <> ) of FLOAT;
    type BESTSECTORS_TIME_POINT is access BESTSECTORS_TIME;
 
@@ -46,6 +60,29 @@ package Stats is
                                  BestSectorTime_In : FLOAT);
 
 
+
+   -- TEST SECTION ---------------------------------------
+   function Get_PreviousNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT;
+
+   function Get_NextNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT;
+
+   function Get_NodeContent( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_POINT;
+
+   function IsLast(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN;
+
+   function IsFirst(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN;
+
+   function Get_Index(SynchOrdStatTabNode : SOST_NODE_POINT) return INTEGER;
+
+   procedure Init_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT);
+
+
+   procedure Set_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT; Value : SOST_POINT );
+
+   procedure Set_PreviousNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT ; Value : in out SOST_NODE_POINT);
+
+   procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT; Value : in out SOST_NODE_POINT );
+
 private
 
    type GENERIC_STATS is tagged record
@@ -54,12 +91,21 @@ private
       BestSectors_Time : BESTSECTORS_TIME_POINT;
    end record;
 
+   type SOST_NODE is record
+      Index : INTEGER;
+      IsLast : BOOLEAN;
+      IsFirst : BOOLEAN;
+      Previous : SOST_NODE_POINT;
+      This : SOST_POINT;
+      Next : SOST_NODE_POINT;
+   end record;
+
    type GLOBAL_STATS is new GENERIC_STATS with
       record
          BestLap_CompetitorId : INTEGER;
          BestTimePerSector_CompetitorId : BESTSECTORS_TIME_COMPETITORSID_POINT;
          FirstTableFree : INTEGER; --maybe unuseful if table is freed each time it's completed
-	 Statistics_Table : SOST_POINT;
+	 Statistics_Table : SOST_NODE;
       end record;
 
    type STATS_ROW is
@@ -69,5 +115,6 @@ private
          Checkpoint_Num : INTEGER;
          Time : FLOAT;
       end record;
+
 
 end Stats;

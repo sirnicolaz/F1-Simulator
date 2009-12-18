@@ -1,5 +1,40 @@
 package body Stats is
 
+   function Get_StatsRow(Competitor_Id_In : INTEGER;
+                         Lap_Num_In : INTEGER;
+                         Checkpoint_Num_In : INTEGER;
+                         Time_In : FLOAT) return STATS_ROW is
+      Row2Return : STATS_ROW;
+   begin
+      Row2Return.Competitor_Id := Competitor_Id_In;
+      Row2Return.Lap_Num := Lap_Num_In;
+      Row2Return.Checkpoint_Num := Checkpoint_Num_In;
+      Row2Return.Time := Time_In;
+      return Row2Return;
+   end Get_StatsRow;
+
+   function Get_CompetitorId(Row : STATS_ROW) return INTEGER is
+   begin
+      return Row.Competitor_Id;
+   end Get_CompetitorId;
+
+   function Get_Lap(Row : STATS_ROW) return INTEGER is
+   begin
+      return Row.Lap_Num;
+   end Get_Lap;
+
+   function Get_CheckPoint(Row : STATS_ROW) return INTEGER is
+   begin
+      return Row.Checkpoint_Num;
+   end Get_CheckPoint;
+
+   function Get_Time(Row : STATS_ROW) return FLOAT is
+   begin
+      return Row.Time;
+   end Get_Time;
+
+
+
    function "<" (Left, Right : STATS_ROW) return BOOLEAN is
    begin
 
@@ -36,6 +71,9 @@ package body Stats is
 
       procedure Add_Row(Row_In : STATS_ROW) is
       begin
+         if (Statistics(1).Competitor_Id = -1) then
+            Add_Row(Row_In,1);
+         else
             for index in Statistics'RANGE loop
                if(Statistics(index) < Row_In ) then
                   if(Find_RowIndex(Row_In.Competitor_Id)/=-1) then
@@ -45,6 +83,8 @@ package body Stats is
                   Add_Row(Row_In,index);
                end if;
             end loop;
+         end if;
+
       end Add_Row;
 
       procedure Remove_Row(Index_In : INTEGER;
@@ -71,7 +111,7 @@ package body Stats is
             end if;
          end loop;
 
-         if(EmptyIndex /= -1) then
+         if(EmptyIndex /= -1) and (EmptyIndex /= 1) then
             for index in reverse Index_In..EmptyIndex loop
                Statistics(index) := Statistics(index-1);
             end loop;
@@ -96,6 +136,79 @@ package body Stats is
       end Find_RowIndex;
 
    end SYNCH_ORDERED_STATS_TABLE;
+
+
+   function Get_PreviousNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT is
+   begin
+      return SynchOrdStatTabNode.Previous;
+   end Get_PreviousNode;
+
+   function Get_NextNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT is
+   begin
+      return SynchOrdStatTabNode.Next;
+   end Get_NextNode;
+
+   function Get_NodeContent( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_POINT is
+   begin
+      return SynchOrdStatTabNode.This;
+   end Get_NodeContent;
+
+   function IsLast(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN is
+   begin
+      return SynchOrdStatTabNode.IsLast;
+   end IsLast;
+
+   function IsFirst(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN is
+   begin
+      return SynchOrdStatTabNode.IsFirst;
+   end IsFirst;
+
+   function Get_Index(SynchOrdStatTabNode : SOST_NODE_POINT) return INTEGER is
+   begin
+      return SynchOrdStatTabNode.Index;
+   end Get_Index;
+
+
+   procedure Init_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT) is
+   begin
+      if(SynchOrdStatTabNode.This = null) then
+         SynchOrdStatTabNode.IsLast := true;
+         SynchOrdStatTabNode.IsFirst := true;
+         SynchOrdStatTabNode.Index := 1;
+         SynchOrdStatTabNode.Previous := null;
+         SynchOrdStatTabNode.Next := null;
+      end if;
+   end Init_Node;
+
+
+   procedure Set_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT; Value : SOST_POINT ) is
+   begin
+      SynchOrdStatTabNode.This := Value;
+   end Set_Node;
+
+   procedure Set_PreviousNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT ; Value : in out SOST_NODE_POINT) is
+   begin
+      if(Value /= null) then
+         SynchOrdStatTabNodePoint.Previous := Value;
+         SynchOrdStatTabNodePoint.Previous.Next := SynchOrdStatTabNodePoint;
+         SynchOrdStatTabNodePoint.Previous.IsLast := false;
+         SynchOrdStatTabNodePoint.IsFirst := false;
+         SynchOrdStatTabNodePoint.Index := SynchOrdStatTabNodePoint.Previous.Index + 1;
+      end if;
+   end Set_PreviousNode;
+
+   procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT; Value : in out SOST_NODE_POINT ) is
+   begin
+      if(Value /= null) then
+         SynchOrdStatTabNodePoint.Next := Value;
+         SynchOrdStatTabNodePoint.Next.Previous := SynchOrdStatTabNodePoint;
+         SynchOrdStatTabNodePoint.Next.IsFirst := false;
+         SynchOrdStatTabNodePoint.IsLast := false;
+         SynchOrdStatTabNodePoint.Next.Index := SynchOrdStatTabNodePoint.Index + 1;
+      end if;
+   end Set_NextNode;
+
+   -- TODO: Remove and Delete this, previous, next node;
 
    function Get_BestLapNum(StatsContainer : GENERIC_STATS ) return INTEGER is
    begin
