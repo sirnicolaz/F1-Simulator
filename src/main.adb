@@ -9,24 +9,24 @@ use Stats;
 
 procedure Main is
 
-   Stat_Node_1 : SOST_NODE_POINT := new SOST_NODE;
-   Stat_Node_2 : SOST_NODE_POINT := new SOST_NODE;
-   Stat_Node_3 : SOST_NODE_POINT := new SOST_NODE;
+   Stat_Node_1 : SOCT_NODE_POINT := new SOCT_NODE;
+   Stat_Node_2 : SOCT_NODE_POINT := new SOCT_NODE;
+   Stat_Node_3 : SOCT_NODE_POINT := new SOCT_NODE;
 
-   SOST_Point_1 : SOST_POINT := new SYNCH_ORDERED_STATS_TABLE;
-   SOST_Point_2 : SOST_POINT := new SYNCH_ORDERED_STATS_TABLE;
-   SOST_Point_3 : SOST_POINT := new SYNCH_ORDERED_STATS_TABLE;
+   SOCT_Point_1 : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+   SOCT_Point_2 : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+   SOCT_Point_3 : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
 
    Test_Row : STATS_ROW;
-   Test_Node : SOST_NODE_POINT;
+   Test_Node : SOCT_NODE_POINT;
 begin
    Init_Node(SynchOrdStatTabNode => Stat_Node_1);
-   Set_Node(Stat_Node_1, SOST_Point_1);
+   Set_Node(Stat_Node_1, SOCT_Point_1);
    Init_Node(SynchOrdStatTabNode => Stat_Node_2);
-   Set_Node(Stat_Node_2, SOST_Point_2);
+   Set_Node(Stat_Node_2, SOCT_Point_2);
    Set_PreviousNode(Stat_Node_2, Stat_Node_1);
    Init_Node(SynchOrdStatTabNode => Stat_Node_3);
-   Set_Node(Stat_Node_3, SOST_Point_3);
+   Set_Node(Stat_Node_3, SOCT_Point_3);
    Set_PreviousNode(Stat_Node_3, Stat_Node_2);
 
    Get_NodeContent(Stat_Node_1).Init_Table(3);

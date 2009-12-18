@@ -50,12 +50,12 @@ package body Stats is
 
    end "<";
 
-   protected body SYNCH_ORDERED_STATS_TABLE is
+   protected body SYNCH_ORDERED_CLASSIFICATION_TABLE is
       procedure Init_Table(NumRows : INTEGER) is
          NullRow : STATS_ROW;
       begin
          NullRow.Competitor_Id := -1;
-         Statistics := new STATS_TABLE(1..NumRows);
+         Statistics := new CLASSIFICATION_TABLE(1..NumRows);
          for index in Statistics'RANGE loop
             Statistics(index) := NullRow;
          end loop;
@@ -135,41 +135,57 @@ package body Stats is
          return -1;
       end Find_RowIndex;
 
-   end SYNCH_ORDERED_STATS_TABLE;
+      procedure Is_Full(Full_Out : out BOOLEAN) is
+      begin
+         if(not Full) then
+            if(Statistics(Statistics'LENGTH).Competitor_Id = 1) then
+               Full := true; -- Table is packed, then it's sufficient to control the last row to verify if table is full or not
+            end if;
+         end if;
+         Full_Out := Full;
+      end Is_Full;
+
+      function Get_Size return INTEGER is
+      begin
+         return Statistics'LENGTH;
+      end Get_Size;
 
 
-   function Get_PreviousNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT is
+   end SYNCH_ORDERED_CLASSIFICATION_TABLE;
+
+
+   function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT is
    begin
       return SynchOrdStatTabNode.Previous;
    end Get_PreviousNode;
 
-   function Get_NextNode( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_NODE_POINT is
+   function Get_NextNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT is
    begin
       return SynchOrdStatTabNode.Next;
    end Get_NextNode;
 
-   function Get_NodeContent( SynchOrdStatTabNode : SOST_NODE_POINT ) return SOST_POINT is
+   function Get_NodeContent( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_POINT is
    begin
       return SynchOrdStatTabNode.This;
    end Get_NodeContent;
 
-   function IsLast(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN is
+   function IsLast(SynchOrdStatTabNode : SOCT_NODE_POINT) return BOOLEAN is
    begin
       return SynchOrdStatTabNode.IsLast;
    end IsLast;
 
-   function IsFirst(SynchOrdStatTabNode : SOST_NODE_POINT) return BOOLEAN is
+   function IsFirst(SynchOrdStatTabNode : SOCT_NODE_POINT) return BOOLEAN is
    begin
       return SynchOrdStatTabNode.IsFirst;
    end IsFirst;
 
-   function Get_Index(SynchOrdStatTabNode : SOST_NODE_POINT) return INTEGER is
+   function Get_Index(SynchOrdStatTabNode : SOCT_NODE_POINT) return INTEGER is
    begin
       return SynchOrdStatTabNode.Index;
    end Get_Index;
 
 
-   procedure Init_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT) is
+   procedure Init_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT) is
    begin
       if(SynchOrdStatTabNode.This = null) then
          SynchOrdStatTabNode.IsLast := true;
@@ -181,12 +197,12 @@ package body Stats is
    end Init_Node;
 
 
-   procedure Set_Node(SynchOrdStatTabNode : in out SOST_NODE_POINT; Value : SOST_POINT ) is
+   procedure Set_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT; Value : SOCT_POINT ) is
    begin
       SynchOrdStatTabNode.This := Value;
    end Set_Node;
 
-   procedure Set_PreviousNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT ; Value : in out SOST_NODE_POINT) is
+   procedure Set_PreviousNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT ; Value : in out SOCT_NODE_POINT) is
    begin
       if(Value /= null) then
          SynchOrdStatTabNodePoint.Previous := Value;
@@ -197,7 +213,7 @@ package body Stats is
       end if;
    end Set_PreviousNode;
 
-   procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOST_NODE_POINT; Value : in out SOST_NODE_POINT ) is
+   procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT; Value : in out SOCT_NODE_POINT ) is
    begin
       if(Value /= null) then
          SynchOrdStatTabNodePoint.Next := Value;
@@ -239,5 +255,75 @@ package body Stats is
    begin
       StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
    end Update_Stats_Sector;
+
+   procedure Init_GlobalStats( GlobStats : in out GLOBAL_STATS; Update_Interval_in : FLOAT ) is
+   begin
+      GlobStats.BestLap_Num := 0;
+      GlobStats.BestLap_Time := 0.0;
+      GlobStats.BestSectors_Time(0) := 0.0;
+      GlobStats.BestSectors_Time(1) := 0.0;
+      GlobStats.BestSectors_Time(2) := 0.0;
+      GlobStats.BestLap_CompetitorId := 0;
+      GlobStats.BestTimePerSector_CompetitorId(0) := 0;
+      GlobStats.BestTimePerSector_CompetitorId(1) := 0;
+      GlobStats.BestTimePerSector_CompetitorId(2) := 0;
+      GlobStats.Update_Interval := Update_Interval_in;
+   end Init_GlobalStats;
+
+   function Get_New_SOCT_NODE(Size : INTEGER) return SOCT_NODE_POINT is
+      TempTableListNode : SOCT_NODE_POINT := new SOCT_NODE;
+      TempSOCT : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+   begin
+      Init_Node(TempTableListNode);
+      TempSOCT.Init_Table(Size);
+      TempTableListNode.This := TempSOCT;
+      return TempTableListNode;
+   end Get_New_SOCT_NODE;
+
+   procedure Set_CompetitorsQty ( GlobStats : in out GLOBAL_STATS;
+                                 CompetitorsQty : INTEGER) is
+   begin
+      GlobStats.Statistics_Table := Get_New_SOCT_NODE(CompetitorsQty);
+   end Set_CompetitorsQty;
+
+   -- It adds e new row with the given information. If in the current table there are no
+   -- rows with the given COmpetitor_ID, the insert there the new data.
+   -- Otherwise, it searches for a table that respects the prerequisite. If no tables are found,
+   -- then a new table is created and linked to the last one of the list.
+   -- NB: we are sure that previous tables of the list can't have any empty row, because GlobalStats
+   -- always references as the current table the one immediatly following the last full one.
+   procedure Update_Stats( GlobStats : in out GLOBAL_STATS;
+                          CompetitorId_In : INTEGER;
+                          Lap_In : INTEGER;
+                          Checkpoint_In : INTEGER;
+                          Time_In : FLOAT) is
+      Competitor_RowIndex : INTEGER;
+      Current_Table : SOCT_NODE_POINT := GlobStats.Statistics_Table;
+      Temp_NewTable : SOCT_NODE_POINT;
+   begin
+      Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
+      -- If competitor is already registered in the current table, control what is the first
+      -- free table
+      while Competitor_RowIndex /= -1 loop
+         if(Get_NextNode(Current_Table) = null) then
+            Temp_NewTable := Get_New_SOCT_NODE(Current_Table.This.Get_Size);
+
+            -- Every row that has time <= the time represented by the new table has to be
+            -- inserted in the new table.
+            for index in 1..Current_Table.This.Get_Size loop
+               if(Current_Table.This.Get_Row(index).Time <= FLOAT(Current_Table.Index) * GlobStats.Update_Interval) then
+                  Temp_NewTable.This.Add_Row(Current_Table.This.Get_Row(index));
+               end if;
+            end loop;
+
+            Set_NextNode(Current_Table,Temp_NewTable);
+
+         end if;
+            Current_Table := Get_NextNode(Current_Table);
+            Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
+      end loop;
+      Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Checkpoint_In,Time_In));
+   end Update_Stats;
+
 
 end Stats;
