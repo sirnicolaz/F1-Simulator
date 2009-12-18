@@ -9,16 +9,16 @@ package body Competitor is
 
 
    -- Set function - CAR
-   procedure Configure_Car(Car_In : in out CAR_DRIVER_ACCESS;
+   procedure Configure_Car(Car_In : in out CAR;
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
                            GasTankCapacity_In : FLOAT;
                            Engine_In : STRING) is
    begin
-      Car_In.auto.MaxSpeed := MaxSpeed_In;
-      Car_In.auto.MaxAcceleration := MaxAcceleration_In;
-      Car_In.auto.GasTankCapacity := GasTankCapacity_In;
-      Car_In.auto.Engine := Engine_In;
+      Car_In.MaxSpeed := MaxSpeed_In;
+      Car_In.MaxAcceleration := MaxAcceleration_In;
+      Car_In.GasTankCapacity := GasTankCapacity_In;
+      Car_In.Engine := Engine_In;
    end Configure_Car;
 
    procedure Set_Vel_In(Competitor_In : in out CAR_DRIVER_ACCESS; PVel_In : in FLOAT) is
@@ -77,9 +77,9 @@ package body Competitor is
    -- almeno 2 direi.
 
 
-   procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER;) is
+   procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER) is
    begin
-      Car_In.pilota.ID := Id_In;
+      Car_In.Id := Id_In;
    end Set_Id;
    -- Set function - STATUS USURY
    procedure Set_Usury(Car_In : in out CAR_DRIVER_ACCESS;
@@ -184,33 +184,31 @@ package body Competitor is
       Car_In.auto.Model := Model_In;
    end Set_Model;
 
-   procedure Configure_Driver(Car_In: in out CAR_DRIVER_ACCESS;
+   procedure Configure_Driver(Car_In: in out DRIVER;
                               Team_In : STRING;
                               FirstName_In : STRING;
                               LastName_In : STRING;
-                              ID_In : INTEGER;
                               Vel_In : FLOAT) is
    begin
-      Car_In.pilota.Team:=Team_In;
-      Car_In.pilota.FirstName:=FirstName_In;
-      Car_In.pilota.LastName:=LastName_In;
-      Car_In.pilota.ID:=ID_In;
-      Car_In.pilota.Vel_In:=Vel_In;
+      Car_In.Team:=Team_In;
+      Car_In.FirstName:=FirstName_In;
+      Car_In.LastName:=LastName_In;
+      Car_In.Vel_In:=Vel_In;
    end Configure_Driver;
 
    --Configuration Method of Strategy
-   procedure Configure_Strategy(Car_In : in out CAR_DRIVER_ACCESS;
+   procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
                                 pitstopGasolineLevel_In : INTEGER;
                                 pitstopLaps_In: INTEGER;
                                 pitstopCondition_In : BOOLEAN;
                                 trim_In : INTEGER;
                                 pitstop_In : BOOLEAN) is
    begin
-      Car_In.strategia.pitstopGasolineLevel :=  pitstopGasolineLevel_In;
-      Car_In.strategia.pitstopLaps := pitstopLaps_In;
-      Car_In.strategia.pitstopCondition := pitstopCondition_In;
-      Car_In.strategia.trim := trim_In;
-      Car_In.strategia.pitstop := pitstop_In;
+      Car_In.pitstopGasolineLevel :=  pitstopGasolineLevel_In;
+      Car_In.pitstopLaps := pitstopLaps_In;
+      Car_In.pitstopCondition := pitstopCondition_In;
+      Car_In.trim := trim_In;
+      Car_In.pitstop := pitstop_In;
    end Configure_Strategy;
 
    procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER) is
@@ -222,9 +220,33 @@ package body Competitor is
 
    function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR) return CAR_DRIVER_ACCESS is
       --parametri
+      Input : File_Input;
+      Reader : Tree_Reader;
+      Doc : Document;
+      carDriver_XML : Node_List;
+      carDriver_Length : INTEGER;
+   --   carDriver_Out : CAR_DRIVER_ACCESS;
       carDriver : CAR_DRIVER_ACCESS;
-      procedure Configure_Strategy_File(Car_In : in out CAR_DRIVER_ACCESS;
-                                        xml_file : STRING) is -- metodo per la configurazione della strategia a partire da un file
+
+   procedure Try_OpenFile is
+      begin
+
+         Open(xml_file,Input);
+
+         Set_Feature(Reader,Validation_Feature,False);
+         Set_Feature(Reader,Namespace_Feature,False);
+
+         Parse(Reader,Input);
+
+         Doc := Get_Tree(Reader);
+         carDriver_XML := Get_Elements_By_Tag_Name(Doc,"car_driver");
+         carDriver_Length := Length(carDriver_XML);
+      exception
+            when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
+      end Try_OpenFile;
+
+      procedure Configure_Strategy_File(Car_In : in out STRATEGY_CAR;
+                                        xml_file : DOCUMENT) is -- metodo per la configurazione della strategia a partire da un file
          pitstopGasolineLevel_In : INTEGER;
          pitstopLaps_In : INTEGER;
          pitstopCondition_In : BOOLEAN;
@@ -233,28 +255,30 @@ package body Competitor is
       begin
          -- lettura parametri dal file xml
          -- scrittura parametri
-         Car_In.Configure_Strategy(pitstopGasolineLevel_In ,
-                                   pitstopLaps_In,
-                                   pitstopCondition_In,
-                                   trim_In,
-                                   pitstop_In);
+         Configure_Strategy(Car_In,
+                            pitstopGasolineLevel_In ,
+                            pitstopLaps_In,
+                            pitstopCondition_In,
+                            trim_In,
+                            pitstop_In);
 
       end Configure_Strategy_File;
 
 
-      procedure Configure_Car_File(Car_In : in out CAR_DRIVER_ACCESS; xml_file : STRING) is
+      procedure Configure_Car_File(Car_In : in out CAR; xml_file : DOCUMENT) is
          MaxSpeed_In : FLOAT;
          MaxAcceleration_In : FLOAT;
          GasTankCapacity_In : FLOAT;
          Engine_In : STRING(1..50);
       begin
-         Car_In.Configure_Car(MaxSpeed_In,
-                              MaxAcceleration_In,
-                              GasTankCapacity_In,
-                              Engine_In);
+         Configure_Car(Car_In,
+                       MaxSpeed_In,
+                       MaxAcceleration_In,
+                       GasTankCapacity_In,
+                       Engine_In);
       end Configure_Car_File;
 
-      procedure Configure_Driver_File(Car_In : in out CAR_DRIVER_ACCESS; xml_file : STRING) is
+      procedure Configure_Driver_File(Car_In : in out DRIVER; xml_file : DOCUMENT) is
          Team_In : STRING(1..20);
          FirstName_In : STRING(1..20);
          LastName_In : STRING(1..20);
@@ -262,18 +286,22 @@ package body Competitor is
          Vel_In : FLOAT :=0.0;
       begin
          --lettura parametri, vel_in esclusa
-         Car_In.Configure_Driver(Team_In,
-                                 FirstName_In,
-                                 LastName_In,
-                                 ID_In,
-                                 Vel_In);
+         Configure_Driver(Car_In,
+                          Team_In,
+                          FirstName_In,
+                          LastName_In,
+                          ID_In,
+                          Vel_In);
       end Configure_Driver_File;
    begin
-      carDriver.strategia:=Configure_Strategy_File(Car_In , xml_file);
-      carDriver.auto:=Configure_Car_File(Car_In , xml_file);
-      carDriver.pilota:=Configure_Driver_File(Car_In , xml_file);
+      --apertura del file
+      Try_OpenFile;
+      --configurazione parametri
+      Configure_Strategy_File(carDriver.strategia , doc);
+      Configure_Car_File(carDriver.auto , doc);
+      Configure_Driver_File(carDriver.pilota , doc);
       return carDriver;
-   end Set_Get_CarDriver;
+   end Init_Competitor;
    -----------------------------------
    -----------------------------------
    -- TASKCOMPETITOR IMPLEMENTATION --
