@@ -22,6 +22,8 @@ package Stats is
    type CLASSIFICATION_TABLE_POINT is access CLASSIFICATION_TABLE;
 
 
+   --TODO: non ha senso che sia una risorsa protetta dal momento che viene usata solo in questo
+   --package da una risorsa a sua volta protetta. Quindi cambiare.
    -- Resource used to maintain statistics ordered and mutually-exclusive accessible
    protected type SYNCH_ORDERED_CLASSIFICATION_TABLE is
       procedure Init_Table(NumRows : INTEGER);
@@ -36,6 +38,7 @@ package Stats is
       function Find_RowIndex(CompetitorId_In : INTEGER) return INTEGER;
       procedure Is_Full(Full_Out : out BOOLEAN);
       function Get_Size return INTEGER;
+      entry Wait_ClassificComplete;
    private
       Id : INTEGER;
       Statistics : CLASSIFICATION_TABLE_POINT;
@@ -89,15 +92,18 @@ package Stats is
    procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT; Value : in out SOCT_NODE_POINT );
    -----------------------------------------------------------
 
-   procedure Init_GlobalStats( GlobStats : in out GLOBAL_STATS; Update_Interval_in : FLOAT );
-   procedure Set_CompetitorsQty ( GlobStats : in out GLOBAL_STATS;
-                                 CompetitorsQty : INTEGER);
-   procedure Update_Stats( GlobStats : in out GLOBAL_STATS;
-                          CompetitorId_In : INTEGER;
-                          Lap_In : INTEGER;
-                          Checkpoint_In : INTEGER;
-                          Time_In : FLOAT);
+   protected type SYNCH_GLOBAL_STATS is
 
+      procedure Init_GlobalStats( Update_Interval_in : FLOAT );
+      procedure Set_CompetitorsQty (CompetitorsQty : INTEGER);
+      procedure Update_Stats(
+                             CompetitorId_In : INTEGER;
+                             Lap_In : INTEGER;
+                             Checkpoint_In : INTEGER;
+                             Time_In : FLOAT);
+   private
+      GlobStats : GLOBAL_STATS;
+   end SYNCH_GLOBAL_STATS;
 
 private
 

@@ -150,9 +150,24 @@ package body Stats is
          return Statistics'LENGTH;
       end Get_Size;
 
+      entry Wait_ClassificComplete when Full is
+      begin
+         null;
+      end Wait_ClassificComplete;
+
 
    end SYNCH_ORDERED_CLASSIFICATION_TABLE;
 
+
+   function Get_New_SOCT_NODE(Size : INTEGER) return SOCT_NODE_POINT is
+      TempTableListNode : SOCT_NODE_POINT := new SOCT_NODE;
+      TempSOCT : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+   begin
+      Init_Node(TempTableListNode);
+      TempSOCT.Init_Table(Size);
+      TempTableListNode.This := TempSOCT;
+      return TempTableListNode;
+   end Get_New_SOCT_NODE;
 
    function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT is
    begin
@@ -256,74 +271,81 @@ package body Stats is
       StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
    end Update_Stats_Sector;
 
-   procedure Init_GlobalStats( GlobStats : in out GLOBAL_STATS; Update_Interval_in : FLOAT ) is
-   begin
-      GlobStats.BestLap_Num := 0;
-      GlobStats.BestLap_Time := 0.0;
-      GlobStats.BestSectors_Time(0) := 0.0;
-      GlobStats.BestSectors_Time(1) := 0.0;
-      GlobStats.BestSectors_Time(2) := 0.0;
-      GlobStats.BestLap_CompetitorId := 0;
-      GlobStats.BestTimePerSector_CompetitorId(0) := 0;
-      GlobStats.BestTimePerSector_CompetitorId(1) := 0;
-      GlobStats.BestTimePerSector_CompetitorId(2) := 0;
-      GlobStats.Update_Interval := Update_Interval_in;
-   end Init_GlobalStats;
+   protected body SYNCH_GLOBAL_STATS is
 
-   function Get_New_SOCT_NODE(Size : INTEGER) return SOCT_NODE_POINT is
-      TempTableListNode : SOCT_NODE_POINT := new SOCT_NODE;
-      TempSOCT : SOCT_POINT := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
-   begin
-      Init_Node(TempTableListNode);
-      TempSOCT.Init_Table(Size);
-      TempTableListNode.This := TempSOCT;
-      return TempTableListNode;
-   end Get_New_SOCT_NODE;
+      procedure Init_GlobalStats( Update_Interval_in : FLOAT ) is
+      begin
+         GlobStats.BestLap_Num := 0;
+         GlobStats.BestLap_Time := 0.0;
+         GlobStats.BestSectors_Time(0) := 0.0;
+         GlobStats.BestSectors_Time(1) := 0.0;
+         GlobStats.BestSectors_Time(2) := 0.0;
+         GlobStats.BestLap_CompetitorId := 0;
+         GlobStats.BestTimePerSector_CompetitorId(0) := 0;
+         GlobStats.BestTimePerSector_CompetitorId(1) := 0;
+         GlobStats.BestTimePerSector_CompetitorId(2) := 0;
+         GlobStats.Update_Interval := Update_Interval_in;
+      end Init_GlobalStats;
 
-   procedure Set_CompetitorsQty ( GlobStats : in out GLOBAL_STATS;
-                                 CompetitorsQty : INTEGER) is
-   begin
-      GlobStats.Statistics_Table := Get_New_SOCT_NODE(CompetitorsQty);
-   end Set_CompetitorsQty;
+      procedure Set_CompetitorsQty (CompetitorsQty : INTEGER) is
+      begin
+         GlobStats.Statistics_Table := Get_New_SOCT_NODE(CompetitorsQty);
+      end Set_CompetitorsQty;
 
-   -- It adds e new row with the given information. If in the current table there are no
-   -- rows with the given COmpetitor_ID, the insert there the new data.
-   -- Otherwise, it searches for a table that respects the prerequisite. If no tables are found,
-   -- then a new table is created and linked to the last one of the list.
-   -- NB: we are sure that previous tables of the list can't have any empty row, because GlobalStats
-   -- always references as the current table the one immediatly following the last full one.
-   procedure Update_Stats( GlobStats : in out GLOBAL_STATS;
-                          CompetitorId_In : INTEGER;
-                          Lap_In : INTEGER;
-                          Checkpoint_In : INTEGER;
-                          Time_In : FLOAT) is
-      Competitor_RowIndex : INTEGER;
-      Current_Table : SOCT_NODE_POINT := GlobStats.Statistics_Table;
-      Temp_NewTable : SOCT_NODE_POINT;
-   begin
-      Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
-      -- If competitor is already registered in the current table, control what is the first
-      -- free table
-      while Competitor_RowIndex /= -1 loop
-         if(Get_NextNode(Current_Table) = null) then
-            Temp_NewTable := Get_New_SOCT_NODE(Current_Table.This.Get_Size);
+      -- It adds e new row with the given information. If in the current table there are no
+      -- rows with the given COmpetitor_ID, the insert there the new data.
+      -- Otherwise, it searches for a table that respects the prerequisite. If no tables are found,
+      -- then a new table is created and linked to the last one of the list.
+      -- NB: we are sure that previous tables of the list can't have any empty row, because GlobalStats
+      -- always references as the current table the one immediatly following the last full one.
+      procedure Update_Stats(CompetitorId_In : INTEGER;
+                             Lap_In : INTEGER;
+                             Checkpoint_In : INTEGER;
+                             Time_In : FLOAT) is
+         Competitor_RowIndex : INTEGER;
+         Current_Table : SOCT_NODE_POINT := GlobStats.Statistics_Table;
+         Control_Var : BOOLEAN;
+
+         procedure Create_New(Previous : in out SOCT_NODE_POINT) is
+            Temp_NewTable : SOCT_NODE_POINT;
+         begin
+            Temp_NewTable := Get_New_SOCT_NODE(Previous.This.Get_Size);
 
             -- Every row that has time <= the time represented by the new table has to be
             -- inserted in the new table.
-            for index in 1..Current_Table.This.Get_Size loop
-               if(Current_Table.This.Get_Row(index).Time <= FLOAT(Current_Table.Index) * GlobStats.Update_Interval) then
-                  Temp_NewTable.This.Add_Row(Current_Table.This.Get_Row(index));
+            for index in 1..Previous.This.Get_Size loop
+               -- Se il tempo di un concorrente nella tabella precedente è maggiore anche della barriera
+               -- rappresentata dalla nuova tabella, allora va salvato. Infatti nel caso venga chiesta una
+               -- classifica aggiornata dell'istante di tempo inerente a questa tabella, il concorrente
+               -- sarà nella stessa posizione (ovvero tratto checkpoint e lap) di quella precedente.
+               if(Previous.This.Get_Row(index).Time >= FLOAT(Previous.Index) * GlobStats.Update_Interval) then
+                  Temp_NewTable.This.Add_Row(Previous.This.Get_Row(index));
                end if;
             end loop;
 
-            Set_NextNode(Current_Table,Temp_NewTable);
+            Set_NextNode(Previous,Temp_NewTable);
+         end Create_New;
 
-         end if;
+      begin
+         Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
+         -- If competitor's infos are already saved in the current table, control what is the first
+         -- free table
+         while Competitor_RowIndex /= -1 loop
+            -- if there are no free table, create a new one
+            if(Get_NextNode(Current_Table) = null) then
+               Create_New(Current_Table);
+            end if;
             Current_Table := Get_NextNode(Current_Table);
             Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
-      end loop;
-      Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Checkpoint_In,Time_In));
-   end Update_Stats;
+         end loop;
+         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Checkpoint_In,Time_In));
 
+         Current_Table.This.Is_Full(Control_Var);
+         if(Control_Var) then
+            Create_New(Current_Table);
+         end if;
+
+      end Update_Stats;
+   end SYNCH_GLOBAL_STATS;
 
 end Stats;
