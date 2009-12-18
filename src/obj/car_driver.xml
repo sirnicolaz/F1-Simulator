@@ -6,11 +6,11 @@
 	  <lastname>Alonso</lastname>
 	</driver>
 	<car>
-	  <maxspeed>350</maxspeed>
+	  <maxspeed>350.0</maxspeed>
 	  <maxacceleration>1.2</maxacceleration>
-	  <gastankcapacity>1000</gastankcapacity>
+	  <gastankcapacity>1000.0</gastankcapacity>
 	  <engine>strong</engine>
-	  <tyreusury>0</tyreusury>
+	  <tyreusury>0.0</tyreusury>
 	  <gasolinelevel>500</gasolinelevel>
 	  <mixture>morbida</mixture>
 	  <model>michelin</model>

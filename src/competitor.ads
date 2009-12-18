@@ -78,7 +78,7 @@ package Competitor is
    function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_Engine(Car_In : CAR_DRIVER_ACCESS) return STRING;
 
-   procedure Configure_Car(Car_In : in out CAR_DRIVER_ACCESS;
+   procedure Configure_Car(Car_In : in out CAR;
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
                            GasTankCapacity_In : FLOAT;
@@ -119,13 +119,12 @@ package Competitor is
 
    -- subtype str is Strategy.STRATEGY;
 
-   procedure Configure_Driver(Car_In: in out CAR_DRIVER_ACCESS;
+   procedure Configure_Driver(Car_In: in out DRIVER;
                               Team_In : STRING;
                               FirstName_In : STRING;
                               LastName_In : STRING;
-                              ID_In : INTEGER;
                               Vel_In : FLOAT);
-   procedure Configure_Strategy(Car_In : in out CAR_DRIVER_ACCESS;
+   procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
                                 pitstopGasolineLevel_In : INTEGER;
                                 pitstopLaps_In: INTEGER;
                                 pitstopCondition_In : BOOLEAN;
