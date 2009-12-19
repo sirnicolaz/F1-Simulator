@@ -29,7 +29,7 @@ package Competitor is
       GasTankCapacity : FLOAT;
       Engine : STRING(1..50);
       TyreUsury : FLOAT;
-      GasolineLevel : INTEGER;
+      GasolineLevel : FLOAT;
       -- private subtype TYRE is record
       Mixture : STRING(1..20);
       Model : STRING(1..20);
@@ -82,14 +82,19 @@ package Competitor is
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
                            GasTankCapacity_In : FLOAT;
-                           Engine_In : STRING);
+                           Engine_In : STRING;
+                           TyreUsury_In : FLOAT;
+                           GasolineLevel_In : FLOAT;
+                           Mixture_In : STRING;
+                           Model_In : STRING;
+                           Type_Tyre_In : STRING);
 
    procedure Set_Usury(Car_In : in out CAR_DRIVER_ACCESS;
                        Usury_In : FLOAT);
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
                           GasLevel_In : INTEGER);
    function Get_Usury(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
-   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Calculate_Status(infoLastSeg : in CAR_DRIVER_ACCESS) return BOOLEAN;
    -- procedure Calculate_Status(infoLastSeg);
    -- questo metodo controlla tyre usury e gasoline level
@@ -125,7 +130,7 @@ package Competitor is
                               LastName_In : STRING;
                               Vel_In : FLOAT);
    procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
-                                pitstopGasolineLevel_In : INTEGER;
+                                pitstopGasolineLevel_In : FLOAT;
                                 pitstopLaps_In: INTEGER;
                                 pitstopCondition_In : BOOLEAN;
                                 trim_In : INTEGER;

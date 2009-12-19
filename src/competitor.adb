@@ -15,10 +15,10 @@ package body Competitor is
                            GasTankCapacity_In : FLOAT;
                            Engine_In : STRING;
                            TyreUsury_In : FLOAT;
-                           GasolineLevel_In : INTEGER;
-                           Mixture_In : STRING(1..20);
-                           Model_In : STRING(1..20);
-                           Type_Tyre_In : STRING(1..20)) is
+                           GasolineLevel_In : FLOAT;
+                           Mixture_In : STRING;
+                           Model_In : STRING;
+                           Type_Tyre_In : STRING) is
    begin
       Car_In.MaxSpeed := MaxSpeed_In;
       Car_In.MaxAcceleration := MaxAcceleration_In;
@@ -69,7 +69,7 @@ package body Competitor is
       --questa funzione ritorna un boolean che indica se il concorrente
       --deve tornare o meno ai box
    begin
-      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10 then
+      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10.0 then
          -- i parametri si possono cambiare ovviamente
          -- basta darci dei valori consistenti
          return TRUE;
@@ -100,7 +100,7 @@ package body Competitor is
 
    -- Set function - STATUS GASLEVEL
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
-                          GasLevel_In : INTEGER) is
+                          GasLevel_In : FLOAT) is
    begin
       Car_In.auto.GasolineLevel := GasLevel_In;
    end;
@@ -112,7 +112,7 @@ package body Competitor is
    end Get_Usury;
 
    -- Get function - STATUS GASLEVEL
-   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
       return Car_In.auto.GasolineLevel;
    end Get_GasLevel;
@@ -208,7 +208,7 @@ package body Competitor is
 
    --Configuration Method of Strategy
    procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
-                                pitstopGasolineLevel_In : INTEGER;
+                                pitstopGasolineLevel_In : FLOAT;
                                 pitstopLaps_In: INTEGER;
                                 pitstopCondition_In : BOOLEAN;
                                 trim_In : INTEGER;
@@ -221,7 +221,7 @@ package body Competitor is
       Car_In.pitstop := pitstop_In;
    end Configure_Strategy;
 
-   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER) is
+   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT) is
 
    begin
       Usury_Out:=Get_Usury(Car_In);
@@ -235,10 +235,10 @@ package body Competitor is
       Doc : Document;
       carDriver_XML : Node_List;
       carDriver_Length : INTEGER;
-   --   carDriver_Out : CAR_DRIVER_ACCESS;
+      --   carDriver_Out : CAR_DRIVER_ACCESS;
       carDriver : CAR_DRIVER_ACCESS;
 
-   procedure Try_OpenFile is
+      procedure Try_OpenFile is
       begin
 
          Open(xml_file,Input);
@@ -252,84 +252,17 @@ package body Competitor is
          carDriver_XML := Get_Elements_By_Tag_Name(Doc,"car_driver");
          carDriver_Length := Length(carDriver_XML);
       exception
-            when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
+         when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
       end Try_OpenFile;
 
       procedure Configure_Strategy_File(Car_In : in out STRATEGY_CAR;
                                         xml_file : DOCUMENT) is -- metodo per la configurazione della strategia a partire da un file
-         pitstopGasolineLevel_In : INTEGER;
+         pitstopGasolineLevel_In : FLOAT;
          pitstopLaps_In : INTEGER;
          pitstopCondition_In : BOOLEAN;
          trim_In : INTEGER;
          pitstop_In : BOOLEAN;
-      strategy_XML : Node_List;
-      Current_Node : Node;
-      Current_Team : STRING(1..7);
-      Current_FirstName : STRING(1..10);
-      Current_LastName : STRING(1..10);
-      --Car_Temp : CAR;
-      --Car_Current : CAR;
-
-      function Get_Feature_Node(Node_In : NODE;
-                           FeatureName_In : STRING) return NODE is
-         Child_Nodes_In : NODE_LIST;
-         Current_Node : NODE;
-      begin
-
-         Child_Nodes_In := Child_Nodes(Node_In);
-         for Index in 1..Length(Child_Nodes_In) loop
-            Current_Node := Item(Child_Nodes_In,Index-1);
-            if Node_Name(Current_Node) = FeatureName_In then
-               return Current_Node;
-            end if;
-         end loop;
-
-         return null;
-      end Get_Feature_Node;
-
-   begin
-
-      --If there is a conf file, use it to auto-init;
-
-      if Document_In /= null then
-
-         car_XML := Get_Elements_By_Tag_Name(Document_In,"strategy_car");
-
-            Current_Node := Item(Racetrack_XML, 0);
-
-            strategy_XML := Child_Nodes(Current_Node);
-            pitstopGasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopGasolineLevel"))));
-            pitstopLaps_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopLaps"))));
-            pitstopCondition_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopCondition"))));
-	    trim_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"trim"))));
-	    pitstop_In := Boolean'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstop"))));
-
-            Racetrack_In(Index) := CheckpointSynch_Current;
-
-
-      end if;
-         -- scrittura parametri
-         Configure_Strategy(Car_In,
-                            pitstopGasolineLevel_In ,
-                            pitstopLaps_In,
-                            pitstopCondition_In,
-                            trim_In,
-                            pitstop_In);
-
-      end Configure_Strategy_File;
-
-
-      procedure Configure_Car_File(Car_In : in out CAR; xml_file : DOCUMENT) is
-         MaxSpeed_In : FLOAT;
-         MaxAcceleration_In : FLOAT;
-         GasTankCapacity_In : FLOAT;
-         Engine_In : STRING(1..50);
-         TyreUsury_In : FLOAT;
-         GasolineLevel_In : INTEGER;
-         Mixture_In : STRING(1..20);
-         Model_In : STRING(1..20);
-         Type_Tyre_In : STRING(1..20);
-         car_XML : Node_List;
+         strategy_XML : Node_List;
          Current_Node : Node;
          Current_Team : STRING(1..7);
          Current_FirstName : STRING(1..10);
@@ -358,28 +291,98 @@ package body Competitor is
 
          --If there is a conf file, use it to auto-init;
 
-         if Document_In /= null then
+         --if Document_In /= null then
 
-            car_XML := Get_Elements_By_Tag_Name(Document_In,"car");
+         strategy_XML := Get_Elements_By_Tag_Name(xml_file,"strategy_car");
 
-            Current_Node := Item(Racetrack_XML, 0);
+         Current_Node := Item(strategy_XML, 0);
 
-            car_XML := Child_Nodes(Current_Node);
-            MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
-            MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
-            GasTankCapacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
-            Engine := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
-            TyreUsury := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
-            GasolineLevel := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
-            Mixture := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
-            Model := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
-            TypeTyre := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
-            --Car_Temp := new CAR;
+         strategy_XML := Child_Nodes(Current_Node);
+         pitstopGasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopGasolineLevel"))));
+         pitstopLaps_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopLaps"))));
+         pitstopCondition_In := Boolean'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopCondition"))));
+         trim_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"trim"))));
+         pitstop_In := Boolean'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstop"))));
 
-            Racetrack_In(Index) := CheckpointSynch_Current;
+         --Racetrack_In(Index) := CheckpointSynch_Current;
 
 
-         end if;
+         --end if;
+         -- scrittura parametri
+         Configure_Strategy(Car_In,
+                            pitstopGasolineLevel_In ,
+                            pitstopLaps_In,
+                            pitstopCondition_In,
+                            trim_In,
+                            pitstop_In);
+
+      end Configure_Strategy_File;
+
+
+      procedure Configure_Car_File(Car_In : in out CAR; xml_file : DOCUMENT) is
+         MaxSpeed_In : FLOAT;
+         MaxAcceleration_In : FLOAT;
+         GasTankCapacity_In : FLOAT;
+         --Engine_In : STRING(1..50);
+         TyreUsury_In : FLOAT;
+         GasolineLevel_In : FLOAT;
+         Mixture_In : STRING(1..20);
+         Model_In : STRING(1..20);
+         Type_Tyre_In : STRING(1..20);
+         car_XML : Node_List;
+         Current_Node : Node;
+         Current_Team : STRING(1..7);
+         Current_FirstName : STRING(1..10);
+         Current_LastName : STRING(1..10);
+         --Car_Temp : CAR;
+         --Car_Current : CAR;
+         Engine_In : INTEGER;
+
+         function Get_Feature_Node(Node_In : NODE;
+                                   FeatureName_In : STRING) return NODE is
+            Child_Nodes_In : NODE_LIST;
+            Current_Node : NODE;
+         begin
+
+            Child_Nodes_In := Child_Nodes(Node_In);
+            for Index in 1..Length(Child_Nodes_In) loop
+               Current_Node := Item(Child_Nodes_In,Index-1);
+               if Node_Name(Current_Node) = FeatureName_In then
+                  return Current_Node;
+               end if;
+            end loop;
+
+            return null;
+         end Get_Feature_Node;
+
+      begin
+
+         --If there is a conf file, use it to auto-init;
+
+         -- if Document_In /= null then
+
+         car_XML := Get_Elements_By_Tag_Name(xml_file,"car");
+
+         Current_Node := Item(car_XML, 0);
+
+         car_XML := Child_Nodes(Current_Node);
+         MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
+         MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
+         GasTankCapacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         Engine_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
+         TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
+         GasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         --Mixture_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
+         --Model_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
+         --Type_Tyre_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
+         --Car_Temp := new CAR;
+         Mixture_In := "morbida";
+         Model_In := "michelin";
+         Type_Tyre_In := "rain";
+         --Racetrack_In(Index) := CheckpointSynch_Current;
+
+
+         -- end if;
 
 
 
@@ -387,7 +390,7 @@ package body Competitor is
                        MaxSpeed_In,
                        MaxAcceleration_In,
                        GasTankCapacity_In,
-                       Engine_In,
+                       "strong",--Engine_In,
                        TyreUsury_In,
                        GasolineLevel_In,
                        Mixture_In ,
@@ -432,21 +435,23 @@ package body Competitor is
 
          --If there is a conf file, use it to auto-init;
 
-         if Document_In /= null then
+         --if Document_In /= null then
 
-            driver_XML := Get_Elements_By_Tag_Name(Document_In,"driver");
-            Current_Node := Item(Racetrack_XML, 0);
-            driver_XML := Child_Nodes(Current_Node);
-            Team_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
-            FirstName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
-            LastName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
-            --Car_Temp := new CAR;
+         driver_XML := Get_Elements_By_Tag_Name(xml_file,"driver");
+         Current_Node := Item(driver_XML, 0);
+         driver_XML := Child_Nodes(Current_Node);
+         --Team_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
+         --FirstName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
+         --LastName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
+         --Car_Temp := new CAR;
+         Team_In := "Ferrari";
+         FirstName_In := "Fernando";
+         LastName_In := "Alonso";
+         --Racetrack_In(Index) := CheckpointSynch_Current;
+         --end loop;
 
-            Racetrack_In(Index) := CheckpointSynch_Current;
-            --end loop;
 
-
-         end if;
+         --end if;
 
          --lettura parametri, vel_in esclusa
          Configure_Driver(Car_In,
