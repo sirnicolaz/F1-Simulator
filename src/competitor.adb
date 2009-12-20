@@ -372,13 +372,13 @@ package body Competitor is
          Engine_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
          TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
          GasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
-         --Mixture_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
+         --Mixture_In := Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
          --Model_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
          --Type_Tyre_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
          --Car_Temp := new CAR;
-         Mixture_In := "morbida";
-         Model_In := "michelin";
-         Type_Tyre_In := "rain";
+         Mixture_In := "morbidaxxxxxxxxxxxxx";
+         Model_In := "michelinxxxxxxxxxxxx";
+         Type_Tyre_In := "rainxxxxxxxxxxxxxxxx";
          --Racetrack_In(Index) := CheckpointSynch_Current;
 
 
@@ -440,7 +440,7 @@ package body Competitor is
          driver_XML := Get_Elements_By_Tag_Name(xml_file,"driver");
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
-         --Team_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
+         --Team_In := Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
          --FirstName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
          --LastName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
          --Car_Temp := new CAR;
@@ -548,9 +548,9 @@ package body Competitor is
          PredictedTime := ActualTime + CrossingTime;
 
          loop
-            C_Checkpoint := Get_PreviousCheckpoint(carDriver.RaceIterator);--missing argument --
+            Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);--missing argument --
             PredictedTime := PredictedTime + MinRaceTime - MinSegTime * Float(Index);
-            C_Checkpoint.Set_ArrivalTime(id); --manca un parametro
+            C_Checkpoint.Set_ArrivalTime(id,PredictedTime); --manca un parametro
             Index := Index + 1;
             exit when Get_Position(carDriver.RaceIterator) = StartingPosition+1;
          end loop;
@@ -576,7 +576,7 @@ package body Competitor is
    ------ CALCOLO CROSSING TIME  -----
    -----------------------------------
    -----------------------------------
-   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : CIRCUIT.RACETRACK_POINT;
+   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathCollection_Index : INTEGER;--PathsCollection_Index : CIRCUIT.RACETRACK_POINT;
                                   F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT) return FLOAT is
       length_path : FLOAT; --lunghezza tratto
       size_path : INTEGER; -- molteplicità tratto
@@ -584,7 +584,7 @@ package body Competitor is
       grip_path : FLOAT; -- attrito
       difficulty_path : FLOAT; -- difficoltà del tratto
       tyre_usury : FLOAT; -- usura delle gomme
-      gasoline_level : INTEGER; -- livello di benzina
+      gasoline_level : FLOAT; -- livello di benzina
       vel_max_reale : FLOAT; --velocità massima raggiungibile
       vel_max : FLOAT;
       lc : FLOAT;

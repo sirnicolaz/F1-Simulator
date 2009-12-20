@@ -39,7 +39,7 @@ package Competitor is
 
    end record;
    type STRATEGY_CAR is record
-      pitstopGasolineLevel : INTEGER;
+      pitstopGasolineLevel : FLOAT;
       pitstopLaps : INTEGER;
       pitstopCondition : BOOLEAN; -- correggere il tipo
       trim : INTEGER; -- correggere il tipo
@@ -92,7 +92,7 @@ package Competitor is
    procedure Set_Usury(Car_In : in out CAR_DRIVER_ACCESS;
                        Usury_In : FLOAT);
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
-                          GasLevel_In : INTEGER);
+                          GasLevel_In : FLOAT);
    function Get_Usury(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Calculate_Status(infoLastSeg : in CAR_DRIVER_ACCESS) return BOOLEAN;
@@ -104,7 +104,7 @@ package Competitor is
    --la macchina non riesca più a girare nel caso il box non sia tempestivo
    --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
    -- almeno 2 direi.
-   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER );
+   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT );
    procedure Set_Vel_In(Competitor_In : in out CAR_DRIVER_ACCESS; PVel_In : in FLOAT);
    function Get_Vel_In(Competitor_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_Team(Competitor_In :CAR_DRIVER_ACCESS) return STRING;
