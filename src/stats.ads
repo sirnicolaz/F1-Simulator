@@ -1,8 +1,19 @@
+-- Per ora è insospesa l'implementazione della statistiche generiche, ovvero quelle destinate
+-- a contenere le classifice sui tempi e giri migliori.
 package Stats is
 
    type GENERIC_STATS is tagged private;
    --type COMPETITOR_STATS is new GENERIC_STATS with private;
    type GLOBAL_STATS is new GENERIC_STATS with private;
+
+   type INT_ARRAY is array(POSITIVE range <>) of INTEGER;
+   type INT_ARRAY_POINT is access INT_ARRAY;
+   type FLOAT_ARRAY is array(POSITIVE range <>) of FLOAT;
+   type FLOAT_ARRAY_POINT is access FLOAT_ARRAY;
+
+   type INT_ARRAY_LIST is private;
+   type FLOAT_ARRAY_LIST_NODE is private;
+
 
    type STATS_ROW is private;
    -- These functions is only for test purpose
@@ -52,21 +63,15 @@ package Stats is
    type SOCT_NODE is private;
    type SOCT_NODE_POINT is access SOCT_NODE;
 
-   type BESTSECTORS_TIME is array(INTEGER range <> ) of FLOAT;
-   type BESTSECTORS_TIME_POINT is access BESTSECTORS_TIME;
-
-   type BESTSECTORS_TIME_COMPETITORSID is array( INTEGER range <> ) of INTEGER;
-   type BESTSECTORS_TIME_COMPETITORSID_POINT is access BESTSECTORS_TIME_COMPETITORSID;
-
-   function Get_BestLapNum(StatsContainer : GENERIC_STATS ) return INTEGER;
-   function Get_BestLapTime(StatsContainer : GENERIC_STATS ) return FLOAT;
-   function Get_BestSectorsTime(StatsContainer : GENERIC_STATS ) return BESTSECTORS_TIME_POINT;
-   procedure Update_Stats_Lap( StatsContainer : in out GENERIC_STATS;
-                              BestLapNum_In : INTEGER;
-                              BestLapTime_In : FLOAT);
-   procedure Update_Stats_Sector( StatsContainer : in out GENERIC_STATS;
-                                 BestSectorNum_In : INTEGER;
-                                 BestSectorTime_In : FLOAT);
+   function Get_BestLapNum(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
+   function Get_BestLapTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT;
+   function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT_ARRAY;
+   --procedure Update_Stats_Lap( StatsContainer : in out GENERIC_STATS;
+   --                           BestLapNum_In : INTEGER;
+   --                          BestLapTime_In : FLOAT);
+   --procedure Update_Stats_Sector( StatsContainer : in out GENERIC_STATS;
+   --                              BestSectorNum_In : INTEGER;
+   --                              BestSectorTime_In : FLOAT);
 
 
 
@@ -111,10 +116,22 @@ package Stats is
 
 private
 
+   type INT_ARRAY_LIST is record
+      Previous : FLOAT_ARRAY_POINT;
+      Next : FLOAT_ARRAY_POINT;
+      This : FLOAT_ARRAY_POINT;
+   end record;
+
+   type FLOAT_ARRAY_LIST_NODE is record
+      Previous : access FLOAT_ARRAY_LIST_NODE;
+      This : FLOAT_ARRAY_POINT;
+      Index : INTEGER;
+   end record;
+
    type GENERIC_STATS is tagged record
-      BestLap_Num : INTEGER; -- Num of best time lap
-      BestLap_Time : FLOAT;
-      BestSectors_Time : BESTSECTORS_TIME_POINT;
+      BestLap_Num : INT_ARRAY_POINT; -- Num of best time laps during the competition (each index represents a time instant)
+      BestLap_Time : FLOAT_ARRAY_POINT; -- Time of best time laps during the competition (each index represents a time instant)
+      BestSectors_Time : FLOAT_ARRAY_LIST_NODE; --Times of best sectors time. each element in the list contains times in a time instant)
    end record;
 
    type SOCT_NODE is record
@@ -129,7 +146,7 @@ private
    type GLOBAL_STATS is new GENERIC_STATS with
       record
          BestLap_CompetitorId : INTEGER;
-         BestTimePerSector_CompetitorId : BESTSECTORS_TIME_COMPETITORSID_POINT;
+         BestTimePerSector_CompetitorId : INT_ARRAY_LIST;
          Statistics_Table : SOCT_NODE_POINT;
          Update_Interval : FLOAT;
       end record;

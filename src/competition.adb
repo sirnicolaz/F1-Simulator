@@ -66,6 +66,7 @@ package body Competition is
 
    -- Initialize Monitor System
 
+
    -- Method to set init the circuit
    procedure Configure_Circuit( ClassificRefreshRate_In : FLOAT;
                                CircuitName_In : STRING;
@@ -78,11 +79,14 @@ package body Competition is
    -- Procedure that sets needed information for the competition. These informations need to be
    -- setted before the competitors start to join
    procedure Configure_Ride( LapsQty_In : INTEGER;
-                             CompetitorsQty_In : INTEGER )
+                            CompetitorsQty_In : INTEGER;
+                            StatisticsRefreshFrequency : FLOAT)
    is
    begin
       Laps_Qty := LapsQty_In;
       JOIN_UTILS.Set_MaxCompetitors(CompetitorsQty_In);
+      MonitorSystem.Init_GlobalStats(StatisticsRefreshFrequency);
+      MonitorSystem.Set_CompetitorsQty(CompetitorsQty_In);
       Competitors := new COMPETITOR_LIST(1..CompetitorsQty_In);
       Ready := true;
    end Configure_Ride;
