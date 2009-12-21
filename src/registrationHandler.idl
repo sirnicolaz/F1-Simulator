@@ -1,0 +1,4 @@
+interface RegistrationHandler {
+  void Remote_Join (in string competitorDescriptor, in string address, out string radioAddress, out short compId, out string monitorSystemAddress);
+  boolean Remote_Ready (in short compId);
+};

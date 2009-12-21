@@ -1,0 +1,167 @@
+V "GNAT Lib v4.4"
+P SS ZX
+R nnnnnnnnnnnnnnnnnnnnnnvvnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnnnvnvnnnnnnnnnnnnnnnn
+
+U registrationhandler.impl%b  registrationhandler-impl.adb  41f04dee NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.command_line%s	a-comlin.adb		a-comlin.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W registrationhandler%s	registrationhandler.adb	registrationhandler.ali
+W registrationhandler.skel%s  registrationhandler-skel.adb  registrationhandler-skel.ali
+
+U registrationhandler.impl%s  registrationhandler-impl.ads  a7399367 EE OO PK
+W ada.exceptions%s	a-except.adb		a-except.ali
+W ada.finalization.list_controller%s  a-filico.adb  a-filico.ali
+W ada.tags%s		a-tags.adb		a-tags.ali
+W corba%s		corba.adb		corba.ali
+W portableserver%s	portableserver.adb	portableserver.ali
+W registrationhandler%s	registrationhandler.adb	registrationhandler.ali
+W system%s		system.ads		system.ali
+W system.finalization_implementation%s  s-finimp.adb  s-finimp.ali
+W system.finalization_root%s  s-finroo.adb	s-finroo.ali
+W system.soft_links%s	s-soflin.adb		s-soflin.ali
+W system.storage_elements%s  s-stoele.adb	s-stoele.ali
+
+D ada.ads		20070406091342 9c7dd3ea
+D a-charac.ads		20070912115821 506ce725
+D a-chlat1.ads		20070912115821 e9ee6d0a
+D a-comlin.ads		20090409232307 3b71d99c
+D a-except.ads		20090409232307 b54b55de
+D a-finali.ads		20090409232307 9eaacebd
+D a-filico.ads		20090409232307 9299732a
+D a-ioexce.ads		20070406091342 be0900a0
+D a-stream.ads		20090409232307 34aca5be
+D a-string.ads		20070406091342 87b4230b
+D a-strmap.ads		20090409232307 5253a637
+D a-strsup.ads		20090409232307 9dd84fea
+D a-strunb.ads		20090409232307 f0549c04
+D a-stwima.ads		20090409232307 0d039275
+D a-stwisu.ads		20090409232307 74300244
+D a-stwiun.ads		20090409232307 adf95c8d
+D a-tags.ads		20090409232307 bfa07446
+D a-textio.ads		20090409232307 fe8af46e
+D a-unccon.ads		20070406091342 51e09df2
+D a-uncdea.ads		20070406091342 dc667e6d
+D corba.ads		20091106234322 a230b8d7
+D corba-abstractbase.ads  20091106234322 bcaa1ca6
+D corba-context.ads	20091106234322 92ee4b15
+D corba-contextlist.ads	20091106234322 742f1a3a
+D corba-exceptionlist.ads  20091106234322 1e7f3caf
+D corba-forward.ads	20091106234322 4d83f663
+D corba-idl_sequences.ads  20091106234322 8e93ba71
+D corba-impl.ads	20091106234322 928eee70
+D corba-nvlist.ads	20091106234322 d286f45c
+D corba-object.ads	20091106234322 648565c5
+D corba-request.ads	20091106234322 0f3259d2
+D corba-sequences.ads	20091106234322 ceb9475e
+D corba-sequences-unbounded.ads  20091106234322 cc7e0677
+D corba-serverrequest.ads  20091106234322 ab081cc3
+D interfac.ads		20090409232307 a69cad5c
+D i-cstrea.ads		20090409232307 e1e064a9
+D polyorb.ads		20091106234320 e06b6eb2
+D polyorb-annotations.ads  20091106234321 19469752
+D polyorb-any.ads	20091106234321 ed712e6f
+D polyorb-any-exceptionlist.ads  20091106234323 313b6428
+D polyorb-any-nvlist.ads  20091106234323 7e26b2a0
+D polyorb-asynch_ev.ads	20091106234320 c6367e9d
+D polyorb-binding_data.ads  20091106234320 c3ff2756
+D polyorb-buffers.ads	20091106234321 8cd414d0
+D polyorb-components.ads  20091106234320 968ae926
+D polyorb-errors.ads	20091106234321 b246ae62
+D polyorb-jobs.ads	20091106234320 6b8c9b1a
+D polyorb-objects.ads	20091106234321 85f5eda6
+D polyorb-opaque.ads	20091106234320 536ddfc6
+D polyorb-opaque-chunk_pools.ads  20091106234320 c79a32d7
+D polyorb-qos.ads	20091106234320 da123a35
+D polyorb-references.ads  20091106234320 5a2d1c2c
+D polyorb-requests.ads	20091106234320 a3c6358a
+D polyorb-sequences.ads	20091106234321 f3a1f9a7
+D polyorb-sequences-unbounded.ads  20091106234320 ca0ccbf5
+D polyorb-servants.ads	20091106234320 81ee7436
+D polyorb-smart_pointers.ads  20091106234324 d720d466
+D polyorb-smart_pointers-controlled_entities.ads  20091106234320 40e6d862
+D polyorb-std.ads	20091106234321 58d75503
+D polyorb-task_info.ads	20091106234324 28a06006
+D polyorb-tasking.ads	20091106234321 9de59f65
+D polyorb-tasking-condition_variables.ads  20091106234321 52a276ca
+D polyorb-tasking-mutexes.ads  20091106234320 d43c248d
+D polyorb-tasking-threads.ads  20091106234321 0c7266cd
+D polyorb-transport.ads	20091106234321 337632a6
+D polyorb-types.ads	20091106234323 290f100c
+D polyorb-utils.ads	20091106234321 6d0ce22a
+D polyorb-utils-chained_lists.ads  20091106234320 673dea73
+D polyorb-utils-ilists.ads  20091106234321 b0e1fb38
+D polyorb-utils-simple_flags.ads  20091106234323 2c9d9263
+D polyorb-utils-strings.ads  20091106234321 ccdff46d
+D portableserver.ads	20091106234323 7da40fea
+D registrationhandler.ads  20091220153930 036f3d4c
+D registrationhandler-impl.ads  20091220153902 7bc21916
+D registrationhandler-impl.adb  20091220153943 a17aeb40
+D registrationhandler-skel.ads  20091220153930 5eb3924a
+D system.ads		20091005122523 15e10948
+D s-crtl.ads		20090409232307 997234a1
+D s-exctab.ads		20090409232307 5c1c61ae
+D s-ficobl.ads		20090409232307 8bb681e5
+D s-finimp.ads		20090409232307 9449f4cb
+D s-finroo.ads		20090409232307 1408f9d1
+D s-parame.ads		20090409232307 f32e56e9
+D s-secsta.ads		20090409232307 7bae3621
+D s-soflin.ads		20090409232307 0c6fd39d
+D s-stache.ads		20090409232307 257b3be8
+D s-stalib.ads		20090409232307 52b793d5
+D s-stoele.ads		20090409232307 ed966df3
+D s-stoele.adb		20090409232307 e9998c78
+D s-stratt.ads		20090409232307 fef7c1da
+D s-traent.ads		20090409232307 bd5f2753
+D s-unstyp.ads		20090409232307 c0f9fae5
+D s-wchcon.ads		20090409232307 ab028799
+X 1 ada.ads
+16K9*Ada 19e8 75|1r6 2r6
+X 4 a-comlin.ads
+36K13*Command_Line 134e21 75|2w10
+X 18 a-textio.ads
+48K13*Text_IO 506e16 75|1w10
+X 21 corba.ads
+51K9*CORBA 1030e10 74|1w6 11r47 12r33 13r43 14r33 15r47 19r37 19r58 75|11r47
+. 12r33 13r43 14r33 15r47 25r37 25r58
+62I12*Short<35|42I9> 74|14r39 19r43 75|14r39 25r43
+74B12*Boolean{boolean} 74|19r64 75|25r64
+76+9*String<66|60+12> 74|11r53 12r39 13r49 15r53 75|11r53 12r39 13r49 15r53
+X 28 corba-impl.ads
+63V13*To_PolyORB_Servant{56|51P9}
+X 35 interfac.ads
+42I9*Integer_16<short_integer>
+X 56 polyorb-servants.ads
+51P9*Servant_Access(50R9)
+X 57 polyorb-smart_pointers.ads
+50U14*Finalize
+88U14*Entity_Lock<61p14>
+89U14*Entity_Unlock<62p14>
+X 58 polyorb-smart_pointers-controlled_entities.ads
+46U14*Initialize
+47V13*Is_Controlled{boolean}<57|47p13>
+X 72 portableserver.ads
+56K9*PortableServer 312e19 74|2w6 6r23
+92H9*Servant_Base<79R9> 298e57 74|6r38
+99U14*Invoke<82p14>
+292V13 Execute_Servant<45|45R9><28|58p13>
+X 73 registrationhandler.ads
+16K9*RegistrationHandler 53e24 74|4r9 21r5 75|4r6 5r23 7r14 33r5
+X 74 registrationhandler-impl.ads
+4K29*Impl 73|16k9 74|21l25 21e29 75|7b34 33l25 33t29
+6R9*Object<72|92R9> 28|63p13 57|50p14 88P14 89P14 58|46p14 47P13 72|99P14
+. 292P13 74|6e67 7r30 9p14 10r34 17p13 18r34 75|10r34 24r34
+7P9*Object_Acc(6R9)
+9U14*Remote_Join 10^20 11>20 12>20 13<20 14>20 15<20 75|9b14 21l8 21t19
+10p20 Self(6R9) 75|10b20 17r28
+11+20 CompetitorDescriptor_In{21|76+9} 75|11b20
+12+20 Address_In{21|76+9} 75|12b20
+13+20 RadioAddress_out{21|76+9} 75|13b20
+14i20 CompId_out{21|62I12} 75|14b20
+15+20 MonitorSystemAddress{21|76+9} 75|15b20
+17V13*Remote_Ready{21|74E12} 18^20 19>20 75|23b13 31l8 31t20
+18p20 Self(6R9) 75|24b20 27r28
+19i20 CompetitorId_In{21|62I12} 75|25b20
+X 76 registrationhandler-skel.ads
+12K29*Skel 75|4w26 5r43 76|16e29
+

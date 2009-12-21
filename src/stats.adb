@@ -255,52 +255,71 @@ package body Stats is
 
    -- TODO: Remove and Delete this, previous, next node;
 
-   function Get_BestLapNum(StatsContainer : GENERIC_STATS ) return INTEGER is
+   function Get_BestLapNum(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER is
    begin
-      return StatsContainer.BestLap_Num;
+      if(StatsContainer.BestLap_Num'LENGTH <= RequestedIndex) then
+         return StatsContainer.BestLap_Num(RequestedIndex);
+      end if;
+      return -1;
    end Get_BestLapNum;
 
-   function Get_BestLapTime(StatsContainer : GENERIC_STATS ) return FLOAT is
+   function Get_BestLapTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT is
    begin
-      return StatsContainer.BestLap_Time;
+      if(StatsContainer.BestLap_Time'LENGTH <= RequestedIndex) then
+         return StatsContainer.BestLap_Time(RequestedIndex);
+      end if;
+      return -1.0;
    end Get_BestLapTime;
 
-   function Get_BestSectorsTime(StatsContainer : GENERIC_STATS ) return BESTSECTORS_TIME_POINT is
+   function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT_ARRAY is
+      Current_BST : FLOAT_ARRAY_LIST_NODE;
+      Null_Array : FLOAT_ARRAY := (1 => -1.0);
    begin
-      return StatsContainer.BestSectors_Time;
+      if(StatsContainer.BestSectors_Time.Index <= RequestedIndex) then
+         Current_BST := StatsContainer.BestSectors_Time;
+         while Current_BST.Index = RequestedIndex loop
+            exit when Current_BST.Previous = null;
+            Current_BST := Current_BST.Previous.all;
+         end loop;
+      end if;
+      if(Current_BST.Index = RequestedIndex) then
+         return Current_BST.This.all;
+      else
+         return Null_Array;
+      end if;
    end Get_BestSectorsTime;
 
-   procedure Update_Stats_Lap( StatsContainer : in out GENERIC_STATS;
-                              BestLapNum_In : INTEGER;
-                              BestLapTime_In : FLOAT) is
-   begin
-      StatsContainer.BestLap_Num := BestLapNum_In;
-      StatsContainer.BestLap_Time := BestLapTime_In;
-   end Update_Stats_Lap;
+   --procedure Update_Stats_Lap( StatsContainer : in out GENERIC_STATS;
+   --                           BestLapNum_In : INTEGER;
+   --                           BestLapTime_In : FLOAT) is
+   --begin
+   --   StatsContainer.BestLap_Num := BestLapNum_In;
+   --   StatsContainer.BestLap_Time := BestLapTime_In;
+   --end Update_Stats_Lap;
 
-   procedure Update_Stats_Sector( StatsContainer : in out GENERIC_STATS;
-                                 BestSectorNum_In : INTEGER;
-                                 BestSectorTime_In : FLOAT) is
-   begin
-      StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
-   end Update_Stats_Sector;
+   --procedure Update_Stats_Sector( StatsContainer : in out GENERIC_STATS;
+   --                              BestSectorNum_In : INTEGER;
+   --                              BestSectorTime_In : FLOAT) is
+   --begin
+   --   StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
+   --end Update_Stats_Sector;
 
    protected body SYNCH_GLOBAL_STATS is
 
       procedure Init_GlobalStats( Update_Interval_in : FLOAT ) is
       begin
-         GlobStats.BestLap_Num := 0;
-         GlobStats.BestLap_Time := 0.0;
+         --GlobStats.BestLap_Num := 0;
+         --GlobStats.BestLap_Time := 0.0;
          -- Temp
-         GlobStats.BestSectors_Time := new BESTSECTORS_TIME(0..2);
-         GlobStats.BestSectors_Time(0) := 0.0;
-         GlobStats.BestSectors_Time(1) := 0.0;
-         GlobStats.BestSectors_Time(2) := 0.0;
+         --GlobStats.BestSectors_Time := new BESTSECTORS_TIME(0..2);
+         --GlobStats.BestSectors_Time(0) := 0.0;
+         --GlobStats.BestSectors_Time(1) := 0.0;
+         --GlobStats.BestSectors_Time(2) := 0.0;
          GlobStats.BestLap_CompetitorId := 0;
-         GlobStats.BestTimePerSector_CompetitorId := new BESTSECTORS_TIME_COMPETITORSID(0..2);
-         GlobStats.BestTimePerSector_CompetitorId(0) := 0;
-         GlobStats.BestTimePerSector_CompetitorId(1) := 0;
-         GlobStats.BestTimePerSector_CompetitorId(2) := 0;
+         --GlobStats.BestTimePerSector_CompetitorId := new BESTSECTORS_TIME_COMPETITORSID(0..2);
+         --GlobStats.BestTimePerSector_CompetitorId(0) := 0;
+         --GlobStats.BestTimePerSector_CompetitorId(1) := 0;
+         --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
          -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
       end Init_GlobalStats;

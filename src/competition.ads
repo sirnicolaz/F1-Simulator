@@ -4,6 +4,9 @@ use Circuit;
 --with Competitor;
 --use Competitor;
 
+with Stats;
+use Stats;
+
 package Competition is
 
    --FIELDS
@@ -12,6 +15,7 @@ package Competition is
    Laps_Qty : INTEGER := 0;
    Competitors_Qty : INTEGER := 0;
    JoinedCompetitors : INTEGER := 0;
+   MonitorSystem : access SYNCH_GLOBAL_STATS := new SYNCH_GLOBAL_STATS;
 
    procedure Configure_Circuit( ClassificRefreshRate_In : FLOAT;
                                CircuitName_In : STRING;
@@ -20,7 +24,8 @@ package Competition is
 
    procedure Configure_Ride(
                             LapsQty_In : INTEGER;
-                            CompetitorsQty_In : INTEGER );
+                            CompetitorsQty_In : INTEGER;
+                            StatisticsRefreshFrequency : FLOAT);
    -- Initialize the competitor
    function Join(CompetitorFileDescriptor_In : STRING) return INTEGER;
    -- Box call this method to signal they are ready to start
