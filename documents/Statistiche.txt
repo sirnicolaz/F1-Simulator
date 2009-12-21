@@ -1,0 +1,22 @@
+Le statistiche si suddividono in:
+- Statistiche concorrente
+ 	Sono le statistiche legate al singolo concorrente e vengono aggiornate dal concorrente stesso ad ogni checkpoint. Contengono informazioni relative
+	a livello benzina, usura gomme...e l'istante di attraversamento del checkpoint.
+- Statistiche globali
+	Offrono una visione di insieme della gara e vengono aggiornate a intervalli prestabiliti da tutti i concorrenti contemporaneamente.
+	Grazie a queste è possibile ottenere dati aggiornati costantemente riguardo alle classifiche. Queste statistiche sono una lista di tabelle,
+	ognuna contenenti le informazioni dei singoli concorrenti inerenti ad un dato istante temporale. La tabella "300" indicherà in che posizione
+	sono i concorrenti all'istante 300.
+
+E' possibile ottenere i dati del singolo concorrente temporalmente correlati ai dati globali solo se si parte da un dato globale. Infatti se
+ una classifica nelle statistiche globale risulta pronta per un dato istante di tempo, implica che fino a quell'istante avremo sicuramente i dati
+dei singoli concorrente (questo perchè un concorrente scrive nella tabella globale di un dato istante solo se quell'istante è almeno passato).
+Se volessimo invece ottenere dati globali legati ad una riga della tabella del singolo utente non sarebbe sempre possibile senza attesa, perchè 
+le tabelle delle classifiche vengono rese disponibili solo quando completate con le righe di ogni concorrente. Quindi se un concorrente ha informazioni 
+sulla tabella concorrente inerenti ad un istante t, non è automatico che tutti gli utenti abbiano l'informazione legata a quell'istante e abbiano quindi
+scritto sulla tabella corrispettiva. 
+Questa considerazione è importante nel momento in cui bisogna implementare i monitor, per evitare che vi possa essere un'attesa lunghissima.
+E' utile in questo caso, per esempio, sapere che il monitor della TV andrebbe implementato facendo in modo che ottenga informazioni sui singoli
+concorrenti solo una volta ottenute informazioni sulla classifica, per assicurarsi di non dove attendere inutilmente dati che potrebbero impiegare 
+molto ad arrivare.
+
