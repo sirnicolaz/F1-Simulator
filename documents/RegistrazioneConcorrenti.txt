@@ -3,8 +3,8 @@ I vari competitor, per attraversare la pista, otterrano un RaceIterator, con cui
 Quindi, una volta iscritto, il competitor dovrà ottenere tale puntatore. Il puntatore verrà assegnato una volta iniziata la gara (il circuito potrebbe
 essere alterato in fase di configurazione).
 La competition è suddivisa in due parti:
-- la prima svolgerà il ruolo di inizializazione dei competitor e della race track. 
-- la seconda attenderà i richieste dalla rete.
+- la prima svolgerà il ruolo di inizializazione dei competitor e della race track. -> package Competition
+- la seconda attenderà i richieste dalla rete.  
 
 In questo modo sarà possibile inizializzare una gara sia localmente che da remoto.
 La competition ottiene informazioni riguardo al competitor. Sarà lei che successivamente creerà il competitor e si occuperà di avviarlo (il competitor è un task);
@@ -50,7 +50,27 @@ L'inizializzazione della gara avviene così:
 	-la procedura ok aggiorna un contatore che tiene conto del numero dei competitor che hanno dato l'ok. arrivato al numero dei competitor iscritti, la gara potrà avere inizio.
 	- l'invocazione di un metodo cancel decrementa di uno il numero di competitor iscritti e anche questo metodo può provocare l'inizio della gara.
 
+RegistrationHandler
+E' il gestore delle richieste remote e locali per l'inizializzazione della competizione.
+Dovrà predisporre i seguenti servizi:
+	- Raccogliere la richiesta di iscrizione proveniente dai box
+		-> Ricevere una stringa xml che andrà salvato in un file; inizializzare la radio per il competitor usando anche l'Ip e la porta del richiedente;
+		   
+
 Precondizioni per la corretta inizializzazione:
 	- I box (se remoti) devono essere già in ascolto e pronti a raccogliere richieste -> rispettata poichè il box si mette in ascolto prima di invocare la Join
 	- il MonitorSystem deve essere disponibile nel momento in cui i box iniziano a richiedere informazioni -> il monitorSystem verrà inizializzato in fase di inizializzazione della Competition
 	- la competitorRadio deve essere già disponibile quando inizia la gara -> rispettata poichè la radio viene allocata alla richiesta del box. Quando il box dà l'ok, significa che ha già effettuato un test di connessione con la radio. la gara inizia quando sono stati dati tutti gli ok.
+
+Gestore delle registrazioni
+-Questa componente si occupa di accogliere le richieste di registrazione in locale o remoto, inoltrarle alla componente Competition e tornarle al richiedente.
+Ciò che va fatto per ogni richiesta è:
+	- Ricevere la stringa xml del descrittore;
+	- Memorizzare l'indirizzo ip e porta (se ce ne sono) del richiedente;
+	- Inizializzare una radio che permetta al box e al concorrente di rimanere in ascolto
+	- Assicurarsi che la radio sia connessa con il box
+	- Effettuare una Richiesta di Join alla competition, inoltrando un riferimento alla radio e la stringa del file XML descrittore;
+	- Attendere di ottenere l'id del competitor e un riferimento (o porta di ascolto) del MonitorSystem
+	- Tornare i dati al richiedente;
+- Attendere l'ok dei box e riferire alla Competition
+

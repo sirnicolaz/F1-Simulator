@@ -1,0 +1,62 @@
+La struttura ad alto livello dei box è stata descritta nell'analisi dei requisiti.
+A basso livello, i box saranno suddivisi in due macrocomponenti:
+- Una parte passiva, destinata a calcolare la strategia quando richiesta e a trasmetterla alla radio del concorrente
+- Una task che interroghi continuamente il monitor della gara per ottenere informazioni aggiornate sullo stato del concorrente.
+
+L'entità passiva si attiva effettua il calcolo della strategia quando:
+	- il task ha ottenuto delle informazioni relative allo stato del concorrente. In questo caso il task stesso informa l'entità passiva di iniziare
+	  il calcolo.
+
+
+Due task e una risorsa protetta:
+	-La risorsa protetta è destinata a contere una lista di informazioni sullo stato del concorrente in gara. Ha una flag "updated" controllata
+	 dal task che effettua i calcoli. Le informazioni possono essere aggiornate contemporaneamente dalla Radio (nel caso il concorrente abbia effettuato
+	 una richiesta di calcolo immediato) oppure dal MonitorBox. Ogni qualvolta viene effettuato un aggiornamento, è necessario inviare anche il TimeStamp
+	 del momento a cui quell'aggiornamente si riferisce. Le informazioni sono così memorizzate per timestamp crescente e vengono analizzate dal box secondo quell'ordine.
+
+	- Un task destinato ad effettuare calcoli di startegia quando ci sono informazioni su cui calcolare.
+	  rimane in wait sopra la risorsa protetta. Quando la guardia si apre, viengono prelevate tutte le informazioni presenti. Le informazioni, come già detto,
+	 sono in ordine di timestamp. I casi in cui il task deve inviare i risultati sono i seguenti:
+		- Sono stati effettuati i calcoli su tutto un giro. Nel momento in cui l'ultimo "pacchetto" di informazioni è stato calcolato, i risultati
+		  vengono inviati alla radio del concorrente.
+		- Arriva una richiesta di emergenza; in questo caso vengono effettuati i calcoli solo sulla richiesta di emergenza e inviati subito al concorrente.
+
+	- Un task destinato ad interrogare il MonitorSystem del server con la gara, chiedendo le informazioni relative al concorrente e alla situazione di gara.
+	  Queste informazioni vengon "impacchettate" e salvate nella risorsa protetta. 
+
+Possibili anomalie:
+	- le anomalie si potrebbero verificare in caso radio o monitorBox abbiano dei ritardi. analizziamo la situazione e vediamo se la possibilità sussiste o no:
+		- Premettiamo che le informazioni del MonitorBox non possono che 
+		          essere precedenti (in termini di TimeStamp)
+			  a quelle della richiesta di emergenza. Questo deriva da alcune considerazioni:
+			  l'unico caso in cui viene mandata una richiesta di emergenza è quando il concorrente si
+			  ferma al box e non trova una strategia oppure ci sono stati eventi imprevisti nella gara. 
+                          Le informazi inviate dal concorrente in questo
+			  caso sono le ultime disponibili perchè altre non sono state mandate al MonitorBox. Quindi il MonitorBox non può avere info più 
+			  aggiornate. Quindi l'unica cosa che può accadere è che per qualche motivo il BoxMonitor abbia avuto problemi nel salvare i dati.
+			  In questo caso si ha un'ANOMALIA TECNICA, ovvero data da problemi fisici del sistema.
+			  Assumendo che la strategia venga calcolata ogni giro, cioè con le info di ogni 3 settori (per esempio), le tre posizioni della lista
+			  relativa all'ultimo giro dovrebbero contenere le informazioni del concorrente prima che possa avvenire il calcolo. Se per qualche 
+			  anomalia queste 3 posizioni non si popolano di dati, scattera il timeout nel server. A quel punto il concorrente invierà tali 
+			  informazioni al Box per ottenere la startegia aggiornata (ATTENZIONE: verranno (re)inviate le info relative al penultimo
+			  giro, perchè sono quelle che attende il box). Verrà così popolata la posizione di emergenza della lista delle informazioni.
+			  Nel momento in cui questa posizione viene valorizzata di informazioni, il task gestore della strategia prenderà in considerazione
+			  quelle e scarterà quelle vecchie nel caso nel frattempo siano arrivate, ricominciando a valutare la lista da dopo la posizione con le 
+			  info di emergenza. Seguendo questo protocollo, le anomalie in questo caso vengono gestite correttamente. 
+			  Un altro tipo di anomalia è invece l'ANOMALIA INTERNA, ovvero un'anomalia legata solamente allo svolgersi della gara. Per esempio
+			  un cambio repentino di tempo atmosferico. In questo caso il concorrente necessita di sapere subito una nuova strategia, per esempio
+			  un rientro ai box per cambio gomme. Quindi, assumendo che non ci siano stati problemi tecnici, il concorrente si ferma al box e tramite
+			  la radio fa una richiesta sincrona al box per ottenere i dati del giro attuale (ATTENZIONE: il box dovrà effettuare il calcolo
+			  considerando che è una strategia da applicarsi subito). Al giro successivo il concorrente non dovrà prendere la strategia.
+			  Se invece per una coincidenza si dovessero verificare entrambe le anomalie, le cose si fanno
+			  leggermente più difficili. E' necessario quindi che il concorrente invii la richiesta di emergenza duplice (usando comunque una sola
+			  chiamata) e inviando sia i dati del giro precedente che di quello attuale. Dopodichè tutto procede come prima.
+
+
+L'entità protetta rappresenta, per ogni posizione, l'informazione relativa ad un dato Time stamp. Ogni posizione dovrà contenere informazioni riguardo a:
+	- Classifica
+	- Livello di benzina
+	- Usura gomme
+	- Velocità media (in quell'intervallo)
+	- Consumo medio (in quell'intervallo)
+
