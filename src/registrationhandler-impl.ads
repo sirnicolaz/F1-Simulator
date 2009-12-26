@@ -11,7 +11,7 @@ package RegistrationHandler.Impl is
    type Object_Acc is access Object;
 
    -- Il monitor di sistema è temporaneamente solo un riferimento all'oggetto
-   MonitorSystem :
+   --MonitorSystem :
 
    procedure Remote_Join (
                    Self : access Object;

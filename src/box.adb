@@ -112,7 +112,7 @@ package body Box is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
       begin
          -- If infos related to a time interval are already saved, do nothing.
-         if(Updates_Last.Previous.This.Time >= Competition_Infos_In.Time) then
+         if(Updates_Last.Previous = null) or (Updates_Last.Previous.This.Time >= Competition_Infos_In.Time) then
             Updates_Last.This := Competition_Infos_In;
             Set_NextNode(Updates_Last,New_Update);
             Updates_Last := New_Update;
