@@ -38,11 +38,14 @@ procedure Main is
    TestComputer : COMPUTER_POINT := new COMPUTER;
 
    task type Consumer is
-      entry Init(MyComputer_In : COMPUTER_POINT; Id_In : INTEGER);
+      entry Init(MyComputer_In : COMPUTER_POINT; Id_In : INTEGER; DelayTime_In : Duration);
    end Consumer;
 
    TestConsumer1 : Consumer;
    TestConsumer2 : Consumer;
+   TestConsumer3 : Consumer;
+   TestConsumer4 : Consumer;
+   TestConsumer5 : Consumer;
 
    task body Consumer is
       MyComputer : COMPUTER_POINT;
@@ -50,10 +53,12 @@ procedure Main is
       Stats : COMP_STATS;
       Lap : INTEGER := 1;
       Sector : INTEGER := 1;
+      DelayTime : Duration;
    begin
-      accept Init(MyComputer_In : COMPUTER_POINT; Id_In : INTEGER) do
+      accept Init(MyComputer_In : COMPUTER_POINT; Id_In : INTEGER; DelayTime_In : Duration) do
          MyComputer := MyComputer_In;
          Id := Id_In;
+         DelayTime := DelayTime_In;
       end Init;
       Put_Line("Computer started in consumer" & INTEGER'IMAGE(Id));
       while true loop
@@ -67,7 +72,7 @@ procedure Main is
          end if;
 
          Put_Line("ID: " & INTEGER'IMAGE(Id) & ", Time in lap " & INTEGER'IMAGE(Get_Lap(Stats)) & ", sector " & INTEGER'IMAGE(Get_Sector(Stats)) & " is " & FLOAT'IMAGE(Get_Time(Stats)));
-         delay 0.5;
+         delay DelayTime;
       end loop;
 
    end Consumer;
@@ -193,8 +198,11 @@ begin
 
    --Onboard computer test
    TestComputer.Init_Computer(1);
-   TestConsumer1.Init(TestComputer,1);
-   TestConsumer2.Init(TestComputer,2);
+   TestConsumer1.Init(TestComputer,1,0.5);
+   TestConsumer2.Init(TestComputer,2,0.2);
+   TestConsumer3.Init(TestComputer,3,1.0);
+   TestConsumer4.Init(TestComputer,4,0.5);
+   TestConsumer5.Init(TestComputer,5,0.8);
    Put_Line("Consumer started");
    TestProducer.Init(TestComputer);
    Put_Line("Producer started");

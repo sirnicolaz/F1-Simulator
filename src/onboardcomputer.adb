@@ -70,7 +70,7 @@ package body OnBoardComputer is
    procedure Reset_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT) is
    begin
       Info_Node_Out.Next := Null;
-      Info_Node_Out.Previous := NUll;
+      Info_Node_Out.Previous := Null;
       Info_Node_Out.Value.Checkpoint := -1;
       Info_Node_Out.Value.Sector := -1;
       Info_Node_Out.Value.Lap := -1;
@@ -78,6 +78,16 @@ package body OnBoardComputer is
       Info_Node_Out.Value.FirstCheckInSect := TRUE; -- Se prima non c'è nulla allora è il primo del settore
       Info_Node_Out.Index := -1;
    end Reset_Node;
+
+   function Reset_Data(Data : COMP_STATS) return COMP_STATS is
+      Data_Copy : COMP_STATS;
+   begin
+      Data_Copy := Data;
+      Data_Copy.LastCheckInSect := false;
+      Data_Copy.FirstCheckInSect := true;
+      return Data_Copy;
+   end Reset_Data;
+
 
    procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS ) is
    begin
@@ -164,7 +174,7 @@ package body OnBoardComputer is
       procedure Add_Data(Data : COMP_STATS) is
          NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
       begin
-         Set_Node(Last_Node,Data);
+         Set_Node(Last_Node,Reset_Data(Data));
          Reset_Node(NewNode);
          Set_NextNode(Last_Node,NewNode);
          Last_Node := NewNode;
@@ -177,10 +187,9 @@ package body OnBoardComputer is
 
          procedure Get_LastCheckPoint(Found : out BOOLEAN) is
          begin
-            Found := TRUE;
+            Found := true;
             if (Iterator.Value.LastCheckInSect = true) then
                CompStats := Iterator.Value;
-               Found := True;
             else
                loop
                   if (Iterator.Next = null) then
