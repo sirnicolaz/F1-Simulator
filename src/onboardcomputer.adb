@@ -71,6 +71,11 @@ package body OnBoardComputer is
    begin
       Info_Node_Out.Next := Null;
       Info_Node_Out.Previous := NUll;
+      Info_Node_Out.Value.Checkpoint := -1;
+      Info_Node_Out.Value.Sector := -1;
+      Info_Node_Out.Value.Lap := -1;
+      Info_Node_Out.Value.LastCheckInSect := FALSE; -- Se è l'ultimo del settore o meno dipende da quello che verrà dopo
+      Info_Node_Out.Value.FirstCheckInSect := TRUE; -- Se prima non c'è nulla allora è il primo del settore
       Info_Node_Out.Index := -1;
    end Reset_Node;
 
@@ -81,7 +86,7 @@ package body OnBoardComputer is
          Info_Node_Out.Index := 1;
       end if;
       if (Info_Node_Out.Previous /= null) then
-         if (Info_Node_Out.Previous.Value.Sector /= 0) then
+         if (Info_Node_Out.Previous.Value.Sector /= -1) then
             if (Info_Node_Out.Previous.Value.Lap < Info_Node_Out.Value.Lap) or (Info_Node_Out.Previous.Value.Sector < Info_Node_Out.Value.Sector) then
                Info_Node_Out.Previous.Value.LastCheckInSect := true;
                Info_Node_Out.Value.FirstCheckInSect := true;
@@ -92,7 +97,7 @@ package body OnBoardComputer is
          end if;
       end if;
       if (Info_Node_Out.Next /= null) then
-         if (Info_Node_Out.Next.Value.Sector /= 0) then
+         if (Info_Node_Out.Next.Value.Sector /= -1) then
             if (Info_Node_Out.Next.Value.Lap > Info_Node_Out.Value.Lap) or (Info_Node_Out.Next.Value.Sector > Info_Node_Out.Value.Sector) then
                Info_Node_Out.Next.Value.FirstCheckInSect := true;
                Info_Node_Out.Value.LastCheckInSect := true;
@@ -112,7 +117,7 @@ package body OnBoardComputer is
          Info_Node_Out.Index := Info_Node_Out.Previous.Index + 1;
       end if;
 
-      if(Info_Node_Out.Previous.Value.Sector /= 0) then
+      if(Info_Node_Out.Previous.Value.Sector /= -1) then
          if (Info_Node_Out.Previous.Value.Lap < Info_Node_Out.Value.Lap) or (Info_Node_Out.Previous.Value.Sector < Info_Node_Out.Value.Sector) then
             Info_Node_Out.Previous.Value.LastCheckInSect := true;
             Info_Node_Out.Value.FirstCheckInSect := true;
@@ -129,7 +134,7 @@ package body OnBoardComputer is
          Info_Node_Out.Next := Value;
          Info_Node_Out.Next.Previous := Info_Node_Out;
          Info_Node_Out.Next.Index := Info_Node_Out.Index + 1;
-         if(Info_Node_Out.Next.Value.Sector /= 0) then
+         if(Info_Node_Out.Next.Value.Sector /= -1) then
             if (Info_Node_Out.Next.Value.Lap > Info_Node_Out.Value.Lap) or (Info_Node_Out.Next.Value.Sector > Info_Node_Out.Value.Sector) then
                Info_Node_Out.Next.Value.FirstCheckInSect := true;
                Info_Node_Out.Value.LastCheckInSect := true;
@@ -172,18 +177,26 @@ package body OnBoardComputer is
 
          procedure Get_LastCheckPoint(Found : out BOOLEAN) is
          begin
+            Found := TRUE;
             if (Iterator.Value.LastCheckInSect = true) then
                CompStats := Iterator.Value;
                Found := True;
             else
-               while (Iterator.Value.LastCheckInSect /= true) loop
+               loop
                   if (Iterator.Next = null) then
                      Found := false;
+                     exit;
                   end if;
                   Iterator := Iterator.Next;
+                  if (Iterator.Value.Sector > Iterator.Previous.Value.Sector) then
+                     Found := false;
+                     exit;
+                  end if;
+                  exit when (Iterator.Value.LastCheckInSect = true);
                end loop;
-               CompStats := Iterator.Value;
-               Found := True;
+               if(Found /= false) then
+                  CompStats := Iterator.Value;
+               end if;
             end if;
          end Get_LastCheckPoint;
 
