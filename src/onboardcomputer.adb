@@ -181,7 +181,7 @@ package body OnBoardComputer is
          Updated := true;
       end Add_Data;
 
-      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS) when true is
+      entry Get_StatsBySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS) when true is
 
          Iterator : COMP_STATS_NODE_POINT;
 
@@ -212,6 +212,7 @@ package body OnBoardComputer is
          StatFound : BOOLEAN;
 
       begin
+         Put_Line("Competitor " & INTEGER'IMAGE(ReqID));
          Iterator := Current_Node;
          if (Iterator.Index = -1) then
             Updated := false;
@@ -284,7 +285,6 @@ package body OnBoardComputer is
          Iterator := Current_Node;
 
          if(Current_Node.Index = -1) then
-
             Updated := false;
             requeue Wait_ByCheck;
          end if;
@@ -312,8 +312,9 @@ package body OnBoardComputer is
 
 
 
-      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
+      entry Wait_BySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
       begin
+         Put_Line("Wait! " & INTEGER'IMAGE(ReqID));
          requeue Get_StatsBySect;
       end Wait_BySect;
 

@@ -62,7 +62,8 @@ procedure Main is
       end Init;
       Put_Line("Computer started in consumer" & INTEGER'IMAGE(Id));
       while true loop
-         MyComputer.Get_StatsBySect(Sector    => Sector,
+         MyComputer.Get_StatsBySect(ReqID => Id,
+                                    Sector    => Sector,
                                     Lap       => Lap,
                                     CompStats => Stats);
          Sector := Sector + 1;
@@ -116,7 +117,7 @@ procedure Main is
          end if;
          Time := Time + 0.2;
          Put_Line("Data added by producer: Check " & INTEGER'IMAGE(Get_Checkpoint(Stats)) & ", Sector " & INTEGER'IMAGE(Get_Sector(Stats)) & " Lap " & INTEGER'IMAGE(Get_Lap(Stats)) & ", Time " & FLOAT'IMAGE(Get_Time(Stats)));
-         delay 0.7;
+           delay 0.2;
       end loop;
    end Producer;
 
@@ -198,11 +199,11 @@ begin
 
    --Onboard computer test
    TestComputer.Init_Computer(1);
-   TestConsumer1.Init(TestComputer,1,0.5);
-   TestConsumer2.Init(TestComputer,2,0.2);
-   TestConsumer3.Init(TestComputer,3,1.0);
-   TestConsumer4.Init(TestComputer,4,0.5);
-   TestConsumer5.Init(TestComputer,5,0.8);
+   TestConsumer1.Init(TestComputer,1,0.7);
+   TestConsumer2.Init(TestComputer,2,0.7);
+   TestConsumer3.Init(TestComputer,3,0.7);
+   TestConsumer4.Init(TestComputer,4,0.7);
+   TestConsumer5.Init(TestComputer,5,0.7);
    Put_Line("Consumer started");
    TestProducer.Init(TestComputer);
    Put_Line("Producer started");

@@ -24,10 +24,10 @@ package OnBoardComputer is
    protected type COMPUTER is
       procedure Init_Computer(CompetitorId_In : INTEGER);
       procedure Add_Data(Data : COMP_STATS);
-      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
+      entry Get_StatsBySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
       entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
       entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
-      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
+      entry Wait_BySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
    private
       Competitor_Id : INTEGER;
       Current_Node : COMP_STATS_NODE_POINT;
