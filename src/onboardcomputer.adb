@@ -181,6 +181,11 @@ package body OnBoardComputer is
          Updated := true;
       end Add_Data;
 
+      function Get_Id return INTEGER is
+      begin
+         return Competitor_Id;
+      end Get_Id;
+
       entry Get_StatsBySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS) when true is
 
          Iterator : COMP_STATS_NODE_POINT;

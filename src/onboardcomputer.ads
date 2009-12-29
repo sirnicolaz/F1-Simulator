@@ -24,6 +24,7 @@ package OnBoardComputer is
    protected type COMPUTER is
       procedure Init_Computer(CompetitorId_In : INTEGER);
       procedure Add_Data(Data : COMP_STATS);
+      function Get_Id return INTEGER;
       entry Get_StatsBySect(ReqID : INTEGER; Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
       entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
       entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);

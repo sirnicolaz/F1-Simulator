@@ -1,0 +1,1 @@
+gnatmake -P/home/jack/Documents/University/SCD/Project/src/f1_symulator.gpr main.adb -d -XLIBRARY_TYPE=static `polyorb-config`

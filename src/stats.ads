@@ -113,6 +113,7 @@ package Stats is
       GlobStats : GLOBAL_STATS;
    end SYNCH_GLOBAL_STATS;
 
+   type S_GLOB_STATS_POINT is access SYNCH_GLOBAL_STATS;
 
 private
 

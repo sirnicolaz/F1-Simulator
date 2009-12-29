@@ -1,3 +1,17 @@
+with CORBA.Impl;
+with CORBA.Object;
+with CORBA.ORB;
+
+with PortableServer.POA.Helper;
+with PortableServer.POAManager;
+
+with PolyORB.CORBA_P.CORBALOC;
+
+with PolyORB.Setup.Thread_Per_Request_Server;
+pragma Warnings (Off, PolyORB.Setup.Thread_Per_Request_Server);
+
+with Ada.Text_IO;
+
 package body Competition is
 
 
@@ -71,7 +85,7 @@ package body Competition is
    procedure Configure_Circuit( ClassificRefreshRate_In : FLOAT;
                                CircuitName_In : STRING;
                                CircuitLocation_In : STRING;
-                               RaceConfigFile_In : STRING ) is
+                               RaceConfigFile_In : STRING) is
    begin
         Circuit_Point:=Get_Racetrack(RaceConfigFile_In);
    end Configure_Circuit;
@@ -82,14 +96,48 @@ package body Competition is
                             CompetitorsQty_In : INTEGER;
                             StatisticsRefreshFrequency : FLOAT)
    is
+
    begin
+      Ada.Text_IO.Put_Line("Configuring...");
+      Ada.Text_IO.Put_Line("Init CORBA...");
+      CORBA.ORB.Initialize ("ORB");
+      Ada.Text_IO.Put_Line("CORBA initialized.");
+      declare
+         Root_POA : PortableServer.POA.Local_Ref;
+
+         Ref : CORBA.Object.Ref;
+         MonitorSys : constant CORBA.Impl.Object_Ptr := new MonitorSystem.Impl.Object;
+      begin
+         Ada.Text_IO.Put_Line("Init system...");
+         -- Init monitor system
+         MonitorSystem.Impl.Init_Monitor(CompetitorsQty_In,StatisticsRefreshFrequency);
+         --  Retrieve Root POA
+         Root_POA := PortableServer.POA.Helper.To_Local_Ref
+           (CORBA.ORB.Resolve_Initial_References
+              (CORBA.ORB.To_CORBA_String ("RootPOA")));
+         --            Ada.Text_IO.Put_Line(CORBA.ORB.To_CORBA_String(Root_POA));
+
+         PortableServer.POAManager.Activate
+           (PortableServer.POA.Get_The_POAManager (Root_POA));
+
+         --  Set up new object
+
+         Ref := PortableServer.POA.Servant_To_Reference
+           (Root_POA, PortableServer.Servant (MonitorSys));
+
+         MonitorIOR := new STRING'("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref)) & "'");
+         Ada.Text_IO.Put_Line(MonitorIOR.all);
+      end;
       Laps_Qty := LapsQty_In;
       JOIN_UTILS.Set_MaxCompetitors(CompetitorsQty_In);
-      MonitorSystem.Init_GlobalStats(StatisticsRefreshFrequency);
-      MonitorSystem.Set_CompetitorsQty(CompetitorsQty_In);
       Competitors := new COMPETITOR_LIST(1..CompetitorsQty_In);
       Ready := true;
    end Configure_Ride;
+
+   procedure Start_Monitor is
+   begin
+      CORBA.ORB.Run;
+   end Start_Monitor;
 
    -- Initialize the competitor
    -- returned values:
@@ -143,5 +191,16 @@ package body Competition is
       end if;
    end Stop_Joining;
 
+
+   function Get_MonitorAddress return STRING is
+   begin
+      return MonitorIOR.all;
+   end Get_MonitorAddress;
+
+   ---Begin test methods implementation---
+   procedure Add_Computer2Monitor(ComputerPoint_In : OnboardComputer.COMPUTER_POINT) is
+   begin
+      MonitorSystem.Impl.Add_Computer(ComputerPoint_In);
+   end Add_Computer2Monitor;
 
 end Competition;

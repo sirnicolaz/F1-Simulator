@@ -1,0 +1,7 @@
+interface MonitorSystem {
+string getCompetitorInfo( in short competitorId );
+string getCompetitionInfo();
+string getEverything( in short competitorId );
+string getClassification();
+string getStatsBySect( in short compId, in short sector, in short lap);
+};
