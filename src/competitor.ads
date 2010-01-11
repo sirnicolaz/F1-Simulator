@@ -136,10 +136,12 @@ package Competitor is
                                 trim_In : INTEGER;
                                 pitstop_In : BOOLEAN);
 
-   function Evaluate(driver : CAR_DRIVER_ACCESS ; F_Segment : CHECKPOINT_SYNCH_POINT) return FLOAT;
-   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : CIRCUIT.RACETRACK_POINT;
-                                  F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT) return FLOAT;
-   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Evaluate(driver : CAR_DRIVER_ACCESS ; F_Segment : CHECKPOINT_SYNCH_POINT;
+                     Paths2Cross : CROSSING_POINT) return FLOAT;
+   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
+                                  F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
+                                  Paths2Cross : CROSSING_POINT) return FLOAT;
+   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT;
 
    function Get_pitstopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER;
 
