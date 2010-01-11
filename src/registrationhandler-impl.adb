@@ -8,7 +8,6 @@ pragma Warnings (Off, RegistrationHandler.Skel);
 package body RegistrationHandler.Impl is
 
 
-
    procedure Remote_Join (
                    Self : access Object;
                    CompetitorDescriptor_In  : CORBA.String;
@@ -40,10 +39,7 @@ package body RegistrationHandler.Impl is
                   CompId_out : INTEGER;
                   MonitorSystemAddress : out STRING) is
    begin
-      Put_Line("LAPS" & POSITIVE'IMAGE(Competition.Laps_Qty));
-      Competition.Configure_Ride(LapsQty_In                 => 5,
-                                 CompetitorsQty_In          => 2,
-                                 StatisticsRefreshFrequency => 100.0);
+
       --Competition.Join(CompetitorFileDescriptor_In => CompetitorDescriptor_In);
       Put_Line("LAPS" & POSITIVE'IMAGE(Competition.Laps_Qty));
    end Join;

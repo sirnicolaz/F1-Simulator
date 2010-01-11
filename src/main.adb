@@ -123,6 +123,9 @@ procedure Main is
 
    -- Competition Test 2 (Obr)
 
+   MarlonId : INTEGER;
+   NicoleId : INTEGER;
+
 begin
 
    --Stats test
@@ -207,7 +210,7 @@ begin
 --     TestConsumer4.Init(TestComputer,4,0.7);
 --     TestConsumer5.Init(TestComputer,5,0.7);
 --     Put_Line("Consumer started");
-     TestProducer.Init(TestComputer);
+   TestProducer.Init(TestComputer);
 --     Put_Line("Producer started");
 
    -- Competition test 2 (Orb)
@@ -216,7 +219,12 @@ begin
                               StatisticsRefreshFrequency => 100.0
                              );
    Competition.Add_Computer2Monitor(TestComputer);
-   Put_Line("TEST " & Competition.Get_Stats(1));
-   Competition.Start_Monitor;
-
+   --Put_Line("TEST " & Competition.Get_Stats(1));
+   --Competition.Start_Monitor;
+   MarlonId := Competition.Join("Marlon Brando");
+   Put_Line("Competitor Marlon Brando joined with id = " & INTEGER'IMAGE(MarlonId));
+   Competition.BoxOk(MarlonId);
+   NicoleId := Competition.Join("Nicole Kidman");
+   Put_Line("Competitor Nicole Kidman joined with id = " & INTEGER'IMAGE(NicoleId));
+   Competition.BoxOk(NicoleId);
 end Main;

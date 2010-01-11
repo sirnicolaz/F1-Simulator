@@ -62,9 +62,9 @@ package body MonitorSystem.Impl is
       Out_Stats : OnboardComputer.COMP_STATS;
       ReturnedString : access STRING;
    begin
-      Computers(INTEGER(CompId)).Get_StatsBySect(ReqID     => 666,
-                                                               Sector    => INTEGER(Sector),
-                                                               Lap       => INTEGER(Lap),
+      Computers(INTEGER(CompId)).Get_StatsBySect(
+                                                 Sector    => INTEGER(Sector),
+                                                 Lap       => INTEGER(Lap),
                                                  CompStats => Out_Stats);
 
       ReturnedString := new STRING'("Lap: " & INTEGER'IMAGE(OnboardComputer.Get_Lap(Out_Stats)) & ", Sector: " & INTEGER'IMAGE(OnboardComputer.Get_Sector(Out_Stats)) & ", Time: " & FLOAT'IMAGE(OnboardComputer.Get_Time(Out_Stats)));

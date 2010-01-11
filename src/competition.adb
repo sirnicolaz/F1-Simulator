@@ -71,7 +71,7 @@ package body Competition is
       begin
          ReadyToStart_Out := false;
          ReadyBoxes := ReadyBoxes + 1;
-         if (ReadyBoxes = JoinedCompetitors) then
+         if (ReadyBoxes = MaxCompetitors) then
            ReadyToStart_Out := true;
          end if;
       end;
@@ -150,13 +150,14 @@ package body Competition is
       if ( Ready = true ) then
          JOIN_UTILS.Get_Id(Assigned_Id);
          if( Assigned_Id /= -1 ) then
+            Ada.Text_IO.Put_Line("Competitor " & CompetitorFileDescriptor_In & " joined.");
             -- TODO: Handle exception for initialization failure
-            null;
             -- Add the competitor to the list
             -- Competitors.add(Init_Competitor(Assigned_Id,CompetitorFileDescriptor_In,Get_Iterator(Circuit_Point)));
          end if;
          return Assigned_Id;
       end if;
+      Ada.Text_IO.Put_Line("Not ready. Retry in a few minuti.");
       return -2;
    end;
 
@@ -175,8 +176,10 @@ package body Competition is
       ReadyToStart : BOOLEAN;
    begin
       JOIN_UTILS.Box_Ready(ReadyToStart);
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(CompetitorId_In) & " ready.");
       if(ReadyToStart) then
-         Start_CompetitorsTasks;
+         Ada.Text_IO.Put_Line("Competition started.");
+         --Start_CompetitorsTasks;
       end if;
 
    end BoxOK;
