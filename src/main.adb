@@ -216,7 +216,7 @@ begin
    -- Competition test 2 (Orb)
    Competition.Configure_Ride(LapsQty_In                 => 5,
                               CompetitorsQty_In          => 2,
-                              StatisticsRefreshFrequency => 100.0
+                              StatisticsRefreshFrequency_In => 100.0
                              );
    Competition.Add_Computer2Monitor(TestComputer);
    --Put_Line("TEST " & Competition.Get_Stats(1));

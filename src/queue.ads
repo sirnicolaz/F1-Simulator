@@ -1,3 +1,5 @@
+with Common;
+
 package Queue is
 
    --QUEUE_CELL Structure definition
@@ -15,6 +17,8 @@ package Queue is
    -- QUEUE Structure definition. QUEUE is an array of QUEUE_CELL pointers.
    type QUEUE is array (POSITIVE range <>) of QUEUE_CELL_POINT;
    procedure Init_Queue(Queue_In : in out QUEUE);
+   procedure Set_Competitors(Queue_In : in out QUEUE;
+                             Competitors_List : Common.COMPETITORS_LIST);
    procedure Add_Competitor2Queue(Queue_In : in out QUEUE;
                                   CompetitorID_In : INTEGER;
                              	  ArrivalTime_In : FLOAT;

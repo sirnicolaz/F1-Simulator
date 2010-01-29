@@ -1,4 +1,5 @@
 with CORBA.Impl;
+use CORBA.Impl;
 with CORBA.Object;
 with CORBA.ORB;
 
@@ -14,12 +15,49 @@ with Ada.Text_IO;
 
 package body Competition is
 
+   task body CompetitionTask is
+      --FIELDs
+      Ready : BOOLEAN := false;
+      Circuit_Point : RACETRACK_POINT;
+      Laps_Qty : INTEGER := 0;
+      Competitors_Qty : INTEGER := 0;
+      JoinedCompetitors : INTEGER := 0;
+      MonitorIOR : access STRING;
+      Ready2Start : BOOLEAN := false;
+      StatisticsRefreshFrequency : FLOAT;
+   begin
+         --attesa iscrizione concorrenti da parte dei box (o stop dell'amministratore)
+      loop
+         accept JoinCompetition(CompetitorFileDescriptor_In : STRING; Id_Out : out INTEGER)
+         do
+            Id_Out := Join(CompetitorFileDescriptor_In);
+            TempId := Id_Out;
+         end JoinCompetition;
+         exit when TempId = -1;
+      end loop;
+
+      --attesa ok dei box
+      while ( not Ready2Start ) loop
+         accept BoxReady(Competitor_Id : in INTEGER) do
+            BoxOk(Competitor_Id);
+         end BoxReady;
+      end loop;
+      --inizio gara
+
+
+   end CompetitionTask;
 
    -- array of competitors pointer subtype COMPETITOR_LIST is array OF
    type COMPETITOR_LIST is array( INTEGER range <> ) of INTEGER;
    type COMPETITOR_LIST_POINT is access COMPETITOR_LIST;
    Competitors : COMPETITOR_LIST_POINT;
-   -- It handle the mutually exlusive assignment of the ids to the joining competitor and
+
+  -- task body MonitorTask is
+--   begin
+
+   --task RegistrationHandlerTask;
+
+   -- It handles the mutually exlusive assignment of the ids to the joining competitor and
    -- verifies the availability
    protected JOIN_UTILS is
       procedure Get_Id( Id_Out : out INTEGER );
@@ -94,47 +132,74 @@ package body Competition is
    -- setted before the competitors start to join
    procedure Configure_Ride( LapsQty_In : INTEGER;
                             CompetitorsQty_In : INTEGER;
-                            StatisticsRefreshFrequency : FLOAT)
+                            StatisticsRefreshFrequency_In : FLOAT)
    is
-
+--      use PortableServer.POA.GOA;
+--      use PolyORB.CORBA_P.Server_Tools;
    begin
-      Ada.Text_IO.Put_Line("Configuring...");
-      Ada.Text_IO.Put_Line("Init CORBA...");
-      CORBA.ORB.Initialize ("ORB");
-      Ada.Text_IO.Put_Line("CORBA initialized.");
-      declare
-         Root_POA : PortableServer.POA.Local_Ref;
-
-         Ref : CORBA.Object.Ref;
-         MonitorSys : constant CORBA.Impl.Object_Ptr := new MonitorSystem.Impl.Object;
-      begin
-         Ada.Text_IO.Put_Line("Init system...");
-         -- Init monitor system
-         MonitorSystem.Impl.Init_Monitor(CompetitorsQty_In,StatisticsRefreshFrequency);
-         --  Retrieve Root POA
-         Root_POA := PortableServer.POA.Helper.To_Local_Ref
-           (CORBA.ORB.Resolve_Initial_References
-              (CORBA.ORB.To_CORBA_String ("RootPOA")));
-         --            Ada.Text_IO.Put_Line(CORBA.ORB.To_CORBA_String(Root_POA));
-
-         PortableServer.POAManager.Activate
-           (PortableServer.POA.Get_The_POAManager (Root_POA));
-
-         --  Set up new object
-
-         Ref := PortableServer.POA.Servant_To_Reference
-           (Root_POA, PortableServer.Servant (MonitorSys));
-
-         MonitorIOR := new STRING'("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref)) & "'");
-         Ada.Text_IO.Put_Line(MonitorIOR.all);
-      end;
+--        Ada.Text_IO.Put_Line("Configuring...");
+--        Ada.Text_IO.Put_Line("Init CORBA...");
+--        CORBA.ORB.Initialize ("ORB");
+--        Ada.Text_IO.Put_Line("CORBA initialized.");
+--        declare
+--           use CORBA.Impl;
+--           ServersGroup : constant PortableServer.POA.GOA.Ref;
+--
+--           Policies : CORBA.Policy.PolicyList;
+--
+--           Ref : CORBA.Object.Ref;
+--           Ref2 : CORBA.Object.Ref;
+--           Group : CORBA.Object.Ref;
+--
+--           ServersGroup := PortableServe.POA.GOA.To_Ref
+--             (PortableServer.POA.Create_POA
+--                (Get_Root_POA,
+--                 CORBA.To_CORBA_STRING("RootGOA"),
+--                 PortableServer.POA.Get_The_POAManager(Get_Root_POA),
+--                 Policies));
+--
+--           MonitorSys : constant CORBA.Impl.Object_Ptr := new MonitorSystem.Impl.Object;
+--           MonitorSys2 : constant CORBA.Impl.Object_Ptr := new MonitorSystem.Impl.Object;
+--
+--           MonitorID1 : constant PortableServer.ObjectId := Servant_To_Id(ServersGroup,PortableServer.Servant(MonitorSys));
+--           MonitorID2 : constant PortableServer.ObjectId := Servant_To_Id(ServersGroup,PortableServer.Servant(MonitorSys2));
+--        begin
+--           Ada.Text_IO.Put_Line("Init system...");
+--              -- Init monitor system
+--              MonitorSystem.Impl.Init_Monitor(CompetitorsQty_In,StatisticsRefreshFrequency);
+--              --  Retrieve Root POA
+--              --Root_POA := PortableServer.POA.Helper.To_Local_Ref
+--              --  (CORBA.ORB.Resolve_Initial_References
+--              --     (CORBA.ORB.To_CORBA_String ("RootPOA")));
+--              --            Ada.Text_IO.Put_Line(CORBA.ORB.To_CORBA_String(Root_POA));
+--
+--           Initiate_Servant(PortableServer.Servant(MonitorSys), Ref);
+--           Initiate_Servant(PortableServer.Servant(MonitorSys2), Ref2);
+--
+--           --CORBA.ORB.String_To_Object
+--
+--           PortableServer.POAManager.Activate
+--                (PortableServer.POA.Get_The_POAManager (Root_POA));
+--
+--              --  Set up new object
+--
+--              Ref := PortableServer.POA.Servant_To_Reference(Root_POA, PortableServer.Servant (MonitorSys));
+--
+--              Ref2 := PortableServer.POA.Servant_To_Reference
+--                (Root_POA, PortableServer.Servant (MonitorSys2));
+--
+--              MonitorIOR := new STRING'("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref)) & "'");
+--              Ada.Text_IO.Put_Line("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref2)));
+--              Ada.Text_IO.Put_Line(MonitorIOR.all);
+--        end;
       Laps_Qty := LapsQty_In;
       JOIN_UTILS.Set_MaxCompetitors(CompetitorsQty_In);
+      StatisticsRefreshFrequency := StatisticsRefreshFrequency_In;
       Competitors := new COMPETITOR_LIST(1..CompetitorsQty_In);
       Ready := true;
    end Configure_Ride;
 
-   procedure Start_Monitor is
+      procedure Start_Monitor is
    begin
       CORBA.ORB.Run;
    end Start_Monitor;
@@ -157,7 +222,7 @@ package body Competition is
          end if;
          return Assigned_Id;
       end if;
-      Ada.Text_IO.Put_Line("Not ready. Retry in a few minuti.");
+      Ada.Text_IO.Put_Line("Not ready. Retry in a few minutes.");
       return -2;
    end;
 
@@ -173,15 +238,13 @@ package body Competition is
 
    -- Box call this method to signal it's ready to start
    procedure BoxOk( CompetitorId_In : INTEGER ) is
-      ReadyToStart : BOOLEAN;
    begin
-      JOIN_UTILS.Box_Ready(ReadyToStart);
+      JOIN_UTILS.Box_Ready(Ready2Start);
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(CompetitorId_In) & " ready.");
-      if(ReadyToStart) then
-         Ada.Text_IO.Put_Line("Competition started.");
+      if(Ready2Start) then
+         Ada.Text_IO.Put_Line("Competition can start.");
          --Start_CompetitorsTasks;
       end if;
-
    end BoxOK;
 
    -- Called if admin explicitally decides to start race before all expected competitors joined
@@ -199,6 +262,102 @@ package body Competition is
    begin
       return MonitorIOR.all;
    end Get_MonitorAddress;
+
+   procedure BeginCompetition is
+      -- riferimento a competizione
+
+      -- instanziazione task monitorsystem
+      task Monitor;
+      task body Monitor is
+      begin
+         begin
+            Ada.Text_IO.Put_Line("Configuring...");
+            Ada.Text_IO.Put_Line("Init CORBA...");
+            CORBA.ORB.Initialize ("ORB");
+            Ada.Text_IO.Put_Line("CORBA initialized.");
+            declare
+               use CORBA.Impl;
+               Root_POA : PortableServer.POA.Local_Ref;
+               Ref : CORBA.Object.Ref;
+
+               MonitorSys : constant CORBA.Impl.Object_Ptr := new MonitorSystem.Impl.Object;
+            begin
+               Ada.Text_IO.Put_Line("Init system...");
+               -- Init monitor system
+               MonitorSystem.Impl.Init_Monitor(Competitors'LENGTH,StatisticsRefreshFrequency);
+               --  Retrieve Root POA
+               Root_POA := PortableServer.POA.Helper.To_Local_Ref
+                 (CORBA.ORB.Resolve_Initial_References
+                    (CORBA.ORB.To_CORBA_String ("RootPOA")));
+
+               PortableServer.POAManager.Activate
+                 (PortableServer.POA.Get_The_POAManager (Root_POA));
+
+               --  Set up new object
+
+               Ref := PortableServer.POA.Servant_To_Reference(Root_POA, PortableServer.Servant (MonitorSys));
+
+               MonitorIOR := new STRING'("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref)) & "'");
+               Ada.Text_IO.Put_Line(MonitorIOR.all);
+
+               CORBA.ORB.Run;
+            end;
+         end;
+      end Monitor;
+
+      -- instanziazione task registration handler
+      task RegistrationHandler;
+      task body RegistrationHandler is
+      begin
+         begin
+            Ada.Text_IO.Put_Line("Configuring registration handler...");
+            CORBA.ORB.Initialize ("ORB");
+            Ada.Text_IO.Put_Line("CORBA initialized.");
+            declare
+               Root_POA : PortableServer.POA.Local_Ref;
+               Ref : CORBA.Object.Ref;
+
+               RegistrationHand : constant CORBA.Impl.Object_Ptr := new RegistrationHandler.Impl.Object;
+            begin
+               Ada.Text_IO.Put_Line("Init system...");
+               --  Retrieve Root POA
+               Root_POA := PortableServer.POA.Helper.To_Local_Ref
+                 (CORBA.ORB.Resolve_Initial_References
+                    (CORBA.ORB.To_CORBA_String ("RootPOA")));
+
+               PortableServer.POAManager.Activate
+                 (PortableServer.POA.Get_The_POAManager (Root_POA));
+
+               --  Set up new object
+
+               Ref := PortableServer.POA.Servant_To_Reference(Root_POA, PortableServer.Servant (MonitorSys));
+
+               RegistrationHandlerIOR := new STRING'("'" & CORBA.To_Standard_String (CORBA.Object.Object_To_String (Ref)) & "'");
+               Ada.Text_IO.Put_Line(RegistrationHandlerIOR.all);
+
+               CORBA.ORB.Run;
+            end;
+         end;
+      end RegistrationHandler;
+
+      --dichiarazione task di avvio
+      task StartHandler is
+         entry JoinCompetition(
+                               CompetitorFileDescriptor_In : STRING;
+                               Id_Out : out INTEGER);
+         entry BoxReady(Competitor_Id : in INTEGER);
+      end StartHandler;
+      --begin
+      task body StartHandler is
+         TempId : INTEGER;
+      begin
+
+      end StartHandler;
+
+   begin
+      Ada.Text_IO.Put_Line("Starting Competition");
+   end BeginCompetition;
+
 
    ---Begin test methods implementation---
    procedure Add_Computer2Monitor(ComputerPoint_In : OnboardComputer.COMPUTER_POINT) is

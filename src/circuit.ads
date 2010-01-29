@@ -1,3 +1,4 @@
+with Common;
 with Queue; use Queue;
 with Input_Sources.File;
 use Input_Sources.File;
@@ -45,7 +46,8 @@ package Circuit is
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
-                        PathsQty_In : POSITIVE);
+                        PathsQty_In : POSITIVE;
+                        Competitors_Qty : POSITIVE);
 
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
    --                   NextCheckpoint_In : POINT_Checkpoint);
@@ -84,6 +86,7 @@ package Circuit is
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
+      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
       entry Wait(CompetitorID_In : INTEGER;
@@ -106,6 +109,8 @@ package Circuit is
    procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
                          Checkpoint_In : CHECKPOINT_SYNCH_POINT;
                             Position_In : POSITIVE);
+   procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
+                             Competitors : in Common.COMPETITORS_LIST);
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                NextCheckpoint : out CHECKPOINT_SYNCH_POINT);
@@ -121,7 +126,7 @@ package Circuit is
 private
 
    type Checkpoint is tagged record
-      Queue : SORTED_QUEUE(1..MaxCompetitors_Qty);
+      Queue : access SORTED_QUEUE;
       SectorID : INTEGER;
       IsGoal : BOOLEAN;
       Multiplicity : POSITIVE;

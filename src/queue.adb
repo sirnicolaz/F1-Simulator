@@ -11,6 +11,13 @@ package body Queue is
       end loop;
    end;
 
+   procedure Set_Competitors(Queue_In : in out QUEUE;
+                             Competitors_List : Common.COMPETITORS_LIST) is
+   begin
+      for Index in Queue_In'RANGE loop
+         Queue_In(Index).CompetitorID := Competitors_List(Index);
+      end loop;
+   end Set_Competitors;
 
    function Get_CompetitorID(Cell_In : QUEUE_CELL_POINT) return INTEGER is
    begin

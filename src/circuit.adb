@@ -49,7 +49,8 @@ package body Circuit is
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
-                        PathsQty_In : POSITIVE) is
+                        PathsQty_In : POSITIVE;
+                        Competitors_Qty : POSITIVE) is
 
       PathsCollection : POINT_PATHS;
 
@@ -67,6 +68,8 @@ package body Circuit is
       Checkpoint_In.SectorID := SectorID_In;
       Checkpoint_In.IsGoal := IsGoal_In;
       Checkpoint_In.Multiplicity :=  PathsQty_In;
+      Checkpoint_In.Queue := new SORTED_QUEUE(1..Competitors_Qty);
+      Init_Queue(Checkpoint_In.Queue.all);
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
    end Set_Values;
@@ -79,7 +82,7 @@ package body Circuit is
    function Get_Time(Checkpoint_In : POINT_Checkpoint;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
-      return Get_CompetitorArrivalTime(Checkpoint_In.Queue, CompetitorID_In);
+      return Get_CompetitorArrivalTime(Checkpoint_In.Queue.all, CompetitorID_In);
    end Get_Time;
 
 
@@ -194,22 +197,27 @@ package body Circuit is
       procedure Signal_Arrival(CompetitorID_In : INTEGER;
                                Paths2Cross : out CROSSING_POINT) is
       begin
-         Set_Arrived(F_Checkpoint.Queue,CompetitorID_In,TRUE);
-         if Get_Position(F_Checkpoint.Queue,CompetitorID_In) = 1 then
+         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
+         if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Paths2Cross := F_Checkpoint.PathsCollection;
          end if;
       end Signal_Arrival;
 
+      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST) is
+      begin
+         Set_Competitors(F_Checkpoint.Queue.all,Competitors);
+      end Set_Competitors;
+
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
       begin
-         Set_Arrived(F_Checkpoint.Queue,CompetitorID_In,FALSE);
+         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
       end Signal_Leaving;
 
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT) is
       begin
-         Add_Competitor2Queue(F_Checkpoint.Queue,CompetitorID_In,Time_In);
-         if Get_IsArrived(F_Checkpoint.Queue,1) then
+         Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
+         if Get_IsArrived(F_Checkpoint.Queue.all,1) then
             Changed := TRUE;
          end if;
 
@@ -227,7 +235,7 @@ package body Circuit is
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT) when Changed = TRUE is
       begin
-         if Get_Position(F_Checkpoint.Queue,CompetitorID_In) = 1 then
+         if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Changed := FALSE;
             Paths2Cross := F_Checkpoint.PathsCollection;
          end if;
@@ -300,7 +308,8 @@ package body Circuit is
                        false,
                        Current_Length,
                        Current_Angle,
-                       Current_Mult);
+                       Current_Mult,
+                       MaxCompetitors_Qty);
             CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
             Racetrack_In(Index) := CheckpointSynch_Current;
          end loop;
@@ -317,6 +326,7 @@ package body Circuit is
                        FALSE,
                        100.00,
                        Angle,
+                       MaxCompetitors_Qty,
                        MaxCompetitors_Qty);
             CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
             Racetrack_In(Index) := CheckpointSynch_Current;
@@ -391,6 +401,16 @@ package body Circuit is
       end if;
 
    end Set_Checkpoint;
+
+   procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
+                             Competitors : in Common.COMPETITORS_LIST) is
+      Race_Length : INTEGER;
+   begin
+      Race_Length := Get_RaceLength(Racetrack_In);
+      for index in 1..Race_Length loop
+         Get_Checkpoint(Racetrack_In.Race_Point.all,index).Set_Competitors(Competitors);
+      end loop;
+   end Set_Competitors;
 
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR is
    Iterator : RACETRACK_ITERATOR;

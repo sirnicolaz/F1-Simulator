@@ -7,7 +7,9 @@ pragma Warnings (Off, RegistrationHandler.Skel);
 
 package body RegistrationHandler.Impl is
 
-
+   -- Il metodo deve:
+   --+ o Preparare le stringhe per renderle utilizzabili dai matodi non remoti
+   --+ o Convertire gli Short in Integer
    procedure Remote_Join (
                    Self : access Object;
                    CompetitorDescriptor_In  : CORBA.String;
@@ -29,7 +31,7 @@ package body RegistrationHandler.Impl is
       pragma Unreferenced (Self);
       pragma Warnings (On);
    begin
-      return false;
+      return Ready(INTEGER(CompetitorId_In));
    end Remote_Ready;
 
    procedure Join(
@@ -48,7 +50,7 @@ package body RegistrationHandler.Impl is
    function Ready (
                    CompetitorId_In: INTEGER ) return BOOLEAN is
    begin
-      return false;
+
    end Ready;
 
 end RegistrationHandler.impl;
