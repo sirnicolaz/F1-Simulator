@@ -3,6 +3,8 @@
 --with Strategy;
 --use Strategy;
 with Ada.Numerics.Generic_Elementary_Functions;
+with Queue; use Queue;
+with Queue; use Queue;
 --use Ada.Numerics.Generic_Elementary_Functions;
 package body Competitor is
 
@@ -264,9 +266,7 @@ package body Competitor is
          pitstop_In : BOOLEAN;
          strategy_XML : Node_List;
          Current_Node : Node;
-         Current_Team : STRING(1..7);
-         Current_FirstName : STRING(1..10);
-         Current_LastName : STRING(1..10);
+
          --Car_Temp : CAR;
          --Car_Current : CAR;
 
@@ -331,9 +331,9 @@ package body Competitor is
          Type_Tyre_In : STRING(1..20);
          car_XML : Node_List;
          Current_Node : Node;
-         Current_Team : STRING(1..7);
-         Current_FirstName : STRING(1..10);
-         Current_LastName : STRING(1..10);
+         Current_Team : STRING(1..7) :="Ferrari";
+         Current_FirstName : STRING(1..8):="Fernando";
+         Current_LastName : STRING(1..6) :="Alonso";
          --Car_Temp : CAR;
          --Car_Current : CAR;
          Engine_In : INTEGER;
@@ -399,9 +399,9 @@ package body Competitor is
       end Configure_Car_File;
 
       procedure Configure_Driver_File(Car_In : in out DRIVER; xml_file : DOCUMENT) is
-         Team_In : STRING(1..20);
-         FirstName_In : STRING(1..20);
-         LastName_In : STRING(1..20);
+         Team_In : STRING(1..7);
+         FirstName_In : STRING(1..8);
+         LastName_In : STRING(1..6);
          Vel_In : FLOAT :=0.0;
          driver_XML : Node_List;
          --Checkpoint_XML : Node_List;
@@ -528,7 +528,7 @@ package body Competitor is
          --sono valori restituiti dalla funzione
 
          --Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
-         CrossingTime:= Evaluate(carDriver,C_Checkpoint); -- CrossingTime è il tempo effettivo di attraversamento del
+         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross); -- CrossingTime è il tempo effettivo di attraversamento del
          --tratto, compreso il tempo di attesa nella traiettoria.
 
          --Fine sezione  per la scelta della traiettoria
@@ -576,10 +576,11 @@ package body Competitor is
    ------ CALCOLO CROSSING TIME  -----
    -----------------------------------
    -----------------------------------
-   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathCollection_Index : INTEGER;--PathsCollection_Index : CIRCUIT.RACETRACK_POINT;
-                                  F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT) return FLOAT is
+   function CalculateCrossingTime (CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
+                                   F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
+                                   Paths2Cross : CROSSING_POINT) return FLOAT is
       length_path : FLOAT; --lunghezza tratto
-      size_path : INTEGER; -- molteplicità tratto
+      --size_path : INTEGER; -- molteplicità tratto
       angle_path : FLOAT; -- angolo
       grip_path : FLOAT; -- attrito
       difficulty_path : FLOAT; -- difficoltà del tratto
@@ -603,11 +604,12 @@ package body Competitor is
       --++++++++++++++++++++++++++++++++++++--
       -- bisogna prevedere una accelerazione (positiva o negativa) per calcolare il tempo di attraversamento..
 
-      length_path := Get_Length(PathsCollection_Index);
-      size_path := Get_Size(PathsCollection_Index);
-      angle_path:= Get_Angle(PathsCollection_Index);
-      grip_path:= Get_Grip(PathsCollection_Index);
-      difficulty_path:= Get_Difficulty(PathsCollection_Index);
+      length_path := Paths2Cross.Get_Length(PathsCollection_Index);
+      --size_path := Paths2Cross.Get_Size(PathsCollection_Index);
+
+      angle_path:= Paths2Cross.Get_Angle(PathsCollection_Index);
+      grip_path:= Paths2Cross.Get_Grip(PathsCollection_Index);
+      difficulty_path:= Paths2Cross.Get_Difficulty(PathsCollection_Index);
       tyre_usury := Get_Usury(CarDriver);
       gasoline_level:=Get_GasLevel(CarDriver);
       vel_max := Get_MaxSpeed(CarDriver); --
@@ -625,14 +627,11 @@ package body Competitor is
       if lc = length_path then
          CarDriver.pilota.Vel_In:=vel_max_reale;
          return timeCritical;-- aggiornare velocità
-      end if;
-      if lc < length_path then
+      elsif lc < length_path then
          CarDriver.pilota.Vel_In:=vel_max_reale;
          return timeCritical + ( length_path - lc )/vel_max_reale;
-      end if;
-
-      if lc> length_path  then
-         timeCritical := (-1.0) * (Vel_In/acc) + Sqrt(((Vel_In ** 2 ) + (2.0 * length_path))/(acc ** 2));
+      elsif lc> length_path  then
+         timeCritical := (-1.0) * (Vel_In/acc) + 25.0;--Sqrt(((Vel_In ** 2 ) + (2.0 * length_path))/(acc ** 2));
          CarDriver.pilota.Vel_In:=CarDriver.pilota.Vel_In + (acc * timeCritical);
          return timeCritical;
       end if;
@@ -645,7 +644,7 @@ package body Competitor is
    -----------------------------------
    -----------------------------------
    function Evaluate(driver : CAR_DRIVER_ACCESS ;
-                     F_Segment : CHECKPOINT_SYNCH_POINT) return FLOAT is
+                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT) return FLOAT is
 
       --qua dentro va effettuata la valutazione della traiettoria migliore e calcolato il tempo di attraversamento
       -- da restituire poi a chi invoca questo metodo.
@@ -657,21 +656,23 @@ package body Competitor is
       StartingInstant : FLOAT := 0.0;
       WaitingTime : FLOAT := 0.0;
       PathTime : FLOAT;
-      CompArrivalTime : FLOAT := Get_ArrivalTime(F_Segment.Queue,1);--metodo non visibile
+      CompArrivalTime : FLOAT := F_Segment.Get_Time(driver.Id);
+      --ho bisogno di avere metodi per il ritorno dei campi dati del checkpoint_sync_point
+      --inoltre non vedo il metodo Get_ArrivalTime
       CrossingTime : FLOAT := 0.0;
       TotalDelay : FLOAT := 0.0;
       MinDelay : FLOAT := -1.0;
-      BestPath : PATH;
+      --BestPath : PATH;
       Competitor_Status_Tyre : FLOAT;
-      Competitor_Status_Level: INTEGER;
-
+      Competitor_Status_Level: FLOAT;
+       --manca il metodo per tornare un pathcollection;
       -- Competitor_Strategy : STRATEGY_CAR := Competitor.Get_Strategy();
 
    begin
       -- loop on paths
       Competitor.Get_Status(driver, Competitor_Status_Tyre, Competitor_Status_Level);
-      for Index in F_Segment.PathsCollection'RANGE loop
-         PathTime := F_Segment.PathsCollection(Index).LastTime;
+      for Index in 1..Paths2Cross.Get_Size loop --no selector pathcollection for type cheskpoint_synch definded in circuit.ads
+         PathTime := F_Segment.Get_Time(Index);
          WaitingTime := PathTime - CompArrivalTime;
          StartingInstant := PathTime;
 
@@ -680,8 +681,8 @@ package body Competitor is
             StartingInstant := CompArrivalTime;
          end if;
 
-         CrossingTime := CalculateCrossingTime(driver, F_Segment.PathsCollection(Index), F_Segment,
-                                               Get_Vel_In(driver));
+         CrossingTime := CalculateCrossingTime(driver, Index, F_Segment,
+                                               Get_Vel_In(driver), Paths2Cross);
          TotalDelay := StartingInstant + CrossingTime; --decidere come calcolare CrossingTime
          if TotalDelay < MinDelay or MinDelay < 0.0 then
             MinDelay := TotalDelay;
@@ -695,7 +696,7 @@ package body Competitor is
    end evaluate;
 
 
-   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
       return str_In.strategia.pitstopGasolineLevel;
    end Get_pitstopGasolineLevel;
