@@ -86,7 +86,8 @@ package Circuit is
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
-      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST);
+      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST;
+                                Times : Common.FLOAT_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
       entry Wait(CompetitorID_In : INTEGER;
@@ -112,6 +113,8 @@ package Circuit is
    procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
                              Competitors : in Common.COMPETITORS_LIST);
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
+   procedure Get_CurrentCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                               CurrentCheckpoint : out CHECKPOINT_SYNCH_POINT);
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                NextCheckpoint : out CHECKPOINT_SYNCH_POINT);
    procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;

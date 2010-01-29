@@ -12,10 +12,12 @@ package body Queue is
    end;
 
    procedure Set_Competitors(Queue_In : in out QUEUE;
-                             Competitors_List : Common.COMPETITORS_LIST) is
+                             Competitors_List : Common.COMPETITORS_LIST;
+                             Times : Common.FLOAT_LIST) is
    begin
       for Index in Queue_In'RANGE loop
          Queue_In(Index).CompetitorID := Competitors_List(Index);
+         Queue_In(Index).ArrivalTime := Times(Index);
       end loop;
    end Set_Competitors;
 

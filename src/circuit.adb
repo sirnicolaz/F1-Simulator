@@ -200,12 +200,16 @@ package body Circuit is
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Paths2Cross := F_Checkpoint.PathsCollection;
+         else
+            Paths2Cross := null; -- fix this crap
          end if;
+
       end Signal_Arrival;
 
-      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST) is
+      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST;
+                                Times : Common.FLOAT_LIST) is
       begin
-         Set_Competitors(F_Checkpoint.Queue.all,Competitors);
+         Set_Competitors(F_Checkpoint.Queue.all,Competitors,Times);
       end Set_Competitors;
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
@@ -405,10 +409,20 @@ package body Circuit is
    procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
                              Competitors : in Common.COMPETITORS_LIST) is
       Race_Length : INTEGER;
+      Times : Common.FLOAT_LIST(1..Competitors'LENGTH);
+      Time : FLOAT := 0.0;
    begin
+      for ind in 1..Competitors'LENGTH loop
+         Times(ind) := Time;
+         Time := Time + 1.0; -- The time gap between 2 following competitors isn't definitive.
+      end loop;
+
       Race_Length := Get_RaceLength(Racetrack_In);
       for index in 1..Race_Length loop
-         Get_Checkpoint(Racetrack_In.Race_Point.all,index).Set_Competitors(Competitors);
+         Get_Checkpoint(Racetrack_In.Race_Point.all,index).Set_Competitors(Competitors,Times);
+         for indez in Times'RANGE loop
+            Times(indez) := Times(indez)+1.0;
+         end loop;
       end loop;
    end Set_Competitors;
 
@@ -419,6 +433,12 @@ package body Circuit is
       Iterator.Position := 1;
       return Iterator;
    end Get_Iterator;
+
+   procedure Get_CurrentCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                   CurrentCheckpoint : out CHECKPOINT_SYNCH_POINT) is
+   begin
+      CurrentCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
+   end Get_CurrentCheckpoint;
 
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                 NextCheckpoint : out CHECKPOINT_SYNCH_POINT) is
