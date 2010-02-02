@@ -72,6 +72,7 @@ package Circuit is
       function Get_Angle(PathIndex : INTEGER) return FLOAT;
       function Get_Grip(PathIndex : INTEGER) return FLOAT;
       function Get_Difficulty(PathIndex : INTEGER) return FLOAT;
+      function Get_PathTime(PathIndex : INTEGER) return FLOAT;
 
    private
       F_Paths : POINT_PATHS := Paths_In;
@@ -110,7 +111,7 @@ package Circuit is
    procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
                          Checkpoint_In : CHECKPOINT_SYNCH_POINT;
                             Position_In : POSITIVE);
-   procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
+   procedure Set_Competitors(Racetrack_In : in out RACETRACK_POINT;
                              Competitors : in Common.COMPETITORS_LIST);
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
    procedure Get_CurrentCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;

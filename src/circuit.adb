@@ -188,6 +188,11 @@ package body Circuit is
          return Get_Difficulty(F_Paths(PathIndex));
       end Get_Difficulty;
 
+      function Get_PathTime(PathIndex : INTEGER) return FLOAT is
+      begin
+         return F_Paths.all(PathIndex).LastTime;
+      end Get_PathTime;
+
    end CROSSING;
 
    protected body CHECKPOINT_SYNCH is
@@ -406,9 +411,10 @@ package body Circuit is
 
    end Set_Checkpoint;
 
-   procedure Set_Competitors(Racetrack_In : in out RACETRACK_ITERATOR;
+   procedure Set_Competitors(Racetrack_In : in out RACETRACK_POINT;
                              Competitors : in Common.COMPETITORS_LIST) is
       Race_Length : INTEGER;
+      Race_It : RACETRACK_ITERATOR := Get_Iterator(Racetrack_In);
       Times : Common.FLOAT_LIST(1..Competitors'LENGTH);
       Time : FLOAT := 0.0;
    begin
@@ -417,9 +423,9 @@ package body Circuit is
          Time := Time + 1.0; -- The time gap between 2 following competitors isn't definitive.
       end loop;
 
-      Race_Length := Get_RaceLength(Racetrack_In);
+      Race_Length := Get_RaceLength(Race_It);
       for index in 1..Race_Length loop
-         Get_Checkpoint(Racetrack_In.Race_Point.all,index).Set_Competitors(Competitors,Times);
+         Get_Checkpoint(Race_It.Race_Point.all,index).Set_Competitors(Competitors,Times);
          for indez in Times'RANGE loop
             Times(indez) := Times(indez)+1.0;
          end loop;
@@ -443,12 +449,12 @@ package body Circuit is
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                 NextCheckpoint : out CHECKPOINT_SYNCH_POINT) is
    begin
+      Put_Line("Position " & INTEGER'IMAGE(RaceIterator.Position));
       if RaceIterator.Position /= RaceIterator.Race_Point'LENGTH then
          RaceIterator.Position := RaceIterator.Position + 1;
       else
          RaceIterator.Position := 1;
       end if;
-
       NextCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
    end Get_NextCheckpoint;
 
