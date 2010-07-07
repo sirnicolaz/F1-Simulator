@@ -16,7 +16,7 @@ package Stats is
 
 
    type STATS_ROW is private;
-   -- These functions is only for test purpose
+   -- These functions are only for test purpose
    function Get_StatsRow(Competitor_Id_In : INTEGER;
                          Lap_Num_In : INTEGER;
                          Checkpoint_Num_In : INTEGER;
@@ -130,9 +130,9 @@ private
    end record;
 
    type GENERIC_STATS is tagged record
-      BestLap_Num : INT_ARRAY_POINT; -- Num of best time laps during the competition (each index represents a time instant)
-      BestLap_Time : FLOAT_ARRAY_POINT; -- Time of best time laps during the competition (each index represents a time instant)
-      BestSectors_Time : FLOAT_ARRAY_LIST_NODE; --Times of best sectors time. each element in the list contains times in a time instant)
+      BestLap_Num : INT_ARRAY_POINT; -- Num of best time lap during the competition (each index represents a time instant)
+      BestLap_Time : FLOAT_ARRAY_POINT; -- Time of best time lap during the competition (each index represents a time instant)
+      BestSectors_Time : FLOAT_ARRAY_LIST_NODE; --Times of best sector time. each element in the list contains the best)
    end record;
 
    type SOCT_NODE is record

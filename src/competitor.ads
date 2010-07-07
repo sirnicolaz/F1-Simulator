@@ -10,16 +10,20 @@ with DOM.Core.Nodes; use DOM.Core.Nodes;
 with DOM.Core.Attrs; use DOM.Core.Attrs;
 with Ada.IO_Exceptions;
 
+with OnBoardComputer;
+use OnBoardComputer;
+
 with Ada.Text_IO;
 use Ada.Text_IO;
 
 
 package Competitor is
+   type VEL is array (POSITIVE range <>) of FLOAT;
 
    type DRIVER is record
-      Team : STRING(1..20);
-      FirstName : STRING(1..20);
-      LastName : STRING(1..20);
+      Team : STRING(1..7):="xxxxxxx";
+      FirstName : STRING(1..8):="xxxxxxxx";
+      LastName : STRING(1..6):="xxxxxx";
       Vel_In : FLOAT := 0.0;
     end record;
 
@@ -27,13 +31,13 @@ package Competitor is
       MaxSpeed : FLOAT;
       MaxAcceleration : FLOAT;
       GasTankCapacity : FLOAT;
-      Engine : STRING(1..50);
+      Engine : STRING(1..6):="xxxxxx";
       TyreUsury : FLOAT;
       GasolineLevel : FLOAT;
       -- private subtype TYRE is record
-      Mixture : STRING(1..20);
-      Model : STRING(1..20);
-      Type_Tyre : STRING(1..20);
+      Mixture : STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
+      Model : STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
+      Type_Tyre : STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
 
       --end record;
 
@@ -52,11 +56,11 @@ package Competitor is
       strategia : STRATEGY_CAR;
       RaceIterator : RACETRACK_ITERATOR;
       Id: INTEGER;
+      statsComputer : COMPUTER_POINT := new COMPUTER;
    end record;
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
-
-   function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR) return CAR_DRIVER_ACCESS;
-   procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
+  function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR; id_In : INTEGER) return CAR_DRIVER_ACCESS;
+  -- procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
 -- set and get function for tyre into car
    function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return STRING;
    function Get_TypeTyre(Car_In : CAR_DRIVER_ACCESS) return STRING;
@@ -118,10 +122,13 @@ package Competitor is
                           LastName_In : in STRING);
 
    --type CAR_DRIVER_ACCESS is access CAR_DRIVER;
-   task TASKCOMPETITOR;
+--task TASKCOMPETITOR(Car_In : CAR_DRIVER_ACCESS);
 
-
-
+   task type TASKCOMPETITOR(carDriver_In : CAR_DRIVER_ACCESS) is
+      entry Start;
+   end TASKCOMPETITOR;
+   --type taskdebug is access TASKCOMPETITOR;
+--procedure Set_endWait(temp : in taskdebug);
    -- subtype str is Strategy.STRATEGY;
 
    procedure Configure_Driver(Car_In: in out DRIVER;
@@ -136,11 +143,11 @@ package Competitor is
                                 trim_In : INTEGER;
                                 pitstop_In : BOOLEAN);
 
-   function Evaluate(driver : CAR_DRIVER_ACCESS ; F_Segment : CHECKPOINT_SYNCH_POINT;
-                     Paths2Cross : CROSSING_POINT) return FLOAT;
-   function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
-                                  F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
-                                  Paths2Cross : CROSSING_POINT) return FLOAT;
+   --function Evaluate(driver : CAR_DRIVER_ACCESS ; F_Segment : CHECKPOINT_SYNCH_POINT;
+     --                Paths2Cross : CROSSING_POINT) return FLOAT;
+   --function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
+    --                              F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
+    --                              Paths2Cross : CROSSING_POINT) return FLOAT;
    function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT;
 
    function Get_pitstopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER;

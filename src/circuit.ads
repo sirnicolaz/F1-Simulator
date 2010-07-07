@@ -19,7 +19,7 @@ package Circuit is
    subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
    Checkpoints_Qty : POSITIVE := 2;
-   MaxCompetitors_Qty : POSITIVE := 2;
+   MaxCompetitors_Qty : POSITIVE := 3;--4;
 
    procedure Set_CheckpointsQty (Qty_In : POSITIVE);
    procedure Set_MaxCompetitorsQty ( Qty_In : POSITIVE);
@@ -91,15 +91,27 @@ package Circuit is
                                 Times : Common.FLOAT_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
+
+      function Get_SectorID return INTEGER;
+
+      function getChanged return Boolean;
+function getContaConcorrenti return Integer;
+      --function aggiungi return Boolean;
+      entry Sincronizza(CompetitorID_In : INTEGER);
+
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT);
+
    private
       F_Checkpoint : POINT_Checkpoint := Checkpoint_In;
       Changed : BOOLEAN := false;
+      Sincronizzazione : BOOLEAN := false;
+      ContaConcorrenti : INTEGER := 0;
    end CHECKPOINT_SYNCH;
 
    type CHECKPOINT_SYNCH_POINT is access CHECKPOINT_SYNCH;
-
+   function getChanged (temp : in CHECKPOINT_SYNCH_POINT) return Boolean;
+   function Sincronizza(CompetitorID_In : INTEGER; temp : CHECKPOINT_SYNCH_POINT) return Boolean;
    type RACETRACK is array(POSITIVE range <>) of CHECKPOINT_SYNCH_POINT;
    type RACETRACK_POINT is access RACETRACK;
 
@@ -125,8 +137,9 @@ package Circuit is
    function Get_IsFinished(RaceIterator : RACETRACK_ITERATOR) return BOOLEAN;
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT;
    function Get_Checkpoint(Racetrack_In : RACETRACK;
-                        Position : POSITIVE) return CHECKPOINT_SYNCH_POINT;
+                           Position : POSITIVE) return CHECKPOINT_SYNCH_POINT;
    function Print_Racetrack(Racetrack_In : RACETRACK) return INTEGER;
+
 private
 
    type Checkpoint is tagged record

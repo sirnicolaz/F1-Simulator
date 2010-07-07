@@ -82,14 +82,15 @@ package body Circuit is
    function Get_Time(Checkpoint_In : POINT_Checkpoint;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
+--      Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time e chiamo get_competitorArrivaltime");
       return Get_CompetitorArrivalTime(Checkpoint_In.Queue.all, CompetitorID_In);
    end Get_Time;
 
 
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
-    --                  NextCheckpoint_In : POINT_Checkpoint) is
+   --                  NextCheckpoint_In : POINT_Checkpoint) is
    --begin
-     -- Checkpoint_In.NextCheckpoint := NextCheckpoint_In;
+   -- Checkpoint_In.NextCheckpoint := NextCheckpoint_In;
    --end Set_Next;
 
    --function Get_Path(Checkpoint_In : POINT_Checkpoint;
@@ -180,7 +181,7 @@ package body Circuit is
 
       function Get_Grip(PathIndex : INTEGER) return FLOAT is
       begin
-           return Get_Grip(F_Paths(PathIndex));
+         return Get_Grip(F_Paths(PathIndex));
       end Get_Grip;
 
       function Get_Difficulty(PathIndex : INTEGER) return FLOAT is
@@ -192,7 +193,6 @@ package body Circuit is
       begin
          return F_Paths.all(PathIndex).LastTime;
       end Get_PathTime;
-
    end CROSSING;
 
    protected body CHECKPOINT_SYNCH is
@@ -203,6 +203,7 @@ package body Circuit is
                                Paths2Cross : out CROSSING_POINT) is
       begin
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
+--        Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono signal_arrival e chiamo get_position");
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Paths2Cross := F_Checkpoint.PathsCollection;
          else
@@ -219,8 +220,10 @@ package body Circuit is
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
       begin
+         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : signal leaving");
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
       end Signal_Leaving;
+
 
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT) is
@@ -234,9 +237,28 @@ package body Circuit is
 
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT is
       begin
+         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time(competitorid_in) e chiamo get_time(F_checkpoint, competitorid)");
          return Get_Time(F_Checkpoint, CompetitorID_In);
       end Get_Time;
 
+      function Get_SectorID return INTEGER is
+      begin
+         return F_Checkpoint.SectorID;
+      end Get_SectorID;
+
+
+      function getContaConcorrenti return Integer is
+      begin
+         return CHECKPOINT_SYNCH.ContaConcorrenti;
+      end getContaConcorrenti;
+
+      entry Sincronizza(CompetitorID_In : INTEGER) when True is
+      begin
+         CHECKPOINT_SYNCH.ContaConcorrenti := CHECKPOINT_SYNCH.ContaConcorrenti+1;
+        -- CHECKPOINT_SYNCH.aggiungi;
+         --Ada.Text_IO.Put_Line("concorrente "&Integer'Image(CompetitorID_In)&", contaconcorrenti = "&Integer'Image(ContaConcorrenti));
+         --return true;
+      end Sincronizza;
       --Method that allow the tasks Competitor to Wait til they reach
       --the 1st position in the checkpoint queue. Once one of them is first,
       --his Paths2Cross is initialized with the segment corresponding CROSSING_POINT,
@@ -244,13 +266,30 @@ package body Circuit is
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT) when Changed = TRUE is
       begin
+         --++++++Ada.Text_IO.Put_Line("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : sono wait e chiamo get_position, CHANGED= "&Boolean'Image(getChanged));
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Changed := FALSE;
             Paths2Cross := F_Checkpoint.PathsCollection;
          end if;
-
+--         Ada.Text_IO.Put_Line("--------********$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : esco dalla WAIT, CHANGED= "&Boolean'Image(getChanged));
       end Wait;
+      function getChanged return Boolean is
+      begin
+         return Changed;
+      end getChanged;
+
    end CHECKPOINT_SYNCH;
+
+   function getChanged(temp : CHECKPOINT_SYNCH_POINT) return Boolean is
+   begin
+      return temp.getChanged;
+   end getChanged;
+
+   function Sincronizza(CompetitorID_In : INTEGER; temp : CHECKPOINT_SYNCH_POINT) return Boolean is
+   begin
+      temp.Sincronizza(CompetitorID_In);
+      return true;
+   end Sincronizza;
 
    --RACETRACK methods implementation
 
@@ -271,7 +310,7 @@ package body Circuit is
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
 
       function Get_Feature_Node(Node_In : NODE;
-                           FeatureName_In : STRING) return NODE is
+                                FeatureName_In : STRING) return NODE is
          Child_Nodes_In : NODE_LIST;
          Current_Node : NODE;
       begin
@@ -344,7 +383,7 @@ package body Circuit is
       end if;
 
       --for Index in 1..CheckpointQty_In-1 loop
-         --Set_Next(Racetrack_In(Index),Racetrack_In(Index+1));
+      --Set_Next(Racetrack_In(Index),Racetrack_In(Index+1));
       --end loop;
 
       --Set_Next(Racetrack_In(CheckpointQty_In),Racetrack_In(1));
@@ -360,7 +399,7 @@ package body Circuit is
       Racetrack_Length : INTEGER;
       Racetrack_Out : RACETRACK_POINT;
 
-   procedure Try_OpenFile is
+      procedure Try_OpenFile is
       begin
 
          Open(Racetrack_File,Input);
@@ -374,7 +413,7 @@ package body Circuit is
          Racetrack_XML := Get_Elements_By_Tag_Name(Doc,"Checkpoint");
          Racetrack_Length := Length(Racetrack_XML);
       exception
-            when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
+         when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
       end Try_OpenFile;
 
    begin
@@ -390,8 +429,8 @@ package body Circuit is
 
 
    procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
-                         Checkpoint_In : CHECKPOINT_SYNCH_POINT;
-                         Position_In : POSITIVE) is
+                            Checkpoint_In : CHECKPOINT_SYNCH_POINT;
+                            Position_In : POSITIVE) is
    begin
       if Position_In >= Racetrack_In'FIRST and Position_In <= Racetrack_In'LAST then
          Racetrack_In(Position_In) := Checkpoint_In;
@@ -418,6 +457,7 @@ package body Circuit is
       Times : Common.FLOAT_LIST(1..Competitors'LENGTH);
       Time : FLOAT := 0.0;
    begin
+      --Ada.Text_IO.Put_Line("^^^^^^^^^________________^^^^^^^^^^^ Competitors'LENGTH: "&Integer'Image(Competitors'LENGTH));
       for ind in 1..Competitors'LENGTH loop
          Times(ind) := Time;
          Time := Time + 1.0; -- The time gap between 2 following competitors isn't definitive.
@@ -433,7 +473,7 @@ package body Circuit is
    end Set_Competitors;
 
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR is
-   Iterator : RACETRACK_ITERATOR;
+      Iterator : RACETRACK_ITERATOR;
    begin
       Iterator.Race_Point := Racetrack_In;
       Iterator.Position := 1;
@@ -449,7 +489,7 @@ package body Circuit is
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                 NextCheckpoint : out CHECKPOINT_SYNCH_POINT) is
    begin
-      Put_Line("Position " & INTEGER'IMAGE(RaceIterator.Position));
+      --++++++Put_Line("Position " & INTEGER'IMAGE(RaceIterator.Position));
       if RaceIterator.Position /= RaceIterator.Race_Point'LENGTH then
          RaceIterator.Position := RaceIterator.Position + 1;
       else
@@ -460,7 +500,7 @@ package body Circuit is
 
    procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                     PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT) is
-      begin
+   begin
       if RaceIterator.Position /= 1 then
          RaceIterator.Position := RaceIterator.Position - 1;
       else
@@ -489,7 +529,7 @@ package body Circuit is
 
 
    function Get_Checkpoint(Racetrack_In : RACETRACK;
-                        Position : POSITIVE) return CHECKPOINT_SYNCH_POINT is
+                           Position : POSITIVE) return CHECKPOINT_SYNCH_POINT is
    begin
       return Racetrack_In(Position);
    end Get_Checkpoint;

@@ -2,10 +2,12 @@
 --use Circuit;
 --with Strategy;
 --use Strategy;
-with Ada.Numerics.Generic_Elementary_Functions;
+-- with Ada.Float_Text_IO; serve solo per stampare float.
+-- use Ada.Float_Text_IO;
+with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
-with Queue; use Queue;
---use Ada.Numerics.Generic_Elementary_Functions;
+--with Queue; use Queue;
+--use Ada.Numerics.Elementary_Functions;
 package body Competitor is
 
 
@@ -230,17 +232,20 @@ package body Competitor is
       Level_Out:=Get_GasLevel(Car_In);
    end Get_Status;
 
-   function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR) return CAR_DRIVER_ACCESS is
+   function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR; id_In : INTEGER) return CAR_DRIVER_ACCESS is
       --parametri
       Input : File_Input;
       Reader : Tree_Reader;
       Doc : Document;
       carDriver_XML : Node_List;
       carDriver_Length : INTEGER;
-      --   carDriver_Out : CAR_DRIVER_ACCESS;
-      carDriver : CAR_DRIVER_ACCESS;
 
-      procedure Try_OpenFile is
+      --   carDriver_Out : CAR_DRIVER_ACCESS;
+      carDriver : CAR_DRIVER_ACCESS := new CAR_DRIVER;
+
+
+      procedure Try_OpenFile is--(xml_file : STRING; Input : in out File_Input; Reader : in out Tree_Reader; Doc : in out Document;
+         --carDriver_XML : in out Node_List; carDriver_Length : in out INTEGER) is
       begin
 
          Open(xml_file,Input);
@@ -257,8 +262,7 @@ package body Competitor is
          when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
       end Try_OpenFile;
 
-      procedure Configure_Strategy_File(Car_In : in out STRATEGY_CAR;
-                                        xml_file : DOCUMENT) is -- metodo per la configurazione della strategia a partire da un file
+      function Configure_Strategy_File(xml_file_In : DOCUMENT) return STRATEGY_CAR is -- metodo per la configurazione della strategia a partire da un file
          pitstopGasolineLevel_In : FLOAT;
          pitstopLaps_In : INTEGER;
          pitstopCondition_In : BOOLEAN;
@@ -267,7 +271,7 @@ package body Competitor is
          strategy_XML : Node_List;
          Current_Node : Node;
 
-         --Car_Temp : CAR;
+         Car_In : STRATEGY_CAR;
          --Car_Current : CAR;
 
          function Get_Feature_Node(Node_In : NODE;
@@ -293,7 +297,7 @@ package body Competitor is
 
          --if Document_In /= null then
 
-         strategy_XML := Get_Elements_By_Tag_Name(xml_file,"strategy_car");
+         strategy_XML := Get_Elements_By_Tag_Name(xml_file_In,"strategy_car");
 
          Current_Node := Item(strategy_XML, 0);
 
@@ -315,11 +319,11 @@ package body Competitor is
                             pitstopCondition_In,
                             trim_In,
                             pitstop_In);
-
+         return Car_In;
       end Configure_Strategy_File;
 
 
-      procedure Configure_Car_File(Car_In : in out CAR; xml_file : DOCUMENT) is
+      function Configure_Car_File(xml_file_In : DOCUMENT) return CAR is
          MaxSpeed_In : FLOAT;
          MaxAcceleration_In : FLOAT;
          GasTankCapacity_In : FLOAT;
@@ -331,12 +335,12 @@ package body Competitor is
          Type_Tyre_In : STRING(1..20);
          car_XML : Node_List;
          Current_Node : Node;
-         Current_Team : STRING(1..7) :="Ferrari";
-         Current_FirstName : STRING(1..8):="Fernando";
-         Current_LastName : STRING(1..6) :="Alonso";
-         --Car_Temp : CAR;
+         -- Current_Team : STRING(1..7) :="Ferrari";
+         -- Current_FirstName : STRING(1..8):="Fernando";
+         -- Current_LastName : STRING(1..6) :="Alonso";
+         Car_In : CAR;
          --Car_Current : CAR;
-         Engine_In : INTEGER;
+         Engine_In : STRING(1..6):="xxxxxx";
 
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : STRING) return NODE is
@@ -361,7 +365,7 @@ package body Competitor is
 
          -- if Document_In /= null then
 
-         car_XML := Get_Elements_By_Tag_Name(xml_file,"car");
+         car_XML := Get_Elements_By_Tag_Name(xml_file_In,"car");
 
          Current_Node := Item(car_XML, 0);
 
@@ -369,9 +373,9 @@ package body Competitor is
          MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
          MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
          GasTankCapacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
-         Engine_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
+         Engine_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine")));
          TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
-         GasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         GasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
          --Mixture_In := Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
          --Model_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
          --Type_Tyre_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
@@ -390,18 +394,19 @@ package body Competitor is
                        MaxSpeed_In,
                        MaxAcceleration_In,
                        GasTankCapacity_In,
-                       "strong",--Engine_In,
+                       Engine_In,
                        TyreUsury_In,
                        GasolineLevel_In,
                        Mixture_In ,
                        Model_In ,
                        Type_Tyre_In );
+         return Car_In;
       end Configure_Car_File;
 
-      procedure Configure_Driver_File(Car_In : in out DRIVER; xml_file : DOCUMENT) is
-         Team_In : STRING(1..7);
-         FirstName_In : STRING(1..8);
-         LastName_In : STRING(1..6);
+      function Configure_Driver_File(xml_file_In : DOCUMENT) return DRIVER is
+         Team_In : STRING(1..7):="xxxxxxx";
+         FirstName_In : STRING(1..8):="xxxxxxxx";
+         LastName_In : STRING(1..6):="xxxxxx";
          Vel_In : FLOAT :=0.0;
          driver_XML : Node_List;
          --Checkpoint_XML : Node_List;
@@ -411,7 +416,7 @@ package body Competitor is
          --Current_Team : STRING(1..7);
          --Current_FirstName : STRING(1..10);
          --Current_LastName : STRING(1..10);
-         --Car_Temp : CAR;
+         Car_In : DRIVER;
          --Car_Current : CAR;
 
          function Get_Feature_Node(Node_In : NODE;
@@ -437,20 +442,18 @@ package body Competitor is
 
          --if Document_In /= null then
 
-         driver_XML := Get_Elements_By_Tag_Name(xml_file,"driver");
+         driver_XML := Get_Elements_By_Tag_Name(xml_file_In,"driver");
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
-         --Team_In := Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
-         --FirstName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
-         --LastName_In := String'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
+         Team_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"team")));
+         FirstName_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname")));
+         LastName_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname")));
          --Car_Temp := new CAR;
-         Team_In := "Ferrari";
-         FirstName_In := "Fernando";
-         LastName_In := "Alonso";
+         --Team_In := "Ferrari";
+         --FirstName_In := "Fernando";
+         --LastName_In := "Alonso";
          --Racetrack_In(Index) := CheckpointSynch_Current;
          --end loop;
-
-
          --end if;
 
          --lettura parametri, vel_in esclusa
@@ -459,126 +462,34 @@ package body Competitor is
                           FirstName_In,
                           LastName_In,
                           Vel_In);
+         return Car_In;
       end Configure_Driver_File;
    begin
       --apertura del file
       Try_OpenFile;
       --configurazione parametri
-      Configure_Strategy_File(carDriver.strategia , doc);
-      Configure_Car_File(carDriver.auto , doc);
-      Configure_Driver_File(carDriver.pilota , doc);
+      Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : strategia...");
+      carDriver.strategia := Configure_Strategy_File(doc);
+      Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : ...auto...");
+      carDriver.auto := Configure_Car_File(doc);
+      Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : ...pilota...");
+      carDriver.pilota := Configure_Driver_File(doc);
+      carDriver.RaceIterator:=RaceIterator;
+      carDriver.Id:=id_In;
+      carDriver.statsComputer.Init_Computer(carDriver.Id);
+      --carDriver:= new CAR_DRIVER(Configure_Car_File(doc),Configure_Driver_File(doc),Configure_Strategy_File(doc));
       return carDriver;
    end Init_Competitor;
-   -----------------------------------
-   -----------------------------------
-   -- TASKCOMPETITOR IMPLEMENTATION --
-   -----------------------------------
-   -----------------------------------
-   task body TASKCOMPETITOR is
-      C_Checkpoint : CHECKPOINT_SYNCH_POINT;
-      PredictedTime : FLOAT := 0.0;
-      DelayTime : FLOAT := 1.0;
-      Paths2Cross : CROSSING_POINT;
 
-      MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
-
-      --<minima quantità di tempo per attraversare la pista>
-      carDriver : CAR_DRIVER_ACCESS;--
-      MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
-
-      ActualTime : FLOAT;
-      Finished : BOOLEAN := FALSE;
-      Index : INTEGER := 0;
-      id : INTEGER := carDriver.Id;
-      StartingPosition :INTEGER;
-      --Path2Cross : carDriver.RaceIterator;
-      CrossingTime : FLOAT;
-
-   begin
-
-      Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint);
-
-      loop
-         --Istante di tempo segnato nel checkpoint attuale per il competitor
-         ActualTime := C_Checkpoint.Get_Time(id); -- non trovo la getTime nel checkpoint
-
-         --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
-         --viene subito assegnata la collezione  di path per la scelta della traiettoria
-         C_Checkpoint.Signal_Arrival(id,Paths2Cross);--arrived
-
-         --altrimenti si comincia ad attendere il proprio turno
-         while Paths2Cross = null loop
-            C_Checkpoint.Wait(id,Paths2Cross);
-         end loop;
-
-         --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
-         --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
-         --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
-         StartingPosition := Get_Position(carDriver.RaceIterator);
-
-         if StartingPosition = 1 then
-            Finished := Get_IsFinished(carDriver.RaceIterator);
-         end if;
-
-         --Se la gara è finita non è necessario effettuare la valutazione della traiettoria
-         exit when Finished = true;
-
-         --Inizio sezione dedicata alla scelta della traiettoria
-         --questa è la soluzione attuale. Il crossing time e il choosenpath
-         --sono valori restituiti dalla funzione
-
-         --Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
-         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross); -- CrossingTime è il tempo effettivo di attraversamento del
-         --tratto, compreso il tempo di attesa nella traiettoria.
-
-         --Fine sezione  per la scelta della traiettoria
-
-         --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
-         --quindi può essere segnalato il passaggio del checkpoint per permettere agli
-         --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
-         --altri checkpoint
-
-         C_Checkpoint.Signal_Leaving(ID);
-
-
-         --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
-         --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
-         --procedere degli altri competitor
-
-         PredictedTime := ActualTime + CrossingTime;
-
-         loop
-            Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);--missing argument --
-            PredictedTime := PredictedTime + MinRaceTime - MinSegTime * Float(Index);
-            C_Checkpoint.Set_ArrivalTime(id,PredictedTime); --manca un parametro
-            Index := Index + 1;
-            exit when Get_Position(carDriver.RaceIterator) = StartingPosition+1;
-         end loop;
-
-         --Delay(DELAY_TIME);
-         Delay(Standard.Duration(PredictedTime));
-      end loop;
-
-      --+Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
-      --+come parametri bisogna che in entrata ci sia la strategia, altrimenti non
-      --+abbiamo niente con cui poterla usare.
-      --+come metodo non è male solo che credo stia meglio nella strategy in modo da
-      --+poter essere disponibile anche per "l'oggetto" di StrategyBox.
-      --+ultima cosa, è corretto chiamare path2cross quando noi invece abbiamo
-      --+il segmento su cui poi scegliere il path giusto?
-
-
-
-   end TASKCOMPETITOR;
 
    -----------------------------------
    -----------------------------------
    ------ CALCOLO CROSSING TIME  -----
    -----------------------------------
    -----------------------------------
-   function CalculateCrossingTime (CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
-                                   F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
-                                   Paths2Cross : CROSSING_POINT) return FLOAT is
+   procedure CalculateCrossingTime (TimeCriticalTemp : out FLOAT; CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
+                                    F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
+                                    Paths2Cross : CROSSING_POINT; Vel_Out : out FLOAT) is
       length_path : FLOAT; --lunghezza tratto
       --size_path : INTEGER; -- molteplicità tratto
       angle_path : FLOAT; -- angolo
@@ -587,12 +498,13 @@ package body Competitor is
       tyre_usury : FLOAT; -- usura delle gomme
       gasoline_level : FLOAT; -- livello di benzina
       vel_max_reale : FLOAT; --velocità massima raggiungibile
-      vel_max : FLOAT;
+      vel_max : FLOAT := carDriver.auto.MaxSpeed;
       lc : FLOAT;
       timeCritical: FLOAT;
       acc: FLOAT;
 
    begin
+      --++++++Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : in CalculateCrossingTime");
       --velocità massima scalata per usura gomme e benzina presente.
       --V =velocità massima
       --U =usura gomme (valori da 0 a 1)
@@ -606,34 +518,66 @@ package body Competitor is
 
       length_path := Paths2Cross.Get_Length(PathsCollection_Index);
       --size_path := Paths2Cross.Get_Size(PathsCollection_Index);
-
+      --++++++Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : length_path = "&Float'Image(length_path));
       angle_path:= Paths2Cross.Get_Angle(PathsCollection_Index);
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : angle_path = "&Float'Image(angle_path));
       grip_path:= Paths2Cross.Get_Grip(PathsCollection_Index);
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : grip_path = "&Float'Image(grip_path));
       difficulty_path:= Paths2Cross.Get_Difficulty(PathsCollection_Index);
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : difficulty_path = "&Float'Image(difficulty_path));
       tyre_usury := Get_Usury(CarDriver);
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
       gasoline_level:=Get_GasLevel(CarDriver);
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Float'Image(gasoline_level));
       vel_max := Get_MaxSpeed(CarDriver); --
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel_max*((Float(gasoline_level)*10.0)/100.0)) = "&Float'Image(vel_max*((Float(gasoline_level)*10.0)/100.0)));
       acc := 1.2; -- cercare un valora buono per l'accelerazione da impostare nell'auto
-      vel_max_reale := vel_max - ((vel_max * (tyre_usury * 10.0))/100.0) - ((Float(gasoline_level)*vel_max)/1000.0);
+      vel_max_reale := vel_max-((tyre_usury * ((vel_max * 10.0))/100.0))-(((gasoline_level/10.00)*(vel_max*10.0)/100.0));
+      tyre_usury := tyre_usury + 0.04; --(25 giri per una gomma circa)
+      gasoline_level := gasoline_level - 4.00;
+      if gasoline_level <= 0.0 then
+         -- vel_max_reale:=0.0; da rimettere..va aggiunto un metodo nella competizione RITIRATO
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : ATTENZIONE - BENZINA FINITA !!!");
+      else
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Float'Image(gasoline_level));
+      end if;
+
       --V - (V*(U x 10)/100))-((B*V)/1000)
       -- formula per il tempo di attraversamento
       -- caso 1
       -- tempo di percorrenza= tempo per raggiungere velocità massima.
       -- lunghezza tratto in accelerazione = lunghezza tratto
       -- velocità finale = velocità massima per quel tratto
-
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max : "&Float'Image(vel_max));
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max reale : "&Float'Image(vel_max_reale));
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel in : "&Float'Image(Vel_In));
       timeCritical := (vel_max_reale - Vel_In) / acc; -- tempo per arrivare a Vmax partendo da Vel_iniziale
-      lc := Vel_In*timeCritical + 0.5*acc*timeCritical*timeCritical;
+      if vel_max_reale <= 0.0 then lc:=0.0;
+      else lc := Vel_In*timeCritical + 0.5*acc*timeCritical*timeCritical;
+      end if;
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : time critical = "&Float'Image(timeCritical));
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : lc = "&Float'Image(lc));
+      --return 10.0;
+
       if lc = length_path then
-         CarDriver.pilota.Vel_In:=vel_max_reale;
-         return timeCritical;-- aggiornare velocità
+         --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 1 - lc=length_path, return "&Float'Image(timeCritical));
+         Vel_Out:=vel_max_reale;---attenzione TODO se cambio vel in in una traiettoria lo cambio anche per quella dopo...
+         TimeCriticalTemp := timeCritical;-- aggiornare velocità
       elsif lc < length_path then
-         CarDriver.pilota.Vel_In:=vel_max_reale;
-         return timeCritical + ( length_path - lc )/vel_max_reale;
+         --++++++ Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 2 - lc<length_path, return "&Float'Image(timeCritical + ( length_path - lc )/vel_max_reale));
+         Vel_Out:=vel_max_reale;
+         --if vel_max_reale = 0.0 then timeCriticalTemp := -1000.0;
+         --else
+         if vel_max_reale = 0.0 then timeCriticalTemp := 0.0;
+         else
+            TimeCriticalTemp := timeCritical + ( length_path - lc )/vel_max_reale;
+         end if;
       elsif lc> length_path  then
-         timeCritical := (-1.0) * (Vel_In/acc) + 25.0;--Sqrt(((Vel_In ** 2 ) + (2.0 * length_path))/(acc ** 2));
-         CarDriver.pilota.Vel_In:=CarDriver.pilota.Vel_In + (acc * timeCritical);
-         return timeCritical;
+         --++++++ Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 3 - lc>length_path, return "&Float'Image((-1.0) * (Vel_In/acc) + 25.0));
+         timeCritical := (-1.0) * (Vel_In/acc) + Ada.Numerics.Elementary_Functions.Sqrt(((Vel_In ** 2 ) + (2.0 * length_path))/(acc ** 2));--TODO Correggere
+         Vel_Out:=CarDriver.pilota.Vel_In + (acc * timeCritical);
+         TimeCriticalTemp := timeCritical;
       end if;
 
    end CalculateCrossingTime;
@@ -659,41 +603,236 @@ package body Competitor is
       CompArrivalTime : FLOAT := F_Segment.Get_Time(driver.Id);
       --ho bisogno di avere metodi per il ritorno dei campi dati del checkpoint_sync_point
       --inoltre non vedo il metodo Get_ArrivalTime
-      CrossingTime : FLOAT := 0.0;
+      CrossingTime : FLOAT:= 0.0;
+      CrossingTimeTemp : FLOAT;
       TotalDelay : FLOAT := 0.0;
       MinDelay : FLOAT := -1.0;
+      pathTimeMinore : FLOAT;
       --BestPath : PATH;
       Competitor_Status_Tyre : FLOAT;
       Competitor_Status_Level: FLOAT;
-       --manca il metodo per tornare un pathcollection;
+      --manca il metodo per tornare un pathcollection;
       -- Competitor_Strategy : STRATEGY_CAR := Competitor.Get_Strategy();
-
+      velTemp : FLOAT :=0.0;
+      traiettoriaScelta : INTEGER;
+      vel_array : VEL(1..Paths2Cross.Get_Size);
    begin
+      -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : In evaluate");
       -- loop on paths
       Competitor.Get_Status(driver, Competitor_Status_Tyre, Competitor_Status_Level);
-      for Index in 1..Paths2Cross.Get_Size loop --no selector pathcollection for type cheskpoint_synch definded in circuit.ads
-         PathTime := F_Segment.Get_Time(Index);
+      --++++++   Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : dopo get status");
+      for Index in 1..Paths2Cross.Get_Size loop
+         --CrossingTime:= 0.0;
+         --++++++         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : Paths2Cross.Get_Size = "&Integer'Image(Paths2Cross.Get_Size));
+         PathTime := Paths2Cross.Get_PathTime(Index);
          WaitingTime := PathTime - CompArrivalTime;
+         -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time: " &Float'Image(PathTime));
          StartingInstant := PathTime;
-
+         --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" :scorro il path2cross, index = "&Integer'Image(Index));
          if WaitingTime < 0.0 then
             WaitingTime := 0.0;
             StartingInstant := CompArrivalTime;
          end if;
+         --CrossingTime:=CrossingTime+StartingInstant;
+         --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : before crossing time");
+         --   Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ waiting time DOPO: " &Float'Image(WaitingTime));
 
-         CrossingTime := CalculateCrossingTime(driver, Index, F_Segment,
-                                               Get_Vel_In(driver), Paths2Cross);
-         TotalDelay := StartingInstant + CrossingTime; --decidere come calcolare CrossingTime
-         if TotalDelay < MinDelay or MinDelay < 0.0 then
-            MinDelay := TotalDelay;
+         CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
+         vel_array(Index):=velTemp;
+         CrossingTimeTemp := CrossingTimeTemp + WaitingTime;--StartingInstant;
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : CrossingTime ="&Float'Image(CrossingTime)&" CrossingTimeTemp = "&Float'Image(CrossingTimeTemp));
+         if CrossingTimeTemp = -1000.0 then
+            Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : RITIRATO. ");
+         end if; -- else if
+         if CrossingTime > CrossingTimeTemp or else  CrossingTime <= 0.0 then
+            CrossingTime := CrossingTimeTemp;
+            traiettoriaScelta := Index;
+            pathTimeMinore := PathTime;
          end if;
+         -- traiettoriaScelta := Index;
+         --++++++  Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : after crossing time");
+         TotalDelay := StartingInstant + CrossingTime; --
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : total delay = "&Float'Image(TotalDelay));
+         if TotalDelay < MinDelay or else MinDelay < 0.0 then
+            MinDelay := TotalDelay;
+            --  Paths2Cross.Update_Time(PathTime+MinDelay, Index);--aggiorno i tempi sulla pista
 
-         -- BestPath := segm[i] dicitura un po alla c++, da correggere.
+            --else Paths2Cross.Update_Time(PathTime+TotalDelay, Index); --aggiorno i tempi sulla pista
+         end if;
+         --BestPath := segm[i] dicitura un po alla c++, da correggere.
          -- il significato è quello di cercare il path con tempo di attesa+attraversamento minore.
 
       end loop;
+      --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$size array velocità = "&Integer'Image(vel_array'LENGTH));
+      --for i in 1..vel_array'LENGTH loop
+      --  Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$velocità path[ "&Integer'Image(i)&" ]= "&Float'Image(vel_array(i)));
+      --end loop;
+      --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : min delay = "&Float'Image(MinDelay));
+      Paths2Cross.Update_Time(pathTimeMinore+TotalDelay, traiettoriaScelta);
+      driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocità di entrata al tratto successivo
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : path scelto = "&Integer'Image(traiettoriaScelta));
+      for Index in 1..Paths2Cross.Get_Size loop
+         PathTime := Paths2Cross.Get_PathTime(Index);
+         --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
+      end loop;
       return MinDelay;
    end evaluate;
+
+   -----------------------------------
+   -----------------------------------
+   -- TASKCOMPETITOR IMPLEMENTATION --
+   -----------------------------------
+   -----------------------------------
+   task body TASKCOMPETITOR is
+      C_Checkpoint : CHECKPOINT_SYNCH_POINT;
+      PredictedTime : FLOAT := 0.0;
+      DelayTime : FLOAT := 1.0;
+      Paths2Cross : CROSSING_POINT;
+
+      MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
+
+      --<minima quantità di tempo per attraversare la pista>
+      carDriver : CAR_DRIVER_ACCESS := carDriver_In;--
+      MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
+      i : INTEGER := 0;
+      ActualTime : FLOAT;
+      Finished : BOOLEAN := FALSE;
+      Index : INTEGER := 0;
+      id : INTEGER := carDriver.Id;
+      StartingPosition :INTEGER;
+      --Path2Cross : carDriver.RaceIterator;
+      CrossingTime : FLOAT;
+      endWait : Boolean :=False;
+      j: INTEGER:=0;
+      tempoTotale : FLOAT := 0.0;
+      valore:BOOLEAN :=False;
+      --statistiche COMP_STATS
+      compStats :COMP_STATS_POINT := new COMP_STATS;
+      SectorID : INTEGER;
+   begin
+
+      Ada.Text_IO.Put_Line("init task");--sincronizzazione task iniziale
+      loop exit when endWait=true;
+         accept Start do
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : Start task");
+            endWait := True;
+         end Start;
+      end loop;
+
+
+      Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, ID = "&Integer'Image(id));
+      --Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint);
+      --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, firstName = "&carDriver.pilota.FirstName);
+      --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, lastName = "&carDriver.pilota.LastName);
+      --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, Team = "&carDriver.pilota.Team);
+      --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : car max speed = "&Float'Image(carDriver.auto.MaxSpeed));
+      --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : driver vel in = "&Float'Image(carDriver.pilota.Vel_In));
+      Get_CurrentCheckPoint(carDriver.RaceIterator,C_Checkpoint); -- NEW
+      --valore := Sincronizza(carDriver.Id, C_Checkpoint);
+      --loop exit when C_Checkpoint.getContaConcorrenti = 4;
+      -- Ada.Text_IO.Put_Line("asasaasaasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasas");
+      --Ada.Text_IO.Put_Line("concorrente "&Integer'Image(carDriver.Id)&", contaconcorrenti = "&Integer'Image(C_Checkpoint.getContaConcorrenti));
+      --end loop;
+      loop
+         -- CONTROLLO STRATEGIA CON I BOX
+
+
+         -- FINE CONTROLLO STRATEGIA CON I BOX
+
+         Ada.Text_IO.Put_Line("______-------****** ITERAZIONE : "&Integer'Image(i)&" , TASK "&Integer'Image(Id)&"******-------______");
+--Ada.Float_Text_IO.Put(tempoTotale);
+         --Istante di tempo segnato nel checkpoint attuale per il competitor
+         ActualTime := C_Checkpoint.Get_Time(id);
+         Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
+         --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
+         --viene subito assegnata la collezione  di path per la scelta della traiettoria
+         C_Checkpoint.Signal_Arrival(id,Paths2Cross);--arrived
+         --altrimenti si comincia ad attendere il proprio turno
+         --era while ... loop
+         while Paths2Cross = null loop
+            C_Checkpoint.Wait(id,Paths2Cross);
+         end loop;
+         --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
+         --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
+         --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
+         StartingPosition := Get_Position(carDriver.RaceIterator);
+         if StartingPosition = 1 then
+            Finished := Get_IsFinished(carDriver.RaceIterator);
+         end if;
+         -- METODO INSERITO SOLO PER FAR "FERMARE LE AUTO", solo per scopo di test
+         if i=7 then
+            Finished := true;
+            Ada.Text_IO.Put_Line(Integer'Image(id)&" : Finished = true, esco dal loop");
+         end if;
+         --Se la gara è finita non è necessario effettuare la valutazione della traiettoria
+         exit when Finished = true;
+
+         i:=i+1;
+         --Inizio sezione dedicata alla scelta della traiettoria
+         --questa è la soluzione attuale. Il crossing time e il choosenpath
+         --sono valori restituiti dalla funzione
+         --Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
+         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross); -- CrossingTime è il tempo effettivo di attraversamento del
+         --tratto, compreso il tempo di attesa nella traiettoria.
+         --Fine sezione  per la scelta della traiettoria
+
+         --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
+         --quindi può essere segnalato il passaggio del checkpoint per permettere agli
+         --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
+         --altri checkpoint
+
+         C_Checkpoint.Signal_Leaving(id);
+
+
+         --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
+         --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
+         --procedere degli altri competitor
+         SectorID:=C_Checkpoint.Get_SectorID;
+         PredictedTime := ActualTime + CrossingTime;
+         Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- TEMPO DI GARA = "&Float'Image(PredictedTime));
+
+         Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- sectorID = "&Integer'Image(sectorID));
+         j:=0;
+         loop
+            Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
+            C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
+            Index := Index + 1;
+            j:=j+1;
+            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, tolto il +1
+         end loop;
+         --AGGIORNAMENTO ONBOARDCOMPUTER
+         -- qua va creata la statistica da aggiungere al computer di bordo
+         -- per poi invocare il metodo Add_Data
+         ONBOARDCOMPUTER.Set_Checkpoint(compStats, i-1);
+         ONBOARDCOMPUTER.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
+         -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
+         ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
+         ONBOARDCOMPUTER.Set_Tyre(compStats, carDriver.auto.TyreUsury);
+         ONBOARDCOMPUTER.Set_Time(compStats, predictedTime);
+         carDriver.statsComputer.Add_Data(compStats.all);
+         --FINE AGGIORNAMENTO ONBOARDCOMPUTER
+
+         Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
+         --tempoTotale := tempoTotale + PredictedTime;
+         --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" @@@@@@ tempoTotale : "&Float'Image(PredictedTime));--Delay(DELAY_TIME);
+         --++++++Ada.Text_IO.Put_Line("&%$&%$&%$&%$&%$&%$&%$&%$__________------_________---------"&Integer'Image(carDriver.Id)&" : prima di delay");
+         Delay(Standard.Duration(CrossingTime/100.0));
+         --Delay(1.0);
+         --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
+         --tempoTotale := tempoTotale +
+      end loop;
+
+      --+Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
+      --+come parametri bisogna che in entrata ci sia la strategia, altrimenti non
+      --+abbiamo niente con cui poterla usare.
+      --+come metodo non è male solo che credo stia meglio nella strategy in modo da
+      --+poter essere disponibile anche per "l'oggetto" di StrategyBox.
+      --+ultima cosa, è corretto chiamare path2cross quando noi invece abbiamo
+      --+il segmento su cui poi scegliere il path giusto?
+      --quando esco dal loop devo togliere il concorrente dalla coda altrimeni si pianta tutto, ovviamente perchè il suo segnaposto
+      --rimane nelle code
+   end TASKCOMPETITOR;
 
 
    function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT is
@@ -724,3 +863,4 @@ package body Competitor is
    ---------------------------------------------------------------------------------------------
 
 end Competitor;
+
