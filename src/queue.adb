@@ -19,15 +19,14 @@ package body Queue is
                              Competitors_List : Common.COMPETITORS_LIST;
                              Times : Common.FLOAT_LIST) is
    begin
-
       for Index in Queue_In'RANGE loop
-         if (Index > Times'LAST) then
+         if( Index in Competitors_List'RANGE) then
             Queue_In(Index).CompetitorID := Competitors_List(Index);
             Queue_In(Index).ArrivalTime := Times(Index);
          else
             Queue_In(Index).CompetitorID := -1;
+            Queue_In(Index).ArrivalTime := -1.0;
          end if;
-
       end loop;
    end Set_Competitors;
 
