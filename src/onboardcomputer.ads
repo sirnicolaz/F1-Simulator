@@ -3,19 +3,20 @@ use Common;
 package OnBoardComputer is
 
    type COMP_STATS is private;
+   type COMP_STATS_POINT is access COMP_STATS; --new, altrimenti come lo usavo?
 
-   procedure Set_Checkpoint(Stats_In : out COMP_STATS; Checkpoint_In : INTEGER);
-   procedure Set_Sector(Stats_In : out COMP_STATS; Sector_In : INTEGER);
-   procedure Set_Lap(Stats_In : out COMP_STATS; Lap_In : INTEGER);
-   procedure Set_Gas(Stats_In : out COMP_STATS; Gas_In : PERCENTAGE);
-   procedure Set_Tyre(Stats_In : out COMP_STATS; Tyre_In : PERCENTAGE);
-   procedure Set_Time(Stats_In : out COMP_STATS; Time_In : FLOAT);
+   procedure Set_Checkpoint(Stats_In : out COMP_STATS_POINT; Checkpoint_In : INTEGER);
+   procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER);
+   procedure Set_Lap(Stats_In : out COMP_STATS_POINT; Lap_In : INTEGER);
+   procedure Set_Gas(Stats_In : out COMP_STATS_POINT; Gas_In : FLOAT);--PERCENTAGE); --meglio float
+   procedure Set_Tyre(Stats_In : out COMP_STATS_POINT; Tyre_In : FLOAT);--PERCENTAGE); -- meglio float
+   procedure Set_Time(Stats_In : out COMP_STATS_POINT; Time_In : FLOAT);
 
    function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER;
    function Get_Sector(Stats_In : COMP_STATS) return INTEGER;
    function Get_Lap(Stats_In : COMP_STATS) return INTEGER;
-   function Get_Gas(Stats_In : COMP_STATS) return PERCENTAGE;
-   function Get_Tyre(Stats_In : COMP_STATS) return PERCENTAGE;
+   function Get_Gas(Stats_In : COMP_STATS) return FLOAT;--PERCENTAGE;
+   function Get_Tyre(Stats_In : COMP_STATS) return FLOAT;--PERCENTAGE;
    function Get_Time(Stats_In : COMP_STATS) return FLOAT;
 
    type COMP_STATS_NODE is private;
@@ -47,8 +48,8 @@ private
       Sector : INTEGER;
       Lap : INTEGER;
       Time : FLOAT;
-      GasLevel : PERCENTAGE;
-      TyreUsury : PERCENTAGE;
+      GasLevel : FLOAT;--PERCENTAGE;
+      TyreUsury : FLOAT;--PERCENTAGE;
    end record;
 
    type COMP_STATS_NODE is record
