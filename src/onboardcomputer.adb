@@ -3,32 +3,32 @@ use Ada.Text_IO;
 
 package body OnBoardComputer is
 
-   procedure Set_Checkpoint(Stats_In : out COMP_STATS; Checkpoint_In : INTEGER) is
+   procedure Set_Checkpoint(Stats_In : out COMP_STATS_POINT; Checkpoint_In : INTEGER) is
    begin
       Stats_In.Checkpoint := Checkpoint_In;
    end Set_Checkpoint;
 
-   procedure Set_Sector(Stats_In : out COMP_STATS; Sector_In : INTEGER) is
+   procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER) is
    begin
       Stats_In.Sector := Sector_In;
    end Set_Sector;
 
-   procedure Set_Lap(Stats_In : out COMP_STATS; Lap_In : INTEGER) is
+   procedure Set_Lap(Stats_In : out COMP_STATS_POINT; Lap_In : INTEGER) is
    begin
       Stats_In.Lap := Lap_In;
    end Set_Lap;
 
-   procedure Set_Gas(Stats_In : out COMP_STATS; Gas_In : PERCENTAGE) is
+   procedure Set_Gas(Stats_In : out COMP_STATS_POINT; Gas_In : 	FLOAT) is
    begin
       Stats_In.GasLevel := Gas_In;
    end Set_Gas;
 
-   procedure Set_Tyre(Stats_In : out COMP_STATS; Tyre_In : PERCENTAGE) is
+   procedure Set_Tyre(Stats_In : out COMP_STATS_POINT; Tyre_In : FLOAT) is
    begin
       Stats_In.TyreUsury := Tyre_In;
    end Set_Tyre;
 
-   procedure Set_Time(Stats_In : out COMP_STATS; Time_In : FLOAT) is
+   procedure Set_Time(Stats_In : out COMP_STATS_POINT; Time_In : FLOAT) is
    begin
       Stats_In.Time := Time_In;
    end Set_Time;
@@ -49,12 +49,12 @@ package body OnBoardComputer is
       return Stats_In.Lap;
    end Get_Lap;
 
-   function Get_Gas(Stats_In : COMP_STATS) return PERCENTAGE is
+   function Get_Gas(Stats_In : COMP_STATS) return FLOAT is
    begin
       return Stats_In.GasLevel;
    end Get_Gas;
 
-   function Get_Tyre(Stats_In : COMP_STATS) return PERCENTAGE is
+   function Get_Tyre(Stats_In : COMP_STATS) return FLOAT is
    begin
       return Stats_In.TyreUsury;
    end Get_Tyre;
@@ -89,7 +89,7 @@ package body OnBoardComputer is
    end Reset_Data;
 
 
-   procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS ) is
+   procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS) is
    begin
       Info_Node_Out.Value := Value;
       if(Info_Node_Out.Index = -1) then
@@ -166,16 +166,19 @@ package body OnBoardComputer is
          Reset_Node(Current_Node);
          Last_Node := Current_Node;
          Updated := false;
+         Ada.Text_IO.Put_Line(Integer'Image(Competitor_Id)&" : COMPUTER DI BORDO AVVIATO");
       end Init_Computer;
 
       procedure Add_Data(Data : COMP_STATS) is
          NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
       begin
+         Ada.Text_IO.Put_Line("inizio add_data");
          Set_Node(Last_Node,Reset_Data(Data));
          Reset_Node(NewNode);
          Set_NextNode(Last_Node,NewNode);
          Last_Node := NewNode;
          Updated := true;
+         Ada.Text_IO.Put_Line("fine add_data");
       end Add_Data;
 
       function Get_Id return INTEGER is
