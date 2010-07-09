@@ -125,9 +125,13 @@ package body Queue is
       Position_Old : INTEGER;
       Position_New : INTEGER := 1;
 
-      begin
+   begin
+      --Get the old position of the competitor in the queue
       Position_Old := Get_Position(Queue_In,CompetitorID_In);
       if(Position_Old = 0) then
+         --If there is a free position in the queue (for instance during
+         --+the initialisation of the queue), that position has to be used
+         --+ to insert the competitor
          FindFreePos_Loop:
          for Index in Queue_In'Range loop
             Position_Old := Position_Old + 1;
@@ -137,12 +141,21 @@ package body Queue is
       end if;
 
       for Index in Queue_In'Range loop
+         -- If the arrivalTime stored in the current Index of the queue
+         --+ is greater than the new time that has to be stored, it means
+         --+ that the new time has to be stored in the place of the one
+         --+ in the current position of the queue.
          if Queue_In(Index).ArrivalTime >= ArrivalTime_In then
+            --The 2 different index assignments are due to the different
+            --+shifting procedures used if the new position of the competitor
+            --+in the queue is greater or less than the old one.
             if Index <= Position_Old then
                Position_New := Index;
             else
                Position_New := Index -1;
             end if;
+         --If the end of the queue is reched, the new position has
+         --+to be the last one.
          elsif Queue_In'LENGTH = Index then
             Position_New := Index;
          end if;
@@ -160,5 +173,42 @@ package body Queue is
       end if;
       Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_New);
    end;
+
+
+   procedure Remove_CompetitorFromQueue(Queue_In : in out SORTED_QUEUE;
+                                        CompetitorID_In : INTEGER) is
+      Current_Position : INTEGER := 0;
+      New_Position : INTEGER := 0;
+
+   begin
+      Current_Position := Get_Position(Queue_In,CompetitorID_In);
+      --Premise: when a competitor gets out of the competition,
+      --+ the queue of each checkpoint has to be "virtually" shortened.
+      --+ In order to do this it's necessary to "tag" the rightmost position
+      --+ of the queue somehow. So the queue slot that has to be "removed"
+      --+ has the fields Competitor_ID set to -1 and ArrivalTime set to -1.0.
+
+      --Check if some competitors are already out of the competition
+      --+(in such a case there'll be a queue slot with the Competitor_ID
+      --+ field set to -1).
+      New_Position := Get_Position(Queue_In,-1);
+
+      if(New_Position = 0) then
+         --This means that no competitors are out of the competition yet,
+         --+so it has to be set to -1 the last position of the queue.
+         New_Position := Queue_In'LENGTH;
+      end if;
+
+      for Index in Current_Position..New_Position-1 loop
+         Queue_In(Index) := Queue_In(Index + 1);
+      end loop;
+
+      --Now it's necessary to virtually remove the queue slot immediately
+      --+ before the last one removed (or the last one there no one has been
+      --+ removed up to now).
+      Queue_In(New_Position).CompetitorID := -1;
+      Queue_In(New_Position).ArrivalTime := -1.0;
+   end;
+
 
 end Queue;

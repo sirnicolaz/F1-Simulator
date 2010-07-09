@@ -119,12 +119,12 @@ procedure Main is
 end Configure_Strategy_File;
 
 begin
-<<<<<<< local
+
    Ada.Text_IO.Put_Line("init car...");
    Try_OpenFile;
    Configure_Strategy_File(tempCar,Doc);
    Ada.Text_IO.Put_Line("end init car...");
-=======
+
 
    --Stats test
 --     Init_Node(SynchOrdStatTabNode => Stat_Node_1);
@@ -225,5 +225,5 @@ begin
    NicoleId := Competition.Join("Nicole Kidman");
    Put_Line("Competitor Nicole Kidman joined with id = " & INTEGER'IMAGE(NicoleId));
    Competition.BoxOk(NicoleId);
->>>>>>> other
+
 end Main;

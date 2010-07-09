@@ -50,9 +50,12 @@ package Queue is
 
    procedure Add_Competitor2Queue(Queue_In : in out SORTED_QUEUE;
                                   CompetitorID_In : INTEGER;
-                             	  ArrivalTime_In : FLOAT);
+                                  ArrivalTime_In : FLOAT);
 
-
+   --This procedure has to be used when a competitor is supposed to be
+   --+ out of the competition.
+   procedure Remove_CompetitorFromQueue(Queue_In : in out SORTED_QUEUE;
+                                        CompetitorID_In : INTEGER);
 
 private
    type QUEUE_CELL is record
