@@ -168,9 +168,6 @@ package body OnBoardComputer is
          Updated := false;
       end Init_Computer;
 
-      -- The method adds new data to the computer. We're sure that data are inserted
-      -- in time-increasing order because internal clock of competitors grows through each
-      -- checkpoint (remember that Computer is updated only once a checkpoint is reached)
       procedure Add_Data(Data : COMP_STATS) is
          NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
       begin
@@ -314,12 +311,11 @@ package body OnBoardComputer is
          Updated := false;
       end Get_StatsByCheck;
 
-
-
       entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
       begin
          requeue Get_StatsBySect;
       end Wait_BySect;
+
 
       entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
       begin

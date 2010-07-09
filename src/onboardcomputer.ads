@@ -1,8 +1,11 @@
 with Common;
 use Common;
+
+--This package represents the statistics of each competitor.
 package OnBoardComputer is
 
    type COMP_STATS is private;
+
 
    procedure Set_Checkpoint(Stats_In : out COMP_STATS; Checkpoint_In : INTEGER);
    procedure Set_Sector(Stats_In : out COMP_STATS; Sector_In : INTEGER);
@@ -21,13 +24,29 @@ package OnBoardComputer is
    type COMP_STATS_NODE is private;
    type COMP_STATS_NODE_POINT is access COMP_STATS_NODE;
 
+   -- This type is used to manage the Computer statistics.
    protected type COMPUTER is
+      -- This method create a brand new COMPUTER whose current_node and last_node
+      --+ are set to an empty one.
       procedure Init_Computer(CompetitorId_In : INTEGER);
+      -- The method adds new data to the computer. We're sure that data are inserted
+      --+ in time-increasing order because internal clock of competitors grows through each
+      --+ checkpoint (remember that Computer is updated only once a checkpoint is reached)
       procedure Add_Data(Data : COMP_STATS);
+      -- It returns the competitor ID related to this Computer
       function Get_Id return INTEGER;
+      -- It sets the CompStats parameter with the statistics related to the given sector and lap
       entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
+      -- It sets the CompStats parameter with the statistics related to the given check-point and lap
       entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
+      -- This method is used when a statistic that has not been inserted yet is asked.
+      --+ When the the competitor updates the list after having passed through a check-point,
+      --+ the variable "Updated" is set. In this way the statistic requester can procede with
+      --+ the method execution checking again if the demanded statistic is available.
       entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
+      -- The purpose of this method is the same of the one described above
+      --+ (even if it's used for asking waiting on a check-point statistic request instead
+      --+ of a sector)
       entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
    private
       Competitor_Id : INTEGER;
@@ -40,9 +59,12 @@ package OnBoardComputer is
 
 private
 
+   -- This type collects all the statistics for each time instant.
    type COMP_STATS is record
       Checkpoint : INTEGER;
+      -- Is this the last check-point in the sector?
       LastCheckInSect : BOOLEAN;
+      -- Is this the first check-point in the sector?
       FirstCheckInSect : BOOLEAN;
       Sector : INTEGER;
       Lap : INTEGER;
@@ -51,6 +73,9 @@ private
       TyreUsury : PERCENTAGE;
    end record;
 
+   --This is the structure used to handle the statistic list.
+   --+ Each node contains a record with all the information concerning the statistics
+   --+ at a given instant.
    type COMP_STATS_NODE is record
       Next : COMP_STATS_NODE_POINT;
       Previous : COMP_STATS_NODE_POINT;

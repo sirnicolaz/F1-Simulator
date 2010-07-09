@@ -25,22 +25,33 @@ package Circuit is
    procedure Set_MaxCompetitorsQty ( Qty_In : POSITIVE);
 
    -- PATH Structure delaration
+   --+ A PATH is one of the possible ways the competitor can take
+   --+ in a segment of the circuit.
    type PATH is private;
 
+   -- In a segment the paths can have different lengths. For instance
+   --+ in a bend the innermost path is shorter than the others.
    function Get_Length(Path_In : PATH) return FLOAT;
+   -- The angle of the bending angle of the path
    function Get_Angle(Path_In : PATH) return FLOAT;
+   -- The grip of the path
    function Get_Grip(Path_In : PATH) return FLOAT;
+   -- Another parameter the characterise the path and it may depend
+   --+ on different features.
    function Get_Difficulty(Path_In : PATH) return FLOAT;
 
-   --PATHS sould be private
+   --TODO: PATHS sould be private
+   --This array represents the set of paths a segment of the
+   --+ circuit has.
    type PATHS is array(INTEGER range <>) of PATH;
    type POINT_PATHS is access PATHS;
 
-   --Checkpoint Structure delcaration
+   --Checkpoint Structure delcaration.
    type Checkpoint is tagged private;
    type POINT_Checkpoint is access Checkpoint;
 
-   --Init Segment. Probably it should be private
+   --Init Segment.
+   --TODO: Probably it should be private
    procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
@@ -61,10 +72,6 @@ package Circuit is
 
 
    protected type CROSSING(Paths_In : POINT_PATHS) is
-      procedure Choose_BestPath(CompetitorID_In : INTEGER;
-                                CrossingTime_Out : out FLOAT;
-                                ChoosenPath_Out : out INTEGER;
-                                ArrivalTime_In : FLOAT);
       procedure Update_Time(Time_In : in FLOAT;
                             PathIndex : in INTEGER);
       function Get_Size return INTEGER;
@@ -95,9 +102,6 @@ package Circuit is
       function Get_SectorID return INTEGER;
 
       function getChanged return Boolean;
-function getContaConcorrenti return Integer;
-      --function aggiungi return Boolean;
-      entry Sincronizza(CompetitorID_In : INTEGER);
 
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT);
@@ -111,7 +115,6 @@ function getContaConcorrenti return Integer;
 
    type CHECKPOINT_SYNCH_POINT is access CHECKPOINT_SYNCH;
    function getChanged (temp : in CHECKPOINT_SYNCH_POINT) return Boolean;
-   function Sincronizza(CompetitorID_In : INTEGER; temp : CHECKPOINT_SYNCH_POINT) return Boolean;
    type RACETRACK is array(POSITIVE range <>) of CHECKPOINT_SYNCH_POINT;
    type RACETRACK_POINT is access RACETRACK;
 

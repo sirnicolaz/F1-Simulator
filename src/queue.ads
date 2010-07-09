@@ -47,6 +47,7 @@ package Queue is
 
    -- SORTED_QUEUE Structure definition. It's the same as QUEUE, but with methods defined to maintain the queue sorted by arrival time.
    subtype SORTED_QUEUE is QUEUE;
+
    procedure Add_Competitor2Queue(Queue_In : in out SORTED_QUEUE;
                                   CompetitorID_In : INTEGER;
                              	  ArrivalTime_In : FLOAT);

@@ -109,54 +109,9 @@ package body Circuit is
    --   return Checkpoint_In.PathsCollection(1).Length;
    --end Get_Length;
 
-   --this resource handle the path choice by the task Competitor.
-   --they're still needed some parameters to use for the evaluation,
-   --like, for example, strategy and car_status.
-   --Valutare se sia il caso di spostare questo funzionalità direttamente nel competitor,
-   --oppure se passare anche il competitor al metodo per fare in modo che possa essere lui stesso
-   --a invocare il metodo per la valutazione (in modo da non dover fare
-   --uscire dal package oggetti che dovrebbero rimanere nascosti).
    protected body CROSSING is
 
-      procedure Choose_BestPath(CompetitorID_In : INTEGER;
-                                CrossingTime_Out : out FLOAT;
-                                ChoosenPath_Out : out INTEGER;
-                                ArrivalTime_In : FLOAT) is
-         StartingInstant : FLOAT := 0.0;
-         WaitingTime : FLOAT := 0.0;
-         PathTime : FLOAT;
-         CrossingTime : FLOAT := 0.0;
-         TotalDelay : FLOAT := 0.0;
-         MinDelay : FLOAT := -1.0;
-         ChoosenPathIndex : INTEGER := 1;
-      begin
-         -- loop through paths
-
-         for Index in F_Paths'RANGE loop
-            PathTime := F_Paths.all(Index).LastTime;
-            WaitingTime := PathTime - ArrivalTime_In;
-            StartingInstant := PathTime;
-            CrossingTime_Out := WaitingTime;
-            if WaitingTime < 0.0 then
-               WaitingTime := 0.0;
-               StartingInstant := ArrivalTime_In;
-               CrossingTime_Out := 0.0;
-            end if;
-
-            --CrossingTime := CalculateCHECKPOINT_SYNCHTime(F_Checkpoint.PathsCollection(Index),Competitor_Status,Competitor_Strategy);
-            TotalDelay := StartingInstant + CrossingTime;
-            if TotalDelay < MinDelay or MinDelay < 0.0 then
-               MinDelay := TotalDelay;
-               ChoosenPathIndex := Index;
-               CrossingTime_Out := CrossingTime_Out + CrossingTime;
-            end if;
-         end loop;
-
-         F_Paths.all(ChoosenPathIndex).LastTime := MinDelay;
-         ChoosenPath_Out := ChoosenPathIndex;
-
-      end Choose_BestPath;
-
+      --This method update the
       procedure Update_Time(Time_In : FLOAT;
                             PathIndex : INTEGER) is
       begin
@@ -197,8 +152,10 @@ package body Circuit is
 
    protected body CHECKPOINT_SYNCH is
 
-      --The method set the calling task Competitor as arrived. If he's in the 1st position,
-      --the CROSSING_POINT is initialized, in order to let the task "cross" the segment.
+      --The method set the calling task Competitor as arrived.
+      --+If he's in the 1st position,
+      --+the Path2Cross is initialised,
+      --+in order to let the task choose the path and "cross" the segment.
       procedure Signal_Arrival(CompetitorID_In : INTEGER;
                                Paths2Cross : out CROSSING_POINT) is
       begin
@@ -207,10 +164,11 @@ package body Circuit is
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Paths2Cross := F_Checkpoint.PathsCollection;
          else
-            Paths2Cross := null; -- fix this crap
+            Paths2Cross := null; -- TODO: fix this crap
          end if;
 
       end Signal_Arrival;
+
 
       procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST;
                                 Times : Common.FLOAT_LIST) is
@@ -246,22 +204,9 @@ package body Circuit is
          return F_Checkpoint.SectorID;
       end Get_SectorID;
 
-
-      function getContaConcorrenti return Integer is
-      begin
-         return CHECKPOINT_SYNCH.ContaConcorrenti;
-      end getContaConcorrenti;
-
-      entry Sincronizza(CompetitorID_In : INTEGER) when True is
-      begin
-         CHECKPOINT_SYNCH.ContaConcorrenti := CHECKPOINT_SYNCH.ContaConcorrenti+1;
-        -- CHECKPOINT_SYNCH.aggiungi;
-         --Ada.Text_IO.Put_Line("concorrente "&Integer'Image(CompetitorID_In)&", contaconcorrenti = "&Integer'Image(ContaConcorrenti));
-         --return true;
-      end Sincronizza;
-      --Method that allow the tasks Competitor to Wait til they reach
+      --Method that allows the tasks Competitor to Wait till they reach
       --the 1st position in the checkpoint queue. Once one of them is first,
-      --his Paths2Cross is initialized with the segment corresponding CROSSING_POINT,
+      --his Paths2Cross is initialized with the corresponding CROSSING_POINT,
       --in order to let it "cross" the segment.
       entry Wait(CompetitorID_In : INTEGER;
                  Paths2Cross : out CROSSING_POINT) when Changed = TRUE is
@@ -273,6 +218,7 @@ package body Circuit is
          end if;
 --         Ada.Text_IO.Put_Line("--------********$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : esco dalla WAIT, CHANGED= "&Boolean'Image(getChanged));
       end Wait;
+
       function getChanged return Boolean is
       begin
          return Changed;
@@ -284,12 +230,6 @@ package body Circuit is
    begin
       return temp.getChanged;
    end getChanged;
-
-   function Sincronizza(CompetitorID_In : INTEGER; temp : CHECKPOINT_SYNCH_POINT) return Boolean is
-   begin
-      temp.Sincronizza(CompetitorID_In);
-      return true;
-   end Sincronizza;
 
    --RACETRACK methods implementation
 
