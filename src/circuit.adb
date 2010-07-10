@@ -187,11 +187,32 @@ package body Circuit is
                                 Time_In : FLOAT) is
       begin
          Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
+         -- If in the 1st position of the queue now there is a competitor who's
+         --+ tagged as "arrived", it means that he has to be notified
+         --+ about the change. In this way he can start to cross the checkpoint.
+         --+ The notification is sent setting the variable "CHANGED".
          if Get_IsArrived(F_Checkpoint.Queue.all,1) then
             Changed := TRUE;
          end if;
 
       end Set_ArrivalTime;
+
+      --The procedure virtually removes the competitor from the queue of
+      --+the given checkpoint. It means that the competitor is not supposed
+      --+to arrive to this checkpoint anymore.
+      procedure Remove_Competitor(CompetitorID_In : INTEGER) is
+      begin
+         Remove_CompetitorFromQueue(F_Checkpoint.Queue.all,CompetitorID_In);
+         -- Removing the competitor it may happen that the first position
+         --+ of the queue becomes taken by a competitor that is ready to cross
+         --+ the checkpoint ( in such a case the Get_IsArrived function with
+         --+ "1" as the second parameter returns true). If that's the case, it's
+         --+ necessary to notify that competitor about the change setting
+         --+ the variable "CHANGED" as we do for the Set_ArrivalTime procedure.
+         if Get_IsArrived(F_Checkpoint.Queue.all,1) then
+            Changed := TRUE;
+         end if;
+      end Remove_Competitor;
 
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT is
       begin

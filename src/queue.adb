@@ -204,7 +204,7 @@ package body Queue is
       end loop;
 
       --Now it's necessary to virtually remove the queue slot immediately
-      --+ before the last one removed (or the last one there no one has been
+      --+ before the last one removed (or the last one in the queue if no one has been
       --+ removed up to now).
       Queue_In(New_Position).CompetitorID := -1;
       Queue_In(New_Position).ArrivalTime := -1.0;

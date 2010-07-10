@@ -94,6 +94,7 @@ package Circuit is
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
+      procedure Remove_Competitor(CompetitorID_In : INTEGER);
       procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST;
                                 Times : Common.FLOAT_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
