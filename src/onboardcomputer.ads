@@ -8,12 +8,12 @@ package OnBoardComputer is
    type COMP_STATS_POINT is access COMP_STATS; --new, altrimenti come lo usavo?
 
 
-   procedure Set_Checkpoint(Stats_In : out COMP_STATS; Checkpoint_In : INTEGER);
-   procedure Set_Sector(Stats_In : out COMP_STATS; Sector_In : INTEGER);
-   procedure Set_Lap(Stats_In : out COMP_STATS; Lap_In : INTEGER);
-   procedure Set_Gas(Stats_In : out COMP_STATS; Gas_In : PERCENTAGE);
-   procedure Set_Tyre(Stats_In : out COMP_STATS; Tyre_In : PERCENTAGE);
-   procedure Set_Time(Stats_In : out COMP_STATS; Time_In : FLOAT);
+   --procedure Set_Checkpoint(Stats_In : out COMP_STATS; Checkpoint_In : INTEGER);
+   --procedure Set_Sector(Stats_In : out COMP_STATS; Sector_In : INTEGER);
+   --procedure Set_Lap(Stats_In : out COMP_STATS; Lap_In : INTEGER);
+   --procedure Set_Gas(Stats_In : out COMP_STATS; Gas_In : PERCENTAGE);
+   --procedure Set_Tyre(Stats_In : out COMP_STATS; Tyre_In : PERCENTAGE);
+   --procedure Set_Time(Stats_In : out COMP_STATS; Time_In : FLOAT);
 
    procedure Set_Checkpoint(Stats_In : out COMP_STATS_POINT; Checkpoint_In : INTEGER);
    procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER);
