@@ -144,7 +144,7 @@ package body Queue is
          -- If the arrivalTime stored in the current Index of the queue
          --+ is greater than the new time that has to be stored, it means
          --+ that the new time has to be stored in the place of the one
-         --+ in the current position of the queue.
+         --+ in the current position (Index) of the queue.
          if Queue_In(Index).ArrivalTime >= ArrivalTime_In then
             --The 2 different index assignments are due to the different
             --+shifting procedures used if the new position of the competitor
@@ -154,11 +154,16 @@ package body Queue is
             else
                Position_New := Index -1;
             end if;
-         --If the end of the queue is reched, the new position has
-         --+to be the last one.
-         elsif Queue_In'LENGTH = Index then
+         --If either the end of the queue or the virtual
+         --+ end of the queue is reched (it means that the next position
+         --+ is -1, so no competitor are supposed to occupy that position
+         --+ anymore) the new position has to be the current one (Index).
+         elsif Queue_In'LENGTH = Index or Queue_In(Index+1).CompetitorID = -1 then
             Position_New := Index;
          end if;
+         -- When this condition is satisfied, it means that a new position
+         --+ for the competitor was found before reaching the end of the
+         --+ queue.
          exit when Queue_In(Index).ArrivalTime >= ArrivalTime_In;
       end loop;
 
