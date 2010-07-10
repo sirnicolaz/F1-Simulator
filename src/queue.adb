@@ -46,6 +46,10 @@ package body Queue is
       Position : INTEGER;
    begin
       Position := Get_Position(Queue_In,CompetitorID_In);
+      if( Position = 0 ) then
+         return -1.0;
+      end if;
+
       return Get_ArrivalTime(Queue_In(Position));
    end Get_CompetitorArrivalTime;
 
@@ -205,8 +209,11 @@ package body Queue is
       end if;
 
       for Index in Current_Position..New_Position-1 loop
-         Queue_In(Index) := Queue_In(Index + 1);
+         --TODO: capire perchè qui c'è bisogno del ".all" e sulla
+         --+ Add_Competitor2Queue invece no
+         Queue_In(Index).all := Queue_In(Index + 1).all;
       end loop;
+
 
       --Now it's necessary to virtually remove the queue slot immediately
       --+ before the last one removed (or the last one in the queue if no one has been
