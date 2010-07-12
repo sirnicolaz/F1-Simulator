@@ -2,8 +2,8 @@
 --use Circuit;
 --with Strategy;
 --use Strategy;
--- with Ada.Float_Text_IO; serve solo per stampare float.
--- use Ada.Float_Text_IO;
+ with Ada.Float_Text_IO;
+ use Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
 --with Queue; use Queue;
@@ -532,9 +532,15 @@ package body Competitor is
       vel_max := Get_MaxSpeed(CarDriver); --
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel_max*((Float(gasoline_level)*10.0)/100.0)) = "&Float'Image(vel_max*((Float(gasoline_level)*10.0)/100.0)));
       acc := 1.2; -- cercare un valora buono per l'accelerazione da impostare nell'auto
-      vel_max_reale := vel_max-((tyre_usury * ((vel_max * 10.0))/100.0))-(((gasoline_level/10.00)*(vel_max*10.0)/100.0));
-      tyre_usury := tyre_usury + 0.04; --(25 giri per una gomma circa)
-      gasoline_level := gasoline_level - 4.00;
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max : "&Float'Image(vel_max)
+                           &" , (tyre_usury * (vel_max)/10.0) : "&Float'Image((tyre_usury * (vel_max)/10.0))
+                          &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image(((gasoline_level/10.00)*(vel_max)/100.0)));
+
+      vel_max_reale := vel_max-((tyre_usury * (vel_max)/10.0))-(((gasoline_level/10.00)*(vel_max)/100.0));
+
+     -- tyre_usury := CarDriver.auto.TyreUsury; --(25 giri per una gomma circa)
+
+     -- gasoline_level := CarDriver.auto.GasolineLevel;
       if gasoline_level <= 0.0 then
          -- vel_max_reale:=0.0; da rimettere..va aggiunto un metodo nella competizione RITIRATO
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : ATTENZIONE - BENZINA FINITA !!!");
@@ -776,6 +782,9 @@ package body Competitor is
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
 
+         --aggiorno tyreusury e gasoline _level
+         CarDriver.auto.TyreUsury := CarDriver.auto.TyreUsury+0.04;
+         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4.0;
          --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
          --quindi può essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
@@ -794,11 +803,14 @@ package body Competitor is
          Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- sectorID = "&Integer'Image(sectorID));
          j:=0;
          loop
+            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : loop j= "&Integer'Image(j));
             Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : metà loop j= "&Integer'Image(j));
             PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
             Index := Index + 1;
             j:=j+1;
+            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : fine loop j= "&Integer'Image(j));
             exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, tolto il +1
          end loop;
          --AGGIORNAMENTO ONBOARDCOMPUTER
@@ -817,7 +829,7 @@ package body Competitor is
          --tempoTotale := tempoTotale + PredictedTime;
          --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" @@@@@@ tempoTotale : "&Float'Image(PredictedTime));--Delay(DELAY_TIME);
          --++++++Ada.Text_IO.Put_Line("&%$&%$&%$&%$&%$&%$&%$&%$__________------_________---------"&Integer'Image(carDriver.Id)&" : prima di delay");
-         Delay(Standard.Duration(CrossingTime/100.0));
+        -- Delay(Standard.Duration(CrossingTime/100.0));
          --Delay(1.0);
          --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
          --tempoTotale := tempoTotale +

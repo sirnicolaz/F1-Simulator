@@ -19,7 +19,7 @@ package Circuit is
    subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
    Checkpoints_Qty : POSITIVE := 2;
-   MaxCompetitors_Qty : POSITIVE := 4;--4;
+   MaxCompetitors_Qty : POSITIVE := 5;--4;
 
    procedure Set_CheckpointsQty (Qty_In : POSITIVE);
    procedure Set_MaxCompetitorsQty ( Qty_In : POSITIVE);
