@@ -23,7 +23,7 @@ package Box is
    --Temporary public type. It has to be private DEL
    --   type BOX_STRATEGY is private;
    type BOX_STRATEGY is record
-      Type_Tyre : STRING(1..20);
+      Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Style : DRIVING_STYLE;
       GasLevel : PERCENTAGE;
       PitStopLap : INTEGER;

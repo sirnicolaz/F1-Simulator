@@ -57,7 +57,7 @@ package body Box is
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
    begin
-      New_Strategy.Type_Tyre := "12345678901234567890";
+      New_Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Rain tyre");
       return New_Strategy;
    end Compute_Strategy;
 
@@ -77,7 +77,7 @@ package body Box is
       New_Info.MeanSpeed := 0.0;
       New_Info.MeanGasConsumption := 0.0;
       New_Info.Time := 0.0;
-      Strategy.Type_Tyre := "Regular             ";
+      Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Regular tyre");
       Strategy.Style := NORMAL;
       Strategy.GasLevel := 0.0;
       Strategy.PitStopLap := 1;
@@ -167,87 +167,36 @@ package body Box is
 
    end SYNCH_COMPETITION_UPDATES;
 
-   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING is
-      Gas : access String;
-      GasLength : INTEGER;
-      Gas_Unb : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      Tyre : STRING(1..20);
-      TyreLength : INTEGER;
-      Style : access STRING;
-      StyleLength : INTEGER;
-      PStopLap : access STRING;
-      PStopLapLength : INTEGER;
-      PStopLap_Unb : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      PStopDelay : access STRING;
-      PStopDelay_Unb : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      PStopDelayLength : INTEGER;
 
-      Tot_Length : INTEGER;
-      XML_String : access STRING;
+
+   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING is
+
+      Style : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+
+      XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
-      --Initialise gas String
-      GasLength := FLOAT'IMAGE(strategy.GasLevel)'LENGTH;
-      Gas := new STRING(1..GasLength);
-      Ada.Float_Text_IO.Put(Gas.all,strategy.GasLevel,0,0);
-
-      Gas_Unb := Unbounded_String.To_Unbounded_String(Ada.Strings.Fixed.Trim(Gas.all,Ada.Strings.Left));
-      GasLength := Unbounded_String.Length(Gas_Unb);
-      --Initialise tyre string
-      Tyre := strategy.Type_Tyre;
-      TyreLength := Tyre'LENGTH;
-      --Initialise style string
       case strategy.Style is
          when AGGRESSIVE =>
-            StyleLength := 10;
-            Style := new STRING(1..StyleLength);
-            Style.all := "Aggressive";
+            Style := Unbounded_String.To_Unbounded_String("Aggressive");
          when NORMAL =>
-            StyleLength := 6;
-            Style := new STRING(1..StyleLength);
-            Style.all := "Normal";
+            Style := Unbounded_String.To_Unbounded_String("Normal");
          when CONSERVATIVE =>
-            StyleLength := 12;
-            Style := new STRING(1..StyleLength);
-            Style.all := "Conservative";
+            Style := Unbounded_String.To_Unbounded_String("Conservative");
       end case;
-      --Initialise pit stop lap string
-      PStopLapLength := INTEGER'IMAGE(strategy.PitStopLap)'LENGTH;
-      PStopLap := new STRING(1..PStopLapLength);
-      PStopLap.all := INTEGER'IMAGE(strategy.PitStopLap);
-      PStopLap_Unb := Unbounded_String.To_Unbounded_String(Ada.Strings.Fixed.Trim(PStopLap.all, Ada.Strings.Left));
-      PStopLapLength := Unbounded_String.Length(PStopLap_Unb);
-      --Initialise pit stop delay string
-      PStopDelayLength := FLOAT'IMAGE(strategy.PitStopDelay)'LENGTH;
-      PStopDelay := new STRING(1..PStopDelayLength);
-      Ada.Float_Text_IO.Put(PStopDelay.all,strategy.PitStopDelay,0,0);
 
-      PStopDelay_Unb := Unbounded_String.To_Unbounded_String(Ada.Strings.Fixed.Trim(PStopDelay.all,Ada.Strings.Left));
-      PStopDelayLength := Unbounded_String.Length(PStopDelay_Unb);
-      -- <?xml version="1.0"?>   21 char
-      --+<strategy>     10 char
-      --+	<tyreType></tyreType>      21 char
-      --+	<style></style>  15 char
-      --+	<gasLevel></gasLevel>    21 char
-      --+	<pitStopLap></pitStopLap>    25 char
-      --+	<pitStopDelay></pitStopDelay>     29 char
-      --+</strategy>    11 char
-      --+ tot 153
-
-      Tot_Length := 153 + GasLength + TyreLength + StyleLength + PStopLapLength + PStopDelayLength;
-      XML_String := new STRING(1..Tot_Length);
-      XML_String.all := "<?xml version=""1.0""?>" &
+      XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
       			"<strategy>" &
-			      "<tyreType>" & Tyre & "</tyreType>" &
-			      "<style>" & Style.all & "</style>" &
-			      "<gasLevel>" & Unbounded_String.To_String(Gas_Unb) & "</gasLevel>" &
-			      "<pitStopLap>" & Unbounded_String.To_String(PStopLap_Unb) & "</pitStopLap>" &
-			      "<pitStopDelay>" & Unbounded_String.To_String(PStopDelay_Unb) & "</pitStopDelay>" &
-		        "</strategy>";
+			      "<tyreType>" & Unbounded_String.To_String(strategy.Type_Tyre)& "</tyreType>" &
+			      "<style>" & Unbounded_String.To_String(Style) & "</style>" &
+			      "<gasLevel>" & FloatToString(strategy.GasLevel) & "</gasLevel>" &
+			      "<pitStopLap>" & IntegerToString(strategy.PitStopLap) & "</pitStopLap>" &
+			      "<pitStopDelay>" & FloatToString(strategy.PitStopDelay) & "</pitStopDelay>" &
+		        "</strategy>");
 
 
 --      ADA.Float_Text_IO.Put(Temp_Str, strategy.Type_Tyre, Float'Base'Digits);
-      return XML_String.all;
+      return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
 
    procedure SendStrategy(New_Strategy : BOX_STRATEGY) is
