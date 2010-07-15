@@ -353,33 +353,13 @@ package body Circuit is
    end Init_Racetrack;
 
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT is
-      Input : File_Input;
-      Reader : Tree_Reader;
+
       Doc : Document;
-      Racetrack_XML : Node_List;
-      Racetrack_Length : INTEGER;
       Racetrack_Out : RACETRACK_POINT;
-
-      procedure Try_OpenFile is
-      begin
-
-         Open(Racetrack_File,Input);
-
-         Set_Feature(Reader,Validation_Feature,False);
-         Set_Feature(Reader,Namespace_Feature,False);
-
-         Parse(Reader,Input);
-
-         Doc := Get_Tree(Reader);
-         Racetrack_XML := Get_Elements_By_Tag_Name(Doc,"Checkpoint");
-         Racetrack_Length := Length(Racetrack_XML);
-      exception
-         when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
-      end Try_OpenFile;
 
    begin
 
-      Try_OpenFile;
+      Doc := Common.Get_Document(Racetrack_File);
 
       Init_Racetrack(Racetrack_Out, Doc);
 

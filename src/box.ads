@@ -1,7 +1,13 @@
 with Common;
 use Common;
 
+with Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;
+
 package Box is
+
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
 
    task type MONITOR is
    end MONITOR;
@@ -12,8 +18,17 @@ package Box is
    type COMPETITION_UPDATE is private;
    type INFO_NODE is private;
    type INFO_NODE_POINT is access INFO_NODE;
-   type BOX_STRATEGY is private;
 
+
+   --Temporary public type. It has to be private DEL
+   --   type BOX_STRATEGY is private;
+   type BOX_STRATEGY is record
+      Type_Tyre : STRING(1..20);
+      Style : DRIVING_STYLE;
+      GasLevel : PERCENTAGE;
+      PitStopLap : INTEGER;
+      PitStopDelay : FLOAT;
+   end record;
    Interval : FLOAT; -- set after competition joining
    Sector_Qty : INTEGER;
    Competitor_Id : INTEGER;
@@ -34,6 +49,9 @@ package Box is
 
    -- Remote Methods --
 
+   --Temporary test function DEL
+   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING;
+
    --This method is ought to establish a connection with the competition
    --+ server and communicate the new strategy to the competitor radio
    procedure SendStrategy(New_Strategy : BOX_STRATEGY);
@@ -47,6 +65,7 @@ package Box is
    function GetRemoteFrequency(radio : in BOX_RADIO) return INTEGER;
    --TODO: find out the purpose of this function
    procedure RequestPitstop;
+
 
 private
    type COMPETITION_UPDATE is record
@@ -65,13 +84,13 @@ private
       This : COMPETITION_UPDATE;
    end record;
 
-   type BOX_STRATEGY is record
-      Type_Tyre : STRING(1..20);
-      Style : DRIVING_STYLE;
-      GasLevel : PERCENTAGE;
-      PitStopLap : INTEGER;
-      PitStopDelay : FLOAT;
-   end record;
+--     type BOX_STRATEGY is record
+--        Type_Tyre : STRING(1..20);
+--        Style : DRIVING_STYLE;
+--        GasLevel : PERCENTAGE;
+--        PitStopLap : INTEGER;
+--        PitStopDelay : FLOAT;
+--     end record;
 
    type BOX_RADIO is record
       -- Frequency: metaphorical way to say "port number"
