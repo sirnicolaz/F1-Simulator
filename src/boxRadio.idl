@@ -1,0 +1,3 @@
+interface BoxRadio {
+	string StrategyEmergencyRequest ( in short lap, in string update );
+};

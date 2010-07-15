@@ -1,0 +1,3 @@
+interface BoxRadio {
+	string SendStrategy ( in string newUpdate );
+};

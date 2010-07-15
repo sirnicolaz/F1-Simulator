@@ -3,18 +3,23 @@ A basso livello, i box saranno suddivisi in due macrocomponenti:
 - Una parte passiva, destinata a calcolare la strategia quando richiesta e a trasmetterla alla radio del concorrente
 - Una task che interroghi continuamente il monitor della gara per ottenere informazioni aggiornate sullo stato del concorrente.
 
-L'entità passiva si attiva effettua il calcolo della strategia quando:
-	- il task ha ottenuto delle informazioni relative allo stato del concorrente. In questo caso il task stesso informa l'entità passiva di iniziare
-	  il calcolo.
+L'entità passiva si attiva effettua il calcolo della strategia quando: -> 
+	- il task ha ottenuto delle informazioni relative allo stato del concorrente. In questo caso il task stesso informa 
+	l'entità passiva di iniziare  il calcolo.
 
 
-Due task e una risorsa protetta:
-	-La risorsa protetta è destinata a contere una lista di informazioni sullo stato del concorrente in gara. Ha una flag "updated" controllata
-	 dal task che effettua i calcoli. Le informazioni possono essere aggiornate contemporaneamente dalla Radio (nel caso il concorrente abbia effettuato
-	 una richiesta di calcolo immediato) oppure dal MonitorBox. Ogni qualvolta viene effettuato un aggiornamento, è necessario inviare anche il TimeStamp
-	 del momento a cui quell'aggiornamente si riferisce. Le informazioni sono così memorizzate per timestamp crescente e vengono analizzate dal box secondo quell'ordine.
+Due task e 
+una risorsa protetta: #COMPETITION_UPDATES --> protected resource
+	-La risorsa protetta è destinata a contere una lista di informazioni sullo stato del concorrente in gara. 
+	Ha una flag "updated" controllata dal task che effettua i calcoli. Le informazioni possono essere aggiornate 
+	contemporaneamente dalla Radio # BOX_RADIO --> public resource ought to be used both remotely from the competitor to update stuff in the box and from the STRATEGY_UPDATER to send stuff to the competitor
+	(nel caso il concorrente abbia effettuato
+	 una richiesta di calcolo immediato) oppure dal BoxMonitor. # BOX_MONITOR --> task
+	 Ogni qualvolta viene effettuato un aggiornamento, è necessario inviare anche il TimeStamp
+	 del momento a cui quell'aggiornamente si riferisce. Le informazioni sono così memorizzate 
+	 per timestamp crescente e vengono analizzate dal box secondo quell'ordine.
 
-	- Un task destinato ad effettuare calcoli di startegia quando ci sono informazioni su cui calcolare.
+	- Un task destinato ad effettuare calcoli di startegia quando ci sono informazioni su cui calcolare. # STRATEGY_UPDATER --> task
 	  rimane in wait sopra la risorsa protetta. Quando la guardia si apre, viengono prelevate tutte le informazioni presenti. Le informazioni, come già detto,
 	 sono in ordine di timestamp. I casi in cui il task deve inviare i risultati sono i seguenti:
 		- Sono stati effettuati i calcoli su tutto un giro. Nel momento in cui l'ultimo "pacchetto" di informazioni è stato calcolato, i risultati

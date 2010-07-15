@@ -1,16 +1,19 @@
+with CORBA.ORB;
+
 package body Box is
 
-   UpdatesBuffer : SYNCH_UPDATES_BUFFER;
+   UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
+   CompetitorRadio_IOR : STRING;
 
    task body MONITOR is
-      Infos : COMPETITION_INFOS;
+      Info : COMPETITION_UPDATE;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
    begin
       loop
          -- Infos := RequestInfos (Competitor_Id,Sector,Lap);
-         UpdatesBuffer.Add_Data(Infos);
-         exit when Infos.Time = -1.0;
+         UpdatesBuffer.Add_Data(Info);
+         exit when Info.Time = -1.0;
          Sector := Sector + 1;
          if(Sector = Sector_Qty) then
             Sector := 0;
@@ -25,8 +28,8 @@ package body Box is
    -- che si deciderà di utilizzare, verranno adottati più o meno
    -- parametri.
    function Compute_Strategy(
-                             New_Infos : COMPETITION_INFOS;
-                             Old_Infos : COMPETITION_INFOS;
+                             New_Info : COMPETITION_UPDATE;
+                             Old_Info : COMPETITION_UPDATE;
                              Old_Strategy : BOX_STRATEGY
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
@@ -34,22 +37,22 @@ package body Box is
       return New_Strategy;
    end Compute_Strategy;
 
-   task body STRATEGY_CALCULATOR is
-      Old_Infos : COMPETITION_INFOS;
-      New_Infos : COMPETITION_INFOS;
+   task body STRATEGY_UPDATER is
+      Old_Info : COMPETITION_UPDATE;
+      New_Info : COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
       Sector : INTEGER := 0;
    begin
-      Old_Infos.GasLevel := 0.0;
-      Old_Infos.TyreUsury := 0.0;
-      Old_Infos.MeanSpeed := 0.0;
-      Old_Infos.MeanGasConsumption := 0.0;
-      Old_Infos.Time := 0.0;
-      New_Infos.GasLevel := 0.0;
-      New_Infos.TyreUsury := 0.0;
-      New_Infos.MeanSpeed := 0.0;
-      New_Infos.MeanGasConsumption := 0.0;
-      New_Infos.Time := 0.0;
+      Old_Info.GasLevel := 0.0;
+      Old_Info.TyreUsury := 0.0;
+      Old_Info.MeanSpeed := 0.0;
+      Old_Info.MeanGasConsumption := 0.0;
+      Old_Info.Time := 0.0;
+      New_Info.GasLevel := 0.0;
+      New_Info.TyreUsury := 0.0;
+      New_Info.MeanSpeed := 0.0;
+      New_Info.MeanGasConsumption := 0.0;
+      New_Info.Time := 0.0;
       Strategy.Type_Tyre := "Regular             ";
       Strategy.Style := NORMAL;
       Strategy.GasLevel := 0.0;
@@ -57,23 +60,23 @@ package body Box is
       Strategy.PitStopDelay := 0.0;
       -- Time = -1.0 means that race is over.
       loop
-         UpdatesBuffer.Wait(New_Infos);
-         exit when New_Infos.Time /= -1.0;
+         UpdatesBuffer.Wait(New_Info);
+         exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
-         Strategy := Compute_Strategy(New_Infos    => New_Infos,
-                                      Old_Infos    => Old_Infos,
+         Strategy := Compute_Strategy(New_Info    => New_Info,
+                                      Old_Info    => Old_Info,
                                       Old_Strategy => Strategy
                                      );
          if(Sector = Sector_Qty) then
             -- send strategy to competitor
             Sector := 0;
          end if;
-         Old_Infos := New_Infos;
+         Old_Info := New_Info;
       end loop;
-   end STRATEGY_CALCULATOR;
+   end STRATEGY_UPDATER;
 
 
-   procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : Competition_Infos ) is
+   procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
    begin
         Info_Node_Out.This := Value;
    end Set_Node;
@@ -96,7 +99,7 @@ package body Box is
       end if;
    end Set_NextNode;
 
-   protected body SYNCH_UPDATES_BUFFER is
+   protected body SYNCH_COMPETITION_UPDATES is
 
       procedure Init_Buffer is
       begin
@@ -108,19 +111,19 @@ package body Box is
          Updates_Last := Updates_Current;
       end Init_Buffer;
 
-      procedure Add_Data(Competition_Infos_In : COMPETITION_INFOS) is
+      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
       begin
          -- If info related to a time interval are already saved, do nothing.
-         if(Updates_Last.Previous = null) or (Updates_Last.Previous.This.Time >= Competition_Infos_In.Time) then
-            Updates_Last.This := Competition_Infos_In;
+         if(Updates_Last.Previous = null) or (Updates_Last.Previous.This.Time >= CompetitionUpdate_In.Time) then
+            Updates_Last.This := CompetitionUpdate_In;
             Set_NextNode(Updates_Last,New_Update);
             Updates_Last := New_Update;
             Updated := True;
          end if;
       end Add_Data;
 
-      entry Wait(NewInfos : out COMPETITION_INFOS) when Updated is
+      entry Wait(NewInfos : out COMPETITION_UPDATE) when Updated is
          New_Update : INFO_NODE_POINT;
       begin
          NewInfos := Updates_Current.This;
@@ -137,8 +140,29 @@ package body Box is
          return Updated;
       end;
 
-   end SYNCH_UPDATES_BUFFER;
+   end SYNCH_COMPETITION_UPDATES;
+
+   procedure SendStrategy(New_Strategy : BOX_STRATEGY) is
+      orb : CORBA.ORB;
+   begin
+      --Initialise the connection with the competitor radio
+      orb := CORBA.ORB.Init(CompetitorRadio_IOR, null);
+      --Invoke the method to communicate the new strategy
+   end SendStrategy;
+
+   procedure StrategyEmergencyRequest (Lap : INTEGER;
+                                       Update : COMPETITION_UPDATE) is
+   begin
+      null;
+   end StrategyEmergencyRequest;
+
+   procedure RequestPitstop is
+   begin
+      null;
+   end RequestPitstop;
+
 
 begin
    UpdatesBuffer.Init_Buffer;
+
 end Box;
