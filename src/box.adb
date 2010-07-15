@@ -1,9 +1,21 @@
 with CORBA.ORB;
+with Polyorb.Setup.Client;
+with CompetitorRadio;
+
+with Input_Sources.File;
+use Input_Sources.File;
+with Sax.Readers; use Sax.Readers;
+with DOM.Readers; use DOM.Readers;
+with DOM.Core; use DOM.Core;
+with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Nodes; use DOM.Core.Nodes;
+with DOM.Core.Attrs; use DOM.Core.Attrs;
+
 
 package body Box is
 
    UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
-   CompetitorRadio_IOR : STRING;
+   CompetitorRadio_IOR : access STRING;
 
    task body MONITOR is
       Info : COMPETITION_UPDATE;
@@ -78,7 +90,7 @@ package body Box is
 
    procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
    begin
-        Info_Node_Out.This := Value;
+      Info_Node_Out.This := Value;
    end Set_Node;
 
    procedure Set_PreviousNode(Info_Node_Out : in out Info_Node_POINT ; Value : in out Info_Node_POINT) is
@@ -142,12 +154,29 @@ package body Box is
 
    end SYNCH_COMPETITION_UPDATES;
 
+   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING is
+   begin
+
+   end BoxStrategyToXML;
+
    procedure SendStrategy(New_Strategy : BOX_STRATEGY) is
-      orb : CORBA.ORB;
+
+      competitor_radio_ref : CompetitorRadio.Ref;
+      strategy_xml : access STRING;
+      result : BOOLEAN;
    begin
       --Initialise the connection with the competitor radio
-      orb := CORBA.ORB.Init(CompetitorRadio_IOR, null);
+      CORBA.ORB.Initialize("ORB");
+      CORBA.ORB.String_To_Object(
+                                 CORBA.To_CORBA_String(CompetitorRadio_IOR.all),competitor_radio_ref);
+
+      --Convert the strategy in an XML string
+      strategy_xml := new STRING(1..BoxStrategyToXML(New_Strategy)'LENGTH);
+      strategy_xml.all := BoxStrategyToXML(New_Strategy);
+
       --Invoke the method to communicate the new strategy
+      result := CompetitorRadio.SendStrategy(competitor_radio_ref,CORBA.To_CORBA_String(strategy_xml.all));
+
    end SendStrategy;
 
    procedure StrategyEmergencyRequest (Lap : INTEGER;
@@ -161,8 +190,18 @@ package body Box is
       null;
    end RequestPitstop;
 
+   function GetLocalFrequency(radio : in BOX_RADIO) return INTEGER is
+   begin
+      return radio.Local_Frequency;
+   end GetLocalFrequency;
+
+   function GetRemoteFrequency(radio : in BOX_RADIO) return INTEGER is
+   begin
+      return radio.Remote_Frequency;
+   end GetRemoteFrequency;
 
 begin
    UpdatesBuffer.Init_Buffer;
+
 
 end Box;

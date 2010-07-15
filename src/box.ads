@@ -43,8 +43,8 @@ package Box is
                                        Update : COMPETITION_UPDATE);
 
    -- Local methods --
-   function GetLocalFrequency return INTEGER;
-   function GetRemoteFrequency return INTEGER;
+   function GetLocalFrequency(radio : in BOX_RADIO) return INTEGER;
+   function GetRemoteFrequency(radio : in BOX_RADIO) return INTEGER;
    --TODO: find out the purpose of this function
    procedure RequestPitstop;
 
