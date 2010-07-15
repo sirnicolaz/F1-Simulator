@@ -1,2 +1,5 @@
 Guida al linguaggio IDL per Corba con i tipi disponibili e altre cose
 http://www.iona.com/support/docs/orbix/gen3/33/html/orbix33cxx_pguide/IDL.html 
+
+Sito apparentemente stiloso. Risolve rogne varie
+http://adacommons.org/Idioms_%28How_do_I_..._using_Ada%29
