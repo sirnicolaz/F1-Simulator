@@ -8,6 +8,9 @@ with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
 --with Queue; use Queue;
 --use Ada.Numerics.Elementary_Functions;
+--  with Ada.Strings;
+--  with Ada.Strings.Unbounded;
+--  with Ada.Strings.Unbounded.Text_IO;
 package body Competitor is
 
 
@@ -16,13 +19,13 @@ package body Competitor is
    procedure Configure_Car(Car_In : in out CAR;
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
-                           GasTankCapacity_In : FLOAT;
-                           Engine_In : STRING;
+                           GasTankCapacity_In : INTEGER;
+                           Engine_In : Str.Unbounded_String;
                            TyreUsury_In : FLOAT;
-                           GasolineLevel_In : FLOAT;
-                           Mixture_In : STRING;
-                           Model_In : STRING;
-                           Type_Tyre_In : STRING) is
+                           GasolineLevel_In : INTEGER;
+                           Mixture_In : Str.Unbounded_String;
+                           Model_In : Str.Unbounded_String;
+                           Type_Tyre_In : Str.Unbounded_String) is
    begin
       Car_In.MaxSpeed := MaxSpeed_In;
       Car_In.MaxAcceleration := MaxAcceleration_In;
@@ -57,13 +60,13 @@ package body Competitor is
    end Get_MaxAcceleration;
 
    -- Get function - CAR GASTANKCAPACITY
-   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return FLOAT is
+   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return INTEGER is
    begin
       return Car_In.auto.GasTankCapacity;
    end Get_GasTankCapacity;
 
    -- Get function - CAR ENGINE
-   function Get_Engine(Car_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_Engine(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Car_In.auto.Engine;
    end Get_Engine;
@@ -73,7 +76,7 @@ package body Competitor is
       --questa funzione ritorna un boolean che indica se il concorrente
       --deve tornare o meno ai box
    begin
-      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10.0 then
+      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10 then
          -- i parametri si possono cambiare ovviamente
          -- basta darci dei valori consistenti
          return TRUE;
@@ -104,7 +107,7 @@ package body Competitor is
 
    -- Set function - STATUS GASLEVEL
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
-                          GasLevel_In : FLOAT) is
+                          GasLevel_In : INTEGER) is
    begin
       Car_In.auto.GasolineLevel := GasLevel_In;
    end;
@@ -116,92 +119,92 @@ package body Competitor is
    end Get_Usury;
 
    -- Get function - STATUS GASLEVEL
-   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT is
+   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return INTEGER is
    begin
       return Car_In.auto.GasolineLevel;
    end Get_GasLevel;
 
    -- Get function - COMPETITOR_INFO TEAM
-   function Get_Team(Competitor_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_Team(Competitor_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Competitor_In.pilota.Team;
    end Get_Team;
 
    -- Get function - COMPETITOR_INFO FIRSTNAME
-   function Get_FirstName(Competitor_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_FirstName(Competitor_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Competitor_In.pilota.FirstName;
    end Get_FirstName;
 
    -- Get function - COMPETITOR_INFO LASTNAME
-   function Get_LastName(Competitor_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_LastName(Competitor_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Competitor_In.pilota.LastName;
    end Get_LastName;
 
    -- Set function - COMPETITOR_INFO TEAM
    procedure Set_Team(Competitor_In: in out CAR_DRIVER_ACCESS;
-                      Team_In : in STRING) is
+                      Team_In : in Str.Unbounded_String) is
    begin
       Competitor_In.pilota.Team := Team_In;
    end Set_Team;
 
    -- Set function - COMPETITOR_INFO FIRSTNAME
    procedure Set_FirstName(Competitor_In: in out CAR_DRIVER_ACCESS;
-                           FirstName_In : in STRING) is
+                           FirstName_In : in Str.Unbounded_String) is
    begin
       Competitor_In.pilota.FirstName := FirstName_In;
    end Set_FirstName;
 
    -- Set function - COMPETITOR_INFO LASTNAME
    procedure Set_LastName(Competitor_In: in out CAR_DRIVER_ACCESS;
-                          LastName_In : in STRING) is
+                          LastName_In : in Str.Unbounded_String) is
    begin
       Competitor_In.pilota.LastName := LastName_In;
    end Set_LastName;
 
    -- Get function - TYRE MIXTURE
-   function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Car_In.auto.Mixture;
    end Get_Mixture;
 
    -- Get function - TYRE TYPETYRE
-   function Get_TypeTyre(Car_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_TypeTyre(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Car_In.auto.Type_Tyre;
    end Get_TypeTyre;
 
    -- Get function - TYRE MODEL
-   function Get_Model(Car_In : CAR_DRIVER_ACCESS) return STRING is
+   function Get_Model(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
       return Car_In.auto.Model;
    end Get_Model;
 
    -- Set function - TYRE MIXTURE
    procedure Set_Mixture(Car_In : in out CAR_DRIVER_ACCESS;
-                         Mixture_In : in STRING) is
+                         Mixture_In : in Str.Unbounded_String) is
    begin
       Car_In.auto.Mixture := Mixture_In;
    end Set_Mixture;
 
    -- Set function - TYRE TYPETYRE
    procedure Set_TypeTyre(Car_In : in out CAR_DRIVER_ACCESS;
-                          TypeTyre_In: in STRING) is
+                          TypeTyre_In: in Str.Unbounded_String) is
    begin
       Car_In.auto.Type_Tyre := TypeTyre_In;
    end Set_TypeTyre;
 
    procedure Set_Model(Car_In : in out CAR_DRIVER_ACCESS;
-                       Model_In : in STRING) is
+                       Model_In : in Str.Unbounded_String) is
    begin
       Car_In.auto.Model := Model_In;
    end Set_Model;
 
    procedure Configure_Driver(Car_In: in out DRIVER;
-                              Team_In : STRING;
-                              FirstName_In : STRING;
-                              LastName_In : STRING;
+                              Team_In :  Str.Unbounded_String;
+                              FirstName_In :  Str.Unbounded_String;
+                              LastName_In :  Str.Unbounded_String;
                               Vel_In : FLOAT) is
    begin
       Car_In.Team:=Team_In;
@@ -225,7 +228,7 @@ package body Competitor is
       Car_In.pitstop := pitstop_In;
    end Configure_Strategy;
 
-   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT) is
+   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER) is
 
    begin
       Usury_Out:=Get_Usury(Car_In);
@@ -326,13 +329,13 @@ package body Competitor is
       function Configure_Car_File(xml_file_In : DOCUMENT) return CAR is
          MaxSpeed_In : FLOAT;
          MaxAcceleration_In : FLOAT;
-         GasTankCapacity_In : FLOAT;
+         GasTankCapacity_In : INTEGER;--FLOAT;
          --Engine_In : STRING(1..50);
          TyreUsury_In : FLOAT;
-         GasolineLevel_In : FLOAT;
-         Mixture_In : STRING(1..20);
-         Model_In : STRING(1..20);
-         Type_Tyre_In : STRING(1..20);
+         GasolineLevel_In : INTEGER;--FLOAT;
+         Mixture_In : Str.Unbounded_String;--access STRING;
+         Model_In : Str.Unbounded_String;-- STRING(1..20);
+         Type_Tyre_In : Str.Unbounded_String;-- STRING(1..20);
          car_XML : Node_List;
          Current_Node : Node;
          -- Current_Team : STRING(1..7) :="Ferrari";
@@ -340,7 +343,7 @@ package body Competitor is
          -- Current_LastName : STRING(1..6) :="Alonso";
          Car_In : CAR;
          --Car_Current : CAR;
-         Engine_In : STRING(1..6):="xxxxxx";
+         Engine_In : Str.Unbounded_String;--STRING(1..6):="xxxxxx";
 
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : STRING) return NODE is
@@ -360,7 +363,7 @@ package body Competitor is
          end Get_Feature_Node;
 
       begin
-
+--  Ada.Text_IO.Put_Line("parser xml");
          --If there is a conf file, use it to auto-init;
 
          -- if Document_In /= null then
@@ -372,17 +375,20 @@ package body Competitor is
          car_XML := Child_Nodes(Current_Node);
          MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
          MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
-         GasTankCapacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
-         Engine_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine")));
+         GasTankCapacity_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         Engine_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
          TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
-         GasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
-         --Mixture_In := Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
-         --Model_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
-         --Type_Tyre_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
+         GasolineLevel_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
+         --Ada.Text_IO.Put_Line("prima ");
+         Mixture_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
+         --Ada.Text_IO.Put_Line("mixture type----------------------");
+         --Ada.Strings.Unbounded.Text_IO.Put_Line(Mixture_In);
+         Model_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
+         Type_Tyre_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
          --Car_Temp := new CAR;
-         Mixture_In := "morbidaxxxxxxxxxxxxx";
-         Model_In := "michelinxxxxxxxxxxxx";
-         Type_Tyre_In := "rainxxxxxxxxxxxxxxxx";
+         --Mixture_In := "morbidaxxxxxxxxxxxxx";
+--           Model_In := "michelinxxxxxxxxxxxx";
+--         Type_Tyre_In := "rainxxxxxxxxxxxxxxxx";
          --Racetrack_In(Index) := CheckpointSynch_Current;
 
 
@@ -404,9 +410,9 @@ package body Competitor is
       end Configure_Car_File;
 
       function Configure_Driver_File(xml_file_In : DOCUMENT) return DRIVER is
-         Team_In : STRING(1..7):="xxxxxxx";
-         FirstName_In : STRING(1..8):="xxxxxxxx";
-         LastName_In : STRING(1..6):="xxxxxx";
+         Team_In : Str.Unbounded_String;--STRING(1..7):="xxxxxxx";
+         FirstName_In : Str.Unbounded_String;-- STRING(1..8):="xxxxxxxx";
+         LastName_In : Str.Unbounded_String;-- STRING(1..6):="xxxxxx";
          Vel_In : FLOAT :=0.0;
          driver_XML : Node_List;
          --Checkpoint_XML : Node_List;
@@ -445,9 +451,9 @@ package body Competitor is
          driver_XML := Get_Elements_By_Tag_Name(xml_file_In,"driver");
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
-         Team_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"team")));
-         FirstName_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname")));
-         LastName_In := Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname")));
+         Team_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
+         FirstName_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
+         LastName_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
          --Car_Temp := new CAR;
          --Team_In := "Ferrari";
          --FirstName_In := "Fernando";
@@ -496,7 +502,7 @@ package body Competitor is
       grip_path : FLOAT; -- attrito
       difficulty_path : FLOAT; -- difficoltà del tratto
       tyre_usury : FLOAT; -- usura delle gomme
-      gasoline_level : FLOAT; -- livello di benzina
+      gasoline_level : INTEGER; -- livello di benzina
       vel_max_reale : FLOAT; --velocità massima raggiungibile
       vel_max : FLOAT := carDriver.auto.MaxSpeed;
       lc : FLOAT;
@@ -528,25 +534,25 @@ package body Competitor is
       tyre_usury := Get_Usury(CarDriver);
       Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
       gasoline_level:=Get_GasLevel(CarDriver);
-      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Float'Image(gasoline_level));
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Integer'Image(gasoline_level));
       vel_max := Get_MaxSpeed(CarDriver); --
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel_max*((Float(gasoline_level)*10.0)/100.0)) = "&Float'Image(vel_max*((Float(gasoline_level)*10.0)/100.0)));
       acc := 1.2; -- cercare un valora buono per l'accelerazione da impostare nell'auto
       Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max : "&Float'Image(vel_max)
                            &" , (tyre_usury * (vel_max)/10.0) : "&Float'Image((tyre_usury * (vel_max)/10.0))
-                          &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image(((gasoline_level/10.00)*(vel_max)/100.0)));
+                          &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image((Float(gasoline_level/10)*(vel_max)/100.0)));
 
-      vel_max_reale := vel_max-((tyre_usury * (vel_max)/10.0))-(((gasoline_level/10.00)*(vel_max)/100.0));
+      vel_max_reale := vel_max-((tyre_usury * (vel_max)/10.0))-((Float(gasoline_level/10)*(vel_max)/100.0));
 
      -- tyre_usury := CarDriver.auto.TyreUsury; --(25 giri per una gomma circa)
 
      -- gasoline_level := CarDriver.auto.GasolineLevel;
-      if gasoline_level <= 0.0 then
+      if gasoline_level <= 0 then
          -- vel_max_reale:=0.0; da rimettere..va aggiunto un metodo nella competizione RITIRATO
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : ATTENZIONE - BENZINA FINITA !!!");
       else
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
-         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Float'Image(gasoline_level));
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Integer'Image(gasoline_level));
       end if;
 
       --V - (V*(U x 10)/100))-((B*V)/1000)
@@ -616,7 +622,7 @@ package body Competitor is
       pathTimeMinore : FLOAT;
       --BestPath : PATH;
       Competitor_Status_Tyre : FLOAT;
-      Competitor_Status_Level: FLOAT;
+      Competitor_Status_Level: INTEGER;
       --manca il metodo per tornare un pathcollection;
       -- Competitor_Strategy : STRATEGY_CAR := Competitor.Get_Strategy();
       velTemp : FLOAT :=0.0;
@@ -726,7 +732,7 @@ package body Competitor is
       end loop;
 
 
-      Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, ID = "&Integer'Image(id));
+      Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, ID = "&Integer'Image(id));--&" , mixture = "&Str.To_String(carDriver.auto.Mixture));
       --Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint);
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, firstName = "&carDriver.pilota.FirstName);
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : body of competitor task, lastName = "&carDriver.pilota.LastName);
@@ -784,7 +790,7 @@ package body Competitor is
 
          --aggiorno tyreusury e gasoline _level
          CarDriver.auto.TyreUsury := CarDriver.auto.TyreUsury+0.04;
-         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4.0;
+         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4;
          --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
          --quindi può essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
@@ -819,7 +825,7 @@ package body Competitor is
          ONBOARDCOMPUTER.Set_Checkpoint(compStats, i-1);
          ONBOARDCOMPUTER.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
-         ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
+         --commentato- da correggere il ripo di gaslevel ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          ONBOARDCOMPUTER.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          ONBOARDCOMPUTER.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats.all);
@@ -829,7 +835,7 @@ package body Competitor is
          --tempoTotale := tempoTotale + PredictedTime;
          --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" @@@@@@ tempoTotale : "&Float'Image(PredictedTime));--Delay(DELAY_TIME);
          --++++++Ada.Text_IO.Put_Line("&%$&%$&%$&%$&%$&%$&%$&%$__________------_________---------"&Integer'Image(carDriver.Id)&" : prima di delay");
-        -- Delay(Standard.Duration(CrossingTime/100.0));
+         Delay(Standard.Duration(CrossingTime/100.0));
          --Delay(1.0);
          --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
          --tempoTotale := tempoTotale +
