@@ -19,7 +19,7 @@ package body Box is
 
 
    UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
-   CompetitorRadio_IOR : access STRING;
+   CompetitorRadio_CorbaLOC : access STRING;
 
    task body MONITOR is
       Info : COMPETITION_UPDATE;
@@ -209,7 +209,7 @@ package body Box is
       --Initialise the connection with the competitor radio
       CORBA.ORB.Initialize("ORB");
       CORBA.ORB.String_To_Object(
-                                 CORBA.To_CORBA_String(CompetitorRadio_IOR.all),competitor_radio_ref);
+                                 CORBA.To_CORBA_String(CompetitorRadio_CorbaLOC.all),competitor_radio_ref);
 
       --Convert the strategy in an XML string
       strategy_xml := new STRING(1..BoxStrategyToXML(New_Strategy)'LENGTH);

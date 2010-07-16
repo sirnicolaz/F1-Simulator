@@ -1,0 +1,32 @@
+Invece di dare al box la responsabilità di mandare la strategia al concorrente, potrebbe essere il contrario.
+Il box reperisce tramite il monitor di gara le informazioni inerenti ad ogni settore attraversato dal concorrente. 
+Di volta in volta aggiorna la strategia.
+Quando il concorrente arriva in prossimità dei box, richiede al box la strategia ricalcolata. Il box può rispondere con una
+nuova strategia, una richiesta di rientro ai box oppure informare che nulla è cambiato.
+Mandando la richiesta di strategia, il concorrente invia anche le informazioni relative al giro a cui è arrivato. In questo modo
+il box è in grado di capire se le informazioni a disposizione sono quelle richieste.
+In caso positivo le nuove informazioni vengono inviate. Se il box non ha ancora ottenuto le informazioni
+necessarie per calcolarla a causa di problemi nel contattare il monitor di gara (dopo, per esempio, 3 eccezioni di timeout), 
+il box manda un'eccezione, informando
+il concorrente di procedere la gara in modo invariato. Questo simula l'evenienza che il box non sia riuscito a reperire
+le informazioni necessarie. 
+Se il concorrente non riesce a contattare il box per via di problemi di rete ( e questo simula l'evenienza in cui il concorrente abbia
+temporaneamente perso il contatto radio con il box), il concorrente procede.
+Per quanto riguarda la strategia,
+considerando che i settori per ogni pista sono 3, diciamo a-b-c,
+e supponendo che il competitor stia finendo il giro n, essa viene calcolata tenendo in considerazione le informazioni
+dei settori (n)a,(n)b,(n-1)c. In questo modo è abbastanza improbabile che il Box non abbia avuto il tempo fisico di ricevere le informazioni necessarie
+per calcolare la strategia.
+
+La strategia contiene le seguenti informazioni:
+
+-stile di guida
+-tipo di ruote (miscela a non ricordo)
+-quantità di benzina con cui riempire il serbatorio
+-tempo di pitstop (solo in caso di pitstop)
+-quante lap al pitstop
+
+Quando il concorrente chiede delle informazioni giusto prima dei box, può ricevere tre diversi tipi di informazione:
+- Un pacchetto con scritte la nuova/vecchia strategia e fra quanti pit stop fermarsi. In questo caso il concorrente procede considerando le
+ nuove informazioni
+- Un pacchetto con la nuova o vecchia strategia, pitstop settato a 0 e il tempo di stop (dovuto al cambio gomme, refill di benzina). In tal caso il concorrente deve rientrare ai box
