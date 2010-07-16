@@ -29,6 +29,7 @@ package Box is
       PitStopLap : INTEGER;
       PitStopDelay : FLOAT;
    end record;
+
    Interval : FLOAT; -- set after competition joining
    Sector_Qty : INTEGER;
    Competitor_Id : INTEGER;
@@ -49,22 +50,14 @@ package Box is
 
    -- Remote Methods --
 
+   function RequestStrategy( lap : in INTEGER ) return STRING;
+
    --Temporary test function DEL
    function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING;
 
-   --This method is ought to establish a connection with the competition
-   --+ server and communicate the new strategy to the competitor radio
-   procedure SendStrategy(New_Strategy : BOX_STRATEGY);
-   -- This remote procedure should be used by the competitor radio to
-   --+ ask for a strategy update in case it hasn't arrived in time.
-   procedure StrategyEmergencyRequest (Lap : INTEGER;
-                                       Update : COMPETITION_UPDATE);
-
    -- Local methods --
-   function GetLocalFrequency(radio : in BOX_RADIO) return INTEGER;
-   function GetRemoteFrequency(radio : in BOX_RADIO) return INTEGER;
-   --TODO: find out the purpose of this function
-   procedure RequestPitstop;
+
+
 
 
 private

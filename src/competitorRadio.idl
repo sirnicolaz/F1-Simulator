@@ -1,3 +1,0 @@
-interface CompetitorRadio {
-	boolean SendStrategy ( in string newUpdate );
-};

@@ -65,3 +65,12 @@ L'entità protetta rappresenta, per ogni posizione, l'informazione relativa ad u
 	- Velocità media (in quell'intervallo)
 	- Consumo medio (in quell'intervallo)
 
+
+------------------ dopo il ristudio ------------------
+non è più necessario che il box comunichi con la radio del competitor. Deve però predisporre di un metodo (remoto) per permette al competitor di 
+recuperare la nuova strategia di gara di volta in volta.
+
+metodi:
+- aggiornamento updates
+- recupero update per il calcolo della strategia
+- metodo remoto per prelevare strategia
