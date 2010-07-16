@@ -1,6 +1,6 @@
 with CORBA.ORB;
 with Polyorb.Setup.Client;
-with CompetitorRadio;
+--with CompetitorRadio;
 
 with Input_Sources.File;
 use Input_Sources.File;
@@ -128,7 +128,7 @@ package body Box is
       procedure Init_Buffer is
       begin
          Updated := False;
-         Updates_CUrrent := new Info_Node;
+         Updates_Current := new Info_Node;
          Updates_Current.Index := 1;
          Updates_Current.Previous := null;
          Updates_Current.Next := null;
@@ -148,10 +148,11 @@ package body Box is
          end if;
       end Add_Data;
 
-      entry Wait(NewInfos : out COMPETITION_UPDATE) when Updated is
+      entry Wait(NewInfo : out COMPETITION_UPDATE) when Updated is
          New_Update : INFO_NODE_POINT;
       begin
-         NewInfos := Updates_Current.This;
+
+         NewInfo := Updates_Current.This;
          if(Updates_Current.Next = null) then
             New_Update :=  new INFO_NODE;
             Set_NextNode(Updates_Current,New_Update);
@@ -167,7 +168,20 @@ package body Box is
 
    end SYNCH_COMPETITION_UPDATES;
 
+   protected body SYNCH_STRATEGY_HISTORY is
 
+      procedure AddStrategy( Strategy : in BOX_STRATEGY ) is
+      begin
+         null;
+      end AddStrategy;
+
+      entry Wait( NewStrategy : out BOX_STRATEGY ;
+                 Lap : in INTEGER) when Updated is
+      begin
+         null;
+      end Wait;
+
+   end SYNCH_STRATEGY_HISTORY;
 
    function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING is
 
@@ -199,52 +213,16 @@ package body Box is
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
 
-   procedure SendStrategy(New_Strategy : BOX_STRATEGY) is
 
-      competitor_radio_ref : CompetitorRadio.Ref;
-      strategy_xml : access STRING;
-      result : BOOLEAN;
+   function RequestStrategy( lap : in INTEGER ) return STRING is
    begin
-
-      --Initialise the connection with the competitor radio
-      CORBA.ORB.Initialize("ORB");
-      CORBA.ORB.String_To_Object(
-                                 CORBA.To_CORBA_String(CompetitorRadio_CorbaLOC.all),competitor_radio_ref);
-
-      --Convert the strategy in an XML string
-      strategy_xml := new STRING(1..BoxStrategyToXML(New_Strategy)'LENGTH);
-      strategy_xml.all := BoxStrategyToXML(New_Strategy);
-
-      --Invoke the method to communicate the new strategy
-      result := CompetitorRadio.SendStrategy(competitor_radio_ref,CORBA.To_CORBA_String(strategy_xml.all));
-
-   end SendStrategy;
-
-   procedure StrategyEmergencyRequest (Lap : INTEGER;
-                                       Update : COMPETITION_UPDATE) is
-   begin
-      null;
-   end StrategyEmergencyRequest;
-
-   procedure RequestPitstop is
-   begin
-      null;
-   end RequestPitstop;
-
-   function GetLocalFrequency(radio : in BOX_RADIO) return INTEGER is
-   begin
-      return radio.Local_Frequency;
-   end GetLocalFrequency;
-
-   function GetRemoteFrequency(radio : in BOX_RADIO) return INTEGER is
-   begin
-      return radio.Remote_Frequency;
-   end GetRemoteFrequency;
+      return "<strategy><strategy>"; --TODO:implement
+   end RequestStrategy;
 
 begin
    UpdatesBuffer.Init_Buffer;
    --Test init for avoiding warning. DEL
-   CompetitorRadio_IOR := new STRING(1..3);
-   CompetitorRadio_IOR.all := "101";
+   CompetitorRadio_CorbaLOC := new STRING(1..3);
+   CompetitorRadio_CorbaLOC.all := "101";
 
 end Box;
