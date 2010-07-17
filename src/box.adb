@@ -11,6 +11,7 @@ with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
 with DOM.Core.Attrs; use DOM.Core.Attrs;
 
+with Ada.Text_IO;
 with ADA.Float_Text_IO;
 with Common;
 use Common;
@@ -19,6 +20,7 @@ package body Box is
 
 
    UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
+   StrategyHistory : SYNCH_STRATEGY_HISTORY;
    CompetitorRadio_CorbaLOC : access STRING;
 
    task body MONITOR is
@@ -65,7 +67,10 @@ package body Box is
       Old_Info : COMPETITION_UPDATE;
       New_Info : COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
-      Sector : INTEGER := 0;
+      --it starts from 1 because the strategy is updated once the competitor
+      --+ the next to last sector. So the first lap strategy will be calculated
+      --+ using only the firts 2 sectors.
+      Sector : INTEGER := 1;
    begin
       Old_Info.GasLevel := 0.0;
       Old_Info.TyreUsury := 0.0;
@@ -85,6 +90,7 @@ package body Box is
       -- Time = -1.0 means that race is over.
       loop
          UpdatesBuffer.Wait(New_Info);
+         --Time=-1.0 should mean that the competitor is out.
          exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
          Strategy := Compute_Strategy(New_Info    => New_Info,
@@ -92,7 +98,7 @@ package body Box is
                                       Old_Strategy => Strategy
                                      );
          if(Sector = Sector_Qty) then
-            -- send strategy to competitor
+            StrategyHistory.AddStrategy(Strategy);
             Sector := 0;
          end if;
          Old_Info := New_Info;
@@ -170,15 +176,33 @@ package body Box is
 
    protected body SYNCH_STRATEGY_HISTORY is
 
+      procedure Init( Lap_Qty : in INTEGER ) is
+      begin
+         history := new STRATEGY_HISTORY(1..Lap_Qty);
+      end Init;
+
       procedure AddStrategy( Strategy : in BOX_STRATEGY ) is
       begin
-         null;
+
+         history.all(history_size+1) := Strategy;
+         history_size := history_size + 1;
+         Updated := true;
+
+         exception when Constraint_Error =>
+            Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
+            Ada.Text_IO.Put("the history array has had an access violation.");
       end AddStrategy;
 
       entry Wait( NewStrategy : out BOX_STRATEGY ;
                  Lap : in INTEGER) when Updated is
       begin
-         null;
+         if Lap <= history_size then
+               NewStrategy := history.all(Lap);
+            else
+               Updated := false;
+               requeue Wait;
+            end if;
+
       end Wait;
 
    end SYNCH_STRATEGY_HISTORY;
@@ -206,21 +230,28 @@ package body Box is
 			      "<gasLevel>" & FloatToString(strategy.GasLevel) & "</gasLevel>" &
 			      "<pitStopLap>" & IntegerToString(strategy.PitStopLap) & "</pitStopLap>" &
 			      "<pitStopDelay>" & FloatToString(strategy.PitStopDelay) & "</pitStopDelay>" &
-		        "</strategy>");
+                                                         "</strategy>");
 
-
---      ADA.Float_Text_IO.Put(Temp_Str, strategy.Type_Tyre, Float'Base'Digits);
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
 
 
    function RequestStrategy( lap : in INTEGER ) return STRING is
+      strategy : BOX_STRATEGY;
    begin
-      return "<strategy><strategy>"; --TODO:implement
+      StrategyHistory.Wait(strategy,lap);
+      return BoxStrategyToXML(strategy);
    end RequestStrategy;
 
 begin
+
+   -- After registering to the competition, it's possible
+   --+ to know the number of laps and use it to initialise
+   --+ strategy history.
+
    UpdatesBuffer.Init_Buffer;
+   StrategyHistory.Init(10);
+
    --Test init for avoiding warning. DEL
    CompetitorRadio_CorbaLOC := new STRING(1..3);
    CompetitorRadio_CorbaLOC.all := "101";

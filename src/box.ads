@@ -32,7 +32,7 @@ package Box is
    type STRATEGY_HISTORY is array(POSITIVE range <>) of BOX_STRATEGY;
 
    Interval : FLOAT; -- set after competition joining
-   Sector_Qty : INTEGER;
+   Sector_Qty : INTEGER := 3; --It's fixed in the f1 competitions
    Competitor_Id : INTEGER;
 
    protected type SYNCH_COMPETITION_UPDATES is
@@ -56,6 +56,8 @@ package Box is
 
    protected type SYNCH_STRATEGY_HISTORY is
 
+      procedure Init( Lap_Qty : in INTEGER );
+
       procedure AddStrategy( Strategy : in BOX_STRATEGY );
 
       entry Wait( NewStrategy : out BOX_STRATEGY;
@@ -63,6 +65,7 @@ package Box is
 
    private
       history : access STRATEGY_HISTORY;
+      history_size : INTEGER := 0;
       Updated : BOOLEAN := false;
    end SYNCH_STRATEGY_HISTORY;
 
