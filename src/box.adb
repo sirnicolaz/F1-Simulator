@@ -39,15 +39,16 @@ package body Box is
          -- Info := RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
          UpdatesBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
-         Sector := Sector + 1;
+         Sector := Sector + 1;--TODO: think the goal of this update
          if(Sector = Sector_Qty) then
             Sector := 0;
             Lap := Lap + 1;
          end if;
-
       end loop;
 
    end MONITOR;
+
+   Monitor_Task : access MONITOR;
 
    -- Intanto è solo la bozza dello scheletro. In base all'algoritmo
    -- che si deciderà di utilizzare, verranno adottati più o meno
@@ -87,10 +88,10 @@ package body Box is
       Strategy.GasLevel := 0.0;
       Strategy.PitStopLap := 1;
       Strategy.PitStopDelay := 0.0;
-      -- Time = -1.0 means that race is over.
+      -- Time = -1.0 means that race is over (think about when the competitor
+      --+ is out of the race).
       loop
          UpdatesBuffer.Wait(New_Info);
-         --Time=-1.0 should mean that the competitor is out.
          exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
          Strategy := Compute_Strategy(New_Info    => New_Info,
@@ -105,6 +106,7 @@ package body Box is
       end loop;
    end STRATEGY_UPDATER;
 
+   StrategyUpdater_Task : access STRATEGY_UPDATER;
 
    procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
    begin
@@ -255,5 +257,8 @@ begin
    --Test init for avoiding warning. DEL
    CompetitorRadio_CorbaLOC := new STRING(1..3);
    CompetitorRadio_CorbaLOC.all := "101";
+
+   Monitor_Task := new MONITOR;
+   StrategyUpdater_Task := new STRATEGY_UPDATER;
 
 end Box;
