@@ -195,25 +195,15 @@ package body Box is
 
       entry Wait(NewInfo : out COMPETITION_UPDATE;
                  Num : in INTEGER) when Updated is
-         --New_Update : INFO_NODE_POINT;
       begin
          requeue Get_Update;
-         --NewInfo := Updates_Current.This;
-         --if(Updates_Current.Next = null) then
-         --   New_Update :=  new INFO_NODE;
-         --   Set_NextNode(Updates_Current,New_Update);
-         --   Updates_Current := New_Update;
-         --   Updated := false;
-         --end if;
       end Wait;
 
       entry Get_Update( NewInfo : out COMPETITION_UPDATE;
                        Num : INTEGER ) when true is
       begin
-         Ada.Text_IO.Put_Line("Asking for " & INTEGER'IMAGE(Num) & " last update index " & INTEGER'IMAGE(Updates_Last.Index));
          if ( Updates_Last.Index < Num ) then
             Updated := false;
-            Ada.Text_IO.Put_Line("FAIL retrieving num " & INTEGER'IMAGE(num));
             requeue Wait;
          else
             Updates_Current := Search_Node(Updates_Current, Num);
@@ -297,7 +287,7 @@ package body Box is
       return BoxStrategyToXML(strategy);
    end RequestStrategy;
 
-begin
+--begin
 
    -- After registering to the competition, it's possible
    --+ to know the number of laps and use it to initialise
@@ -307,8 +297,8 @@ begin
 --   StrategyHistory.Init(10);
 
    --Test init for avoiding warning. DEL
-   CompetitorRadio_CorbaLOC := new STRING(1..3);
-   CompetitorRadio_CorbaLOC.all := "101";
+--   CompetitorRadio_CorbaLOC := new STRING(1..3);
+--   CompetitorRadio_CorbaLOC.all := "101";
 
 --   Monitor_Task := new MONITOR;
 --   StrategyUpdater_Task := new STRATEGY_UPDATER;
