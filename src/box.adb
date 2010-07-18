@@ -48,7 +48,7 @@ package body Box is
 
    end MONITOR;
 
-   Monitor_Task : access MONITOR;
+   --Monitor_Task : access MONITOR;
 
    -- Intanto è solo la bozza dello scheletro. In base all'algoritmo
    -- che si deciderà di utilizzare, verranno adottati più o meno
@@ -65,6 +65,7 @@ package body Box is
    end Compute_Strategy;
 
    task body STRATEGY_UPDATER is
+      Index : INTEGER := 1;
       Old_Info : COMPETITION_UPDATE;
       New_Info : COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
@@ -91,7 +92,8 @@ package body Box is
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
-         UpdatesBuffer.Wait(New_Info);
+         UpdatesBuffer.Wait(New_Info, Index);
+         Index := Index + 1;
          exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
          Strategy := Compute_Strategy(New_Info    => New_Info,
@@ -106,7 +108,7 @@ package body Box is
       end loop;
    end STRATEGY_UPDATER;
 
-   StrategyUpdater_Task : access STRATEGY_UPDATER;
+   --StrategyUpdater_Task : access STRATEGY_UPDATER;
 
    procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
    begin
@@ -125,49 +127,99 @@ package body Box is
    procedure Set_NextNode(Info_Node_Out : in out Info_Node_POINT; Value : in out Info_Node_POINT ) is
    begin
       if(Value /= null) then
+         Value.Previous := Info_Node_Out;
+         Value.Index := Info_Node_Out.Index + 1;
          Info_Node_Out.Next := Value;
-         Info_Node_Out.Next.Previous := Info_Node_Out;
-         Info_Node_Out.Next.Index := Info_Node_Out.Index + 1;
       end if;
    end Set_NextNode;
+
+   function Search_Node( Starting_Node : in INFO_NODE_POINT;
+                        Num : in INTEGER) return INFO_NODE_POINT is
+      Iterator : INFO_NODE_POINT := Starting_Node;
+   begin
+      if (Iterator /= null) then
+         if (Iterator.Index < Num ) then
+            --Search forward
+            loop
+               Iterator := Iterator.Next;
+               exit when Iterator = null or else Iterator.Index = Num;
+            end loop;
+         elsif (Iterator.Index > Num) then
+            --Search backward
+            loop
+               Iterator := Iterator.Previous;
+               exit when Iterator.Previous = null or else Iterator.Index = Num;
+            end loop;
+         end if;
+      end if;
+
+      return Iterator;
+
+   end Search_Node;
+
 
    protected body SYNCH_COMPETITION_UPDATES is
 
       procedure Init_Buffer is
       begin
          Updated := False;
-         Updates_Current := new Info_Node;
-         Updates_Current.Index := 1;
-         Updates_Current.Previous := null;
-         Updates_Current.Next := null;
-         Updates_Current.This.MeanSpeed := -1.0;
+	 Updates_Current := null;
          Updates_Last := Updates_Current;
       end Init_Buffer;
 
-      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE) is
+      procedure Add_Data(CompetitionUpdate_In : in out COMPETITION_UPDATE) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
       begin
          -- If info related to a time interval are already saved, do nothing.
-         if(Updates_Last.Previous = null) or (Updates_Last.Previous.This.Time >= CompetitionUpdate_In.Time) then
-            Updates_Last.This := CompetitionUpdate_In;
+
+         if(Updates_Last = null) then
+            New_Update.This := CompetitionUpdate_In;
+            Updates_Last := New_Update;
+            Updates_Last.Index := 1;
+            Updates_Last.Previous := null;
+            Updates_Last.Next := null;
+            Updates_Current := Updates_Last;
+            Updated := true;
+         elsif (Updates_Last.This.Time < CompetitionUpdate_In.Time) then
+            New_Update.This := CompetitionUpdate_In;
+
             Set_NextNode(Updates_Last,New_Update);
+
             Updates_Last := New_Update;
             Updated := True;
+
          end if;
+      exception when Program_Error =>
+            Ada.Text_IO.Put_Line("Constraint error adding update at time " & FloatToString(CompetitionUpdate_In.Time));
       end Add_Data;
 
-      entry Wait(NewInfo : out COMPETITION_UPDATE) when Updated is
-         New_Update : INFO_NODE_POINT;
+      entry Wait(NewInfo : out COMPETITION_UPDATE;
+                 Num : in INTEGER) when Updated is
+         --New_Update : INFO_NODE_POINT;
       begin
-
-         NewInfo := Updates_Current.This;
-         if(Updates_Current.Next = null) then
-            New_Update :=  new INFO_NODE;
-            Set_NextNode(Updates_Current,New_Update);
-            Updates_Current := New_Update;
-            Updated := false;
-         end if;
+         requeue Get_Update;
+         --NewInfo := Updates_Current.This;
+         --if(Updates_Current.Next = null) then
+         --   New_Update :=  new INFO_NODE;
+         --   Set_NextNode(Updates_Current,New_Update);
+         --   Updates_Current := New_Update;
+         --   Updated := false;
+         --end if;
       end Wait;
+
+      entry Get_Update( NewInfo : out COMPETITION_UPDATE;
+                       Num : INTEGER ) when true is
+      begin
+         Ada.Text_IO.Put_Line("Asking for " & INTEGER'IMAGE(Num) & " last update index " & INTEGER'IMAGE(Updates_Last.Index));
+         if ( Updates_Last.Index < Num ) then
+            Updated := false;
+            Ada.Text_IO.Put_Line("FAIL retrieving num " & INTEGER'IMAGE(num));
+            requeue Wait;
+         else
+            Updates_Current := Search_Node(Updates_Current, Num);
+            NewInfo := Updates_Current.This;
+         end if;
+      end Get_Update;
 
       function IsUpdated return BOOLEAN is
       begin
@@ -251,14 +303,14 @@ begin
    --+ to know the number of laps and use it to initialise
    --+ strategy history.
 
-   UpdatesBuffer.Init_Buffer;
-   StrategyHistory.Init(10);
+--   UpdatesBuffer.Init_Buffer;
+--   StrategyHistory.Init(10);
 
    --Test init for avoiding warning. DEL
    CompetitorRadio_CorbaLOC := new STRING(1..3);
    CompetitorRadio_CorbaLOC.all := "101";
 
-   Monitor_Task := new MONITOR;
-   StrategyUpdater_Task := new STRATEGY_UPDATER;
+--   Monitor_Task := new MONITOR;
+--   StrategyUpdater_Task := new STRATEGY_UPDATER;
 
 end Box;

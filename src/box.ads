@@ -15,7 +15,6 @@ package Box is
    task type STRATEGY_UPDATER is
    end STRATEGY_UPDATER;
 
-   type COMPETITION_UPDATE is private;
    type INFO_NODE is private;
    type INFO_NODE_POINT is access INFO_NODE;
 
@@ -28,6 +27,19 @@ package Box is
       PitStopLap : INTEGER;
       PitStopDelay : FLOAT;
    end record;
+   --type COMPETITION_UPDATE is private;
+   type COMPETITION_UPDATE is record
+      GasLevel : PERCENTAGE;
+      TyreUsury : PERCENTAGE;
+      MeanSpeed : FLOAT; -- km/h
+      MeanGasConsumption : FLOAT; -- l/h
+      Time : FLOAT;
+      Lap : INTEGER;
+      Sector : INTEGER;
+      -- Classific : decidere come esprimerla;
+   end record;
+
+
 
    type STRATEGY_HISTORY is array(POSITIVE range <>) of BOX_STRATEGY;
 
@@ -37,8 +49,11 @@ package Box is
 
    protected type SYNCH_COMPETITION_UPDATES is
       procedure Init_Buffer;
-      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE);
-      entry Wait(NewInfo : out COMPETITION_UPDATE);
+      procedure Add_Data(CompetitionUpdate_In : in out COMPETITION_UPDATE);
+      entry Wait(NewInfo : out COMPETITION_UPDATE;
+                 Num : in INTEGER);
+      entry Get_Update( NewInfo : out COMPETITION_UPDATE;
+                       Num : INTEGER );
       function IsUpdated return BOOLEAN;
    private
       Updates_Current : Info_Node_Point;
@@ -83,19 +98,19 @@ package Box is
    -- Local methods --
 
 private
-   type COMPETITION_UPDATE is record
-      GasLevel : PERCENTAGE;
-      TyreUsury : PERCENTAGE;
-      MeanSpeed : FLOAT; -- km/h
-      MeanGasConsumption : FLOAT; -- l/h
-      Time : FLOAT;
-      Lap : INTEGER;
-      Sector : INTEGER;
-      -- Classific : decidere come esprimerla;
-   end record;
+--     type COMPETITION_UPDATE is record
+--        GasLevel : PERCENTAGE;
+--        TyreUsury : PERCENTAGE;
+--        MeanSpeed : FLOAT; -- km/h
+--        MeanGasConsumption : FLOAT; -- l/h
+--        Time : FLOAT;
+--        Lap : INTEGER;
+--        Sector : INTEGER;
+--        -- Classific : decidere come esprimerla;
+--     end record;
 
    type Info_Node is record
-      Index : POSITIVE;
+      Index : INTEGER;
       Previous : INFO_NODE_POINT;
       Next : INFO_NODE_POINT;
       This : COMPETITION_UPDATE;
