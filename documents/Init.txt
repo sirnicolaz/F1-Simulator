@@ -1,0 +1,31 @@
+-Viene avviata l'interfaccia di configurazione della Competition. Qui verranno inseriti:
+	- Informazioni sulla pista
+	- Impostazioni sulla gara, quali numero di lap, numero di concorrenti max ecc
+-Una volta configurata la gara, viene pubblicato un oggetto CORBA per la ricezione delle "registrazioni"
+ quindi Competition sta in attesa di informazioni per inizializzare i concorrenti.
+	|_> una componente remota dovrà stare in attesa di informazioni dai box remoti
+	|_> contemporaneamente verrà pubblicato l'oggetto CORBA Monitor, per permettere ai box di ottenere le informazioni
+	    di gara in tempo aggiornato. Tale oggetto verrà poi usato anche dalle TV per seguire l'andamento della gara.
+-Ogni volta che un box finisce di configurare un concorrente, contatta il metodo di registrazione inviando il CORBALoc del box
+-Il metodo di registrazione esegue i seguenti job:
+	- Inizializzare un concorrente con le informazioni passate dal box
+	- Passare al concorrente il CORBALoc del box e (in qualche modo) fargli fare un test di connessione per verificare che
+	  tutto sia ok 
+        - Una volta verificato il tutto, tornare al Box l'id del concorrente e il CORBALoc del Monitor
+VARIANTE:
+	- se per inizializzare il monitor sono prima necessarie tutte le informazioni dei concorrenti, il metodo di registrazione
+	  farà stare i box in attesa (nel senso che non "ritorna") fino a che tutti gli i concorrenti non saranno registrati (o 
+	  l'amministratore non avrà deciso di decretare lo stop delle registrazioni). A quel punto creerà il monitor, lo inizializzerà
+	  e poi tornerà il corbaLoc a tutti i Box.
+
+-Una volta che tutti sono registrati, è il momento di attendere che i box siano sincronizzati sui monitor. Quindi vi sarà un metodo sui monitor
+ chiamato "Ready" o qualcosa di simile che verrà usato dai box per informare la Competition che sono pronti. Quando tutti hanno dato l'ok, la gara parte
+|_____--> SEMPLIFICAZIONE: una volta terminate le registrazioni, la gara parte senza test aggiuntivi.
+
+
+Oggetti e metodi necessari:
+	- Un oggetto corba pubblico con un metodo per gestire la registrazione
+	- Un metodo di init che avvii la competition e il registration handler, passando la competition al registration handler
+	- Un oggetto corba che possa essere usato dall'interfaccia di configurazione della gara per passare i parametri di configurazione
+	  alla competition
+	- 
