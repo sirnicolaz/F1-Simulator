@@ -1,0 +1,4 @@
+interface Monitor {
+        string GetUpdate ( in short num );
+};
+
