@@ -75,7 +75,7 @@ package Box is
 
       procedure AddStrategy( Strategy : in BOX_STRATEGY );
 
-      entry Wait( NewStrategy : out BOX_STRATEGY;
+      entry Get_Strategy( NewStrategy : out BOX_STRATEGY;
                  Lap : in INTEGER);
 
    private
@@ -87,10 +87,6 @@ package Box is
 
    -- BOX RADIO TYPES AND METHODS DEFINITION --
    type BOX_RADIO is private;
-
-   -- Remote Methods --
-
-   function RequestStrategy( lap : in INTEGER ) return STRING;
 
    --Temporary test function DEL
    function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING;

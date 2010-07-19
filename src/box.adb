@@ -242,17 +242,17 @@ package body Box is
             Ada.Text_IO.Put("the history array has had an access violation.");
       end AddStrategy;
 
-      entry Wait( NewStrategy : out BOX_STRATEGY ;
+      entry Get_Strategy( NewStrategy : out BOX_STRATEGY ;
                  Lap : in INTEGER) when Updated is
       begin
          if Lap <= history_size then
                NewStrategy := history.all(Lap);
             else
                Updated := false;
-               requeue Wait;
+               requeue Get_Strategy;
             end if;
 
-      end Wait;
+      end Get_Strategy;
 
    end SYNCH_STRATEGY_HISTORY;
 
@@ -316,13 +316,6 @@ package body Box is
 
       return Unbounded_String.To_String(XML_String);
    end CompetitionUpdateToXML;
-
-   function RequestStrategy( lap : in INTEGER ) return STRING is
-      strategy : BOX_STRATEGY;
-   begin
-      StrategyHistory.Wait(strategy,lap);
-      return BoxStrategyToXML(strategy);
-   end RequestStrategy;
 
 begin
 
