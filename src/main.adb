@@ -65,8 +65,4 @@ begin
    TempTask.Start;
    TempTask2.Start;
 
-
-
-
-
 end Main;

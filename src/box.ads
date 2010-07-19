@@ -28,7 +28,7 @@ package Box is
       PitStopDelay : FLOAT;
    end record;
    --type COMPETITION_UPDATE is private;
-   type COMPETITION_UPDATE is record
+   type COMPETITION_UPDATE( competitor_qty : INTEGER) is record
       GasLevel : PERCENTAGE;
       TyreUsury : PERCENTAGE;
       MeanSpeed : FLOAT; -- km/h
@@ -36,7 +36,7 @@ package Box is
       Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
-      -- Classific : decidere come esprimerla;
+      Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);
    end record;
 
 
@@ -49,7 +49,7 @@ package Box is
 
    protected type SYNCH_COMPETITION_UPDATES is
       procedure Init_Buffer;
-      procedure Add_Data(CompetitionUpdate_In : in out COMPETITION_UPDATE);
+      procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE);
       entry Wait(NewInfo : out COMPETITION_UPDATE;
                  Num : in INTEGER);
       entry Get_Update( NewInfo : out COMPETITION_UPDATE;
@@ -94,7 +94,7 @@ package Box is
 
    --Temporary test function DEL
    function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING;
-
+   function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING;
    -- Local methods --
 
 private
@@ -113,7 +113,7 @@ private
       Index : INTEGER;
       Previous : INFO_NODE_POINT;
       Next : INFO_NODE_POINT;
-      This : COMPETITION_UPDATE;
+      This : access COMPETITION_UPDATE;
    end record;
 
 --     type BOX_STRATEGY is record

@@ -17,7 +17,7 @@ package Common is
 
    subtype PERCENTAGE is FLOAT range 0.0..100.0;
    type DRIVING_STYLE is (AGGRESSIVE,NORMAL,CONSERVATIVE);
-   type COMPETITORS_LIST is array(INTEGER range <>) of INTEGER;
+   type COMPETITOR_LIST is array(INTEGER range <>) of INTEGER;
    type FLOAT_LIST is array(INTEGER range <>) of FLOAT;
    subtype IP_PART is INTEGER range 0..255;
    type IP_ADDRESS is private;

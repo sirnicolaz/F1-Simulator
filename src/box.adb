@@ -19,17 +19,19 @@ use Common;
 package body Box is
 
 
+   Competitor_Qty : INTEGER := 10;
    UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
    StrategyHistory : SYNCH_STRATEGY_HISTORY;
    CompetitorRadio_CorbaLOC : access STRING;
 
    task body MONITOR is
-      Info : COMPETITION_UPDATE;
+      Info : access COMPETITION_UPDATE;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
    begin
       loop
          -- Test init values to avoid warnings DEL
+         Info := new COMPETITION_UPDATE(Competitor_Qty);
          Info.GasLevel := 42.0;
          Info.TyreUsury := 42.0;
          Info.MeanSpeed := 42.0;
@@ -66,19 +68,21 @@ package body Box is
 
    task body STRATEGY_UPDATER is
       Index : INTEGER := 1;
-      Old_Info : COMPETITION_UPDATE;
-      New_Info : COMPETITION_UPDATE;
+      Old_Info : access COMPETITION_UPDATE;
+      New_Info : access COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
       --it starts from 1 because the strategy is updated once the competitor
       --+ the next to last sector. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
       Sector : INTEGER := 1;
    begin
+      Old_Info := new COMPETITION_UPDATE(Competitor_Qty);
       Old_Info.GasLevel := 0.0;
       Old_Info.TyreUsury := 0.0;
       Old_Info.MeanSpeed := 0.0;
       Old_Info.MeanGasConsumption := 0.0;
       Old_Info.Time := 0.0;
+      New_Info := new COMPETITION_UPDATE(Competitor_Qty);
       New_Info.GasLevel := 0.0;
       New_Info.TyreUsury := 0.0;
       New_Info.MeanSpeed := 0.0;
@@ -92,12 +96,12 @@ package body Box is
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
-         UpdatesBuffer.Wait(New_Info, Index);
+         UpdatesBuffer.Get_Update(New_Info.all, Index);
          Index := Index + 1;
          exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
-         Strategy := Compute_Strategy(New_Info    => New_Info,
-                                      Old_Info    => Old_Info,
+         Strategy := Compute_Strategy(New_Info    => New_Info.all,
+                                      Old_Info    => Old_Info.all,
                                       Old_Strategy => Strategy
                                      );
          if(Sector = Sector_Qty) then
@@ -112,7 +116,8 @@ package body Box is
 
    procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
    begin
-      Info_Node_Out.This := Value;
+      Info_Node_Out.This := new COMPETITION_UPDATE(Competitor_Qty);
+      Info_Node_Out.This.all := Value;
    end Set_Node;
 
    procedure Set_PreviousNode(Info_Node_Out : in out Info_Node_POINT ; Value : in out Info_Node_POINT) is
@@ -167,7 +172,7 @@ package body Box is
          Updates_Last := Updates_Current;
       end Init_Buffer;
 
-      procedure Add_Data(CompetitionUpdate_In : in out COMPETITION_UPDATE) is
+      procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
       begin
          -- If info related to a time interval are already saved, do nothing.
@@ -207,7 +212,7 @@ package body Box is
             requeue Wait;
          else
             Updates_Current := Search_Node(Updates_Current, Num);
-            NewInfo := Updates_Current.This;
+            NewInfo := Updates_Current.This.all;
          end if;
       end Get_Update;
 
@@ -279,6 +284,38 @@ package body Box is
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
 
+   function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING is
+
+      Competitor_Qty : INTEGER := 0;
+
+      XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+
+      begin
+
+      if update.Classific /= null then
+         Competitor_Qty := update.Classific'LENGTH;
+      end if;
+
+      XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
+                                                         "<update>" &
+                                                         "<gasLevel>" & Common.FloatToString(update.GasLevel) & "<gasLevel> <!-- % -->" &
+                                                         "<tyreUsury>" & Common.FloatToString(update.TyreUsury) & "</tyreUsury> <!-- % -->" &
+                                                         "<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
+                                                         "<meanGasConsumption>" & Common.FloatToString(update.MeanGasConsumption) & "</meanGasConsumption> <!-- l/h --> " &
+                                                         "<time>" & Common.FloatToString(update.Time) & "</time> <!-- time instant --> " &
+                                                         "<lap>" & Common.IntegerToString(update.Lap) & "</lap> " &
+                                                         "<sector>" & Common.IntegerToString(update.Sector) & "</sector> " &
+                                                         "<classific competitors="" " & Common.IntegerToString(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");
+      -- The classific is expressed as an integer sequence where the first place
+      --+ in the competition is related to the first position in the array.
+      for Index in 1..Competitor_Qty loop
+         XML_String := XML_String & "<compId>" & Common.IntegerToString(update.Classific(Index)) & "</compId> ";
+      end loop;
+
+      XML_String := XML_String & "</classific></update> ";
+
+      return Unbounded_String.To_String(XML_String);
+   end CompetitionUpdateToXML;
 
    function RequestStrategy( lap : in INTEGER ) return STRING is
       strategy : BOX_STRATEGY;
@@ -287,7 +324,7 @@ package body Box is
       return BoxStrategyToXML(strategy);
    end RequestStrategy;
 
---begin
+begin
 
    -- After registering to the competition, it's possible
    --+ to know the number of laps and use it to initialise
@@ -297,8 +334,8 @@ package body Box is
 --   StrategyHistory.Init(10);
 
    --Test init for avoiding warning. DEL
---   CompetitorRadio_CorbaLOC := new STRING(1..3);
---   CompetitorRadio_CorbaLOC.all := "101";
+     CompetitorRadio_CorbaLOC := new STRING(1..3);
+     CompetitorRadio_CorbaLOC.all := "101";
 
 --   Monitor_Task := new MONITOR;
 --   StrategyUpdater_Task := new STRATEGY_UPDATER;
