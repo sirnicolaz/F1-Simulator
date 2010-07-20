@@ -29,6 +29,11 @@ package Common is
    --Open and parse an XML document starting from the document name
    function Get_Document(doc_file : STRING) return Document;
 
+   --Given a starting node and a tag name, the method returns
+   --+ the first node with the given tag name, child of the Node_In
+   function Get_Feature_Node(Node_In : NODE;
+                             FeatureName_In : STRING) return NODE;
+
    --Convert a float into a string, not in the exponential notation: 42.0 and not 4.20000E1
    function FloatToString( num : FLOAT ) return STRING;
 

@@ -1,58 +1,41 @@
 with Circuit;
 use Circuit;
 
---with Competitor;
---use Competitor;
-
-with Stats;
-use Stats;
-
-with MonitorSystem.Impl;
-use MonitorSystem.Impl;
-
-with RegistrationHandler.Impl;
-use RegistrationHandler.Impl;
+with Competitor;
+use Competitor;
 
 with CORBA.Impl;
 
 with OnboardComputer;
 
+with Ada.Strings;
+with Ada.Strings.Unbounded;
+
+
 package Competition is
 
-   task type CompetitionTask is
-      -- entries
-      entry ConfigureCompetition()
-      entry JoinCompetition(
-                            CompetitorFileDescriptor_In : STRING;
-                            Id_Out : out INTEGER);
-      entry BoxReady(Competitor_Id : in INTEGER);
-   end CompetitionTask;
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
 
---   task MonitorTask;
---   task RegistrationHandlerTask;
+   type CompetitorTask_Array is array(POSITIVE range <>) of access Competitor.TASKCOMPETITOR;
 
-   procedure Configure_Circuit( ClassificRefreshRate_In : FLOAT;
-                               CircuitName_In : STRING;
-                               CircuitLocation_In : STRING;
-                               RaceConfigFile_In : STRING );
+   protected type SYNCH_COMPETITION is
+      procedure Join( Driver_Config : STRING;
+                     Box_CorbaLOC : STRING);
 
-   procedure Configure_Ride(
-                            LapsQty_In : INTEGER;
-                            CompetitorsQty_In : INTEGER;
-                            StatisticsRefreshFrequency_In : FLOAT);
+      procedure Configure( MaxCompetitors : in POSITIVE;
+                          ClassificRefreshTime_in : in FLOAT;
+                          Name_in : in STRING;
+                          Laps_in : in INTEGER;
+                          Circuit_File : in STRING);
+   private
+      Track : Circuit.RACETRACK_POINT;
+      ClassificRefreshTime : FLOAT;
+      Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Laps : INTEGER;
+      Competitors : access CompetitorTask_Array;
+   end SYNCH_COMPETITION;
 
-   function Get_MonitorAddress return STRING;
+   type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;
 
-   -- Initialize the competitor
-   function Join(CompetitorFileDescriptor_In : STRING) return INTEGER;
-   -- Box call this method to signal they are ready to start
-   procedure BoxOk( CompetitorId_In : INTEGER);
-   -- Each competitor task is started
-   procedure Stop_Joining;
-
-
-
-   ---Begin test methods specification---
-   procedure Add_Computer2Monitor(ComputerPoint_In : OnboardComputer.COMPUTER_POINT);
-   procedure Start_Monitor;
 end Competition;

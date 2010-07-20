@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config>
+	<name>Indianapolis</name>
+	<circuitConfigFile>race.xml</circuitConfigFile>
+	<classificRefreshTime>43.0</classificRefreshTime> <!-- float - seconds. This is the time interval between each snapshot of the classific -->
+	<competitorQty>7</competitorQty> <!-- int -->
+	<laps>5</laps> <!-- int -->
+</config>

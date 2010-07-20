@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<strategy>
+	<tyreType>rain tyre</tyreType>
+	<style>aggressive</style>
+	<gasLevel>20%</gasLevel>
+	<pitStopLap>3</pitStopLap>
+	<pitStopDelay>0.0</pitStopDelay>
+</strategy>

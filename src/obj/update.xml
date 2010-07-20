@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<update>
+	<gasLevel>43<gasLevel> <!-- % -->
+	<tyreUsury>38</tyreUsury> <!-- % -->
+	<meanSpeed>270</meanSpead> <!-- km/h -->
+	<meanGasConsumption>14</meanGasConsumption> <!-- l/h -->
+	<time>1984.42</time> <!-- time instant -->
+	<lap>3</lap> 
+	<sector>2</sector> 
+	<classific competitors="7" >   <!-- competitor ids, pol position = first one -->
+		<compId>4</compId>
+		<compId>1</compId>
+		<compId>7</compId>
+		<compId>2</compId>
+		<compId>3</compId>
+		<compId>6</compId>
+		<compId>5</compId>
+	</classific>
+</update>
+

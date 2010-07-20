@@ -3,3 +3,13 @@ La componente "competition" è l'interfaccia verso la configurazione e lo svilup
 - Componente di configurazione, da usare offline dall'admin locale per configurare i parametri di gara.
 - Componente di registrazione, usata online dai potenziali partecipanti per registrarsi alla gara -> la componente viene deallocata una volta che la gara è iniziata
 - Componente di monitoraggio, utilizzata dai box e dai teleschermi per avere un log continuo delle informazioni di gara
+
+
+carDriverTemp4 : CAR_DRIVER_ACCESS:=Init_Competitor("./obj/car_driver2.xml",iteratorTemp4, 4);
+TempTask3: TASKCOMPETITOR(carDriverTemp3);
+iteratorTemp4 : RACETRACK_ITERATOR := Get_Iterator(RaceTrackTemp);
+
+Campi competizione:
+	- Puntatore al circuito -> inizializzato in fase di configurazione
+	- Lista concorrenti (array di puntatori a TaskCompetitor) -> grandezza inizializzata in fase di configurazione
+	- Puntatore al monitor (da implementare) -> quando viene inizializzato deve tornare immediatamente lo IOR

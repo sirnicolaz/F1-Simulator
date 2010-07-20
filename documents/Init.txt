@@ -29,3 +29,22 @@ Oggetti e metodi necessari:
 	- Un oggetto corba che possa essere usato dall'interfaccia di configurazione della gara per passare i parametri di configurazione
 	  alla competition
 	- 
+
+Script bash:
+	- Avvio del mainInit in ada
+		- Allocazione della competition 
+		- Avvio dell'oggetto corba per la configurazione della competizione
+		- L'init rimane in attesa sulla competition che avvisera l'init della ricezione dei parametri
+		  di configurazione nel momento opportuno
+	- Avvio dell'interfaccia java per l'immissione dei parametri di configurazione
+		- una volta immessi i parametri di configurazione,vengono confermati e passati all'oggetto corba per la configurazione
+	- L'oggetto corba di configurazione configura la competition che "notifica" l'init di procedere
+		- Successivamente l'Init inizializza l'oggetto corba di registrazione
+		- Nel frattempo viene inizializzato anche il monitor di gara. Il corbaloc del monitor di gara verrà passato all'interfaccia java
+	- L'interfaccia java cambia pannello e mostra uno "screen" con aggiornamenti sullo stato di registrazione dei concorrenti
+		- per fare questo, verrà usato il monitor di gara il quale tornerà ogni nuovo concorrente man mano che si registrano.
+		  Verrà tornato un parametro speciale quando tutti i concorrenti sono stati inizializzati
+		- l'interfaccia java cambia metodo e dichiara il suo ready al monitor (il ready dell'interfaccia di amministrazione è necessario 
+		  prima che sia dato il via alla gara)
+	- Quando tutti i ready sono arrivati (box e monitor di amministrazione) la gara ha inizio e vengono usati i metodi di aggiornamento 
+	  del monitor per ricevere info aggiornate sullo stato della gara
