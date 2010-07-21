@@ -21,7 +21,7 @@ package Competition is
 
    protected type SYNCH_COMPETITION is
 
-      procedure Register_NewCompetitor(CompetitorDescriptor_File : in STRING;
+      procedure Register_NewCompetitor(CompetitorDescriptor : in STRING;
                                        Box_CorbaLOC : in STRING;
                                        Given_Id : out INTEGER);
 

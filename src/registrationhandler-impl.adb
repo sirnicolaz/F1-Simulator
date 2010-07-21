@@ -1,12 +1,28 @@
 package body RegistrationHandler.impl is
 
+   Comp : Competition.SYNCH_COMPETITION_POINT;
+
+   procedure Init(Competition_In : in Competition.SYNCH_COMPETITION_POINT) is
+   begin
+      Comp := Competition_In;
+   end Init;
+
    procedure Join_Competition(Self : access Object;
-                              CompetitorDescriptor_File : in CORBA.STRING;
+                              CompetitorDescriptor : in CORBA.STRING;
                               BoxCorbaLOC : in CORBA.STRING;
                               MonitorCorbaLOC : out CORBA.STRING;
                               Competitor_ID : out CORBA.Short) is
+      Competitor_ID_INT : INTEGER;
+
    begin
-      null;
+
+      Comp.Register_NewCompetitor(CORBA.To_Standard_String(CompetitorDescriptor),
+                                  CORBA.To_Standard_String(BoxCorbaLOC),
+                                  Competitor_ID_INT);
+
+      COmpetitor_ID := Corba.SHORT(Competitor_ID_INT);
+
+      -- MonitorCorbaLOC := Comp.GetMonitor;
    end Join_COmpetition;
 
    -- When the box joining request has been accepted, the box wait that

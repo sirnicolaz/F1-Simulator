@@ -1,0 +1,4 @@
+interface RegistrationHandler {
+  void Join_Competition (in string competitorDescriptorFile,in string boxCorbaLoc, out string monitorCorbaLoc, out short competitorId);
+  string Wait_Ready( in short competitorId );
+};
