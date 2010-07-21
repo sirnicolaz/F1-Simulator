@@ -9,6 +9,7 @@ with OnboardComputer;
 with Ada.Strings;
 with Ada.Strings.Unbounded;
 
+with Common;
 
 package Competition is
 
@@ -44,7 +45,9 @@ package Competition is
       --+ the competition
       Next_ID : INTEGER := 1;
       Registrations_Open : BOOLEAN := False;
-
+      Stop_Joining : BOOLEAN := False;
+      Configured : BOOLEAN := False;
+      Comp_List : access Common.COMPETITOR_LIST;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

@@ -24,6 +24,18 @@ begin
    declare
       Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
       The_Competition : Competition.SYNCH_COMPETITION_POINT := new Competition.SYNCH_COMPETITION;
+
+      task type Starter(Comp_In : Competition.SYNCH_COMPETITION_POINT) is
+      end Starter;
+
+      task body Starter is
+         Comp : Competition.SYNCH_COMPETITION_POINT := Comp_In;
+      begin
+            Competition.Ready(Comp,True);
+      end Starter;
+
+      Starter_Task : access Starter;
+
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
       Ada.Text_IO.Put_Line("Configuring competition object...");
@@ -74,6 +86,8 @@ begin
             (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))
             & "'");
          --  Launch the server
+
+         Starter_Task := new Starter(The_Competition);
 
          CORBA.ORB.Run;
 
