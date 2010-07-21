@@ -21,24 +21,23 @@ package RegistrationHandler is
    Repository_Id : constant PolyORB.Std.String :=
      "IDL:RegistrationHandler:1.0";
 
-   procedure Remote_Join
+   procedure Join_Competition
      (Self : Ref;
-      competitorDescriptor : CORBA.String;
-      address : CORBA.String;
-      radioAddress : out CORBA.String;
-      compId : out CORBA.Short;
-      monitorSystemAddress : out CORBA.String);
+      competitorDescriptorFile : CORBA.String;
+      boxCorbaLoc : CORBA.String;
+      monitorCorbaLoc : out CORBA.String;
+      competitorId : out CORBA.Short);
 
-   Remote_Join_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:RegistrationHandler/Remote_Join:1.0";
+   Join_Competition_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:RegistrationHandler/Join_Competition:1.0";
 
-   function Remote_Ready
+   function Wait_Ready
      (Self : Ref;
-      compId : CORBA.Short)
-     return CORBA.Boolean;
+      competitorId : CORBA.Short)
+     return CORBA.String;
 
-   Remote_Ready_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:RegistrationHandler/Remote_Ready:1.0";
+   Wait_Ready_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:RegistrationHandler/Wait_Ready:1.0";
 
    function Is_A
      (Self : Ref;

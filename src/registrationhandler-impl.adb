@@ -1,56 +1,24 @@
-with Ada.Text_IO;
-use Ada.Text_IO;
-with Ada.Command_Line;
+package body RegistrationHandler.impl is
 
-with RegistrationHandler.Skel;
-pragma Warnings (Off, RegistrationHandler.Skel);
-
-package body RegistrationHandler.Impl is
-
-   -- Il metodo deve:
-   --+ o Preparare le stringhe per renderle utilizzabili dai matodi non remoti
-   --+ o Convertire gli Short in Integer
-   procedure Remote_Join (
-                   Self : access Object;
-                   CompetitorDescriptor_In  : CORBA.String;
-                   Address_In : CORBA.String;
-                   RadioAddress_out : out CORBA.String;
-                   CompId_out : CORBA.Short;
-                   MonitorSystemAddress : out CORBA.String) is
-      pragma Warnings (Off);
-      pragma Unreferenced (Self);
-      pragma Warnings (On);
+   procedure Join_Competition(Self : access Object;
+                              CompetitorDescriptor_File : in CORBA.STRING;
+                              BoxCorbaLOC : in CORBA.STRING;
+                              MonitorCorbaLOC : out CORBA.STRING;
+                              Competitor_ID : out CORBA.Short) is
    begin
       null;
-   end Remote_Join;
+   end Join_COmpetition;
 
-   function Remote_Ready (
-                   Self : access Object;
-                   CompetitorId_In: CORBA.Short ) return CORBA.Boolean is
-      pragma Warnings (Off);
-      pragma Unreferenced (Self);
-      pragma Warnings (On);
+   -- When the box joining request has been accepted, the box wait that
+   --+ all the other participants join the competition. After that
+   --+ it's possible to have all the information about the competition
+   --+ (like the total number of competitors, that could be less
+   --+ than the maximum number choosen at the beginning).
+
+   function Wait_Ready(Self : access Object;
+                       CompetitorID : CORBA.Short) return CORBA.String is
    begin
-      return Ready(INTEGER(CompetitorId_In));
-   end Remote_Ready;
-
-   procedure Join(
-                  CompetitorDescriptor_In  : STRING;
-                  Address_In : STRING;
-                  RadioAddress_out : out STRING;
-                  CompId_out : INTEGER;
-                  MonitorSystemAddress : out STRING) is
-   begin
-
-      --Competition.Join(CompetitorFileDescriptor_In => CompetitorDescriptor_In);
-      Put_Line("LAPS" & POSITIVE'IMAGE(Competition.Laps_Qty));
-   end Join;
-
-
-   function Ready (
-                   CompetitorId_In: INTEGER ) return BOOLEAN is
-   begin
-
-   end Ready;
+      return CORBA.To_CORBA_String("No configuration yet");
+   end Wait_Ready;
 
 end RegistrationHandler.impl;

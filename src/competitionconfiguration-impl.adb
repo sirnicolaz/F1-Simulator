@@ -1,3 +1,5 @@
+with Ada.Text_IO;
+
 with CompetitionConfiguration.Skel;
 pragma Warnings (Off, CompetitionConfiguration.Skel);
 with CORBA;
@@ -35,6 +37,7 @@ package body CompetitionConfiguration.Impl is
       Current_Node : NODE;
       Config_Doc : DOCUMENT;
    begin
+      Ada.Text_IO.Put_Line("Getting document");
       Config_Doc := Common.Get_Document(doc_file => CORBA.To_Standard_String(config_file));
 
       Config := Get_Elements_By_Tag_Name(Config_Doc,"config");
@@ -48,7 +51,7 @@ package body CompetitionConfiguration.Impl is
 
       Comp.Configure(Competitor_Qty,Classific_RefreshTime,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
 
-      return CORBA.To_CORBA_String("no iot yet");
+      return CORBA.To_CORBA_String("no ior yet");
    end Configure;
 
 

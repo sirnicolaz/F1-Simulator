@@ -1,39 +1,19 @@
 with CORBA;
 with PortableServer;
 
-with Competition;
-use Competition;
-
-
-package RegistrationHandler.Impl is
+package RegistrationHandler.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
+
    type Object_Acc is access Object;
 
-   -- Il monitor di sistema è temporaneamente solo un riferimento all'oggetto
-   --MonitorSystem :
+   procedure Join_Competition(Self : access Object;
+                              CompetitorDescriptor_File : in CORBA.STRING;
+                              BoxCorbaLOC : in CORBA.STRING;
+                              MonitorCorbaLOC : out CORBA.STRING;
+                              Competitor_ID : out CORBA.Short);
 
-   procedure Remote_Join (
-                   Self : access Object;
-                   CompetitorDescriptor_In  : CORBA.String;
-                   Address_In : CORBA.String;
-                   RadioAddress_out : out CORBA.String;
-                   CompId_out : CORBA.Short;
-                   MonitorSystemAddress : out CORBA.String);
+   function Wait_Ready(Self : access Object;
+                       CompetitorID : CORBA.Short) return CORBA.String;
 
-   function Remote_Ready (
-                   Self : access Object;
-                   CompetitorId_In: CORBA.Short ) return CORBA.Boolean;
-
-
-   procedure Join(
-                  CompetitorDescriptor_In  : STRING;
-                  Address_In : STRING;
-                  RadioAddress_out : out STRING;
-                  CompId_out : INTEGER;
-                  MonitorSystemAddress : out STRING);
-
-   function Ready (
-                   CompetitorId_In: INTEGER ) return BOOLEAN;
-
-end RegistrationHandler.Impl;
+end RegistrationHandler.impl;

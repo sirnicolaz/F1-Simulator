@@ -19,12 +19,21 @@ package body Competition is
 
    protected body SYNCH_COMPETITION is
 
-      procedure Join( Driver_Config : STRING;
-                     Box_CorbaLOC : STRING) is
+      procedure Register_NewCompetitor(CompetitorDescriptor_File : in STRING;
+                                       Box_CorbaLOC : in STRING;
+                                       Given_Id : out INTEGER) is
+         ID : INTEGER;
+         Driver : CAR_DRIVER_ACCESS;
       begin
-         null;
-      end Join;
-
+         --Find an available ID for the competitor
+         ID := Next_ID;
+         Next_ID := Next_ID + 1;
+         --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
+         Driver := Init_Competitor(CompetitorDescriptor_File,Circuit.Get_Iterator(Track),ID);
+         --Initialise the task competitor
+         Competitors.all(1) := new TASKCOMPETITOR(Driver);
+         Given_ID := ID;
+      end;
 
       procedure Configure( MaxCompetitors : in POSITIVE;
                           ClassificRefreshTime_in : in FLOAT;
@@ -40,6 +49,7 @@ package body Competition is
 
          Track := Circuit.Get_Racetrack(Circuit_File);
 
+         Done := True;
       end Configure;
 
    end SYNCH_COMPETITION;

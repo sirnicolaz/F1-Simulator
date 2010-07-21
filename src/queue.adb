@@ -16,7 +16,7 @@ package body Queue is
    --WARNING: no check on the Competitors_List size. It might happen that
    --+the method tries to initialise a position of the queue with a NULL value.
    procedure Set_Competitors(Queue_In : in out QUEUE;
-                             Competitors_List : Common.COMPETITORS_LIST;
+                             Competitors_List : Common.COMPETITOR_LIST;
                              Times : Common.FLOAT_LIST) is
    begin
       for Index in Queue_In'RANGE loop

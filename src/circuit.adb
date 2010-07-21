@@ -170,7 +170,7 @@ package body Circuit is
       end Signal_Arrival;
 
 
-      procedure Set_Competitors(Competitors : Common.COMPETITORS_LIST;
+      procedure Set_Competitors(Competitors : Common.COMPETITOR_LIST;
                                 Times : Common.FLOAT_LIST) is
       begin
          Set_Competitors(F_Checkpoint.Queue.all,Competitors,Times);
@@ -392,7 +392,7 @@ package body Circuit is
    end Set_Checkpoint;
 
    procedure Set_Competitors(Racetrack_In : in out RACETRACK_POINT;
-                             Competitors : in Common.COMPETITORS_LIST) is
+                             Competitors : in Common.COMPETITOR_LIST) is
       Race_Length : INTEGER;
       Race_It : RACETRACK_ITERATOR := Get_Iterator(Racetrack_In);
       Times : Common.FLOAT_LIST(1..Competitors'LENGTH);

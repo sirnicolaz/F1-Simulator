@@ -29,29 +29,25 @@ with PolyORB.Initialization;
 
 package body RegistrationHandler.Skel is
 
-   Remote_Join_Arg_Name_competitorDescriptor_Ü : constant CORBA.Identifier :=
+   Join_Competition_Arg_Name_competitorDescriptorFile_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorDescriptor");
+        ("competitorDescriptorFile");
 
-   Remote_Join_Arg_Name_address_Ü : constant CORBA.Identifier :=
+   Join_Competition_Arg_Name_boxCorbaLoc_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("address");
+        ("boxCorbaLoc");
 
-   Remote_Join_Arg_Name_radioAddress_Ü : constant CORBA.Identifier :=
+   Join_Competition_Arg_Name_monitorCorbaLoc_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("radioAddress");
+        ("monitorCorbaLoc");
 
-   Remote_Join_Arg_Name_compId_Ü : constant CORBA.Identifier :=
+   Join_Competition_Arg_Name_competitorId_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("compId");
+        ("competitorId");
 
-   Remote_Join_Arg_Name_monitorSystemAddress_Ü : constant CORBA.Identifier :=
+   Wait_Ready_Arg_Name_competitorId_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("monitorSystemAddress");
-
-   Remote_Ready_Arg_Name_compId_Ü : constant CORBA.Identifier :=
-     CORBA.To_CORBA_String
-        ("compId");
+        ("competitorId");
 
    procedure Invoke
      (Self : PortableServer.Servant;
@@ -109,123 +105,108 @@ package body RegistrationHandler.Skel is
                     (Result_Ü));
             end;
          elsif (Operation_Ü
-            = "Remote_Join")
+            = "Join_Competition")
          then
             declare
-               Argument_competitorDescriptor_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_competitorDescriptor_Ü);
-               Arg_CC_competitorDescriptor_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorDescriptorFile_Ü : CORBA.String;
+               pragma Warnings (Off, Argument_competitorDescriptorFile_Ü);
+               Arg_CC_competitorDescriptorFile_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorDescriptor_Ü'Unrestricted_Access);
-               Arg_Any_competitorDescriptor_Ü : constant CORBA.Any :=
+                    (Argument_competitorDescriptorFile_Ü'Unrestricted_Access);
+               Arg_Any_competitorDescriptorFile_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_String,
-                     Arg_CC_competitorDescriptor_Ü'Unchecked_Access);
-               Argument_address_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_address_Ü);
-               Arg_CC_address_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorDescriptorFile_Ü'Unchecked_Access);
+               Argument_boxCorbaLoc_Ü : CORBA.String;
+               pragma Warnings (Off, Argument_boxCorbaLoc_Ü);
+               Arg_CC_boxCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_address_Ü'Unrestricted_Access);
-               Arg_Any_address_Ü : constant CORBA.Any :=
+                    (Argument_boxCorbaLoc_Ü'Unrestricted_Access);
+               Arg_Any_boxCorbaLoc_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_String,
-                     Arg_CC_address_Ü'Unchecked_Access);
-               Argument_radioAddress_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_radioAddress_Ü);
-               Arg_CC_radioAddress_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_boxCorbaLoc_Ü'Unchecked_Access);
+               Argument_monitorCorbaLoc_Ü : CORBA.String;
+               pragma Warnings (Off, Argument_monitorCorbaLoc_Ü);
+               Arg_CC_monitorCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_radioAddress_Ü'Unrestricted_Access);
-               Arg_Any_radioAddress_Ü : constant CORBA.Any :=
+                    (Argument_monitorCorbaLoc_Ü'Unrestricted_Access);
+               Arg_Any_monitorCorbaLoc_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_String,
-                     Arg_CC_radioAddress_Ü'Unchecked_Access);
-               Argument_compId_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_compId_Ü);
-               Arg_CC_compId_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_monitorCorbaLoc_Ü'Unchecked_Access);
+               Argument_competitorId_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorId_Ü);
+               Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_compId_Ü'Unrestricted_Access);
-               Arg_Any_compId_Ü : constant CORBA.Any :=
+                    (Argument_competitorId_Ü'Unrestricted_Access);
+               Arg_Any_competitorId_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_compId_Ü'Unchecked_Access);
-               Argument_monitorSystemAddress_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_monitorSystemAddress_Ü);
-               Arg_CC_monitorSystemAddress_Ü : aliased PolyORB.Any.Content'Class :=
-                 CORBA.Wrap
-                    (Argument_monitorSystemAddress_Ü'Unrestricted_Access);
-               Arg_Any_monitorSystemAddress_Ü : constant CORBA.Any :=
-                 CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_String,
-                     Arg_CC_monitorSystemAddress_Ü'Unchecked_Access);
+                     Arg_CC_competitorId_Ü'Unchecked_Access);
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Remote_Join_Arg_Name_competitorDescriptor_Ü,
-                  Arg_Any_competitorDescriptor_Ü,
+                  Join_Competition_Arg_Name_competitorDescriptorFile_Ü,
+                  Arg_Any_competitorDescriptorFile_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Remote_Join_Arg_Name_address_Ü,
-                  Arg_Any_address_Ü,
+                  Join_Competition_Arg_Name_boxCorbaLoc_Ü,
+                  Arg_Any_boxCorbaLoc_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Remote_Join_Arg_Name_radioAddress_Ü,
-                  Arg_Any_radioAddress_Ü,
+                  Join_Competition_Arg_Name_monitorCorbaLoc_Ü,
+                  Arg_Any_monitorCorbaLoc_Ü,
                   CORBA.ARG_OUT);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Remote_Join_Arg_Name_compId_Ü,
-                  Arg_Any_compId_Ü,
-                  CORBA.ARG_OUT);
-               CORBA.NVList.Add_Item
-                 (Argument_List_Ü,
-                  Remote_Join_Arg_Name_monitorSystemAddress_Ü,
-                  Arg_Any_monitorSystemAddress_Ü,
+                  Join_Competition_Arg_Name_competitorId_Ü,
+                  Arg_Any_competitorId_Ü,
                   CORBA.ARG_OUT);
                --  Processing request
                CORBA.ServerRequest.Arguments
                  (Request,
                   Argument_List_Ü);
                --  Call Implementation
-               RegistrationHandler.Impl.Remote_Join
+               RegistrationHandler.Impl.Join_Competition
                  (RegistrationHandler.Impl.Object'Class
                     (Self.all)'Access,
-                  Argument_competitorDescriptor_Ü,
-                  Argument_address_Ü,
-                  Argument_radioAddress_Ü,
-                  Argument_compId_Ü,
-                  Argument_monitorSystemAddress_Ü);
+                  Argument_competitorDescriptorFile_Ü,
+                  Argument_boxCorbaLoc_Ü,
+                  Argument_monitorCorbaLoc_Ü,
+                  Argument_competitorId_Ü);
                CORBA.NVList.Internals.Clone_Out_Args
                  (Argument_List_Ü);
             end;
          elsif (Operation_Ü
-            = "Remote_Ready")
+            = "Wait_Ready")
          then
             declare
-               Argument_compId_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_compId_Ü);
-               Arg_CC_compId_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorId_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorId_Ü);
+               Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_compId_Ü'Unrestricted_Access);
-               Arg_Any_compId_Ü : constant CORBA.Any :=
+                    (Argument_competitorId_Ü'Unrestricted_Access);
+               Arg_Any_competitorId_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_compId_Ü'Unchecked_Access);
-               Result_Ü : CORBA.Boolean;
+                     Arg_CC_competitorId_Ü'Unchecked_Access);
+               Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
                     (Result_Ü'Unrestricted_Access);
                Arg_Any_Result_Ü_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_Boolean,
+                    (CORBA.TC_String,
                      Arg_CC_Result_Ü_Ü'Unchecked_Access);
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Remote_Ready_Arg_Name_compId_Ü,
-                  Arg_Any_compId_Ü,
+                  Wait_Ready_Arg_Name_competitorId_Ü,
+                  Arg_Any_competitorId_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -233,10 +214,10 @@ package body RegistrationHandler.Skel is
                   Argument_List_Ü);
                --  Call Implementation
                Result_Ü :=
-                 RegistrationHandler.Impl.Remote_Ready
+                 RegistrationHandler.Impl.Wait_Ready
                     (RegistrationHandler.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_compId_Ü);
+                     Argument_competitorId_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,

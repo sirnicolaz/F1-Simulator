@@ -20,8 +20,10 @@ package Competition is
    type CompetitorTask_Array is array(POSITIVE range <>) of access Competitor.TASKCOMPETITOR;
 
    protected type SYNCH_COMPETITION is
-      procedure Join( Driver_Config : STRING;
-                     Box_CorbaLOC : STRING);
+
+      procedure Register_NewCompetitor(CompetitorDescriptor_File : in STRING;
+                                       Box_CorbaLOC : in STRING;
+                                       Given_Id : out INTEGER);
 
       procedure Configure( MaxCompetitors : in POSITIVE;
                           ClassificRefreshTime_in : in FLOAT;
@@ -34,6 +36,10 @@ package Competition is
       Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Laps : INTEGER;
       Competitors : access CompetitorTask_Array;
+      -- The ID to assign to the next competitor that will apply for joining
+      --+ the competition
+      Next_ID : INTEGER := 1;
+      Done : BOOLEAN := False;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

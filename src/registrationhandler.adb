@@ -17,97 +17,84 @@ with PolyORB.CORBA_P.Exceptions;
 
 package body RegistrationHandler is
 
-   Remote_Join_Arg_Name_competitorDescriptor_Ü : constant PolyORB.Types.Identifier :=
+   Join_Competition_Arg_Name_competitorDescriptorFile_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorDescriptor");
+        ("competitorDescriptorFile");
 
-   Remote_Join_Arg_Name_address_Ü : constant PolyORB.Types.Identifier :=
+   Join_Competition_Arg_Name_boxCorbaLoc_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("address");
+        ("boxCorbaLoc");
 
-   Remote_Join_Arg_Name_radioAddress_Ü : constant PolyORB.Types.Identifier :=
+   Join_Competition_Arg_Name_monitorCorbaLoc_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("radioAddress");
+        ("monitorCorbaLoc");
 
-   Remote_Join_Arg_Name_compId_Ü : constant PolyORB.Types.Identifier :=
+   Join_Competition_Arg_Name_competitorId_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("compId");
+        ("competitorId");
 
-   Remote_Join_Arg_Name_monitorSystemAddress_Ü : constant PolyORB.Types.Identifier :=
-     PolyORB.Types.To_PolyORB_String
-        ("monitorSystemAddress");
-
-   Remote_Join_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+   Join_Competition_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
 
-   --------------------------
-   -- Remote_Join_Result_Ü --
-   --------------------------
+   -------------------------------
+   -- Join_Competition_Result_Ü --
+   -------------------------------
 
-   function Remote_Join_Result_Ü return PolyORB.Any.NamedValue is
-      pragma Inline (Remote_Join_Result_Ü);
+   function Join_Competition_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Join_Competition_Result_Ü);
    begin
-      return (Name => Remote_Join_Result_Name_Ü,
+      return (Name => Join_Competition_Result_Name_Ü,
       Argument => CORBA.Internals.Get_Empty_Any
         (CORBA.TC_Void),
       Arg_Modes => 0);
-   end Remote_Join_Result_Ü;
+   end Join_Competition_Result_Ü;
 
-   -----------------
-   -- Remote_Join --
-   -----------------
+   ----------------------
+   -- Join_Competition --
+   ----------------------
 
-   procedure Remote_Join
+   procedure Join_Competition
      (Self : Ref;
-      competitorDescriptor : CORBA.String;
-      address : CORBA.String;
-      radioAddress : out CORBA.String;
-      compId : out CORBA.Short;
-      monitorSystemAddress : out CORBA.String)
+      competitorDescriptorFile : CORBA.String;
+      boxCorbaLoc : CORBA.String;
+      monitorCorbaLoc : out CORBA.String;
+      competitorId : out CORBA.Short)
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
-      Arg_CC_competitorDescriptor_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorDescriptorFile_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorDescriptor'Unrestricted_Access);
-      Arg_Any_competitorDescriptor_Ü : constant CORBA.Any :=
+           (competitorDescriptorFile'Unrestricted_Access);
+      Arg_Any_competitorDescriptorFile_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_String,
-            Arg_CC_competitorDescriptor_Ü'Unchecked_Access);
-      Arg_CC_address_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorDescriptorFile_Ü'Unchecked_Access);
+      Arg_CC_boxCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (address'Unrestricted_Access);
-      Arg_Any_address_Ü : constant CORBA.Any :=
+           (boxCorbaLoc'Unrestricted_Access);
+      Arg_Any_boxCorbaLoc_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_String,
-            Arg_CC_address_Ü'Unchecked_Access);
-      Arg_CC_radioAddress_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_boxCorbaLoc_Ü'Unchecked_Access);
+      Arg_CC_monitorCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (radioAddress'Unrestricted_Access);
-      Arg_Any_radioAddress_Ü : constant CORBA.Any :=
+           (monitorCorbaLoc'Unrestricted_Access);
+      Arg_Any_monitorCorbaLoc_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_String,
-            Arg_CC_radioAddress_Ü'Unchecked_Access);
-      pragma Warnings (Off, radioAddress);
-      Arg_CC_compId_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_monitorCorbaLoc_Ü'Unchecked_Access);
+      pragma Warnings (Off, monitorCorbaLoc);
+      Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (compId'Unrestricted_Access);
-      Arg_Any_compId_Ü : constant CORBA.Any :=
+           (competitorId'Unrestricted_Access);
+      Arg_Any_competitorId_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_compId_Ü'Unchecked_Access);
-      pragma Warnings (Off, compId);
-      Arg_CC_monitorSystemAddress_Ü : aliased PolyORB.Any.Content'Class :=
-        CORBA.Wrap
-           (monitorSystemAddress'Unrestricted_Access);
-      Arg_Any_monitorSystemAddress_Ü : constant CORBA.Any :=
-        CORBA.Internals.Get_Wrapper_Any
-           (CORBA.TC_String,
-            Arg_CC_monitorSystemAddress_Ü'Unchecked_Access);
-      pragma Warnings (Off, monitorSystemAddress);
+            Arg_CC_competitorId_Ü'Unchecked_Access);
+      pragma Warnings (Off, competitorId);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
-        Remote_Join_Result_Ü;
+        Join_Competition_Result_Ü;
    begin
       if CORBA.Object.Is_Nil
         (CORBA.Object.Ref
@@ -122,40 +109,34 @@ package body RegistrationHandler is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         Remote_Join_Arg_Name_competitorDescriptor_Ü,
+         Join_Competition_Arg_Name_competitorDescriptorFile_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorDescriptor_Ü),
+           (Arg_Any_competitorDescriptorFile_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         Remote_Join_Arg_Name_address_Ü,
+         Join_Competition_Arg_Name_boxCorbaLoc_Ü,
          PolyORB.Any.Any
-           (Arg_Any_address_Ü),
+           (Arg_Any_boxCorbaLoc_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         Remote_Join_Arg_Name_radioAddress_Ü,
+         Join_Competition_Arg_Name_monitorCorbaLoc_Ü,
          PolyORB.Any.Any
-           (Arg_Any_radioAddress_Ü),
+           (Arg_Any_monitorCorbaLoc_Ü),
          PolyORB.Any.ARG_OUT);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         Remote_Join_Arg_Name_compId_Ü,
+         Join_Competition_Arg_Name_competitorId_Ü,
          PolyORB.Any.Any
-           (Arg_Any_compId_Ü),
-         PolyORB.Any.ARG_OUT);
-      PolyORB.Any.NVList.Add_Item
-        (Argument_List_Ü,
-         Remote_Join_Arg_Name_monitorSystemAddress_Ü,
-         PolyORB.Any.Any
-           (Arg_Any_monitorSystemAddress_Ü),
+           (Arg_Any_competitorId_Ü),
          PolyORB.Any.ARG_OUT);
       --  Creating the request
       PolyORB.Requests.Create_Request
         (Target => CORBA.Object.Internals.To_PolyORB_Ref
            (CORBA.Object.Ref
               (Self)),
-         Operation => "Remote_Join",
+         Operation => "Join_Competition",
          Arg_List => Argument_List_Ü,
          Result => Result_Nv_Ü,
          Req => Request_Ü);
@@ -169,54 +150,54 @@ package body RegistrationHandler is
         (Request_Ü);
       PolyORB.Requests.Destroy_Request
         (Request_Ü);
-   end Remote_Join;
+   end Join_Competition;
 
-   Remote_Ready_Arg_Name_compId_Ü : constant PolyORB.Types.Identifier :=
+   Wait_Ready_Arg_Name_competitorId_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("compId");
+        ("competitorId");
 
-   Remote_Ready_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+   Wait_Ready_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
 
-   ---------------------------
-   -- Remote_Ready_Result_Ü --
-   ---------------------------
+   -------------------------
+   -- Wait_Ready_Result_Ü --
+   -------------------------
 
-   function Remote_Ready_Result_Ü return PolyORB.Any.NamedValue is
-      pragma Inline (Remote_Ready_Result_Ü);
+   function Wait_Ready_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Wait_Ready_Result_Ü);
    begin
-      return (Name => Remote_Ready_Result_Name_Ü,
+      return (Name => Wait_Ready_Result_Name_Ü,
       Argument => CORBA.Internals.Get_Empty_Any
-        (CORBA.TC_Boolean),
+        (CORBA.TC_String),
       Arg_Modes => 0);
-   end Remote_Ready_Result_Ü;
+   end Wait_Ready_Result_Ü;
 
-   ------------------
-   -- Remote_Ready --
-   ------------------
+   ----------------
+   -- Wait_Ready --
+   ----------------
 
-   function Remote_Ready
+   function Wait_Ready
      (Self : Ref;
-      compId : CORBA.Short)
-     return CORBA.Boolean
+      competitorId : CORBA.Short)
+     return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
-      Result_Ü : CORBA.Boolean;
+      Result_Ü : CORBA.String;
       pragma Warnings (Off, Result_Ü);
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_compId_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (compId'Unrestricted_Access);
-      Arg_Any_compId_Ü : constant CORBA.Any :=
+           (competitorId'Unrestricted_Access);
+      Arg_Any_competitorId_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_compId_Ü'Unchecked_Access);
+            Arg_CC_competitorId_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
-        Remote_Ready_Result_Ü;
+        Wait_Ready_Result_Ü;
    begin
       if CORBA.Object.Is_Nil
         (CORBA.Object.Ref
@@ -231,9 +212,9 @@ package body RegistrationHandler is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         Remote_Ready_Arg_Name_compId_Ü,
+         Wait_Ready_Arg_Name_competitorId_Ü,
          PolyORB.Any.Any
-           (Arg_Any_compId_Ü),
+           (Arg_Any_competitorId_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -245,7 +226,7 @@ package body RegistrationHandler is
         (Target => CORBA.Object.Internals.To_PolyORB_Ref
            (CORBA.Object.Ref
               (Self)),
-         Operation => "Remote_Ready",
+         Operation => "Wait_Ready",
          Arg_List => Argument_List_Ü,
          Result => Result_Nv_Ü,
          Req => Request_Ü);
@@ -261,7 +242,7 @@ package body RegistrationHandler is
         (Request_Ü);
       --  Return value
       return Result_Ü;
-   end Remote_Ready;
+   end Wait_Ready;
 
    ----------
    -- Is_A --
