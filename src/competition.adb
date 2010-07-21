@@ -6,11 +6,26 @@ package body Competition is
 
    -- type Monitor_POINT is access MONITOR --to implement (Lory)
 
+   -- This method is supposed to be called when either all the
+   --+competitors are registered or the administrator manually
+   --+starts the competition
+   procedure Ready(Competition_In : SYNCH_COMPETITION_POINT;
+                   Wait_All : BOOLEAN) is
+   begin
+
+      if( Wait_All ) then
+            Competition_In.Wait;
+      end if;
+
+      Competition_In.Start;
+
+   end Ready;
+
    protected body SYNCH_COMPETITION is
 
-      procedure Register_NewCompetitor(CompetitorDescriptor : in STRING;
+      entry Register_NewCompetitor(CompetitorDescriptor : in STRING;
                                        Box_CorbaLOC : in STRING;
-                                       Given_Id : out INTEGER) is
+                                       Given_Id : out INTEGER) when Registrations_Open is
          ID : INTEGER;
          Driver : CAR_DRIVER_ACCESS;
 
@@ -36,7 +51,27 @@ package body Competition is
          Competitors.all(1) := new TASKCOMPETITOR(Driver);
          Ada.Text_IO.Put_Line("End");
          Given_ID := ID;
+
+         if ( ID = Competitors'LENGTH + 1 ) then
+            Registrations_Open := false;
+         end if;
       end;
+
+      procedure Start is
+      begin
+         Registrations_Open := false;
+
+         -- Monitor.Wait_Ok;
+
+         for Index in Competitors'RANGE loop
+            Competitors.all(Index).Start;
+         end loop;
+      end Start;
+
+      entry Wait when Registrations_Open = false is
+      begin
+         null;
+      end Wait;
 
       procedure Configure( MaxCompetitors : in POSITIVE;
                           ClassificRefreshTime_in : in FLOAT;
@@ -52,8 +87,13 @@ package body Competition is
 
          Track := Circuit.Get_Racetrack(Circuit_File);
 
-         Done := True;
+         Registrations_Open := True;
       end Configure;
+
+      function AreRegistrationsOpen return BOOLEAN is
+      begin
+         return Registrations_Open;
+      end AreRegistrationsOpen;
 
    end SYNCH_COMPETITION;
 

@@ -18,7 +18,4 @@ package RegistrationHandler.impl is
                               MonitorCorbaLOC : out CORBA.STRING;
                               Competitor_ID : out CORBA.Short);
 
-   function Wait_Ready(Self : access Object;
-                       CompetitorID : CORBA.Short) return CORBA.String;
-
 end RegistrationHandler.impl;

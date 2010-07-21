@@ -26,7 +26,7 @@ package body RegistrationHandler.impl is
                                   CORBA.To_Standard_String(BoxCorbaLOC),
                                   Competitor_ID_INT);
 
-      COmpetitor_ID := Corba.SHORT(Competitor_ID_INT);
+      Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
       -- MonitorCorbaLOC := Comp.GetMonitor;
    end Join_COmpetition;

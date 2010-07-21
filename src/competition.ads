@@ -19,7 +19,7 @@ package Competition is
 
    protected type SYNCH_COMPETITION is
 
-      procedure Register_NewCompetitor(CompetitorDescriptor : in STRING;
+      entry Register_NewCompetitor(CompetitorDescriptor : in STRING;
                                        Box_CorbaLOC : in STRING;
                                        Given_Id : out INTEGER);
 
@@ -28,6 +28,12 @@ package Competition is
                           Name_in : in STRING;
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING);
+
+      function AreRegistrationsOpen return BOOLEAN;
+
+      entry Wait;
+
+      procedure Start;
    private
       Track : Circuit.RACETRACK_POINT;
       ClassificRefreshTime : FLOAT;
@@ -37,9 +43,12 @@ package Competition is
       -- The ID to assign to the next competitor that will apply for joining
       --+ the competition
       Next_ID : INTEGER := 1;
-      Done : BOOLEAN := False;
+      Registrations_Open : BOOLEAN := False;
+
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;
 
+   procedure Ready(Competition_In : SYNCH_COMPETITION_POINT;
+                   Wait_All : BOOLEAN);
 end Competition;
