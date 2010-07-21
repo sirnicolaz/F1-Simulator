@@ -8,10 +8,10 @@
 	<car>
 	  <maxspeed>350.0</maxspeed>
 	  <maxacceleration>1.2</maxacceleration>
-	  <gastankcapacity>100.0</gastankcapacity>
+	  <gastankcapacity>1000</gastankcapacity>
 	  <engine>strong</engine>
 	  <tyreusury>0.0</tyreusury>
-	  <gasolinelevel>50.0</gasolinelevel>
+	  <gasolinelevel>100</gasolinelevel>
 	  <mixture>morbida</mixture>
 	  <model>michelin</model>
 	  <type_tyre>rain</type_tyre>

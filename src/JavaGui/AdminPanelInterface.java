@@ -6,4 +6,5 @@ public interface AdminPanelInterface{
   //public void confirmSetting();
   public void switchPanel(JPanel succPanel);//dovrà essere un JPanel
   public void resetInfo();
+  public boolean connect();
 }

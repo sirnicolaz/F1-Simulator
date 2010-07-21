@@ -4,6 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
+import java.util.Properties;
+import org.omg.CORBA.ORB;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
+
+
 public class BoxAdminWindow implements AdminPanelInterface{
 // private JFrame frame = new JFrame("Competitor");
 //sezione JSlider
@@ -605,6 +614,74 @@ e.printStackTrace();
 return false;
 }
 }
+
+public boolean connect(){
+	try {
+	
+            //initialize orb
+            /*Properties props = System.getProperties();
+            props.put("org.omg.CORBA.ORBInitialPort", args[1]);
+            //Replace MyHost with the name of the host on which you are running the server
+            props.put("org.omg.CORBA.ORBInitialHost", args[0]);
+            ORB orb = ORB.init(args, props);
+	    */
+//LETTURA IOR DA FILE
+	    FileReader doc=new FileReader("/ior/ior.txt");
+BufferedReader bufRead = new BufferedReader(doc);
+String ior;    // String that holds current file line
+ int count = 0;  // Line number of count 
+            
+            // Read first line
+            ior = bufRead.readLine();
+            count++;
+            
+            // Read through file one line at time. Print line # and line
+           while (ior != null){
+                ior = ior+bufRead.readLine();
+                count++;
+            }
+            bufRead.close();
+
+//inizializzazione e comunicazione con la logica.
+	    ORB orb = ORB.init(ior, null);
+	    System.out.println("Initialized ORB");
+
+            //Instantiate Servant and create reference
+// 	    POA rootPOA = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
+           
+            //rootPOA.activate_object(listener);
+	    //Echo ref = EchoHelper.narrow(
+              //  rootPOA.servant_to_reference(listener));
+
+            //Resolve MessageServer
+	    org.omg.CORBA.Object obj = orb.string_to_object(ior);
+	    Echo comp = EchoHelper.narrow(obj);
+	/*	
+	    Echo msgServer = EchoHelper.narrow(
+	        orb.string_to_object("corbaloc:iiop:1.2@"+args[0]+":"+args[1]+"//"+args[2]));*/
+
+            //Register listener reference (callback object) with MessageServer
+           
+            System.out.println("Listener registered with MessageServer :" + comp.echoQuarantadue("sono client java - echoQuarantadue"));
+            System.out.println("Listener registered with MessageServer :" + comp.echoString("sono client java - echoString"));
+	    org.omg.CORBA.IntHolder pippo = new org.omg.CORBA.IntHolder();
+	    comp.echoProcedure("sono client java - echoProcedure", pippo);
+            System.out.println("Listener registered with MessageServer :");
+
+	    //Activate rootpoa
+            //rootPOA.the_POAManager().activate();
+
+            //Wait for messages
+            //orb.run();
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+ 
+   }
+
+
+
 
 public static void main(String[] args){
 JFrame j = new JFrame("Box Admin Window");

@@ -91,7 +91,8 @@ package body OnBoardComputer is
 
    procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS) is
    begin
-      Info_Node_Out.Value := Value;
+      Ada.Text_IO.Put_Line("PRE Info node out : ");
+      Info_Node_Out.Value := Value;--problema nell'utilizzo di questo
       if(Info_Node_Out.Index = -1) then
          Info_Node_Out.Index := 1;
       end if;
