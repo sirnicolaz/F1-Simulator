@@ -1,16 +1,3 @@
-with CORBA.Impl;
-use CORBA.Impl;
-with CORBA.Object;
-with CORBA.ORB;
-
-with PortableServer.POA.Helper;
-with PortableServer.POAManager;
-
-with PolyORB.CORBA_P.CORBALOC;
-
-with PolyORB.Setup.Thread_Per_Request_Server;
-pragma Warnings (Off, PolyORB.Setup.Thread_Per_Request_Server);
-
 with Ada.Text_IO;
 
 with Common;
@@ -36,13 +23,18 @@ package body Competition is
          Next_ID := Next_ID + 1;
 
          -- Creating the file where the CompetitorDescriptor will be saved
+         Ada.Text_IO.Put_Line("Saving file...");
          File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
          Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
-
+         Ada.Text_IO.Put(CompetitorDescriptor_File, CompetitorDescriptor);
+         Ada.Text_IO.Close(CompetitorDescriptor_File);
          --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
+         Ada.Text_IO.Put_Line("Init competitor...");
          Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID);
          --Initialise the task competitor
+         Ada.Text_IO.Put_Line("Init task...");
          Competitors.all(1) := new TASKCOMPETITOR(Driver);
+         Ada.Text_IO.Put_Line("End");
          Given_ID := ID;
       end;
 

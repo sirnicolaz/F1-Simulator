@@ -1,8 +1,4 @@
-with Competition;
-use Competition;
-
-with CompetitionConfiguration.impl;
-with RegistrationHandler.impl;
+with Ada.Text_IO;
 
 with CORBA.Impl;
 with CORBA.Object;
@@ -11,16 +7,20 @@ with CORBA.ORB;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 
+with CompetitionConfiguration.impl;
+with RegistrationHandler.impl;
+
 with PolyORB.CORBA_P.CORBALOC;
 
 with PolyORB.Setup.No_Tasking_Server;
 pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
 
-with Ada.Text_IO;
+with Competition;
+use Competition;
 
 procedure Init is
 begin
-   -- Declare the Competition remote object
+   --Declare the Competition remote object
    declare
       Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
       The_Competition : Competition.SYNCH_COMPETITION_POINT := new Competition.SYNCH_COMPETITION;
