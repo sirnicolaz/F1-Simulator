@@ -1,3 +1,9 @@
+with Ada.Text_IO;
+
+with RegistrationHandler.Skel;
+pragma Warnings (Off, RegistrationHandler.Skel);
+with CORBA;
+
 package body RegistrationHandler.impl is
 
    Comp : Competition.SYNCH_COMPETITION_POINT;
@@ -15,7 +21,7 @@ package body RegistrationHandler.impl is
       Competitor_ID_INT : INTEGER;
 
    begin
-
+      Ada.Text_IO.Put_Line("registering....");
       Comp.Register_NewCompetitor(CORBA.To_Standard_String(CompetitorDescriptor),
                                   CORBA.To_Standard_String(BoxCorbaLOC),
                                   Competitor_ID_INT);

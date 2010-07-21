@@ -5,13 +5,17 @@ A -gnato
 A -gnatVa
 A -gnatA
 P SS ZX
-R nnnnnnnnnnnnnnnnnnnnnnnvnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnvnnvnvnnnnnnnnnnnnnv1+nn
+R nnnnnnnnnnnnnnnnnnnnnnvvnnnnnnnnnnnnnnvnnvnnnnnnnnnnnnnvnnvnvnnnnnnnnnnnnnv1+nn
 
-U registrationhandler.impl%b  registrationhandler-impl.adb  9a99ac8e NE OO PK
+U registrationhandler.impl%b  registrationhandler-impl.adb  be9649ea NE OO PK
+W ada%s			ada.ads			ada.ali
+W ada.text_io%s		a-textio.adb		a-textio.ali
+W corba%s		corba.adb		corba.ali
 W registrationhandler%s	registrationhandler.adb	registrationhandler.ali
+W registrationhandler.skel%s  registrationhandler-skel.adb  registrationhandler-skel.ali
 W system.secondary_stack%s  s-secsta.adb	s-secsta.ali
 
-U registrationhandler.impl%s  registrationhandler-impl.ads  154c778c EE OO PK
+U registrationhandler.impl%s  registrationhandler-impl.ads  6e881500 EE OO PK
 W ada.exceptions%s	a-except.adb		a-except.ali
 W ada.finalization.list_controller%s  a-filico.adb  a-filico.ali
 W ada.tags%s		a-tags.adb		a-tags.ali
@@ -50,7 +54,7 @@ D a-unccon.ads		20070406091342 51e09df2
 D a-uncdea.ads		20070406091342 dc667e6d
 D circuit.ads		20100720222259 7a592e22
 D common.ads		20100720192254 21a731f4
-D competition.ads	20100721122645 d10191c9
+D competition.ads	20100721143102 aac5f345
 D competitor.ads	20100715174527 73626f19
 D corba.ads		20091106234322 a230b8d7
 D corba-abstractbase.ads  20091106234322 bcaa1ca6
@@ -115,9 +119,10 @@ D polyorb-utils-simple_flags.ads  20091106234323 2c9d9263
 D polyorb-utils-strings.ads  20091106234321 ccdff46d
 D portableserver.ads	20091106234323 7da40fea
 D queue.ads		20100720222307 ebc4870a
-D registrationhandler.ads  20100721101156 b228260e
-D registrationhandler-impl.ads  20100721122149 a9f17776
-D registrationhandler-impl.adb  20100721124701 3368dbf8
+D registrationhandler.ads  20100721150225 b228260e
+D registrationhandler-impl.ads  20100721145821 a9f17776
+D registrationhandler-impl.adb  20100721150904 156ee06f
+D registrationhandler-skel.ads  20100721150225 5eb3924a
 D sax.ads		20090519080659 3c830d26
 D sax-attributes.ads	20090519080657 0d33f55e
 D sax-encodings.ads	20090519080657 277fb504
@@ -167,16 +172,21 @@ D unicode-ces-basic_8bit.ads  20090519080705 f1fb7359
 D unicode-ces-utf32.ads	20090519080705 70ff4ee6
 D unicode-ces-utf8.ads	20090519080706 f86456d6
 D unicode-encodings.ads	20090519080706 9cf73f79
+X 1 ada.ads
+16K9*Ada 19e8 93|1r6 24r7
+X 20 a-textio.ads
+48K13*Text_IO 506e16 93|1w10 24r11
+263U14*Put_Line 93|24r19
 X 26 competition.ads
-15K9*Competition 47e16 92|4w6 5r5 13r39 93|3r11 5r39
-24U17 Register_NewCompetitor 93|19r12
-45P9*SYNCH_COMPETITION_POINT(22W19) 92|13r51 93|3r23 5r51
+13K9*Competition 45e16 92|4w6 5r5 13r39 93|9r11 11r39
+22U17 Register_NewCompetitor 93|25r12
+43P9*SYNCH_COMPETITION_POINT(20W19) 92|13r51 93|9r23 11r51
 X 28 corba.ads
-51K9*CORBA 1030e10 92|1w6 16r57 17r48 18r53 19r51 22r39 22r59 93|11r57 12r48
-. 13r53 14r51 19r35 20r35 23r24 35r39 35r59 37r14
-62I12*Short<50|42I9> 92|19r57 22r45 93|14r57 23r30 35r45
-76+9*String<83|60+12> 92|16r63 17r54 18r59 22r65 93|11r63 12r54 13r59 35r65
-136V13*To_CORBA_String{76+9} 93|37r20
+51K9*CORBA 1030e10 92|1w6 16r57 17r48 18r53 19r51 22r39 22r59 93|5w6 17r57
+. 18r48 19r53 20r51 25r35 26r35 29r24 41r39 41r59 43r14
+62I12*Short<50|42I9> 92|19r57 22r45 93|20r57 29r30 41r45
+76+9*String<83|60+12> 92|16r63 17r54 18r59 22r65 93|17r63 18r54 19r59 41r65
+136V13*To_CORBA_String{76+9} 93|43r20
 X 35 corba-impl.ads
 63V13*To_PolyORB_Servant{73|51P9}
 X 50 interfac.ads
@@ -191,31 +201,33 @@ X 75 polyorb-smart_pointers-controlled_entities.ads
 46U14*Initialize
 47V13*Is_Controlled{boolean}<74|47p13>
 X 83 polyorb-types.ads
-133V13*To_Standard_String{string} 93|19r41 20r41
+133V13*To_Standard_String{string} 93|25r41 26r41
 X 89 portableserver.ads
 56K9*PortableServer 312e19 92|2w6 9r23
 92H9*Servant_Base<79R9> 298e57 92|9r38
 99U14*Invoke<82p14>
 292V13 Execute_Servant<62|45R9><35|58p13>
 X 91 registrationhandler.ads
-16K9*RegistrationHandler 52e24 92|7r9 24r5 93|1r14 40r5
+16K9*RegistrationHandler 52e24 92|7r9 24r5 93|3r6 4r23 7r14 46r5
 X 92 registrationhandler-impl.ads
-7K29*impl 91|16k9 92|24l25 24e29 93|1b34 40l25 40t29
+7K29*impl 91|16k9 92|24l25 24e29 93|7b34 46l25 46t29
 9R9*Object<89|92R9> 35|63p13 74|50p14 88P14 89P14 75|46p14 47P13 89|99P14
-. 292P13 92|9e67 11r30 15p14 15r45 21p13 21r38 93|10r45 34r38
+. 292P13 92|9e67 11r30 15p14 15r45 21p13 21r38 93|16r45 40r38
 11P9*Object_Acc(9R9)
-13U14*Init 13>19 93|5b14 8l8 8t12
-13p19 Competition_In{26|45P9} 93|5b19 7r15
-15U14*Join_Competition 15^31 16>31 17>31 18<31 19<31 93|10b14 26l8 26t24
-15p31 Self(9R9) 93|10b31
-16+31 CompetitorDescriptor{28|76+9} 93|11b31 19r60
-17+31 BoxCorbaLOC{28|76+9} 93|12b31 20r60
-18+31 MonitorCorbaLOC{28|76+9} 93|13b31
-19i31 Competitor_ID{28|62I12} 93|14b31 23m7
-21V13*Wait_Ready{28|76+9} 21^24 22>24 93|34b13 38l8 38t18
-21p24 Self(9R9) 93|34b24
-22i24 CompetitorID{28|62I12} 93|35b24
+13U14*Init 13>19 93|11b14 14l8 14t12
+13p19 Competition_In{26|43P9} 93|11b19 13r15
+15U14*Join_Competition 15^31 16>31 17>31 18<31 19<31 93|16b14 32l8 32t24
+15p31 Self(9R9) 93|16b31
+16+31 CompetitorDescriptor{28|76+9} 93|17b31 25r60
+17+31 BoxCorbaLOC{28|76+9} 93|18b31 26r60
+18+31 MonitorCorbaLOC{28|76+9} 93|19b31
+19i31 Competitor_ID{28|62I12} 93|20b31 29m7
+21V13*Wait_Ready{28|76+9} 21^24 22>24 93|40b13 44l8 44t18
+21p24 Self(9R9) 93|40b24
+22i24 CompetitorID{28|62I12} 93|41b24
 X 93 registrationhandler-impl.adb
-3p4 Comp{26|45P9} 7m7 19r7
-15i7 Competitor_ID_INT{integer} 21m35 23r36
+9p4 Comp{26|43P9} 13m7 25r7
+21i7 Competitor_ID_INT{integer} 27m35 29r36
+X 94 registrationhandler-skel.ads
+12K29*Skel 93|3w26 4r43 94|16e29
 

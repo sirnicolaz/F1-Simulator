@@ -4,8 +4,6 @@ use Circuit;
 with Competitor;
 use Competitor;
 
-with CORBA.Impl;
-
 with OnboardComputer;
 
 with Ada.Strings;
