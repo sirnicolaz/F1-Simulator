@@ -47,11 +47,12 @@ package body Circuit is
    procedure Init_BoxLanePaths(Paths_Collection_In : in out POINT_PATHS;
                                Competitor_Qty : INTEGER;
                                Length : FLOAT) is
-      begin
-         for index in 1..Competitor_Qty loop
-            Set_Values(Paths_Collection_In.all(index),Length ,ANGLE_GRADE(180.0),GRIP_RANGE(5.0),DIFFICULTY_RANGE(1.0));
-         end loop;
-      end Init_BoxLanePaths;
+   begin
+      Paths_Collection_In := new PATHS(1..Competitor_Qty);
+      for index in 1..Competitor_Qty loop
+         Set_Values(Paths_Collection_In.all(index),Length ,ANGLE_GRADE(180.0),GRIP_RANGE(5.0),DIFFICULTY_RANGE(1.0));
+      end loop;
+   end Init_BoxLanePaths;
 
    --Checkpoint methods implementation
    procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
@@ -63,7 +64,8 @@ package body Circuit is
                         Difficulty_In : DIFFICULTY_RANGE;
                         PathsQty_In : POSITIVE; -- mult
                         Competitors_Qty : POSITIVE;
-                        IsPreBox_In : BOOLEAN) is
+                        IsPreBox_In : BOOLEAN;
+                        IsExitBox : BOOLEAN) is
 
       PathsCollection : POINT_PATHS;
 
@@ -90,6 +92,7 @@ package body Circuit is
       Checkpoint_In.Multiplicity :=  PathsQty_In;
       Checkpoint_In.Queue := new SORTED_QUEUE(1..Competitors_Qty);
       Checkpoint_In.IsPreBox := IsPreBox_In;
+      Checkpoint_In.IsExitBox := IsExitBox;
       Init_Queue(Checkpoint_In.Queue.all);
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
@@ -269,7 +272,7 @@ package body Circuit is
       --The function returns the length of the shortest path
       function Get_Length return FLOAT is
       begin
-         return F_CheckPoint.PathsCollection.Get_Length(0);
+         return F_CheckPoint.PathsCollection.Get_Length(1);
       end Get_Length;
 
       function Get_SectorID return INTEGER is
@@ -422,7 +425,8 @@ package body Circuit is
                              Current_Difficutly,
                              Current_Mult,
                              MaxCompetitors_Qty,
-                             IsPreBox);
+                             IsPreBox,
+                             IsExitBox);
 
                   CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
                   Racetrack_In(Checkpoint_Index) := CheckpointSynch_Current;
@@ -449,6 +453,7 @@ package body Circuit is
                        5.0,
                        MaxCompetitors_Qty,
                        MaxCompetitors_Qty,
+                       False,
                        False);
             CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
             Racetrack_In(Index) := CheckpointSynch_Current;
@@ -474,7 +479,7 @@ package body Circuit is
       end loop;
 
       Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,BoxLane_Length);
-      PreBox_Checkpoint.PathsCollection := new CROSSING(PreBox_Paths);
+      PreBox(PreBox_Checkpoint.all).Box := new CROSSING(PreBox_Paths);
 
    end Init_Racetrack;
 
@@ -577,6 +582,18 @@ package body Circuit is
       PreviousCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
 
    end Get_PreviousCheckpoint;
+
+   procedure Get_ExitBoxCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                   ExitBoxCheckpoint : out CHECKPOINT_SYNCH_POINT) is
+      Tmp_Checkpoint : CHECKPOINT_SYNCH_POINT;
+   begin
+      loop
+         Get_NextCheckpoint(RaceIterator,Tmp_Checkpoint);
+         exit when Tmp_Checkpoint.Is_ExitBox;
+      end loop;
+
+      ExitBoxCheckpoint := Tmp_Checkpoint;
+   end Get_ExitBoxCheckpoint;
 
    function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER is
    begin

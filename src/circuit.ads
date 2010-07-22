@@ -60,7 +60,8 @@ package Circuit is
                         Difficulty_In : DIFFICULTY_RANGE;
                         PathsQty_In : POSITIVE;
                         Competitors_Qty : POSITIVE;
-                        IsPreBox_In : BOOLEAN);
+                        IsPreBox_In : BOOLEAN;
+                        IsExitBox : BOOLEAN);
 
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
    --                   NextCheckpoint_In : POINT_Checkpoint);
@@ -145,6 +146,8 @@ package Circuit is
                                NextCheckpoint : out CHECKPOINT_SYNCH_POINT);
    procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                     PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT);
+   procedure Get_ExitBoxCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                                    ExitBoxCheckpoint : out CHECKPOINT_SYNCH_POINT);
    function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER;
    function Get_Position(RaceIterator : RACETRACK_ITERATOR) return POSITIVE;
    function Get_IsFinished(RaceIterator : RACETRACK_ITERATOR) return BOOLEAN;

@@ -5,10 +5,14 @@
 	                <length>19.00</length>
 	                <mult>2</mult>
 			<angle>140.00</angle>
+			<difficulty>8.0</difficulty>
+			<grip>7.0</grip>
 	        </checkpoint>
-	        <checkpoint>
-	                <length>19.00</length>
+	        <checkpoint exitBox="true">
+	                <length>20.00</length>
 	                <mult>2</mult>
+			<difficulty>8.0</difficulty>
+			<grip>7.0</grip>
 			<angle>140.00</angle>
 	        </checkpoint>
 	</sector>
@@ -16,19 +20,25 @@
 	        <checkpoint> 
 	                <length>23.00</length>
 	                <mult>2</mult>
-			<angle>120.00</angle>
+			<angle>120.00</angle>			
+			<difficulty>8.0</difficulty>
+			<grip>7.0</grip>
 	        </checkpoint>
 	        <checkpoint> 
-	                <length>23.00</length>
+	                <length>29.00</length>
 	                <mult>2</mult>
 			<angle>120.00</angle>
-	        </checkpoint>
+			<difficulty>8.0</difficulty>
+			<grip>7.0</grip>
+		 </checkpoint>
 	</sector>
 	<sector>
 	        <checkpoint preBox="true" >
-	                <length>17.00</length>
+	                <length>142.00</length>
 	                <mult>5</mult>
 			<angle>180.00</angle>
+			<difficulty>8.0</difficulty>
+			<grip>7.0</grip>
 	        </checkpoint>
 	</sector>
 </racetrack>
