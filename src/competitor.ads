@@ -61,6 +61,7 @@ package Competitor is
       RaceIterator : RACETRACK_ITERATOR;
       Id: INTEGER;
       statsComputer : COMPUTER_POINT := new COMPUTER;
+      boxCorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
    end record;
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
   function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR; id_In : INTEGER) return CAR_DRIVER_ACCESS;
