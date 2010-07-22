@@ -52,3 +52,6 @@ SOCT_NODE :
     - isLast
     - isFirst
 
+Altre annotazioni:
+In fase di inizializzazione di ogni GLOBAL_STATS_HANLDER va passato al costruttore il riferimento a un unico SYNCH_GLOBAL_STATS creato in precedenza (dalla competizione magari), in modo che sia un oggetto condiviso fra tutti gli ONBOARDCOMPUTER  e i MONITOR dei concorrenti e delle tv.
+
