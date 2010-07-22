@@ -43,12 +43,24 @@ package body Circuit is
       return Path_In.Difficulty;
    end Get_Difficulty;
 
+   --Method for initialising the paths of the box
+   procedure Init_BoxLanePaths(Paths_Collection_In : in out POINT_PATHS;
+                               Competitor_Qty : INTEGER;
+                               Length : FLOAT) is
+      begin
+         for index in 1..Competitor_Qty loop
+            Set_Values(Paths_Collection_In.all(index),Length ,ANGLE_GRADE(180.0),GRIP_RANGE(5.0),DIFFICULTY_RANGE(1.0));
+         end loop;
+      end Init_BoxLanePaths;
+
    --Checkpoint methods implementation
    procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT; -- y
                         Angle_In : ANGLE_GRADE; -- alpha
+                        Grip_In : GRIP_RANGE;
+                        Difficulty_In : DIFFICULTY_RANGE;
                         PathsQty_In : POSITIVE; -- mult
                         Competitors_Qty : POSITIVE;
                         IsPreBox_In : BOOLEAN) is
@@ -69,7 +81,7 @@ package body Circuit is
             Tmp_Length := (((FLOAT(index)-1.0) * 1.6) + r ) * AlphaRad;
             Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,GRIP_RANGE(9.00),DIFFICULTY_RANGE(9.8));
          end loop;
-         null;
+
       end Init_Paths;
 
    begin
@@ -82,11 +94,6 @@ package body Circuit is
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
 
-
-      if( IsPreBox_In ) then
-         Init_Paths(PathsCollection,Competitors_Qty);
-         PreBox(Checkpoint_In.all).Box := new CROSSING(PathsCollection);
-      end if;
    end Set_Values;
 
    procedure Set_Goal(Checkpoint_In : in out Checkpoint) is
@@ -249,6 +256,22 @@ package body Circuit is
          return Get_Time(F_Checkpoint, CompetitorID_In);
       end Get_Time;
 
+      function Is_PreBox return BOOLEAN is
+      begin
+         return F_CheckPoint.IsPreBox;
+      end Is_PreBox;
+
+      function Is_ExitBox return BOOLEAN is
+      begin
+         return F_CheckPoint.IsExitBox;
+      end Is_ExitBox;
+
+      --The function returns the length of the shortest path
+      function Get_Length return FLOAT is
+      begin
+         return F_CheckPoint.PathsCollection.Get_Length(0);
+      end Get_Length;
+
       function Get_SectorID return INTEGER is
       begin
          return F_Checkpoint.SectorID;
@@ -310,12 +333,20 @@ package body Circuit is
       IsGoal : BOOLEAN;
       IsPreBox_Attr : Attr;
       IsPreBox : BOOLEAN;
+      IsExitBox_Attr : Attr;
+      IsExitBox : BOOLEAN;
       Current_Length : FLOAT;
       Current_Mult : INTEGER;
       Current_Angle : FLOAT;
+      Current_Grip : FLOAT;
+      Current_Difficutly : FLOAT;
       Checkpoint_Temp : POINT_Checkpoint;
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
 
+      Track_Iterator : RACETRACK_ITERATOR;
+      BoxLane_Length : FLOAT;
+      PreBox_Checkpoint : POINT_Checkpoint;
+      PreBox_Paths : POINT_PATHS;
    begin
 
       --If there is a conf file, use it to auto-init;
@@ -360,15 +391,26 @@ package body Circuit is
                      IsPreBox := Boolean'Value(Value(IsPreBox_Attr));
                   end if;
 
+                  IsExitBox_Attr := Get_Named_Item (Attributes (Current_Node), "exitBox");
+
+                  if IsExitBox_Attr = null then
+                     IsExitBox := false;
+                  else
+                     IsExitBox := Boolean'Value(Value(IsExitBox_Attr));
+                  end if;
+
                   Feature_List := Child_Nodes(Current_Node);
                   Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
                   Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
+                  Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
+                  Current_Difficutly := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"difficulty"))));
 
                   if IsPreBox = false then
                      Checkpoint_Temp := new Checkpoint;
                   else
                      Checkpoint_Temp := new PreBox;
+                     PreBox_Checkpoint := Checkpoint_Temp;
                   end if;
 
                   Set_Values(Checkpoint_Temp,
@@ -376,6 +418,8 @@ package body Circuit is
                              IsGoal,
                              Current_Length,
                              Current_Angle,
+                             Current_Grip,
+                             Current_Difficutly,
                              Current_Mult,
                              MaxCompetitors_Qty,
                              IsPreBox);
@@ -383,6 +427,7 @@ package body Circuit is
                   CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
                   Racetrack_In(Checkpoint_Index) := CheckpointSynch_Current;
                   Checkpoint_Index := Checkpoint_Index + 1;
+
                end if;
             end loop;
 
@@ -400,6 +445,8 @@ package body Circuit is
                        FALSE,
                        100.00,
                        Angle,
+                       5.0,
+                       5.0,
                        MaxCompetitors_Qty,
                        MaxCompetitors_Qty,
                        False);
@@ -409,6 +456,25 @@ package body Circuit is
          end loop;
 
       end if;
+
+      --Setting the box lane
+      ---The method find out the pre-box and the exit-box checkpoint. The
+      --+length between them willl be the total length of the box
+      Track_Iterator := Get_Iterator(Racetrack_In);
+      Get_CurrentCheckpoint(Track_Iterator,CheckpointSynch_Current);
+      while CheckpointSynch_Current.Is_PreBox /= true loop
+         Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
+      end loop;
+
+      BoxLane_Length := CheckpointSynch_Current.Get_Length;
+
+      while CheckpointSynch_Current.Is_ExitBox /= true loop
+         Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
+         BoxLane_Length := BoxLane_Length + CheckpointSynch_Current.Get_Length;
+      end loop;
+
+      Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,BoxLane_Length);
+      PreBox_Checkpoint.PathsCollection := new CROSSING(PreBox_Paths);
 
    end Init_Racetrack;
 

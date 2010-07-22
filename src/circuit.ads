@@ -56,6 +56,8 @@ package Circuit is
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
+                        Grip_In : GRIP_RANGE;
+                        Difficulty_In : DIFFICULTY_RANGE;
                         PathsQty_In : POSITIVE;
                         Competitors_Qty : POSITIVE;
                         IsPreBox_In : BOOLEAN);
@@ -102,7 +104,10 @@ package Circuit is
                                 Times : Common.FLOAT_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
---      function Get_Box
+      function Is_PreBox return BOOLEAN;
+      function Is_ExitBox return BOOLEAN;
+
+      function Get_Length return FLOAT;
 
       function Get_SectorID return INTEGER;
 
@@ -157,6 +162,7 @@ private
       Multiplicity : POSITIVE;
       PathsCollection : CROSSING_POINT;
       IsPreBox : BOOLEAN;
+      IsExitBox : BOOLEAN;
    end record;
 
    type PreBox is new Checkpoint
