@@ -91,8 +91,9 @@ package body COMMON is
 
    end IntegerToString;
 
-   procedure Set_Checkpoint(Stats_In : out Common.COMP_STATS_POINT; Checkpoint_In : INTEGER) is
+   procedure Set_Checkpoint(Stats_In : out COMP_STATS_POINT; Checkpoint_In : INTEGER) is
    begin
+      Stats_In := new COMP_STATS;
       Stats_In.Checkpoint := Checkpoint_In;
    end Set_Checkpoint;
 
@@ -134,7 +135,10 @@ package body COMMON is
 --     procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER) is
 --     begin
 --        Stats_In.
-
+   function Get_LastCheckInSect(Stats_In : COMP_STATS_POINT) return BOOLEAN is
+   begin
+      return Stats_In.LastCheckInSect;
+   end Get_LastCheckInSect;
 
    function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER is
    begin

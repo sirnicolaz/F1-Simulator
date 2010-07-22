@@ -502,9 +502,9 @@ returnNum : INTEGER;
       tempLap : INTEGER;
       tempTime : FLOAT;
    begin
-      tempCheck := ONBOARDCOMPUTER.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
-      tempLap := ONBOARDCOMPUTER.Get_Lap(competitorInfo_In.all); -- numero giro
-      tempTime := ONBOARDCOMPUTER.Get_Time(competitorInfo_In.all); -- tempo
+      tempCheck := Common.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
+      tempLap := Common.Get_Lap(competitorInfo_In.all); -- numero giro
+      tempTime := Common.Get_Time(competitorInfo_In.all); -- tempo
       global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
    end updateCompetitorInfo;
 

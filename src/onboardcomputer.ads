@@ -47,18 +47,18 @@ package OnBoardComputer is
       -- It returns the competitor ID related to this Computer
       function Get_Id return INTEGER;
       -- It sets the CompStats parameter with the statistics related to the given sector and lap
-      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
+      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT);
       -- It sets the CompStats parameter with the statistics related to the given check-point and lap
-      entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS);
+      entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT);
       -- This method is used when a statistic that has not been inserted yet is asked.
       --+ When the the competitor updates the list after having passed through a check-point,
       --+ the variable "Updated" is set. In this way the statistic requester can procede with
       --+ the method execution checking again if the demanded statistic is available.
-      entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
+      entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT);
       -- The purpose of this method is the same of the one described above
       --+ (even if it's used for asking waiting on a check-point statistic request instead
       --+ of a sector)
-      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS);
+      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT);
    private
       Competitor_Id : INTEGER;
       Current_Node : COMP_STATS_NODE_POINT;

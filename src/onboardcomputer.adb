@@ -86,7 +86,7 @@ package body OnBoardComputer is
       Set_FirstCheckInSect(Info_Node_Out.Value, False);
 end Reset_Node;
 
-   function Reset_Data(Data : COMP_STATS_POINT) return COMP_STATS is
+   function Reset_Data(Data : COMP_STATS_POINT) return COMP_STATS_POINT is
       Data_Copy : Common.COMP_STATS_POINT;
    begin
 --      Ada.Text_IO.Put_Line("in Reset_Data");
@@ -95,7 +95,7 @@ end Reset_Node;
       Set_LastCheckInSect(Data_Copy, false);
       --Data_Copy.FirstCheckInSect := true;
       Set_FirstCheckInSect(Data_Copy, false);
-      return Data_Copy.all;
+      return Data_Copy;
    end Reset_Data;
 
 
@@ -227,14 +227,14 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
          return Competitor_Id;
       end Get_Id;
 
-      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS) when true is
+      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT) when true is
 
          Iterator : COMP_STATS_NODE_POINT;
 
          procedure Get_LastCheckPoint(Found : out BOOLEAN) is
          begin
             Found := true;
-            if (Iterator.Value.LastCheckInSect = true) then
+            if (Get_LastCheckInSect(Iterator.Value) = true) then
                CompStats := Iterator.Value;
             else
                loop
@@ -243,11 +243,11 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
                      exit;
                   end if;
                   Iterator := Iterator.Next;
-                  if (Iterator.Value.Sector > Iterator.Previous.Value.Sector) then
+                  if (Get_Sector(Iterator.Value.all) > Get_Sector(Iterator.Previous.Value.all)) then
                      Found := false;
                      exit;
                   end if;
-                  exit when (Iterator.Value.LastCheckInSect = true);
+                  exit when (Get_LastCheckInSect(Iterator.Value) = true);
                end loop;
                if(Found /= false) then
                   CompStats := Iterator.Value;
@@ -264,53 +264,53 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
             requeue Wait_BySect; -- La lista è ancora vuota;
          end if;
 
-         if (Iterator.Value.Lap /= Lap) then
-            if (Iterator.Value.Lap < Lap) then
+         if (Get_Lap(Iterator.Value.all) /= Lap) then
+            if (Get_Lap(Iterator.Value.all) < Lap) then
                loop
                   if(Iterator.Next = null) then
                      Updated := false;
                      requeue Wait_BySect;
                   end if;
                   Iterator := Iterator.Next;
-                  exit when Iterator.Value.Lap = Lap;
+                  exit when Get_Lap(Iterator.Value.all) = Lap;
                end loop;
             else
                loop
                   if(Iterator.Previous = null) then
-                     CompStats.Checkpoint := -1;
+                     Set_Checkpoint(CompStats,-1);
                      exit;
                   end if;
                   Iterator := Iterator.Previous;
-                  exit when Iterator.Value.Lap = Lap;
+                  exit when Get_Lap(Iterator.Value.all) = Lap;
                end loop;
             end if;
          end if;
 
-         if(CompStats.Checkpoint /= -1) then
-            if (Iterator.Value.Sector /= Sector) then
-               if (Iterator.Value.Sector < Sector) then
+         if(Get_Checkpoint(CompStats.all) /= -1) then
+            if (Get_Sector(Iterator.Value.all) /= Sector) then
+               if (Get_Sector(Iterator.Value.all) < Sector) then
                   loop
                      if(Iterator.Next = null) then
                         Updated := false;
                         requeue Wait_BySect;
                      end if;
                      Iterator := Iterator.Next;
-                     exit when Iterator.Value.Sector = Sector;
+                     exit when Get_Sector(Iterator.Value.all) = Sector;
                   end loop;
                else
                   loop
                      if(Iterator.Previous = null) then
-                        CompStats.Checkpoint := -1;
+                        Set_Checkpoint(CompStats,-1);
                         exit;
                      end if;
                      Iterator := Iterator.Previous;
-                     exit when Iterator.Value.Sector = Sector;
+                     exit when Get_Sector(Iterator.Value.all) = Sector;
                   end loop;
                end if;
             end if;
          end if;
 
-         if CompStats.Checkpoint /= -1 then
+         if Get_Checkpoint(CompStats.all) /= -1 then
             Updated := false;
             Get_LastCheckpoint(StatFound);
             if(StatFound = true) then
@@ -322,7 +322,7 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
 
       end Get_StatsBySect;
 
-      entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS) when true is
+      entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT) when true is
          Position : INTEGER := Lap * Checkpoint;
          Iterator : COMP_STATS_NODE_POINT;
       begin
@@ -355,13 +355,13 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
          Updated := false;
       end Get_StatsByCheck;
 
-      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
+      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT) when Updated is
       begin
          requeue Get_StatsBySect;
       end Wait_BySect;
 
 
-      entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS) when Updated is
+      entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT) when Updated is
       begin
          requeue Get_StatsByCheck;
       end Wait_ByCheck;
