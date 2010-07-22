@@ -1,5 +1,7 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
+--  with ONBOARDCOMPUTER;
+--  use ONBOARDCOMPUTER;
 package body Stats is
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
@@ -403,6 +405,13 @@ returnNum : INTEGER;
          GlobStats.competitorNum := CompetitorsQty;
       end Set_CompetitorsQty;
 
+      function Get_CompetitorsQty return INTEGER IS
+      begin
+         return
+           GlobStats.competitorNum;
+      end Get_CompetitorsQty;
+
+
       function Test_Get_Classific return CLASSIFICATION_TABLE is
       begin
          return GlobStats.lastClassificUpdate.This.Test_Get_Classific;--.Get_Classific;--Statistics_Table.This.Test_Get_Classific;
@@ -486,5 +495,39 @@ returnNum : INTEGER;
          end if;
       end Update_Stats;
    end SYNCH_GLOBAL_STATS;
+
+   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+                                  competitorInfo_In : COMP_STATS_POINT)is
+      tempCheck : INTEGER;
+      tempLap : INTEGER;
+      tempTime : FLOAT;
+   begin
+      tempCheck := ONBOARDCOMPUTER.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
+      tempLap := ONBOARDCOMPUTER.Get_Lap(competitorInfo_In.all); -- numero giro
+      tempTime := ONBOARDCOMPUTER.Get_Time(competitorInfo_In.all); -- tempo
+      global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
+   end updateCompetitorInfo;
+
+--     function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE --return the last classific available
+--     is
+--        Classific_Out : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..global_In.global.Get_CompetitorsQty);
+--        RequestedIndex : INTEGER := 0;
+--     begin
+--        global_In.global.Get_Classific(RequestedIndex ,Classific_Out.all );
+--
+--        return Classific_Out.all;
+--     end getClassification;
+--
+   -- return the last classificationtable complete
+   function lastClassificUpdate(global_In : GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE is
+   begin
+      return global_In.lastClassificUpdate.This.Test_Get_Classific;
+   end lastClassificUpdate;
+
+   -- updated the calssificationtable with the info of the competitor
+
+--     procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+--                                    competitorInfo_In : COMP_STATS);
+
 
 end Stats;
