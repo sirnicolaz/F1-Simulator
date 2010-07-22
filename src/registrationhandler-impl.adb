@@ -1,3 +1,12 @@
+with Ada.Text_IO;
+
+with RegistrationHandler.Skel;
+pragma Warnings (Off, RegistrationHandler.Skel);
+
+pragma Warnings (Off);
+
+with CORBA;
+
 package body RegistrationHandler.impl is
 
    Comp : Competition.SYNCH_COMPETITION_POINT;
@@ -15,15 +24,15 @@ package body RegistrationHandler.impl is
       Competitor_ID_INT : INTEGER;
 
    begin
-
+      Ada.Text_IO.Put_Line("registering....");
       Comp.Register_NewCompetitor(CORBA.To_Standard_String(CompetitorDescriptor),
                                   CORBA.To_Standard_String(BoxCorbaLOC),
                                   Competitor_ID_INT);
 
-      COmpetitor_ID := Corba.SHORT(Competitor_ID_INT);
+      Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
       -- MonitorCorbaLOC := Comp.GetMonitor;
-   end Join_COmpetition;
+   end Join_Competition;
 
    -- When the box joining request has been accepted, the box wait that
    --+ all the other participants join the competition. After that

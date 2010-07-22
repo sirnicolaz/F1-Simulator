@@ -31,14 +31,6 @@ package RegistrationHandler is
    Join_Competition_Repository_Id : constant PolyORB.Std.String :=
      "IDL:RegistrationHandler/Join_Competition:1.0";
 
-   function Wait_Ready
-     (Self : Ref;
-      competitorId : CORBA.Short)
-     return CORBA.String;
-
-   Wait_Ready_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:RegistrationHandler/Wait_Ready:1.0";
-
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)

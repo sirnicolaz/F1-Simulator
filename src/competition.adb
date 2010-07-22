@@ -1,29 +1,37 @@
-with CORBA.Impl;
-use CORBA.Impl;
-with CORBA.Object;
-with CORBA.ORB;
-
-with PortableServer.POA.Helper;
-with PortableServer.POAManager;
-
-with PolyORB.CORBA_P.CORBALOC;
-
-with PolyORB.Setup.Thread_Per_Request_Server;
-pragma Warnings (Off, PolyORB.Setup.Thread_Per_Request_Server);
-
 with Ada.Text_IO;
 
 with Common;
 
+pragma Warnings (Off); -- TODO: delete
 package body Competition is
 
    -- type Monitor_POINT is access MONITOR --to implement (Lory)
 
+   -- This method is supposed to be called when either all the
+   --+competitors are registered or the administrator manually
+   --+starts the competition
+   procedure Ready(Competition_In : SYNCH_COMPETITION_POINT;
+                   Wait_All : BOOLEAN) is
+   begin
+
+      Ada.Text_IO.Put_Line("Waiting for ready...");
+
+      if( Wait_All ) then
+            Competition_In.Wait;
+      end if;
+
+      Ada.Text_IO.Put_Line("Ready!");
+
+
+      Competition_In.Start;
+
+   end Ready;
+
    protected body SYNCH_COMPETITION is
 
-      procedure Register_NewCompetitor(CompetitorDescriptor : in STRING;
+      entry Register_NewCompetitor(CompetitorDescriptor : in STRING;
                                        Box_CorbaLOC : in STRING;
-                                       Given_Id : out INTEGER) is
+                                       Given_Id : out INTEGER) when Registrations_Open is
          ID : INTEGER;
          Driver : CAR_DRIVER_ACCESS;
 
@@ -31,20 +39,70 @@ package body Competition is
          File_Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       begin
 
-         --Find an available ID for the competitor
-         ID := Next_ID;
-         Next_ID := Next_ID + 1;
+         -- In this case, either the maximum number of competitor has been reached
+         --+ or the administrator has manually started the race
+         --+ so no further joining is possible
+         if ( Stop_Joining = true ) then
 
-         -- Creating the file where the CompetitorDescriptor will be saved
-         File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
-         Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
+            Ada.Text_IO.Put_Line("Stop joining");
+            Given_Id := -1;
+         else
 
-         --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
-         Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID);
-         --Initialise the task competitor
-         Competitors.all(1) := new TASKCOMPETITOR(Driver);
-         Given_ID := ID;
+            --Find an available ID for the competitor
+            ID := Next_ID;
+            Next_ID := Next_ID + 1;
+
+            -- Creating the file where the CompetitorDescriptor will be saved
+            Ada.Text_IO.Put_Line("Saving file...");
+            File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
+            Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
+            Ada.Text_IO.Put(CompetitorDescriptor_File, CompetitorDescriptor);
+            Ada.Text_IO.Close(CompetitorDescriptor_File);
+            --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
+            Ada.Text_IO.Put_Line("Init competitor...");
+            Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID);
+            --Initialise the task competitor
+            Ada.Text_IO.Put_Line("Init task...");
+            Competitors.all(ID) := new TASKCOMPETITOR(Driver);
+            Ada.Text_IO.Put_Line("End");
+            Given_ID := ID;
+
+            Comp_List(ID) := ID;
+
+            Ada.Text_IO.Put_Line("Competitor ID : " & INTEGER'IMAGE(Given_ID));
+            Ada.Text_IO.Put_Line("Name : " & Unbounded_String.To_String(Competitor.Get_FirstName(Competitor_In => Driver)));
+
+            if ( Next_ID = Competitors'LENGTH + 1 ) then
+               Stop_Joining := true;
+            end if;
+
+         end if;
+
       end;
+
+      procedure Start is
+      begin
+
+         Ada.Text_IO.Put_Line("Starting competition...");
+
+         Stop_Joining := true;
+
+         -- Monitor.Wait_Ok;
+
+         Set_Competitors(Track,Comp_List.all);
+
+         for Index in 1..Next_Id-1 loop
+            Competitors.all(Index).Start;
+         end loop;
+
+         Ada.Text_IO.Put_Line("Competition starting");
+
+      end Start;
+
+      entry Wait when Configured = true and Stop_Joining = true is
+      begin
+         null;
+      end Wait;
 
       procedure Configure( MaxCompetitors : in POSITIVE;
                           ClassificRefreshTime_in : in FLOAT;
@@ -60,8 +118,17 @@ package body Competition is
 
          Track := Circuit.Get_Racetrack(Circuit_File);
 
-         Done := True;
+         Registrations_Open := True;
+
+         Configured := True;
+
+         Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
       end Configure;
+
+      function AreRegistrationsOpen return BOOLEAN is
+      begin
+         return Registrations_Open;
+      end AreRegistrationsOpen;
 
    end SYNCH_COMPETITION;
 
