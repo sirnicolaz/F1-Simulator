@@ -64,6 +64,7 @@ package Common is
    function Get_Gas(Stats_In : COMP_STATS) return FLOAT;--PERCENTAGE;
    function Get_Tyre(Stats_In : COMP_STATS) return FLOAT;--PERCENTAGE;
    function Get_Time(Stats_In : COMP_STATS) return FLOAT;
+   function Get_LastCheckInSect(Stats_In : COMP_STATS_POINT) return BOOLEAN;
 
 
 private
