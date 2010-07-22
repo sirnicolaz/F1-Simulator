@@ -6,6 +6,7 @@ with DOM.Core; use DOM.Core;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
 
 with Ada.IO_Exceptions;
+with Ada.Text_IO;
 
 package body COMMON is
    procedure Set_IpAddress(ip_out : out IP_ADDRESS;
@@ -89,5 +90,89 @@ package body COMMON is
       return Unbounded_String.To_String(Temp_UnboundedString);
 
    end IntegerToString;
+
+   procedure Set_Checkpoint(Stats_In : out Common.COMP_STATS_POINT; Checkpoint_In : INTEGER) is
+   begin
+      Stats_In.Checkpoint := Checkpoint_In;
+   end Set_Checkpoint;
+
+   procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER) is
+   begin
+      Stats_In.Sector := Sector_In;
+   end Set_Sector;
+
+   procedure Set_Lap(Stats_In : out COMP_STATS_POINT; Lap_In : INTEGER) is
+   begin
+      Stats_In.Lap := Lap_In;
+   end Set_Lap;
+
+   procedure Set_Gas(Stats_In : out COMP_STATS_POINT; Gas_In : 	FLOAT) is
+   begin
+      Stats_In.GasLevel := Gas_In;
+   end Set_Gas;
+
+   procedure Set_Tyre(Stats_In : out COMP_STATS_POINT; Tyre_In : FLOAT) is
+   begin
+      Stats_In.TyreUsury := Tyre_In;
+   end Set_Tyre;
+
+   procedure Set_Time(Stats_In : out COMP_STATS_POINT; Time_In : FLOAT) is
+   begin
+      Stats_In.Time := Time_In;
+   end Set_Time;
+
+   procedure Set_LastCheckInSect(Stats_In : out COMP_STATS_POINT; LastCheck_In : BOOLEAN) is
+   begin
+      Stats_In.LastCheckInSect := LastCheck_In;
+   end Set_LastCheckInSect;
+
+   procedure Set_FirstCheckInSect(Stats_In : out COMP_STATS_POINT; FirstCheck_In : BOOLEAN) is
+   begin
+      Stats_In.FirstCheckInSect := FirstCheck_In;
+   end Set_FirstCheckInSect;
+
+--     procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER) is
+--     begin
+--        Stats_In.
+
+
+   function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER is
+   begin
+      return Stats_In.Checkpoint;
+   end Get_Checkpoint;
+
+   function Get_Sector(Stats_In : COMP_STATS) return INTEGER is
+   begin
+      return Stats_In.Sector;
+   end Get_Sector;
+
+   function Get_Lap(Stats_In : COMP_STATS) return INTEGER is
+   begin
+      return Stats_In.Lap;
+   end Get_Lap;
+
+   function Get_Gas(Stats_In : COMP_STATS) return FLOAT is
+   begin
+      return Stats_In.GasLevel;
+   end Get_Gas;
+
+   function Get_Tyre(Stats_In : COMP_STATS) return FLOAT is
+   begin
+      return Stats_In.TyreUsury;
+   end Get_Tyre;
+
+   function Get_Time(Stats_In : COMP_STATS) return FLOAT is
+   begin
+      return Stats_In.Time;
+   end Get_Time;
+
+     procedure Update_Stats(compStats : in out COMP_STATS_POINT) is
+   begin
+      Ada.Text_IO.Put_Line("Update_Stats");
+--        Ada.Text_IO.Put_Line(Integer'Image(compStats.sgs_In.Get_CompetitorsQty));
+    	--initGlobalStatsHandler(compStats.global,compStats.sgs_In, 100.0);
+   end Update_Stats;
+
+
 
 end COMMON;

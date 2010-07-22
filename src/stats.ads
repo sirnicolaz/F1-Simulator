@@ -1,5 +1,7 @@
-with ONBOARDCOMPUTER;
-use ONBOARDCOMPUTER;
+--    with ONBOARDCOMPUTER;
+--  use ONBOARDCOMPUTER;
+with Common;
+use Common;
 
 package Stats is
 

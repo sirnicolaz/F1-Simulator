@@ -1,5 +1,5 @@
-with Ada.Text_IO;
-use Ada.Text_IO;
+--  with Ada.Text_IO;
+--  use Ada.Text_IO;
 --  with ONBOARDCOMPUTER;
 --  use ONBOARDCOMPUTER;
 package body Stats is

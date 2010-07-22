@@ -424,7 +424,7 @@ package body Competitor is
          --Current_LastName : STRING(1..10);
          Car_In : DRIVER;
          --Car_Current : CAR;
-
+         global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : STRING) return NODE is
             Child_Nodes_In : NODE_LIST;
@@ -482,7 +482,7 @@ package body Competitor is
       carDriver.pilota := Configure_Driver_File(doc);
       carDriver.RaceIterator:=RaceIterator;
       carDriver.Id:=id_In;
-      carDriver.statsComputer.Init_Computer(carDriver.Id);
+      carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       --carDriver:= new CAR_DRIVER(Configure_Car_File(doc),Configure_Driver_File(doc),Configure_Strategy_File(doc));
       return carDriver;
    end Init_Competitor;
@@ -842,6 +842,7 @@ package body Competitor is
          ONBOARDCOMPUTER.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          ONBOARDCOMPUTER.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats.all);
+
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 
          Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
