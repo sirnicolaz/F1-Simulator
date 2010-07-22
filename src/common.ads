@@ -56,7 +56,7 @@ package Common is
    procedure Set_LastCheckInSect(Stats_In : out COMP_STATS_POINT; LastCheck_In : BOOLEAN);
    procedure Set_FirstCheckInSect(Stats_In : out COMP_STATS_POINT; FirstCheck_In : BOOLEAN);
    --procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER);
-   procedure Update_Stats(compStats : in out COMP_STATS_POINT);
+   procedure Update_Stats(compStats : in out COMP_STATS_POINT);-- global : GLOBAL_STATS_HANDLER_POINT);
 
    function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER;
    function Get_Sector(Stats_In : COMP_STATS) return INTEGER;

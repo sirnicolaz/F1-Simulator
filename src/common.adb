@@ -170,7 +170,7 @@ package body COMMON is
       return Stats_In.Time;
    end Get_Time;
 
-     procedure Update_Stats(compStats : in out COMP_STATS_POINT) is
+   procedure Update_Stats(compStats : in out COMP_STATS_POINT) is-- , global : GLOBAL_STATS_HANDLER) is
    begin
       Ada.Text_IO.Put_Line("Update_Stats");
 --        Ada.Text_IO.Put_Line(Integer'Image(compStats.sgs_In.Get_CompetitorsQty));

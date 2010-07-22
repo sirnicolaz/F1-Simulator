@@ -1,5 +1,5 @@
---  with Ada.Text_IO;
---  use Ada.Text_IO;
+with Ada.Text_IO;
+use Ada.Text_IO;
 --  with ONBOARDCOMPUTER;
 --  use ONBOARDCOMPUTER;
 package body Stats is
@@ -529,5 +529,9 @@ returnNum : INTEGER;
 --     procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
 --                                    competitorInfo_In : COMP_STATS);
 
+   procedure printGlobUPD(gl : GLOBAL_STATS_HANDLER) is
+   begin
+      Ada.Text_IO.Put_Line("global update time : "&Float'Image(gl.updatePeriod));
+      end printGlobUPD;
 
 end Stats;

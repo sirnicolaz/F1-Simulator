@@ -41,13 +41,6 @@ package Stats is
    type CLASSIFICATION_TABLE is array(POSITIVE range <>) of STATS_ROW;
    type CLASSIFICATION_TABLE_POINT is access CLASSIFICATION_TABLE;
 
-   -- global_stats_handler : access to global_stats
-   type GLOBAL_STATS_HANDLER is private;
-   type GLOBAL_STATS_HANDLER_POINT is access GLOBAL_STATS_HANDLER;
-   --metodi per GLOBALSTATSHANDLER
-   function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT;
-   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
-                                  competitorInfo_In : COMP_STATS_POINT);
 --   function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE;--return the last classific available
 
    -- return the last classificationtable complete
@@ -151,9 +144,22 @@ package Stats is
 
    type S_GLOB_STATS_POINT is access SYNCH_GLOBAL_STATS;
 
+   -- global_stats_handler : access to global_stats
+   --type GLOBAL_STATS_HANDLER is private;
+   type GLOBAL_STATS_HANDLER(update_In: access FLOAT) is record
+      updatePeriod : FLOAT := update_In.all;
+      global : S_GLOB_STATS_POINT; -- accesso alle statistiche globali
+   end record;
+   type GLOBAL_STATS_HANDLER_POINT is access GLOBAL_STATS_HANDLER;
+   --metodi per GLOBALSTATSHANDLER
+   procedure printGlobUPD(gl : GLOBAL_STATS_HANDLER);
+   function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT;
+   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+                                  competitorInfo_In : COMP_STATS_POINT);
+
+
    procedure initGlobalStatsHandler(globalStatsHandler : in out GLOBAL_STATS_HANDLER_POINT; sgs_In : in S_GLOB_STATS_POINT;
                                    updatePeriod_In : FLOAT);
-
 private
 
    type GS_LAP is record
@@ -200,10 +206,7 @@ private
       Update_Interval : FLOAT;
    end record;
 
-   type GLOBAL_STATS_HANDLER is record
-      updatePeriod : FLOAT;
-      global : S_GLOB_STATS_POINT; -- accesso alle statistiche globali
-   end record;
+
 
    type STATS_ROW is record
       Competitor_Id : INTEGER;
