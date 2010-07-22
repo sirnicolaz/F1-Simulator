@@ -58,7 +58,8 @@ package Circuit is
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
                         PathsQty_In : POSITIVE;
-                        Competitors_Qty : POSITIVE);
+                        Competitors_Qty : POSITIVE;
+                        IsPreBox_In : BOOLEAN);
 
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
    --                   NextCheckpoint_In : POINT_Checkpoint);
@@ -110,9 +111,8 @@ package Circuit is
    private
       F_Checkpoint : POINT_Checkpoint := Checkpoint_In;
       Changed : BOOLEAN := false;
-      Sincronizzazione : BOOLEAN := false;
-      ContaConcorrenti : INTEGER := 0;
    end CHECKPOINT_SYNCH;
+
 
    type CHECKPOINT_SYNCH_POINT is access CHECKPOINT_SYNCH;
    function getChanged (temp : in CHECKPOINT_SYNCH_POINT) return Boolean;
@@ -152,6 +152,7 @@ private
       IsGoal : BOOLEAN;
       Multiplicity : POSITIVE;
       PathsCollection : CROSSING_POINT;
+      IsPreBox : BOOLEAN;
    end record;
 
    type PATH is record
