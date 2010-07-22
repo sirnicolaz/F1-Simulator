@@ -191,7 +191,7 @@ private
 
    type GLOBAL_STATS_HANDLER is record
       updatePeriod : FLOAT;
-      global : GLOBAL_STATS;
+      global : S_GLOBAL_STATS_POINT; -- accesso alle statistiche globali
    end record;
 
    type STATS_ROW is record

@@ -20,3 +20,35 @@ E' utile in questo caso, per esempio, sapere che il monitor della TV andrebbe im
 concorrenti solo una volta ottenute informazioni sulla classifica, per assicurarsi di non dove attendere inutilmente dati che potrebbero impiegare 
 molto ad arrivare.
 
+
+ORGANIZZAZIONE GERARCHIA OGGETTI NELLE STATISTICHE
+
+GERARCHIA PRINCIPALE (GLOBAL_STATS_HANLDER)
+
+GLOBAL_STATS_HANLDER:
+    -SYNCH_GLOBAL_STATS:
+	-GLOBAL_STATS : 
+	  - SOCT_NODE_POINT
+	  - INDEX_SOCT
+	  - GEN_STATS :
+	      - GS_LAP :
+		  - info_lap
+	      - SECTOR_ARRAY :
+		  - info_sector_1
+		  - info_sector_2
+		  - info_sector_3
+
+GERARCHIA SOCT_NODE:
+
+SOCT_NODE :
+    - index i
+    - SOCT_POINT :
+	- CLASSIFICATION_TABLE :
+	    - STATS_ROW_1 .. STATS_ROW_N (con N = Max Competitor Quantity)
+	- full
+	- id
+    - prev
+    - next
+    - isLast
+    - isFirst
+
