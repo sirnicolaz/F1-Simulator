@@ -2,18 +2,20 @@
 --use Circuit;
 --with Strategy;
 --use Strategy;
- with Ada.Float_Text_IO;
+with Ada.Float_Text_IO;
  use Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
---with Queue; use Queue;
---use Ada.Numerics.Elementary_Functions;
---  with Ada.Strings;
---  with Ada.Strings.Unbounded;
---  with Ada.Strings.Unbounded.Text_IO;
+
+with Common;
+
+with CORBA.ORB;
+with PolyORB.Setup.Client;
+pragma Warnings (Off, PolyORB.Setup.Client);
+
+with PolyORB.Utils.Report;
+
 package body Competitor is
-
-
 
    -- Set function - CAR
    procedure Configure_Car(Car_In : in out CAR;
@@ -417,7 +419,7 @@ package body Competitor is
          driver_XML : Node_List;
          Current_Node : Node;
          Car_In : DRIVER;
-         global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
+         --global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : STRING) return NODE is
             Child_Nodes_In : NODE_LIST;
@@ -475,7 +477,12 @@ package body Competitor is
          return CorbaLoc;
       end Configure_BoxCorbaLoc_File;
 
+      --remote communication declaration section
+      use PolyORB.Utils.Report;
+      boxCorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
+
    begin
+
       --apertura del file
       Try_OpenFile;
       --configurazione parametri
@@ -487,9 +494,23 @@ package body Competitor is
       carDriver.pilota := Configure_Driver_File(doc);
       carDriver.RaceIterator:=RaceIterator;
       carDriver.Id:=id_In;
-      carDriver.boxCorbaLoc := Configure_BoxCorbaLoc_File(doc);
 
-      carDriver.statsComputer.Init_Computer(carDriver.Id, global);
+      --Init communication with the box
+      boxCorbaLoc := Configure_BoxCorbaLoc_File(doc);
+
+      CORBA.ORB.Initialize ("ORB");
+
+      --  Getting the CORBA.Object
+      CORBA.ORB.String_To_Object
+        (CORBA.To_CORBA_String (Str.To_String(boxCorbaLoc)), carDriver.Radio);
+
+      --  Checking if it worked
+
+      if BoxRadio.Is_Nil (carDriver.Radio) then
+         Put_Line ("Competitor " & INTEGER'IMAGE(carDriver.Id) & " : cannot invoke on a nil reference");
+      end if;
+
+      --carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       --carDriver:= new CAR_DRIVER(Configure_Car_File(doc),Configure_Driver_File(doc),Configure_Strategy_File(doc));
       return carDriver;
    end Init_Competitor;
@@ -725,7 +746,7 @@ package body Competitor is
       tempoTotale : FLOAT := 0.0;
       valore:BOOLEAN :=False;
       --statistiche COMP_STATS
-      compStats :COMP_STATS_POINT := new COMP_STATS;
+      compStats : Common.COMP_STATS_POINT := new Common.COMP_STATS;
       SectorID : INTEGER;
 
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
@@ -767,9 +788,16 @@ package body Competitor is
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- NEW: se torna true, significa che è un prebox
+
             --Bisogna richiedere la nuova strategia al box
+            --dichiara una stringa e assegnaci il valore di ritorno della box radio
+            --BoxRadio.RequestStrategy(carDriver.Radio,1);
+            --prendi quella stringa e tramite un qualche metodo salvala su file
+            --e poi parsala per prendere su l'oggetto strategia corrispondente
             --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
             -- PitStop := true;
+            --Dopodichè copia i nuovi valori di strategia e memorizza il tempo di pitstop
+            --in caso sia necessario farlo
             null;
          end if;
 
@@ -777,6 +805,9 @@ package body Competitor is
          C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
                                                              --era while ... loop
+
+         --NEW, ovunque sia che bisogna usarlo, il checkpoint successivo ai box
+         --+ si ottiene con Get_ExitBoxCheckpoint invece che Get_NextCheckpoint
 
          -- NEW, prima non era commentato. Ora è stato cambiato il checkpoint
 --           while Paths2Cross = null loop
@@ -823,6 +854,7 @@ package body Competitor is
          --procedere degli altri competitor
          SectorID:=C_Checkpoint.Get_SectorID;
          PredictedTime := ActualTime + CrossingTime;
+         --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
          Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- TEMPO DI GARA = "&Float'Image(PredictedTime));
 
          Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- sectorID = "&Integer'Image(sectorID));
@@ -841,13 +873,13 @@ package body Competitor is
          --AGGIORNAMENTO ONBOARDCOMPUTER
          -- qua va creata la statistica da aggiungere al computer di bordo
          -- per poi invocare il metodo Add_Data
-         ONBOARDCOMPUTER.Set_Checkpoint(compStats, i-1);
-         ONBOARDCOMPUTER.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
+         Common.Set_Checkpoint(compStats, i-1);
+         Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
          --commentato- da correggere il ripo di gaslevel ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
-         ONBOARDCOMPUTER.Set_Tyre(compStats, carDriver.auto.TyreUsury);
-         ONBOARDCOMPUTER.Set_Time(compStats, predictedTime);
-         carDriver.statsComputer.Add_Data(compStats.all);
+         Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
+         Common.Set_Time(compStats, predictedTime);
+         carDriver.statsComputer.Add_Data(compStats);
 
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 

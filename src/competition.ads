@@ -11,6 +11,8 @@ with Ada.Strings.Unbounded;
 
 with Common;
 
+with Stats;
+
 package Competition is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
@@ -48,6 +50,7 @@ package Competition is
       Stop_Joining : BOOLEAN := False;
       Configured : BOOLEAN := False;
       Comp_List : access Common.COMPETITOR_LIST;
+      Global_Statistics : Stats.GLOBAL_STATS_HANDLER_POINT;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

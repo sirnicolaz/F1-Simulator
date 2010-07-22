@@ -1,6 +1,7 @@
 with Ada.Text_IO;
 
 with Common;
+with Stats;
 
 pragma Warnings (Off); -- TODO: delete
 package body Competition is
@@ -123,6 +124,8 @@ package body Competition is
          Configured := True;
 
          Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
+
+         --Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(ClassificRefreshTime_in),
       end Configure;
 
       function AreRegistrationsOpen return BOOLEAN is
