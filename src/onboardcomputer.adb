@@ -82,6 +82,7 @@ package body OnBoardComputer is
    function Reset_Data(Data : COMP_STATS) return COMP_STATS is
       Data_Copy : COMP_STATS;
    begin
+--      Ada.Text_IO.Put_Line("in Reset_Data");
       Data_Copy := Data;
       Data_Copy.LastCheckInSect := false;
       Data_Copy.FirstCheckInSect := true;
@@ -91,8 +92,9 @@ package body OnBoardComputer is
 
    procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS) is
    begin
-      Ada.Text_IO.Put_Line("PRE Info node out : ");
-      Info_Node_Out.Value := Value;--problema nell'utilizzo di questo
+      Info_Node_Out := new COMP_STATS_NODE;
+     -- Ada.Text_IO.Put_Line("PRE Info node out : info_node_out.index = " & Integer'Image(Info_Node_Out.Index));
+      Info_Node_Out.Value := Value;
       if(Info_Node_Out.Index = -1) then
          Info_Node_Out.Index := 1;
       end if;

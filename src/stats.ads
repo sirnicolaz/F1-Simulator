@@ -43,20 +43,21 @@ package Stats is
    type GLOBAL_STATS_HANDLER is private;
    type GLOBAL_STATS_HANDLER_POINT is access GLOBAL_STATS_HANDLER;
    --metodi per GLOBALSTATSHANDLER
-   procedure updateCompetitorInfo(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
-                                  competitorInfo_In : COMP_STATS);
-   function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE;--return the last classific available
+   function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT;
+   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+                                  competitorInfo_In : COMP_STATS_POINT);
+--   function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE;--return the last classific available
 
    -- return the last classificationtable complete
    function lastClassificUpdate(global_In : GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE;
    -- updated the calssificationtable with the info of the competitor
 
-   procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
-                                  competitorInfo_In : COMP_STATS);
+   --procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+  --                                competitorInfo_In : COMP_STATS);
    --create new classificationtable to update info of the competitor
-   function createNew return CLASSIFICATION_TABLE;
+   --function createNew return CLASSIFICATION_TABLE;
    --verify and eventually update the stats about best performance in the race
-   function updateStats(competitorInfo_In : COMP_STATS) return boolean;
+ --  function updateStats(competitorInfo_In : COMP_STATS) return boolean;
 
    --TODO: non ha senso che sia una risorsa protetta dal momento che viene usata solo in questo
    --package da una risorsa a sua volta protetta. Quindi cambiare.
@@ -120,7 +121,7 @@ package Stats is
 
    function Get_Index(SynchOrdStatTabNode : SOCT_NODE_POINT) return INTEGER;
 
-   procedure Init_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT);
+   procedure Init_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT); -- inizializza un nodo
 
 
    procedure Set_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT; Value : SOCT_POINT );
@@ -131,8 +132,10 @@ package Stats is
    -----------------------------------------------------------
 
    protected type SYNCH_GLOBAL_STATS is
-      procedure Init_GlobalStats( Update_Interval_in : FLOAT );
+      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT; lastClassificUpdate_In : in SOCT_NODE_POINT;
+                                CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT);
       procedure Set_CompetitorsQty (CompetitorsQty : INTEGER);
+      function Get_CompetitorsQty return INTEGER;
       procedure Update_Stats(
                              CompetitorId_In : INTEGER;
                              Lap_In : INTEGER;
@@ -145,6 +148,10 @@ package Stats is
    end SYNCH_GLOBAL_STATS;
 
    type S_GLOB_STATS_POINT is access SYNCH_GLOBAL_STATS;
+
+   procedure initGlobalStatsHandler(globalStatsHandler : in out GLOBAL_STATS_HANDLER_POINT; sgs_In : in S_GLOB_STATS_POINT;
+                                   updatePeriod_In : FLOAT);
+
 private
 
    type GS_LAP is record
@@ -187,11 +194,13 @@ private
 --        bestTimePerSectorCompID : INTEGER;
       firstTableFree : INTEGER := 0;--prima tabella libera
       genStats : GENERIC_STATS;
+      competitorNum : INTEGER;
+      Update_Interval : FLOAT;
    end record;
 
    type GLOBAL_STATS_HANDLER is record
       updatePeriod : FLOAT;
-      global : S_GLOBAL_STATS_POINT; -- accesso alle statistiche globali
+      global : S_GLOB_STATS_POINT; -- accesso alle statistiche globali
    end record;
 
    type STATS_ROW is record

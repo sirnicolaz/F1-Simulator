@@ -1,5 +1,7 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
+--  with ONBOARDCOMPUTER;
+--  use ONBOARDCOMPUTER;
 package body Stats is
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
@@ -279,8 +281,8 @@ returnNum : INTEGER;
    begin
       for z in 1..3
       loop
-         if StatsContainer.bestSector.numSector(z) = RequestIndex then
-             returnNum := StatsContainer.bestSector.numSector;
+         if StatsContainer.bestSector(z).numSector = RequestedIndex then
+             returnNum := StatsContainer.bestSector(z).numSector;
          end if;
       end loop;
       return StatsContainer.bestSector(returnNum).timeSector;
@@ -303,8 +305,8 @@ returnNum : INTEGER;
    begin
       for z in 1..3
       loop
-         if StatsContainer.bestSector.numSector(z) = RequestIndex then
-             returnNum := StatsContainer.bestSector.numSector;
+         if StatsContainer.bestSector(z).numSector = RequestedIndex then
+             returnNum := StatsContainer.bestSector(z).numSector;
          end if;
       end loop;
       return StatsContainer.bestSector(returnNum).idCompetitor;
@@ -315,8 +317,8 @@ returnNum : INTEGER;
    begin
       for z in 1..3
       loop
-         if StatsContainer.bestSector.numSector(z) = RequestIndex then
-             returnNum := StatsContainer.bestSector.numSector;
+         if StatsContainer.bestSector(z).numSector = RequestedIndex then
+             returnNum := StatsContainer.bestSector(z).numSector;
          end if;
       end loop;
       return StatsContainer.bestSector(returnNum).numBestLap;
@@ -336,12 +338,25 @@ returnNum : INTEGER;
    --   StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
    --end Update_Stats_Sector;
 
+   procedure initGlobalStatsHandler(globalStatsHandler : in out GLOBAL_STATS_HANDLER_POINT; sgs_In : in S_GLOB_STATS_POINT;
+                                   updatePeriod_In : FLOAT) is
+   begin
+      globalStatsHandler.global := sgs_In; -- inizializzazione SYNCH_GLOBAL_STATS
+      globalStatsHandler.updatePeriod := updatePeriod_In;
+   end initGlobalStatsHandler;
+
+   function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT is
+   begin
+      return global.updatePeriod;
+   end getUpdateTime;
+
+
    procedure compareTime(StatsGeneric : in GENERIC_STATS;  NewStats : in out GENERIC_STATS) is
       -- prendo la global_stats che ho a disposizione e confronto settore per settore se ho stabilito un nuovo record
       -- e poi confronto sul giro totale.
       time : FLOAT;
    begin
-      time := Get_BestLapTime(StatsContainer);
+      time := Get_BestLapTime(StatsGeneric);
       if time > StatsGeneric.bestLap.timeLap then
          NewStats.bestLap.numBestLap := StatsGeneric.bestLap.numBestLap;
          NewStats.bestLap.idCompetitor := StatsGeneric.bestLap.idCompetitor;
@@ -361,8 +376,14 @@ returnNum : INTEGER;
 
    protected body SYNCH_GLOBAL_STATS is
 
-      procedure Init_GlobalStats( Update_Interval_in : FLOAT ) is
+      -- function to init reference to global_stats
+      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT; lastClassificUpdate_In : in SOCT_NODE_POINT;
+                                CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT) is
       begin
+         GlobStats.firstTableFree := lastClassificUpdate_In.Index; -- init the first table free
+         GlobStats.genStats := genStats_In.all; -- init generic_stats
+         GlobStats.lastClassificUpdate := lastClassificUpdate_In;
+         Set_CompetitorsQty (CompetitorsQty);
          --GlobStats.BestLap_Num := 0;
          --GlobStats.BestLap_Time := 0.0;
          -- Temp
@@ -370,7 +391,7 @@ returnNum : INTEGER;
          --GlobStats.BestSectors_Time(0) := 0.0;
          --GlobStats.BestSectors_Time(1) := 0.0;
          --GlobStats.BestSectors_Time(2) := 0.0;
-         GlobStats.BestLap_CompetitorId := 0;
+         --GlobStats.BestLap_CompetitorId := 0;
          --GlobStats.BestTimePerSector_CompetitorId := new BESTSECTORS_TIME_COMPETITORSID(0..2);
          --GlobStats.BestTimePerSector_CompetitorId(0) := 0;
          --GlobStats.BestTimePerSector_CompetitorId(1) := 0;
@@ -381,23 +402,30 @@ returnNum : INTEGER;
 
       procedure Set_CompetitorsQty (CompetitorsQty : INTEGER) is
       begin
-         GlobStats.Statistics_Table := Get_New_SOCT_NODE(CompetitorsQty);
+         GlobStats.competitorNum := CompetitorsQty;
       end Set_CompetitorsQty;
+
+      function Get_CompetitorsQty return INTEGER IS
+      begin
+         return
+           GlobStats.competitorNum;
+      end Get_CompetitorsQty;
+
 
       function Test_Get_Classific return CLASSIFICATION_TABLE is
       begin
-         return GlobStats.Statistics_Table.This.Test_Get_Classific;
+         return GlobStats.lastClassificUpdate.This.Test_Get_Classific;--.Get_Classific;--Statistics_Table.This.Test_Get_Classific;
       end Test_Get_Classific;
 
       entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE) when true is
-         CurrentIndex : INTEGER := GlobStats.Statistics_Table.Index;
+         CurrentIndex : INTEGER := GlobStats.firstTableFree;--Statistics_Table.Index;
          TempStatsTable : SOCT_NODE_POINT;
       begin
          if (CurrentIndex = RequestedIndex) then
-            requeue GlobStats.Statistics_Table.This.Get_Classific;
+            requeue GlobStats.lastClassificUpdate.This.Get_Classific;-- .Statistics_Table.This.Get_Classific;
          else
             CurrentIndex := CurrentIndex - 1;
-            TempStatsTable := GlobStats.Statistics_Table.Previous;
+            TempStatsTable := GlobStats.lastClassificUpdate.Previous;--Statistics_Table.Previous;
             while CurrentIndex /= RequestedIndex loop
                TempStatsTable := TempStatsTable.Previous;
                CurrentIndex := CurrentIndex - 1;
@@ -417,7 +445,7 @@ returnNum : INTEGER;
                              Checkpoint_In : INTEGER;
                              Time_In : FLOAT) is
          Competitor_RowIndex : INTEGER;
-         Current_Table : SOCT_NODE_POINT := GlobStats.Statistics_Table;
+         Current_Table : SOCT_NODE_POINT := GlobStats.lastClassificUpdate;--Statistics_Table;
          Control_Var : BOOLEAN;
 
          procedure Create_New(Previous : in out SOCT_NODE_POINT) is
@@ -458,14 +486,48 @@ returnNum : INTEGER;
          -- bisogna verificare se è piena. In tal caso bisogna crearne una nuova vuota da far puntare
          -- al globStats per mantere valida l'invariante secondo cui la tabella riferita dal GlobStat
          -- è sempre quella non piena subito dopo l'ultima piena della lista.
-         GlobStats.Statistics_Table.This.Is_Full(Control_Var);
+         GlobStats.lastClassificUpdate.This.Is_Full(Control_Var);--Statistics_Table.This.Is_Full(Control_Var);
          if(Control_Var) then
-            if(Get_NextNode(GlobStats.Statistics_Table) = null) then
-               Create_New(GlobStats.Statistics_Table);
+            if(Get_NextNode(GlobStats.lastClassificUpdate) = null) then--Statistics_Table) = null) then
+               Create_New(GlobStats.lastClassificUpdate);--Statistics_Table);
             end if;
-            GlobStats.Statistics_Table := Get_NextNode(GlobStats.Statistics_Table);
+            GlobStats.lastClassificUpdate := Get_NextNode(GlobStats.lastClassificUpdate);--Statistics_Table);
          end if;
       end Update_Stats;
    end SYNCH_GLOBAL_STATS;
+
+   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+                                  competitorInfo_In : COMP_STATS_POINT)is
+      tempCheck : INTEGER;
+      tempLap : INTEGER;
+      tempTime : FLOAT;
+   begin
+      tempCheck := ONBOARDCOMPUTER.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
+      tempLap := ONBOARDCOMPUTER.Get_Lap(competitorInfo_In.all); -- numero giro
+      tempTime := ONBOARDCOMPUTER.Get_Time(competitorInfo_In.all); -- tempo
+      global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
+   end updateCompetitorInfo;
+
+--     function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE --return the last classific available
+--     is
+--        Classific_Out : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..global_In.global.Get_CompetitorsQty);
+--        RequestedIndex : INTEGER := 0;
+--     begin
+--        global_In.global.Get_Classific(RequestedIndex ,Classific_Out.all );
+--
+--        return Classific_Out.all;
+--     end getClassification;
+--
+   -- return the last classificationtable complete
+   function lastClassificUpdate(global_In : GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE is
+   begin
+      return global_In.lastClassificUpdate.This.Test_Get_Classific;
+   end lastClassificUpdate;
+
+   -- updated the calssificationtable with the info of the competitor
+
+--     procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+--                                    competitorInfo_In : COMP_STATS);
+
 
 end Stats;
