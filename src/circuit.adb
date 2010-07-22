@@ -50,7 +50,8 @@ package body Circuit is
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
                         PathsQty_In : POSITIVE;
-                        Competitors_Qty : POSITIVE) is
+                        Competitors_Qty : POSITIVE;
+                        IsPreBox_In : BOOLEAN) is
 
       PathsCollection : POINT_PATHS;
 
@@ -69,6 +70,7 @@ package body Circuit is
       Checkpoint_In.IsGoal := IsGoal_In;
       Checkpoint_In.Multiplicity :=  PathsQty_In;
       Checkpoint_In.Queue := new SORTED_QUEUE(1..Competitors_Qty);
+      Checkpoint_In.IsPreBox := IsPreBox_In;
       Init_Queue(Checkpoint_In.Queue.all);
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
@@ -257,35 +259,24 @@ package body Circuit is
    --TODO: validate input file and verify haandle exceptions
    procedure Init_Racetrack(Racetrack_In : in out RACETRACK_POINT;
                             Document_In : DOCUMENT) is
-      CheckpointQty_In : INTEGER;
-      Angle : ANGLE_GRADE;
-      Racetrack_XML : Node_List;
-      Checkpoint_XML : Node_List;
+      CheckpointQty : INTEGER;
+      Sector_Qty : INTEGER := 3;
+      Sector_List : Node_List;
+      Checkpoint_List : Node_List;
+      Feature_List : Node_List;
+      Checkpoint_Index : INTEGER := 1;
       Current_Node : Node;
+
+      Angle : ANGLE_GRADE;
       IsGoal_Attr : Attr;
       IsGoal : BOOLEAN;
+      IsPreBox_Attr : Attr;
+      IsPreBox : BOOLEAN;
       Current_Length : FLOAT;
       Current_Mult : INTEGER;
       Current_Angle : FLOAT;
       Checkpoint_Temp : POINT_Checkpoint;
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
-
-      function Get_Feature_Node(Node_In : NODE;
-                                FeatureName_In : STRING) return NODE is
-         Child_Nodes_In : NODE_LIST;
-         Current_Node : NODE;
-      begin
-
-         Child_Nodes_In := Child_Nodes(Node_In);
-         for Index in 1..Length(Child_Nodes_In) loop
-            Current_Node := Item(Child_Nodes_In,Index-1);
-            if Node_Name(Current_Node) = FeatureName_In then
-               return Current_Node;
-            end if;
-         end loop;
-
-         return null;
-      end Get_Feature_Node;
 
    begin
 
@@ -293,41 +284,71 @@ package body Circuit is
 
       if Document_In /= null then
 
-         Racetrack_XML := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
-         CheckpointQty_In := Length(Racetrack_XML);
-         Racetrack_In := new RACETRACK(1..CheckpointQty_In);
-         for Index in 1..CheckpointQty_In loop
-            Current_Node := Item(Racetrack_XML, Index-1);
-            IsGoal_Attr := Get_Named_Item (Attributes (Current_Node), "goal");
+         --Find out the number of checkpoint and allocate the Racetrack
+         CheckPoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
+         CheckpointQty := Length(CheckPoint_List);
+         Racetrack_In := new RACETRACK(1..CheckpointQty);
 
-            if IsGoal_Attr = null then
-               IsGoal := false;
-            else
-               IsGoal := Boolean'Value(Value(IsGoal_Attr));
-            end if;
+         --Loop through the sectors and, for each one, init the related checkpoints
+         Sector_List := Get_Elements_By_Tag_Name(Document_In,"sector");
 
-            Checkpoint_XML := Child_Nodes(Current_Node);
-            Current_Length := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"length"))));
-            Current_Mult := Positive'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mult"))));
-            Current_Angle := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"angle"))));
-            Checkpoint_Temp := new Checkpoint;
+         -- 3 is the standard number of sector in a circuit
+         for Index in 1..3 loop
+            --Taking the first sector
+            Current_Node := Item(Sector_List, Index-1);
+            CheckPoint_List := Child_Nodes(Current_Node);
 
-            Set_Values(Checkpoint_Temp,
-                       1,
-                       false,
-                       Current_Length,
-                       Current_Angle,
-                       Current_Mult,
-                       MaxCompetitors_Qty);
-            CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
-            Racetrack_In(Index) := CheckpointSynch_Current;
+            CheckpointQty := Length(CheckPoint_List);
+
+            --Retrieve the information contained in each checkpoint (if we are
+            --+ dealing with a checkpoint node)
+            for Indez in 1..CheckpointQty loop
+              if(DOM.Core.Nodes.Node_Name(Item(CheckPoint_List,Indez-1)) = "checkpoint") then
+
+                  Current_Node := Item(CheckPoint_List, Indez-1);
+                  IsGoal_Attr := Get_Named_Item (Attributes (Current_Node), "goal");
+
+                  if IsGoal_Attr = null then
+                     IsGoal := false;
+                  else
+                     IsGoal := Boolean'Value(Value(IsGoal_Attr));
+                  end if;
+
+                  IsPreBox_Attr := Get_Named_Item (Attributes (Current_Node), "preBox");
+
+                  if IsPreBox_Attr = null then
+                     IsPreBox := false;
+                  else
+                     IsPreBox := Boolean'Value(Value(IsPreBox_Attr));
+                  end if;
+
+                  Feature_List := Child_Nodes(Current_Node);
+                  Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
+                  Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
+                  Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
+                  Checkpoint_Temp := new Checkpoint;
+
+                  Set_Values(Checkpoint_Temp,
+                             Index,
+                             IsGoal,
+                             Current_Length,
+                             Current_Angle,
+                             Current_Mult,
+                             MaxCompetitors_Qty,
+                             IsPreBox);
+                  CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
+                  Racetrack_In(Checkpoint_Index) := CheckpointSynch_Current;
+                  Checkpoint_Index := Checkpoint_Index + 1;
+               end if;
+            end loop;
+
          end loop;
 
       else
          --else auto configure a default circular N_Checkpoints-M_paths track (with N = Checkpoints_Qty and M = MaxCompetitors_Qty -1;
          Angle := 360.00 / FLOAT(Checkpoints_Qty);
-         CheckpointQty_In := Checkpoints_Qty;
-         Racetrack_In := new RACETRACK(1..CheckpointQty_In);
+         CheckpointQty := Checkpoints_Qty;
+         Racetrack_In := new RACETRACK(1..CheckpointQty);
          for Index in 1..Checkpoints_Qty loop
             Checkpoint_Temp := new Checkpoint;
             Set_Values(Checkpoint_Temp,
@@ -336,9 +357,11 @@ package body Circuit is
                        100.00,
                        Angle,
                        MaxCompetitors_Qty,
-                       MaxCompetitors_Qty);
+                       MaxCompetitors_Qty,
+                       False);
             CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
             Racetrack_In(Index) := CheckpointSynch_Current;
+
          end loop;
 
       end if;
