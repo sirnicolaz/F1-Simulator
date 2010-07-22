@@ -415,15 +415,8 @@ package body Competitor is
          LastName_In : Str.Unbounded_String;-- STRING(1..6):="xxxxxx";
          Vel_In : FLOAT :=0.0;
          driver_XML : Node_List;
-         --Checkpoint_XML : Node_List;
          Current_Node : Node;
-         --IsGoal_Attr : Attr;
-         --IsGoal : BOOLEAN;
-         --Current_Team : STRING(1..7);
-         --Current_FirstName : STRING(1..10);
-         --Current_LastName : STRING(1..10);
          Car_In : DRIVER;
-         --Car_Current : CAR;
          global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : STRING) return NODE is
@@ -470,6 +463,18 @@ package body Competitor is
                           Vel_In);
          return Car_In;
       end Configure_Driver_File;
+
+      function Configure_BoxCorbaLoc_File(xml_file_In : DOCUMENT) return Str.Unbounded_String is
+         BoxCorbaLoc_ElementsList : Node_List;
+         Current_Node : Node;
+         CorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
+      begin
+         BoxCorbaLoc_ElementsList := Get_Elements_By_Tag_Name(xml_file_In,"boxCorbaLoc");
+         Current_Node := Item(BoxCorbaLoc_ElementsList, 0);
+         CorbaLoc := Str.To_Unbounded_String(Node_Value(First_Child(Current_Node)));
+         return CorbaLoc;
+      end Configure_BoxCorbaLoc_File;
+
    begin
       --apertura del file
       Try_OpenFile;
@@ -482,6 +487,8 @@ package body Competitor is
       carDriver.pilota := Configure_Driver_File(doc);
       carDriver.RaceIterator:=RaceIterator;
       carDriver.Id:=id_In;
+      carDriver.boxCorbaLoc := Configure_BoxCorbaLoc_File(doc);
+
       carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       --carDriver:= new CAR_DRIVER(Configure_Car_File(doc),Configure_Driver_File(doc),Configure_Strategy_File(doc));
       return carDriver;
@@ -700,7 +707,6 @@ package body Competitor is
       PredictedTime : FLOAT := 0.0;
       DelayTime : FLOAT := 1.0;
       Paths2Cross : CROSSING_POINT;
-
       MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
 
       --<minima quantità di tempo per attraversare la pista>

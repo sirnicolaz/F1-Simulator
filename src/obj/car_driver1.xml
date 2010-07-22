@@ -23,4 +23,5 @@
 	 <trim>1</trim>
 	 <pitstop>false</pitstop>
 	</strategy_car>
+	<boxCorbaLoc>corbaloc:lamerda@lacacca://vomito</boxCorbaLoc>
 </car_driver>
