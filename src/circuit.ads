@@ -1,4 +1,5 @@
 with Common;
+use Common;
 with Queue; use Queue;
 with Input_Sources.File;
 use Input_Sources.File;
@@ -16,8 +17,6 @@ use Ada.Text_IO;
 
 package Circuit is
 
-   subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
-   subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
    Checkpoints_Qty : POSITIVE := 2;
    MaxCompetitors_Qty : POSITIVE := 5;--4;
 
@@ -48,7 +47,7 @@ package Circuit is
 
    --Checkpoint Structure delcaration.
    type Checkpoint is tagged private;
-   type POINT_Checkpoint is access Checkpoint;
+   type POINT_Checkpoint is access Checkpoint'CLASS;
 
    --Init Segment.
    --TODO: Probably it should be private
@@ -90,8 +89,11 @@ package Circuit is
 
    protected type CHECKPOINT_SYNCH(Checkpoint_In : POINT_Checkpoint) is
 
-      procedure Signal_Arrival(CompetitorID_In : INTEGER;
-                               Paths2Cross : out CROSSING_POINT);
+      function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN;
+
+      entry Signal_Arrival(CompetitorID_In : INTEGER;
+                               Paths2Cross : out CROSSING_POINT;
+                               Go2Box : BOOLEAN);
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
@@ -100,13 +102,15 @@ package Circuit is
                                 Times : Common.FLOAT_LIST);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
+--      function Get_Box
 
       function Get_SectorID return INTEGER;
 
       function getChanged return Boolean;
 
       entry Wait(CompetitorID_In : INTEGER;
-                 Paths2Cross : out CROSSING_POINT);
+                 Paths2Cross : out CROSSING_POINT;
+                 Go2Box : BOOLEAN);
 
    private
       F_Checkpoint : POINT_Checkpoint := Checkpoint_In;
@@ -155,11 +159,19 @@ private
       IsPreBox : BOOLEAN;
    end record;
 
+   type PreBox is new Checkpoint
+   with
+      record
+         Box : CROSSING_POINT;
+      end record;
+
+
+
    type PATH is record
       Length : FLOAT;
-      Grip : FLOAT;
-      Difficulty : FLOAT range 0.0..10.0;
-      Angle : FLOAT range 0.0..360.0;
+      Grip : GRIP_RANGE;
+      Difficulty : DIFFICULTY_RANGE;
+      Angle : ANGLE_GRADE;
       LastTime : FLOAT;
    end record;
 

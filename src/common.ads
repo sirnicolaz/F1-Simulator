@@ -17,6 +17,9 @@ package Common is
 
    subtype PERCENTAGE is FLOAT range 0.0..100.0;
    type DRIVING_STYLE is (AGGRESSIVE,NORMAL,CONSERVATIVE);
+   subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
+   subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
+   subtype GRIP_RANGE is FLOAT range 0.0..10.0;
    type COMPETITOR_LIST is array(INTEGER range <>) of INTEGER;
    type FLOAT_LIST is array(INTEGER range <>) of FLOAT;
    subtype IP_PART is INTEGER range 0..255;

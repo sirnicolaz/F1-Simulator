@@ -721,6 +721,8 @@ package body Competitor is
       --statistiche COMP_STATS
       compStats :COMP_STATS_POINT := new COMP_STATS;
       SectorID : INTEGER;
+
+      PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
    begin
 
       Ada.Text_IO.Put_Line("init task");--sincronizzazione task iniziale
@@ -758,12 +760,23 @@ package body Competitor is
          Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
-         C_Checkpoint.Signal_Arrival(id,Paths2Cross);--arrived
+         if( C_Checkpoint.Set_Arrived(id) = true ) then -- NEW: se torna true, significa che è un prebox
+            --Bisogna richiedere la nuova strategia al box
+            --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
+            -- PitStop := true;
+            null;
+         end if;
+
+
+         C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
-         --era while ... loop
-         while Paths2Cross = null loop
-            C_Checkpoint.Wait(id,Paths2Cross);
-         end loop;
+                                                             --era while ... loop
+
+         -- NEW, prima non era commentato. Ora è stato cambiato il checkpoint
+--           while Paths2Cross = null loop
+--              C_Checkpoint.Wait(id,Paths2Cross);
+--           end loop;
+
          --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo

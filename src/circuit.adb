@@ -14,7 +14,7 @@ package body Circuit is
    procedure Set_Values(Path_In : in out PATH;
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
-                        Grip_In : FLOAT;
+                        Grip_In : GRIP_RANGE;
                         Difficulty_In : DIFFICULTY_RANGE) is
    begin
       Path_In.Length := Length_In;
@@ -47,9 +47,9 @@ package body Circuit is
    procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
-                        Length_In : FLOAT;
-                        Angle_In : ANGLE_GRADE;
-                        PathsQty_In : POSITIVE;
+                        Length_In : FLOAT; -- y
+                        Angle_In : ANGLE_GRADE; -- alpha
+                        PathsQty_In : POSITIVE; -- mult
                         Competitors_Qty : POSITIVE;
                         IsPreBox_In : BOOLEAN) is
 
@@ -57,10 +57,17 @@ package body Circuit is
 
       procedure Init_Paths(Paths_Collection_In : in out POINT_PATHS;
                            Paths_Qty : INTEGER) is
+
+         AlphaRad : FLOAT := (3.14 * Angle_In) / 180.0;
+         Shortest_Side : FLOAT := Length_In;
+         r : FLOAT := Shortest_Side / AlphaRad;
+         Tmp_Length : FLOAT := (r * 1.0) * AlphaRad ;
+
       begin
          Paths_Collection_In := new PATHS(1..Paths_Qty);
          for index in 1..Paths_Qty loop
-            Set_Values(Paths_Collection_In.all(index),Length_In,Angle_In,12.00,DIFFICULTY_RANGE(9.8));
+            Tmp_Length := (((FLOAT(index)-1.0) * 1.6) + r ) * AlphaRad;
+            Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,GRIP_RANGE(9.00),DIFFICULTY_RANGE(9.8));
          end loop;
          null;
       end Init_Paths;
@@ -74,6 +81,12 @@ package body Circuit is
       Init_Queue(Checkpoint_In.Queue.all);
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
+
+
+      if( IsPreBox_In ) then
+         Init_Paths(PathsCollection,Competitors_Qty);
+         PreBox(Checkpoint_In.all).Box := new CROSSING(PathsCollection);
+      end if;
    end Set_Values;
 
    procedure Set_Goal(Checkpoint_In : in out Checkpoint) is
@@ -153,20 +166,34 @@ package body Circuit is
    end CROSSING;
 
    protected body CHECKPOINT_SYNCH is
+      --The method set the "flag" arrived on the checkpoint queue.
+      --+The method returns a boolean indicating whether the checkpoint
+      --+can lead to a box or not.
+      function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN is
+      begin
+         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
+         return F_Checkpoint.IsPreBox;
+      end Set_Arrived;
 
       --The method set the calling task Competitor as arrived.
       --+If he's in the 1st position,
       --+the Path2Cross is initialised,
       --+in order to let the task choose the path and "cross" the segment.
-      procedure Signal_Arrival(CompetitorID_In : INTEGER;
-                               Paths2Cross : out CROSSING_POINT) is
+      entry Signal_Arrival(CompetitorID_In : INTEGER;
+                               Paths2Cross : out CROSSING_POINT;
+                               Go2Box : BOOLEAN) when true is
       begin
-         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
+         --         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
 --        Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono signal_arrival e chiamo get_position");
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
-            Paths2Cross := F_Checkpoint.PathsCollection;
+            Changed := false;
+            if ( Go2Box = true ) then
+               Paths2Cross := PreBox(F_Checkpoint.all).Box;
+            else
+               Paths2Cross := F_Checkpoint.PathsCollection;
+            end if;
          else
-            Paths2Cross := null; -- TODO: fix this crap
+            requeue Wait; -- TODO: fix this crap
          end if;
 
       end Signal_Arrival;
@@ -232,13 +259,24 @@ package body Circuit is
       --his Paths2Cross is initialized with the corresponding CROSSING_POINT,
       --in order to let it "cross" the segment.
       entry Wait(CompetitorID_In : INTEGER;
-                 Paths2Cross : out CROSSING_POINT) when Changed = TRUE is
+                 Paths2Cross : out CROSSING_POINT;
+                Go2Box : BOOLEAN) when Changed = TRUE is
       begin
-         --++++++Ada.Text_IO.Put_Line("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : sono wait e chiamo get_position, CHANGED= "&Boolean'Image(getChanged));
-         if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
-            Changed := FALSE;
-            Paths2Cross := F_Checkpoint.PathsCollection;
-         end if;
+         requeue Signal_Arrival;
+
+--           --++++++Ada.Text_IO.Put_Line("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : sono wait e chiamo get_position, CHANGED= "&Boolean'Image(getChanged));
+--           if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
+--              Changed := FALSE;
+--
+--              if ( Go2Box = true ) then
+--                 Paths2Cross := PreBox(F_Checkpoint.all).Box;
+--              else
+--                 Paths2Cross := F_Checkpoint.PathsCollection;
+--              end if;
+--
+--           else
+--              requeue Wait;
+--           end if;
 --         Ada.Text_IO.Put_Line("--------********$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : esco dalla WAIT, CHANGED= "&Boolean'Image(getChanged));
       end Wait;
 
@@ -326,7 +364,12 @@ package body Circuit is
                   Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
                   Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
-                  Checkpoint_Temp := new Checkpoint;
+
+                  if IsPreBox = false then
+                     Checkpoint_Temp := new Checkpoint;
+                  else
+                     Checkpoint_Temp := new PreBox;
+                  end if;
 
                   Set_Values(Checkpoint_Temp,
                              Index,
@@ -336,6 +379,7 @@ package body Circuit is
                              Current_Mult,
                              MaxCompetitors_Qty,
                              IsPreBox);
+
                   CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
                   Racetrack_In(Checkpoint_Index) := CheckpointSynch_Current;
                   Checkpoint_Index := Checkpoint_Index + 1;
@@ -365,13 +409,6 @@ package body Circuit is
          end loop;
 
       end if;
-
-      --for Index in 1..CheckpointQty_In-1 loop
-      --Set_Next(Racetrack_In(Index),Racetrack_In(Index+1));
-      --end loop;
-
-      --Set_Next(Racetrack_In(CheckpointQty_In),Racetrack_In(1));
-      --Set_Goal(Racetrack_In(1).all);
 
    end Init_Racetrack;
 
