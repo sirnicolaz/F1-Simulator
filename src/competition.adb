@@ -125,7 +125,7 @@ package body Competition is
 
          Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
 
-         --Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(ClassificRefreshTime_in),
+         Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(new FLOAT'(ClassificRefreshTime_in));
       end Configure;
 
       function AreRegistrationsOpen return BOOLEAN is
