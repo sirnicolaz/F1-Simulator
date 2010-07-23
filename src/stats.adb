@@ -398,6 +398,7 @@ returnNum : INTEGER;
          --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
          -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
+
       end Init_GlobalStats;
 
       procedure Set_CompetitorsQty (CompetitorsQty : INTEGER) is
