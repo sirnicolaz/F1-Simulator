@@ -9,12 +9,6 @@ package Box is
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
 
-   task type MONITOR is
-   end MONITOR;
-
-   task type STRATEGY_UPDATER is
-   end STRATEGY_UPDATER;
-
    type INFO_NODE is private;
    type INFO_NODE_POINT is access INFO_NODE;
 
@@ -60,6 +54,18 @@ package Box is
       Updates_Last : Info_Node_Point;
       Updated : BOOLEAN;
    end SYNCH_COMPETITION_UPDATES;
+
+   -- This task is the responsible of getting the competition updates from the
+   --+ remote server and putting them into the updated buffer shared with
+   --+ the strategy updater
+   task type MONITOR( SharedBuffer : access SYNCH_COMPETITION_UPDATES) is
+   end MONITOR;
+
+   -- The strategy updater takes new information about the competition
+   --+ whenever they are available in the update buffer. Then it uses
+   --+ them to compute the new startegy lap by lap.
+   task type STRATEGY_UPDATER ( SharedBuffer : access SYNCH_COMPETITION_UPDATES ) is
+   end STRATEGY_UPDATER;
 
    --The resource handle the mutually exclusive access to the
    --+ strategy history. The resource is written by the

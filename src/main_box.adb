@@ -7,6 +7,7 @@ with CORBA.ORB;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 
+with Box;
 with BoxRadio.impl;
 with PolyORB.CORBA_P.CORBALOC;
 
@@ -33,6 +34,10 @@ begin
    --Declare the BoxRadio remote object
    declare
       Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
+      Updates_Buffer : Box.SYNCH_COMPETITION_UPDATES;
+      History : Box.SYNCH_STRATEGY_HISTORY;
+      Updater : Box.STRATEGY_UPDATER;
+      Mon : Box.MONITOR;
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
       declare
@@ -51,8 +56,13 @@ begin
            (PortableServer.POA.Get_The_POAManager(Root_POA));
 
          -- Set up the CompetitionConfigurationObject
-         BoxRadio'_Ref := PortableServer.POA.Servant_To_Reference
+         BoxRadio_Ref := PortableServer.POA.Servant_To_Reference
            (Root_POA, PortableServer.Servant(BoxRadio_Obj));
+
+         CORBA.ORB.Run;
+
+         --Take the reference to the Monitor in the competition server
+
 
       end;
    end;

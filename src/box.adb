@@ -20,7 +20,6 @@ package body Box is
 
 
    Competitor_Qty : INTEGER := 10;
-   UpdatesBuffer : SYNCH_COMPETITION_UPDATES;
    StrategyHistory : SYNCH_STRATEGY_HISTORY;
    CompetitorRadio_CorbaLOC : access STRING;
 
@@ -28,6 +27,7 @@ package body Box is
       Info : access COMPETITION_UPDATE;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
+      UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
    begin
       loop
          -- Test init values to avoid warnings DEL
@@ -39,7 +39,7 @@ package body Box is
          Info.Time := 42.0;
 
          -- Info := RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
-         UpdatesBuffer.Add_Data(Info);
+         UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
          Sector := Sector + 1;--TODO: think the goal of this update
          if(Sector = Sector_Qty) then
@@ -71,6 +71,7 @@ package body Box is
       Old_Info : access COMPETITION_UPDATE;
       New_Info : access COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
+      UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
       --it starts from 1 because the strategy is updated once the competitor
       --+ the next to last sector. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
@@ -96,7 +97,7 @@ package body Box is
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
-         UpdatesBuffer.Get_Update(New_Info.all, Index);
+         UpdateBuffer.Get_Update(New_Info.all, Index);
          Index := Index + 1;
          exit when New_Info.Time /= -1.0;
          Sector := Sector + 1;
