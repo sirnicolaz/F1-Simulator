@@ -5,6 +5,16 @@ use Common;
 
 package Stats is
 
+
+   type GS_LAP is private; -- type to save generic_stats for the best lap time
+   type GS_LAP_POINT is access GS_LAP;
+
+   type GS_SECTOR is private; -- type to save generic_stats for the best sector time
+   type GS_SECTOR_POINT is access GS_SECTOR;
+
+   type SECTOR_ARRAY is array(1..3) of GS_SECTOR;
+   type SECTOR_ARRAY_POINT is access SECTOR_ARRAY;
+
    --sezione array vari
    type INT_ARRAY is array(POSITIVE range <>) of INTEGER;
    type INT_ARRAY_POINT is access INT_ARRAY;
@@ -15,11 +25,16 @@ package Stats is
    type FLOAT_ARRAY_LIST_NODE is private;
 
    -- generic_stats : for the best performance in the race
-   type GENERIC_STATS is private;
-   type GENERIC_STATS_POINT is access GENERIC_STATS;
+   --type GENERIC_STATS is private;
+   type GENERIC_STATS is record
+      bestLap : GS_LAP;
+      bestSector : SECTOR_ARRAY_POINT;-- array of GS_SECTOR to save information about three sector of the racetrack
+   end record;
+
+	type GENERIC_STATS_POINT is access GENERIC_STATS;
 
    -- global_stats : collection of synch_ordered_classification_table
-   type GLOBAL_STATS is private;
+   type GLOBAL_STATS(sgs_In : access GENERIC_STATS; updatePeriod_In : access FLOAT) is private;
    type GLOBAL_STATS_POINT is access GLOBAL_STATS;
 
    -- stats_row : single row of the synch_ordered_classification_table
@@ -94,15 +109,6 @@ package Stats is
    -- il secondo parametro è il pacchetto con i migliori tempi salvati, devo
    -- controllare se per caso ho dei tempi migliori.
 
-   type GS_LAP is private; -- type to save generic_stats for the best lap time
-   type GS_LAP_POINT is access GS_LAP;
-
-   type GS_SECTOR is private; -- type to save generic_stats for the best sector time
-   type GS_SECTOR_POINT is access GS_SECTOR;
-
-   type SECTOR_ARRAY is array(1..3) of GS_SECTOR;
-   type SECTOR_ARRAY_POINT is access SECTOR_ARRAY;
-
    -- FUNCTION OF SOCT_NODE -- TEST ---------------------------------------
    function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT;
 
@@ -126,9 +132,8 @@ package Stats is
    procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT; Value : in out SOCT_NODE_POINT );
    -----------------------------------------------------------
 
-   protected type SYNCH_GLOBAL_STATS is
-      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT; lastClassificUpdate_In : in SOCT_NODE_POINT;
-                                CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT);
+   protected type SYNCH_GLOBAL_STATS(sgs_In : access GENERIC_STATS; updatePeriod_In : access FLOAT) is
+      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT; CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT);
       procedure Set_CompetitorsQty (CompetitorsQty : INTEGER);
       function Get_CompetitorsQty return INTEGER;
       procedure Update_Stats(
@@ -139,20 +144,24 @@ package Stats is
       function Test_Get_Classific return CLASSIFICATION_TABLE;
       entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE);
    private
-      GlobStats : GLOBAL_STATS;
-   end SYNCH_GLOBAL_STATS;
+      GlobStats : GLOBAL_STATS_POINT := new GLOBAL_STATS(sgs_In, updatePeriod_In);
+end SYNCH_GLOBAL_STATS;
+
 
    type S_GLOB_STATS_POINT is access SYNCH_GLOBAL_STATS;
 
+   function print return BOOLEAN;
    -- global_stats_handler : access to global_stats
    --type GLOBAL_STATS_HANDLER is private;
-   type GLOBAL_STATS_HANDLER(update_In: access FLOAT) is record
+   type GLOBAL_STATS_HANDLER(update_In: access FLOAT; temp : access GENERIC_STATS) is record
       updatePeriod : FLOAT := update_In.all;
-      global : S_GLOB_STATS_POINT; -- accesso alle statistiche globali
+      global : S_GLOB_STATS_POINT := new SYNCH_GLOBAL_STATS(temp, update_In);
+      prova : BOOLEAN := print;
+--        Init_GlobalStats( new GENERIC_STATS, null, 10, update_In.all);-- accesso alle statistiche globali
    end record;
    type GLOBAL_STATS_HANDLER_POINT is access GLOBAL_STATS_HANDLER;
    --metodi per GLOBALSTATSHANDLER
-   procedure printGlobUPD(gl : GLOBAL_STATS_HANDLER);
+--     procedure printGlobUPD(gl : GLOBAL_STATS_HANDLER);
    function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT;
    procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
                                   competitorInfo_In : COMP_STATS_POINT);
@@ -191,12 +200,12 @@ private
       Next : SOCT_NODE_POINT;
    end record;
 
-   type GENERIC_STATS is record
-      bestLap : GS_LAP;
-      bestSector : SECTOR_ARRAY_POINT;-- array of GS_SECTOR to save information about three sector of the racetrack
-   end record;
+   --type GENERIC_STATS is record
+   --   bestLap : GS_LAP;
+   --   bestSector : SECTOR_ARRAY_POINT;-- array of GS_SECTOR to save information about three sector of the racetrack
+   -- end record;
 
-   type GLOBAL_STATS is record
+   type GLOBAL_STATS(sgs_In : access GENERIC_STATS; updatePeriod_In : access FLOAT) is record
       lastClassificUpdate : SOCT_NODE_POINT;--SOCT_POINT; --access to SYNCH_ORDERED_CLASSIFICATION_TABLE
 --        bestLapCompID : INTEGER;
 --        bestTimePerSectorCompID : INTEGER;

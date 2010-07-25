@@ -174,7 +174,8 @@ package body COMMON is
    begin
       Ada.Text_IO.Put_Line("Update_Stats");
 --        Ada.Text_IO.Put_Line(Integer'Image(compStats.sgs_In.Get_CompetitorsQty));
-    	--initGlobalStatsHandler(compStats.global,compStats.sgs_In, 100.0);
+--initGlobalStatsHandler(compStats.global,compStats.sgs_In, 100.0);
+--  	updateCompetitorInfo(compStats)
    end Update_Stats;
 
 

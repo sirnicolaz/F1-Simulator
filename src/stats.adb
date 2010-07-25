@@ -4,6 +4,12 @@ use Ada.Text_IO;
 --  use ONBOARDCOMPUTER;
 package body Stats is
 
+   function print return BOOLEAN is
+   begin
+      Ada.Text_IO.put_Line("in costruttore S_GLOB");
+      return true;
+   end print;
+
    function Get_StatsRow(Competitor_Id_In : INTEGER;
                          Lap_Num_In : INTEGER;
                          Checkpoint_Num_In : INTEGER;
@@ -377,12 +383,12 @@ returnNum : INTEGER;
    protected body SYNCH_GLOBAL_STATS is
 
       -- function to init reference to global_stats
-      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT; lastClassificUpdate_In : in SOCT_NODE_POINT;
-                                CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT) is
+      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT;CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT) is
       begin
-         GlobStats.firstTableFree := lastClassificUpdate_In.Index; -- init the first table free
+         --GlobStats := new GLOBAL_STATS(genStats_In, Update_Interval_in); --inizializzo il campo dati per poi assegnarci i valori, altrimenti eccezione
+         GlobStats.firstTableFree :=1;
+         GlobStats.lastClassificUpdate := new SOCT_NODE;
          GlobStats.genStats := genStats_In.all; -- init generic_stats
-         GlobStats.lastClassificUpdate := lastClassificUpdate_In;
          Set_CompetitorsQty (CompetitorsQty);
          --GlobStats.BestLap_Num := 0;
          --GlobStats.BestLap_Time := 0.0;
@@ -448,10 +454,10 @@ returnNum : INTEGER;
          Competitor_RowIndex : INTEGER;
          Current_Table : SOCT_NODE_POINT := GlobStats.lastClassificUpdate;--Statistics_Table;
          Control_Var : BOOLEAN;
-
          procedure Create_New(Previous : in out SOCT_NODE_POINT) is
             Temp_NewTable : SOCT_NODE_POINT;
          begin
+            Ada.Text_IO.Put_Line("in create new");
             Temp_NewTable := Get_New_SOCT_NODE(Previous.This.Get_Size);
             Set_NextNode(Previous,Temp_NewTable);
 
@@ -470,6 +476,16 @@ returnNum : INTEGER;
          end Create_New;
 
       begin
+         if Current_Table.This = null then
+            Init_Node(Current_Table);
+            Current_Table.This := new SYNCH_ORDERED_CLASSIFICATION_TABLE;--inizializzo un nodo, se non esiste.
+            Current_Table.This.Init_Table(10);-- inizializzare il campo this
+            Ada.Text_IO.Put_Line("init node & table");
+         end if;
+--           Current_Table.This :=
+           -- Create_New(Current_Table);
+         --if Current_Table.This = null then Ada.Text_IO.Put_Line("this null");
+         --end if;
          Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
          -- If competitor's infos are already saved in the current table, control what is the first
          -- free table
@@ -503,10 +519,13 @@ returnNum : INTEGER;
       tempLap : INTEGER;
       tempTime : FLOAT;
    begin
+      Ada.Text_IO.Put_Line("in updateCompetitorInfo");
       tempCheck := Common.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
       tempLap := Common.Get_Lap(competitorInfo_In.all); -- numero giro
       tempTime := Common.Get_Time(competitorInfo_In.all); -- tempo
+      Ada.Text_IO.Put_Line(" creazione singoli campi");
       global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
+      Ada.Text_IO.Put_Line("aggiornamento tabella completato");
    end updateCompetitorInfo;
 
 --     function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE --return the last classific available
@@ -520,8 +539,9 @@ returnNum : INTEGER;
 --     end getClassification;
 --
    -- return the last classificationtable complete
-   function lastClassificUpdate(global_In : GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE is
+   function lastClassificUpdate(global_In : in GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE is
    begin
+      Ada.Text_IO.Put_Line("lastClassificUpdate");
       return global_In.lastClassificUpdate.This.Test_Get_Classific;
    end lastClassificUpdate;
 
