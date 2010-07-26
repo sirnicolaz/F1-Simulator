@@ -1,21 +1,13 @@
 with Ada.Text_IO;
 
-with CORBA.Impl;
-with CORBA.Object;
-with CORBA.ORB;
-
-with PortableServer.POA.Helper;
-with PortableServer.POAManager;
-
 with Box;
 with BoxRadio.impl;
-with PolyORB.CORBA_P.CORBALOC;
 
-with PolyORB.Setup.No_Tasking_Server;
-pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
-
+with Ada.Strings.Unbounded;
 procedure Main_Box is
 
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
    -- Declare:
    --+ -the box registration handler
    --+ -the local box package:
@@ -31,39 +23,41 @@ procedure Main_Box is
 --      entry Submit_Configuration( Configuration : STRING );
 --      entry
 begin
+
+   Ada.Text_IO.Put_Line("End");
    --Declare the BoxRadio remote object
    declare
-      Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
-      Updates_Buffer : Box.SYNCH_COMPETITION_UPDATES;
-      History : Box.SYNCH_STRATEGY_HISTORY;
-      Updater : Box.STRATEGY_UPDATER;
-      Mon : Box.MONITOR;
+
+      Update_Buffer : access Box.SYNCH_COMPETITION_UPDATES;
+      History : access Box.SYNCH_STRATEGY_HISTORY;
+      Updater : access Box.STRATEGY_UPDATER;
+      Mon : access Box.MONITOR;
+      Laps : INTEGER;
+      Radio_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Corbaloc_Storage : BoxRadio.impl.SYNCH_CORBALOC_POINT := new BoxRadio.impl.SYNCH_CORBALOC;
+      Start_Radio : access BoxRadio.impl.Starter := new BoxRadio.impl.Starter(Corbaloc_Storage);
    begin
-      CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
+      Ada.Text_IO.Put_Line("Gettin corbaloc...");
+      Corbaloc_Storage.Get_CorbaLOC(Radio_CorbaLOC);
+
+      Ada.Text_IO.Put_Line("Corba LOC : " & Unbounded_String.To_String(Radio_CorbaLOC));
       declare
-         Root_POA : PortableServer.POA.Local_Ref;
-         BoxRadio_Ref : CORBA.Object.Ref;
-         BoxRadio_Obj : constant CORBA.Impl.Object_Ptr := new BoxRadio.Impl.Object;
-      begin
-         -- Retrieve the Root POA
-         Ada.Text_IO.Put_Line("Retrieving ROOT_POA...");
-         Root_POA := PortableServer.POA.Helper.To_Local_Ref
-           (CORBA.ORB.Resolve_Initial_References
-              (CORBA.ORB.To_CORBA_String("RootPOA")));
+         begin
 
-         Ada.Text_IO.Put_Line("Activating ROOT_POA...");
-         PortableServer.POAManager.Activate
-           (PortableServer.POA.Get_The_POAManager(Root_POA));
+         -- Init BoxRadio corba
+         -- Take the corba loc
+         -- Wait (through an accept) for the competitor information and the competition server
+         -- CORBA loc
+         -- Initialize the corba object for communicating with the server
+         -- Invoke the RegisterNewCompetitor with all the required information
+         -- Use the information obtained to initialize all the buffers needed and
+         -- to initialize the monitor connection with the server (using the corbaloc
+         -- of the competition monitor)
 
-         -- Set up the CompetitionConfigurationObject
-         BoxRadio_Ref := PortableServer.POA.Servant_To_Reference
-           (Root_POA, PortableServer.Servant(BoxRadio_Obj));
-
-         CORBA.ORB.Run;
-
-         --Take the reference to the Monitor in the competition server
-
-
+         History := new Box.SYNCH_STRATEGY_HISTORY;
+         History.Init(Laps);
+         Updater := new Box.STRATEGY_UPDATER(Update_Buffer);
+         Mon := new Box.MONITOR(Update_Buffer);
       end;
    end;
 end Main_Box;
