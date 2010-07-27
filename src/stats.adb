@@ -404,6 +404,14 @@ returnNum : INTEGER;
          --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
          -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.idCompetitor : " & Integer'Image(GlobStats.genStats.bestLap.idCompetitor));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.numBestLap : " & Integer'Image(GlobStats.genStats.bestLap.numBestLap));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.timeLap : " & Float'Image(GlobStats.genStats.bestLap.timeLap));
+
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).idCompetitor : " & Integer'Image(GlobStats.genStats.bestSector(3).idCompetitor));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numSector : " & Integer'Image(GlobStats.genStats.bestSector(3).numSector));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numBestLap : " & Integer'Image(GlobStats.genStats.bestSector(3).numBestLap));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).timeSector : " & Float'Image(GlobStats.genStats.bestSector(3).timeSector));
 
       end Init_GlobalStats;
 
