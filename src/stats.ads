@@ -39,6 +39,8 @@ package Stats is
 
 	type GENERIC_STATS_POINT is access GENERIC_STATS;
 
+   procedure setGSLAP(genStats_In : in out GENERIC_STATS; numBestLap : INTEGER; idCompetitor : INTEGER; timeLap : FLOAT);
+   procedure setGS_SECTOR(genStats_In : in out GENERIC_STATS; numSector : INTEGER; numBestLap : INTEGER; idCompetitor : INTEGER; timeSector : FLOAT);
    -- global_stats : collection of synch_ordered_classification_table
    type GLOBAL_STATS(sgs_In : access GENERIC_STATS; updatePeriod_In : access FLOAT) is private;
    type GLOBAL_STATS_POINT is access GLOBAL_STATS;
