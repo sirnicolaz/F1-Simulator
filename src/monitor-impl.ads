@@ -12,6 +12,6 @@ package Monitor.impl is
    procedure Init( CompetitionUpdates_Buffer : access Box.SYNCH_COMPETITION_UPDATES );
 
    function GetUpdate(Self : access Object;
-                         num : in CORBA.Short) return CORBA.String;
+                      num : in CORBA.Short) return CORBA.String;
 
 end Monitor.impl;

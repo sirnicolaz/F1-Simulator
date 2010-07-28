@@ -1,6 +1,9 @@
 with CORBA.ORB;
 with Polyorb.Setup.Client;
---with CompetitorRadio;
+pragma Warnings (Off, PolyORB.Setup.Client);
+
+with PolyORB.Utils.Report;
+--with MonitorRadio;
 
 with Input_Sources.File;
 use Input_Sources.File;
@@ -28,7 +31,20 @@ package body Box is
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
       UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
+
+      -- Radio : MonitorRadio.Ref;
+      RadioCorbaLOC : STRING := MonitorRadio_CorbaLOC.all;
    begin
+
+      CORBA.ORB.Initialize("ORB");
+
+      --COrba.ORB.String_To_Object(CORBA.To_CORBA_String(MonitorRadioCorbaLOC), Radio);
+
+      --if MonitorRadio.Is_Nil(Radio) then
+      --   Ada.Text_IO.Put_Line("Monitor radio down");
+      --   return
+      --end if;
+
       loop
          -- Test init values to avoid warnings DEL
          Info := new COMPETITION_UPDATE(Competitor_Qty);
@@ -165,13 +181,6 @@ package body Box is
 
 
    protected body SYNCH_COMPETITION_UPDATES is
-
-      procedure Init_Buffer is
-      begin
-         Updated := False;
-	 Updates_Current := null;
-         Updates_Last := Updates_Current;
-      end Init_Buffer;
 
       procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;

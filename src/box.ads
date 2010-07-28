@@ -34,7 +34,6 @@ package Box is
    end record;
 
 
-
    type STRATEGY_HISTORY is array(POSITIVE range <>) of BOX_STRATEGY;
 
    Interval : FLOAT; -- set after competition joining
@@ -42,7 +41,6 @@ package Box is
    Competitor_Id : INTEGER;
 
    protected type SYNCH_COMPETITION_UPDATES is
-      procedure Init_Buffer;
       procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE);
       entry Wait(NewInfo : out COMPETITION_UPDATE;
                  Num : in INTEGER);
@@ -52,13 +50,14 @@ package Box is
    private
       Updates_Current : Info_Node_Point;
       Updates_Last : Info_Node_Point;
-      Updated : BOOLEAN;
+      Updated : BOOLEAN := False;
    end SYNCH_COMPETITION_UPDATES;
 
    -- This task is the responsible of getting the competition updates from the
    --+ remote server and putting them into the updated buffer shared with
    --+ the strategy updater
-   task type MONITOR( SharedBuffer : access SYNCH_COMPETITION_UPDATES) is
+   task type MONITOR(SharedBuffer : access SYNCH_COMPETITION_UPDATES;
+                     MonitorRadio_CorbaLOC : access STRING) is
    end MONITOR;
 
    -- The strategy updater takes new information about the competition
@@ -82,7 +81,7 @@ package Box is
       procedure AddStrategy( Strategy : in BOX_STRATEGY );
 
       entry Get_Strategy( NewStrategy : out BOX_STRATEGY;
-                 Lap : in INTEGER);
+                         Lap : in INTEGER);
 
    private
       history : access STRATEGY_HISTORY;

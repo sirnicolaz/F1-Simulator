@@ -1,3 +1,0 @@
-interface CompetitionConfiguration{
-	string Configure( in string config);
-};
