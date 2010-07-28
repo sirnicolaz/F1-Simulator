@@ -40,7 +40,8 @@ begin
    temp_2 := temp;
    global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);--new GENERIC_STATS);--'(temp.all));
                                                      --pritnGlobUPD(global.all);
-   setGSLAP(temp_new.all, 1, 42, 10.0);
+--creazione giri migliori e tempi su settore migliori per scopi di test
+   setGSLAP(temp_new.all, 1, 42, 0.5);
    setGS_SECTOR(temp_new.all,1, 1, 42, 0.3);
    setGS_SECTOR(temp_new.all,2, 1, 42, 0.3);
    setGS_SECTOR(temp_new.all,3, 1, 42, 0.3);
@@ -67,5 +68,15 @@ begin
    end if;
   compareTime(temp_new.all, temp_2.all);--passaggio primo parametro mancante
    obc.Add_Data(compStats);
+
+   Ada.Text_IO.Put_Line("bestLapNum : "&Integer'Image(Get_BestLapNum(temp_2.all)));
+   Ada.Text_IO.Put_Line("bestLapTime : "&Float'Image(Get_BestLapTime(temp_2.all)));
+   Ada.Text_IO.Put_Line("bestSector(1)time : "&Float'Image(Get_BestSectorsTime(temp_2.all, 1)));
+   Ada.Text_IO.Put_Line("bestSector(1)lap : "&Integer'Image(Get_BestSectorsLap(temp_2.all, 1)));
+   Ada.Text_IO.Put_Line("bestSector(1)id : "&Integer'Image(Get_BestSectorsId(temp_2.all, 1)));
+
+--     function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT;--_ARRAY;
+--     function Get_BestSectorsLap(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
+--     function Get_BestSectorsId(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 end Test;

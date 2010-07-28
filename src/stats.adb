@@ -363,7 +363,9 @@ returnNum : INTEGER;
       time : FLOAT;
    begin
       Ada.Text_IO.Put_Line("in comparetime");
-      time := Get_BestLapTime(StatsGeneric);
+      time := Get_BestLapTime(NewStats);
+      Ada.Text_IO.Put_Line("Get_BestLapTime(StatsGeneric) = "&Float'Image(time));
+      Ada.Text_IO.Put_Line("StatsGeneric.bestLap.timeLap"&Float'Image(StatsGeneric.bestLap.timeLap));
       if time > StatsGeneric.bestLap.timeLap or else time < 0.0 then
          Ada.Text_IO.Put_Line("in comparetime, time > statsgeneric.bestLap.timeLap");
          NewStats.bestLap.numBestLap := StatsGeneric.bestLap.numBestLap;
