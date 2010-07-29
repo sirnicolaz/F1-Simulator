@@ -35,6 +35,8 @@ procedure Test is
    temp : GENERIC_STATS_POINT := new GENERIC_STATS;
    temp_2 : GENERIC_STATS_POINT;
    temp_new : GENERIC_STATS_POINT := new GENERIC_STATS;
+   class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
+
 begin
    --temp := new GENERIC_STATS_POINT;
    temp_2 := temp;
@@ -55,7 +57,8 @@ begin
    Common.Set_Sector(compStats, 1); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
    -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
                                                    --commentato- da correggere il ripo di gaslevel ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
-   -- Ada.Text_IO.Put_Line("POST setsector PRE set tyre");
+                                    -- Ada.Text_IO.Put_Line("POST setsector PRE set tyre");
+                                    Common.Set_Lap(compStats, 42);
    Common.Set_Tyre(compStats, 0.15);
    -- Ada.Text_IO.Put_Line("POST settyre PREset time");
    Common.Set_Time(compStats, predictedTime);
@@ -75,6 +78,8 @@ begin
    Ada.Text_IO.Put_Line("bestSector(1)lap : "&Integer'Image(Get_BestSectorsLap(temp_2.all, 1)));
    Ada.Text_IO.Put_Line("bestSector(1)id : "&Integer'Image(Get_BestSectorsId(temp_2.all, 1)));
 
+   class.all := global.global.Test_Get_Classific;
+   Ada.Text_IO.Put_Line("classifica : Id = "&Integer'Image(Get_CompetitorId(class(1)))&", lap = "&Integer'Image(Get_Lap(class(1)))&", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&", time = "&Float'Image(Get_Time(class(1))));
 --     function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT;--_ARRAY;
 --     function Get_BestSectorsLap(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
 --     function Get_BestSectorsId(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;

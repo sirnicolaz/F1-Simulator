@@ -435,6 +435,7 @@ returnNum : INTEGER;
 
       function Test_Get_Classific return CLASSIFICATION_TABLE is
       begin
+         Ada.Text_IO.Put_Line("init get_classific");
          return GlobStats.lastClassificUpdate.This.Test_Get_Classific;--.Get_Classific;--Statistics_Table.This.Test_Get_Classific;
       end Test_Get_Classific;
 
@@ -536,6 +537,7 @@ returnNum : INTEGER;
       Ada.Text_IO.Put_Line("in updateCompetitorInfo");
       tempCheck := Common.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
       tempLap := Common.Get_Lap(competitorInfo_In.all); -- numero giro
+      Ada.Text_IO.Put_Line("tempLap : "&Integer'Image(tempLap));
       tempTime := Common.Get_Time(competitorInfo_In.all); -- tempo
       Ada.Text_IO.Put_Line(" creazione singoli campi");
       global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
