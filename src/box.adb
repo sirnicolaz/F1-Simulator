@@ -23,7 +23,6 @@ package body Box is
 
 
    Competitor_Qty : INTEGER := 10;
-   StrategyHistory : SYNCH_STRATEGY_HISTORY;
    CompetitorRadio_CorbaLOC : access STRING;
 
    task body MONITOR is
@@ -33,7 +32,7 @@ package body Box is
       UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
 
       -- Radio : MonitorRadio.Ref;
-      RadioCorbaLOC : STRING := MonitorRadio_CorbaLOC.all;
+      RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
    begin
 
       CORBA.ORB.Initialize("ORB");
@@ -54,7 +53,8 @@ package body Box is
          Info.MeanGasConsumption := 42.0;
          Info.Time := 42.0;
 
-         -- Info := RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
+         -- Info_XMLStr := RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
+         -- Info := XML2CompetitionUpdate(Info_XMLStr)
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
          Sector := Sector + 1;--TODO: think the goal of this update
@@ -88,6 +88,7 @@ package body Box is
       New_Info : access COMPETITION_UPDATE;
       Strategy : BOX_STRATEGY;
       UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
+      StrategyHistory : access SYNCH_STRATEGY_HISTORY := SharedHistory;
       --it starts from 1 because the strategy is updated once the competitor
       --+ the next to last sector. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
@@ -294,6 +295,7 @@ package body Box is
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
 
+   -- Used to send to the client interface the information concerning the competition
    function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING is
 
       Competitor_Qty : INTEGER := 0;

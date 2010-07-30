@@ -57,14 +57,8 @@ package Box is
    --+ remote server and putting them into the updated buffer shared with
    --+ the strategy updater
    task type MONITOR(SharedBuffer : access SYNCH_COMPETITION_UPDATES;
-                     MonitorRadio_CorbaLOC : access STRING) is
+                     MonitorRadio_CorbaLOC : access Unbounded_String.Unbounded_String) is
    end MONITOR;
-
-   -- The strategy updater takes new information about the competition
-   --+ whenever they are available in the update buffer. Then it uses
-   --+ them to compute the new startegy lap by lap.
-   task type STRATEGY_UPDATER ( SharedBuffer : access SYNCH_COMPETITION_UPDATES ) is
-   end STRATEGY_UPDATER;
 
    --The resource handle the mutually exclusive access to the
    --+ strategy history. The resource is written by the
@@ -89,6 +83,12 @@ package Box is
       Updated : BOOLEAN := false;
    end SYNCH_STRATEGY_HISTORY;
 
+   -- The strategy updater takes new information about the competition
+   --+ whenever they are available in the update buffer. Then it uses
+   --+ them to compute the new startegy lap by lap.
+   task type STRATEGY_UPDATER ( SharedBuffer : access SYNCH_COMPETITION_UPDATES;
+                               SharedHistory : access SYNCH_STRATEGY_HISTORY) is
+   end STRATEGY_UPDATER;
 
    -- BOX RADIO TYPES AND METHODS DEFINITION --
    type BOX_RADIO is private;

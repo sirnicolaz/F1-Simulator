@@ -144,39 +144,63 @@ begin
          end;
       end Starter;
 
-      Update_Buffer : access Box.SYNCH_COMPETITION_UPDATES := new Box.SYNCH_COMPETITION_UPDATES;
-      History : access Box.SYNCH_STRATEGY_HISTORY;
-      Updater : access Box.STRATEGY_UPDATER;
-      Mon : access Box.MONITOR;
-      Laps : INTEGER;
       BoxRadio_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Monitor_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Configurator_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Corbaloc_Storage : SYNCH_CORBALOC_POINT := new SYNCH_CORBALOC;
       Start : access Starter := new Starter(Corbaloc_Storage);
 
+      Update_Buffer : access Box.SYNCH_COMPETITION_UPDATES;
+      History : access Box.SYNCH_STRATEGY_HISTORY;
+      Updater : access Box.STRATEGY_UPDATER;
+      BoxMonitor : access Box.MONITOR;
+      -- Resources for writing corbalocs into file
+      CorbaLOC_File : Ada.Text_IO.FILE_TYPE;
+
+      --Settings resource (shared with the configurator)
+      Settings : access Configurator.Impl.SYNCH_COMPETITION_SETTINGS;
+      --Settings
+      CompetitionMonitor_CorbaLOC : access Unbounded_String.Unbounded_String := new Unbounded_String.Unbounded_String;
+      Laps : INTEGER := -1;
    begin
       Corbaloc_Storage.Get_CorbaLOC(BoxRadio_CorbaLOC, C_BOX_RADIO);
       Corbaloc_Storage.Get_CorbaLOC(Monitor_CorbaLOC, C_MONITOR);
       Corbaloc_Storage.Get_CorbaLOC(Configurator_CorbaLOC, C_CONFIGURATOR);
-      Ada.Text_IO.Put_Line("Box Radio Corba LOC : " & Unbounded_String.To_String(BoxRadio_CorbaLOC));
-      Ada.Text_IO.Put_Line("Monitor Corba LOC : " & Unbounded_String.To_String(Monitor_CorbaLOC));
-      Ada.Text_IO.Put_Line("Configurato Corba LOC : " & Unbounded_String.To_String(Configurator_CorbaLOC));
-      declare
-         begin
-         -- Init BoxRadio corba
-         -- Take the corba loc
-         -- Wait (through an accept) for the competitor information and the competition server
-         -- CORBA loc
-         -- Initialize the corba object for communicating with the server
-         -- Invoke the RegisterNewCompetitor with all the required information
-         -- Use the information obtained to initialize all the buffers needed and
-         -- to initialize the monitor connection with the server (using the corbaloc
-         -- of the competition monitor)
-         History := new Box.SYNCH_STRATEGY_HISTORY;
-         History.Init(Laps);
-         Updater := new Box.STRATEGY_UPDATER(Update_Buffer);
-         --Mon := new Box.MONITOR(Update_Buffer);
-      end;
+
+      -- Saving the CorbaLOCS into file
+      -- First we create the file
+      Ada.Text_IO.Create(CorbaLOC_File, Ada.Text_IO.Out_File, "corbaLoc.txt");
+      -- Then we write to it
+      Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(BoxRadio_CorbaLOC));
+      Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Monitor_CorbaLOC));
+      Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Configurator_CorbaLOC));
+
+      Ada.Text_IO.Close(CorbaLOC_File);
+
+      Settings := Configurator.Impl.Get_SettingsResource;
+      Settings.Get_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC.all);
+      Settings.Get_Laps(Laps);
+
+      -- Resourced shared between tasks
+      Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
+      History := new Box.SYNCH_STRATEGY_HISTORY;
+      History.Init(Laps);
+
+      -- Initialize all the resources and tasks needed box side.
+      --It's very important the init order in this case. The BoxRadio has to be
+      --+ initialised with the shared Strategy history protected resource before
+      --+ the competition starts. The competition will start after the BoxMonitor
+      --+ will be started (the box monitor sends a ready signal to the competition).
+      --+ This is necessary because when the competition starts, the competitor associated
+      --+ to the Box radio will start to request new strategies. When the method
+      --+ Request_NewStrategy is invoked, the Box Radio tries to access the resource
+      --+ StrategyHistory. If such resource is not already initialized before the beginning
+      --+ of the competition, there would be a access violation.
+      BoxRadio.impl.Init(History);
+      Updater := new Box.STRATEGY_UPDATER(Update_Buffer,History);
+      BoxMonitor := new Box.MONITOR(Update_Buffer,
+                                    CompetitionMonitor_CorbaLOC);
+
+      Ada.Text_IO.Put_Line("Box Started");
    end;
 end Main_Box;
