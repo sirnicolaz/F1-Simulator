@@ -6,13 +6,18 @@ use Common;
 package Stats is
 
 
+
    type GS_LAP is private; -- type to save generic_stats for the best lap time
    type GS_LAP_POINT is access GS_LAP;
 
-   type GS_SECTOR is private; -- type to save generic_stats for the best sector time
-   type GS_SECTOR_POINT is access GS_SECTOR;
+   type GS_SECTOR(numSector_In : INTEGER; numBestLap_In : INTEGER; idCompetitor_In : INTEGER; timeSector_In : access FLOAT) is record
+      numSector : INTEGER := numSector_In;
+      numBestLap : INTEGER :=numBestLap_In;
+      idCompetitor : INTEGER :=idCompetitor_In;
+      timeSector : FLOAT := timeSector_In.all;
+   end record;type GS_SECTOR_POINT is access GS_SECTOR;
 
-   type SECTOR_ARRAY is array(1..3) of GS_SECTOR;
+   type SECTOR_ARRAY is array(1..3) of GS_SECTOR_POINT;
    type SECTOR_ARRAY_POINT is access SECTOR_ARRAY;
 
    --sezione array vari
@@ -27,12 +32,15 @@ package Stats is
    -- generic_stats : for the best performance in the race
    --type GENERIC_STATS is private;
    type GENERIC_STATS is record
-      bestLap : GS_LAP;
-      bestSector : SECTOR_ARRAY_POINT;-- array of GS_SECTOR to save information about three sector of the racetrack
+      bestLap : GS_LAP_POINT :=new GS_LAP;
+--      bestSector : SECTOR_ARRAY_POINT:= NEW SECTOR_ARRAY;--(new GS_SECTOR(1,-1,-1,-1.0),new GS_SECTOR(2,-1,-1,-1.0),new GS_SECTOR(3,-1,-1,-1.0));-- array of GS_SECTOR to save information about three sector of the racetrack
+      bestSector : SECTOR_ARRAY :=(new GS_SECTOR(1,-1,-1,new Float'(-1.0)),new GS_SECTOR(2,-1,-1,new Float'(-1.0)),new GS_SECTOR(3,-1,-1,new Float'(-1.0)));-- array of GS_SECTOR to save information about three sector of the racetrack
    end record;
 
 	type GENERIC_STATS_POINT is access GENERIC_STATS;
 
+   procedure setGSLAP(genStats_In : in out GENERIC_STATS; numBestLap : INTEGER; idCompetitor : INTEGER; timeLap : FLOAT);
+   procedure setGS_SECTOR(genStats_In : in out GENERIC_STATS; numSector : INTEGER; numBestLap : INTEGER; idCompetitor : INTEGER; timeSector : FLOAT);
    -- global_stats : collection of synch_ordered_classification_table
    type GLOBAL_STATS(sgs_In : access GENERIC_STATS; updatePeriod_In : access FLOAT) is private;
    type GLOBAL_STATS_POINT is access GLOBAL_STATS;
@@ -172,17 +180,17 @@ end SYNCH_GLOBAL_STATS;
 private
 
    type GS_LAP is record
-      numBestLap : INTEGER;
-      idCompetitor : INTEGER;
-      timeLap : FLOAT;
+      numBestLap : INTEGER := -1;
+      idCompetitor : INTEGER := -1;
+      timeLap : FLOAT := -1.0;
    end record;
 
-   type GS_SECTOR is record
-      numSector : INTEGER;
-      numBestLap : INTEGER;
-      idCompetitor : INTEGER;
-      timeSector : FLOAT;
-   end record;
+--     type GS_SECTOR(numSector_In : INTEGER; numBestLap_In : INTEGER; idCompetitor_In : INTEGER;timeSector_In : FLOAT) is record
+--        numSector : INTEGER := numSector_In;
+--        numBestLap : INTEGER :=numBestLap_In;
+--        idCompetitor : INTEGER :=idCompetitor_In;
+--        timeSector : FLOAT := timeSector_In;
+--     end record;
 
 --    type GENERIC_STATS is tagged record
 --        BestLap_Num : INT_ARRAY_POINT; -- Num of best time lap during the competition (each index represents a time instant)

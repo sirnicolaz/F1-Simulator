@@ -362,16 +362,22 @@ returnNum : INTEGER;
       -- e poi confronto sul giro totale.
       time : FLOAT;
    begin
-      time := Get_BestLapTime(StatsGeneric);
-      if time > StatsGeneric.bestLap.timeLap then
+      Ada.Text_IO.Put_Line("in comparetime");
+      time := Get_BestLapTime(NewStats);
+      Ada.Text_IO.Put_Line("Get_BestLapTime(StatsGeneric) = "&Float'Image(time));
+      Ada.Text_IO.Put_Line("StatsGeneric.bestLap.timeLap"&Float'Image(StatsGeneric.bestLap.timeLap));
+      if time > StatsGeneric.bestLap.timeLap or else time < 0.0 then
+         Ada.Text_IO.Put_Line("in comparetime, time > statsgeneric.bestLap.timeLap");
          NewStats.bestLap.numBestLap := StatsGeneric.bestLap.numBestLap;
          NewStats.bestLap.idCompetitor := StatsGeneric.bestLap.idCompetitor;
          NewStats.bestLap.timeLap := StatsGeneric.bestLap.timeLap;
       end if;
       --scorro le generic_stats relative ai tre settori e aggiorno le informazioni se serve
+      Ada.Text_IO.Put_Line("in loop");
       for z in 1..3
       loop
-         if NewStats.bestSector(z).timeSector > StatsGeneric.bestSector(z).timeSector then
+         if NewStats.bestSector(z).timeSector > StatsGeneric.bestSector(z).timeSector or else NewStats.bestSector(z).timeSector < 0.0 then
+            Ada.Text_IO.Put_Line("NewStats.bestSector(z).timeSector > StatsGeneric.bestSector(z).timeSector");
             NewStats.bestSector(z).timeSector := StatsGeneric.bestSector(z).timeSector;
             NewStats.bestSector(z).numBestLap := StatsGeneric.bestSector(z).numBestLap;
             NewStats.bestSector(z).idCompetitor := StatsGeneric.bestSector(z).idCompetitor;
@@ -404,6 +410,14 @@ returnNum : INTEGER;
          --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
          -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.idCompetitor : " & Integer'Image(GlobStats.genStats.bestLap.idCompetitor));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.numBestLap : " & Integer'Image(GlobStats.genStats.bestLap.numBestLap));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.timeLap : " & Float'Image(GlobStats.genStats.bestLap.timeLap));
+
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).idCompetitor : " & Integer'Image(GlobStats.genStats.bestSector(3).idCompetitor));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numSector : " & Integer'Image(GlobStats.genStats.bestSector(3).numSector));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numBestLap : " & Integer'Image(GlobStats.genStats.bestSector(3).numBestLap));
+         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).timeSector : " & Float'Image(GlobStats.genStats.bestSector(3).timeSector));
 
       end Init_GlobalStats;
 
@@ -421,6 +435,7 @@ returnNum : INTEGER;
 
       function Test_Get_Classific return CLASSIFICATION_TABLE is
       begin
+         Ada.Text_IO.Put_Line("init get_classific");
          return GlobStats.lastClassificUpdate.This.Test_Get_Classific;--.Get_Classific;--Statistics_Table.This.Test_Get_Classific;
       end Test_Get_Classific;
 
@@ -522,10 +537,13 @@ returnNum : INTEGER;
       Ada.Text_IO.Put_Line("in updateCompetitorInfo");
       tempCheck := Common.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
       tempLap := Common.Get_Lap(competitorInfo_In.all); -- numero giro
+      Ada.Text_IO.Put_Line("tempLap : "&Integer'Image(tempLap));
       tempTime := Common.Get_Time(competitorInfo_In.all); -- tempo
       Ada.Text_IO.Put_Line(" creazione singoli campi");
       global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
       Ada.Text_IO.Put_Line("aggiornamento tabella completato");
+      --controllo se migliori prestazioni
+     -- if global_In
    end updateCompetitorInfo;
 
 --     function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE --return the last classific available
@@ -554,5 +572,24 @@ returnNum : INTEGER;
    begin
       Ada.Text_IO.Put_Line("global update time : "&Float'Image(gl.updatePeriod));
       end printGlobUPD;
+
+
+   procedure setGSLAP(genStats_In : in out GENERIC_STATS; numBestLap : INTEGER; idCompetitor : INTEGER; timeLap : FLOAT) IS
+   begin
+      genStats_In.bestLap.numBestLap := numBestLap;
+      genStats_In.bestLap.idCompetitor := idCompetitor;
+      genStats_In.bestLap.timeLap := timeLap;
+      Ada.Text_IO.Put_Line("Generic stats.GS_LAP ok");
+   end setGSLAP;
+
+   procedure setGS_SECTOR(genStats_In : in out GENERIC_STATS; numSector : INTEGER; numBestLap : INTEGER; idCompetitor : INTEGER; timeSector : FLOAT) is
+   begin
+      genStats_In.bestSector(numSector).numSector := numSector;
+      genStats_In.bestSector(numSector).numBestLap := numBestLap;
+      genStats_In.bestSector(numSector).idCompetitor := idCompetitor;
+      genStats_In.bestSector(numSector).timeSector := timeSector;
+      Ada.Text_IO.Put_Line("Generic stats.GS_SECTOR("&Integer'Image(numSector)&") ok");
+   end setGS_SECTOR;
+
 
 end Stats;
