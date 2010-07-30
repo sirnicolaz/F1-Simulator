@@ -1,0 +1,10 @@
+interface Competition_Monitor {
+	string getClassific;
+	string getBestLap;
+	string getBestSector( in short index );
+	string getCondCar( in short competitorID );
+	string getCompetitor(in short competitorID);
+	string getCompetitorTimeSector(in short competitorID, in short sectorIn);
+	string getCompetitorTimeLap(in short competitorID, in short lapIn);
+	string getCompetitorTimeCheck(in short competitorID, in short checkpoint);
+};
