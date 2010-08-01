@@ -151,7 +151,7 @@ begin
       Start : access Starter := new Starter(Corbaloc_Storage);
 
       Update_Buffer : access Box.SYNCH_COMPETITION_UPDATES;
-      History : access Box.SYNCH_STRATEGY_HISTORY;
+      History : Box.SYNCH_STRATEGY_HISTORY_POINT;
       Updater : access Box.STRATEGY_UPDATER;
       BoxMonitor : access Box.MONITOR;
       -- Resources for writing corbalocs into file
@@ -171,19 +171,23 @@ begin
       -- First we create the file
       Ada.Text_IO.Create(CorbaLOC_File, Ada.Text_IO.Out_File, "corbaLoc.txt");
       -- Then we write to it
+      Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Configurator_CorbaLOC));
       Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(BoxRadio_CorbaLOC));
       Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Monitor_CorbaLOC));
-      Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Configurator_CorbaLOC));
 
       Ada.Text_IO.Close(CorbaLOC_File);
 
       Settings := Configurator.Impl.Get_SettingsResource;
+      Ada.Text_IO.Put_Line("Getting parameters");
       Settings.Get_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC.all);
+      Ada.Text_IO.Put_Line("Corbaloc got: " & Unbounded_String.To_String(CompetitionMonitor_CorbaLOC.all));
       Settings.Get_Laps(Laps);
+      Ada.Text_IO.Put_Line("Laps got: " & INTEGER'IMAGE(Laps));
 
       -- Resourced shared between tasks
       Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
       History := new Box.SYNCH_STRATEGY_HISTORY;
+      Ada.Text_IO.Put_Line("init History");
       History.Init(Laps);
 
       -- Initialize all the resources and tasks needed box side.
@@ -196,8 +200,11 @@ begin
       --+ Request_NewStrategy is invoked, the Box Radio tries to access the resource
       --+ StrategyHistory. If such resource is not already initialized before the beginning
       --+ of the competition, there would be a access violation.
+      Ada.Text_IO.Put_Line("Init BoxRadio");
       BoxRadio.impl.Init(History);
+      Ada.Text_IO.Put_Line("Start Updater");
       Updater := new Box.STRATEGY_UPDATER(Update_Buffer,History);
+      Ada.Text_IO.Put_Line("Start BoxMonitor");
       BoxMonitor := new Box.MONITOR(Update_Buffer,
                                     CompetitionMonitor_CorbaLOC);
 

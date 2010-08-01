@@ -83,6 +83,8 @@ package Box is
       Updated : BOOLEAN := false;
    end SYNCH_STRATEGY_HISTORY;
 
+   type SYNCH_STRATEGY_HISTORY_POINT is access SYNCH_STRATEGY_HISTORY;
+
    -- The strategy updater takes new information about the competition
    --+ whenever they are available in the update buffer. Then it uses
    --+ them to compute the new startegy lap by lap.

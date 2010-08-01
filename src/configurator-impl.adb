@@ -51,10 +51,8 @@ package body Configurator.Impl is
    function Configure(Self : access Object;
                       config_file : CORBA.STRING) return CORBA.STRING is
       Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      Circuit_File : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      Classific_RefreshTime : FLOAT;
-      Competitor_Qty : INTEGER;
-      Laps : INTEGER;
+      MaxSpeed : FLOAT;
+      PitStop : INTEGER;
 
       Config : Node_List;
       Current_Node : NODE;
@@ -67,12 +65,11 @@ package body Configurator.Impl is
       Current_Node := Item(Config,0);
 
       Name := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"name"))));
-      Circuit_File := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"circuitConfigFile"))));
-      Competitor_Qty := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorQty"))));
-      Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
-      Classific_RefreshTime := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"classificRefreshTime"))));
+      PitStop := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStop"))));
+      MaxSpeed := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"maxSpeed"))));
 
---      Comp.Configure(Competitor_Qty,Classific_RefreshTime,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
+      Settings.Set_Laps(10);
+      Settings.Set_CompetitionMonitor_CorbaLOC(Unbounded_String.To_Unbounded_String("undefined"));
 
       return CORBA.To_CORBA_String("no ior yet");
    end Configure;

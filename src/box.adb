@@ -44,6 +44,8 @@ package body Box is
       --   return
       --end if;
 
+      -- MonitorRadio.Ready(CompetitorID);
+
       loop
          -- Test init values to avoid warnings DEL
          Info := new COMPETITION_UPDATE(Competitor_Qty);
@@ -53,7 +55,7 @@ package body Box is
          Info.MeanGasConsumption := 42.0;
          Info.Time := 42.0;
 
-         -- Info_XMLStr := RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
+         -- Info_XMLStr := MonitorRadio.RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
          -- Info := XML2CompetitionUpdate(Info_XMLStr)
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;

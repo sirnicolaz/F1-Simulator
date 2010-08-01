@@ -17,10 +17,10 @@ with Ada.Text_IO;
 
 package body BoxRadio.impl is
 
+   StrategyHistory : Box.SYNCH_STRATEGY_HISTORY_POINT;
 
-   StrategyHistory : access Box.SYNCH_STRATEGY_HISTORY;
 
-   procedure Init( StrategyHistory_Buffer : access Box.SYNCH_STRATEGY_HISTORY ) is
+   procedure Init( StrategyHistory_Buffer : Box.SYNCH_STRATEGY_HISTORY_POINT ) is
    begin
       StrategyHistory := StrategyHistory_Buffer;
    end Init;

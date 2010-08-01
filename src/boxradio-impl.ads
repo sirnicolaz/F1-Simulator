@@ -14,7 +14,7 @@ package BoxRadio.impl is
 
    type Object_Acc is access Object;
 
-   procedure Init( StrategyHistory_Buffer : access Box.SYNCH_STRATEGY_HISTORY );
+   procedure Init( StrategyHistory_Buffer : Box.SYNCH_STRATEGY_HISTORY_POINT );
 
    function RequestStrategy( Self : access Object;
                             lap : CORBA.Short ) return CORBA.String;
