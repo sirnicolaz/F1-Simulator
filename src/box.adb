@@ -26,17 +26,15 @@ package body Box is
    CompetitorRadio_CorbaLOC : access STRING;
 
    task body MONITOR is
-      Info : access COMPETITION_UPDATE;
+      Info : COMPETITION_UPDATE_POINT;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
-      UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
+      UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
 
       -- Radio : MonitorRadio.Ref;
       RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
    begin
-
       CORBA.ORB.Initialize("ORB");
-
       --COrba.ORB.String_To_Object(CORBA.To_CORBA_String(MonitorRadioCorbaLOC), Radio);
 
       --if MonitorRadio.Is_Nil(Radio) then
@@ -46,24 +44,26 @@ package body Box is
 
       -- MonitorRadio.Ready(CompetitorID);
 
+      -- Test init values to avoid warnings DEL
+      Info := new COMPETITION_UPDATE(Competitor_Qty);
+      Info.GasLevel := 42.0;
+      Info.TyreUsury := 42.0;
+      Info.MeanSpeed := 42.0;
+      Info.MeanGasConsumption := 42.0;
+      Info.Time := 42.0;
       loop
-         -- Test init values to avoid warnings DEL
-         Info := new COMPETITION_UPDATE(Competitor_Qty);
-         Info.GasLevel := 42.0;
-         Info.TyreUsury := 42.0;
-         Info.MeanSpeed := 42.0;
-         Info.MeanGasConsumption := 42.0;
-         Info.Time := 42.0;
 
          -- Info_XMLStr := MonitorRadio.RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
          -- Info := XML2CompetitionUpdate(Info_XMLStr)
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
-         Sector := Sector + 1;--TODO: think the goal of this update
+         Sector := Sector + 1;
          if(Sector = Sector_Qty) then
             Sector := 0;
             Lap := Lap + 1;
          end if;
+         Info.Time := Info.Time + 1.0;--just for test;
+         Delay(Standard.Duration(2));
       end loop;
 
    end MONITOR;
@@ -86,11 +86,11 @@ package body Box is
 
    task body STRATEGY_UPDATER is
       Index : INTEGER := 1;
-      Old_Info : access COMPETITION_UPDATE;
-      New_Info : access COMPETITION_UPDATE;
+      Old_Info : COMPETITION_UPDATE_POINT;
+      New_Info : COMPETITION_UPDATE_POINT;
       Strategy : BOX_STRATEGY;
-      UpdateBuffer : access SYNCH_COMPETITION_UPDATES := SharedBuffer;
-      StrategyHistory : access SYNCH_STRATEGY_HISTORY := SharedHistory;
+      UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
+      StrategyHistory : SYNCH_STRATEGY_HISTORY_POINT := SharedHistory;
       --it starts from 1 because the strategy is updated once the competitor
       --+ the next to last sector. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
@@ -118,17 +118,19 @@ package body Box is
       loop
          UpdateBuffer.Get_Update(New_Info.all, Index);
          Index := Index + 1;
-         exit when New_Info.Time /= -1.0;
+         exit when New_Info.Time = -1.0;
          Sector := Sector + 1;
          Strategy := Compute_Strategy(New_Info    => New_Info.all,
                                       Old_Info    => Old_Info.all,
                                       Old_Strategy => Strategy
                                      );
+
          if(Sector = Sector_Qty) then
             StrategyHistory.AddStrategy(Strategy);
             Sector := 0;
          end if;
          Old_Info := New_Info;
+         Delay(Standard.Duration(2));
       end loop;
    end STRATEGY_UPDATER;
 
@@ -185,13 +187,13 @@ package body Box is
 
    protected body SYNCH_COMPETITION_UPDATES is
 
-      procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE) is
+      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE_POINT) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
       begin
          -- If info related to a time interval are already saved, do nothing.
-
          if(Updates_Last = null) then
-            New_Update.This := CompetitionUpdate_In;
+            New_Update.This := new COMPETITION_UPDATE(CompetitionUpdate_In.Classific'LENGTH);
+            New_Update.This.all := CompetitionUpdate_In.all;
             Updates_Last := New_Update;
             Updates_Last.Index := 1;
             Updates_Last.Previous := null;
@@ -199,16 +201,19 @@ package body Box is
             Updates_Current := Updates_Last;
             Updated := true;
          elsif (Updates_Last.This.Time < CompetitionUpdate_In.Time) then
-            New_Update.This := CompetitionUpdate_In;
+
+            New_Update.This := new COMPETITION_UPDATE(CompetitionUpdate_In.Classific'LENGTH);
+            New_Update.This.all := CompetitionUpdate_In.all;
 
             Set_NextNode(Updates_Last,New_Update);
 
             Updates_Last := New_Update;
             Updated := True;
-
          end if;
       exception when Program_Error =>
             Ada.Text_IO.Put_Line("Constraint error adding update at time " & FloatToString(CompetitionUpdate_In.Time));
+
+
       end Add_Data;
 
       entry Wait(NewInfo : out COMPETITION_UPDATE;
@@ -220,10 +225,13 @@ package body Box is
       entry Get_Update( NewInfo : out COMPETITION_UPDATE;
                        Num : INTEGER ) when true is
       begin
-         if ( Updates_Last.Index < Num ) then
+         Ada.Text_IO.Put_Line("Try to retrieve new info...");
+         if ( Updates_Last = null or else Updates_Last.Index < Num ) then
             Updated := false;
+            Ada.Text_IO.Put_Line("Requeue");
             requeue Wait;
          else
+            Ada.Text_IO.Put_Line("Got it");
             Updates_Current := Search_Node(Updates_Current, Num);
             NewInfo := Updates_Current.This.all;
          end if;
