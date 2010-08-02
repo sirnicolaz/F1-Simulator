@@ -1,10 +1,15 @@
-interface Competition_Monitor {
-	string getClassific;
-	string getBestLap;
+ interface Competition_Monitor {
+	string getClassific();
+	string getBestLap();
 	string getBestSector( in short index );
-	string getCondCar( in short competitorID );
-	string getCompetitor(in short competitorID);
-	string getCompetitorTimeSector(in short competitorID, in short sectorIn);
-	string getCompetitorTimeLap(in short competitorID, in short lapIn);
-	string getCompetitorTimeCheck(in short competitorID, in short checkpoint);
+	string getCondCar( in short competitorIdIn );
+	string getCompetitor(in short competitorIdIn);
+	string getCompetitorTimeSector(in short competitorIdIn, in short sectorIn);
+	string getCompetitorTimeLap(in short competitorIdIn, in short lapIn);
+	string getCompetitorTimeCheck(in short competitorIdIn, in short checkpointIn);
+	string getGas(in short competitorIdIn, in short Sector, in short lapIn);
+	string getTyreUsury(in short competitorIdIn, in short sectorIn, in short lapIn);
+	string getMeanSpeed(in short competitorIdIn, in short sectorIn, in short lapIn);
+	string getTime(in short competitorIdIn, in short sectorIn, in short lapIn);
+	string getMeanGasConsumption(in short competitorIdIn, in short sectorIn, in short lapIn);
 };

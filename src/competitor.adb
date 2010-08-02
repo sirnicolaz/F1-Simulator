@@ -876,7 +876,8 @@ package body Competitor is
          Common.Set_Checkpoint(compStats, i-1);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
-         --commentato- da correggere il ripo di gaslevel ONBOARDCOMPUTER.Set_Gas(compStats, carDriver.auto.GasolineLevel);
+                                                 --commentato- da correggere il ripo di gaslevel
+         Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats);

@@ -279,6 +279,15 @@ package body Stats is
 --        return -1.0;
       return StatsContainer.bestLap.timeLap;
    end Get_BestLapTime;
+--     function getLapTime(computerIn : COMP_STATS_NODE_POINT; competitorId_In : in INTEGER; numLap : in INTEGER ) return FLOAT is
+--     begin
+--  --        computerIn
+--          end getLapTime;
+
+   funCtion Get_BestLapId(StatsContainer : GENERIC_STATS) return INTEGER IS
+   begin
+      return StatsContainer.bestLap.idCompetitor;
+   end Get_BestLapId;
 
    function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT is--FLOAT_ARRAY is
 --        Current_BST : FLOAT_ARRAY_LIST_NODE;
