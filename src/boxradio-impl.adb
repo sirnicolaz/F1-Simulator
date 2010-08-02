@@ -36,7 +36,9 @@ package body BoxRadio.impl is
 
    begin
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
-      return CORBA.To_CORBA_String(Box.BoxStrategyToXML(NewStrategy));
+
+      --return CORBA.To_CORBA_String(Box.BoxStrategyToXML(NewStrategy));
+      return CORBA.To_CORBA_String("Merda");
    end RequestStrategy;
 
 end BoxRadio.impl;
