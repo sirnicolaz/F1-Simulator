@@ -1,6 +1,8 @@
 with Common;
 use Common;
 
+with Competitor;
+
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 
@@ -33,6 +35,7 @@ package Box is
       Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);
    end record;
 
+   type COMPETITION_UPDATE_POINT is access COMPETITION_UPDATE;
 
    type STRATEGY_HISTORY is array(POSITIVE range <>) of BOX_STRATEGY;
 
@@ -41,7 +44,7 @@ package Box is
    Competitor_Id : INTEGER;
 
    protected type SYNCH_COMPETITION_UPDATES is
-      procedure Add_Data(CompetitionUpdate_In : access COMPETITION_UPDATE);
+      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE_POINT);
       entry Wait(NewInfo : out COMPETITION_UPDATE;
                  Num : in INTEGER);
       entry Get_Update( NewInfo : out COMPETITION_UPDATE;
@@ -53,10 +56,11 @@ package Box is
       Updated : BOOLEAN := False;
    end SYNCH_COMPETITION_UPDATES;
 
+   type SYNCH_COMPETITION_UPDATES_POINT is access SYNCH_COMPETITION_UPDATES;
    -- This task is the responsible of getting the competition updates from the
    --+ remote server and putting them into the updated buffer shared with
    --+ the strategy updater
-   task type MONITOR(SharedBuffer : access SYNCH_COMPETITION_UPDATES;
+   task type MONITOR(SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
                      MonitorRadio_CorbaLOC : access Unbounded_String.Unbounded_String) is
    end MONITOR;
 
@@ -88,8 +92,8 @@ package Box is
    -- The strategy updater takes new information about the competition
    --+ whenever they are available in the update buffer. Then it uses
    --+ them to compute the new startegy lap by lap.
-   task type STRATEGY_UPDATER ( SharedBuffer : access SYNCH_COMPETITION_UPDATES;
-                               SharedHistory : access SYNCH_STRATEGY_HISTORY) is
+   task type STRATEGY_UPDATER ( SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
+                               SharedHistory : SYNCH_STRATEGY_HISTORY_POINT) is
    end STRATEGY_UPDATER;
 
    -- BOX RADIO TYPES AND METHODS DEFINITION --
@@ -116,7 +120,7 @@ private
       Index : INTEGER;
       Previous : INFO_NODE_POINT;
       Next : INFO_NODE_POINT;
-      This : access COMPETITION_UPDATE;
+      This : COMPETITION_UPDATE_POINT;
    end record;
 
 --     type BOX_STRATEGY is record

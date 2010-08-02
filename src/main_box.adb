@@ -150,10 +150,8 @@ begin
       Corbaloc_Storage : SYNCH_CORBALOC_POINT := new SYNCH_CORBALOC;
       Start : access Starter := new Starter(Corbaloc_Storage);
 
-      Update_Buffer : access Box.SYNCH_COMPETITION_UPDATES;
+      Update_Buffer : Box.SYNCH_COMPETITION_UPDATES_POINT;
       History : Box.SYNCH_STRATEGY_HISTORY_POINT;
-      Updater : access Box.STRATEGY_UPDATER;
-      BoxMonitor : access Box.MONITOR;
       -- Resources for writing corbalocs into file
       CorbaLOC_File : Ada.Text_IO.FILE_TYPE;
 
@@ -203,11 +201,16 @@ begin
       Ada.Text_IO.Put_Line("Init BoxRadio");
       BoxRadio.impl.Init(History);
       Ada.Text_IO.Put_Line("Start Updater");
-      Updater := new Box.STRATEGY_UPDATER(Update_Buffer,History);
-      Ada.Text_IO.Put_Line("Start BoxMonitor");
-      BoxMonitor := new Box.MONITOR(Update_Buffer,
-                                    CompetitionMonitor_CorbaLOC);
 
-      Ada.Text_IO.Put_Line("Box Started");
+      declare
+
+         Updater : access Box.STRATEGY_UPDATER := new Box.STRATEGY_UPDATER(Update_Buffer,History);
+         BoxMonitor : access Box.MONITOR := new Box.MONITOR(Update_Buffer,
+                                                         CompetitionMonitor_CorbaLOC);
+
+      begin
+         --Delay(Standard.Duration(40000));
+         null;
+      end;
    end;
 end Main_Box;
