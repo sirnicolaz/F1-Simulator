@@ -1,9 +1,39 @@
 credo che per il calcolo della strategia ci siano una serie di casi da affrontare:
 caso 1 - benzina/gomme per effettuare >10 giri
-	-passando a un livello superiore di guida (se non sono già al massimo) quanti giri riesco a fare? più di dieci? e poi quanti me ne mancherebbero alla fine?
-	-se con questo passaggio riesco ad arrivare a fine gara (oppure arrivare a fare un pitstop intorno a 1/3 o 2/3 di gara) allora passo a quel modo di guida altrimenti resto sul mio metodo di guida
+	-passando a un livello superiore di guida (se non sono già al massimo) 
+quanti giri riesco a fare? più di dieci? e poi quanti me ne mancherebbero alla fine?
+	-se con questo passaggio riesco ad arrivare a fine gara 
+(oppure arrivare a fare un pitstop intorno a 1/3 o 2/3 di gara) allora passo a quel modo di guida altrimenti resto sul mio metodo di guida
 caso 2 - benzina/gomme per effettuare <10 giri
 	-passando a un livello inferiore di guida a quanti giri dalla fine riesco ad arrivare?conviene fare un pitstop?
 
 Bisogna valutare ricordandosi che in generale vengono effettuati 2 pitstop per gara e che il pitstop porta ovviamente a una perdita di tempo
 
+----PREMESSA-----
+L'utente sceglie:
+	- tipo, miscela e usura gomme
+	- capacità serbatoio e quantità benzina
+	- motore -> massima velocità e accelerazione
+	- stile di guida: conservativo, normale, aggressivo
+
+	QUESTA SE LA TIENE IL BOX
+	- strategia globale: cauto, normale, rischioso, pazzo
+
+----OPERAZIONI-----
+- Verifica numero giri disponibili in base a 
+	- benzina
+	- gomme
+ottengo ----> Giri Rimanenti
+- Verificare se possibilie/necessario cambiare stile di guida
+	-> si verifica se in quel livello il consumo di gomme e benzina
+	  (calcolato in base alla media fino a quel momento) permette di finire la gara o arrivare
+	  al prossimo pitstop
+		
+- Aumentare o diminuire il livello dello stile di guida in base alla necessità. (Tenere il livello massimo possibile)
+- Se la benzina non è sufficiente ad arrivare alla fine o al prossimo pitstop o se è il momento di pit stop, calcolare il tempo
+  di delay e quanta benzina mettere:
+	-> la quantità di benzina dipende dalla situazione:
+		- mettere la benzina necessaria per arrivare alla fine se la fine è vicina
+		- altrimenti
+	-> decidere se e quali gomme mettere
+        -> decidere prossimo pit stop
