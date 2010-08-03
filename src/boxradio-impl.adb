@@ -15,6 +15,9 @@ pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
 
 with Ada.Text_IO;
 
+with Common;
+use Common;
+
 package body BoxRadio.impl is
 
    StrategyHistory : Box.SYNCH_STRATEGY_HISTORY_POINT;
@@ -37,8 +40,8 @@ package body BoxRadio.impl is
    begin
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
 
-      --return CORBA.To_CORBA_String(Box.BoxStrategyToXML(NewStrategy));
-      return CORBA.To_CORBA_String("Merda");
+      return CORBA.To_CORBA_String(Box.BoxStrategyToXML(NewStrategy));
+      --return CORBA.To_CORBA_STRING("Merda");
    end RequestStrategy;
 
 end BoxRadio.impl;

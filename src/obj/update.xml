@@ -8,13 +8,14 @@
 	<lap>3</lap> 
 	<sector>2</sector> 
 	<classific competitors="7" >   <!-- competitor ids, pol position = first one -->
-		<compId>4</compId>
-		<compId>1</compId>
-		<compId>7</compId>
-		<compId>2</compId>
-		<compId>3</compId>
-		<compId>6</compId>
-		<compId>5</compId>
+		<competitor id="4" >0.0</compId> <!-- distance (in second) from the first one-->
+		<competitor id="1" >0.2</compId> <!-- distance (in second) from the first one-->
+		<competitor id="2" >0.3</compId> <!-- distance (in second) from the first one-->
+		<competitor id="5" >0.4</compId> <!-- distance (in second) from the first one-->
+		<competitor id="3" >0.5</compId> <!-- distance (in second) from the first one-->
+		<competitor id="6" >0.6</compId> <!-- distance (in second) from the first one-->
+		<competitor id="7" >0.7</compId> <!-- distance (in second) from the first one-->
 	</classific>
 </update>
+
 

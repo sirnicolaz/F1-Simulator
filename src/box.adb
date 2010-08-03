@@ -25,6 +25,15 @@ package body Box is
    Competitor_Qty : INTEGER := 10;
    CompetitorRadio_CorbaLOC : access STRING;
 
+   -- Circuit length. Initialised after the competitor registration
+   CircuitLength : FLOAT := 1.0;
+
+   MeanKmsPerLitre : FLOAT := 1.7;
+   -- Depending on the driving style, the meand kilometres per litre
+   --+ will change
+   AggressiveMod : FLOAT := -0.2;
+   ConservativeMod : FLOAT := 0.2;
+
    task body MONITOR is
       Info : COMPETITION_UPDATE_POINT;
       Sector : INTEGER := 0;
@@ -80,7 +89,24 @@ package body Box is
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
    begin
+
+      --TODO: implement AI
+      -- If the amount of gas is not enough for another lap, it's
+      --+ necessary to stop
+      if ( New_Info.GasLevel <
+          (CircuitLength / (Old_Info.MeanGasConsumption))) then null; end if;
+      -- One lap less to the pit stop
+      New_Strategy.PitStopLap := Old_strategy.PitStopLap - 1;
+
+      --Depending on the position in the classific (and on the distances between competitors)
+      --+ the driving style may vary.
+      --+
+
+      Old_info.
+
+      New_Strategy := Old_Strategy;
       New_Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Rain tyre");
+      New_Strategy.PitStopLap := New_Strategy.PitStopLap + 1;
       return New_Strategy;
    end Compute_Strategy;
 
@@ -257,7 +283,6 @@ package body Box is
          history.all(history_size+1) := Strategy;
          history_size := history_size + 1;
          Updated := true;
-
          exception when Constraint_Error =>
             Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
             Ada.Text_IO.Put("the history array has had an access violation.");
@@ -292,7 +317,6 @@ package body Box is
          when CONSERVATIVE =>
             Style := Unbounded_String.To_Unbounded_String("Conservative");
       end case;
-
       XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
       			"<strategy>" &
 			      "<tyreType>" & Unbounded_String.To_String(strategy.Type_Tyre)& "</tyreType>" &

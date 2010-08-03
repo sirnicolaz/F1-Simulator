@@ -3,6 +3,6 @@
 	<tyreType>rain tyre</tyreType>
 	<style>aggressive</style>
 	<gasLevel>20%</gasLevel>
-	<pitStopLap>3</pitStopLap>
+	<pitStopLaps>3</pitStopLaps>
 	<pitStopDelay>0.0</pitStopDelay>
 </strategy>
