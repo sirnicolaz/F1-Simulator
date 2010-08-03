@@ -19,6 +19,11 @@ with Ada.Strings.Unbounded;
 with Common;
 
 package body Competition_Monitor.Impl is
+   procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
+   begin
+      (indexIn):= compIn.all;
+   end AddOBC;
+
    function getClassific(Self : access Object) return CORBA.STRING is
       class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..25);
       upd : FLOAT := 100.0;
@@ -83,7 +88,7 @@ package body Competition_Monitor.Impl is
 
 
 
-   end getCompetitor;
+   end getCompetitorTimeSector;
 
    function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;

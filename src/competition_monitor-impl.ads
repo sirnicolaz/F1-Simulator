@@ -1,10 +1,16 @@
 with CORBA;
 with PortableServer;
+with OnBoardComputer;
+USE OnBoardComputer;
 
 with Ada.Strings.Unbounded;
 
 
 package Competition_Monitor.impl is
+   type OBC is array (Positive range <>) of ONBOARDCOMPUTER.COMPUTER;
+   type OBC_POINT is access OBC;
+
+   procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
    type Object is new PortableServer.Servant_Base with null record;
@@ -22,4 +28,7 @@ package Competition_Monitor.impl is
    function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+
+private
+arrayComputer : OBC(1..10);
 end Competition_Monitor.impl;
