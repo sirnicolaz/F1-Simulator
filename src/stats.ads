@@ -15,7 +15,8 @@ package Stats is
       numBestLap : INTEGER :=numBestLap_In;
       idCompetitor : INTEGER :=idCompetitor_In;
       timeSector : FLOAT := timeSector_In.all;
-   end record;type GS_SECTOR_POINT is access GS_SECTOR;
+   end record;
+   type GS_SECTOR_POINT is access GS_SECTOR;
 
    type SECTOR_ARRAY is array(1..3) of GS_SECTOR_POINT;
    type SECTOR_ARRAY_POINT is access SECTOR_ARRAY;
