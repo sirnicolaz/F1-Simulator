@@ -69,6 +69,11 @@ package OnBoardComputer is
 
    type COMPUTER_POINT is access COMPUTER;
 
+
+--     function getValue(compIn : in Common.COMP_STATS_NODE; competitorId_In : in INTEGER; numLap : in INTEGER ) is
+--     begin
+--     	compIn.Value
+   --Value : Common.COMP_STATS_POINT
 private
    -- This type collects all the statistics for each time instant.
 --     type COMP_STATS is record

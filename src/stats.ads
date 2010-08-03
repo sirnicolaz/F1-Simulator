@@ -110,12 +110,14 @@ package Stats is
 
    function Get_BestLapNum(StatsContainer : GENERIC_STATS) return INTEGER;
    function Get_BestLapTime(StatsContainer : GENERIC_STATS) return FLOAT;
+   funCtion Get_BestLapId(StatsContainer : GENERIC_STATS) return INTEGER;
    function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT;--_ARRAY;
    function Get_BestSectorsLap(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
    function Get_BestSectorsId(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
    procedure compareTime(StatsGeneric : in GENERIC_STATS;  NewStats : in out GENERIC_STATS);
    -- il secondo parametro è il pacchetto con i migliori tempi salvati, devo
    -- controllare se per caso ho dei tempi migliori.
+   function getLapTime(competitorId_In : in INTEGER; numLap : in INTEGER ) return FLOAT;
 
    -- FUNCTION OF SOCT_NODE -- TEST ---------------------------------------
    function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT;
