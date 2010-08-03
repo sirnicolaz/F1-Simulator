@@ -1,0 +1,9 @@
+credo che per il calcolo della strategia ci siano una serie di casi da affrontare:
+caso 1 - benzina/gomme per effettuare >10 giri
+	-passando a un livello superiore di guida (se non sono già al massimo) quanti giri riesco a fare? più di dieci? e poi quanti me ne mancherebbero alla fine?
+	-se con questo passaggio riesco ad arrivare a fine gara (oppure arrivare a fare un pitstop intorno a 1/3 o 2/3 di gara) allora passo a quel modo di guida altrimenti resto sul mio metodo di guida
+caso 2 - benzina/gomme per effettuare <10 giri
+	-passando a un livello inferiore di guida a quanti giri dalla fine riesco ad arrivare?conviene fare un pitstop?
+
+Bisogna valutare ricordandosi che in generale vengono effettuati 2 pitstop per gara e che il pitstop porta ovviamente a una perdita di tempo
+
