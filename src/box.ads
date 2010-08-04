@@ -14,6 +14,10 @@ package Box is
    type INFO_NODE is private;
    type INFO_NODE_POINT is access INFO_NODE;
 
+   procedure Init(Laps_In : INTEGER;
+                  CircuitLength_In : FLOAT;
+                  CompetitorId_In : INTEGER);
+
    --Temporary public type. It has to be private DEL
    --   type BOX_STRATEGY is private;
    type BOX_STRATEGY is record
@@ -80,6 +84,9 @@ package Box is
 
       entry Get_Strategy( NewStrategy : out BOX_STRATEGY;
                          Lap : in INTEGER);
+
+      -- It returns the pit stops already done.
+      function Get_PitStopDone return INTEGER;
 
    private
       history : access STRATEGY_HISTORY;

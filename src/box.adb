@@ -25,6 +25,8 @@ package body Box is
    Competitor_Qty : INTEGER := 10;
    CompetitorRadio_CorbaLOC : access STRING;
 
+   CompetitorID : INTEGER;
+
    -- Circuit length. Initialised after the competitor registration
    CircuitLength : FLOAT := 1.0;
 
@@ -33,6 +35,18 @@ package body Box is
    --+ will change
    AggressiveMod : FLOAT := -0.2;
    ConservativeMod : FLOAT := 0.2;
+
+   -- Total laps
+   Laps : INTEGER := 0;
+
+   procedure Init(Laps_In : INTEGER;
+                  CircuitLength_In : FLOAT;
+                  CompetitorId_In : INTEGER) is
+   begin
+      Laps := Laps_In;
+      CircuitLength := CircuitLength_In;
+      CompetitorID := CompetitorId_In;
+   end Init;
 
    task body MONITOR is
       Info : COMPETITION_UPDATE_POINT;
@@ -88,13 +102,61 @@ package body Box is
                              Old_Strategy : BOX_STRATEGY
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
+
+      StrategyFactor : FLOAT;
+
+      RemainingDoableLaps_Gas : INTEGER;
+      RemainingDoableLaps_Tyre : INTEGER;
+
+      RemainingDoableLaps : INTEGER;
+
+      Laps2PitStop : INTEGER;
+      Laps2End : INTEGER;
+
    begin
 
       --TODO: implement AI
+      -- Calculate the remaining number of laps til either the pitstop or the
+      --+ end of the competition.
+      Laps2PitStop := Old_Strategy.PitStopLap - 1;
+      Laps2End := Laps - New_Info.Lap;
+
+      -- Calculate how many laps are still doable with the given gas and tyre usury
+      -- MeanGasConsuption is the amount of litres of gas used for 1 km calculated
+      --+ against all the information obtained up to now.
+      --+ Depending on the Global Strategy, the box will be more or less optimistic
+      --+ calculating the number remaining laps.
+      --+ GAS
+      --+ Cautious -> 1/3 more then the exact amount calculated
+      --+ Normal -> 1/5 more the the exact the amount calculated
+      --+ Risky --> the exact amount calculated
+      --+ Fool --> 1/7 less then the exact amount calculated
+      --+ TYRE --> we'll see
+      StrategyFactor := -0.5; -- set normal as default
+
+      RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
+        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * Old_Info.MeanGasConsumption))));
+      -- the MeanTyreUsury express how mouch the the tyre was usured for each km.
+      --+ The value it's calculated considering all the information up to now.
+      --RemainingLaps_Tyre : INTEGER(FLOAT'Floor(
+      --+(New_Info.MeanTyreUsury / (CircuitLength * Old_Info.MeanTyreUsury)))
+
+      if( RemainingDoableLaps_Gas > RemainingDoableLaps_Tyre) then
+         RemainingDoableLaps := RemainingDoableLaps_Gas;
+      else
+         RemainingDoableLaps := RemainingDoableLaps_Tyre;
+      end if;
+
+      New_Strategy.PitStopLap := New_Strategy.PitStopLap - 1;
+
+      if ( Old_Strategy.PitStopLap - 1 <= RemainingDoableLaps ) then
+         null;
+      end if;
+
+
       -- If the amount of gas is not enough for another lap, it's
       --+ necessary to stop
-      if ( New_Info.GasLevel <
-          (CircuitLength / (Old_Info.MeanGasConsumption))) then null; end if;
+
       -- One lap less to the pit stop
       New_Strategy.PitStopLap := Old_strategy.PitStopLap - 1;
 
@@ -102,11 +164,9 @@ package body Box is
       --+ the driving style may vary.
       --+
 
-      Old_info.
-
       New_Strategy := Old_Strategy;
       New_Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Rain tyre");
-      New_Strategy.PitStopLap := New_Strategy.PitStopLap + 1;
+
       return New_Strategy;
    end Compute_Strategy;
 
@@ -299,6 +359,18 @@ package body Box is
             end if;
 
       end Get_Strategy;
+
+      -- TODO: test it
+      function Get_PitStopDone return INTEGER is
+         TotalPitStops : INTEGER := 0;
+      begin
+         for Index in 1..history_size loop
+            if history(Index).PitStopLap = 0 then
+               TotalPitStops := TotalPitStops + 1;
+            end if;
+            end loop;
+         return TotalPitStops;
+      end Get_PitStopDone;
 
    end SYNCH_STRATEGY_HISTORY;
 

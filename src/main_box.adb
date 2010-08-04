@@ -187,6 +187,7 @@ begin
       History := new Box.SYNCH_STRATEGY_HISTORY;
       Ada.Text_IO.Put_Line("init History");
       History.Init(Laps);
+      -- TODO: initialize the Box with Init
 
       -- Initialize all the resources and tasks needed box side.
       --It's very important the init order in this case. The BoxRadio has to be
