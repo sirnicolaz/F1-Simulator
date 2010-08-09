@@ -113,6 +113,8 @@ package body Box is
       Laps2PitStop : INTEGER;
       Laps2End : INTEGER;
 
+      CurrentMeanConsuption : FLOAT := MeanKmsPerLitre;
+
    begin
 
       --TODO: implement AI
@@ -136,7 +138,8 @@ package body Box is
 
       RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
         (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * Old_Info.MeanGasConsumption))));
-      -- the MeanTyreUsury express how mouch the the tyre was usured for each km.
+
+      -- The MeanTyreUsury express how mouch the the tyre was usured for each km.
       --+ The value it's calculated considering all the information up to now.
       --RemainingLaps_Tyre : INTEGER(FLOAT'Floor(
       --+(New_Info.MeanTyreUsury / (CircuitLength * Old_Info.MeanTyreUsury)))
@@ -148,6 +151,29 @@ package body Box is
       end if;
 
       New_Strategy.PitStopLap := New_Strategy.PitStopLap - 1;
+
+      --If the number of doable laps is enought to either finish the comeptition
+      --+ to or reach the next pitstop, try to see if it's possible to change the drive
+      --+ style a more aggressive one
+      if ( RemainingDoableLaps >= Laps2End or RemainingDoableLaps >= Laps2PitStop) then
+         -- Calculate a many laps would be doable with a more aggressive driving style
+         --+ (if it's not already the most aggressive one)
+         if( Old_Strategy.Style /= Common.AGGRESSIVE ) then
+            --TODO
+            null;
+         end if;
+      end if;
+
+      -- If the laps the competitor can do are less then the remaining laps (either
+      --+ to the pitstop or to the end of the competition), calculate if with a more
+      --+ conservative driving style it's possible to reach the target
+      if( RemainingDoableLaps < Laps2End ) then
+         ;
+      elsif ( RemainingDoableLaps < Laps2PitStop ) then
+         null;
+      else
+
+      end if;
 
       if ( Old_Strategy.PitStopLap - 1 <= RemainingDoableLaps ) then
          null;
