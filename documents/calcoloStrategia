@@ -47,7 +47,11 @@ ottengo ----> Giri Rimanenti
 - controllo usura gomme
 - calcolo giri "fattibili" con margine di rischio dipendente dalla strategia globale (che ha il box)
 - se il numero di giri è sufficiente per arrivare al pitstop/fine della corsa allora mantieni la strategia
-- se il numero di giri non è sufficiente per arrivare al pitstop/fine della corsa allora valuta se utilizzando una guida più conservativa si arriva alla fine/pitstop. Se questa soluzione funziona ok, altrimenti ordina pitstop per il giro in cui si pensa serva (cioè sta per finire la benzina/gomme). La quantità di benzina da immettere è quella necessaria (con precisione dettata dalla strategia globale) ad arrivare al pitstop successivo (o a fine gara, se possibile).
+- se il numero di giri non è sufficiente per arrivare al pitstop/fine della corsa allora valuta se utilizzando 
+una guida più conservativa si arriva alla fine/pitstop. 
+Se questa soluzione funziona ok, altrimenti ordina pitstop per il giro in cui si pensa serva 
+(cioè sta per finire la benzina/gomme). La quantità di benzina da immettere è quella necessaria 
+(con precisione dettata dalla strategia globale) ad arrivare al pitstop successivo (o a fine gara, se possibile).
 - il tipo di gomme da montare dipenderà anche da che meteo c'è sulla pista.
 - bisogna prevedere (già dall'inizio) di effettuare circa 2 pitstop, quindi il primo pitstop sarà dettato dalla benzina/gomme presenti a inizio gara (quindi preimpostati in fase di configurazione) mentre il secondo si può calcolare prendendo i giri che mancano alla fine dopo il primo pitstop  e si dividono per 2, ottenendo così dopo quanti giri va effettuato il secondo pitstop (e di conseguenza la benzina/gomme da mettere).
 In caso di cambio meteo imprevisto si può affrettare il pitstop e magari approfittare per fare benzina, in modo da non sprecare pitstop.

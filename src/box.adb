@@ -112,8 +112,14 @@ package body Box is
 
       Laps2PitStop : INTEGER;
       Laps2End : INTEGER;
+      RemainingLaps : INTEGER; -- the minimum between Laps2PitStop and Laps2end
 
       CurrentMeanConsuption : FLOAT := MeanKmsPerLitre;
+
+      Doable : BOOLEAN := false;
+      Warning : BOOLEAN := false;
+      ChangeStyle : BOOLEAN := false;
+      Style2Simulate : Common.DRIVING_STYLE;
 
    begin
 
@@ -122,6 +128,11 @@ package body Box is
       --+ end of the competition.
       Laps2PitStop := Old_Strategy.PitStopLap - 1;
       Laps2End := Laps - New_Info.Lap;
+      if ( Laps2PitStop < Laps2end ) then
+         RemainingLaps := Laps2PitStop;
+      else
+         RemainingLaps := Laps2End;
+      end if;
 
       -- Calculate how many laps are still doable with the given gas and tyre usury
       -- MeanGasConsuption is the amount of litres of gas used for 1 km calculated
@@ -153,26 +164,61 @@ package body Box is
       New_Strategy.PitStopLap := New_Strategy.PitStopLap - 1;
 
       --If the number of doable laps is enought to either finish the comeptition
-      --+ to or reach the next pitstop, try to see if it's possible to change the drive
-      --+ style a more aggressive one
-      if ( RemainingDoableLaps >= Laps2End or RemainingDoableLaps >= Laps2PitStop) then
-         -- Calculate a many laps would be doable with a more aggressive driving style
+      --+ or to reach the next pitstop, try to see if it's possible to change the driving
+      --+ style to a more aggressive one
+      Style2Simulate := Old_Strategy.Style;
+      ChangeStyle := false;
+      if ( RemainingDoableLaps >= RemainingLaps ) then
+         Warning := false;
+         -- Calculate how many laps would be doable with a more aggressive driving style
          --+ (if it's not already the most aggressive one)
          if( Old_Strategy.Style /= Common.AGGRESSIVE ) then
-            --TODO
+            Style2Simulate := Common.AGGRESSIVE;
+            -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
             null;
+            if( Old_Strategy.Style /= Common.NORMAL or else Doable = false) then
+               Style2Simulate := Common.NORMAL;
+               -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
+               if ( Doable = true ) then
+                  ChangeStyle := true;
+               end if;
+            end if;
          end if;
+
+      else
+         -- If the laps the competitor can do are less then the remaining laps (either
+         --+ to the pitstop or to the end of the competition), calculate whether with a more
+         --+ conservative driving style it's possible to reach the target or not
+
+         --Laps2Simulate := RemainingLaps;
+         -- TODO: write this code better
+         if( Old_Strategy.Style /= Common.CONSERVATIVE ) then
+            Style2Simulate := Common.CONSERVATIVE;
+            -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+            null;
+            if( Doable = true ) then
+               ChangeStyle := true;
+
+               -- Try, if possible, to drive faster
+               if( Old_Strategy.Style /= Common.NORMAL ) then
+               Style2Simulate := Common.NORMAL;
+                  -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+                  if ( Doable /= true ) then
+                     Style2Simulate := Common.CONSERVATIVE;
+                  end if;
+                  null;
+               end if;
+            else
+               Warning := true;
+            end if;
+         end if;
+
       end if;
 
-      -- If the laps the competitor can do are less then the remaining laps (either
-      --+ to the pitstop or to the end of the competition), calculate if with a more
-      --+ conservative driving style it's possible to reach the target
-      if( RemainingDoableLaps < Laps2End ) then
-         ;
-      elsif ( RemainingDoableLaps < Laps2PitStop ) then
-         null;
+      if ( ChangeStyle = true ) then
+         New_Strategy.Style := Style2Simulate;
       else
-
+         New_Strategy.Style := Old_Strategy.Style;
       end if;
 
       if ( Old_Strategy.PitStopLap - 1 <= RemainingDoableLaps ) then
