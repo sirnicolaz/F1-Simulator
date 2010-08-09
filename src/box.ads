@@ -88,10 +88,12 @@ package Box is
       -- It returns the pit stops already done.
       function Get_PitStopDone return INTEGER;
 
+
    private
       history : access STRATEGY_HISTORY;
       history_size : INTEGER := 0;
       Updated : BOOLEAN := false;
+      --TODO: evaluate whether to put a PitStopDone field or not
    end SYNCH_STRATEGY_HISTORY;
 
    type SYNCH_STRATEGY_HISTORY_POINT is access SYNCH_STRATEGY_HISTORY;

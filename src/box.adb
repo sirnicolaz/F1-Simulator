@@ -39,6 +39,12 @@ package body Box is
    -- Total laps
    Laps : INTEGER := 0;
 
+   --TODO: decide whether to keep seconds or milliseconds
+   -- Time needed at the box to refill the gas tank by one litre (seconds)
+   TimePerLitre : FLOAT := 0.2;
+   -- Time needed at the box to change the tyres (seconds)
+   TyreChangeTime : FLOAT := 1.2;
+
    procedure Init(Laps_In : INTEGER;
                   CircuitLength_In : FLOAT;
                   CompetitorId_In : INTEGER) is
@@ -98,8 +104,8 @@ package body Box is
    -- parametri.
    function Compute_Strategy(
                              New_Info : COMPETITION_UPDATE;
-                             Old_Info : COMPETITION_UPDATE;
-                             Old_Strategy : BOX_STRATEGY
+                             Old_Strategy : BOX_STRATEGY;
+                             PitStop_Done : in INTEGER
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
 
@@ -148,7 +154,7 @@ package body Box is
       StrategyFactor := -0.5; -- set normal as default
 
       RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
-        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * Old_Info.MeanGasConsumption))));
+        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * New_Info.MeanGasConsumption))));
 
       -- The MeanTyreUsury express how mouch the the tyre was usured for each km.
       --+ The value it's calculated considering all the information up to now.
@@ -161,111 +167,116 @@ package body Box is
          RemainingDoableLaps := RemainingDoableLaps_Tyre;
       end if;
 
-      New_Strategy.PitStopLap := New_Strategy.PitStopLap - 1;
 
-      --If the number of doable laps is enought to either finish the comeptition
-      --+ or to reach the next pitstop, try to see if it's possible to change the driving
-      --+ style to a more aggressive one
-      Style2Simulate := Old_Strategy.Style;
-      ChangeStyle := false;
-      if ( RemainingDoableLaps >= RemainingLaps ) then
-         Warning := false;
-         -- Calculate how many laps would be doable with a more aggressive driving style
-         --+ (if it's not already the most aggressive one)
-         if( Old_Strategy.Style /= Common.AGGRESSIVE ) then
-            Style2Simulate := Common.AGGRESSIVE;
-            -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
-            null;
-            if( Old_Strategy.Style /= Common.NORMAL or else Doable = false) then
-               Style2Simulate := Common.NORMAL;
+      if ( RemainingLaps /= 0 ) then
+         --If the number of doable laps is enough to either finish the comeptition
+         --+ or to reach the next pitstop, try to see if it's possible to change the driving
+         --+ style to a more aggressive one
+         Style2Simulate := Old_Strategy.Style;
+         ChangeStyle := false;
+         if ( RemainingDoableLaps >= RemainingLaps ) then
+            Warning := false;
+            -- Calculate how many laps would be doable with a more aggressive driving style
+            --+ (if it's not already the most aggressive one)
+            if( Old_Strategy.Style /= Common.AGGRESSIVE ) then
+               Style2Simulate := Common.AGGRESSIVE;
                -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
-               if ( Doable = true ) then
-                  ChangeStyle := true;
-               end if;
-            end if;
-         end if;
-
-      else
-         -- If the laps the competitor can do are less then the remaining laps (either
-         --+ to the pitstop or to the end of the competition), calculate whether with a more
-         --+ conservative driving style it's possible to reach the target or not
-
-         --Laps2Simulate := RemainingLaps;
-         -- TODO: write this code better
-         if( Old_Strategy.Style /= Common.CONSERVATIVE ) then
-            Style2Simulate := Common.CONSERVATIVE;
-            -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
-            null;
-            if( Doable = true ) then
-               ChangeStyle := true;
-
-               -- Try, if possible, to drive faster
-               if( Old_Strategy.Style /= Common.NORMAL ) then
-               Style2Simulate := Common.NORMAL;
-                  -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
-                  if ( Doable /= true ) then
-                     Style2Simulate := Common.CONSERVATIVE;
+               null;
+               if( Old_Strategy.Style /= Common.NORMAL or else Doable = false) then
+                  Style2Simulate := Common.NORMAL;
+                  -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
+                  if ( Doable = true ) then
+                     ChangeStyle := true;
                   end if;
-                  null;
                end if;
-            else
-               Warning := true;
             end if;
+
+         else
+            -- If the laps the competitor can do are less then the remaining laps (either
+            --+ to the pitstop or to the end of the competition), calculate whether with a more
+            --+ conservative driving style it's possible to reach the target or not
+
+            --Laps2Simulate := RemainingLaps;
+            -- TODO: write this code better
+            if( Old_Strategy.Style /= Common.CONSERVATIVE ) then
+               Style2Simulate := Common.CONSERVATIVE;
+               -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+               null;
+               if( Doable = true ) then
+                  ChangeStyle := true;
+
+                  -- Try, if possible, to drive faster
+                  if( Old_Strategy.Style /= Common.NORMAL ) then
+                     Style2Simulate := Common.NORMAL;
+                     -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+                     if ( Doable /= true ) then
+                        Style2Simulate := Common.CONSERVATIVE;
+                     end if;
+                  end if;
+               else
+                  Warning := true;
+               end if;
+            end if;
+
+         end if;
+
+         if ( ChangeStyle = true ) then
+            New_Strategy.Style := Style2Simulate;
+         else
+            if ( Warning = true and RemainingDoableLaps /= 0) then
+               New_Strategy.PitStopLap := RemainingDoableLaps - 1;
+            else
+               New_Strategy.PitStopLap := Old_Strategy.PitStopLap - 1;
+            end if;
+            New_Strategy.Style := Old_Strategy.Style;
          end if;
 
       end if;
 
-      if ( ChangeStyle = true ) then
-         New_Strategy.Style := Style2Simulate;
-      else
-         New_Strategy.Style := Old_Strategy.Style;
+      -- If the number of laps to the PitStop is 0, it means that the competitor is going to
+      --+ have a pitstop, so it's necessary to calculate the amount of gas to refill and
+      --+ the type o tyres tu put on the car
+      if ( New_Strategy.PitStopLap = 0 ) then
+
+         -- Calculate the amount of gas needed to reach the next pitstop (set on the
+         --+ half of the remaining laps).
+         New_Strategy.GasLevel :=
+           ( ( FLOAT( Laps2End / 2 ) * CircuitLength ) *
+              New_Info.MeanGasConsumption ) *
+             ( 1.0 - StrategyFactor ); -- explain why - StrategyFactor instead of +
+         --TODO: convert GasLevel from Percentage to Litres
+         -- Calculate the time needed to refill the gas tank
+         New_Strategy.PitStopDelay :=  New_Strategy.GasLevel * TimePerLitre;
+
+         -- The total delay at the box is the maximum time between gas refill
+         --+ tyre change
+         if ( New_Strategy.PitStopDelay < TyreChangeTime ) then
+            New_Strategy.PitStopDelay := TyreChangeTime;
+         end if;
+
+         -- TODO: implement different type of tyre depending on the weather
+         New_Strategy.Type_Tyre := Old_Strategy.Type_Tyre;
+
       end if;
-
-      if ( Old_Strategy.PitStopLap - 1 <= RemainingDoableLaps ) then
-         null;
-      end if;
-
-
-      -- If the amount of gas is not enough for another lap, it's
-      --+ necessary to stop
-
-      -- One lap less to the pit stop
-      New_Strategy.PitStopLap := Old_strategy.PitStopLap - 1;
-
-      --Depending on the position in the classific (and on the distances between competitors)
-      --+ the driving style may vary.
-      --+
-
-      New_Strategy := Old_Strategy;
-      New_Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Rain tyre");
 
       return New_Strategy;
+
    end Compute_Strategy;
 
    task body STRATEGY_UPDATER is
       Index : INTEGER := 1;
-      Old_Info : COMPETITION_UPDATE_POINT;
       New_Info : COMPETITION_UPDATE_POINT;
       Strategy : BOX_STRATEGY;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
       StrategyHistory : SYNCH_STRATEGY_HISTORY_POINT := SharedHistory;
-      --it starts from 1 because the strategy is updated once the competitor
-      --+ the next to last sector. So the first lap strategy will be calculated
+      --it starts from 1 because the strategy is updated once the competitor reached
+      --+ sector previous to the last one. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
       Sector : INTEGER := 1;
    begin
-      Old_Info := new COMPETITION_UPDATE(Competitor_Qty);
-      Old_Info.GasLevel := 0.0;
-      Old_Info.TyreUsury := 0.0;
-      Old_Info.MeanSpeed := 0.0;
-      Old_Info.MeanGasConsumption := 0.0;
-      Old_Info.Time := 0.0;
+
       New_Info := new COMPETITION_UPDATE(Competitor_Qty);
-      New_Info.GasLevel := 0.0;
-      New_Info.TyreUsury := 0.0;
-      New_Info.MeanSpeed := 0.0;
-      New_Info.MeanGasConsumption := 0.0;
-      New_Info.Time := 0.0;
+      --TODO: what is the first strategy stored?
       Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Regular tyre");
       Strategy.Style := NORMAL;
       Strategy.GasLevel := 0.0;
@@ -278,17 +289,15 @@ package body Box is
          Index := Index + 1;
          exit when New_Info.Time = -1.0;
          Sector := Sector + 1;
-         Strategy := Compute_Strategy(New_Info    => New_Info.all,
-                                      Old_Info    => Old_Info.all,
-                                      Old_Strategy => Strategy
+         Strategy := Compute_Strategy(New_Info.all,
+                                      Strategy,
+                                      StrategyHistory.Get_PitStopDone
                                      );
 
          if(Sector = Sector_Qty) then
             StrategyHistory.AddStrategy(Strategy);
             Sector := 0;
          end if;
-         Old_Info := New_Info;
-         Delay(Standard.Duration(2));
       end loop;
    end STRATEGY_UPDATER;
 
