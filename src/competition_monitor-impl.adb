@@ -21,11 +21,18 @@ with Common;
 package body Competition_Monitor.Impl is
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
-      (indexIn):= compIn.all;
+      arrayComputer(indexIn):= compIn;
    end AddOBC;
 
+
+   procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER) is
+   begin
+      arrayStats(IndexIn) := compStats_In;
+   end AddComp;
+
+
    function getClassific(Self : access Object) return CORBA.STRING is
-      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..25);
+      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
       upd : FLOAT := 100.0;
       global : GLOBAL_STATS_HANDLER_POINT;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
@@ -34,14 +41,27 @@ package body Competition_Monitor.Impl is
    begin
       global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
       class.all := global.global.Test_Get_Classific;
-      Ada.Text_IO.Put_Line("classifica : Id = "&Integer'Image(Get_CompetitorId(class(1)))&
-                           ", lap = "&Integer'Image(Get_Lap(class(1)))&
-                           ", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&", time = "
-                           &Float'Image(Get_Time(class(1))));
-      Unbounded_String.Set_Unbounded_String(ret,"Id = "&Integer'Image(Get_CompetitorId(class(1)))&
-                                                  ", lap = "&Integer'Image(Get_Lap(class(1)))&
-                                                  ", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&
-                                                  ", time = "&Float'Image(Get_Time(class(1))));
+      Ada.Text_IO.Put_Line("<update><gasLevel><gasLevel><tyreUsury><lap>"
+                           --&&"</tyreUsury><meanSpeed>"
+                           --&&"270</meanSpead><meanGasConsumption>"
+                           --&&"14</meanGasConsumption><time>"
+                           --&&"1984.42</time>	<lap>"
+                           &Integer'Image(Get_Lap(class(1)))&"</lap>"
+                           --<sector>"&&"2</sector>
+                           );
+
+      Ada.Text_IO.Put_Line("<classific competitors="&Integer'Image(class'Length)&"><competitor id="
+                           &Integer'Image(Get_CompetitorId(class(1)))&
+                           " >0.0</compId><competitor id="&Integer'Image(Get_CompetitorId(class(2)))&" >"
+                           &Float'Image(Get_Time(class(2))-Get_Time(class(1)))&"</compId></classific>");
+      Unbounded_String.Set_Unbounded_String(ret,"<classific competitors="&Integer'Image(class'Length)&"><competitor id="
+                           &Integer'Image(Get_CompetitorId(class(1)))&
+                           " >0.0</compId><competitor id="&Integer'Image(Get_CompetitorId(class(2)))&" >"
+                           &Float'Image(Get_Time(class(2))-Get_Time(class(1)))&"</compId></classific>");
+--                                              "Id = "&Integer'Image(Get_CompetitorId(class(1)))&
+--                                                    ", lap = "&Integer'Image(Get_Lap(class(1)))&
+--                                                    ", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&
+--                                                    ", time = "&Float'Image(Get_Time(class(1))));
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getClassific;
@@ -78,24 +98,28 @@ package body Competition_Monitor.Impl is
       return retString;
    end getBestSector;
 
-   function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
+   function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING is
+   begin
+      return CORBA.To_CORBA_String("getCompetitor");
+   end getCompetitor;
+
    function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING is
   upd : FLOAT := 100.0;
    global : GLOBAL_STATS_HANDLER_POINT;
    temp : GENERIC_STATS_POINT := new GENERIC_STATS;
    begin
       global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
-
+return CORBA.To_CORBA_String("getCompetitorTimeSector");
 
 
    end getCompetitorTimeSector;
 
-   function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
-   function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
+--     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+--     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
 
 end Competition_Monitor.Impl;
