@@ -20,7 +20,7 @@ package Competition_Monitor.impl is
    type Object is new PortableServer.Servant_Base with null record;
 
    type Object_Acc is access Object;
-   function getClassific(Self : access Object) return CORBA.STRING;
+   function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING;
    function getBestLap(Self : access Object) return CORBA.STRING;
    function getBestSector(Self : access Object; indexIn : CORBA.Short)return CORBA.String;
    function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;

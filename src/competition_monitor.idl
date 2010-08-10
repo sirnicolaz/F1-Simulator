@@ -1,5 +1,5 @@
  interface Competition_Monitor {
-	string getClassific();
+	string getClassific(in short idComp_In);
 	string getBestLap();
 	string getBestSector( in short index );
 	string getCondCar( in short competitorIdIn );
