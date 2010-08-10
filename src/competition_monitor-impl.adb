@@ -31,42 +31,57 @@ package body Competition_Monitor.Impl is
    end AddComp;
 
 
-   function getClassific(Self : access Object) return CORBA.STRING is
+   function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING is
       class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
       upd : FLOAT := 100.0;
       global : GLOBAL_STATS_HANDLER_POINT;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
       ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       retString : CORBA.String;
+      index : INTEGER := 0;
+      tempStats : Common.COMP_STATS;
+      lap : INTEGER;
+      sector : INTEGER;
+      checkpoint : INTEGER;
+      gasLevel : FLOAT;
+      tyreUsury : FLOAT;
+      time : FLOAT;
    begin
       global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
+      tempStats := arrayStats(Integer(idComp_In)).all;
+      lap := Common.Get_Lap(tempStats);
+      checkpoint := Common.Get_Checkpoint(tempStats);
+      gasLevel := Common.Get_Gas(tempStats);
+      tyreUsury := Common.Get_Tyre(tempStats);
+      sector := Common.Get_Sector(tempStats);
+      time := Common.Get_Time(tempStats);
       class.all := global.global.Test_Get_Classific;
-      Ada.Text_IO.Put_Line("<update><gasLevel><gasLevel><tyreUsury><lap>"
-                           --&&"</tyreUsury><meanSpeed>"
-                           --&&"270</meanSpead><meanGasConsumption>"
-                           --&&"14</meanGasConsumption><time>"
-                           --&&"1984.42</time>	<lap>"
-                           &Integer'Image(Get_Lap(class(1)))&"</lap>"
-                           --<sector>"&&"2</sector>
-                           );
-
-      Ada.Text_IO.Put_Line("<classific competitors="&Integer'Image(class'Length)&"><competitor id="
-                           &Integer'Image(Get_CompetitorId(class(1)))&
-                           " >0.0</compId><competitor id="&Integer'Image(Get_CompetitorId(class(2)))&" >"
-                           &Float'Image(Get_Time(class(2))-Get_Time(class(1)))&"</compId></classific>");
-      Unbounded_String.Set_Unbounded_String(ret,"<classific competitors="
-                                            &Integer'Image(class'Length)
-                                            &"><competitor id="
-                                            &Integer'Image(Get_CompetitorId(class(1)))
-                                            &" >0.0</compId><competitor id="
-                                            &Integer'Image(Get_CompetitorId(class(2)))
+      Unbounded_String.Set_Unbounded_String(ret,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(gasLevel)
+                                            &"<gasLevel><tyreUsury>"&Float'Image(tyreUsury)
+                                            &"</tyreUsury><time>"
+                                            &Float'Image(time)&"</time><lap>"
+                                            &Integer'Image(lap)&"</lap><sector>"
+                                            &Integer'Image(sector)&"</sector>"
+                                           );
+      Unbounded_String.Append(ret,"<classific competitors="
+                              &Integer'Image(class'Length)
+                              &"><competitor id="
+                              &Integer'Image(Get_CompetitorId(class(1)))
+                              &" >0.0</compId>");
+      --        <competitor id="
+      --                                              &Integer'Image(Get_CompetitorId(class(2)))
+      --                                              &" >"
+      --                                              &Float'Image(Get_Time(class(2))-Get_Time(class(1)))
+      --                                              &"</compId></classific>");
+      for index in 0..class'length
+      loop
+         Unbounded_String.Append(ret,"<competitor id="
+                                            &Integer'Image(Get_CompetitorId(class(index)))
                                             &" >"
-                                            &Float'Image(Get_Time(class(2))-Get_Time(class(1)))
-                                            &"</compId></classific>");
---                                              "Id = "&Integer'Image(Get_CompetitorId(class(1)))&
---                                                    ", lap = "&Integer'Image(Get_Lap(class(1)))&
---                                                    ", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&
---                                                    ", time = "&Float'Image(Get_Time(class(1))));
+                                            &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
+                                              &"</compId>");
+      end loop;
+      Unbounded_String.Append(ret, "</classific></update>");
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getClassific;
@@ -93,7 +108,6 @@ package body Competition_Monitor.Impl is
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestLap;
-
    function getBestSector(Self : access Object; indexIn : CORBA.Short) return CORBA.String is
             retString : CORBA.String;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
