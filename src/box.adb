@@ -28,20 +28,27 @@ package body Box is
    CompetitorID : INTEGER;
 
    -- Circuit length. Initialised after the competitor registration
-   CircuitLength : FLOAT := 1.0;
+   CircuitLength : FLOAT := 23.0;
 
+   -- Hypothetical values for the gas and tyre consumption.
+   --+ These are generic values, not connected neither to the type
+   --+ of circuit nor to the driving style of the competitor. They're
+   --+ ought to be used to calculate the first statistics when
+   --+no statistical information are available yet.
+   MeanTyreUsuryPerKm : PERCENTAGE := 0.3;
    MeanKmsPerLitre : FLOAT := 1.7;
-   -- Depending on the driving style, the meand kilometres per litre
-   --+ will change
-   AggressiveMod : FLOAT := -0.2;
-   ConservativeMod : FLOAT := 0.2;
+   -- Depending on the driving style, the mean kilometres per litre
+   --+ will change. 1 step is like moving from NORMAL to AGGRESSIVE.
+   --+ If the style switch from AGGRESSIVE to conservative, the
+   --+ total modifier it's (0.2 * 2) * -1 (it's 2 steps backward)
+   DrivingStyle1StepModifier : FLOAT := 0.2;
 
    -- Total laps
    Laps : INTEGER := 0;
 
    --TODO: decide whether to keep seconds or milliseconds
    -- Time needed at the box to refill the gas tank by one litre (seconds)
-   TimePerLitre : FLOAT := 0.2;
+   TimePerLitre : FLOAT := 0.083;
    -- Time needed at the box to change the tyres (seconds)
    TyreChangeTime : FLOAT := 1.2;
 
@@ -105,7 +112,9 @@ package body Box is
    function Compute_Strategy(
                              New_Info : COMPETITION_UPDATE;
                              Old_Strategy : BOX_STRATEGY;
-                             PitStop_Done : in INTEGER
+                             PitStop_Done : in INTEGER;
+                             PreviousLapMeanGasConsumption : FLOAT;
+                             PreviousLapMeanTyreUsury : FLOAT
                             ) return BOX_STRATEGY is
       New_Strategy : BOX_STRATEGY;
 
@@ -126,6 +135,32 @@ package body Box is
       Warning : BOOLEAN := false;
       ChangeStyle : BOOLEAN := false;
       Style2Simulate : Common.DRIVING_STYLE;
+
+      function SimulateDrivingStyleChange(OldStyle : Common.DRIVING_STYLE;
+                                          NewStyle : Common.DRIVING_STYLE;
+                                          Laps2Simulate : INTEGER;
+                                          GasLevel_in : FLOAT;
+                                          TyreUsury_in : PERCENTAGE) return BOOLEAN is
+         TotalStyleModifier : FLOAT;
+         GasNeeded : FLOAT;
+         TyreNeeded : PERCENTAGE;
+      begin
+         TotalStyleModifier := DrivingStyle1StepModifier * FLOAT(Common.Style_Distance(OldStyle,NewStyle));
+         GasNeeded := (PreviousLapMeanGasConsumption + TotalStyleModifier) *
+           (CircuitLength * FLOAT(Laps2Simulate));
+         TyreNeeded := PreviousLapMeanTyreUsury
+         -- + TotalTyreUsuryStyleModifier
+           * (CircuitLength * FLOAT(Laps2Simulate));
+         if ( GasNeeded > GasLevel_In ) then
+            return false;
+         elsif (TyreNeeded < TyreUsury_In ) then --TODO: check
+            return false;
+         else
+            return true;
+         end if;
+
+      end SimulateDrivingStyleChange;
+
 
    begin
 
@@ -154,12 +189,12 @@ package body Box is
       StrategyFactor := -0.5; -- set normal as default
 
       RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
-        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * New_Info.MeanGasConsumption))));
+        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * PreviousLapMeanGasConsumption))));
 
-      -- The MeanTyreUsury express how mouch the the tyre was usured for each km.
+      -- The MeanTyreUsury expresses how mouch the tyre was usured for each km.
       --+ The value it's calculated considering all the information up to now.
-      --RemainingLaps_Tyre : INTEGER(FLOAT'Floor(
-      --+(New_Info.MeanTyreUsury / (CircuitLength * Old_Info.MeanTyreUsury)))
+      RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
+        (New_Info.TyreUsury / (CircuitLength * PreviousLapMeanTyreUsury))));--TODO: verify
 
       if( RemainingDoableLaps_Gas > RemainingDoableLaps_Tyre) then
          RemainingDoableLaps := RemainingDoableLaps_Gas;
@@ -180,11 +215,12 @@ package body Box is
             --+ (if it's not already the most aggressive one)
             if( Old_Strategy.Style /= Common.AGGRESSIVE ) then
                Style2Simulate := Common.AGGRESSIVE;
-               -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
+               Doable := SimulateDrivingStyleChange(Old_Strategy.Style,
+                                                    Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                null;
                if( Old_Strategy.Style /= Common.NORMAL or else Doable = false) then
                   Style2Simulate := Common.NORMAL;
-                  -- Doable := SimulateDrivingStyleChange(SimulatedStyle, Laps2Simulate);
+                  Doable := SimulateDrivingStyleChange(Old_Strategy.Style,Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                   if ( Doable = true ) then
                      ChangeStyle := true;
                   end if;
@@ -200,7 +236,7 @@ package body Box is
             -- TODO: write this code better
             if( Old_Strategy.Style /= Common.CONSERVATIVE ) then
                Style2Simulate := Common.CONSERVATIVE;
-               -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+               Doable := SimulateDrivingStyleChange(Old_Strategy.Style,Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                null;
                if( Doable = true ) then
                   ChangeStyle := true;
@@ -208,7 +244,7 @@ package body Box is
                   -- Try, if possible, to drive faster
                   if( Old_Strategy.Style /= Common.NORMAL ) then
                      Style2Simulate := Common.NORMAL;
-                     -- Doable := SimulateDrivingStyleChange(Style2Simulate, Laps2Simulate);
+                     Doable := SimulateDrivingStyleChange(Old_Strategy.Style,Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                      if ( Doable /= true ) then
                         Style2Simulate := Common.CONSERVATIVE;
                      end if;
@@ -269,7 +305,20 @@ package body Box is
       Strategy : BOX_STRATEGY;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
       StrategyHistory : SYNCH_STRATEGY_HISTORY_POINT := SharedHistory;
-      --it starts from 1 because the strategy is updated once the competitor reached
+
+      -- The starting value of the MeanGasConsuptionPerLap is
+      --+ calculated against the circuit length and the hypothetic
+      --+ gas consumption of an F1 car. The same is for the tyre usury.
+      LatestLapMeanGasConsumption : FLOAT := CircuitLength / MeanKmsPerLitre;
+      LatestLapMeanTyreUsury : PERCENTAGE := CircuitLength / MeanTyreUsuryPerKm;
+
+      -- Variables used to calculate the means progressively
+      PreviousSectorGasLevel : FLOAT := 0.0; -- TODO: the initial value must be the initial gas in the gas tank
+      PreviousSectorTyreUsury : FLOAT := 0.0;
+      PartialGasConsumptionMean : FLOAT := 0.0;
+      PartialTyreUsuryMean : FLOAT := 0.0;
+
+      --it starts from 1 because the strategy is updated once the competitor reaches
       --+ sector previous to the last one. So the first lap strategy will be calculated
       --+ using only the firts 2 sectors.
       Sector : INTEGER := 1;
@@ -286,17 +335,37 @@ package body Box is
       --+ is out of the race).
       loop
          UpdateBuffer.Get_Update(New_Info.all, Index);
+
+         PartialGasConsumptionMean := PartialGasConsumptionMean +
+           (PreviousSectorGasLevel - New_Info.GasLevel); -- the gas level is a decreasing float
+         PreviousSectorGasLevel := PreviousSectorGasLevel - New_Info.GasLevel;
+
+         PartialTyreUsuryMean := PartialTyreUsuryMean +
+           (New_Info.TyreUsury - PreviousSectorTyreUsury); -- the tyre usury is an increasing percentage
+         PreviousSectorTyreUsury := New_Info.TyreUsury - PreviousSectorTyreUsury;
+
          Index := Index + 1;
          exit when New_Info.Time = -1.0;
+
          Sector := Sector + 1;
-         Strategy := Compute_Strategy(New_Info.all,
-                                      Strategy,
-                                      StrategyHistory.Get_PitStopDone
-                                     );
 
          if(Sector = Sector_Qty) then
+
+            Strategy := Compute_Strategy(New_Info.all,
+                                         Strategy,
+                                         StrategyHistory.Get_PitStopDone,
+                                         LatestLapMeanGasConsumption,
+                                         LatestLapMeanTyreUsury
+                                        );
+
             StrategyHistory.AddStrategy(Strategy);
             Sector := 0;
+            LatestLapMeanGasConsumption := PartialGasConsumptionMean / 3.0;
+            LatestLapMeanTyreUsury := PartialTyreUsuryMean / 3.0;
+            PartialGasConsumptionMean := 0.0;
+            PartialTyreUsuryMean := 0.0;
+            PreviousSectorGasLevel := Strategy.GasLevel;
+            PreviousSectorTyreUsury := 0.0;--we assume that the tyre are always changed
          end if;
       end loop;
    end STRATEGY_UPDATER;

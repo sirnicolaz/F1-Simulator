@@ -29,6 +29,12 @@ package Common is
                  ip_string : in STRING);
    function Get_IpAddress(ip : in IP_ADDRESS) return STRING;
 
+   -- It returns the distance between to driving styles
+   --+ (ie: between NORMAL and AGGRESSIVE there only one step forward, so the distance
+   --+ is 1 )
+   function Style_Distance ( Style1 : DRIVING_STYLE;
+                            Style2 : DRIVING_STYLE ) return INTEGER;
+
    --Open and parse an XML document starting from the document name
    function Get_Document(doc_file : STRING) return Document;
 

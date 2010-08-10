@@ -22,6 +22,36 @@ package body COMMON is
         return "127.0.0.1";
    end Get_IpAddress;
 
+   function Style_Distance ( Style1 : DRIVING_STYLE;
+                            Style2 : DRIVING_STYLE ) return INTEGER is
+   begin
+      if ( Style1 = CONSERVATIVE ) then
+         if(Style2 = NORMAL) then
+            return 1;
+         elsif(Style2 = AGGRESSIVE) then
+            return 2;
+         else
+            return 0;
+         end if;
+      elsif ( Style1 = NORMAL ) then
+         if(Style2 = CONSERVATIVE) then
+            return -1;
+         elsif(Style2 = AGGRESSIVE) then
+            return 1;
+         else
+            return 0;
+         end if;
+      else
+         if(Style2 = NORMAL) then
+            return -1;
+         elsif(Style2 = CONSERVATIVE) then
+            return -2;
+         else
+            return 0;
+         end if;
+      end if;
+   end Style_Distance;
+
    function Get_Document(doc_file : STRING) return Document is
       Input : File_Input;
       Reader : Tree_Reader;
