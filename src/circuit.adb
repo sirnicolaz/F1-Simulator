@@ -404,6 +404,8 @@ package body Circuit is
 
                   Feature_List := Child_Nodes(Current_Node);
                   Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
+                  RaceTrack_Length := RaceTrack_Length + Current_Length;--TODO: decide whether to keep the shortest path length or the longest one to calculate the total circuit length
+
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
                   Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
                   Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
@@ -444,6 +446,7 @@ package body Circuit is
          Racetrack_In := new RACETRACK(1..CheckpointQty);
          for Index in 1..Checkpoints_Qty loop
             Checkpoint_Temp := new Checkpoint;
+            RaceTrack_Length := RaceTrack_Length + 100.00;--TODO: decide whether to keep the shortest path length
             Set_Values(Checkpoint_Temp,
                        1,
                        FALSE,

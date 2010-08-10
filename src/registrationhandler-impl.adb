@@ -20,7 +20,9 @@ package body RegistrationHandler.impl is
                               CompetitorDescriptor : in CORBA.STRING;
                               BoxCorbaLOC : in CORBA.STRING;
                               MonitorCorbaLOC : out CORBA.STRING;
-                              Competitor_ID : out CORBA.Short) is
+                              Competitor_ID : out CORBA.Short;
+                              CircuitLength : out CORBA.Float;
+                              Laps : out CORBA.Short) is
       Competitor_ID_INT : INTEGER;
 
    begin
@@ -29,6 +31,8 @@ package body RegistrationHandler.impl is
                                   CORBA.To_Standard_String(BoxCorbaLOC),
                                   Competitor_ID_INT);
 
+      Laps := CORBA.Short(Comp.Get_Laps);
+      CircuitLength := CORBA.Float(Comp.Get_CircuitLength);
       Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
       -- MonitorCorbaLOC := Comp.GetMonitor;

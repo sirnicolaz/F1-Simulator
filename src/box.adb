@@ -22,10 +22,12 @@ use Common;
 package body Box is
 
 
-   Competitor_Qty : INTEGER := 10;
-   CompetitorRadio_CorbaLOC : access STRING;
+   Competitor_Qty : INTEGER := 10;--TODO:it's necessary. Change it, the number of competitors is known only after the first update
 
+   --Competitor information
    CompetitorID : INTEGER;
+   GasTankCapacity : FLOAT;
+   TyreType : Unbounded_String.Unbounded_String;
 
    -- Circuit length. Initialised after the competitor registration
    CircuitLength : FLOAT := 23.0;
@@ -52,13 +54,39 @@ package body Box is
    -- Time needed at the box to change the tyres (seconds)
    TyreChangeTime : FLOAT := 1.2;
 
-   procedure Init(Laps_In : INTEGER;
-                  CircuitLength_In : FLOAT;
-                  CompetitorId_In : INTEGER) is
+   -- The strategy factor depends on the box strategy. More risky
+   --+ is the strategy, more optimistic is the evaluation of
+   --+ doable laps with the given gas level and tyre usury.
+   --+ Cautious -> evaluation assuming 1/3 less then the amount gas given
+   --+ Normal -> evaluation assuming 1/5 less then the amount gas given
+   --+ Risky --> evaluation assuming exactly the same amount of gas given
+   --+ Fool --> evaluation assuming 1/7 more then the amount gas given
+   StrategyFactor : FLOAT;
+
+   procedure Init(Laps_In : in INTEGER;
+                  CircuitLength_In : in FLOAT;
+                  CompetitorId_In : in INTEGER;
+                  BoxStrategy_In : in BOX_STRATEGY;
+                  GasTankCapacity_In : FLOAT
+                 ) is
    begin
+
       Laps := Laps_In;
       CircuitLength := CircuitLength_In;
       CompetitorID := CompetitorId_In;
+      GasTankCapacity := GasTankCapacity_In;
+
+      case BoxStrategy_In is
+         when CAUTIOUS =>
+            StrategyFactor := -0.3;
+         when NORMAL | NULL_STRATEGY =>
+            StrategyFactor := -0.5;
+         when RISKY =>
+            StrategyFactor := 1.0;
+         when FOOL =>
+            StrategyFactor := 0.7;
+      end case;
+
    end Init;
 
    task body MONITOR is
@@ -106,23 +134,52 @@ package body Box is
 
    --Monitor_Task : access MONITOR;
 
+   function CalculateDoableLaps(CurrentGasLevel : FLOAT;
+                                CurrentTyreUsury : PERCENTAGE;
+                                MeanGasConsumption : FLOAT;
+                                MeanTyreConsumption : PERCENTAGE) return INTEGER is
+
+      RemainingDoableLaps_Gas : INTEGER;
+      RemainingDoableLaps_Tyre : INTEGER;
+
+      RemainingDoableLaps : INTEGER;
+
+   begin
+
+         -- Calculate how many laps are still doable with the given gas and tyre usury
+      -- MeanGasConsuption is the amount of litres of gas used for 1 km calculated
+      --+ against all the information obtained up to now.
+      --+ Depending on the Global Strategy, the box will be more or less optimistic
+      --+ calculating the number remaining laps.
+
+      RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
+        (( CurrentGasLevel + (CurrentGasLevel * StrategyFactor) )/ (CircuitLength * MeanGasConsumption))));
+
+      -- The MeanTyreUsury expresses how mouch the tyre was usured for each km.
+      --+ The value it's calculated considering all the information up to now.
+      RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
+        (CurrentTyreUsury / (CircuitLength * MeanTyreConsumption))));--TODO: verify
+
+      if( RemainingDoableLaps_Gas > RemainingDoableLaps_Tyre) then
+         RemainingDoableLaps := RemainingDoableLaps_Gas;
+      else
+         RemainingDoableLaps := RemainingDoableLaps_Tyre;
+      end if;
+
+      return RemainingDoableLaps;
+   end CalculateDoableLaps;
+
    -- Intanto è solo la bozza dello scheletro. In base all'algoritmo
    -- che si deciderà di utilizzare, verranno adottati più o meno
    -- parametri.
    function Compute_Strategy(
                              New_Info : COMPETITION_UPDATE;
-                             Old_Strategy : BOX_STRATEGY;
+                             Old_Strategy : STRATEGY;
                              PitStop_Done : in INTEGER;
                              PreviousLapMeanGasConsumption : FLOAT;
                              PreviousLapMeanTyreUsury : FLOAT
-                            ) return BOX_STRATEGY is
-      New_Strategy : BOX_STRATEGY;
-
-      StrategyFactor : FLOAT;
-
-      RemainingDoableLaps_Gas : INTEGER;
-      RemainingDoableLaps_Tyre : INTEGER;
-
+                            ) return STRATEGY is
+      New_Strategy : STRATEGY;
       RemainingDoableLaps : INTEGER;
 
       Laps2PitStop : INTEGER;
@@ -165,41 +222,21 @@ package body Box is
    begin
 
       --TODO: implement AI
+      RemainingDoableLaps := CalculateDoableLaps(CurrentGasLevel     => New_Info.GasLevel,
+                                                 CurrentTyreUsury    => New_Info.TyreUsury,
+                                                 MeanGasConsumption  => PreviousLapMeanGasConsumption,
+                                                 MeanTyreConsumption => PreviousLapMeanTyreUsury);
+
       -- Calculate the remaining number of laps til either the pitstop or the
       --+ end of the competition.
+
+
       Laps2PitStop := Old_Strategy.PitStopLap - 1;
       Laps2End := Laps - New_Info.Lap;
       if ( Laps2PitStop < Laps2end ) then
          RemainingLaps := Laps2PitStop;
       else
          RemainingLaps := Laps2End;
-      end if;
-
-      -- Calculate how many laps are still doable with the given gas and tyre usury
-      -- MeanGasConsuption is the amount of litres of gas used for 1 km calculated
-      --+ against all the information obtained up to now.
-      --+ Depending on the Global Strategy, the box will be more or less optimistic
-      --+ calculating the number remaining laps.
-      --+ GAS
-      --+ Cautious -> 1/3 more then the exact amount calculated
-      --+ Normal -> 1/5 more the the exact the amount calculated
-      --+ Risky --> the exact amount calculated
-      --+ Fool --> 1/7 less then the exact amount calculated
-      --+ TYRE --> we'll see
-      StrategyFactor := -0.5; -- set normal as default
-
-      RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
-        (( New_Info.GasLevel + (New_Info.GasLevel * StrategyFactor) )/ (CircuitLength * PreviousLapMeanGasConsumption))));
-
-      -- The MeanTyreUsury expresses how mouch the tyre was usured for each km.
-      --+ The value it's calculated considering all the information up to now.
-      RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
-        (New_Info.TyreUsury / (CircuitLength * PreviousLapMeanTyreUsury))));--TODO: verify
-
-      if( RemainingDoableLaps_Gas > RemainingDoableLaps_Tyre) then
-         RemainingDoableLaps := RemainingDoableLaps_Gas;
-      else
-         RemainingDoableLaps := RemainingDoableLaps_Tyre;
       end if;
 
 
@@ -302,7 +339,7 @@ package body Box is
    task body STRATEGY_UPDATER is
       Index : INTEGER := 1;
       New_Info : COMPETITION_UPDATE_POINT;
-      Strategy : BOX_STRATEGY;
+      Evolving_Strategy : STRATEGY;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
       StrategyHistory : SYNCH_STRATEGY_HISTORY_POINT := SharedHistory;
 
@@ -325,12 +362,19 @@ package body Box is
    begin
 
       New_Info := new COMPETITION_UPDATE(Competitor_Qty);
-      --TODO: what is the first strategy stored?
-      Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String("Regular tyre");
-      Strategy.Style := NORMAL;
-      Strategy.GasLevel := 0.0;
-      Strategy.PitStopLap := 1;
-      Strategy.PitStopDelay := 0.0;
+      --The first strategy is stored before the beginning of the competition
+      --+ and it's calculated against some configured parameter and some hypothetical
+      --+ values
+      Evolving_Strategy.PitStopLap := CalculateDoableLaps(CurrentGasLevel     => InitialGasLevel.all,
+                                                          CurrentTyreUsury    => 0.0,
+                                                          MeanGasConsumption  => LatestLapMeanGasConsumption,
+                                                          MeanTyreConsumption => LatestLapMeanTyreUsury);
+
+      Evolving_Strategy.Type_Tyre := Unbounded_String.To_Unbounded_String(InitialTyreType.all);
+      Evolving_Strategy.Style := NORMAL;
+      Evolving_Strategy.GasLevel := InitialGasLevel.all;
+      Evolving_Strategy.PitStopDelay := 0.0;
+      StrategyHistory.AddStrategy(Evolving_Strategy);
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
@@ -351,20 +395,20 @@ package body Box is
 
          if(Sector = Sector_Qty) then
 
-            Strategy := Compute_Strategy(New_Info.all,
-                                         Strategy,
+            Evolving_Strategy := Compute_Strategy(New_Info.all,
+                                         Evolving_Strategy,
                                          StrategyHistory.Get_PitStopDone,
                                          LatestLapMeanGasConsumption,
                                          LatestLapMeanTyreUsury
                                         );
 
-            StrategyHistory.AddStrategy(Strategy);
+            StrategyHistory.AddStrategy(Evolving_Strategy);
             Sector := 0;
             LatestLapMeanGasConsumption := PartialGasConsumptionMean / 3.0;
             LatestLapMeanTyreUsury := PartialTyreUsuryMean / 3.0;
             PartialGasConsumptionMean := 0.0;
             PartialTyreUsuryMean := 0.0;
-            PreviousSectorGasLevel := Strategy.GasLevel;
+            PreviousSectorGasLevel := Evolving_Strategy.GasLevel;
             PreviousSectorTyreUsury := 0.0;--we assume that the tyre are always changed
          end if;
       end loop;
@@ -487,10 +531,10 @@ package body Box is
          history := new STRATEGY_HISTORY(1..Lap_Qty);
       end Init;
 
-      procedure AddStrategy( Strategy : in BOX_STRATEGY ) is
+      procedure AddStrategy( Strategy_in : in STRATEGY ) is
       begin
 
-         history.all(history_size+1) := Strategy;
+         history.all(history_size+1) := Strategy_in;
          history_size := history_size + 1;
          Updated := true;
          exception when Constraint_Error =>
@@ -498,7 +542,7 @@ package body Box is
             Ada.Text_IO.Put("the history array has had an access violation.");
       end AddStrategy;
 
-      entry Get_Strategy( NewStrategy : out BOX_STRATEGY ;
+      entry Get_Strategy( NewStrategy : out STRATEGY ;
                  Lap : in INTEGER) when Updated is
       begin
          if Lap <= history_size then
@@ -524,14 +568,14 @@ package body Box is
 
    end SYNCH_STRATEGY_HISTORY;
 
-   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING is
+   function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING is
 
       Style : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
       XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
-      case strategy.Style is
+      case Strategy_in.Style is
          when AGGRESSIVE =>
             Style := Unbounded_String.To_Unbounded_String("Aggressive");
          when NORMAL =>
@@ -541,11 +585,11 @@ package body Box is
       end case;
       XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
       			"<strategy>" &
-			      "<tyreType>" & Unbounded_String.To_String(strategy.Type_Tyre)& "</tyreType>" &
+			      "<tyreType>" & Unbounded_String.To_String(Strategy_in.Type_Tyre)& "</tyreType>" &
 			      "<style>" & Unbounded_String.To_String(Style) & "</style>" &
-			      "<gasLevel>" & FloatToString(strategy.GasLevel) & "</gasLevel>" &
-			      "<pitStopLap>" & IntegerToString(strategy.PitStopLap) & "</pitStopLap>" &
-			      "<pitStopDelay>" & FloatToString(strategy.PitStopDelay) & "</pitStopDelay>" &
+			      "<gasLevel>" & FloatToString(Strategy_in.GasLevel) & "</gasLevel>" &
+			      "<pitStopLap>" & IntegerToString(Strategy_in.PitStopLap) & "</pitStopLap>" &
+			      "<pitStopDelay>" & FloatToString(Strategy_in.PitStopDelay) & "</pitStopDelay>" &
                                                          "</strategy>");
 
       return Unbounded_String.To_String(XML_String);
@@ -584,21 +628,5 @@ package body Box is
 
       return Unbounded_String.To_String(XML_String);
    end CompetitionUpdateToXML;
-
-begin
-
-   -- After registering to the competition, it's possible
-   --+ to know the number of laps and use it to initialise
-   --+ strategy history.
-
---   UpdatesBuffer.Init_Buffer;
---   StrategyHistory.Init(10);
-
-   --Test init for avoiding warning. DEL
-     CompetitorRadio_CorbaLOC := new STRING(1..3);
-     CompetitorRadio_CorbaLOC.all := "101";
-
---   Monitor_Task := new MONITOR;
---   StrategyUpdater_Task := new STRATEGY_UPDATER;
 
 end Box;

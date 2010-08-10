@@ -26,7 +26,9 @@ package RegistrationHandler is
       competitorDescriptorFile : CORBA.String;
       boxCorbaLoc : CORBA.String;
       monitorCorbaLoc : out CORBA.String;
-      competitorId : out CORBA.Short);
+      competitorId : out CORBA.Short;
+      circuitLength : out CORBA.Float;
+      laps : out CORBA.Short);
 
    Join_Competition_Repository_Id : constant PolyORB.Std.String :=
      "IDL:RegistrationHandler/Join_Competition:1.0";

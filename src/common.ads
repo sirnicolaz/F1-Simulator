@@ -21,9 +21,20 @@ package Common is
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
    subtype GRIP_RANGE is FLOAT range 0.0..10.0;
    type COMPETITOR_LIST is array(INTEGER range <>) of INTEGER;
+   type FLOAT_POINT is access FLOAT;
+   type STRING_POINT is access STRING;
    type FLOAT_LIST is array(INTEGER range <>) of FLOAT;
    subtype IP_PART is INTEGER range 0..255;
    type IP_ADDRESS is private;
+
+   type STRATEGY is record
+      Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Style : DRIVING_STYLE;
+      GasLevel : PERCENTAGE;
+      PitStopLap : INTEGER;
+      PitStopDelay : FLOAT;
+   end record;
+
 
    procedure Set_IpAddress(ip_out : out IP_ADDRESS;
                  ip_string : in STRING);

@@ -110,6 +110,10 @@ package body Competition is
                           Name_in : in STRING;
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING) is
+         Track_Iterator : RACETRACK_ITERATOR;
+         Track_Length : FLOAT := 0.0;
+         CheckPoint_Tmp : Circuit.CHECKPOINT_SYNCH_POINT;
+         FirstCheckPoint_Got : INTEGER;
       begin
          Laps := Laps_In;
          Name := Unbounded_String.To_Unbounded_String(Name_In);
@@ -118,6 +122,7 @@ package body Competition is
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
 
          Track := Circuit.Get_Racetrack(Circuit_File);
+         Circuit_Length := Circuit.RaceTrack_Length;
 
          Registrations_Open := True;
 
@@ -125,8 +130,19 @@ package body Competition is
 
          Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
 
-         Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(new FLOAT'(ClassificRefreshTime_in));
+         --TODO:fix
+         --Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(new FLOAT'(ClassificRefreshTime_in));
       end Configure;
+
+      function Get_Laps return INTEGER is
+      begin
+         return Laps;
+      end Get_Laps;
+
+      function Get_CircuitLength return FLOAT is
+      begin
+         return Circuit_Length;
+      end Get_CircuitLength;
 
       function AreRegistrationsOpen return BOOLEAN is
       begin

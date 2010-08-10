@@ -45,6 +45,14 @@ package body RegistrationHandler.Skel is
      CORBA.To_CORBA_String
         ("competitorId");
 
+   Join_Competition_Arg_Name_circuitLength_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("circuitLength");
+
+   Join_Competition_Arg_Name_laps_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("laps");
+
    procedure Invoke
      (Self : PortableServer.Servant;
       Request : CORBA.ServerRequest.Object_Ptr);
@@ -140,6 +148,24 @@ package body RegistrationHandler.Skel is
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
                      Arg_CC_competitorId_Ü'Unchecked_Access);
+               Argument_circuitLength_Ü : CORBA.Float;
+               pragma Warnings (Off, Argument_circuitLength_Ü);
+               Arg_CC_circuitLength_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_circuitLength_Ü'Unrestricted_Access);
+               Arg_Any_circuitLength_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Float,
+                     Arg_CC_circuitLength_Ü'Unchecked_Access);
+               Argument_laps_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_laps_Ü);
+               Arg_CC_laps_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_laps_Ü'Unrestricted_Access);
+               Arg_Any_laps_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_laps_Ü'Unchecked_Access);
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
@@ -161,6 +187,16 @@ package body RegistrationHandler.Skel is
                   Join_Competition_Arg_Name_competitorId_Ü,
                   Arg_Any_competitorId_Ü,
                   CORBA.ARG_OUT);
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  Join_Competition_Arg_Name_circuitLength_Ü,
+                  Arg_Any_circuitLength_Ü,
+                  CORBA.ARG_OUT);
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  Join_Competition_Arg_Name_laps_Ü,
+                  Arg_Any_laps_Ü,
+                  CORBA.ARG_OUT);
                --  Processing request
                CORBA.ServerRequest.Arguments
                  (Request,
@@ -172,7 +208,9 @@ package body RegistrationHandler.Skel is
                   Argument_competitorDescriptorFile_Ü,
                   Argument_boxCorbaLoc_Ü,
                   Argument_monitorCorbaLoc_Ü,
-                  Argument_competitorId_Ü);
+                  Argument_competitorId_Ü,
+                  Argument_circuitLength_Ü,
+                  Argument_laps_Ü);
                CORBA.NVList.Internals.Clone_Out_Args
                  (Argument_List_Ü);
             end;

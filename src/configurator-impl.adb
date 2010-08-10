@@ -3,7 +3,6 @@ with Ada.Text_IO;
 with Configurator.Skel;
 pragma Warnings (Off, Configurator.Skel);
 with CORBA;
-
 with Ada.Strings.Unbounded;
 with Sax.Readers; use Sax.Readers;
 with DOM.Readers; use DOM.Readers;
@@ -26,21 +25,108 @@ package body Configurator.Impl is
          CMon_CorbaLOC_Out := CompetitionMonitor_CorbaLOC;
       end Get_CompetitionMonitor_CorbaLOC;
 
+      entry Get_CircuitLength ( CircuitLength_Out : out FLOAT ) when Initialized is
+      begin
+         CircuitLength_Out := CircuitLength;
+      end Get_CircuitLength;
+
+      entry Get_CompetitorID ( CompetitorID_out : out INTEGER ) when Initialized is
+      begin
+         CompetitorID_out := CompetitorID;
+      end Get_CompetitorID;
+
+      entry Get_BoxStrategy ( BoxStrategy_out : out Box.BOX_STRATEGY ) when Initialized is
+      begin
+         BoxStrategy_out := BoxStrategy;
+      end Get_BoxStrategy;
+
+      entry Get_GasTankCapacity ( GasTankCapacity_Out : out FLOAT)  when Initialized is
+      begin
+         GasTankCapacity_out := GasTankCapacity;
+      end Get_GasTankCapacity;
+
+      entry Get_InitialGasLevel ( InitialGasLevel_Out : out FLOAT)  when Initialized is
+      begin
+         InitialGasLevel_out := InitialGasLevel;
+      end Get_InitialGasLevel;
+
+      entry Get_InitialTyreType ( InitialTyreType_Out : out Unbounded_String.Unbounded_String)  when Initialized is
+      begin
+         InitialTyreType_out := InitialTyreType;
+      end Get_InitialTyreType;
+
       procedure Set_Laps ( Laps_In : in INTEGER) is
       begin
          Laps := Laps_In;
-         if ( CompetitionMonitor_CorbaLOC /= Unbounded_String.Null_Unbounded_String ) then
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8) then
             Initialized := true;
          end if;
       end Set_Laps;
 
+      procedure Set_CompetitorID ( CompetitorID_In : in INTEGER) is
+      begin
+         CompetitorID := CompetitorID_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8)  then
+            Initialized := true;
+         end if;
+      end Set_CompetitorID;
+
+      procedure Set_CircuitLength ( CircuitLength_In : in FLOAT) is
+      begin
+         CircuitLength := CircuitLength_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8) then
+            Initialized := true;
+         end if;
+      end Set_CircuitLength;
+
       procedure Set_CompetitionMonitor_CorbaLOC ( CMon_CorbaLoc_In : in Unbounded_String.Unbounded_String) is
       begin
          CompetitionMonitor_CorbaLOC := CMon_CorbaLoc_In;
-         if( Laps /= -1) then
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8) then
             Initialized := true;
          end if;
       end Set_CompetitionMonitor_CorbaLOC;
+
+      procedure Set_BoxStrategy( BoxStrategy_In : in Box.BOX_STRATEGY ) is
+      begin
+         BoxStrategy := BoxStrategy_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8)  then
+            Initialized := true;
+         end if;
+      end Set_BoxStrategy;
+
+      procedure Set_GasTankCapacity ( GasTankCapacity_in : in FLOAT) is
+      begin
+         GasTankCapacity := GasTankCapacity_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8)  then
+            Initialized := true;
+         end if;
+      end Set_GasTankCapacity;
+
+      procedure Set_InitialGasLevel ( InitialGasLevel_in : in FLOAT) is
+      begin
+         InitialGasLevel := InitialGasLevel_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8)  then
+            Initialized := true;
+         end if;
+      end Set_InitialGasLevel;
+
+      procedure Set_InitialTyreType ( InitialTyreType_in : in Unbounded_String.Unbounded_String) is
+      begin
+         InitialTyreType := InitialTyreType_In;
+         ConfiguredParameters := ConfiguredParameters + 1;
+         if ( ConfiguredParameters = 8)  then
+            Initialized := true;
+         end if;
+      end Set_InitialTyreType;
+
    end SYNCH_COMPETITION_SETTINGS;
 
    function Get_SettingsResource return access SYNCH_COMPETITION_SETTINGS is
@@ -50,9 +136,16 @@ package body Configurator.Impl is
 
    function Configure(Self : access Object;
                       config_file : CORBA.STRING) return CORBA.STRING is
-      Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      MaxSpeed : FLOAT;
-      PitStop : INTEGER;
+      CompetitionMonitor_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      BoxStrategy_Str : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      BoxStrategy : Box.BOX_STRATEGY;
+      InitialTyreType : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      CircuitLength : FLOAT;
+      InitialGasLevel : FLOAT;
+      GasTankCapacity : FLOAT;
+      CompetitorID : INTEGER;
+      Laps : POSITIVE;
+
 
       Config : Node_List;
       Current_Node : NODE;
@@ -64,14 +157,37 @@ package body Configurator.Impl is
       Config := Get_Elements_By_Tag_Name(Config_Doc,"config");
       Current_Node := Item(Config,0);
 
-      Name := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"name"))));
-      PitStop := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStop"))));
-      MaxSpeed := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"maxSpeed"))));
 
-      Settings.Set_Laps(10);
-      Settings.Set_CompetitionMonitor_CorbaLOC(Unbounded_String.To_Unbounded_String("undefined"));
+      CompetitionMonitor_CorbaLOC := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"monitorCorbaLoc"))));
+      InitialTyreType := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"initialTyreType"))));
+      Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
+      CircuitLength := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"circuitLength"))));
+      GasTankCapacity := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasTankCapacity"))));
+      InitialGasLevel := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"initialGasLevel"))));
+      CompetitorID := INTEGER'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorID"))));
+      BoxStrategy_Str := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"boxStrategy"))));
 
-      return CORBA.To_CORBA_String("no ior yet");
+      if(BoxStrategy_Str = "cautious" ) then
+         BoxStrategy := Box.CAUTIOUS;
+      elsif ( BoxStrategy_Str = "risky" ) then
+         BoxStrategy := Box.RISKY;
+      elsif (BoxStrategy_Str = "fool") then
+         BoxStrategy := Box.FOOL;
+      else
+         BoxStrategy := Box.NORMAL;
+      end if;
+
+      Settings.Set_Laps(Laps);
+      Settings.Set_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC);
+      Settings.Set_CompetitorID(CompetitorID);
+      Settings.Set_CircuitLength(CircuitLength);
+      Settings.Set_BoxStrategy(BoxStrategy);
+      Settings.Set_GasTankCapacity(GasTankCapacity);
+      Settings.Set_InitialGasLevel(InitialGasLevel);
+      Settings.Set_InitialTyreType(InitialTyreType);
+
+      return CORBA.To_CORBA_String(Unbounded_String.To_String(CompetitionMonitor_CorbaLOC));
+
    end Configure;
 
 

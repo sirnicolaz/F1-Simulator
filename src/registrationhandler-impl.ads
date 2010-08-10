@@ -16,6 +16,8 @@ package RegistrationHandler.impl is
                               CompetitorDescriptor : in CORBA.STRING;
                               BoxCorbaLOC : in CORBA.STRING;
                               MonitorCorbaLOC : out CORBA.STRING;
-                              Competitor_ID : out CORBA.Short);
+                              Competitor_ID : out CORBA.Short;
+                              CircuitLength : out CORBA.Float;
+                              Laps : out CORBA.Short);
 
 end RegistrationHandler.impl;

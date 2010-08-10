@@ -33,6 +33,14 @@ package body RegistrationHandler is
      PolyORB.Types.To_PolyORB_String
         ("competitorId");
 
+   Join_Competition_Arg_Name_circuitLength_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("circuitLength");
+
+   Join_Competition_Arg_Name_laps_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("laps");
+
    Join_Competition_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
@@ -59,7 +67,9 @@ package body RegistrationHandler is
       competitorDescriptorFile : CORBA.String;
       boxCorbaLoc : CORBA.String;
       monitorCorbaLoc : out CORBA.String;
-      competitorId : out CORBA.Short)
+      competitorId : out CORBA.Short;
+      circuitLength : out CORBA.Float;
+      laps : out CORBA.Short)
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
       Arg_CC_competitorDescriptorFile_Ü : aliased PolyORB.Any.Content'Class :=
@@ -92,6 +102,22 @@ package body RegistrationHandler is
            (CORBA.TC_Short,
             Arg_CC_competitorId_Ü'Unchecked_Access);
       pragma Warnings (Off, competitorId);
+      Arg_CC_circuitLength_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (circuitLength'Unrestricted_Access);
+      Arg_Any_circuitLength_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Float,
+            Arg_CC_circuitLength_Ü'Unchecked_Access);
+      pragma Warnings (Off, circuitLength);
+      Arg_CC_laps_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (laps'Unrestricted_Access);
+      Arg_Any_laps_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_laps_Ü'Unchecked_Access);
+      pragma Warnings (Off, laps);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         Join_Competition_Result_Ü;
@@ -130,6 +156,18 @@ package body RegistrationHandler is
          Join_Competition_Arg_Name_competitorId_Ü,
          PolyORB.Any.Any
            (Arg_Any_competitorId_Ü),
+         PolyORB.Any.ARG_OUT);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Join_Competition_Arg_Name_circuitLength_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_circuitLength_Ü),
+         PolyORB.Any.ARG_OUT);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Join_Competition_Arg_Name_laps_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_laps_Ü),
          PolyORB.Any.ARG_OUT);
       --  Creating the request
       PolyORB.Requests.Create_Request

@@ -16,6 +16,7 @@ with CORBA.Impl;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 with PolyORB.CORBA_P.CORBALOC;
+with Common;
 
 procedure Main_Box is
 
@@ -160,6 +161,14 @@ begin
       --Settings
       CompetitionMonitor_CorbaLOC : access Unbounded_String.Unbounded_String := new Unbounded_String.Unbounded_String;
       Laps : INTEGER := -1;
+      CircuitLength : FLOAT := -1.0;
+      CompetitorID : INTEGER := -1;
+      BoxStrategy : Box.BOX_STRATEGY := Box.NULL_STRATEGY;
+      InitialGasLevel : Common.FLOAT_POINT := new FLOAT;
+      InitialTyreType : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      InitialTyreType_StdStr : Common.STRING_POINT;
+      GasTankCapacity : FLOAT := -1.0;
+
    begin
       Corbaloc_Storage.Get_CorbaLOC(BoxRadio_CorbaLOC, C_BOX_RADIO);
       Corbaloc_Storage.Get_CorbaLOC(Monitor_CorbaLOC, C_MONITOR);
@@ -181,6 +190,20 @@ begin
       Ada.Text_IO.Put_Line("Corbaloc got: " & Unbounded_String.To_String(CompetitionMonitor_CorbaLOC.all));
       Settings.Get_Laps(Laps);
       Ada.Text_IO.Put_Line("Laps got: " & INTEGER'IMAGE(Laps));
+      Settings.Get_CompetitorID(CompetitorID);
+      Ada.Text_IO.Put_Line("Competitor ID got: " & INTEGER'IMAGE(CompetitorID));
+      Settings.Get_CircuitLength(CircuitLength);
+      Ada.Text_IO.Put_Line("Circuit length got: " & FLOAT'IMAGE(CircuitLength));
+      Settings.Get_BoxStrategy(BoxStrategy);
+      Ada.Text_IO.Put_Line("Box Strategy got");
+      Settings.Get_GasTankCapacity(GasTankCapacity);
+      Settings.Get_InitialGasLevel(InitialGasLevel.all);
+      Settings.Get_InitialTyreType(InitialTyreType);
+      InitialTyreType_StdStr := new STRING(1..Unbounded_String.Length(InitialTyreType));
+      InitialTyreType_StdStr.all := Unbounded_String.To_String(InitialTyreType);
+
+      Box.Init(Laps,CircuitLength,CompetitorID,BoxStrategy,GasTankCapacity);
+      Ada.Text_IO.Put_Line("Box package initialized");
 
       -- Resourced shared between tasks
       Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
@@ -205,9 +228,13 @@ begin
 
       declare
 
-         Updater : access Box.STRATEGY_UPDATER := new Box.STRATEGY_UPDATER(Update_Buffer,History);
+         Updater : access Box.STRATEGY_UPDATER := new Box.STRATEGY_UPDATER(Update_Buffer,
+                                                                           History,
+                                                                           InitialGasLevel,
+                                                                           InitialTyreType_StdStr
+                                                                          );
          BoxMonitor : access Box.MONITOR := new Box.MONITOR(Update_Buffer,
-                                                         CompetitionMonitor_CorbaLOC);
+                                                            CompetitionMonitor_CorbaLOC);
 
       begin
          --Delay(Standard.Duration(40000));

@@ -757,6 +757,7 @@ package body Competitor is
          accept Start do
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : Start task");
             endWait := True;
+            --TODO: Contattare il Box e chiedergli la strategia
          end Start;
       end loop;
 

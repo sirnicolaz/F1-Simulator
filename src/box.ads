@@ -14,20 +14,14 @@ package Box is
    type INFO_NODE is private;
    type INFO_NODE_POINT is access INFO_NODE;
 
-   procedure Init(Laps_In : INTEGER;
-                  CircuitLength_In : FLOAT;
-                  CompetitorId_In : INTEGER);
+   type BOX_STRATEGY is (CAUTIOUS,NORMAL,RISKY,FOOL,NULL_STRATEGY);
 
-   --Temporary public type. It has to be private DEL
-   --   type BOX_STRATEGY is private;
-   type BOX_STRATEGY is record
-      Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      Style : DRIVING_STYLE;
-      GasLevel : PERCENTAGE;
-      PitStopLap : INTEGER;
-      PitStopDelay : FLOAT;
-   end record;
-   --type COMPETITION_UPDATE is private;
+   procedure Init(Laps_In : in INTEGER;
+                  CircuitLength_In : in FLOAT;
+                  CompetitorId_In : in INTEGER;
+                  BoxStrategy_In : in BOX_STRATEGY;
+                  GasTankCapacity_In : FLOAT);
+
    type COMPETITION_UPDATE( competitor_qty : INTEGER) is record
       GasLevel : PERCENTAGE;
       TyreUsury : PERCENTAGE;
@@ -41,7 +35,7 @@ package Box is
 
    type COMPETITION_UPDATE_POINT is access COMPETITION_UPDATE;
 
-   type STRATEGY_HISTORY is array(POSITIVE range <>) of BOX_STRATEGY;
+   type STRATEGY_HISTORY is array(POSITIVE range <>) of STRATEGY;
 
    Interval : FLOAT; -- set after competition joining
    Sector_Qty : INTEGER := 3; --It's fixed in the f1 competitions
@@ -80,9 +74,9 @@ package Box is
 
       procedure Init( Lap_Qty : in INTEGER );
 
-      procedure AddStrategy( Strategy : in BOX_STRATEGY );
+      procedure AddStrategy( Strategy_in : in STRATEGY );
 
-      entry Get_Strategy( NewStrategy : out BOX_STRATEGY;
+      entry Get_Strategy( NewStrategy : out STRATEGY;
                          Lap : in INTEGER);
 
       -- It returns the pit stops already done.
@@ -102,14 +96,16 @@ package Box is
    --+ whenever they are available in the update buffer. Then it uses
    --+ them to compute the new startegy lap by lap.
    task type STRATEGY_UPDATER ( SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
-                               SharedHistory : SYNCH_STRATEGY_HISTORY_POINT) is
+                               SharedHistory : SYNCH_STRATEGY_HISTORY_POINT;
+                               InitialGasLevel : Common.FLOAT_POINT;
+                               InitialTyreType : Common.STRING_POINT) is
    end STRATEGY_UPDATER;
 
    -- BOX RADIO TYPES AND METHODS DEFINITION --
    type BOX_RADIO is private;
 
    --Temporary test function DEL
-   function BoxStrategyToXML(strategy : BOX_STRATEGY) return STRING;
+   function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING;
    function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING;
    -- Local methods --
 

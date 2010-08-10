@@ -32,6 +32,10 @@ package Competition is
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING);
 
+      function Get_Laps return INTEGER;
+
+      function Get_CircuitLength return FLOAT;
+
       function AreRegistrationsOpen return BOOLEAN;
 
       entry Wait;
@@ -42,6 +46,7 @@ package Competition is
       ClassificRefreshTime : FLOAT;
       Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Laps : INTEGER;
+      Circuit_Length : FLOAT;
       Competitors : access CompetitorTask_Array;
       -- The ID to assign to the next competitor that will apply for joining
       --+ the competition

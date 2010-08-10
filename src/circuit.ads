@@ -17,7 +17,9 @@ use Ada.Text_IO;
 
 package Circuit is
 
-   Checkpoints_Qty : POSITIVE := 2;
+   RaceTrack_Length : FLOAT := 0.0;
+
+   Checkpoints_Qty : POSITIVE := 2;--TODO: verify if it's necessary
    MaxCompetitors_Qty : POSITIVE := 5;--4;
 
    procedure Set_CheckpointsQty (Qty_In : POSITIVE);
@@ -173,8 +175,6 @@ private
       record
          Box : CROSSING_POINT;
       end record;
-
-
 
    type PATH is record
       Length : FLOAT;
