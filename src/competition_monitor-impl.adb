@@ -54,10 +54,15 @@ package body Competition_Monitor.Impl is
                            &Integer'Image(Get_CompetitorId(class(1)))&
                            " >0.0</compId><competitor id="&Integer'Image(Get_CompetitorId(class(2)))&" >"
                            &Float'Image(Get_Time(class(2))-Get_Time(class(1)))&"</compId></classific>");
-      Unbounded_String.Set_Unbounded_String(ret,"<classific competitors="&Integer'Image(class'Length)&"><competitor id="
-                           &Integer'Image(Get_CompetitorId(class(1)))&
-                           " >0.0</compId><competitor id="&Integer'Image(Get_CompetitorId(class(2)))&" >"
-                           &Float'Image(Get_Time(class(2))-Get_Time(class(1)))&"</compId></classific>");
+      Unbounded_String.Set_Unbounded_String(ret,"<classific competitors="
+                                            &Integer'Image(class'Length)
+                                            &"><competitor id="
+                                            &Integer'Image(Get_CompetitorId(class(1)))
+                                            &" >0.0</compId><competitor id="
+                                            &Integer'Image(Get_CompetitorId(class(2)))
+                                            &" >"
+                                            &Float'Image(Get_Time(class(2))-Get_Time(class(1)))
+                                            &"</compId></classific>");
 --                                              "Id = "&Integer'Image(Get_CompetitorId(class(1)))&
 --                                                    ", lap = "&Integer'Image(Get_Lap(class(1)))&
 --                                                    ", checkpoint = "&Integer'Image(Get_CheckPoint(class(1)))&
@@ -77,7 +82,14 @@ package body Competition_Monitor.Impl is
       num := Stats.Get_BestLapNum(temp.all);
       time := Stats.Get_BestLapTime(temp.all);
       id := Stats.Get_BestLapId(temp.all);
-      Unbounded_String.Set_Unbounded_String(ret,"Best Lap = "&Integer'Image(num)&" , time = "&Float'Image(time)&" , Id Competitor = "&Integer'Image(id));
+      Unbounded_String.Set_Unbounded_String(ret,"<bestlap><num>"
+                                            &Integer'Image(num)
+                                            &"</num><idComp>"
+                                            &Integer'Image(id)
+                                            &"</idComp><time>"
+                                            &Float'Image(time)
+                                            &"</time></bestlap>"
+                                           );
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestLap;
@@ -93,7 +105,16 @@ package body Competition_Monitor.Impl is
       num := Stats.Get_BestSectorsLap(temp.all,Integer(indexIn));
       time := Stats.Get_BestSectorsTime(temp.all,Integer(indexIn));
       id := Stats.Get_BestSectorsId(temp.all,Integer(indexIn));
-      Unbounded_String.Set_Unbounded_String(ret ,"Sector : "&Integer'Image(Integer(indexIn))&" , Best Time : "&Float'Image(time)&" , Id Competitor : "&Integer'Image(id)&" in lap "&Integer'Image(num));
+      Unbounded_String.Set_Unbounded_String(ret ,"<bestsector><numSector>"
+                                            &Integer'Image(Integer(indexIn))
+                                            &"</numSector><numLap>"
+                                            &Integer'Image(num)
+                                            &"</numLap><idComp>"
+                                            &Integer'Image(id)
+                                            &"</idComp><time>"
+                                            &Float'Image(time)
+                                            &"</time></bestsector>"
+                                            );
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestSector;
