@@ -1,0 +1,6 @@
+<bestsector>
+  <numSector>1</numSector><!--number of sector (1,2,3)-->
+  <numLap>12</numLap><!--number of lap-->
+  <idComp>1</idComp><!--id competitor -->
+  <time>20.0</time><!--time of best sector-->
+</bestsector>
