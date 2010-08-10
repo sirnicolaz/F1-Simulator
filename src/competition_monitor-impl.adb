@@ -108,7 +108,6 @@ package body Competition_Monitor.Impl is
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestLap;
-
    function getBestSector(Self : access Object; indexIn : CORBA.Short) return CORBA.String is
             retString : CORBA.String;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;

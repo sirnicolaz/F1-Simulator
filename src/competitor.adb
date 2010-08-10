@@ -748,7 +748,7 @@ package body Competitor is
       --statistiche COMP_STATS
       compStats : Common.COMP_STATS_POINT := new Common.COMP_STATS;
       SectorID : INTEGER;
-
+--carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
    begin
 
@@ -881,7 +881,7 @@ package body Competitor is
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats);
-
+--Competition_Monitor.impl.AddComp(compStats, carDriver.Id); --salvo l'ultimo compStats e lo passo alla competition monitor che poi la userà per ritornare i dati
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 
          Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
