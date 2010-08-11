@@ -61,7 +61,7 @@ package body Competition is
             Ada.Text_IO.Close(CompetitorDescriptor_File);
             --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
             Ada.Text_IO.Put_Line("Init competitor...");
-            Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID);
+            Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID,Box_CorbaLOC);
             --Initialise the task competitor
             Ada.Text_IO.Put_Line("Init task...");
             Competitors.all(ID) := new TASKCOMPETITOR(Driver);

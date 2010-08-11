@@ -237,7 +237,10 @@ package body Competitor is
       Level_Out:=Get_GasLevel(Car_In);
    end Get_Status;
 
-   function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR; id_In : INTEGER) return CAR_DRIVER_ACCESS is
+   function Init_Competitor(xml_file : STRING;
+                            RaceIterator : RACETRACK_ITERATOR;
+                            id_In : INTEGER;
+                            BoxRadio_CorbaLOC) return CAR_DRIVER_ACCESS is
       --parametri
       Input : File_Input;
       Reader : Tree_Reader;

@@ -68,7 +68,10 @@ package Competitor is
       Radio : BoxRadio.Ref;
    end record;
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
-  function Init_Competitor(xml_file : STRING; RaceIterator : RACETRACK_ITERATOR; id_In : INTEGER) return CAR_DRIVER_ACCESS;
+   function Init_Competitor(xml_file : STRING;
+                            RaceIterator : RACETRACK_ITERATOR;
+                            id_In : INTEGER;
+                            BoxRadio_CorbaLoc : in STRING) return CAR_DRIVER_ACCESS;
   -- procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
 -- set and get function for tyre into car
    function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String;
