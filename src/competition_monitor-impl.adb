@@ -66,10 +66,11 @@ package body Competition_Monitor.Impl is
       return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
    end getInfo;
 
-   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER) is
-   begin -- TODO : da completare il corpo della funzione
-      null;
+   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String) is
+   begin
+     arrayComp(id).arrayInfo(lap).setSector(sector, updXml);
    end setInfo;
+
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;
@@ -136,6 +137,13 @@ package body Competition_Monitor.Impl is
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getClassific;
+
+   procedure AddCompId (IdComp :  INTEGER) is
+      --arr : INFO_POINT;
+   begin
+      arrayComp(IdComp).arrayInfo := new InfoArray(1..10); --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
+   end AddCompId;
+
 
    function getBestLap(Self : access Object) return CORBA.STRING is
       retString : CORBA.String;
