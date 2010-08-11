@@ -19,6 +19,57 @@ with Ada.Strings.Unbounded;
 with Common;
 
 package body Competition_Monitor.Impl is
+   protected body INFO_STRING is
+      entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when true is -- ritorna le info sul settore relativo al giro, se disponibili
+      begin
+         if index = 1 then
+            if sector1 = Unbounded_String.Null_Unbounded_String then
+               Updated := false;
+               requeue Wait;
+            else
+               sectorString := sector1;
+            end if;
+         elsif index = 2 then
+            if sector2 = Unbounded_String.Null_Unbounded_String then
+               Updated := false;
+               requeue Wait;
+            else
+               sectorString := sector2;
+            end if;
+         else
+            if sector3 = Unbounded_String.Null_Unbounded_String then
+               Updated := false;
+               requeue Wait;
+            else
+               sectorString := sector3;
+            end if;
+         end if;
+      end getSector;
+      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when Updated is
+      begin
+
+         requeue GetSector;
+      end Wait;
+     -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
+      procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String) is
+      begin
+         if index = 1 then sector1 := updXml;
+         elsif index = 2 then sector2 := updXml;
+         else sector3 := updXml;
+         end if;
+         Updated := true;
+         end setSector;
+   end INFO_STRING;
+   function getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short) return CORBA.String is
+      stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   begin --TODO : da completare il corpo della funzione
+      return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
+   end getInfo;
+
+   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER) is
+   begin -- TODO : da completare il corpo della funzione
+      null;
+   end setInfo;
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;

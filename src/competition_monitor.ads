@@ -22,11 +22,22 @@ package Competition_Monitor is
      "IDL:Competition_Monitor:1.0";
 
    function getClassific
-     (Self : Ref)
+     (Self : Ref;
+      idComp_In : CORBA.Short)
      return CORBA.String;
 
    getClassific_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor/getClassific:1.0";
+
+   function getInfo
+     (Self : Ref;
+      lap : CORBA.Short;
+      sector : CORBA.Short;
+      id : CORBA.Short)
+     return CORBA.String;
+
+   getInfo_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor/getInfo:1.0";
 
    function getBestLap
      (Self : Ref)
@@ -45,7 +56,7 @@ package Competition_Monitor is
 
    function getCondCar
      (Self : Ref;
-      competitorID : CORBA.Short)
+      competitorIdIn : CORBA.Short)
      return CORBA.String;
 
    getCondCar_Repository_Id : constant PolyORB.Std.String :=
@@ -53,7 +64,7 @@ package Competition_Monitor is
 
    function getCompetitor
      (Self : Ref;
-      competitorID : CORBA.Short)
+      competitorIdIn : CORBA.Short)
      return CORBA.String;
 
    getCompetitor_Repository_Id : constant PolyORB.Std.String :=
@@ -61,7 +72,7 @@ package Competition_Monitor is
 
    function getCompetitorTimeSector
      (Self : Ref;
-      competitorID : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       sectorIn : CORBA.Short)
      return CORBA.String;
 
@@ -70,7 +81,7 @@ package Competition_Monitor is
 
    function getCompetitorTimeLap
      (Self : Ref;
-      competitorID : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       lapIn : CORBA.Short)
      return CORBA.String;
 
@@ -79,8 +90,8 @@ package Competition_Monitor is
 
    function getCompetitorTimeCheck
      (Self : Ref;
-      competitorID : CORBA.Short;
-      checkpoint : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      checkpointIn : CORBA.Short)
      return CORBA.String;
 
    getCompetitorTimeCheck_Repository_Id : constant PolyORB.Std.String :=
@@ -88,9 +99,9 @@ package Competition_Monitor is
 
    function getGas
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      lapIn : CORBA.Short)
      return CORBA.String;
 
    getGas_Repository_Id : constant PolyORB.Std.String :=
@@ -98,9 +109,9 @@ package Competition_Monitor is
 
    function getTyreUsury
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String;
 
    getTyreUsury_Repository_Id : constant PolyORB.Std.String :=
@@ -108,9 +119,9 @@ package Competition_Monitor is
 
    function getMeanSpeed
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String;
 
    getMeanSpeed_Repository_Id : constant PolyORB.Std.String :=
@@ -118,9 +129,9 @@ package Competition_Monitor is
 
    function getTime
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String;
 
    getTime_Repository_Id : constant PolyORB.Std.String :=
@@ -128,9 +139,9 @@ package Competition_Monitor is
 
    function getMeanGasConsumption
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String;
 
    getMeanGasConsumption_Repository_Id : constant PolyORB.Std.String :=

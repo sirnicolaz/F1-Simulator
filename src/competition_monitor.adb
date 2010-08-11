@@ -10,12 +10,16 @@ pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 with PolyORB.Any.NVList;
 with PolyORB.Any;
-with PolyORB.Requests;
 with PolyORB.Types;
+with PolyORB.Requests;
 with PolyORB.CORBA_P.Interceptors_Hooks;
 with PolyORB.CORBA_P.Exceptions;
 
 package body Competition_Monitor is
+
+   getClassific_Arg_Name_idComp_In_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("idComp_In");
 
    getClassific_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -39,7 +43,8 @@ package body Competition_Monitor is
    ------------------
 
    function getClassific
-     (Self : Ref)
+     (Self : Ref;
+      idComp_In : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -48,6 +53,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
+      Arg_CC_idComp_In_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (idComp_In'Unrestricted_Access);
+      Arg_Any_idComp_In_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_idComp_In_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getClassific_Result_Ü;
@@ -62,6 +74,13 @@ package body Competition_Monitor is
       --  Create the Argument list
       PolyORB.Any.NVList.Create
         (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         getClassific_Arg_Name_idComp_In_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_idComp_In_Ü),
+         PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
         (PolyORB.Any.Get_Container
@@ -89,6 +108,134 @@ package body Competition_Monitor is
       --  Return value
       return Result_Ü;
    end getClassific;
+
+   getInfo_Arg_Name_lap_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("lap");
+
+   getInfo_Arg_Name_sector_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("sector");
+
+   getInfo_Arg_Name_id_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("id");
+
+   getInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   ----------------------
+   -- getInfo_Result_Ü --
+   ----------------------
+
+   function getInfo_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (getInfo_Result_Ü);
+   begin
+      return (Name => getInfo_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_String),
+      Arg_Modes => 0);
+   end getInfo_Result_Ü;
+
+   -------------
+   -- getInfo --
+   -------------
+
+   function getInfo
+     (Self : Ref;
+      lap : CORBA.Short;
+      sector : CORBA.Short;
+      id : CORBA.Short)
+     return CORBA.String
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Result_Ü : CORBA.String;
+      pragma Warnings (Off, Result_Ü);
+      Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (Result_Ü'Unrestricted_Access);
+      Arg_CC_lap_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (lap'Unrestricted_Access);
+      Arg_Any_lap_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_lap_Ü'Unchecked_Access);
+      Arg_CC_sector_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (sector'Unrestricted_Access);
+      Arg_Any_sector_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_sector_Ü'Unchecked_Access);
+      Arg_CC_id_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (id'Unrestricted_Access);
+      Arg_Any_id_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_id_Ü'Unchecked_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        getInfo_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         getInfo_Arg_Name_lap_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_lap_Ü),
+         PolyORB.Any.ARG_IN);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         getInfo_Arg_Name_sector_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_sector_Ü),
+         PolyORB.Any.ARG_IN);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         getInfo_Arg_Name_id_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_id_Ü),
+         PolyORB.Any.ARG_IN);
+      --  Setting the result value
+      PolyORB.Any.Set_Value
+        (PolyORB.Any.Get_Container
+           (Result_Nv_Ü.Argument).all,
+         Arg_CC_Result_Ü_Ü'Unrestricted_Access);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "getInfo",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+      --  Return value
+      return Result_Ü;
+   end getInfo;
 
    getBestLap_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -255,9 +402,9 @@ package body Competition_Monitor is
       return Result_Ü;
    end getBestSector;
 
-   getCondCar_Arg_Name_competitorID_Ü : constant PolyORB.Types.Identifier :=
+   getCondCar_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCondCar_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -282,7 +429,7 @@ package body Competition_Monitor is
 
    function getCondCar
      (Self : Ref;
-      competitorID : CORBA.Short)
+      competitorIdIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -291,13 +438,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorID'Unrestricted_Access);
-      Arg_Any_competitorID_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_competitorID_Ü'Unchecked_Access);
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getCondCar_Result_Ü;
@@ -315,9 +462,9 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCondCar_Arg_Name_competitorID_Ü,
+         getCondCar_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorID_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -347,9 +494,9 @@ package body Competition_Monitor is
       return Result_Ü;
    end getCondCar;
 
-   getCompetitor_Arg_Name_competitorID_Ü : constant PolyORB.Types.Identifier :=
+   getCompetitor_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCompetitor_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -374,7 +521,7 @@ package body Competition_Monitor is
 
    function getCompetitor
      (Self : Ref;
-      competitorID : CORBA.Short)
+      competitorIdIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -383,13 +530,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorID'Unrestricted_Access);
-      Arg_Any_competitorID_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_competitorID_Ü'Unchecked_Access);
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getCompetitor_Result_Ü;
@@ -407,9 +554,9 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCompetitor_Arg_Name_competitorID_Ü,
+         getCompetitor_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorID_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -439,9 +586,9 @@ package body Competition_Monitor is
       return Result_Ü;
    end getCompetitor;
 
-   getCompetitorTimeSector_Arg_Name_competitorID_Ü : constant PolyORB.Types.Identifier :=
+   getCompetitorTimeSector_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCompetitorTimeSector_Arg_Name_sectorIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -470,7 +617,7 @@ package body Competition_Monitor is
 
    function getCompetitorTimeSector
      (Self : Ref;
-      competitorID : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       sectorIn : CORBA.Short)
      return CORBA.String
    is
@@ -480,13 +627,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorID'Unrestricted_Access);
-      Arg_Any_competitorID_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_competitorID_Ü'Unchecked_Access);
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
       Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (sectorIn'Unrestricted_Access);
@@ -511,9 +658,9 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCompetitorTimeSector_Arg_Name_competitorID_Ü,
+         getCompetitorTimeSector_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorID_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
@@ -549,9 +696,9 @@ package body Competition_Monitor is
       return Result_Ü;
    end getCompetitorTimeSector;
 
-   getCompetitorTimeLap_Arg_Name_competitorID_Ü : constant PolyORB.Types.Identifier :=
+   getCompetitorTimeLap_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCompetitorTimeLap_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -580,7 +727,7 @@ package body Competition_Monitor is
 
    function getCompetitorTimeLap
      (Self : Ref;
-      competitorID : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       lapIn : CORBA.Short)
      return CORBA.String
    is
@@ -590,13 +737,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorID'Unrestricted_Access);
-      Arg_Any_competitorID_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_competitorID_Ü'Unchecked_Access);
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
       Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (lapIn'Unrestricted_Access);
@@ -621,9 +768,9 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCompetitorTimeLap_Arg_Name_competitorID_Ü,
+         getCompetitorTimeLap_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorID_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
@@ -659,13 +806,13 @@ package body Competition_Monitor is
       return Result_Ü;
    end getCompetitorTimeLap;
 
-   getCompetitorTimeCheck_Arg_Name_competitorID_Ü : constant PolyORB.Types.Identifier :=
+   getCompetitorTimeCheck_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("competitorID");
+        ("competitorIdIn");
 
-   getCompetitorTimeCheck_Arg_Name_checkpoint_Ü : constant PolyORB.Types.Identifier :=
+   getCompetitorTimeCheck_Arg_Name_checkpointIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("checkpoint");
+        ("checkpointIn");
 
    getCompetitorTimeCheck_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -690,8 +837,8 @@ package body Competition_Monitor is
 
    function getCompetitorTimeCheck
      (Self : Ref;
-      competitorID : CORBA.Short;
-      checkpoint : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      checkpointIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -700,20 +847,20 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (competitorID'Unrestricted_Access);
-      Arg_Any_competitorID_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_competitorID_Ü'Unchecked_Access);
-      Arg_CC_checkpoint_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+      Arg_CC_checkpointIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (checkpoint'Unrestricted_Access);
-      Arg_Any_checkpoint_Ü : constant CORBA.Any :=
+           (checkpointIn'Unrestricted_Access);
+      Arg_Any_checkpointIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_checkpoint_Ü'Unchecked_Access);
+            Arg_CC_checkpointIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getCompetitorTimeCheck_Result_Ü;
@@ -731,15 +878,15 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCompetitorTimeCheck_Arg_Name_competitorID_Ü,
+         getCompetitorTimeCheck_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_competitorID_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getCompetitorTimeCheck_Arg_Name_checkpoint_Ü,
+         getCompetitorTimeCheck_Arg_Name_checkpointIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_checkpoint_Ü),
+           (Arg_Any_checkpointIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -769,17 +916,17 @@ package body Competition_Monitor is
       return Result_Ü;
    end getCompetitorTimeCheck;
 
-   getGas_Arg_Name_Competitor_Id_Ü : constant PolyORB.Types.Identifier :=
+   getGas_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
    getGas_Arg_Name_Sector_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Sector");
 
-   getGas_Arg_Name_Lap_Ü : constant PolyORB.Types.Identifier :=
+   getGas_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Lap");
+        ("lapIn");
 
    getGas_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -804,9 +951,9 @@ package body Competition_Monitor is
 
    function getGas
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
+      competitorIdIn : CORBA.Short;
       Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      lapIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -815,13 +962,13 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Competitor_Id'Unrestricted_Access);
-      Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Competitor_Id_Ü'Unchecked_Access);
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
       Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Sector'Unrestricted_Access);
@@ -829,13 +976,13 @@ package body Competition_Monitor is
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
             Arg_CC_Sector_Ü'Unchecked_Access);
-      Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Lap'Unrestricted_Access);
-      Arg_Any_Lap_Ü : constant CORBA.Any :=
+           (lapIn'Unrestricted_Access);
+      Arg_Any_lapIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Lap_Ü'Unchecked_Access);
+            Arg_CC_lapIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getGas_Result_Ü;
@@ -853,9 +1000,9 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getGas_Arg_Name_Competitor_Id_Ü,
+         getGas_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Competitor_Id_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
@@ -865,9 +1012,9 @@ package body Competition_Monitor is
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getGas_Arg_Name_Lap_Ü,
+         getGas_Arg_Name_lapIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Lap_Ü),
+           (Arg_Any_lapIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -897,17 +1044,17 @@ package body Competition_Monitor is
       return Result_Ü;
    end getGas;
 
-   getTyreUsury_Arg_Name_Competitor_Id_Ü : constant PolyORB.Types.Identifier :=
+   getTyreUsury_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getTyreUsury_Arg_Name_Sector_Ü : constant PolyORB.Types.Identifier :=
+   getTyreUsury_Arg_Name_sectorIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Sector");
+        ("sectorIn");
 
-   getTyreUsury_Arg_Name_Lap_Ü : constant PolyORB.Types.Identifier :=
+   getTyreUsury_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Lap");
+        ("lapIn");
 
    getTyreUsury_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -932,9 +1079,9 @@ package body Competition_Monitor is
 
    function getTyreUsury
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -943,27 +1090,27 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Competitor_Id'Unrestricted_Access);
-      Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-      Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+      Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Sector'Unrestricted_Access);
-      Arg_Any_Sector_Ü : constant CORBA.Any :=
+           (sectorIn'Unrestricted_Access);
+      Arg_Any_sectorIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Sector_Ü'Unchecked_Access);
-      Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_sectorIn_Ü'Unchecked_Access);
+      Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Lap'Unrestricted_Access);
-      Arg_Any_Lap_Ü : constant CORBA.Any :=
+           (lapIn'Unrestricted_Access);
+      Arg_Any_lapIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Lap_Ü'Unchecked_Access);
+            Arg_CC_lapIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getTyreUsury_Result_Ü;
@@ -981,21 +1128,21 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTyreUsury_Arg_Name_Competitor_Id_Ü,
+         getTyreUsury_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Competitor_Id_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTyreUsury_Arg_Name_Sector_Ü,
+         getTyreUsury_Arg_Name_sectorIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Sector_Ü),
+           (Arg_Any_sectorIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTyreUsury_Arg_Name_Lap_Ü,
+         getTyreUsury_Arg_Name_lapIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Lap_Ü),
+           (Arg_Any_lapIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -1025,17 +1172,17 @@ package body Competition_Monitor is
       return Result_Ü;
    end getTyreUsury;
 
-   getMeanSpeed_Arg_Name_Competitor_Id_Ü : constant PolyORB.Types.Identifier :=
+   getMeanSpeed_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getMeanSpeed_Arg_Name_Sector_Ü : constant PolyORB.Types.Identifier :=
+   getMeanSpeed_Arg_Name_sectorIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Sector");
+        ("sectorIn");
 
-   getMeanSpeed_Arg_Name_Lap_Ü : constant PolyORB.Types.Identifier :=
+   getMeanSpeed_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Lap");
+        ("lapIn");
 
    getMeanSpeed_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -1060,9 +1207,9 @@ package body Competition_Monitor is
 
    function getMeanSpeed
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -1071,27 +1218,27 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Competitor_Id'Unrestricted_Access);
-      Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-      Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+      Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Sector'Unrestricted_Access);
-      Arg_Any_Sector_Ü : constant CORBA.Any :=
+           (sectorIn'Unrestricted_Access);
+      Arg_Any_sectorIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Sector_Ü'Unchecked_Access);
-      Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_sectorIn_Ü'Unchecked_Access);
+      Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Lap'Unrestricted_Access);
-      Arg_Any_Lap_Ü : constant CORBA.Any :=
+           (lapIn'Unrestricted_Access);
+      Arg_Any_lapIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Lap_Ü'Unchecked_Access);
+            Arg_CC_lapIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getMeanSpeed_Result_Ü;
@@ -1109,21 +1256,21 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanSpeed_Arg_Name_Competitor_Id_Ü,
+         getMeanSpeed_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Competitor_Id_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanSpeed_Arg_Name_Sector_Ü,
+         getMeanSpeed_Arg_Name_sectorIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Sector_Ü),
+           (Arg_Any_sectorIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanSpeed_Arg_Name_Lap_Ü,
+         getMeanSpeed_Arg_Name_lapIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Lap_Ü),
+           (Arg_Any_lapIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -1153,17 +1300,17 @@ package body Competition_Monitor is
       return Result_Ü;
    end getMeanSpeed;
 
-   getTime_Arg_Name_Competitor_Id_Ü : constant PolyORB.Types.Identifier :=
+   getTime_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getTime_Arg_Name_Sector_Ü : constant PolyORB.Types.Identifier :=
+   getTime_Arg_Name_sectorIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Sector");
+        ("sectorIn");
 
-   getTime_Arg_Name_Lap_Ü : constant PolyORB.Types.Identifier :=
+   getTime_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Lap");
+        ("lapIn");
 
    getTime_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -1188,9 +1335,9 @@ package body Competition_Monitor is
 
    function getTime
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -1199,27 +1346,27 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Competitor_Id'Unrestricted_Access);
-      Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-      Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+      Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Sector'Unrestricted_Access);
-      Arg_Any_Sector_Ü : constant CORBA.Any :=
+           (sectorIn'Unrestricted_Access);
+      Arg_Any_sectorIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Sector_Ü'Unchecked_Access);
-      Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_sectorIn_Ü'Unchecked_Access);
+      Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Lap'Unrestricted_Access);
-      Arg_Any_Lap_Ü : constant CORBA.Any :=
+           (lapIn'Unrestricted_Access);
+      Arg_Any_lapIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Lap_Ü'Unchecked_Access);
+            Arg_CC_lapIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getTime_Result_Ü;
@@ -1237,21 +1384,21 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTime_Arg_Name_Competitor_Id_Ü,
+         getTime_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Competitor_Id_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTime_Arg_Name_Sector_Ü,
+         getTime_Arg_Name_sectorIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Sector_Ü),
+           (Arg_Any_sectorIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getTime_Arg_Name_Lap_Ü,
+         getTime_Arg_Name_lapIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Lap_Ü),
+           (Arg_Any_lapIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value
@@ -1281,17 +1428,17 @@ package body Competition_Monitor is
       return Result_Ü;
    end getTime;
 
-   getMeanGasConsumption_Arg_Name_Competitor_Id_Ü : constant PolyORB.Types.Identifier :=
+   getMeanGasConsumption_Arg_Name_competitorIdIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getMeanGasConsumption_Arg_Name_Sector_Ü : constant PolyORB.Types.Identifier :=
+   getMeanGasConsumption_Arg_Name_sectorIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Sector");
+        ("sectorIn");
 
-   getMeanGasConsumption_Arg_Name_Lap_Ü : constant PolyORB.Types.Identifier :=
+   getMeanGasConsumption_Arg_Name_lapIn_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
-        ("Lap");
+        ("lapIn");
 
    getMeanGasConsumption_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -1316,9 +1463,9 @@ package body Competition_Monitor is
 
    function getMeanGasConsumption
      (Self : Ref;
-      Competitor_Id : CORBA.Short;
-      Sector : CORBA.Short;
-      Lap : CORBA.Short)
+      competitorIdIn : CORBA.Short;
+      sectorIn : CORBA.Short;
+      lapIn : CORBA.Short)
      return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
@@ -1327,27 +1474,27 @@ package body Competition_Monitor is
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
-      Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+      Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Competitor_Id'Unrestricted_Access);
-      Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+           (competitorIdIn'Unrestricted_Access);
+      Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-      Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+      Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Sector'Unrestricted_Access);
-      Arg_Any_Sector_Ü : constant CORBA.Any :=
+           (sectorIn'Unrestricted_Access);
+      Arg_Any_sectorIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Sector_Ü'Unchecked_Access);
-      Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+            Arg_CC_sectorIn_Ü'Unchecked_Access);
+      Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
-           (Lap'Unrestricted_Access);
-      Arg_Any_Lap_Ü : constant CORBA.Any :=
+           (lapIn'Unrestricted_Access);
+      Arg_Any_lapIn_Ü : constant CORBA.Any :=
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
-            Arg_CC_Lap_Ü'Unchecked_Access);
+            Arg_CC_lapIn_Ü'Unchecked_Access);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getMeanGasConsumption_Result_Ü;
@@ -1365,21 +1512,21 @@ package body Competition_Monitor is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanGasConsumption_Arg_Name_Competitor_Id_Ü,
+         getMeanGasConsumption_Arg_Name_competitorIdIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Competitor_Id_Ü),
+           (Arg_Any_competitorIdIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanGasConsumption_Arg_Name_Sector_Ü,
+         getMeanGasConsumption_Arg_Name_sectorIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Sector_Ü),
+           (Arg_Any_sectorIn_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getMeanGasConsumption_Arg_Name_Lap_Ü,
+         getMeanGasConsumption_Arg_Name_lapIn_Ü,
          PolyORB.Any.Any
-           (Arg_Any_Lap_Ü),
+           (Arg_Any_lapIn_Ü),
          PolyORB.Any.ARG_IN);
       --  Setting the result value
       PolyORB.Any.Set_Value

@@ -12,8 +12,8 @@ with Competition_Monitor.Impl;
 with CORBA;
 pragma Elaborate_All (CORBA);
 with PolyORB.Any;
-with CORBA.ServerRequest;
 with CORBA.NVList;
+with CORBA.ServerRequest;
 with PolyORB.CORBA_P.IR_Hooks;
 with CORBA.Object;
 with CORBA.Object.Helper;
@@ -29,101 +29,117 @@ with PolyORB.Initialization;
 
 package body Competition_Monitor.Skel is
 
+   getClassific_Arg_Name_idComp_In_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("idComp_In");
+
+   getInfo_Arg_Name_lap_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("lap");
+
+   getInfo_Arg_Name_sector_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("sector");
+
+   getInfo_Arg_Name_id_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("id");
+
    getBestSector_Arg_Name_index_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
         ("index");
 
-   getCondCar_Arg_Name_competitorID_Ü : constant CORBA.Identifier :=
+   getCondCar_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorID");
+        ("competitorIdIn");
 
-   getCompetitor_Arg_Name_competitorID_Ü : constant CORBA.Identifier :=
+   getCompetitor_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorID");
+        ("competitorIdIn");
 
-   getCompetitorTimeSector_Arg_Name_competitorID_Ü : constant CORBA.Identifier :=
+   getCompetitorTimeSector_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCompetitorTimeSector_Arg_Name_sectorIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
         ("sectorIn");
 
-   getCompetitorTimeLap_Arg_Name_competitorID_Ü : constant CORBA.Identifier :=
+   getCompetitorTimeLap_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorID");
+        ("competitorIdIn");
 
    getCompetitorTimeLap_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
         ("lapIn");
 
-   getCompetitorTimeCheck_Arg_Name_competitorID_Ü : constant CORBA.Identifier :=
+   getCompetitorTimeCheck_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorID");
+        ("competitorIdIn");
 
-   getCompetitorTimeCheck_Arg_Name_checkpoint_Ü : constant CORBA.Identifier :=
+   getCompetitorTimeCheck_Arg_Name_checkpointIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("checkpoint");
+        ("checkpointIn");
 
-   getGas_Arg_Name_Competitor_Id_Ü : constant CORBA.Identifier :=
+   getGas_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
    getGas_Arg_Name_Sector_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
         ("Sector");
 
-   getGas_Arg_Name_Lap_Ü : constant CORBA.Identifier :=
+   getGas_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Lap");
+        ("lapIn");
 
-   getTyreUsury_Arg_Name_Competitor_Id_Ü : constant CORBA.Identifier :=
+   getTyreUsury_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getTyreUsury_Arg_Name_Sector_Ü : constant CORBA.Identifier :=
+   getTyreUsury_Arg_Name_sectorIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Sector");
+        ("sectorIn");
 
-   getTyreUsury_Arg_Name_Lap_Ü : constant CORBA.Identifier :=
+   getTyreUsury_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Lap");
+        ("lapIn");
 
-   getMeanSpeed_Arg_Name_Competitor_Id_Ü : constant CORBA.Identifier :=
+   getMeanSpeed_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getMeanSpeed_Arg_Name_Sector_Ü : constant CORBA.Identifier :=
+   getMeanSpeed_Arg_Name_sectorIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Sector");
+        ("sectorIn");
 
-   getMeanSpeed_Arg_Name_Lap_Ü : constant CORBA.Identifier :=
+   getMeanSpeed_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Lap");
+        ("lapIn");
 
-   getTime_Arg_Name_Competitor_Id_Ü : constant CORBA.Identifier :=
+   getTime_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getTime_Arg_Name_Sector_Ü : constant CORBA.Identifier :=
+   getTime_Arg_Name_sectorIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Sector");
+        ("sectorIn");
 
-   getTime_Arg_Name_Lap_Ü : constant CORBA.Identifier :=
+   getTime_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Lap");
+        ("lapIn");
 
-   getMeanGasConsumption_Arg_Name_Competitor_Id_Ü : constant CORBA.Identifier :=
+   getMeanGasConsumption_Arg_Name_competitorIdIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Competitor_Id");
+        ("competitorIdIn");
 
-   getMeanGasConsumption_Arg_Name_Sector_Ü : constant CORBA.Identifier :=
+   getMeanGasConsumption_Arg_Name_sectorIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Sector");
+        ("sectorIn");
 
-   getMeanGasConsumption_Arg_Name_Lap_Ü : constant CORBA.Identifier :=
+   getMeanGasConsumption_Arg_Name_lapIn_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("Lap");
+        ("lapIn");
 
    procedure Invoke
      (Self : PortableServer.Servant;
@@ -184,6 +200,15 @@ package body Competition_Monitor.Skel is
             = "getClassific")
          then
             declare
+               Argument_idComp_In_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_idComp_In_Ü);
+               Arg_CC_idComp_In_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_idComp_In_Ü'Unrestricted_Access);
+               Arg_Any_idComp_In_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_idComp_In_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -194,6 +219,11 @@ package body Competition_Monitor.Skel is
                     (CORBA.TC_String,
                      Arg_CC_Result_Ü_Ü'Unchecked_Access);
             begin
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  getClassific_Arg_Name_idComp_In_Ü,
+                  Arg_Any_idComp_In_Ü,
+                  CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
                  (Request,
@@ -202,7 +232,83 @@ package body Competition_Monitor.Skel is
                Result_Ü :=
                  Competition_Monitor.Impl.getClassific
                     (Competition_Monitor.Impl.Object'Class
-                       (Self.all)'Access);
+                       (Self.all)'Access,
+                     Argument_idComp_In_Ü);
+               --  Setting the result
+               CORBA.ServerRequest.Set_Result
+                 (Request,
+                  Arg_Any_Result_Ü_Ü);
+               CORBA.NVList.Internals.Clone_Out_Args
+                 (Argument_List_Ü);
+            end;
+         elsif (Operation_Ü
+            = "getInfo")
+         then
+            declare
+               Argument_lap_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lap_Ü);
+               Arg_CC_lap_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_lap_Ü'Unrestricted_Access);
+               Arg_Any_lap_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_lap_Ü'Unchecked_Access);
+               Argument_sector_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_sector_Ü);
+               Arg_CC_sector_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_sector_Ü'Unrestricted_Access);
+               Arg_Any_sector_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_sector_Ü'Unchecked_Access);
+               Argument_id_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_id_Ü);
+               Arg_CC_id_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_id_Ü'Unrestricted_Access);
+               Arg_Any_id_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_id_Ü'Unchecked_Access);
+               Result_Ü : CORBA.String;
+               pragma Warnings (Off, Result_Ü);
+               Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Result_Ü'Unrestricted_Access);
+               Arg_Any_Result_Ü_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_String,
+                     Arg_CC_Result_Ü_Ü'Unchecked_Access);
+            begin
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  getInfo_Arg_Name_lap_Ü,
+                  Arg_Any_lap_Ü,
+                  CORBA.ARG_IN);
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  getInfo_Arg_Name_sector_Ü,
+                  Arg_Any_sector_Ü,
+                  CORBA.ARG_IN);
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  getInfo_Arg_Name_id_Ü,
+                  Arg_Any_id_Ü,
+                  CORBA.ARG_IN);
+               --  Processing request
+               CORBA.ServerRequest.Arguments
+                 (Request,
+                  Argument_List_Ü);
+               --  Call Implementation
+               Result_Ü :=
+                 Competition_Monitor.Impl.getInfo
+                    (Competition_Monitor.Impl.Object'Class
+                       (Self.all)'Access,
+                     Argument_lap_Ü,
+                     Argument_sector_Ü,
+                     Argument_id_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -289,15 +395,15 @@ package body Competition_Monitor.Skel is
             = "getCondCar")
          then
             declare
-               Argument_competitorID_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorID_Ü);
-               Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorID_Ü'Unrestricted_Access);
-               Arg_Any_competitorID_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorID_Ü'Unchecked_Access);
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -310,8 +416,8 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCondCar_Arg_Name_competitorID_Ü,
-                  Arg_Any_competitorID_Ü,
+                  getCondCar_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -322,7 +428,7 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getCondCar
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_competitorID_Ü);
+                     Argument_competitorIdIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -334,15 +440,15 @@ package body Competition_Monitor.Skel is
             = "getCompetitor")
          then
             declare
-               Argument_competitorID_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorID_Ü);
-               Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorID_Ü'Unrestricted_Access);
-               Arg_Any_competitorID_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorID_Ü'Unchecked_Access);
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -355,8 +461,8 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCompetitor_Arg_Name_competitorID_Ü,
-                  Arg_Any_competitorID_Ü,
+                  getCompetitor_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -367,7 +473,7 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getCompetitor
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_competitorID_Ü);
+                     Argument_competitorIdIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -379,15 +485,15 @@ package body Competition_Monitor.Skel is
             = "getCompetitorTimeSector")
          then
             declare
-               Argument_competitorID_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorID_Ü);
-               Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorID_Ü'Unrestricted_Access);
-               Arg_Any_competitorID_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorID_Ü'Unchecked_Access);
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
                Argument_sectorIn_Ü : CORBA.Short;
                pragma Warnings (Off, Argument_sectorIn_Ü);
                Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
@@ -409,8 +515,8 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCompetitorTimeSector_Arg_Name_competitorID_Ü,
-                  Arg_Any_competitorID_Ü,
+                  getCompetitorTimeSector_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
@@ -426,7 +532,7 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getCompetitorTimeSector
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_competitorID_Ü,
+                     Argument_competitorIdIn_Ü,
                      Argument_sectorIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
@@ -439,15 +545,15 @@ package body Competition_Monitor.Skel is
             = "getCompetitorTimeLap")
          then
             declare
-               Argument_competitorID_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorID_Ü);
-               Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorID_Ü'Unrestricted_Access);
-               Arg_Any_competitorID_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorID_Ü'Unchecked_Access);
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
                Argument_lapIn_Ü : CORBA.Short;
                pragma Warnings (Off, Argument_lapIn_Ü);
                Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
@@ -469,8 +575,8 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCompetitorTimeLap_Arg_Name_competitorID_Ü,
-                  Arg_Any_competitorID_Ü,
+                  getCompetitorTimeLap_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
@@ -486,7 +592,7 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getCompetitorTimeLap
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_competitorID_Ü,
+                     Argument_competitorIdIn_Ü,
                      Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
@@ -499,24 +605,24 @@ package body Competition_Monitor.Skel is
             = "getCompetitorTimeCheck")
          then
             declare
-               Argument_competitorID_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorID_Ü);
-               Arg_CC_competitorID_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorID_Ü'Unrestricted_Access);
-               Arg_Any_competitorID_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorID_Ü'Unchecked_Access);
-               Argument_checkpoint_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_checkpoint_Ü);
-               Arg_CC_checkpoint_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+               Argument_checkpointIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_checkpointIn_Ü);
+               Arg_CC_checkpointIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_checkpoint_Ü'Unrestricted_Access);
-               Arg_Any_checkpoint_Ü : constant CORBA.Any :=
+                    (Argument_checkpointIn_Ü'Unrestricted_Access);
+               Arg_Any_checkpointIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_checkpoint_Ü'Unchecked_Access);
+                     Arg_CC_checkpointIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -529,13 +635,13 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCompetitorTimeCheck_Arg_Name_competitorID_Ü,
-                  Arg_Any_competitorID_Ü,
+                  getCompetitorTimeCheck_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getCompetitorTimeCheck_Arg_Name_checkpoint_Ü,
-                  Arg_Any_checkpoint_Ü,
+                  getCompetitorTimeCheck_Arg_Name_checkpointIn_Ü,
+                  Arg_Any_checkpointIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -546,8 +652,8 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getCompetitorTimeCheck
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_competitorID_Ü,
-                     Argument_checkpoint_Ü);
+                     Argument_competitorIdIn_Ü,
+                     Argument_checkpointIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -559,15 +665,15 @@ package body Competition_Monitor.Skel is
             = "getGas")
          then
             declare
-               Argument_Competitor_Id_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Competitor_Id_Ü);
-               Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Competitor_Id_Ü'Unrestricted_Access);
-               Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Competitor_Id_Ü'Unchecked_Access);
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
                Argument_Sector_Ü : CORBA.Short;
                pragma Warnings (Off, Argument_Sector_Ü);
                Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
@@ -577,15 +683,15 @@ package body Competition_Monitor.Skel is
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
                      Arg_CC_Sector_Ü'Unchecked_Access);
-               Argument_Lap_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Lap_Ü);
-               Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_lapIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lapIn_Ü);
+               Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Lap_Ü'Unrestricted_Access);
-               Arg_Any_Lap_Ü : constant CORBA.Any :=
+                    (Argument_lapIn_Ü'Unrestricted_Access);
+               Arg_Any_lapIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Lap_Ü'Unchecked_Access);
+                     Arg_CC_lapIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -598,8 +704,8 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getGas_Arg_Name_Competitor_Id_Ü,
-                  Arg_Any_Competitor_Id_Ü,
+                  getGas_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
@@ -608,8 +714,8 @@ package body Competition_Monitor.Skel is
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getGas_Arg_Name_Lap_Ü,
-                  Arg_Any_Lap_Ü,
+                  getGas_Arg_Name_lapIn_Ü,
+                  Arg_Any_lapIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -620,9 +726,9 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getGas
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_Competitor_Id_Ü,
+                     Argument_competitorIdIn_Ü,
                      Argument_Sector_Ü,
-                     Argument_Lap_Ü);
+                     Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -634,33 +740,33 @@ package body Competition_Monitor.Skel is
             = "getTyreUsury")
          then
             declare
-               Argument_Competitor_Id_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Competitor_Id_Ü);
-               Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Competitor_Id_Ü'Unrestricted_Access);
-               Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-               Argument_Sector_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Sector_Ü);
-               Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+               Argument_sectorIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_sectorIn_Ü);
+               Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Sector_Ü'Unrestricted_Access);
-               Arg_Any_Sector_Ü : constant CORBA.Any :=
+                    (Argument_sectorIn_Ü'Unrestricted_Access);
+               Arg_Any_sectorIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Sector_Ü'Unchecked_Access);
-               Argument_Lap_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Lap_Ü);
-               Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_sectorIn_Ü'Unchecked_Access);
+               Argument_lapIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lapIn_Ü);
+               Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Lap_Ü'Unrestricted_Access);
-               Arg_Any_Lap_Ü : constant CORBA.Any :=
+                    (Argument_lapIn_Ü'Unrestricted_Access);
+               Arg_Any_lapIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Lap_Ü'Unchecked_Access);
+                     Arg_CC_lapIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -673,18 +779,18 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTyreUsury_Arg_Name_Competitor_Id_Ü,
-                  Arg_Any_Competitor_Id_Ü,
+                  getTyreUsury_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTyreUsury_Arg_Name_Sector_Ü,
-                  Arg_Any_Sector_Ü,
+                  getTyreUsury_Arg_Name_sectorIn_Ü,
+                  Arg_Any_sectorIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTyreUsury_Arg_Name_Lap_Ü,
-                  Arg_Any_Lap_Ü,
+                  getTyreUsury_Arg_Name_lapIn_Ü,
+                  Arg_Any_lapIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -695,9 +801,9 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getTyreUsury
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_Competitor_Id_Ü,
-                     Argument_Sector_Ü,
-                     Argument_Lap_Ü);
+                     Argument_competitorIdIn_Ü,
+                     Argument_sectorIn_Ü,
+                     Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -709,33 +815,33 @@ package body Competition_Monitor.Skel is
             = "getMeanSpeed")
          then
             declare
-               Argument_Competitor_Id_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Competitor_Id_Ü);
-               Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Competitor_Id_Ü'Unrestricted_Access);
-               Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-               Argument_Sector_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Sector_Ü);
-               Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+               Argument_sectorIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_sectorIn_Ü);
+               Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Sector_Ü'Unrestricted_Access);
-               Arg_Any_Sector_Ü : constant CORBA.Any :=
+                    (Argument_sectorIn_Ü'Unrestricted_Access);
+               Arg_Any_sectorIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Sector_Ü'Unchecked_Access);
-               Argument_Lap_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Lap_Ü);
-               Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_sectorIn_Ü'Unchecked_Access);
+               Argument_lapIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lapIn_Ü);
+               Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Lap_Ü'Unrestricted_Access);
-               Arg_Any_Lap_Ü : constant CORBA.Any :=
+                    (Argument_lapIn_Ü'Unrestricted_Access);
+               Arg_Any_lapIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Lap_Ü'Unchecked_Access);
+                     Arg_CC_lapIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -748,18 +854,18 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanSpeed_Arg_Name_Competitor_Id_Ü,
-                  Arg_Any_Competitor_Id_Ü,
+                  getMeanSpeed_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanSpeed_Arg_Name_Sector_Ü,
-                  Arg_Any_Sector_Ü,
+                  getMeanSpeed_Arg_Name_sectorIn_Ü,
+                  Arg_Any_sectorIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanSpeed_Arg_Name_Lap_Ü,
-                  Arg_Any_Lap_Ü,
+                  getMeanSpeed_Arg_Name_lapIn_Ü,
+                  Arg_Any_lapIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -770,9 +876,9 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getMeanSpeed
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_Competitor_Id_Ü,
-                     Argument_Sector_Ü,
-                     Argument_Lap_Ü);
+                     Argument_competitorIdIn_Ü,
+                     Argument_sectorIn_Ü,
+                     Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -784,33 +890,33 @@ package body Competition_Monitor.Skel is
             = "getTime")
          then
             declare
-               Argument_Competitor_Id_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Competitor_Id_Ü);
-               Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Competitor_Id_Ü'Unrestricted_Access);
-               Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-               Argument_Sector_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Sector_Ü);
-               Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+               Argument_sectorIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_sectorIn_Ü);
+               Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Sector_Ü'Unrestricted_Access);
-               Arg_Any_Sector_Ü : constant CORBA.Any :=
+                    (Argument_sectorIn_Ü'Unrestricted_Access);
+               Arg_Any_sectorIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Sector_Ü'Unchecked_Access);
-               Argument_Lap_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Lap_Ü);
-               Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_sectorIn_Ü'Unchecked_Access);
+               Argument_lapIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lapIn_Ü);
+               Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Lap_Ü'Unrestricted_Access);
-               Arg_Any_Lap_Ü : constant CORBA.Any :=
+                    (Argument_lapIn_Ü'Unrestricted_Access);
+               Arg_Any_lapIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Lap_Ü'Unchecked_Access);
+                     Arg_CC_lapIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -823,18 +929,18 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTime_Arg_Name_Competitor_Id_Ü,
-                  Arg_Any_Competitor_Id_Ü,
+                  getTime_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTime_Arg_Name_Sector_Ü,
-                  Arg_Any_Sector_Ü,
+                  getTime_Arg_Name_sectorIn_Ü,
+                  Arg_Any_sectorIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getTime_Arg_Name_Lap_Ü,
-                  Arg_Any_Lap_Ü,
+                  getTime_Arg_Name_lapIn_Ü,
+                  Arg_Any_lapIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -845,9 +951,9 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getTime
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_Competitor_Id_Ü,
-                     Argument_Sector_Ü,
-                     Argument_Lap_Ü);
+                     Argument_competitorIdIn_Ü,
+                     Argument_sectorIn_Ü,
+                     Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
@@ -859,33 +965,33 @@ package body Competition_Monitor.Skel is
             = "getMeanGasConsumption")
          then
             declare
-               Argument_Competitor_Id_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Competitor_Id_Ü);
-               Arg_CC_Competitor_Id_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_competitorIdIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorIdIn_Ü);
+               Arg_CC_competitorIdIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Competitor_Id_Ü'Unrestricted_Access);
-               Arg_Any_Competitor_Id_Ü : constant CORBA.Any :=
+                    (Argument_competitorIdIn_Ü'Unrestricted_Access);
+               Arg_Any_competitorIdIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Competitor_Id_Ü'Unchecked_Access);
-               Argument_Sector_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Sector_Ü);
-               Arg_CC_Sector_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_competitorIdIn_Ü'Unchecked_Access);
+               Argument_sectorIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_sectorIn_Ü);
+               Arg_CC_sectorIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Sector_Ü'Unrestricted_Access);
-               Arg_Any_Sector_Ü : constant CORBA.Any :=
+                    (Argument_sectorIn_Ü'Unrestricted_Access);
+               Arg_Any_sectorIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Sector_Ü'Unchecked_Access);
-               Argument_Lap_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_Lap_Ü);
-               Arg_CC_Lap_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_sectorIn_Ü'Unchecked_Access);
+               Argument_lapIn_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_lapIn_Ü);
+               Arg_CC_lapIn_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_Lap_Ü'Unrestricted_Access);
-               Arg_Any_Lap_Ü : constant CORBA.Any :=
+                    (Argument_lapIn_Ü'Unrestricted_Access);
+               Arg_Any_lapIn_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_Lap_Ü'Unchecked_Access);
+                     Arg_CC_lapIn_Ü'Unchecked_Access);
                Result_Ü : CORBA.String;
                pragma Warnings (Off, Result_Ü);
                Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
@@ -898,18 +1004,18 @@ package body Competition_Monitor.Skel is
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanGasConsumption_Arg_Name_Competitor_Id_Ü,
-                  Arg_Any_Competitor_Id_Ü,
+                  getMeanGasConsumption_Arg_Name_competitorIdIn_Ü,
+                  Arg_Any_competitorIdIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanGasConsumption_Arg_Name_Sector_Ü,
-                  Arg_Any_Sector_Ü,
+                  getMeanGasConsumption_Arg_Name_sectorIn_Ü,
+                  Arg_Any_sectorIn_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  getMeanGasConsumption_Arg_Name_Lap_Ü,
-                  Arg_Any_Lap_Ü,
+                  getMeanGasConsumption_Arg_Name_lapIn_Ü,
+                  Arg_Any_lapIn_Ü,
                   CORBA.ARG_IN);
                --  Processing request
                CORBA.ServerRequest.Arguments
@@ -920,9 +1026,9 @@ package body Competition_Monitor.Skel is
                  Competition_Monitor.Impl.getMeanGasConsumption
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
-                     Argument_Competitor_Id_Ü,
-                     Argument_Sector_Ü,
-                     Argument_Lap_Ü);
+                     Argument_competitorIdIn_Ü,
+                     Argument_sectorIn_Ü,
+                     Argument_lapIn_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,
