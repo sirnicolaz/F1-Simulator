@@ -26,12 +26,12 @@ package Competition_Monitor.impl is
       Updated : Boolean := false;
    end INFO_STRING;
 
-  --array di lap
-  type infoArray is array (Positive range<>) of INFO_STRING;
-  type INFO_ARRAY_POINT is access infoArray;
+   --array di lap
+   type infoArray is array (Positive range<>) of INFO_STRING;
+   type INFO_ARRAY_POINT is access infoArray;
 
-  --struttura dati con dentro l'array, ne esiste uno per ogni concorrente (rappresentato dall'array arrayComp(IDCONCORRENTE))
-  type INFO_POINT is record
+   --struttura dati con dentro l'array, ne esiste uno per ogni concorrente (rappresentato dall'array arrayComp(IDCONCORRENTE))
+   type INFO_POINT is record
       arrayInfo : INFO_ARRAY_POINT := new infoArray(1..10);
    end record;
 
@@ -54,13 +54,13 @@ package Competition_Monitor.impl is
    function getBestSector(Self : access Object; indexIn : CORBA.Short)return CORBA.String;
    function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
    function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING;
---     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
---     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
+   --     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
 
 private
    arrayComputer : OBC(1..10);

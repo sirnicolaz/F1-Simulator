@@ -50,7 +50,7 @@ package body Competition_Monitor.Impl is
 
          requeue GetSector;
       end Wait;
-     -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
+      -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
       procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String) is
       begin
          if index = 1 then sector1 := updXml;
@@ -58,17 +58,19 @@ package body Competition_Monitor.Impl is
          else sector3 := updXml;
          end if;
          Updated := true;
-         end setSector;
+      end setSector;
    end INFO_STRING;
    function getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short) return CORBA.String is
       stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin --TODO : da completare il corpo della funzione
-      return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
+      --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
+      return arrayComp(Integer(id)).arrayInfo(Integer(Lap)).getSector(Integer(sector));
+      --ritorna le info relative all'utente id, del giro lap del settore sector (se non presenti va in wait, il settore è una risorsa protetta)
    end getInfo;
 
    procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String) is
    begin
-     arrayComp(id).arrayInfo(lap).setSector(sector, updXml);
+      arrayComp(id).arrayInfo(lap).setSector(sector, updXml);
    end setInfo;
 
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
@@ -128,10 +130,10 @@ package body Competition_Monitor.Impl is
       for index in 0..class'length
       loop
          Unbounded_String.Append(ret,"<competitor id="
-                                            &Integer'Image(Get_CompetitorId(class(index)))
-                                            &" >"
-                                            &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
-                                              &"</compId>");
+                                 &Integer'Image(Get_CompetitorId(class(index)))
+                                 &" >"
+                                 &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
+                                 &"</compId>");
       end loop;
       Unbounded_String.Append(ret, "</classific></update>");
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
@@ -168,7 +170,7 @@ package body Competition_Monitor.Impl is
       return retString;
    end getBestLap;
    function getBestSector(Self : access Object; indexIn : CORBA.Short) return CORBA.String is
-            retString : CORBA.String;
+      retString : CORBA.String;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
       num : INTEGER;
       id : INTEGER;
@@ -187,7 +189,7 @@ package body Competition_Monitor.Impl is
                                             &"</idComp><time>"
                                             &Float'Image(time)
                                             &"</time></bestsector>"
-                                            );
+                                           );
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestSector;
@@ -198,22 +200,22 @@ package body Competition_Monitor.Impl is
    end getCompetitor;
 
    function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING is
-  upd : FLOAT := 100.0;
-   global : GLOBAL_STATS_HANDLER_POINT;
-   temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+      upd : FLOAT := 100.0;
+      global : GLOBAL_STATS_HANDLER_POINT;
+      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
    begin
       global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
-return CORBA.To_CORBA_String("getCompetitorTimeSector");
+      return CORBA.To_CORBA_String("getCompetitorTimeSector");
 
 
    end getCompetitorTimeSector;
 
---     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
---     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
---     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
+   --     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   --     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
 
 end Competition_Monitor.Impl;

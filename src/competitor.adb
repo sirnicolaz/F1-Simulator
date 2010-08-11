@@ -750,6 +750,7 @@ package body Competitor is
       SectorID : INTEGER;
 --carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
+      updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin
 
       Ada.Text_IO.Put_Line("init task");--sincronizzazione task iniziale
@@ -805,15 +806,15 @@ package body Competitor is
 
          C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
-                                                             --era while ... loop
+         --era while ... loop
 
          --NEW, ovunque sia che bisogna usarlo, il checkpoint successivo ai box
          --+ si ottiene con Get_ExitBoxCheckpoint invece che Get_NextCheckpoint
 
          -- NEW, prima non era commentato. Ora è stato cambiato il checkpoint
---           while Paths2Cross = null loop
---              C_Checkpoint.Wait(id,Paths2Cross);
---           end loop;
+         --           while Paths2Cross = null loop
+         --              C_Checkpoint.Wait(id,Paths2Cross);
+         --           end loop;
 
          --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
@@ -877,12 +878,21 @@ package body Competitor is
          Common.Set_Checkpoint(compStats, i-1);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
-                                                 --commentato- da correggere il ripo di gaslevel
+         --commentato- da correggere il ripo di gaslevel
          Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats);
---Competition_Monitor.impl.AddComp(compStats, carDriver.Id); --salvo l'ultimo compStats e lo passo alla competition monitor che poi la userà per ritornare i dati
+         Unbounded_String.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
+                                               &"<gasLevel><tyreUsury>"&Float'Image(carDriver.auto.TyreUsury)
+                                               &"</tyreUsury><time>"
+                                               &Float'Image(predictedTime)&"</time><lap>"
+                                               &Integer'Image(42)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
+                                               &Integer'Image(sectorID)&"</sector>"
+                                              );
+         Competition_Monitor.impl.setInfo(42,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+         --viene salvata la stringa che va a costruire la parte iniziale di update.xml
+
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 
          Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
