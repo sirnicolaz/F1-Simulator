@@ -22,7 +22,7 @@ package Box is
                   BoxStrategy_In : in BOX_STRATEGY;
                   GasTankCapacity_In : FLOAT);
 
-   type COMPETITION_UPDATE( competitor_qty : INTEGER) is record
+   type COMPETITION_UPDATE is record
       GasLevel : FLOAT;
       TyreUsury : PERCENTAGE;
       MeanSpeed : FLOAT; -- km/h
@@ -30,7 +30,9 @@ package Box is
       Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
-      Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);
+      --For now it's not necessary. In the future there might be an improvement
+      --+ in the strategy computation considering the classific too.
+      --Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);
    end record;
 
    type COMPETITION_UPDATE_POINT is access COMPETITION_UPDATE;
@@ -87,7 +89,6 @@ package Box is
       history : access STRATEGY_HISTORY;
       history_size : INTEGER := 0;
       Updated : BOOLEAN := false;
-      --TODO: evaluate whether to put a PitStopDone field or not
    end SYNCH_STRATEGY_HISTORY;
 
    type SYNCH_STRATEGY_HISTORY_POINT is access SYNCH_STRATEGY_HISTORY;

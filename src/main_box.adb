@@ -159,7 +159,7 @@ begin
       --Settings resource (shared with the configurator)
       Settings : access Configurator.Impl.SYNCH_COMPETITION_SETTINGS;
       --Settings
-      CompetitionMonitor_CorbaLOC : access Unbounded_String.Unbounded_String := new Unbounded_String.Unbounded_String;
+      CompetitionMonitor_CorbaLOC : Common.UNBOUNDED_STRING_POINT := new Unbounded_String.Unbounded_String;
       Laps : INTEGER := -1;
       CircuitLength : FLOAT := -1.0;
       CompetitorID : INTEGER := -1;

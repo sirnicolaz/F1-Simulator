@@ -27,7 +27,7 @@ package body Monitor.impl is
 
       -- The NewInfo is initialised to 1 for construction constraints.
       --+ The get update method will "update" the variable to the right value.
-      NewInfo := new Box.COMPETITION_UPDATE(1);
+      NewInfo := new Box.COMPETITION_UPDATE;
       Buffer.Get_Update(NewInfo.all,INTEGER(num));
       return CORBA.To_CORBA_String(Box.CompetitionUpdateToXML(NewInfo.all));
    end GetUpdate;

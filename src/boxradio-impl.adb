@@ -35,7 +35,7 @@ package body BoxRadio.impl is
       pragma Unreferenced (Self);
       pragma Warnings (On);
 
-      NewStrategy : Box.BOX_STRATEGY;
+      NewStrategy : Common.STRATEGY;
 
    begin
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
