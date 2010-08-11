@@ -26,11 +26,12 @@ package Common is
    type FLOAT_LIST is array(INTEGER range <>) of FLOAT;
    subtype IP_PART is INTEGER range 0..255;
    type IP_ADDRESS is private;
+   type UNBOUNDED_STRING_POINT is access Unbounded_String.Unbounded_String;
 
    type STRATEGY is record
       Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Style : DRIVING_STYLE;
-      GasLevel : PERCENTAGE;
+      GasLevel : FLOAT;
       PitStopLap : INTEGER;
       PitStopDelay : FLOAT;
    end record;
