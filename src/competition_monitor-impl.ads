@@ -52,8 +52,8 @@ package Competition_Monitor.impl is
    function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING;
    function getBestLap(Self : access Object) return CORBA.STRING;
    function getBestSector(Self : access Object; indexIn : CORBA.Short)return CORBA.String;
-   function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
-   function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING;
+   --function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
+   --function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING;
    --     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
    --     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;

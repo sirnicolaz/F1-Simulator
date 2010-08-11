@@ -60,11 +60,39 @@ package body Competition_Monitor.Impl is
          Updated := true;
       end setSector;
    end INFO_STRING;
+
    function getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short) return CORBA.String is
       stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-   begin --TODO : da completare il corpo della funzione
+      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
+      upd : FLOAT := 100.0;
+      global : GLOBAL_STATS_HANDLER_POINT;
+      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+   begin
+      global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
+      class.all := global.global.Test_Get_Classific;
       --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
-      return arrayComp(Integer(id)).arrayInfo(Integer(Lap)).getSector(Integer(sector));
+--      Unbounded_String.Set_Unbounded_String(stringRet,
+      arrayComp(Integer(id)).arrayInfo(Integer(Lap)).getSector(Integer(sector),stringRet);
+      Unbounded_String.Append(stringRet,"<classific competitors="
+                              &Integer'Image(class'Length)
+                              &"><competitor id="
+                              &Integer'Image(Get_CompetitorId(class(1)))
+                              &" >0.0</compId>");
+      --        <competitor id="
+      --                                              &Integer'Image(Get_CompetitorId(class(2)))
+      --                                              &" >"
+      --                                              &Float'Image(Get_Time(class(2))-Get_Time(class(1)))
+      --                                              &"</compId></classific>");
+      for index in 0..class'length
+      loop
+         Unbounded_String.Append(stringRet,"<competitor id="
+                                 &Integer'Image(Get_CompetitorId(class(index)))
+                                 &" >"
+                                 &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
+                                 &"</compId>");
+      end loop;
+      Unbounded_String.Append(stringRet, "</classific></update>");
+      return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
       --ritorna le info relative all'utente id, del giro lap del settore sector (se non presenti va in wait, il settore è una risorsa protetta)
    end getInfo;
 

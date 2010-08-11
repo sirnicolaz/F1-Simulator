@@ -21,14 +21,6 @@ package Competition_Monitor is
    Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor:1.0";
 
-   function getClassific
-     (Self : Ref;
-      idComp_In : CORBA.Short)
-     return CORBA.String;
-
-   getClassific_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getClassific:1.0";
-
    function getInfo
      (Self : Ref;
       lap : CORBA.Short;
@@ -53,99 +45,6 @@ package Competition_Monitor is
 
    getBestSector_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor/getBestSector:1.0";
-
-   function getCondCar
-     (Self : Ref;
-      competitorIdIn : CORBA.Short)
-     return CORBA.String;
-
-   getCondCar_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getCondCar:1.0";
-
-   function getCompetitor
-     (Self : Ref;
-      competitorIdIn : CORBA.Short)
-     return CORBA.String;
-
-   getCompetitor_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getCompetitor:1.0";
-
-   function getCompetitorTimeSector
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      sectorIn : CORBA.Short)
-     return CORBA.String;
-
-   getCompetitorTimeSector_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getCompetitorTimeSector:1.0";
-
-   function getCompetitorTimeLap
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getCompetitorTimeLap_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getCompetitorTimeLap:1.0";
-
-   function getCompetitorTimeCheck
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      checkpointIn : CORBA.Short)
-     return CORBA.String;
-
-   getCompetitorTimeCheck_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getCompetitorTimeCheck:1.0";
-
-   function getGas
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      Sector : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getGas_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getGas:1.0";
-
-   function getTyreUsury
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      sectorIn : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getTyreUsury_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getTyreUsury:1.0";
-
-   function getMeanSpeed
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      sectorIn : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getMeanSpeed_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getMeanSpeed:1.0";
-
-   function getTime
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      sectorIn : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getTime_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getTime:1.0";
-
-   function getMeanGasConsumption
-     (Self : Ref;
-      competitorIdIn : CORBA.Short;
-      sectorIn : CORBA.Short;
-      lapIn : CORBA.Short)
-     return CORBA.String;
-
-   getMeanGasConsumption_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor/getMeanGasConsumption:1.0";
 
    function Is_A
      (Self : Ref;
