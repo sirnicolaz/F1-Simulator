@@ -1,7 +1,7 @@
 with Common;
 use Common;
 
-with Competitor;
+--with Competitor;
 
 with Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
@@ -23,7 +23,7 @@ package Box is
                   GasTankCapacity_In : FLOAT);
 
    type COMPETITION_UPDATE( competitor_qty : INTEGER) is record
-      GasLevel : PERCENTAGE;
+      GasLevel : FLOAT;
       TyreUsury : PERCENTAGE;
       MeanSpeed : FLOAT; -- km/h
       MeanGasConsumption : FLOAT; -- l/h
@@ -59,7 +59,7 @@ package Box is
    --+ remote server and putting them into the updated buffer shared with
    --+ the strategy updater
    task type MONITOR(SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
-                     MonitorRadio_CorbaLOC : access Unbounded_String.Unbounded_String) is
+                     MonitorRadio_CorbaLOC : Common.UNBOUNDED_STRING_POINT) is
    end MONITOR;
 
    --The resource handle the mutually exclusive access to the
