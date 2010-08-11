@@ -67,6 +67,7 @@ package body Competition_Monitor.Impl is
       upd : FLOAT := 100.0;
       global : GLOBAL_STATS_HANDLER_POINT;
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+      index : INTEGER := 0;
    begin
       global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
       class.all := global.global.Test_Get_Classific;
@@ -78,12 +79,8 @@ package body Competition_Monitor.Impl is
                               &"><competitor id="
                               &Integer'Image(Get_CompetitorId(class(1)))
                               &" >0.0</compId>");
-      --        <competitor id="
-      --                                              &Integer'Image(Get_CompetitorId(class(2)))
-      --                                              &" >"
-      --                                              &Float'Image(Get_Time(class(2))-Get_Time(class(1)))
-      --                                              &"</compId></classific>");
-      for index in 0..class'length
+
+      for index in 0..class'length --loop per costruire la classifica dopo il primo concorrente
       loop
          Unbounded_String.Append(stringRet,"<competitor id="
                                  &Integer'Image(Get_CompetitorId(class(index)))
@@ -92,7 +89,7 @@ package body Competition_Monitor.Impl is
                                  &"</compId>");
       end loop;
       Unbounded_String.Append(stringRet, "</classific></update>");
-      return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
+      return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));--file update.xml completo
       --ritorna le info relative all'utente id, del giro lap del settore sector (se non presenti va in wait, il settore è una risorsa protetta)
    end getInfo;
 

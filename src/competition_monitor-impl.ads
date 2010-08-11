@@ -49,7 +49,8 @@ package Competition_Monitor.impl is
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
    procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER);
    procedure AddCompId (IdComp :  INTEGER);
-   function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING;
+   --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING; TODO per ora commentata, non serve, la classifica viene già ritornata ai box
+   --eventualmente la riuseremo per le tv, un po modificata magari.
    function getBestLap(Self : access Object) return CORBA.STRING;
    function getBestSector(Self : access Object; indexIn : CORBA.Short)return CORBA.String;
    --function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
@@ -63,9 +64,9 @@ package Competition_Monitor.impl is
    --     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
 
 private
-   arrayComputer : OBC(1..10);
-   arrayStats : compStatsArray(1..10);
-   arrayComp : compArray(1..10);
-   --arrayInfo : infoArray(1..10);
+   arrayComputer : OBC(1..10);--per avere gli onboardcomputer di ogni concorrente
+   arrayStats : compStatsArray(1..10); --per avere le statistiche
+   arrayComp : compArray(1..10);--per avere l'array con i dati relativi a ogni concorrente (l'id del concorrente è l'indice dell'array)
+   --TODO : correggere gli indici degli array per ora fissati a 10 e poi a max competitors.
 
 end Competition_Monitor.impl;
