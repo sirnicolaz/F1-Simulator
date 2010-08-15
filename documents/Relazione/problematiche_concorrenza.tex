@@ -1,26 +1,27 @@
-% - Predicibilità della gara
+% - PredicibilitÃ  della gara
 % - Corretto svolgimento della gara rispetto agli input forniti, in modo indipendente dalle funzionamento
 % delle componenti a basso livello de sistema operativo (scheduler....)
 % - Evitare race condition su risorse condivise
 % - Evitare stalli del sistema
-% - Assicurarsi che vi sia almeno un istante t in cui due o più task eseguano in concorrenza
+% - Assicurarsi che vi sia almeno un istante t in cui due o piÃ¹ task eseguano in concorrenza
 % - Coerenza temporale
 % - Evitare starvation
-Nel corso dell'analisi ad alto livello del progetto, sono emerse numerose problematiche legate alla coesistenza nel sistema di più \emph{task} concorrenti e di risorse tra di essi condivise. \\
+Nel corso dell'analisi ad alto livello del progetto, sono emerse numerose problematiche legate alla coesistenza nel 
+sistema di pi\`{u} \emph{task} concorrenti e di risorse tra di essi condivise. \\
 \subsection{Percorrenza concorrente della pista}
-Come da specifica, il sistema dovrà prevedere una pista per lo svolgimento della gara. I partecipanti percorreranno quindi i tratti del circuito in modo concorrente e questo pone già numerose problematiche per il corretto svolgimento della competizione.
-Si può vedere ogni tratto come una risorsa condivisa fra i concorrenti della gara. Ciascuna risorsa avrà una motleplicità limitata, coerentemente a quanto accade nella realtà. Questo porta inevitabilmente a due problematiche da affrontare:
+Come da specifica, il sistema dovr\`{a} prevedere una pista per lo svolgimento della gara. I partecipanti percorreranno quindi i tratti del circuito in modo concorrente e questo pone gi\`{a} numerose problematiche per il corretto svolgimento della competizione.
+Si pu\`{o} vedere ogni tratto come una risorsa condivisa fra i concorrenti della gara. Ciascuna risorsa avr\`{a} una motleplicit\`{a} limitata, coerentemente a quanto accade nella realt\`{a}. Questo porta inevitabilmente a due problematiche da affrontare:
 \begin{enumerate}
-\item I concorrenti dovranno attraversare ogni tratto in modo da non violare i limiti di molteplicità imposti. Bisognerà quindi impedire che ad un istante \textbf{t} dello svolgimento della gara, su un tratto con molteplicità \textbf{n} vi siano, contemporaneamente, \textbf{n+1} auto che lo stanno attraversando;
-\item Evitare ``teletrasporto''. Uno possibile scenario che si potrebbe infatti presentare nel corso della gara potrebbe essere il seguente (in caso di progettazione poco attenta):
-Un tratto \textbf{TrN} a molteplicità \textbf{1} viene attraversato da \textbf{2} auto, \textbf{A} e \textbf{B}. Logicamente, quindi, se \textbf{A} arriva prima di \textbf{B}, all'inizio del tratto \textbf{TrN+1} l'ordine dovrà essere mantenuto. Ad alto livello si potrebbe pensare, come soluzione plausibile, di affidare ad \textbf{A} la risorsa \textbf{TrN} e, una volta effettuato virtualmente l'attraversamento, farla rilasciare e affidarle il tratto \textbf{TrN+1}, mentre \textbf{B} starà cercando di ottenere \textbf{TrN} e percorrerlo.
-Questa soluzione non tiene però in considerazione le problematiche legate alla gestione dei processi dallo scheduler. Potrebbe infatti accadere che:
+\item I concorrenti dovranno attraversare ogni tratto in modo da non violare i limiti di molteplicit\`{a} imposti. Bisogner\`{a} quindi impedire che ad un istante \textbf{t} dello svolgimento della gara, su un tratto con molteplicit\`{a} \textbf{n} vi siano, contemporaneamente, \textbf{n+1} auto che lo stanno attraversando;
+\item Evitare l'effetto ``teletrasporto''. Uno possibile scenario che si potrebbe infatti presentare nel corso della gara potrebbe essere il seguente (in caso di progettazione poco attenta):
+Un tratto $Tr_N$ a molteplicit\`{a} \textbf{1} viene attraversato da \textbf{2} auto, \textbf{A} e \textbf{B}. Logicamente, quindi, se \textbf{A} arriva prima di \textbf{B}, all'inizio del tratto $Tr_{N+1}$ l'ordine dovr\`{a} essere mantenuto. Ad alto livello si potrebbe pensare, come soluzione plausibile, di affidare ad \textbf{A} la risorsa $Tr_N$ e, una volta effettuato virtualmente l'attraversamento, farla rilasciare e affidarle il tratto $Tr_{N+1}$, mentre \textbf{B} star\`{a} cercando di ottenere$Tr_N$ e percorrerlo.
+Questa soluzione non tiene per\`{o} in considerazione le problematiche legate alla gestione dei processi dallo scheduler. Potrebbe infatti accadere che:
 \begin{itemize}
-\item \textbf{A} ottiene \textbf{TrN} e \textbf{B} rimane in attesa;
-\item \textbf{A} rilascia \textbf{TrN} e viene prerilasciato dallo scheduler;
-\item \textbf{B} ottiene \textbf{TrN}, lo rilascia e successivamente ottiene \textbf{trN+1} prima di essere prerilasciato dallo scheduler;
-\item \textbf{A} è di nuovo attivo ma si trova in una posizione non coerente con quanto previsto: è avvenuto un sorpasso in una zona non consentita.
+\item \textbf{A} ottiene $Tr_N$ e \textbf{B} rimane in attesa;
+\item \textbf{A} rilascia $Tr_N$ e viene prerilasciato dallo scheduler;
+\item \textbf{B} ottiene $Tr_N$, lo rilascia e successivamente ottiene $Tr_{N+1}$ prima di essere prerilasciato dallo scheduler;
+\item \textbf{A} \`{e} di nuovo attivo ma si trova in una posizione non coerente con quanto previsto: \`{e} avvenuto un sorpasso in una zona non consentita.
 \end{itemize}
-Da questo emerge il problema della gestione dei processi a livello di sistema operativo. Non è possibile infatti fare assunzione sulle politiche di ordinamento e esecuzione dello scheduler, poichè dipende dalle scelte architetturali del sistema operativo sottostante. Di conseguenza è necessario sviluppare un strategia di svolgimento della gara che preservi la coerenza della competizione indipendentemente dal comportamento, talvolta non prevedibile, dello scheduler.
-\item Il problema precedente potrebbe essere raggirato introducendo l'accumulo di risorse. Ovvero prima di rilasciare il tratto \textbf{TrN}, il concorrente \textbf{TrN+1} deve aver già ottenuto l'accesso al tratto \textbf{TrN+1}. In questo modo, però, si potrebbe presentare una prospettiva di stallo. Infatti, se il numero di tratti è minore o uguale al numero di concorrenti, potrebbe verificarsi un'attesa circolare potenzialmente infinita sui tratti della pista. Bisogna quindi assicurarsi che non ci siano le condizioni per il verificarsi di stalli.
+Da questo emerge il problema della gestione dei processi a livello di sistema operativo. Non \`{e} possibile infatti fare assunzione sulle politiche di ordinamento e esecuzione dello scheduler, poich\`{e} dipende dalle scelte architetturali del sistema operativo sottostante. Di conseguenza \`{e} necessario sviluppare un strategia di svolgimento della gara che preservi la coerenza della competizione indipendentemente dal comportamento, talvolta non prevedibile, dello scheduler.
+\item Il problema precedente potrebbe essere raggirato introducendo l'accumulo di risorse. Ovvero prima di rilasciare il tratto $Tr_N$, il concorrente $Tr_{N+1}$ deve aver gi\`{a} ottenuto l'accesso al tratto $Tr_{N+1}$. In questo modo, per\`{o}, si potrebbe presentare una prospettiva di stallo. Infatti, se il numero di tratti \`{e} minore o uguale al numero di concorrenti, potrebbe verificarsi un'attesa circolare potenzialmente infinita sui tratti della pista. Bisogna quindi assicurarsi che non ci siano le condizioni per il verificarsi di stalli.
 \end{enumerate}

@@ -21,11 +21,16 @@ with Ada.Strings.Unbounded;
 with Stats;
 use Stats;
 
-with BoxRadio;
+with CompetitorRadio;
+use CompetitorRadio;
 
+with Common;
 package Competitor is
    package Str renames Ada.Strings.Unbounded;
    use type Str.Unbounded_String;
+
+   procedure Set_Laps( LapsQty : in INTEGER);
+
 
    type VEL is array (POSITIVE range <>) of FLOAT;
    type DRIVER is record
@@ -38,10 +43,10 @@ package Competitor is
    type CAR is record -- macchina
       MaxSpeed : FLOAT;
       MaxAcceleration : FLOAT;
-      GasTankCapacity : INTEGER;
+      GasTankCapacity : FLOAT;
       Engine : Str.Unbounded_String := Str.Null_Unbounded_String;--STRING(1..6):="xxxxxx";
       TyreUsury : FLOAT;
-      GasolineLevel : INTEGER;
+      GasolineLevel : FLOAT;
       -- private subtype TYRE is record
       Mixture : Str.Unbounded_String := Str.Null_Unbounded_String;-- : STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
       Model : Str.Unbounded_String := Str.Null_Unbounded_String;--STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
@@ -61,17 +66,18 @@ package Competitor is
    type CAR_DRIVER is tagged record
       auto : CAR;
       pilota : DRIVER;
-      strategia : STRATEGY_CAR;
+      strategia : Common.STRATEGY;
       RaceIterator : RACETRACK_ITERATOR;
       Id: INTEGER;
       statsComputer : COMPUTER_POINT := new COMPUTER;
-      Radio : BoxRadio.Ref;
+      Radio : BOX_CONNECTION;
    end record;
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
    function Init_Competitor(xml_file : STRING;
                             RaceIterator : RACETRACK_ITERATOR;
                             id_In : INTEGER;
-                            BoxRadio_CorbaLoc : in STRING) return CAR_DRIVER_ACCESS;
+                            BoxRadio_CorbaLoc : in STRING;
+                            GlobalStatsHandler : GLOBAL_STATS_HANDLER_POINT) return CAR_DRIVER_ACCESS;
   -- procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
 -- set and get function for tyre into car
    function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String;
@@ -87,20 +93,18 @@ package Competitor is
 
 
    -- Set car values
-
-
    function Get_MaxSpeed(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_MaxAcceleration(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
-   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_Engine(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String;
 
    procedure Configure_Car(Car_In : in out CAR;
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
-                           GasTankCapacity_In : INTEGER;
+                           GasTankCapacity_In : FLOAT;
                            Engine_In : Str.Unbounded_String;
                            TyreUsury_In : FLOAT;
-                           GasolineLevel_In : INTEGER;
+                           GasolineLevel_In : FLOAT;
                            Mixture_In : Str.Unbounded_String;
                            Model_In : Str.Unbounded_String;
                            Type_Tyre_In : Str.Unbounded_String);
@@ -108,9 +112,9 @@ package Competitor is
    procedure Set_Usury(Car_In : in out CAR_DRIVER_ACCESS;
                        Usury_In : FLOAT);
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
-                          GasLevel_In : INTEGER);
+                          GasLevel_In : FLOAT);
    function Get_Usury(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
-   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Calculate_Status(infoLastSeg : in CAR_DRIVER_ACCESS) return BOOLEAN;
    -- procedure Calculate_Status(infoLastSeg);
    -- questo metodo controlla tyre usury e gasoline level
@@ -120,7 +124,7 @@ package Competitor is
    --la macchina non riesca più a girare nel caso il box non sia tempestivo
    --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
    -- almeno 2 direi.
-   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER );
+   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT );
    procedure Set_Vel_In(Competitor_In : in out CAR_DRIVER_ACCESS; PVel_In : in FLOAT);
    function Get_Vel_In(Competitor_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Get_Team(Competitor_In :CAR_DRIVER_ACCESS) return Str.Unbounded_String;
@@ -148,26 +152,20 @@ package Competitor is
                               FirstName_In : Str.Unbounded_String;
                               LastName_In : Str.Unbounded_String;
                               Vel_In : FLOAT);
-   procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
-                                pitstopGasolineLevel_In : FLOAT;
-                                pitstopLaps_In: INTEGER;
-                                pitstopCondition_In : BOOLEAN;
-                                trim_In : INTEGER;
-                                pitstop_In : BOOLEAN);
 
    --function Evaluate(driver : CAR_DRIVER_ACCESS ; F_Segment : CHECKPOINT_SYNCH_POINT;
      --                Paths2Cross : CROSSING_POINT) return FLOAT;
    --function CalculateCrossingTime(CarDriver : CAR_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
     --                              F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
     --                              Paths2Cross : CROSSING_POINT) return FLOAT;
-   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT;
+   function Get_StrategyGasLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT;
 
-   function Get_pitstopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Get_StrategyPitstopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER;
 
-   function Get_pitstopCondition (str_In : CAR_DRIVER_ACCESS) return BOOLEAN;
+   function Get_StrategyTyreType (str_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String;
 
-   function Get_trim (str_In : CAR_DRIVER_ACCESS) return INTEGER;
+   function Get_StrategyPitStopDelay (str_In : CAR_DRIVER_ACCESS) return FLOAT;
 
-   function Get_pitstop (str_In : CAR_DRIVER_ACCESS) return BOOLEAN;
+   function Get_StrategyStyle (str_In : CAR_DRIVER_ACCESS) return Common.DRIVING_STYLE;
 
 end Competitor;

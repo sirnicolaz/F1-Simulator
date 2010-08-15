@@ -32,10 +32,13 @@ package Common is
       Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Style : DRIVING_STYLE;
       GasLevel : FLOAT;
-      PitStopLap : INTEGER;
+      PitStopLaps : INTEGER;
       PitStopDelay : FLOAT;
    end record;
 
+   function SaveToFile(FileName : STRING;
+                        Content : STRING;
+                        Path : STRING) return BOOLEAN;
 
    procedure Set_IpAddress(ip_out : out IP_ADDRESS;
                  ip_string : in STRING);

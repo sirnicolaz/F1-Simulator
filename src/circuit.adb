@@ -269,6 +269,11 @@ package body Circuit is
          return F_CheckPoint.IsExitBox;
       end Is_ExitBox;
 
+      function Is_Goal return BOOLEAN is
+      begin
+         return F_CheckPoint.IsGoal;
+      end Is_Goal;
+
       --The function returns the length of the shortest path
       function Get_Length return FLOAT is
       begin

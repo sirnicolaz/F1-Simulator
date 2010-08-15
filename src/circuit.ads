@@ -109,6 +109,7 @@ package Circuit is
 
       function Is_PreBox return BOOLEAN;
       function Is_ExitBox return BOOLEAN;
+      function Is_Goal return BOOLEAN;
 
       function Get_Length return FLOAT;
 

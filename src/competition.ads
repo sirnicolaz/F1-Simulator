@@ -55,7 +55,10 @@ package Competition is
       Stop_Joining : BOOLEAN := False;
       Configured : BOOLEAN := False;
       Comp_List : access Common.COMPETITOR_LIST;
-      Global_Statistics : Stats.GLOBAL_STATS_HANDLER_POINT;
+      Monitor : Competition_monitor.impl.STARTSTOPHANDLER_POINT;
+      --TODO: verify if really needed
+      GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
+      GenericStatistics : GENERIC_STATS_POINT;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

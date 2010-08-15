@@ -91,6 +91,18 @@ package body COMMON is
       return null;
    end Get_Feature_Node;
 
+   function SaveToFile(FileName : STRING;
+                        Content : STRING;
+                        Path : STRING) return BOOLEAN is
+      File : Ada.Text_IO.FILE_TYPE;
+   begin
+      --TODO: return false if file creation fails
+      Ada.Text_IO.Create(File, Ada.Text_IO.Out_File, Path & FileName);
+      Ada.Text_IO.Put(File, Content);
+      Ada.Text_IO.Close(File);
+      return true;
+   end SaveToFile;
+
    function FloatToString( num : FLOAT ) return STRING is
       Temp_StringLength : INTEGER;
       Temp_String : access STRING;

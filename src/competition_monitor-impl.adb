@@ -6,8 +6,6 @@ with Ada.Text_IO;
 with Competition_Monitor.Skel;
 pragma Warnings (Off, Competition_Monitor.Skel);
 with CORBA;
-with Stats;
-use Stats;
 
 with Ada.Strings.Unbounded;
 --with Sax.Readers; use Sax.Readers;
@@ -19,6 +17,53 @@ with Ada.Strings.Unbounded;
 with Common;
 
 package body Competition_Monitor.Impl is
+
+   CompetitionHandler : StartStopHandler_POINT;
+   GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
+   CompetitorQty : INTEGER;
+
+   protected body StartStopHandler is
+
+      procedure Ready ( CompetitorID : in INTEGER) is
+      begin
+         ExpectedBoxes := ExpectedBoxes - 1;
+      end Ready;
+      --TODO: maybe not necessary
+      procedure Stop( CompetitorID : in INTEGER) is
+      begin
+         null;
+      end Stop;
+
+      --Through this method the competition knows when to start the competitors
+      entry WaitReady when ExpectedBoxes = 0 is
+      begin
+         null;
+      end WaitReady;
+
+      procedure Set_ExpectedBoxes( CompetitorQty : INTEGER) is
+      begin
+         ExpectedBoxes := CompetitorQty;
+      end Set_ExpectedBoxes;
+
+   end StartStopHandler;
+
+   function Init( CompetitorQty_In : INTEGER;
+                 GlobalStatistics_In : GLOBAL_STATS_HANDLER_POINT ) return STARTSTOPHANDLER_POINT is
+
+   begin
+      CompetitorQty := CompetitorQty_In;
+
+      arrayComputer := new OBC(1..CompetitorQty);
+      arrayStats := new compStatsArray(1..CompetitorQty);
+      arrayComp := new compArray(1..CompetitorQty);
+      CompetitionHandler := new STARTSTOPHANDLER;
+      CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
+
+      GlobalStatistics := GlobalStatistics_In;
+
+      return CompetitionHandler;
+   end Init;
+
    protected body INFO_STRING is
       entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when true is -- ritorna le info sul settore relativo al giro, se disponibili
       begin
@@ -63,14 +108,15 @@ package body Competition_Monitor.Impl is
 
    function getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short) return CORBA.String is
       stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
+      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..CompetitorQty);
       upd : FLOAT := 100.0;
-      global : GLOBAL_STATS_HANDLER_POINT;
-      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+      --global : GLOBAL_STATS_HANDLER_POINT;
+      --temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+
       index : INTEGER := 0;
    begin
-      global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
-      class.all := global.global.Test_Get_Classific;
+      --global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
+      class.all := GlobalStatistics.global.Test_Get_Classific;
       --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
 --      Unbounded_String.Set_Unbounded_String(stringRet,
       arrayComp(Integer(id)).arrayInfo(Integer(Lap)).getSector(Integer(sector),stringRet);
@@ -104,17 +150,17 @@ package body Competition_Monitor.Impl is
    end AddOBC;
 
 
-   procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER) is
-   begin
-      arrayStats(IndexIn) := compStats_In;
-   end AddComp;
+--   procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER) is
+ --  begin
+  --    arrayStats(IndexIn) := compStats_In;
+   --end AddComp;
 
 
    function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING is
-      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
-      upd : FLOAT := 100.0;
-      global : GLOBAL_STATS_HANDLER_POINT;
-      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+      class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..CompetitorQty);
+      --upd : FLOAT := 100.0;
+--      global : GLOBAL_STATS_HANDLER_POINT;
+--      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
       ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       retString : CORBA.String;
       index : INTEGER := 0;
@@ -126,7 +172,7 @@ package body Competition_Monitor.Impl is
       tyreUsury : FLOAT;
       time : FLOAT;
    begin
-      global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
+      --global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
       tempStats := arrayStats(Integer(idComp_In)).all;
       lap := Common.Get_Lap(tempStats);
       checkpoint := Common.Get_Checkpoint(tempStats);
@@ -134,7 +180,7 @@ package body Competition_Monitor.Impl is
       tyreUsury := Common.Get_Tyre(tempStats);
       sector := Common.Get_Sector(tempStats);
       time := Common.Get_Time(tempStats);
-      class.all := global.global.Test_Get_Classific;
+      class.all := GlobalStatistics.global.Test_Get_Classific;
       Unbounded_String.Set_Unbounded_String(ret,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(gasLevel)
                                             &"<gasLevel><tyreUsury>"&Float'Image(tyreUsury)
                                             &"</tyreUsury><time>"
@@ -168,7 +214,8 @@ package body Competition_Monitor.Impl is
    procedure AddCompId (IdComp :  INTEGER) is
       --arr : INFO_POINT;
    begin
-      arrayComp(IdComp).arrayInfo := new InfoArray(1..10); --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
+      arrayComp(IdComp).arrayInfo := new InfoArray(1..CompetitorQty);
+      --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
    end AddCompId;
 
 
@@ -194,8 +241,10 @@ package body Competition_Monitor.Impl is
       retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
       return retString;
    end getBestLap;
+
    function getBestSector(Self : access Object; indexIn : CORBA.Short) return CORBA.String is
       retString : CORBA.String;
+
       temp : GENERIC_STATS_POINT := new GENERIC_STATS;
       num : INTEGER;
       id : INTEGER;
@@ -242,5 +291,6 @@ package body Competition_Monitor.Impl is
    --     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+
 
 end Competition_Monitor.Impl;

@@ -3,7 +3,7 @@ with Ada.Text_IO;
 with Common;
 with Stats;
 
-pragma Warnings (Off); -- TODO: delete
+--pragma Warnings (Off); -- TODO: delete
 package body Competition is
 
    -- type Monitor_POINT is access MONITOR --to implement (Lory)
@@ -36,6 +36,10 @@ package body Competition is
          ID : INTEGER;
          Driver : CAR_DRIVER_ACCESS;
 
+         --Generic state boolean
+         Result : BOOLEAN := false;
+
+         --TODO: remove after testing new method
          CompetitorDescriptor_File : Ada.Text_IO.FILE_TYPE;
          File_Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       begin
@@ -56,12 +60,22 @@ package body Competition is
             -- Creating the file where the CompetitorDescriptor will be saved
             Ada.Text_IO.Put_Line("Saving file...");
             File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
-            Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
-            Ada.Text_IO.Put(CompetitorDescriptor_File, CompetitorDescriptor);
-            Ada.Text_IO.Close(CompetitorDescriptor_File);
+
+            --Handler the saving failure
+            Result := Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
+                              Content  => CompetitorDescriptor,
+                              Path     => "");
+            --TODO: remove after testing
+            --Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
+            --Ada.Text_IO.Put(CompetitorDescriptor_File, CompetitorDescriptor);
+            --Ada.Text_IO.Close(CompetitorDescriptor_File);
             --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
             Ada.Text_IO.Put_Line("Init competitor...");
-            Driver := Init_Competitor(Unbounded_String.To_String(File_Name),Circuit.Get_Iterator(Track),ID,Box_CorbaLOC);
+            Driver := Init_Competitor(Unbounded_String.To_String(File_Name),
+                                      Circuit.Get_Iterator(Track),
+                                      ID,
+                                      Box_CorbaLOC,
+                                      GlobalStatistics);
             --Initialise the task competitor
             Ada.Text_IO.Put_Line("Init task...");
             Competitors.all(ID) := new TASKCOMPETITOR(Driver);
@@ -97,6 +111,9 @@ package body Competition is
          end loop;
 
          Ada.Text_IO.Put_Line("Competition starting");
+         -- TODO: wait the end of the competition:
+         --+ either all the competitors are arrived or
+         --+ retired. Use the global statistic for this.
 
       end Start;
 
@@ -116,6 +133,7 @@ package body Competition is
          FirstCheckPoint_Got : INTEGER;
       begin
          Laps := Laps_In;
+
          Name := Unbounded_String.To_Unbounded_String(Name_In);
          ClassificRefreshTime := ClassificRefreshTime_In;
 
@@ -126,12 +144,19 @@ package body Competition is
 
          Registrations_Open := True;
 
+
+
+         GenericStatistics := new GENERIC_STATS;
+         GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
+           (new FLOAT'(ClassificRefreshTime_in),
+            GenericStatistics);
+         Monitor := Competition_Monitor.impl.Init(MaxCompetitors,
+                                                  GlobalStatistics);
+
+
          Configured := True;
 
          Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
-
-         --TODO:fix
-         --Global_Statistics := new Stats.GLOBAL_STATS_HANDLER(new FLOAT'(ClassificRefreshTime_in));
       end Configure;
 
       function Get_Laps return INTEGER is

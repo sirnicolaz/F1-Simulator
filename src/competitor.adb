@@ -7,24 +7,29 @@ with Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
 
+with Competition_Monitor.impl;
+
 with Common;
-
-with CORBA.ORB;
-with PolyORB.Setup.Client;
-pragma Warnings (Off, PolyORB.Setup.Client);
-
-with PolyORB.Utils.Report;
+with Ada.Calendar;
+use Ada.Calendar;
 
 package body Competitor is
+
+   --THis value has to be the same for oeveryone
+   LastLap : INTEGER;
+   procedure Set_Laps( LapsQty : in INTEGER) is
+   begin
+      LastLap := LapsQty;
+   end Set_Laps;
 
    -- Set function - CAR
    procedure Configure_Car(Car_In : in out CAR;
                            MaxSpeed_In : FLOAT;
                            MaxAcceleration_In : FLOAT;
-                           GasTankCapacity_In : INTEGER;
+                           GasTankCapacity_In : FLOAT;
                            Engine_In : Str.Unbounded_String;
                            TyreUsury_In : FLOAT;
-                           GasolineLevel_In : INTEGER;
+                           GasolineLevel_In : FLOAT;
                            Mixture_In : Str.Unbounded_String;
                            Model_In : Str.Unbounded_String;
                            Type_Tyre_In : Str.Unbounded_String) is
@@ -62,7 +67,7 @@ package body Competitor is
    end Get_MaxAcceleration;
 
    -- Get function - CAR GASTANKCAPACITY
-   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_GasTankCapacity(Car_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
       return Car_In.auto.GasTankCapacity;
    end Get_GasTankCapacity;
@@ -78,7 +83,7 @@ package body Competitor is
       --questa funzione ritorna un boolean che indica se il concorrente
       --deve tornare o meno ai box
    begin
-      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10 then
+      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10.0 then
          -- i parametri si possono cambiare ovviamente
          -- basta darci dei valori consistenti
          return TRUE;
@@ -109,7 +114,7 @@ package body Competitor is
 
    -- Set function - STATUS GASLEVEL
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
-                          GasLevel_In : INTEGER) is
+                          GasLevel_In : FLOAT) is
    begin
       Car_In.auto.GasolineLevel := GasLevel_In;
    end;
@@ -121,7 +126,7 @@ package body Competitor is
    end Get_Usury;
 
    -- Get function - STATUS GASLEVEL
-   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
       return Car_In.auto.GasolineLevel;
    end Get_GasLevel;
@@ -215,22 +220,7 @@ package body Competitor is
       Car_In.Vel_In:=Vel_In;
    end Configure_Driver;
 
-   --Configuration Method of Strategy
-   procedure Configure_Strategy(Car_In : in out STRATEGY_CAR;
-                                pitstopGasolineLevel_In : FLOAT;
-                                pitstopLaps_In: INTEGER;
-                                pitstopCondition_In : BOOLEAN;
-                                trim_In : INTEGER;
-                                pitstop_In : BOOLEAN) is
-   begin
-      Car_In.pitstopGasolineLevel :=  pitstopGasolineLevel_In;
-      Car_In.pitstopLaps := pitstopLaps_In;
-      Car_In.pitstopCondition := pitstopCondition_In;
-      Car_In.trim := trim_In;
-      Car_In.pitstop := pitstop_In;
-   end Configure_Strategy;
-
-   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out INTEGER) is
+   procedure Get_Status(Car_In : CAR_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT) is
 
    begin
       Usury_Out:=Get_Usury(Car_In);
@@ -240,7 +230,8 @@ package body Competitor is
    function Init_Competitor(xml_file : STRING;
                             RaceIterator : RACETRACK_ITERATOR;
                             id_In : INTEGER;
-                            BoxRadio_CorbaLOC) return CAR_DRIVER_ACCESS is
+                            BoxRadio_CorbaLOC : STRING;
+                            GlobalStatsHandler : GLOBAL_STATS_HANDLER_POINT) return CAR_DRIVER_ACCESS is
       --parametri
       Input : File_Input;
       Reader : Tree_Reader;
@@ -270,74 +261,14 @@ package body Competitor is
          when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
       end Try_OpenFile;
 
-      function Configure_Strategy_File(xml_file_In : DOCUMENT) return STRATEGY_CAR is -- metodo per la configurazione della strategia a partire da un file
-         pitstopGasolineLevel_In : FLOAT;
-         pitstopLaps_In : INTEGER;
-         pitstopCondition_In : BOOLEAN;
-         trim_In : INTEGER;
-         pitstop_In : BOOLEAN;
-         strategy_XML : Node_List;
-         Current_Node : Node;
-
-         Car_In : STRATEGY_CAR;
-         --Car_Current : CAR;
-
-         function Get_Feature_Node(Node_In : NODE;
-                                   FeatureName_In : STRING) return NODE is
-            Child_Nodes_In : NODE_LIST;
-            Current_Node : NODE;
-         begin
-
-            Child_Nodes_In := Child_Nodes(Node_In);
-            for Index in 1..Length(Child_Nodes_In) loop
-               Current_Node := Item(Child_Nodes_In,Index-1);
-               if Node_Name(Current_Node) = FeatureName_In then
-                  return Current_Node;
-               end if;
-            end loop;
-
-            return null;
-         end Get_Feature_Node;
-
-      begin
-
-         --If there is a conf file, use it to auto-init;
-
-         --if Document_In /= null then
-
-         strategy_XML := Get_Elements_By_Tag_Name(xml_file_In,"strategy_car");
-
-         Current_Node := Item(strategy_XML, 0);
-
-         strategy_XML := Child_Nodes(Current_Node);
-         pitstopGasolineLevel_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopGasolineLevel"))));
-         pitstopLaps_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopLaps"))));
-         pitstopCondition_In := Boolean'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstopCondition"))));
-         trim_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"trim"))));
-         pitstop_In := Boolean'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"pitstop"))));
-
-         --Racetrack_In(Index) := CheckpointSynch_Current;
-
-
-         --end if;
-         -- scrittura parametri
-         Configure_Strategy(Car_In,
-                            pitstopGasolineLevel_In ,
-                            pitstopLaps_In,
-                            pitstopCondition_In,
-                            trim_In,
-                            pitstop_In);
-         return Car_In;
-      end Configure_Strategy_File;
-
 
       function Configure_Car_File(xml_file_In : DOCUMENT) return CAR is
          MaxSpeed_In : FLOAT;
          MaxAcceleration_In : FLOAT;
-         GasTankCapacity_In : INTEGER;--FLOAT;
+         GasTankCapacity_In : FLOAT;--FLOAT;
          --Engine_In : STRING(1..50);
          TyreUsury_In : FLOAT;
-         GasolineLevel_In : INTEGER;--FLOAT;
+         GasolineLevel_In : FLOAT;--FLOAT;
          Mixture_In : Str.Unbounded_String;--access STRING;
          Model_In : Str.Unbounded_String;-- STRING(1..20);
          Type_Tyre_In : Str.Unbounded_String;-- STRING(1..20);
@@ -380,10 +311,10 @@ package body Competitor is
          car_XML := Child_Nodes(Current_Node);
          MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
          MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
-         GasTankCapacity_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         GasTankCapacity_In := FLOAT'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
          Engine_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
          TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
-         GasolineLevel_In := Integer'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
+         GasolineLevel_In := FLOAT'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
          --Ada.Text_IO.Put_Line("prima ");
          Mixture_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
          --Ada.Text_IO.Put_Line("mixture type----------------------");
@@ -469,28 +400,27 @@ package body Competitor is
          return Car_In;
       end Configure_Driver_File;
 
-      function Configure_BoxCorbaLoc_File(xml_file_In : DOCUMENT) return Str.Unbounded_String is
-         BoxCorbaLoc_ElementsList : Node_List;
-         Current_Node : Node;
-         CorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
-      begin
-         BoxCorbaLoc_ElementsList := Get_Elements_By_Tag_Name(xml_file_In,"boxCorbaLoc");
-         Current_Node := Item(BoxCorbaLoc_ElementsList, 0);
-         CorbaLoc := Str.To_Unbounded_String(Node_Value(First_Child(Current_Node)));
-         return CorbaLoc;
-      end Configure_BoxCorbaLoc_File;
 
+      --TODO: try to remove this stuff
       --remote communication declaration section
-      use PolyORB.Utils.Report;
-      boxCorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
+      --use PolyORB.Utils.Report;
+      --boxCorbaLoc : Str.Unbounded_String := Str.Null_Unbounded_String;
 
+      RadioConnection_Success : BOOLEAN := false;
    begin
 
       --apertura del file
       Try_OpenFile;
       --configurazione parametri
-      Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : strategia...");
-      carDriver.strategia := Configure_Strategy_File(doc);
+      --Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : strategia...");
+
+      --Init onboard computer
+      carDriver.statsComputer.Init_Computer(id_In,GlobalStatsHandler);
+
+      --Teoricamente non serve più perchè la strategia viene presa su giusto
+      --+ prima di iniziare la gare
+      --carDriver.strategia := Configure_Strategy_File(doc);
+
       Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : ...auto...");
       carDriver.auto := Configure_Car_File(doc);
       Ada.Text_IO.Put_Line(Integer'Image(id_In)&" : ...pilota...");
@@ -498,20 +428,18 @@ package body Competitor is
       carDriver.RaceIterator:=RaceIterator;
       carDriver.Id:=id_In;
 
-      --Init communication with the box
-      boxCorbaLoc := Configure_BoxCorbaLoc_File(doc);
-
-      CORBA.ORB.Initialize ("ORB");
-
-      --  Getting the CORBA.Object
-      CORBA.ORB.String_To_Object
-        (CORBA.To_CORBA_String (Str.To_String(boxCorbaLoc)), carDriver.Radio);
-
-      --  Checking if it worked
-
-      if BoxRadio.Is_Nil (carDriver.Radio) then
-         Put_Line ("Competitor " & INTEGER'IMAGE(carDriver.Id) & " : cannot invoke on a nil reference");
-      end if;
+      --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
+      --+ (probably other problems are occured in such a case)
+      loop CompetitorRadio.Init_BoxConnection(BoxRadio_CorbaLOC => BoxRadio_CorbaLOC,
+                                            Radio             => carDriver.Radio,
+                                            ID                => carDriver.Id,
+                                              Success           => RadioConnection_Success);
+         exit when RadioConnection_Success = true;
+         Ada.Text_IO.Put_Line("Connection to box failed for competitor n. " &
+                              Common.IntegerToString(id_In));
+         Ada.Text_IO.Put_Line("Retry in 5 seconds...");
+         Delay(Standard.Duration(5));
+      end loop;
 
       --carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       --carDriver:= new CAR_DRIVER(Configure_Car_File(doc),Configure_Driver_File(doc),Configure_Strategy_File(doc));
@@ -533,7 +461,7 @@ package body Competitor is
       grip_path : FLOAT; -- attrito
       difficulty_path : FLOAT; -- difficoltà del tratto
       tyre_usury : FLOAT; -- usura delle gomme
-      gasoline_level : INTEGER; -- livello di benzina
+      gasoline_level : FLOAT; -- livello di benzina
       vel_max_reale : FLOAT; --velocità massima raggiungibile
       vel_max : FLOAT := carDriver.auto.MaxSpeed;
       lc : FLOAT;
@@ -565,25 +493,25 @@ package body Competitor is
       tyre_usury := Get_Usury(CarDriver);
       Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
       gasoline_level:=Get_GasLevel(CarDriver);
-      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Integer'Image(gasoline_level));
+      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&FLOAT'Image(gasoline_level));
       vel_max := Get_MaxSpeed(CarDriver); --
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel_max*((Float(gasoline_level)*10.0)/100.0)) = "&Float'Image(vel_max*((Float(gasoline_level)*10.0)/100.0)));
       acc := 1.2; -- cercare un valora buono per l'accelerazione da impostare nell'auto
       Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max : "&Float'Image(vel_max)
                            &" , (tyre_usury * (vel_max)/10.0) : "&Float'Image((tyre_usury * (vel_max)/10.0))
-                          &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image((Float(gasoline_level/10)*(vel_max)/100.0)));
+                          &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image((Float(gasoline_level/10.0)*(vel_max)/100.0)));
 
-      vel_max_reale := vel_max-((tyre_usury * (vel_max)/10.0))-((Float(gasoline_level/10)*(vel_max)/100.0));
+      vel_max_reale := vel_max-((tyre_usury * (vel_max)/10.0))-((Float(gasoline_level/10.0)*(vel_max)/100.0));
 
      -- tyre_usury := CarDriver.auto.TyreUsury; --(25 giri per una gomma circa)
 
      -- gasoline_level := CarDriver.auto.GasolineLevel;
-      if gasoline_level <= 0 then
+      if gasoline_level <= 0.0 then
          -- vel_max_reale:=0.0; da rimettere..va aggiunto un metodo nella competizione RITIRATO
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : ATTENZIONE - BENZINA FINITA !!!");
       else
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : tyre_usury = "&Float'Image(tyre_usury));
-         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Integer'Image(gasoline_level));
+         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : gasoline_level = "&Float'Image(gasoline_level));
       end if;
 
       --V - (V*(U x 10)/100))-((B*V)/1000)
@@ -653,7 +581,7 @@ package body Competitor is
       pathTimeMinore : FLOAT;
       --BestPath : PATH;
       Competitor_Status_Tyre : FLOAT;
-      Competitor_Status_Level: INTEGER;
+      Competitor_Status_Level: FLOAT;
       --manca il metodo per tornare un pathcollection;
       -- Competitor_Strategy : STRATEGY_CAR := Competitor.Get_Strategy();
       velTemp : FLOAT :=0.0;
@@ -726,6 +654,9 @@ package body Competitor is
    -- TASKCOMPETITOR IMPLEMENTATION --
    -----------------------------------
    -----------------------------------
+
+
+
    task body TASKCOMPETITOR is
       C_Checkpoint : CHECKPOINT_SYNCH_POINT;
       PredictedTime : FLOAT := 0.0;
@@ -753,7 +684,37 @@ package body Competitor is
       SectorID : INTEGER;
 --carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
-      updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      updateStr : Str.Unbounded_String := Str.Null_Unbounded_String;
+
+      -- The lap count is kept in this variable
+      --TODO: chiedere a lorenzo se non era già da qualche altra parte
+      CurrentLap : INTEGER := 0;
+
+      --Strategy file name got from the box
+      Strategy_FileName : Str.Unbounded_String := Str.Null_Unbounded_String;
+      --Strategy got from the box
+      BrandNewStrategy : Common.STRATEGY;
+
+      --Helper method (given a file name, it return the strategy object extracted from that file)
+      function XML2Strategy( StrategyFile : Str.Unbounded_String) return Common.STRATEGY is
+         -- Objects needed for reading the XML strategy file
+         Config : Node_List;
+         Current_Node : NODE;
+         Strategy_Doc : DOCUMENT;
+
+         Tmp_Strategy : Common.STRATEGY;
+      begin
+
+         Strategy_Doc := Common.Get_Document(doc_file => Str.To_String(StrategyFile));
+         Config := Get_Elements_By_Tag_Name(Strategy_Doc,"strategy");
+         Current_Node := Item(Config,0);
+
+         Tmp_Strategy.GasLevel := 43.0;
+
+      return Tmp_Strategy;
+
+   end XML2Strategy;
+
    begin
 
       Ada.Text_IO.Put_Line("init task");--sincronizzazione task iniziale
@@ -778,12 +739,13 @@ package body Competitor is
       --loop exit when C_Checkpoint.getContaConcorrenti = 4;
       -- Ada.Text_IO.Put_Line("asasaasaasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasas");
       --Ada.Text_IO.Put_Line("concorrente "&Integer'Image(carDriver.Id)&", contaconcorrenti = "&Integer'Image(C_Checkpoint.getContaConcorrenti));
-      --end loop;
+                                                                  --end loop;
+      -- Ask the box for the starting strategy
+      Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio, CurrentLap));
+      BrandNewStrategy := XML2Strategy(Strategy_FileName);
+
+
       loop
-         -- CONTROLLO STRATEGIA CON I BOX
-
-
-         -- FINE CONTROLLO STRATEGIA CON I BOX
 
          Ada.Text_IO.Put_Line("______-------****** ITERAZIONE : "&Integer'Image(i)&" , TASK "&Integer'Image(Id)&"******-------______");
 --Ada.Float_Text_IO.Put(tempoTotale);
@@ -792,20 +754,22 @@ package body Competitor is
          Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
-         if( C_Checkpoint.Set_Arrived(id) = true ) then -- NEW: se torna true, significa che è un prebox
+         if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
+            CurrentLap := CurrentLap + 1;--TODO: find a way to get the lap from the competition
 
-            --Bisogna richiedere la nuova strategia al box
-            --dichiara una stringa e assegnaci il valore di ritorno della box radio
-            --BoxRadio.RequestStrategy(carDriver.Radio,1);
-            --prendi quella stringa e tramite un qualche metodo salvala su file
-            --e poi parsala per prendere su l'oggetto strategia corrispondente
+            -- Ask for the box strategy once the prebox checkpoint is reached
+            Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap));
+
+            --Get the strategy object from the file
+            BrandNewStrategy := XML2Strategy(Strategy_FileName);
+
             --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
-            -- PitStop := true;
-            --Dopodichè copia i nuovi valori di strategia e memorizza il tempo di pitstop
-            --in caso sia necessario farlo
-            null;
-         end if;
+            if(BrandNewStrategy.PitStopLaps = 0) then
+               PitStop := true;
+            end if;
 
+            carDriver.strategia := BrandNewStrategy;
+         end if;
 
          C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
@@ -823,14 +787,19 @@ package body Competitor is
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
          StartingPosition := Get_Position(carDriver.RaceIterator);
-         if StartingPosition = 1 then
-            Finished := Get_IsFinished(carDriver.RaceIterator);
-         end if;
-         -- METODO INSERITO SOLO PER FAR "FERMARE LE AUTO", solo per scopo di test
-         if i=7 then
+
+         --TODO: verificare se va bene controllare la fine della gara adesso o quando
+         --+ viene superato il check
+         if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
             Finished := true;
-            Ada.Text_IO.Put_Line(Integer'Image(id)&" : Finished = true, esco dal loop");
          end if;
+
+
+         -- METODO INSERITO SOLO PER FAR "FERMARE LE AUTO", solo per scopo di test
+         --if i=7 then
+         --   Finished := true;
+         --   Ada.Text_IO.Put_Line(Integer'Image(id)&" : Finished = true, esco dal loop");
+         --end if;
          --Se la gara è finita non è necessario effettuare la valutazione della traiettoria
          exit when Finished = true;
 
@@ -839,13 +808,21 @@ package body Competitor is
          --questa è la soluzione attuale. Il crossing time e il choosenpath
          --sono valori restituiti dalla funzione
          --Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
-         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross); -- CrossingTime è il tempo effettivo di attraversamento del
+
+         -- CrossingTime è il tempo effettivo di attraversamento del
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
+         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross);
 
+         --If a pitstop occured, add the pit stop time to the crossing time
+         if (PitStop = true) then
+            CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
+         end if;
+
+         --TODO: fare qualcosa di intelligente
          --aggiorno tyreusury e gasoline _level
          CarDriver.auto.TyreUsury := CarDriver.auto.TyreUsury+0.04;
-         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4;
+         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4.0;
          --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
          --quindi può essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
@@ -881,28 +858,45 @@ package body Competitor is
          Common.Set_Checkpoint(compStats, i-1);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
-         --commentato- da correggere il ripo di gaslevel
+                                                 --commentato- da correggere il ripo di gaslevel
+
          Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats);
-         Unbounded_String.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
+
+         Str.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
                                                &"<gasLevel><tyreUsury>"&Float'Image(carDriver.auto.TyreUsury)
                                                &"</tyreUsury><time>"
                                                &Float'Image(predictedTime)&"</time><lap>"
-                                               &Integer'Image(42)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
+                                               &Integer'Image(CurrentLap)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
                                                &Integer'Image(sectorID)&"</sector>"
-                                              );
-         Competition_Monitor.impl.setInfo(42,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+                                 );
+
+         Competition_Monitor.impl.setInfo(CurrentLap,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
          --viene salvata la stringa che va a costruire la parte iniziale di update.xml
 
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 
-         Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
+         -- If it was a pitstop, get the checkpoint following the one of the boxes
+         if( PitStop = true) then
+            Get_ExitBoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            --If there was a pitstop it means that the goal checkpoint was passed
+            --+ the boxes
+            CurrentLap := CurrentLap + 1;
+         else
+            Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
+         end if;
          --tempoTotale := tempoTotale + PredictedTime;
          --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" @@@@@@ tempoTotale : "&Float'Image(PredictedTime));--Delay(DELAY_TIME);
          --++++++Ada.Text_IO.Put_Line("&%$&%$&%$&%$&%$&%$&%$&%$__________------_________---------"&Integer'Image(carDriver.Id)&" : prima di delay");
-         Delay(Standard.Duration(CrossingTime/100.0));
+
+         if(C_CheckPoint.Is_Goal) then
+            CurrentLap := CurrentLap + 1;
+         end if;
+
+         -- TODO: retrieve the clock just once -> not automatically useful
+         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime/100.0));
          --Delay(1.0);
          --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
          --tempoTotale := tempoTotale +
@@ -920,30 +914,30 @@ package body Competitor is
    end TASKCOMPETITOR;
 
 
-   function Get_pitstopGasolineLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT is
+   function Get_StrategyGasLevel(str_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
-      return str_In.strategia.pitstopGasolineLevel;
-   end Get_pitstopGasolineLevel;
+      return str_In.strategia.GasLevel;
+   end Get_StrategyGasLevel;
 
-   function Get_pitstopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_StrategyPitStopLaps(str_In : CAR_DRIVER_ACCESS) return INTEGER is
    begin
-      return str_In.strategia.pitstopLaps;
-   end Get_pitstopLaps;
+      return str_In.strategia.PitStopLaps;
+   end Get_StrategypitstopLaps;
 
-   function Get_pitstopCondition (str_In : CAR_DRIVER_ACCESS) return BOOLEAN is
+   function Get_StrategyTyreType (str_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String is
    begin
-      return str_In.strategia.pitstopCondition;
-   end Get_pitstopCondition;
+      return str_In.strategia.Type_Tyre;
+   end Get_StrategyTyreType;
 
-   function Get_trim (str_In : CAR_DRIVER_ACCESS) return INTEGER is
+   function Get_StrategyStyle (str_In : CAR_DRIVER_ACCESS) return Common.DRIVING_STYLE is
    begin
-      return str_In.strategia.trim;
-   end Get_trim;
+      return str_In.strategia.Style;
+   end Get_StrategyStyle;
 
-   function Get_pitstop (str_In : CAR_DRIVER_ACCESS) return BOOLEAN is
+   function Get_StrategyPitstopDelay (str_In : CAR_DRIVER_ACCESS) return FLOAT is
    begin
-      return str_In.strategia.pitstop;
-   end Get_pitstop;
+      return str_In.strategia.PitStopDelay;
+   end Get_StrategyPitstopDelay;
 
    ---------------------------------------------------------------------------------------------
 
