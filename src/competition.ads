@@ -12,6 +12,7 @@ with Ada.Strings.Unbounded;
 with Common;
 
 with Stats;
+with Competition_Monitor.impl;
 
 package Competition is
 
@@ -57,8 +58,9 @@ package Competition is
       Comp_List : access Common.COMPETITOR_LIST;
       Monitor : Competition_monitor.impl.STARTSTOPHANDLER_POINT;
       --TODO: verify if really needed
-      GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
-      GenericStatistics : GENERIC_STATS_POINT;
+      GlobalStatistics : Stats.GLOBAL_STATS_HANDLER_POINT;
+      GenericStatistics : Stats.GENERIC_STATS_POINT;
+      Monitor_CobraLoc : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

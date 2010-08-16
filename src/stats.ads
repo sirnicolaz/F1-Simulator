@@ -118,7 +118,10 @@ package Stats is
    procedure compareTime(StatsGeneric : in GENERIC_STATS;  NewStats : in out GENERIC_STATS);
    -- il secondo parametro è il pacchetto con i migliori tempi salvati, devo
    -- controllare se per caso ho dei tempi migliori.
-   function getLapTime(competitorId_In : in INTEGER; numLap : in INTEGER ) return FLOAT;
+
+   --TODO: non era commentata, ma ho dovuto commentarla perchè il body non esisteva.
+   --+trovare una spiegazione a questa anomalia
+   --function getLapTime(competitorId_In : in INTEGER; numLap : in INTEGER ) return FLOAT;
 
    -- FUNCTION OF SOCT_NODE -- TEST ---------------------------------------
    function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT;

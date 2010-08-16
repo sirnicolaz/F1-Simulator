@@ -139,6 +139,8 @@ package body COMMON is
       Stats_In.Checkpoint := Checkpoint_In;
    end Set_Checkpoint;
 
+   pragma Warnings(Off);
+   --TODO : fix those warnings
    procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER) is
    begin
       Stats_In.Sector := Sector_In;
@@ -174,6 +176,7 @@ package body COMMON is
       Stats_In.FirstCheckInSect := FirstCheck_In;
    end Set_FirstCheckInSect;
 
+   pragma Warnings(On);
 --     procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER) is
 --     begin
 --        Stats_In.

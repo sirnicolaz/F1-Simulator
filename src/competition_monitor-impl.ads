@@ -18,6 +18,10 @@ package Competition_Monitor.impl is
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
 
+   task type MonitorStarter is
+      entry Broadcast( Monitor_CorbaLOC_Out : out Unbounded_String.Unbounded_String);
+   end MonitorStarter;
+
    protected type StartStopHandler is
       procedure Ready ( CompetitorID : in INTEGER);
       --TODO: maybe not necessary

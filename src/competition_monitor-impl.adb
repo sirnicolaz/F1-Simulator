@@ -7,6 +7,18 @@ with Competition_Monitor.Skel;
 pragma Warnings (Off, Competition_Monitor.Skel);
 with CORBA;
 
+with CORBA.Impl;
+with CORBA.Object;
+with CORBA.ORB;
+
+with PortableServer.POA.Helper;
+with PortableServer.POAManager;
+
+with PolyORB.CORBA_P.CORBALOC;
+
+with PolyORB.Setup.No_Tasking_Server;
+pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
+
 with Ada.Strings.Unbounded;
 --with Sax.Readers; use Sax.Readers;
 --with DOM.Readers; use DOM.Readers;
@@ -21,6 +33,47 @@ package body Competition_Monitor.Impl is
    CompetitionHandler : StartStopHandler_POINT;
    GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
    CompetitorQty : INTEGER;
+
+
+   -- Task ought to start the remote object
+   task body MonitorStarter is
+      Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
+      Monitor_CorbaLoc : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   begin
+      CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
+      declare
+         Root_POA : PortableServer.POA.Local_Ref;
+         CompetitionMonitor_Ref : CORBA.Object.Ref;
+
+         CompetitionMonitor_Obj : constant CORBA.Impl.Object_Ptr := new Competition_Monitor.impl.Object;
+
+      begin
+         -- Retrieve the Root POA
+         Ada.Text_IO.Put_Line("Retrieving ROOT_POA...");
+         Root_POA := PortableServer.POA.Helper.To_Local_Ref
+           (CORBA.ORB.Resolve_Initial_References
+              (CORBA.ORB.To_CORBA_String("RootPOA")));
+
+         Ada.Text_IO.Put_Line("Activating ROOT_POA...");
+         PortableServer.POAManager.Activate
+           (PortableServer.POA.Get_The_POAManager(Root_POA));
+
+         -- Set up the CompetitionConfigurationObject
+         CompetitionMonitor_Ref := PortableServer.POA.Servant_To_Reference
+           (Root_POA, PortableServer.Servant(CompetitionMonitor_Obj));
+
+         Monitor_CorbaLoc := Unbounded_String.To_Unbounded_String
+           (CORBA.To_Standard_String
+              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(CompetitionMonitor_Ref)));
+
+         accept Broadcast( Monitor_CorbaLOC_Out : out Unbounded_String.Unbounded_String) do
+            Monitor_CorbaLOC_Out := Monitor_CorbaLoc;
+         end Broadcast;
+
+         CORBA.ORB.Run;
+      end;
+
+   end MonitorStarter;
 
    protected body StartStopHandler is
 

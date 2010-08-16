@@ -1,6 +1,9 @@
 with CORBA.ORB;
+
 with Polyorb.Setup.Client;
 pragma Warnings (Off, PolyORB.Setup.Client);
+
+with Competition_Monitor;
 
 with PolyORB.Utils.Report;
 --with MonitorRadio;
@@ -93,22 +96,25 @@ package body Box is
    end Init;
 
    task body MONITOR is
+      Info_XMLStr : Unbounded_String.Unbounded_String;
       Info : COMPETITION_UPDATE_POINT;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
 
-      -- Radio : MonitorRadio.Ref;
+      Radio : Competition_Monitor.Ref;
       RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
    begin
       Ada.Text_IO.Put_Line("Monitor begin");
       CORBA.ORB.Initialize("ORB");
-      --COrba.ORB.String_To_Object(CORBA.To_CORBA_String(MonitorRadioCorbaLOC), Radio);
+      Corba.ORB.String_To_Object(CORBA.To_CORBA_String
+                                 (Unbounded_String.To_String(MonitorRadio_CorbaLOC.all))
+                                 , Radio);
 
-      --if MonitorRadio.Is_Nil(Radio) then
-      --   Ada.Text_IO.Put_Line("Monitor radio down");
-      --   return
-      --end if;
+      if Competition_Monitor.Is_Nil(Radio) then
+         Ada.Text_IO.Put_Line("Monitor radio down");
+
+      end if;
 
       -- MonitorRadio.Ready(CompetitorID);
 
@@ -121,7 +127,12 @@ package body Box is
       Info.Time := 42.0;
       loop
 
-         -- Info_XMLStr := MonitorRadio.RequestInfo (Competitor_Id,Sector,Lap); TODO: implement this.
+         Info_XMLStr := Unbounded_String.To_Unbounded_String
+           (CORBA.To_Standard_String
+              (Radio.getInfo
+                 (CORBA.Short(Lap),
+                  CORBA.Short(Sector),
+                  CORBA.Short(Competitor_Id)))); --TODO: implement this.
          -- Info := XML2CompetitionUpdate(Info_XMLStr)
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
@@ -238,8 +249,8 @@ package body Box is
       -- Calculate the remaining number of laps til either the pitstop or the
       --+ end of the competition.
 
-      Laps2PitStop := Old_Strategy.PitStopLap - 1;
-      New_Strategy.PitStopLap := Laps2PitStop;
+      Laps2PitStop := Old_Strategy.PitStopLaps - 1;
+      New_Strategy.PitStopLaps := Laps2PitStop;
 
       Laps2End := Laps - New_Info.Lap;
       if ( Laps2PitStop < Laps2end ) then
@@ -309,7 +320,7 @@ package body Box is
             New_Strategy.Style := Style2Simulate;
          else
             if ( Warning = true and RemainingDoableLaps /= 0) then
-               New_Strategy.PitStopLap := RemainingDoableLaps - 1;
+               New_Strategy.PitStopLaps := RemainingDoableLaps - 1;
             end if;
             New_Strategy.Style := Old_Strategy.Style;
          end if;
@@ -319,7 +330,7 @@ package body Box is
       -- If the number of laps to the PitStop is 0, it means that the competitor is going to
       --+ have a pitstop, so it's necessary to calculate the amount of gas to refill and
       --+ the type o tyres tu put on the car
-      if ( New_Strategy.PitStopLap = 0 ) then
+      if ( New_Strategy.PitStopLaps = 0 ) then
 
          -- Calculate the amount of gas needed to reach the next pitstop (set on the
          --+ half of the remaining laps).
@@ -379,7 +390,7 @@ package body Box is
       --The first strategy is stored before the beginning of the competition
       --+ and it's calculated against some configured parameter and some hypothetical
       --+ values
-      Evolving_Strategy.PitStopLap := CalculateDoableLaps(CurrentGasLevel     => InitialGasLevel.all,
+      Evolving_Strategy.PitStopLaps := CalculateDoableLaps(CurrentGasLevel     => InitialGasLevel.all,
                                                           CurrentTyreUsury    => 0.0,
                                                           MeanGasConsumption  => LatestLapMeanGasConsumption,
                                                           MeanTyreConsumption => LatestLapMeanTyreUsury);
@@ -588,7 +599,7 @@ package body Box is
          TotalPitStops : INTEGER := 0;
       begin
          for Index in 1..history_size loop
-            if history(Index).PitStopLap = 0 then
+            if history(Index).PitStopLaps = 0 then
                TotalPitStops := TotalPitStops + 1;
             end if;
             end loop;
@@ -617,7 +628,7 @@ package body Box is
 			      "<tyreType>" & Unbounded_String.To_String(Strategy_in.Type_Tyre)& "</tyreType>" &
 			      "<style>" & Unbounded_String.To_String(Style) & "</style>" &
 			      "<gasLevel>" & FloatToString(Strategy_in.GasLevel) & "</gasLevel>" &
-			      "<pitStopLap>" & IntegerToString(Strategy_in.PitStopLap) & "</pitStopLap>" &
+			      "<PitStopLaps>" & IntegerToString(Strategy_in.PitStopLaps) & "</PitStopLaps>" &
 			      "<pitStopDelay>" & FloatToString(Strategy_in.PitStopDelay) & "</pitStopDelay>" &
                                                          "</strategy>");
 

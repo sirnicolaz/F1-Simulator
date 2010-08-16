@@ -106,9 +106,14 @@ package body Competition is
 
          Set_Competitors(Track,Comp_List.all);
 
+
+         --We are aware of what we are doing here and
+         --+ the Start is not a blocking action.
+         pragma Warnings (Off);
          for Index in 1..Next_Id-1 loop
             Competitors.all(Index).Start;
          end loop;
+         pragma Warnings (On);
 
          Ada.Text_IO.Put_Line("Competition starting");
          -- TODO: wait the end of the competition:
@@ -127,10 +132,10 @@ package body Competition is
                           Name_in : in STRING;
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING) is
+
          Track_Iterator : RACETRACK_ITERATOR;
          Track_Length : FLOAT := 0.0;
-         CheckPoint_Tmp : Circuit.CHECKPOINT_SYNCH_POINT;
-         FirstCheckPoint_Got : INTEGER;
+         Starter : access Competition_Monitor.impl.MonitorStarter;
       begin
          Laps := Laps_In;
 
@@ -146,13 +151,22 @@ package body Competition is
 
 
 
-         GenericStatistics := new GENERIC_STATS;
+         GenericStatistics := new Stats.GENERIC_STATS;
          GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
            (new FLOAT'(ClassificRefreshTime_in),
             GenericStatistics);
          Monitor := Competition_Monitor.impl.Init(MaxCompetitors,
                                                   GlobalStatistics);
 
+         Starter := new Competition_Monitor.impl.MonitorStarter;
+
+         --We are aware that it's a potentially blocking action,
+         --+but the competition can't start withouth the information
+         --+retrieved from that entry. In case of block, the competition
+         --+doesn't start and that's right.
+         pragma Warnings(off);
+         Starter.all.Broadcast(Monitor_CobraLoc);
+         pragma Warnings(On);
 
          Configured := True;
 
