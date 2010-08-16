@@ -104,6 +104,9 @@ package body Box is
 
       Radio : Competition_Monitor.Ref;
       RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
+
+      --Generic boolean
+      Success : BOOLEAN := false;
    begin
       Ada.Text_IO.Put_Line("Monitor begin");
       CORBA.ORB.Initialize("ORB");
@@ -116,24 +119,20 @@ package body Box is
 
       end if;
 
-      -- MonitorRadio.Ready(CompetitorID);
+      Success := Competition_Monitor.Ready(Radio,CORBA.Short(Competitor_Id));
 
       -- Test init values to avoid warnings DEL
       Info := new COMPETITION_UPDATE;
-      Info.GasLevel := 42.0;
-      Info.TyreUsury := 42.0;
-      Info.MeanSpeed := 42.0;
-      Info.MeanGasConsumption := 42.0;
-      Info.Time := 42.0;
       loop
 
          Info_XMLStr := Unbounded_String.To_Unbounded_String
            (CORBA.To_Standard_String
-              (Radio.getInfo
-                 (CORBA.Short(Lap),
+              (Competition_Monitor.getInfo(
+               Radio,
+                 CORBA.Short(Lap),
                   CORBA.Short(Sector),
-                  CORBA.Short(Competitor_Id)))); --TODO: implement this.
-         -- Info := XML2CompetitionUpdate(Info_XMLStr)
+                  CORBA.Short(Competitor_Id))));
+         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr));
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
          Sector := Sector + 1;
@@ -669,5 +668,46 @@ package body Box is
 
       return Unbounded_String.To_String(XML_String);
    end CompetitionUpdateToXML;
+
+   function XML2CompetitionUpdate(UpdateStr_In : STRING) return COMPETITION_UPDATE_POINT is
+      Update : COMPETITION_UPDATE_POINT := new COMPETITION_UPDATE;
+      Doc : Document;
+      Update_NodeList : Node_List;
+      Current_Node : NODE;
+
+      GasLevel : FLOAT;
+      TyreUsury : PERCENTAGE;
+      Time : FLOAT;
+      Lap : INTEGER;
+      Sector : INTEGER;
+
+      Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
+      Success : BOOLEAN := false;
+   begin
+      --TODO: handle the exception
+      Success := Common.SaveToFile(FileName => Unbounded_String.To_String(Update_FileName),
+                        Content  => UpdateStr_In,
+                        Path     => "");
+
+      Doc := Common.Get_Document(Unbounded_String.To_String(Update_FileName));
+      Update_NodeList := Get_Elements_By_Tag_Name(Doc,"update");
+      Current_Node := Item(Update_NodeList,0);
+
+      GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
+      TyreUsury := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreUsury"))));
+      Lap := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"lap"))));
+      Sector := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"sector"))));
+      Time := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
+
+
+
+      Update.GasLevel := GasLevel;
+      Update.TyreUsury := TyreUsury;
+      Update.Time := Time;
+      Update.Lap := Lap;
+      Update.Sector := Sector;
+
+      return Update;
+   end XML2CompetitionUpdate;
 
 end Box;

@@ -102,7 +102,13 @@ package body Competition is
 
          Stop_Joining := true;
 
-         -- Monitor.Wait_Ok;
+         --This method (Start) is called only when noone needs
+         --+ to call the competition anymore, because all the competitor
+         --+ supposed to ride are registered. So this WaitReady
+         --+ is not blocking any request.
+         pragma Warnings(off);
+         Monitor.WaitReady;
+         pragma Warnings(On);
 
          Set_Competitors(Track,Comp_List.all);
 
@@ -135,7 +141,7 @@ package body Competition is
 
          Track_Iterator : RACETRACK_ITERATOR;
          Track_Length : FLOAT := 0.0;
-         Starter : access Competition_Monitor.impl.MonitorStarter;
+         --Starter : access Competition_Monitor.impl.MonitorStarter;
       begin
          Laps := Laps_In;
 
@@ -149,8 +155,6 @@ package body Competition is
 
          Registrations_Open := True;
 
-
-
          GenericStatistics := new Stats.GENERIC_STATS;
          GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
            (new FLOAT'(ClassificRefreshTime_in),
@@ -158,20 +162,26 @@ package body Competition is
          Monitor := Competition_Monitor.impl.Init(MaxCompetitors,
                                                   GlobalStatistics);
 
-         Starter := new Competition_Monitor.impl.MonitorStarter;
+         --NEW: moved to init.adb procedure
+         --Starter := new Competition_Monitor.impl.MonitorStarter;
 
          --We are aware that it's a potentially blocking action,
          --+but the competition can't start withouth the information
          --+retrieved from that entry. In case of block, the competition
          --+doesn't start and that's right.
-         pragma Warnings(off);
-         Starter.all.Broadcast(Monitor_CobraLoc);
-         pragma Warnings(On);
+         --pragma Warnings(off);
+         --Starter.all.Broadcast(Monitor_CobraLoc);
+         --pragma Warnings(On);
 
          Configured := True;
 
          Comp_List := new Common.COMPETITOR_LIST(1..MaxCompetitors);
       end Configure;
+
+      procedure Set_MonitorCorbaLOC ( Monitor_COrbaLoc_In : Unbounded_String.Unbounded_String) is
+      begin
+         Monitor_CorbaLoc := Monitor_CorbaLoc_In;
+      end Set_MonitorCOrbaLOC;
 
       function Get_Laps return INTEGER is
       begin

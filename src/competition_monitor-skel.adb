@@ -45,6 +45,10 @@ package body Competition_Monitor.Skel is
      CORBA.To_CORBA_String
         ("index");
 
+   ready_Arg_Name_competitorId_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("competitorId");
+
    procedure Invoke
      (Self : PortableServer.Servant;
       Request : CORBA.ServerRequest.Object_Ptr);
@@ -243,6 +247,51 @@ package body Competition_Monitor.Skel is
                     (Competition_Monitor.Impl.Object'Class
                        (Self.all)'Access,
                      Argument_index_Ü);
+               --  Setting the result
+               CORBA.ServerRequest.Set_Result
+                 (Request,
+                  Arg_Any_Result_Ü_Ü);
+               CORBA.NVList.Internals.Clone_Out_Args
+                 (Argument_List_Ü);
+            end;
+         elsif (Operation_Ü
+            = "ready")
+         then
+            declare
+               Argument_competitorId_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_competitorId_Ü);
+               Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_competitorId_Ü'Unrestricted_Access);
+               Arg_Any_competitorId_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Short,
+                     Arg_CC_competitorId_Ü'Unchecked_Access);
+               Result_Ü : CORBA.Boolean;
+               pragma Warnings (Off, Result_Ü);
+               Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Result_Ü'Unrestricted_Access);
+               Arg_Any_Result_Ü_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Boolean,
+                     Arg_CC_Result_Ü_Ü'Unchecked_Access);
+            begin
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  ready_Arg_Name_competitorId_Ü,
+                  Arg_Any_competitorId_Ü,
+                  CORBA.ARG_IN);
+               --  Processing request
+               CORBA.ServerRequest.Arguments
+                 (Request,
+                  Argument_List_Ü);
+               --  Call Implementation
+               Result_Ü :=
+                 Competition_Monitor.Impl.ready
+                    (Competition_Monitor.Impl.Object'Class
+                       (Self.all)'Access,
+                     Argument_competitorId_Ü);
                --  Setting the result
                CORBA.ServerRequest.Set_Result
                  (Request,

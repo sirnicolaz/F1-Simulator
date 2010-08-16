@@ -7,8 +7,9 @@ with CORBA.ORB;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 
-with CompetitionConfiguration.impl;
+with CompetitionConfigurator.impl;
 with RegistrationHandler.impl;
+with Competition_Monitor.impl;
 
 with PolyORB.CORBA_P.CORBALOC;
 
@@ -39,7 +40,7 @@ begin
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
       Ada.Text_IO.Put_Line("Configuring competition object...");
-      CompetitionConfiguration.Impl.Init(The_Competition);
+      CompetitionConfigurator.Impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Configuring registration handler object...");
       RegistrationHandler.impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Init ROOT_POA..");
@@ -47,11 +48,11 @@ begin
          Root_POA : PortableServer.POA.Local_Ref;
          CompConfiguration_Ref : CORBA.Object.Ref;
          RegistrationHandler_Ref : CORBA.Object.Ref;
-         --Monitor_Ref : CORBA.Object.Ref;
+         Monitor_Ref : CORBA.Object.Ref;
 
-         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new CompetitionConfiguration.Impl.Object;
+         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new CompetitionConfigurator.Impl.Object;
          RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new RegistrationHandler.Impl.Object;
-         --Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Monitor.impl.Object;
+         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Competition_Monitor.impl.Object;
 
       begin
          -- Retrieve the Root POA
@@ -72,6 +73,9 @@ begin
          RegistrationHandler_Ref := PortableServer.POA.Servant_To_Reference
            (Root_POA, PortableServer.Servant(RegistrationHandler_Obj));
 
+         -- Set up the CompetitionMonitor handler Object
+         Monitor_Ref := PortableServer.POA.Servant_To_Reference
+           (Root_POA, PortableServer.Servant(Monitor_Obj));
          -- CompetitionConfiguration corbaloc
          Ada.Text_IO.Put_Line
            ("CompetitionConfiguration: '"
@@ -87,6 +91,10 @@ begin
             & "'");
          --  Launch the server
 
+         The_Competition.Set_MonitorCorbaLOC
+           (Unbounded_String.To_Unbounded_String
+              (CORBA.To_Standard_String
+                 (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))));
          Starter_Task := new Starter(The_Competition);
 
          CORBA.ORB.Run;

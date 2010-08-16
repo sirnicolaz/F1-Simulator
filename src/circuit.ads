@@ -63,7 +63,9 @@ package Circuit is
                         PathsQty_In : POSITIVE;
                         Competitors_Qty : POSITIVE;
                         IsPreBox_In : BOOLEAN;
-                        IsExitBox : BOOLEAN);
+                        IsExitBox : BOOLEAN;
+                        IsFirstOfTheSector : BOOLEAN;
+                        IsLastOfTheSector : BOOLEAN);
 
    --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
    --                   NextCheckpoint_In : POINT_Checkpoint);
@@ -109,6 +111,10 @@ package Circuit is
 
       function Is_PreBox return BOOLEAN;
       function Is_ExitBox return BOOLEAN;
+
+      function Is_FirstOfTheSector return BOOLEAN;
+      function Is_LastOfTheSector return BOOLEAN;
+
       function Is_Goal return BOOLEAN;
 
       function Get_Length return FLOAT;
@@ -169,6 +175,8 @@ private
       PathsCollection : CROSSING_POINT;
       IsPreBox : BOOLEAN;
       IsExitBox : BOOLEAN;
+      IsFirstOfTheSector : BOOLEAN;
+      IsLastOfTheSector : BOOLEAN;
    end record;
 
    type PreBox is new Checkpoint

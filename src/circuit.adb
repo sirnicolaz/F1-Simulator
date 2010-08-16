@@ -65,7 +65,9 @@ package body Circuit is
                         PathsQty_In : POSITIVE; -- mult
                         Competitors_Qty : POSITIVE;
                         IsPreBox_In : BOOLEAN;
-                        IsExitBox : BOOLEAN) is
+                        IsExitBox : BOOLEAN;
+                        IsFirstOfTheSector : BOOLEAN;
+                        IsLastOfTheSector : BOOLEAN) is
 
       PathsCollection : POINT_PATHS;
 
@@ -93,6 +95,8 @@ package body Circuit is
       Checkpoint_In.Queue := new SORTED_QUEUE(1..Competitors_Qty);
       Checkpoint_In.IsPreBox := IsPreBox_In;
       Checkpoint_In.IsExitBox := IsExitBox;
+      Checkpoint_In.IsLastOfTheSector := IsLastOfTheSector;
+      Checkpoint_In.IsFirstOfTheSector := IsFirstOfTheSector;
       Init_Queue(Checkpoint_In.Queue.all);
       Init_Paths(PathsCollection,PathsQty_In);
       Checkpoint_In.PathsCollection := new CROSSING(PathsCollection);
@@ -269,6 +273,16 @@ package body Circuit is
          return F_CheckPoint.IsExitBox;
       end Is_ExitBox;
 
+      function Is_FirstOfTheSector return BOOLEAN is
+      begin
+         return F_CheckPoint.IsFirstOfTheSector;
+      end Is_FirstOfTheSector;
+
+      function Is_LastOfTheSector return BOOLEAN is
+      begin
+         return F_CheckPoint.IsLastOfTheSector;
+      end Is_LastOfTheSector;
+
       function Is_Goal return BOOLEAN is
       begin
          return F_CheckPoint.IsGoal;
@@ -343,6 +357,8 @@ package body Circuit is
       IsPreBox : BOOLEAN;
       IsExitBox_Attr : Attr;
       IsExitBox : BOOLEAN;
+      IsLastOfTheSector : BOOLEAN;
+      IsFirstOfTheSector : BOOLEAN;
       Current_Length : FLOAT;
       Current_Mult : INTEGER;
       Current_Angle : FLOAT;
@@ -423,6 +439,17 @@ package body Circuit is
                      PreBox_Checkpoint := Checkpoint_Temp;
                   end if;
 
+                  if(Indez = 1) then
+                     IsFirstOfTheSector := true;
+                     IsLastOfTheSector := false;
+                  elsif (Indez = CheckpointQty) then
+                     IsFirstOfTheSector := false;
+                     IsLastOfTheSector := true;
+                  else
+                     IsFirstOfTheSector := false;
+                     IsLastOfTheSector := false;
+                  end if;
+
                   Set_Values(Checkpoint_Temp,
                              Index,
                              IsGoal,
@@ -433,7 +460,9 @@ package body Circuit is
                              Current_Mult,
                              MaxCompetitors_Qty,
                              IsPreBox,
-                             IsExitBox);
+                             IsExitBox,
+                             IsFirstOfTheSector,
+                             IsLastOfTheSector);
 
                   CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
                   Racetrack_In(Checkpoint_Index) := CheckpointSynch_Current;
@@ -452,6 +481,18 @@ package body Circuit is
          for Index in 1..Checkpoints_Qty loop
             Checkpoint_Temp := new Checkpoint;
             RaceTrack_Length := RaceTrack_Length + 100.00;--TODO: decide whether to keep the shortest path length
+
+            if(Index = 1) then
+               IsFirstOfTheSector := true;
+               IsLastOfTheSector := false;
+            elsif (Index = CheckpointQty) then
+               IsFirstOfTheSector := false;
+               IsLastOfTheSector := true;
+            else
+               IsFirstOfTheSector := false;
+               IsLastOfTheSector := false;
+            end if;
+
             Set_Values(Checkpoint_Temp,
                        1,
                        FALSE,
@@ -462,7 +503,9 @@ package body Circuit is
                        MaxCompetitors_Qty,
                        MaxCompetitors_Qty,
                        False,
-                       False);
+                       False,
+                       IsFirstOfTheSector,
+                       IsLastOfTheSector);
             CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
             Racetrack_In(Index) := CheckpointSynch_Current;
 

@@ -46,6 +46,14 @@ package Competition_Monitor is
    getBestSector_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor/getBestSector:1.0";
 
+   function ready
+     (Self : Ref;
+      competitorId : CORBA.Short)
+     return CORBA.Boolean;
+
+   ready_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor/ready:1.0";
+
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)

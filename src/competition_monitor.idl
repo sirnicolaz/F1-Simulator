@@ -2,4 +2,5 @@
 	string getInfo(in short lap, in short sector, in short id);
 	string getBestLap();
 	string getBestSector( in short index );
+	boolean ready( in short competitorId );
 };

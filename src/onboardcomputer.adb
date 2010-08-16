@@ -1,6 +1,8 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
+with Competition_Monitor.impl;
+
 package body OnBoardComputer is
 
 --     procedure Set_Checkpoint(Stats_In : out Common.COMP_STATS_POINT; Checkpoint_In : INTEGER) is
@@ -211,12 +213,32 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
 
       procedure Add_Data(Data : COMP_STATS_POINT) is
          NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
+         updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       begin
          Ada.Text_IO.Put_Line("inizio add_data");
          Set_Node(Last_Node,Reset_Data(Data));
          Reset_Node(NewNode);
+
          Set_NextNode(Last_Node,NewNode);
          Last_Node := NewNode;
+
+         -- If the information are related to last checkpoint of the sector
+         --+ it's necessary to add those information to the competition monitor
+         if(Common.Get_LastCheckInSect(Data)) then
+
+            Unbounded_String.Set_Unbounded_String(updateStr,
+                                                  "<?xml version=""1.0""?>" &
+                                                  "<update>" &
+                                                  "<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"<gasLevel>" &
+                                                  "<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>" &
+                                                  "<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
+                                                  "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
+                                                  "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>"
+                                                 );
+            Competition_Monitor.impl.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+         end if;
+
+
          Updated := true;
          Ada.Text_IO.Put_Line("fine add_data");
          --sezione di controllo nel caso debba aggiornare le statistiche globali

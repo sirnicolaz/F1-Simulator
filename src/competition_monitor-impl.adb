@@ -33,6 +33,7 @@ package body Competition_Monitor.Impl is
    CompetitionHandler : StartStopHandler_POINT;
    GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
    CompetitorQty : INTEGER;
+   IsConfigured : BOOLEAN := false;
 
 
    -- Task ought to start the remote object
@@ -77,6 +78,7 @@ package body Competition_Monitor.Impl is
 
    protected body StartStopHandler is
 
+      --TODO: use that CompetitorID to recognize the caller
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
          ExpectedBoxes := ExpectedBoxes - 1;
@@ -90,6 +92,7 @@ package body Competition_Monitor.Impl is
       --Through this method the competition knows when to start the competitors
       entry WaitReady when ExpectedBoxes = 0 is
       begin
+         Ada.Text_IO.Put_Line("READY!!!!!");
          null;
       end WaitReady;
 
@@ -114,8 +117,24 @@ package body Competition_Monitor.Impl is
 
       GlobalStatistics := GlobalStatistics_In;
 
+      IsConfigured := true;
+
       return CompetitionHandler;
    end Init;
+
+   function Ready( Self : access Object;
+                  CompetitorID : Corba.SHORT) return BOOLEAN is
+   begin
+      --Verify that the monitor is initialised and the competitor
+      --+ onboard computer is added (everything should already be
+      --+ fine automatically once the box invokes this method, but
+      --+ just for bug tracing we inserted this control)
+      if( arrayComputer(INTEGER(CompetitorID)) /= null and  IsConfigured = true) then
+         CompetitionHandler.Ready(INTEGER(CompetitorID));
+         return true;
+      end if;
+      return false;
+   end Ready;
 
    protected body INFO_STRING is
       entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when true is -- ritorna le info sul settore relativo al giro, se disponibili
@@ -151,6 +170,7 @@ package body Competition_Monitor.Impl is
       -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
       procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String) is
       begin
+         Ada.Text_IO.Put_Line("Setting sector " & Common.IntegerToString(index));
          if index = 1 then sector1 := updXml;
          elsif index = 2 then sector2 := updXml;
          else sector3 := updXml;
@@ -169,25 +189,29 @@ package body Competition_Monitor.Impl is
       index : INTEGER := 0;
    begin
       --global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);
-      class.all := GlobalStatistics.global.Test_Get_Classific;
+
+      --TODO: si era detto che la classifica non serve qui. Verificare
+      --+ ed eventualmente eliminare
+      --class.all := GlobalStatistics.global.Test_Get_Classific;
+
       --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
 --      Unbounded_String.Set_Unbounded_String(stringRet,
       arrayComp(Integer(id)).arrayInfo(Integer(Lap)).getSector(Integer(sector),stringRet);
-      Unbounded_String.Append(stringRet,"<classific competitors="
-                              &Integer'Image(class'Length)
-                              &"><competitor id="
-                              &Integer'Image(Get_CompetitorId(class(1)))
-                              &" >0.0</compId>");
+      --Unbounded_String.Append(stringRet,"<classific competitors="
+       --                       &Integer'Image(class'Length)
+      --                        &"><competitor id="
+      --                        &Integer'Image(Get_CompetitorId(class(1)))
+      --                        &" >0.0</compId>");
 
-      for index in 0..class'length --loop per costruire la classifica dopo il primo concorrente
-      loop
-         Unbounded_String.Append(stringRet,"<competitor id="
-                                 &Integer'Image(Get_CompetitorId(class(index)))
-                                 &" >"
-                                 &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
-                                 &"</compId>");
-      end loop;
-      Unbounded_String.Append(stringRet, "</classific></update>");
+      --for index in 0..class'length --loop per costruire la classifica dopo il primo concorrente
+      --loop
+      --   Unbounded_String.Append(stringRet,"<competitor id="
+      --                           &Integer'Image(Get_CompetitorId(class(index)))
+      --                           &" >"
+      --                           &Float'Image(Get_Time(class(index))-Get_Time(class(index-1)))
+      --                           &"</compId>");
+      --end loop;
+      --Unbounded_String.Append(stringRet, "</classific></update>");
       return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));--file update.xml completo
       --ritorna le info relative all'utente id, del giro lap del settore sector (se non presenti va in wait, il settore è una risorsa protetta)
    end getInfo;

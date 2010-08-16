@@ -40,6 +40,9 @@ package Competition_Monitor.impl is
    function Init( CompetitorQty_In : INTEGER;
                  GlobalStatistics_In : GLOBAL_STATS_HANDLER_POINT ) return STARTSTOPHANDLER_POINT;
 
+   function Ready( Self : access Object;
+                  CompetitorID : Corba.SHORT) return BOOLEAN;
+
 
    protected type INFO_STRING is -- tipo protetto con le stringhe che poi verranno ritornate (file update.xml)
       entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String );--ritorna la stringa sul relativo settore

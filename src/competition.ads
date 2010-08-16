@@ -39,6 +39,8 @@ package Competition is
 
       function AreRegistrationsOpen return BOOLEAN;
 
+      procedure Set_MonitorCorbaLOC ( Monitor_COrbaLoc_In : Unbounded_String.Unbounded_String);
+
       entry Wait;
 
       procedure Start;
@@ -60,7 +62,7 @@ package Competition is
       --TODO: verify if really needed
       GlobalStatistics : Stats.GLOBAL_STATS_HANDLER_POINT;
       GenericStatistics : Stats.GENERIC_STATS_POINT;
-      Monitor_CobraLoc : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Monitor_CorbaLoc : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    end SYNCH_COMPETITION;
 
    type SYNCH_COMPETITION_POINT is access SYNCH_COMPETITION;

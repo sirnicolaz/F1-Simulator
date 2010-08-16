@@ -835,6 +835,7 @@ package body Competitor is
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
          SectorID:=C_Checkpoint.Get_SectorID;
+
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
          Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- TEMPO DI GARA = "&Float'Image(PredictedTime));
@@ -856,6 +857,8 @@ package body Competitor is
          -- qua va creata la statistica da aggiungere al computer di bordo
          -- per poi invocare il metodo Add_Data
          Common.Set_Checkpoint(compStats, i-1);
+         Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
+         Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
                                                  --commentato- da correggere il ripo di gaslevel
@@ -865,15 +868,17 @@ package body Competitor is
          Common.Set_Time(compStats, predictedTime);
          carDriver.statsComputer.Add_Data(compStats);
 
-         Str.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
-                                               &"<gasLevel><tyreUsury>"&Float'Image(carDriver.auto.TyreUsury)
-                                               &"</tyreUsury><time>"
-                                               &Float'Image(predictedTime)&"</time><lap>"
-                                               &Integer'Image(CurrentLap)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
-                                               &Integer'Image(sectorID)&"</sector>"
-                                 );
+         --NEW: moved to onboard computer
+         --Str.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
+         --                                      &"<gasLevel><tyreUsury>"&Float'Image(carDriver.auto.TyreUsury)
+         --                                      &"</tyreUsury><time>"
+         --                                      &Float'Image(predictedTime)&"</time><lap>"
+         --                                      &Integer'Image(CurrentLap)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
+         --                                      &Integer'Image(sectorID)&"</sector>"
+         --                        );
 
-         Competition_Monitor.impl.setInfo(CurrentLap,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+         --Competition_Monitor.impl.setInfo(CurrentLap,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+
          --viene salvata la stringa che va a costruire la parte iniziale di update.xml
 
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
