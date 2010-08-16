@@ -159,7 +159,7 @@ package body Competition is
          GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
            (new FLOAT'(ClassificRefreshTime_in),
             GenericStatistics);
-         Monitor := Competition_Monitor.impl.Init(MaxCompetitors,
+         Monitor := Competition_Monitor.Init(MaxCompetitors,
                                                   GlobalStatistics);
 
          --NEW: moved to init.adb procedure
@@ -192,6 +192,11 @@ package body Competition is
       begin
          return Circuit_Length;
       end Get_CircuitLength;
+
+      function Get_MonitorCorbaLOC return STRING is
+      begin
+         return Unbounded_String.To_String(Monitor_CorbaLoc);
+      end Get_MonitorCorbaLOC;
 
       function AreRegistrationsOpen return BOOLEAN is
       begin

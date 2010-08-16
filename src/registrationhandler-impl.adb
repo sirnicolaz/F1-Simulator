@@ -5,8 +5,6 @@ pragma Warnings (Off, RegistrationHandler.Skel);
 
 pragma Warnings (Off);
 
-with CORBA;
-
 package body RegistrationHandler.impl is
 
    Comp : Competition.SYNCH_COMPETITION_POINT;
@@ -35,7 +33,7 @@ package body RegistrationHandler.impl is
       CircuitLength := CORBA.Float(Comp.Get_CircuitLength);
       Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
-      -- MonitorCorbaLOC := Comp.GetMonitor;
+      MonitorCorbaLOC := CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
    end Join_Competition;
 
    -- When the box joining request has been accepted, the box wait that

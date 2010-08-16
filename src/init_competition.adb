@@ -7,10 +7,6 @@ with CORBA.ORB;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 
-with CompetitionConfigurator.impl;
-with RegistrationHandler.impl;
-with Competition_Monitor.impl;
-
 with PolyORB.CORBA_P.CORBALOC;
 
 with PolyORB.Setup.No_Tasking_Server;
@@ -19,10 +15,17 @@ pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
 with Competition;
 use Competition;
 
-procedure Init is
+with RegistrationHandler.impl;
+with CompetitionConfigurator.impl;
+with Competition_Monitor_Radio.impl;
+
+procedure Init_Competition is
 begin
+   Ada.Text_IO.Put_Line("Very beginning");
+
    --Declare the Competition remote object
    declare
+
       Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
       The_Competition : Competition.SYNCH_COMPETITION_POINT := new Competition.SYNCH_COMPETITION;
 
@@ -52,7 +55,7 @@ begin
 
          CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new CompetitionConfigurator.Impl.Object;
          RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new RegistrationHandler.Impl.Object;
-         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Competition_Monitor.impl.Object;
+         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Competition_Monitor_Radio.impl.Object;
 
       begin
          -- Retrieve the Root POA
@@ -95,6 +98,8 @@ begin
            (Unbounded_String.To_Unbounded_String
               (CORBA.To_Standard_String
                  (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))));
+
+         Ada.Text_IO.Put_Line("Initing starter");
          Starter_Task := new Starter(The_Competition);
 
          CORBA.ORB.Run;
@@ -102,4 +107,4 @@ begin
       end;
    end;
 
-end Init;
+end Init_Competition;

@@ -1,7 +1,7 @@
 with Common;
 use Common;
-  with Stats;
-  use Stats;
+with Stats;
+use Stats;
 
 --This package represents the statistics of each competitor.
 package OnBoardComputer is

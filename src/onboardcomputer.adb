@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
-with Competition_Monitor.impl;
+with Competition_Monitor;
 
 package body OnBoardComputer is
 
@@ -182,7 +182,7 @@ end Reset_Node;
 --                 Info_Node_Out.Next.Value.FirstCheckInSect := false;
 --              end if;
 --           end if;
-if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
+         if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
             if (Get_Lap(Info_Node_Out.Next.Value.all) > Get_Lap(Info_Node_Out.Value.all)) or (Get_Sector(Info_Node_Out.Next.Value.all) > Get_Sector(Info_Node_Out.Value.all)) then
                Set_LastCheckInSect(Info_Node_Out.Value, true);
                Set_FirstCheckInSect(Info_Node_Out.Next.Value, true);
@@ -235,7 +235,7 @@ if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
                                                   "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
                                                   "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>"
                                                  );
-            Competition_Monitor.impl.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+            Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
          end if;
 
 

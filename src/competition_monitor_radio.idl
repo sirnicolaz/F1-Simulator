@@ -1,4 +1,4 @@
- interface Competition_Monitor {
+ interface Competition_Monitor_Radio {
 	string getInfo(in short lap, in short sector, in short id);
 	string getBestLap();
 	string getBestSector( in short index );

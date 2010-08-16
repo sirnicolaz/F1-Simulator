@@ -7,7 +7,7 @@ with Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
 with Queue; use Queue;
 
-with Competition_Monitor.impl;
+with Competition_Monitor;
 
 with Common;
 with Ada.Calendar;

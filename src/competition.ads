@@ -12,7 +12,7 @@ with Ada.Strings.Unbounded;
 with Common;
 
 with Stats;
-with Competition_Monitor.impl;
+with Competition_Monitor;
 
 package Competition is
 
@@ -41,6 +41,7 @@ package Competition is
 
       procedure Set_MonitorCorbaLOC ( Monitor_COrbaLoc_In : Unbounded_String.Unbounded_String);
 
+      function Get_MonitorCorbaLOC return STRING;
       entry Wait;
 
       procedure Start;
@@ -58,7 +59,7 @@ package Competition is
       Stop_Joining : BOOLEAN := False;
       Configured : BOOLEAN := False;
       Comp_List : access Common.COMPETITOR_LIST;
-      Monitor : Competition_monitor.impl.STARTSTOPHANDLER_POINT;
+      Monitor : Competition_monitor.STARTSTOPHANDLER_POINT;
       --TODO: verify if really needed
       GlobalStatistics : Stats.GLOBAL_STATS_HANDLER_POINT;
       GenericStatistics : Stats.GENERIC_STATS_POINT;
