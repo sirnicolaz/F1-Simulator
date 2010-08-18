@@ -38,7 +38,7 @@ package Box is
 
    type COMPETITION_UPDATE_POINT is access COMPETITION_UPDATE;
 
-   type STRATEGY_HISTORY is array(POSITIVE range <>) of STRATEGY;
+   type STRATEGY_HISTORY is array(INTEGER range <>) of STRATEGY;
 
    Interval : FLOAT; -- set after competition joining
    Sector_Qty : INTEGER := 3; --It's fixed in the f1 competitions
@@ -61,9 +61,9 @@ package Box is
    -- This task is the responsible of getting the competition updates from the
    --+ remote server and putting them into the updated buffer shared with
    --+ the strategy updater
-   task type MONITOR(SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
+   task type UPDATE_RETRIEVER(SharedBuffer : SYNCH_COMPETITION_UPDATES_POINT;
                      MonitorRadio_CorbaLOC : Common.UNBOUNDED_STRING_POINT) is
-   end MONITOR;
+   end UPDATE_RETRIEVER;
 
    --The resource handle the mutually exclusive access to the
    --+ strategy history. The resource is written by the

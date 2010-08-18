@@ -16,6 +16,10 @@ with CORBA.Impl;
 with PortableServer.POA.Helper;
 with PortableServer.POAManager;
 with PolyORB.CORBA_P.CORBALOC;
+
+with PolyORB.Setup.Thread_Pool_Server;
+pragma Warnings (Off, PolyORB.Setup.Thread_Pool_Server);
+
 with Common;
 
 procedure Main_Box is
@@ -103,7 +107,8 @@ begin
          declare
             Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
          begin
-            CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
+            CORBA.ORB.Initialize("ORB");
+--            CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
             declare
                Root_POA : PortableServer.POA.Local_Ref;
                BoxRadio_Ref : CORBA.Object.Ref;
@@ -233,8 +238,9 @@ begin
                                                                            InitialGasLevel,
                                                                            InitialTyreType_StdStr
                                                                           );
-         BoxMonitor : access Box.MONITOR := new Box.MONITOR(Update_Buffer,
-                                                            CompetitionMonitor_CorbaLOC);
+
+         BoxMonitor : access Box.UPDATE_RETRIEVER := new Box.UPDATE_RETRIEVER(Update_Buffer,
+                                                                              CompetitionMonitor_CorbaLOC);
 
       begin
          --Delay(Standard.Duration(40000));

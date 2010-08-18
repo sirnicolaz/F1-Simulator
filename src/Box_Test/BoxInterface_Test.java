@@ -42,7 +42,7 @@ public class BoxInterface_Test{
 		String initialTyreType = "normal";
 		Double gasTankCapacity = 250.0;
 		String boxStrategy = "NORMAL";
-		Double initialGasLevel = 156.0;
+		Double initialGasLevel = 150.0;
 
 		String boxConfFile = "<?xml version=\"1.0\"?>" +
 					"<config>" + 
@@ -52,9 +52,9 @@ public class BoxInterface_Test{
 						"<circuitLength>" +  circuitLength.value + "</circuitLength>" + 
 						"<initialGasLevel>" + initialGasLevel + "</initialGasLevel>" +
 						"<gasTankCapacity>" + gasTankCapacity + "</gasTankCapacity>" + 
-						"<competitorID>" + comp_ID.value + "</comp_ID>" + 
+						"<competitorID>" + comp_ID.value + "</competitorID>" + 
 						"<boxStrategy>" + boxStrategy + "</boxStrategy>" + 
-					"<config>";
+					"</config>";
 		String configFileName = "boxConfig.xml";
 
 

@@ -1,18 +1,6 @@
 with BoxRadio.Skel;
 pragma Warnings (Off, BoxRadio.Skel);
 
-with CORBA.Impl;
-with CORBA.Object;
-with CORBA.ORB;
-
-with PortableServer.POA.Helper;
-with PortableServer.POAManager;
-
-with PolyORB.CORBA_P.CORBALOC;
-
-with PolyORB.Setup.No_Tasking_Server;
-pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
-
 with Ada.Text_IO;
 
 with Common;
@@ -38,6 +26,7 @@ package body BoxRadio.impl is
       NewStrategy : Common.STRATEGY;
 
    begin
+      Ada.Text_IO.Put_Line("Requesting strategy for lap: " & Common.IntegerToString(INTEGER(lap)));
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
 
       return CORBA.To_CORBA_String(Box.BoxStrategyToXML(NewStrategy));

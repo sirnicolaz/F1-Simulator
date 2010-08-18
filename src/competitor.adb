@@ -428,6 +428,8 @@ package body Competitor is
       carDriver.RaceIterator:=RaceIterator;
       carDriver.Id:=id_In;
 
+      --Initializing onboard computer references in the Competition Monitor
+      Competition_Monitor.AddOBC(carDriver.statsComputer,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
       --+ (probably other problems are occured in such a case)
       loop CompetitorRadio.Init_BoxConnection(BoxRadio_CorbaLOC => BoxRadio_CorbaLOC,
@@ -735,6 +737,7 @@ package body Competitor is
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : car max speed = "&Float'Image(carDriver.auto.MaxSpeed));
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : driver vel in = "&Float'Image(carDriver.pilota.Vel_In));
       Get_CurrentCheckPoint(carDriver.RaceIterator,C_Checkpoint); -- NEW
+      Ada.Text_IO.Put_Line("Current checkpoint got");
       --valore := Sincronizza(carDriver.Id, C_Checkpoint);
       --loop exit when C_Checkpoint.getContaConcorrenti = 4;
       -- Ada.Text_IO.Put_Line("asasaasaasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasas");
@@ -742,6 +745,7 @@ package body Competitor is
                                                                   --end loop;
       -- Ask the box for the starting strategy
       Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio, CurrentLap));
+      Ada.Text_IO.Put_Line("Strategy got");
       BrandNewStrategy := XML2Strategy(Strategy_FileName);
 
 

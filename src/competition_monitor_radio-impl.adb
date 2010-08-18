@@ -1,15 +1,18 @@
 with Competition_Monitor_Radio.Skel;
 pragma Warnings (Off, Competition_Monitor_Radio.Skel);
-with CORBA;
 
 with Stats;
 with Competition_Monitor;
+
+with Common;
+with Ada.Text_IO;
 
 package body Competition_Monitor_Radio.impl is
 
    function Ready( Self : access Object;
                   CompetitorID : Corba.SHORT) return BOOLEAN is
    begin
+      Ada.Text_IO.Put_Line("Ready box " & COmmon.IntegerToString(INTEGER(CompetitorID)));
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 

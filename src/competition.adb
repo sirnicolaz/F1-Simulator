@@ -98,7 +98,7 @@ package body Competition is
       procedure Start is
       begin
 
-         Ada.Text_IO.Put_Line("Starting competition...");
+         Ada.Text_IO.Put_Line("Wating box ready");
 
          Stop_Joining := true;
 
@@ -110,18 +110,21 @@ package body Competition is
          Monitor.WaitReady;
          pragma Warnings(On);
 
+         Ada.Text_IO.Put_Line("Box ready!");
+
          Set_Competitors(Track,Comp_List.all);
 
 
          --We are aware of what we are doing here and
          --+ the Start is not a blocking action.
+         Ada.Text_IO.Put_Line("Starting competitors");
          pragma Warnings (Off);
          for Index in 1..Next_Id-1 loop
             Competitors.all(Index).Start;
          end loop;
          pragma Warnings (On);
 
-         Ada.Text_IO.Put_Line("Competition starting");
+         Ada.Text_IO.Put_Line("Competition started!!!!!!!!!");
          -- TODO: wait the end of the competition:
          --+ either all the competitors are arrived or
          --+ retired. Use the global statistic for this.
@@ -143,13 +146,18 @@ package body Competition is
          Track_Length : FLOAT := 0.0;
          --Starter : access Competition_Monitor.impl.MonitorStarter;
       begin
+         Ada.Text_IO.Put_Line("Configuring competition (inside)");
          Laps := Laps_In;
 
          Name := Unbounded_String.To_Unbounded_String(Name_In);
          ClassificRefreshTime := ClassificRefreshTime_In;
 
+
+         Ada.Text_IO.Put_Line("Initilizing competitor array");
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
 
+
+         Ada.Text_IO.Put_Line("Getting racetrack file: " & Circuit_File);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
 
@@ -159,6 +167,7 @@ package body Competition is
          GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
            (new FLOAT'(ClassificRefreshTime_in),
             GenericStatistics);
+         Ada.Text_IO.Put_Line("initializing monitor");
          Monitor := Competition_Monitor.Init(MaxCompetitors,
                                                   GlobalStatistics);
 

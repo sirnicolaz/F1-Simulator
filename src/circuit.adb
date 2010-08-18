@@ -375,7 +375,12 @@ package body Circuit is
 
       --If there is a conf file, use it to auto-init;
 
+
+      Ada.Text_IO.Put_Line("Start building");
+
       if Document_In /= null then
+
+         Ada.Text_IO.Put_Line("Building racetrack");
 
          --Find out the number of checkpoint and allocate the Racetrack
          CheckPoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
@@ -541,7 +546,12 @@ package body Circuit is
 
    begin
 
+
+      Ada.Text_IO.Put_Line("Getting racetrack document");
+
       Doc := Common.Get_Document(Racetrack_File);
+
+      Ada.Text_IO.Put_Line("Starting racetrack init");
 
       Init_Racetrack(Racetrack_Out, Doc);
 

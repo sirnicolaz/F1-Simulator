@@ -23,6 +23,7 @@ package body Competition_Monitor is
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
          ExpectedBoxes := ExpectedBoxes - 1;
+         Ada.Text_IO.Put_Line(Common.IntegerToString(ExpectedBoxes) & " boxes left");
       end Ready;
       --TODO: maybe not necessary
       procedure Stop( CompetitorID : in INTEGER) is
@@ -50,6 +51,12 @@ package body Competition_Monitor is
       --+ onboard computer is added (everything should already be
       --+ fine automatically once the box invokes this method, but
       --+ just for bug tracing we inserted this control)
+      if(arrayComputer(INTEGER(CompetitorID)) = null) then
+         Ada.Text_IO.Put_Line("Onboard computer null");
+      else
+         Ada.Text_IO.Put_Line("Onboard computer ok");
+      end if;
+
       if( arrayComputer(INTEGER(CompetitorID)) /= null and  IsConfigured = true) then
          CompetitionHandler.Ready(INTEGER(CompetitorID));
          return true;
@@ -130,6 +137,7 @@ package body Competition_Monitor is
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;
+      AddCompId(indexIn);
    end AddOBC;
 
    procedure AddCompId (IdComp :  INTEGER) is

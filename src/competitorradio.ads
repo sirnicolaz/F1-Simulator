@@ -2,10 +2,10 @@ with BoxRadio;
 with Ada.Text_IO;
 
 with CORBA.ORB;
-with PolyORB.Setup.Client;
-pragma Warnings (Off, PolyORB.Setup.Client);
+--with PolyORB.Setup.Client;
+--pragma Warnings (Off, PolyORB.Setup.Client);
 
-with PolyORB.Utils.Report;
+--with PolyORB.Utils.Report;
 
 
 package CompetitorRadio is

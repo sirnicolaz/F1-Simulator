@@ -1,23 +1,23 @@
 with Ada.Text_IO;
 
-with CORBA.Impl;
-with CORBA.Object;
-with CORBA.ORB;
-
-with PortableServer.POA.Helper;
-with PortableServer.POAManager;
-
-with PolyORB.CORBA_P.CORBALOC;
-
-with PolyORB.Setup.No_Tasking_Server;
-pragma Warnings (Off, PolyORB.Setup.No_Tasking_Server);
-
-with Competition;
-use Competition;
-
 with RegistrationHandler.impl;
 with CompetitionConfigurator.impl;
 with Competition_Monitor_Radio.impl;
+
+with CORBA.ORB;
+with PortableServer;
+with PortableServer.POA;
+with CORBA.Object;
+with CORBA.Impl;
+with PortableServer.POA.Helper;
+with PortableServer.POAManager;
+with PolyORB.CORBA_P.CORBALOC;
+
+with PolyORB.Setup.Thread_Pool_Server;
+pragma Warnings (Off, PolyORB.Setup.Thread_Pool_Server);
+
+with Competition;
+use Competition;
 
 procedure Init_Competition is
 begin
@@ -27,7 +27,7 @@ begin
    declare
 
       Argv : CORBA.ORB.Arg_List := CORBA.ORB.Command_Line_Arguments;
-      The_Competition : Competition.SYNCH_COMPETITION_POINT := new Competition.SYNCH_COMPETITION;
+      The_Competition : SYNCH_COMPETITION_POINT := new SYNCH_COMPETITION;
 
       task type Starter(Comp_In : Competition.SYNCH_COMPETITION_POINT) is
       end Starter;
@@ -35,7 +35,7 @@ begin
       task body Starter is
          Comp : Competition.SYNCH_COMPETITION_POINT := Comp_In;
       begin
-            Competition.Ready(Comp,True);
+           Competition.Ready(Comp,True);
       end Starter;
 
       Starter_Task : access Starter;
@@ -92,12 +92,18 @@ begin
             & CORBA.To_Standard_String
             (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))
             & "'");
-         --  Launch the server
+
+         Ada.Text_IO.Put_Line
+           ("Competition Monitor Radio: '"
+            & CORBA.To_Standard_String
+            (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref))
+            & "'");
 
          The_Competition.Set_MonitorCorbaLOC
            (Unbounded_String.To_Unbounded_String
               (CORBA.To_Standard_String
-                 (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))));
+                 (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref))));
+         --  Launch the server
 
          Ada.Text_IO.Put_Line("Initing starter");
          Starter_Task := new Starter(The_Competition);

@@ -48,10 +48,10 @@ package body CompetitionConfigurator.impl is
       Competitor_Qty := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorQty"))));
       Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
       Classific_RefreshTime := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"classificRefreshTime"))));
-
+      Ada.Text_IO.Put_Line("Configuring...");
       Comp.Configure(Competitor_Qty,Classific_RefreshTime,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
-
-      return CORBA.To_CORBA_String("no ior yet");
+      Ada.Text_IO.Put_Line("Configuration done.");
+      return CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
    end Configure;
 
 end CompetitionConfigurator.impl;

@@ -1,11 +1,8 @@
 with CORBA.ORB;
 
-with Polyorb.Setup.Client;
-pragma Warnings (Off, PolyORB.Setup.Client);
+with Competition_Monitor_Radio;
 
-with Competition_Monitor;
-
-with PolyORB.Utils.Report;
+--with PolyORB.Utils.Report;
 --with MonitorRadio;
 
 with Input_Sources.File;
@@ -21,6 +18,9 @@ with Ada.Text_IO;
 with ADA.Float_Text_IO;
 with Common;
 use Common;
+
+--with PolyORB.Setup.Client;
+--pragma Warnings (Off, PolyORB.Setup.Client);
 
 package body Box is
 
@@ -95,43 +95,48 @@ package body Box is
 
    end Init;
 
-   task body MONITOR is
+   task body UPDATE_RETRIEVER is
+
       Info_XMLStr : Unbounded_String.Unbounded_String;
       Info : COMPETITION_UPDATE_POINT;
       Sector : INTEGER := 0;
       Lap : INTEGER := 0;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
 
-      Radio : Competition_Monitor.Ref;
+      Radio : Competition_Monitor_Radio.Ref;
       RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
 
       --Generic boolean
       Success : BOOLEAN := false;
    begin
-      Ada.Text_IO.Put_Line("Monitor begin");
-      CORBA.ORB.Initialize("ORB");
+      Ada.Text_IO.Put_Line("Monitor begin: " & Unbounded_String.To_String(MonitorRadio_CorbaLOC.all) & ", id: " & Common.IntegerToString(CompetitorID));
+      --CORBA.ORB.Initialize("ORB");
       Corba.ORB.String_To_Object(CORBA.To_CORBA_String
-                                 (Unbounded_String.To_String(MonitorRadio_CorbaLOC.all))
-                                 , Radio);
+                                 (RadioCorbaLOC) , Radio);
 
-      if Competition_Monitor.Is_Nil(Radio) then
+      if Competition_Monitor_Radio.Is_Nil(Radio) then
          Ada.Text_IO.Put_Line("Monitor radio down");
 
       end if;
 
-      Success := Competition_Monitor.Ready(Radio,CORBA.Short(Competitor_Id));
+      Ada.Text_IO.Put_Line("Monitor reference taken");
 
+      Success := Competition_Monitor_Radio.Ready(Radio,CORBA.Short(CompetitorID));
+
+      Ada.Text_IO.Put_Line("Successful!");
       -- Test init values to avoid warnings DEL
       Info := new COMPETITION_UPDATE;
       loop
 
+         Ada.Text_IO.Put_Line("Getting info");
          Info_XMLStr := Unbounded_String.To_Unbounded_String
            (CORBA.To_Standard_String
-              (Competition_Monitor.getInfo(
+              (Competition_Monitor_Radio.getInfo(
                Radio,
                  CORBA.Short(Lap),
                   CORBA.Short(Sector),
-                  CORBA.Short(Competitor_Id))));
+               CORBA.Short(CompetitorID))));
+         Ada.Text_IO.Put_Line("Info taken");
          Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr));
          UpdateBuffer.Add_Data(Info);
          exit when Info.Time = -1.0;
@@ -144,7 +149,7 @@ package body Box is
          Delay(Standard.Duration(2));
       end loop;
 
-   end MONITOR;
+   end UPDATE_RETRIEVER;
 
    --Monitor_Task : access MONITOR;
 
@@ -567,7 +572,7 @@ package body Box is
 
       procedure Init( Lap_Qty : in INTEGER ) is
       begin
-         history := new STRATEGY_HISTORY(1..Lap_Qty);
+         history := new STRATEGY_HISTORY(0..Lap_Qty-1);
       end Init;
 
       procedure AddStrategy( Strategy_in : in STRATEGY ) is
@@ -576,6 +581,7 @@ package body Box is
          history.all(history_size+1) := Strategy_in;
          history_size := history_size + 1;
          Updated := true;
+         Ada.Text_IO.Put_Line("Strategy added");
          exception when Constraint_Error =>
             Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
             Ada.Text_IO.Put("the history array has had an access violation.");
@@ -584,12 +590,15 @@ package body Box is
       entry Get_Strategy( NewStrategy : out STRATEGY ;
                  Lap : in INTEGER) when Updated is
       begin
+         Ada.Text_IO.Put_Line("Retrieving new strategy");
          if Lap <= history_size then
-               NewStrategy := history.all(Lap);
-            else
-               Updated := false;
-               requeue Get_Strategy;
-            end if;
+            Ada.Text_IO.Put_Line("Strategy got");
+            NewStrategy := history.all(Lap);
+         else
+            Ada.Text_IO.Put_Line("Strategy missing");
+            Updated := false;
+            requeue Get_Strategy;
+         end if;
 
       end Get_Strategy;
 
@@ -614,6 +623,8 @@ package body Box is
       XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
+      Ada.Text_IO.Put_Line("Producing xml strategy...");
+
       case Strategy_in.Style is
          when AGGRESSIVE =>
             Style := Unbounded_String.To_Unbounded_String("Aggressive");
@@ -627,9 +638,11 @@ package body Box is
 			      "<tyreType>" & Unbounded_String.To_String(Strategy_in.Type_Tyre)& "</tyreType>" &
 			      "<style>" & Unbounded_String.To_String(Style) & "</style>" &
 			      "<gasLevel>" & FloatToString(Strategy_in.GasLevel) & "</gasLevel>" &
-			      "<PitStopLaps>" & IntegerToString(Strategy_in.PitStopLaps) & "</PitStopLaps>" &
+			      "<pitStopLaps>" & IntegerToString(Strategy_in.PitStopLaps) & "</pitStopLaps>" &
 			      "<pitStopDelay>" & FloatToString(Strategy_in.PitStopDelay) & "</pitStopDelay>" &
                                                          "</strategy>");
+
+      Ada.Text_IO.Put_Line("Strategy done");
 
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;

@@ -3,7 +3,7 @@ with Ada.Text_IO;
 with RegistrationHandler.Skel;
 pragma Warnings (Off, RegistrationHandler.Skel);
 
-pragma Warnings (Off);
+with Common;
 
 package body RegistrationHandler.impl is
 
@@ -31,6 +31,7 @@ package body RegistrationHandler.impl is
 
       Laps := CORBA.Short(Comp.Get_Laps);
       CircuitLength := CORBA.Float(Comp.Get_CircuitLength);
+      Ada.Text_IO.Put_Line("ID int " & Common.IntegerToString(Competitor_ID_INT));
       Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
       MonitorCorbaLOC := CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
