@@ -154,10 +154,12 @@ package body Competition is
 
 
          Ada.Text_IO.Put_Line("Initilizing competitor array");
+         Competitor.Set_Laps(Laps_In);
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
 
 
          Ada.Text_IO.Put_Line("Getting racetrack file: " & Circuit_File);
+         Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
 

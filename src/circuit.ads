@@ -19,6 +19,8 @@ package Circuit is
 
    RaceTrack_Length : FLOAT := 0.0;
 
+   --Default value for Checkpoints and max competitors qty, used
+   --+ in case of troubles with conf file
    Checkpoints_Qty : POSITIVE := 2;--TODO: verify if it's necessary
    MaxCompetitors_Qty : POSITIVE := 5;--4;
 

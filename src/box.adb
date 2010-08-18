@@ -78,7 +78,9 @@ package body Box is
    begin
 
       Laps := Laps_In;
-      CircuitLength := CircuitLength_In;
+      --TODO: decide wheter to you km or m for the circuit length and
+      --+ keep this unit wherever.
+      CircuitLength := CircuitLength_In/1000.00;
       CompetitorID := CompetitorId_In;
       GasTankCapacity := GasTankCapacity_In;
 

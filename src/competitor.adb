@@ -758,7 +758,9 @@ package body Competitor is
          Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
+         Ada.Text_IO.Put_Line("Setting arrival");
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
+            Ada.Text_IO.Put_Line("Pit stop");
             CurrentLap := CurrentLap + 1;--TODO: find a way to get the lap from the competition
 
             -- Ask for the box strategy once the prebox checkpoint is reached
@@ -775,6 +777,8 @@ package body Competitor is
             carDriver.strategia := BrandNewStrategy;
          end if;
 
+         Ada.Text_IO.Put_Line("Signal arrival");
+
          C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
          --era while ... loop
@@ -790,11 +794,15 @@ package body Competitor is
          --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
+
+         Ada.Text_IO.Put_Line("Get checkpoint position");
+
          StartingPosition := Get_Position(carDriver.RaceIterator);
 
          --TODO: verificare se va bene controllare la fine della gara adesso o quando
          --+ viene superato il check
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
+            Ada.Text_IO.Put_Line("Last lap reached");
             Finished := true;
          end if;
 
@@ -816,6 +824,8 @@ package body Competitor is
          -- CrossingTime è il tempo effettivo di attraversamento del
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
+
+         Ada.Text_IO.Put_Line("Evaluating..");
          CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross);
 
          --If a pitstop occured, add the pit stop time to the crossing time
