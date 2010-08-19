@@ -91,8 +91,10 @@ package body Competition_Monitor is
    protected body INFO_STRING is
       entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when true is -- ritorna le info sul settore relativo al giro, se disponibili
       begin
+         Ada.Text_IO.Put_Line("in getSector");
          if index = 1 then
             if sector1 = Unbounded_String.Null_Unbounded_String then
+               Ada.Text_IO.Put_Line("in getSector,settore 1 NULL");
                Updated := false;
                requeue Wait;
             else
@@ -100,6 +102,7 @@ package body Competition_Monitor is
             end if;
          elsif index = 2 then
             if sector2 = Unbounded_String.Null_Unbounded_String then
+               Ada.Text_IO.Put_Line("in getSector,settore 2 NULL");
                Updated := false;
                requeue Wait;
             else
@@ -107,6 +110,7 @@ package body Competition_Monitor is
             end if;
          else
             if sector3 = Unbounded_String.Null_Unbounded_String then
+               Ada.Text_IO.Put_Line("in getSector,settore 3 NULL");
                Updated := false;
                requeue Wait;
             else
@@ -114,7 +118,7 @@ package body Competition_Monitor is
             end if;
          end if;
       end getSector;
-      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when Updated is
+      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when Updated  is
       begin
 --Ada.Text_IO.Put_Line("in wait");
          requeue GetSector;
