@@ -139,9 +139,12 @@ package body Box is
                   CORBA.Short(Sector),
                CORBA.Short(CompetitorID))));
          Ada.Text_IO.Put_Line("Info taken");
-         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr));
+         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+         Ada.Text_IO.Put_Line("Xml->update");
          UpdateBuffer.Add_Data(Info);
+         Ada.Text_IO.Put_Line("Buffer updated");
          exit when Info.Time = -1.0;
+         Ada.Text_IO.Put_Line("Which sector?");
          if(Sector = Sector_Qty) then
             Sector := 1;
             Lap := Lap + 1;
@@ -733,7 +736,8 @@ package body Box is
       return Unbounded_String.To_String(XML_String);
    end CompetitionUpdateToXML;
 
-   function XML2CompetitionUpdate(UpdateStr_In : STRING) return COMPETITION_UPDATE_POINT is
+   function XML2CompetitionUpdate(UpdateStr_In : STRING;
+                                  Temporary_StringName : STRING) return COMPETITION_UPDATE_POINT is
       Update : COMPETITION_UPDATE_POINT := new COMPETITION_UPDATE;
       Doc : Document;
       Update_NodeList : Node_List;
@@ -745,28 +749,37 @@ package body Box is
       Lap : INTEGER;
       Sector : INTEGER;
 
-      Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
+      --Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
       Success : BOOLEAN := false;
    begin
       --TODO: handle the exception
-      Success := Common.SaveToFile(FileName => Unbounded_String.To_String(Update_FileName),
+      Ada.Text_IO.Put_Line("SAving file");
+      Success := Common.SaveToFile(FileName => Temporary_StringName,
                         Content  => UpdateStr_In,
                         Path     => "");
-
-      Doc := Common.Get_Document(Unbounded_String.To_String(Update_FileName));
+      Ada.Text_IO.Put_Line("File saved");
+      Doc := Common.Get_Document(Temporary_StringName);
+      Ada.Text_IO.Put_Line("Document got");
       Update_NodeList := Get_Elements_By_Tag_Name(Doc,"update");
+      Ada.Text_IO.Put_Line("Nodelist got");
       Current_Node := Item(Update_NodeList,0);
-
+      Ada.Text_IO.Put_Line("Start saving values");
       GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
+      Ada.Text_IO.Put_Line("Gas done");
       TyreUsury := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreUsury"))));
+      Ada.Text_IO.Put_Line("Tyre done");
       Lap := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"lap"))));
+      Ada.Text_IO.Put_Line("Lap done");
       Sector := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"sector"))));
+      Ada.Text_IO.Put_Line("Sector done");
       Time := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
-
+      Ada.Text_IO.Put_Line("Time done");
 
 
       Update.GasLevel := GasLevel;
+      Ada.Text_IO.Put_Line("Updating tyre usury");
       Update.TyreUsury := TyreUsury;
+      Ada.Text_IO.Put_Line("Tyre usury done");
       Update.Time := Time;
       Update.Lap := Lap;
       Update.Sector := Sector;

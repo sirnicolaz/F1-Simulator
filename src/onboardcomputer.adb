@@ -234,11 +234,12 @@ end Reset_Node;
             Unbounded_String.Set_Unbounded_String(updateStr,
                                                   "<?xml version=""1.0""?>" &
                                                   "<update>" &
-                                                  "<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"<gasLevel>" &
+                                                  "<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"</gasLevel>" &
                                                   "<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>" &
                                                   "<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
                                                   "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
-                                                  "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>"
+                                                  "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>" &
+                                                  "</update>"
                                                  );
             Ada.Text_IO.Put_Line("Adding news to monitor");
             Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda

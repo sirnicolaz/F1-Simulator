@@ -48,13 +48,13 @@ package Competition_Monitor is
 
    type INFO_STRING_POINT is access INFO_STRING; -- NEW
    --array di lap
-   type infoArray is array (INTEGER range <>) of INFO_STRING_POINT;--new
-   type INFO_ARRAY_POINT is access infoArray;
+   type INFO_ARRAY is array (INTEGER range <>) of INFO_STRING_POINT;--new
+   type INFO_ARRAY_POINT is access INFO_ARRAY;
 
    --struttura dati con dentro l'array, ne esiste uno per ogni concorrente (rappresentato dall'array arrayComp(IDCONCORRENTE))
-   type INFO_POINT is record
-      arrayInfo : INFO_ARRAY_POINT;
-   end record;
+   --type INFO_POINT is record
+   --   arrayInfo : INFO_ARRAY_POINT;
+   --end record;
 
    function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING;
    procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String);--metodo per settare le informazioni
@@ -64,12 +64,12 @@ package Competition_Monitor is
    type COMP_POINT is access compStatsArray;
 
 
-   type compArray is array (Positive range<>) of INFO_POINT;
+   type compArray is array (Positive range<>) of INFO_ARRAY_POINT;
    type C_POINT is access compArray;
 
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
 --   procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER);
-   procedure AddCompId (IdComp :  INTEGER);
+   --procedure AddCompId (IdComp :  INTEGER);
 
    --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING; TODO per ora commentata, non serve, la classifica viene già ritornata ai box
    --eventualmente la riuseremo per le tv, un po modificata magari.
@@ -84,13 +84,5 @@ package Competition_Monitor is
    --function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-
-
-
-private
-   arrayComputer : access OBC;--(1..10);--per avere gli onboardcomputer di ogni concorrente
-   arrayStats : access compStatsArray;--(1..10); --per avere le statistiche
-   arrayComp : access compArray; --(1..10);--per avere l'array con i dati relativi a ogni concorrente (l'id del concorrente è l'indice dell'array)
-   --TODO : correggere gli indici degli array per ora fissati a 10 e poi a max competitors.
 
 end Competition_Monitor;

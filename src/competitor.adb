@@ -737,7 +737,7 @@ package body Competitor is
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : car max speed = "&Float'Image(carDriver.auto.MaxSpeed));
       --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" : driver vel in = "&Float'Image(carDriver.pilota.Vel_In));
       Get_CurrentCheckPoint(carDriver.RaceIterator,C_Checkpoint); -- NEW
-      Ada.Text_IO.Put_Line("Current checkpoint got");
+      Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&"Current checkpoint got");
       --valore := Sincronizza(carDriver.Id, C_Checkpoint);
       --loop exit when C_Checkpoint.getContaConcorrenti = 4;
       -- Ada.Text_IO.Put_Line("asasaasaasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasasas");
@@ -745,7 +745,7 @@ package body Competitor is
                                                                   --end loop;
       -- Ask the box for the starting strategy
       Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio, CurrentLap));
-      Ada.Text_IO.Put_Line("Strategy got");
+      Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&"Strategy got");
       BrandNewStrategy := XML2Strategy(Strategy_FileName);
 
 
@@ -757,14 +757,14 @@ package body Competitor is
 
          --Istante di tempo segnato nel checkpoint attuale per il competitor
          ActualTime := C_Checkpoint.Get_Time(id);
-         Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
-         Ada.Text_IO.Put_Line("Setting arrival");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Setting arrival");
 
 
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
-            Ada.Text_IO.Put_Line("Pit stop");
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pit stop");
             CurrentLap := CurrentLap + 1;--TODO: find a way to get the lap from the competition
 
             -- Ask for the box strategy once the prebox checkpoint is reached
@@ -781,7 +781,7 @@ package body Competitor is
             carDriver.strategia := BrandNewStrategy;
          end if;
 
-         Ada.Text_IO.Put_Line("Signal arrival");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Signal arrival");
 
          C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);--arrived
          --altrimenti si comincia ad attendere il proprio turno
@@ -799,7 +799,7 @@ package body Competitor is
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
 
-         Ada.Text_IO.Put_Line("Get checkpoint position");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Get checkpoint position");
 
          StartingPosition := Get_Position(carDriver.RaceIterator);
 
@@ -808,7 +808,7 @@ package body Competitor is
          --TODO: verificare se va bene controllare la fine della gara adesso o quando
          --+ viene superato il check
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
-            Ada.Text_IO.Put_Line("Last lap reached");
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
             Finished := true;
             -- per poi invocare il metodo Add_Data
 
@@ -822,6 +822,7 @@ package body Competitor is
             Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
             Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
             Common.Set_Time(compStats, predictedTime);
+            Common.Set_Lap(compStats, CurrentLap);
             carDriver.statsComputer.Add_Data(compStats);
          end if;
 
@@ -844,7 +845,7 @@ package body Competitor is
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
 
-         Ada.Text_IO.Put_Line("Evaluating..");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
          CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross);
 
          --If a pitstop occured, add the pit stop time to the crossing time
@@ -884,7 +885,7 @@ package body Competitor is
          -- qua va creata la statistica da aggiungere al computer di bordo
          -- per poi invocare il metodo Add_Data
          Common.Set_Checkpoint(compStats, i-1);
-         Ada.Text_IO.Put_Line("Checkpoint n. "
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& " Checkpoint n. "
                               & Common.IntegerToString(Get_Position(carDriver.RaceIterator))
                               & " is the last checkpoint in sector " & BOOLEAN'IMAGE(C_Checkpoint.Is_LastOfTheSector));
          Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
@@ -896,6 +897,7 @@ package body Competitor is
          Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
+         Common.Set_Lap(compStats, CurrentLap);
          carDriver.statsComputer.Add_Data(compStats);
 
          --NEW: moved to onboard computer
@@ -931,7 +933,7 @@ package body Competitor is
          end if;
 
          -- TODO: retrieve the clock just once -> not necessary useful
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime/10.0));
+         --delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime/10.0));
          --Delay(1.0);
          --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
          --tempoTotale := tempoTotale +

@@ -18,6 +18,13 @@ package body Competition_Monitor is
    Laps : INTEGER;
    IsConfigured : BOOLEAN := false;
 
+   --per avere gli onboardcomputer di ogni concorrente
+   arrayComputer : access OBC;
+   --per avere le statistiche
+   arrayStats : access compStatsArray;
+   --per avere l'array con i dati relativi a ogni concorrente (l'id del concorrente è l'indice dell'array)
+   arrayComp : access compArray;
+
    function getBool return Boolean is
    begin
       return IsConfigured;
@@ -81,22 +88,22 @@ package body Competition_Monitor is
       arrayComputer := new OBC(1..CompetitorQty);
       arrayStats := new compStatsArray(1..CompetitorQty);
       arrayComp := new compArray(1..CompetitorQty);
+
+      --Init the INFO_ARRAY_POINT
+      for Index in 1..CompetitorQty loop
+         arrayComp(Index) := new INFO_ARRAY(0..Laps-1);
+         for Indez in 0..Laps-1 loop
+            arrayComp(Index).all(Indez) := new INFO_STRING;
+         end loop;
+      end loop;
+
+
       CompetitionHandler := new STARTSTOPHANDLER;
       CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
 
       GlobalStatistics := GlobalStatistics_In;
 
       IsConfigured := true;
-
-      for index in 1..CompetitorQty
-      loop
-         arrayComp(index).arrayInfo := new infoArray(0..Laps-1);
-         for i in 1..Laps-1
-         loop
-            arrayComp(index).arrayInfo(i):= new INFO_STRING;
-         end loop;
-      end loop;
-
 
       return CompetitionHandler;
    end Init;
@@ -160,30 +167,27 @@ package body Competition_Monitor is
 --         if arrayComp = null then
 --           Ada.Text_IO.Put_Line("arrayComp NULL");
 --        end if;
-      if arrayComp(id).arrayInfo = null then
-         arrayComp(id).arrayInfo := new infoArray(0..Laps-1);
-         Ada.Text_IO.Put_Line("arrayInfo init");
-      end if;
+
 --         if arrayComp(id).arrayInfo = null then
 --           Ada.Text_IO.Put_Line("arrayInfo NULL");
 --        end if;
-      arrayComp(id).arrayInfo(lap):= new INFO_STRING;
-      --Ada.Text_IO.Put_Line(Unbounded_String.To_String(updXml));
-      arrayComp(id).arrayInfo(lap).setSector(sector, updXml);
+--Ada.Text_IO.Put_Line(Unbounded_String.To_String(updXml));
+      Ada.Text_IO.Put_Line("Competitor " & Common.IntegerToString(id) & " is addin info of lap " & Common.IntegerToString(lap));
+      arrayComp(id).all(lap).setSector(sector, updXml);
    end setInfo;
 
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;
-      AddCompId(indexIn);
+      --AddCompId(indexIn);
    end AddOBC;
 
-   procedure AddCompId (IdComp :  INTEGER) is
+   --procedure AddCompId (IdComp :  INTEGER) is
       --arr : INFO_POINT;
-   begin
-      arrayComp(IdComp).arrayInfo := new InfoArray(0..Laps);
+   --begin
+      --arrayComp(IdComp).arrayInfo := new InfoArray(0..Laps);
       --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
-   end AddCompId;
+   --end AddCompId;
 
    function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING is
       stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
@@ -198,25 +202,9 @@ package body Competition_Monitor is
 
       --TODO: si era detto che la classifica non serve qui. Verificare
       --+ ed eventualmente eliminare
-      --class.all := GlobalStatistics.global.Test_Get_Classific;
 
-      --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
-      --      Unbounded_String.Set_Unbounded_String(stringRet,
-      Ada.Text_IO.Put_Line("settore richiesto = "&Integer'Image(sector));
-      if arrayComp = null then
-         Ada.Text_IO.Put_Line("valore di arrayComp(id) null ");
-      end if;
-
-      --if arrayComp(id).arrayInfo = null then
-        -- Ada.Text_IO.Put_Line("valore di arrayComp(id).arrayInfo(Lap) null");
-      --end if;
-
---        if arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) = null then
---           Ada.Text_IO.Put_Line("valore di arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) null");
---           end if;
-Ada.Text_IO.Put_Line("prima di getSector");
-      arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet);
-Ada.Text_IO.Put_Line("dopo di getSector");
+      arrayComp(id).all(Lap).getSector(sector,stringRet);
+      Ada.Text_IO.Put_Line("dopo di getSector");
 
       --Unbounded_String.Append(stringRet,"<classific competitors="
        --                       &Integer'Image(class'Length)
