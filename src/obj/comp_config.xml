@@ -4,5 +4,5 @@
 	<circuitConfigFile>obj/race.xml</circuitConfigFile>
 	<classificRefreshTime>43.0</classificRefreshTime> <!-- float - seconds. This is the time interval between each snapshot of the classific -->
 	<competitorQty>2</competitorQty> <!-- int -->
-	<laps>50</laps> <!-- int -->
+	<laps>20</laps> <!-- int -->
 </config>

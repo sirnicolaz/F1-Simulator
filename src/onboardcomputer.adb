@@ -88,15 +88,18 @@ package body OnBoardComputer is
       Set_FirstCheckInSect(Info_Node_Out.Value, False);
 end Reset_Node;
 
+   --Actually this is a copy function. TODO: change name
    function Reset_Data(Data : COMP_STATS_POINT) return COMP_STATS_POINT is
-      Data_Copy : Common.COMP_STATS_POINT;
+      Data_Copy : Common.COMP_STATS_POINT := new Common.COMP_STATS;
    begin
 --      Ada.Text_IO.Put_Line("in Reset_Data");
-      Data_Copy := Data;
+      Data_Copy.all := Data.all;
+
+      --NEW: cosa ci faceva qui
       --Data_Copy.LastCheckInSect := false;
-      Set_LastCheckInSect(Data_Copy, false);
+      --Set_LastCheckInSect(Data_Copy, false);
       --Data_Copy.FirstCheckInSect := true;
-      Set_FirstCheckInSect(Data_Copy, false);
+      --Set_FirstCheckInSect(Data_Copy, false);
       return Data_Copy;
    end Reset_Data;
 
@@ -224,8 +227,10 @@ end Reset_Node;
 
          -- If the information are related to last checkpoint of the sector
          --+ it's necessary to add those information to the competition monitor
-         if(Common.Get_LastCheckInSect(Data)) then
 
+         if(Common.Get_LastCheckInSect(Data) = true) then
+
+            Ada.Text_IO.Put_Line("Sector end");
             Unbounded_String.Set_Unbounded_String(updateStr,
                                                   "<?xml version=""1.0""?>" &
                                                   "<update>" &
@@ -235,6 +240,7 @@ end Reset_Node;
                                                   "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
                                                   "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>"
                                                  );
+            Ada.Text_IO.Put_Line("Adding news to monitor");
             Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
          end if;
 

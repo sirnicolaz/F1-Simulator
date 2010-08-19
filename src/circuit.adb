@@ -342,7 +342,13 @@ package body Circuit is
    --TODO: validate input file and verify haandle exceptions
    procedure Init_Racetrack(Racetrack_In : in out RACETRACK_POINT;
                             Document_In : DOCUMENT) is
+      NodeQty : INTEGER;
       CheckpointQty : INTEGER;
+      --In an XML file, between each tag there is a hidden tag text.
+      --+ So, while looping through the checkpoint node, it's necessary
+      --+ to keep trace of which of the inspected nodes are checkpoints
+      --+ and which ones are not.
+      CheckpointCounter : INTEGER := 0;
       Sector_Qty : INTEGER := 3;
       Sector_List : Node_List;
       Checkpoint_List : Node_List;
@@ -396,12 +402,16 @@ package body Circuit is
             Current_Node := Item(Sector_List, Index-1);
             CheckPoint_List := Child_Nodes(Current_Node);
 
-            CheckpointQty := Length(CheckPoint_List);
+            NodeQty := Length(CheckPoint_List);
+            CheckpointQty := NodeQty - (NodeQty/2+1);
+            Ada.Text_IO.Put_Line(Common.IntegerToString(CheckpointQty) & " checkpoints");
 
             --Retrieve the information contained in each checkpoint (if we are
             --+ dealing with a checkpoint node)
-            for Indez in 1..CheckpointQty loop
-              if(DOM.Core.Nodes.Node_Name(Item(CheckPoint_List,Indez-1)) = "checkpoint") then
+            CheckpointCounter := 0;
+            for Indez in 1..NodeQty loop
+               if(DOM.Core.Nodes.Node_Name(Item(CheckPoint_List,Indez-1)) = "checkpoint") then
+                  CheckpointCounter := CheckpointCounter + 1;
 
                   Current_Node := Item(CheckPoint_List, Indez-1);
                   IsGoal_Attr := Get_Named_Item (Attributes (Current_Node), "goal");
@@ -444,10 +454,12 @@ package body Circuit is
                      PreBox_Checkpoint := Checkpoint_Temp;
                   end if;
 
-                  if(Indez = 1) then
+                  if(CheckpointCounter = 1) then
+                     Ada.Text_IO.Put_Line("First check in sector");
                      IsFirstOfTheSector := true;
                      IsLastOfTheSector := false;
-                  elsif (Indez = CheckpointQty) then
+                  elsif (CheckpointCounter = CheckpointQty) then
+                     Ada.Text_IO.Put_Line("Last check in sector");
                      IsFirstOfTheSector := false;
                      IsLastOfTheSector := true;
                   else

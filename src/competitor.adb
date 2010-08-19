@@ -751,14 +751,18 @@ package body Competitor is
 
       loop
 
-         Ada.Text_IO.Put_Line("______-------****** ITERAZIONE : "&Integer'Image(i)&" , TASK "&Integer'Image(Id)&"******-------______");
---Ada.Float_Text_IO.Put(tempoTotale);
+         --Ada.Text_IO.Put_Line("______-------****** ITERAZIONE : "&Integer'Image(i)&" , TASK "&Integer'Image(Id)&"******-------______");
+         --Ada.Float_Text_IO.Put(tempoTotale);
+
+
          --Istante di tempo segnato nel checkpoint attuale per il competitor
          ActualTime := C_Checkpoint.Get_Time(id);
          Ada.Text_IO.Put_Line(Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
          Ada.Text_IO.Put_Line("Setting arrival");
+
+
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
             Ada.Text_IO.Put_Line("Pit stop");
             CurrentLap := CurrentLap + 1;--TODO: find a way to get the lap from the competition
@@ -799,11 +803,26 @@ package body Competitor is
 
          StartingPosition := Get_Position(carDriver.RaceIterator);
 
+         --NEW: Moved. It was just before the crossing time calculation.
+         SectorID:=C_Checkpoint.Get_SectorID;
          --TODO: verificare se va bene controllare la fine della gara adesso o quando
          --+ viene superato il check
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
             Ada.Text_IO.Put_Line("Last lap reached");
             Finished := true;
+            -- per poi invocare il metodo Add_Data
+
+            Common.Set_Checkpoint(compStats, i-1);
+            Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
+            Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
+            Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
+         -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
+                                                 --commentato- da correggere il ripo di gaslevel
+
+            Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
+            Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
+            Common.Set_Time(compStats, predictedTime);
+            carDriver.statsComputer.Add_Data(compStats);
          end if;
 
 
@@ -848,29 +867,26 @@ package body Competitor is
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
-         SectorID:=C_Checkpoint.Get_SectorID;
 
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
-         Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- TEMPO DI GARA = "&Float'Image(PredictedTime));
-
-         Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : 11- sectorID = "&Integer'Image(sectorID));
          j:=0;
          loop
-            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : loop j= "&Integer'Image(j));
             Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : metà loop j= "&Integer'Image(j));
             PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
             Index := Index + 1;
             j:=j+1;
-            Ada.Text_IO.Put_Line("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"&Integer'Image(carDriver.Id)&" : fine loop j= "&Integer'Image(j));
-            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, tolto il +1
+            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
          end loop;
+        -- Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);--NEW: rieliminat
          --AGGIORNAMENTO ONBOARDCOMPUTER
          -- qua va creata la statistica da aggiungere al computer di bordo
          -- per poi invocare il metodo Add_Data
          Common.Set_Checkpoint(compStats, i-1);
+         Ada.Text_IO.Put_Line("Checkpoint n. "
+                              & Common.IntegerToString(Get_Position(carDriver.RaceIterator))
+                              & " is the last checkpoint in sector " & BOOLEAN'IMAGE(C_Checkpoint.Is_LastOfTheSector));
          Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
          Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
@@ -914,8 +930,8 @@ package body Competitor is
             CurrentLap := CurrentLap + 1;
          end if;
 
-         -- TODO: retrieve the clock just once -> not automatically useful
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime/100.0));
+         -- TODO: retrieve the clock just once -> not necessary useful
+         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime/10.0));
          --Delay(1.0);
          --++++++Ada.Text_IO.Put_Line("***********--------******************"&Integer'Image(carDriver.Id)&" : dopo delay("&Float'Image(PredictedTime)&")");
          --tempoTotale := tempoTotale +
