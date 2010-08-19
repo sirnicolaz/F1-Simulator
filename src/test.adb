@@ -24,8 +24,11 @@ with Common;
 use Common;
   with Stats;
   use Stats;
+with supporto;
+
 
 procedure Test is
+   taskProva : supporto.prova;
 --   RaceTrackTemp : Circuit.RACETRACK_POINT :=Get_Racetrack("./obj/racetrack.xml");
    obc : COMPUTER_POINT := new COMPUTER;
    compStats : COMP_STATS_POINT := new COMP_STATS;
@@ -37,8 +40,11 @@ procedure Test is
    temp_new : GENERIC_STATS_POINT := new GENERIC_STATS;
    class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..10);
    updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-start: Competition_Monitor.STARTSTOPHANDLER_POINT;
+   updateStr2 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   start: Competition_Monitor.STARTSTOPHANDLER_POINT;
+
 begin
+
 
    --     temp := new GENERIC_STATS_POINT;
      temp_2 := temp;
@@ -53,10 +59,25 @@ begin
                                                   "<lap>0</lap>" &
                                                   "<sector>1</sector>"
                                           );
+   Unbounded_String.Set_Unbounded_String(updateStr2,
+                                                  "<?xml version=""1.0""?>" &
+                                                  "<update>" &
+                                                  "<gasLevel>0.5<gasLevel>" &
+                                                  "<tyreUsury>0.4</tyreUsury>" &
+                                                  "<time>100.0</time>" &
+                                                  "<lap>0</lap>" &
+                                                  "<sector>2</sector>"
+                                          );
    start := Competition_Monitor.Init(10,10,global);
    Competition_Monitor.setInfo(0,1,1,updateStr);
    Ada.Text_IO.Put_Line("prova di stampa : \n "&Competition_Monitor.getInfo(0,1,1));
---     --temp := new GENERIC_STATS_POINT;
+   --Competition_Monitor.getInfo(0,2,1);
+   --Ada.Text_IO.Put_Line("prova di stampa 2 : \n "&Competition_Monitor.getInfo(0,2,1));
+
+Competition_Monitor.setInfo(0,2,1,updateStr2);
+Ada.Text_IO.Put_Line("prova di stampa 3 : \n "&Competition_Monitor.getInfo(0,2,1));
+
+   --     --temp := new GENERIC_STATS_POINT;
 --     temp_2 := temp;
 --     global := new GLOBAL_STATS_HANDLER(new FLOAT'(upd), temp);--new GENERIC_STATS);--'(temp.all));
 --                                                               --pritnGlobUPD(global.all);
