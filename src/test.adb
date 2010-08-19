@@ -29,10 +29,14 @@ with supporto;
 
 procedure Test is
    taskProva : supporto.prova;
-      begin
-      Ada.Text_IO.Put_Line("MAIN : faccio una getInfo su una cosa che ancora non esiste");
-      Ada.Text_IO.Put_Line("MAIN : getInfo ... \n"&Competition_Monitor.getInfo(0,2,1));
-      Ada.Text_IO.Put_Line("MAIN : fine esecuzione");
+begin
+  Delay(1.0);
+   Ada.Text_IO.Put_Line("MAIN : faccio una getInfo su una cosa che ancora non esiste");
+--     loop exit when Competition_Monitor.getBool = TRUE;
+--     Ada.Text_IO.Put_Line("MAIN : loop");
+--     end loop;
+   Ada.Text_IO.Put_Line("MAIN : getInfo ... \n"&Competition_Monitor.getInfo(0,2,1));
+   Ada.Text_IO.Put_Line("MAIN : fine esecuzione");
 end Test;
 
 --  --   RaceTrackTemp : Circuit.RACETRACK_POINT :=Get_Racetrack("./obj/racetrack.xml");

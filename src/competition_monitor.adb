@@ -18,6 +18,11 @@ package body Competition_Monitor is
    Laps : INTEGER;
    IsConfigured : BOOLEAN := false;
 
+   function getBool return Boolean is
+   begin
+      return IsConfigured;
+   end getBool;
+
    protected body StartStopHandler is
 
       --TODO: use that CompetitorID to recognize the caller
@@ -83,6 +88,16 @@ package body Competition_Monitor is
 
       IsConfigured := true;
 
+      for index in 1..CompetitorQty
+      loop
+         arrayComp(index).arrayInfo := new infoArray(0..Laps-1);
+         for i in 1..Laps-1
+         loop
+            arrayComp(index).arrayInfo(i):= new INFO_STRING;
+         end loop;
+      end loop;
+
+
       return CompetitionHandler;
    end Init;
 
@@ -147,7 +162,7 @@ package body Competition_Monitor is
 --        end if;
       if arrayComp(id).arrayInfo = null then
          arrayComp(id).arrayInfo := new infoArray(0..Laps-1);
---         Ada.Text_IO.Put_Line("arrayInfo init");
+         Ada.Text_IO.Put_Line("arrayInfo init");
       end if;
 --         if arrayComp(id).arrayInfo = null then
 --           Ada.Text_IO.Put_Line("arrayInfo NULL");
@@ -187,7 +202,7 @@ package body Competition_Monitor is
 
       --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
       --      Unbounded_String.Set_Unbounded_String(stringRet,
-      Ada.Text_IO.Put_Line("id = "&Integer'Image(id));
+      Ada.Text_IO.Put_Line("settore richiesto = "&Integer'Image(sector));
       if arrayComp = null then
          Ada.Text_IO.Put_Line("valore di arrayComp(id) null ");
       end if;

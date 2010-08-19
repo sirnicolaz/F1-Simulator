@@ -81,10 +81,12 @@ begin
    Ada.Text_IO.Put_Line("prova di stampa : \n "&Competition_Monitor.getInfo(0,1,1));
    --Competition_Monitor.getInfo(0,2,1);
    --Ada.Text_IO.Put_Line("prova di stampa 2 : \n "&Competition_Monitor.getInfo(0,2,1));
+   delay(2.0);
+Ada.Text_IO.Put_Line("prima di setInfo settore 2");
+      Competition_Monitor.setInfo(0,2,1,updateStr2);
+      Ada.Text_IO.Put_Line("dopo setInfo settore 2");
 
-   Competition_Monitor.setInfo(0,2,1,updateStr2);
-   delay(1.0);
-Ada.Text_IO.Put_Line("prova di stampa 3 : \n "&Competition_Monitor.getInfo(0,2,1));
+--Ada.Text_IO.Put_Line("prova di stampa 3 : \n "&Competition_Monitor.getInfo(0,2,1));
 
    end prova;
    end supporto;
