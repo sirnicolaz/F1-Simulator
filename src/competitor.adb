@@ -765,7 +765,6 @@ package body Competitor is
 
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pit stop");
-            CurrentLap := CurrentLap + 1;--TODO: find a way to get the lap from the competition
 
             -- Ask for the box strategy once the prebox checkpoint is reached
             Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap));
@@ -873,9 +872,9 @@ package body Competitor is
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
          j:=0;
          loop
-            Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-            PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
+            Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
+            PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
             Index := Index + 1;
             j:=j+1;
             exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
@@ -921,14 +920,16 @@ package body Competitor is
             --If there was a pitstop it means that the goal checkpoint was passed
             --+ the boxes
             CurrentLap := CurrentLap + 1;
+            Ada.Text_IO.Put_Line("Pit stop done");
          else
             Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
          end if;
          --tempoTotale := tempoTotale + PredictedTime;
          --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" @@@@@@ tempoTotale : "&Float'Image(PredictedTime));--Delay(DELAY_TIME);
          --++++++Ada.Text_IO.Put_Line("&%$&%$&%$&%$&%$&%$&%$&%$__________------_________---------"&Integer'Image(carDriver.Id)&" : prima di delay");
-
+         Ada.Text_IO.Put_Line("Is goal?");
          if(C_CheckPoint.Is_Goal) then
+            Ada.Text_IO.Put_Line("yes");
             CurrentLap := CurrentLap + 1;
          end if;
 
