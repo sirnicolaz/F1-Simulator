@@ -171,7 +171,8 @@ package body Competition is
             GenericStatistics);
          Ada.Text_IO.Put_Line("initializing monitor");
          Monitor := Competition_Monitor.Init(MaxCompetitors,
-                                                  GlobalStatistics);
+                                             Laps_In,
+                                             GlobalStatistics);
 
          --NEW: moved to init.adb procedure
          --Starter := new Competition_Monitor.impl.MonitorStarter;
