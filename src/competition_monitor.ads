@@ -30,6 +30,7 @@ package Competition_Monitor is
    function Ready(CompetitorID : INTEGER) return BOOLEAN;
 
    function Init( CompetitorQty_In : INTEGER;
+                 Laps_In : INTEGER;
                  GlobalStatistics_In : GLOBAL_STATS_HANDLER_POINT ) return STARTSTOPHANDLER_POINT;
 
    protected type INFO_STRING is -- tipo protetto con le stringhe che poi verranno ritornate (file update.xml)
@@ -45,12 +46,12 @@ package Competition_Monitor is
    end INFO_STRING;
 
    --array di lap
-   type infoArray is array (Positive range<>) of INFO_STRING;
+   type infoArray is array (INTEGER range <>) of INFO_STRING;
    type INFO_ARRAY_POINT is access infoArray;
 
    --struttura dati con dentro l'array, ne esiste uno per ogni concorrente (rappresentato dall'array arrayComp(IDCONCORRENTE))
    type INFO_POINT is record
-      arrayInfo : INFO_ARRAY_POINT := new infoArray(1..10);
+      arrayInfo : INFO_ARRAY_POINT;
    end record;
 
    function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING;

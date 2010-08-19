@@ -15,6 +15,7 @@ package body Competition_Monitor is
    CompetitionHandler : StartStopHandler_POINT;
    GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
    CompetitorQty : INTEGER;
+   Laps : INTEGER;
    IsConfigured : BOOLEAN := false;
 
    protected body StartStopHandler is
@@ -65,10 +66,12 @@ package body Competition_Monitor is
    end Ready;
 
    function Init( CompetitorQty_In : INTEGER;
+                 Laps_In : INTEGER;
                  GlobalStatistics_In : GLOBAL_STATS_HANDLER_POINT ) return STARTSTOPHANDLER_POINT is
 
    begin
       CompetitorQty := CompetitorQty_In;
+      Laps := Laps_In;
 
       arrayComputer := new OBC(1..CompetitorQty);
       arrayStats := new compStatsArray(1..CompetitorQty);
@@ -143,7 +146,7 @@ package body Competition_Monitor is
    procedure AddCompId (IdComp :  INTEGER) is
       --arr : INFO_POINT;
    begin
-      arrayComp(IdComp).arrayInfo := new InfoArray(1..CompetitorQty);
+      arrayComp(IdComp).arrayInfo := new InfoArray(0..Laps);
       --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
    end AddCompId;
 
