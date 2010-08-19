@@ -116,7 +116,7 @@ package body Competition_Monitor is
       end getSector;
       entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when Updated is
       begin
-
+--Ada.Text_IO.Put_Line("in wait");
          requeue GetSector;
       end Wait;
       -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
@@ -195,7 +195,10 @@ package body Competition_Monitor is
 --        if arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) = null then
 --           Ada.Text_IO.Put_Line("valore di arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) null");
 --           end if;
+Ada.Text_IO.Put_Line("prima di getSector");
       arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet);
+Ada.Text_IO.Put_Line("dopo di getSector");
+
       --Unbounded_String.Append(stringRet,"<classific competitors="
        --                       &Integer'Image(class'Length)
       --                        &"><competitor id="
