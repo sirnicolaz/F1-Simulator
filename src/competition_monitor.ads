@@ -45,8 +45,9 @@ package Competition_Monitor is
       Updated : Boolean := false;
    end INFO_STRING;
 
+   type INFO_STRING_POINT is access INFO_STRING; -- NEW
    --array di lap
-   type infoArray is array (INTEGER range <>) of INFO_STRING;
+   type infoArray is array (INTEGER range <>) of INFO_STRING_POINT;--new
    type INFO_ARRAY_POINT is access infoArray;
 
    --struttura dati con dentro l'array, ne esiste uno per ogni concorrente (rappresentato dall'array arrayComp(IDCONCORRENTE))

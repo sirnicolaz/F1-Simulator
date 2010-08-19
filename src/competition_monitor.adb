@@ -134,6 +134,22 @@ package body Competition_Monitor is
 
    procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String) is
    begin
+--        if arrayComp = null then
+--           arrayComp := new CompArray(1..CompetitorQty);--TODO : stronzata
+--           Ada.Text_IO.Put_Line("arrayComp init");
+--        end if;
+--         if arrayComp = null then
+--           Ada.Text_IO.Put_Line("arrayComp NULL");
+--        end if;
+      if arrayComp(id).arrayInfo = null then
+         arrayComp(id).arrayInfo := new infoArray(0..Laps-1);
+--         Ada.Text_IO.Put_Line("arrayInfo init");
+      end if;
+--         if arrayComp(id).arrayInfo = null then
+--           Ada.Text_IO.Put_Line("arrayInfo NULL");
+--        end if;
+      arrayComp(id).arrayInfo(lap):= new INFO_STRING;
+      --Ada.Text_IO.Put_Line(Unbounded_String.To_String(updXml));
       arrayComp(id).arrayInfo(lap).setSector(sector, updXml);
    end setInfo;
 
@@ -166,7 +182,19 @@ package body Competition_Monitor is
       --class.all := GlobalStatistics.global.Test_Get_Classific;
 
       --return Corba.To_CORBA_String(Unbounded_String.To_String(stringRet));
---      Unbounded_String.Set_Unbounded_String(stringRet,
+      --      Unbounded_String.Set_Unbounded_String(stringRet,
+      Ada.Text_IO.Put_Line("id = "&Integer'Image(id));
+      if arrayComp = null then
+         Ada.Text_IO.Put_Line("valore di arrayComp(id) null ");
+      end if;
+
+      --if arrayComp(id).arrayInfo = null then
+        -- Ada.Text_IO.Put_Line("valore di arrayComp(id).arrayInfo(Lap) null");
+      --end if;
+
+--        if arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) = null then
+--           Ada.Text_IO.Put_Line("valore di arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet) null");
+--           end if;
       arrayComp(id).arrayInfo(Lap).getSector(sector,stringRet);
       --Unbounded_String.Append(stringRet,"<classific competitors="
        --                       &Integer'Image(class'Length)
