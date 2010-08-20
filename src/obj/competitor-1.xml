@@ -7,7 +7,7 @@
 	</driver>
 	<car>
 	  <maxspeed>400.0</maxspeed>
-	  <maxacceleration>1.3</maxacceleration>
+	  <maxacceleration>7.75</maxacceleration>
 	  <gastankcapacity>250</gastankcapacity>
 	  <engine>strong</engine>
 	  <tyreusury>0.0</tyreusury>

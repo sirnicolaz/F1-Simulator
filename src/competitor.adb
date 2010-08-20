@@ -686,7 +686,9 @@ package body Competitor is
       --for Index in 1..Paths2Cross.Get_Size loop
         -- PathTime := Paths2Cross.Get_PathTime(Index);
          --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
-      --end loop;
+        --end loop;
+      driver.auto.TyreUsury := driver.auto.TyreUsury - (Paths2Cross.Get_Length(traiettoriaScelta)*1.17/1000.0); --TODO : far influire anche altri parametri
+      driver.auto.GasolineLevel := driver.auto.GasolineLevel - (Paths2Cross.Get_Length(traiettoriaScelta)/1700.0); --TODO : far influire anche altri parametri
       return CrossingTime;
    end evaluate;
 
@@ -924,8 +926,9 @@ package body Competitor is
 
          --TODO: fare qualcosa di intelligente
          --aggiorno tyreusury e gasoline _level
-         CarDriver.auto.TyreUsury := CarDriver.auto.TyreUsury+0.04;
-         CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4.0;
+
+         --CarDriver.auto.TyreUsury := CarDriver.auto.TyreUsury+0.04;
+         --CarDriver.auto.GasolineLevel := CarDriver.auto.GasolineLevel - 4.0;
          --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
          --quindi può essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
