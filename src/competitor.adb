@@ -620,6 +620,8 @@ package body Competitor is
       traiettoriaScelta : INTEGER;
       vel_array : VEL(1..Paths2Cross.Get_Size);
       waitingTimeMinore : FLOAT := 0.0;
+      temp_usury : Common.PERCENTAGE := 0.0;
+      gas_modifier : FLOAT := 0.0;
    begin
       -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : In evaluate");
       -- loop on paths
@@ -695,9 +697,40 @@ package body Competitor is
         (Common.FloatToString(driver.auto.TyreUsury)  & "-"
          & Common.FloatToString(Paths2Cross.Get_Length(traiettoriaScelta)) &
          "*1.17/1000.0");
-
-      driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*1.17/1000.0); --TODO : far influire anche altri parametri
-      driver.auto.GasolineLevel := driver.auto.GasolineLevel - (Paths2Cross.Get_Length(traiettoriaScelta)/1700.0); --TODO : far influire anche altri parametri
+      --aggiorno il modificatore in base all'angolo
+      if Paths2Cross.Get_Angle(traiettoriaScelta) < 45.0 then temp_usury := temp_usury + 0.005;
+      elsif Paths2Cross.Get_Angle(traiettoriaScelta) > 45.0 and Paths2Cross.Get_Angle(traiettoriaScelta) < 90.0 then temp_usury := temp_usury + 0.0035;
+      else temp_usury := temp_usury + 0.0015;
+      end if;
+      --aggiorno il modificatore in base alla mescola
+      if driver.auto.Type_Tyre = "Morbida" then temp_usury := temp_usury + 0.03;
+      else temp_usury := temp_usury + 0.01;
+      end if;
+      --aggiorno il modificatore in base alla velocità massima raggiunta
+      if vel_array(traiettoriaScelta) >= 300.0 then temp_usury := temp_usury + 0.02;
+      elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then temp_usury := temp_usury + 0.01;
+      elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then temp_usury := temp_usury + 0.007;
+      else temp_usury := temp_usury + 0.005;
+      end if;
+      -- adesso in temp_usury è presente una percentuale da sommare a quella statica calcolata.
+      -- al massimo il valore di usura arriva a 0.86, nella peggiore delle ipotesi.
+      -- il valore di usura si intende ogni 1000 metri
+      -- quindi x = (1000*100)/0.80 = 125 km
+      -- x = (1000*100)/0.86 = 116,279 km
+      -- in totale quasi due giri (in media 5.5 km al giro) di differenza
+      driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
+      --il valore di 0.8 è stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
+      -- calcolo gas_modifier
+      if vel_array(traiettoriaScelta) >= 300.0 then gas_modifier := 0.15;
+      elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then gas_modifier := 0.10;
+      elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then gas_modifier := 0.5;
+      else gas_modifier := 0.0;
+      end if;
+      driver.auto.GasolineLevel := driver.auto.GasolineLevel - ((0.6 + gas_modifier) * Paths2Cross.Get_Length(traiettoriaScelta)/1000.0);
+      -- 0.6 è il valore di  litri al km consumati
+      -- questo valore può arrivare (in base alla velocità ) fino a 0.75 litri al km
+      -- il calcolo è quindi (0.6 + modificatore) * lunghezzaTratto /1000
+      -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
       return CrossingTime;
    end evaluate;
 
