@@ -590,8 +590,8 @@ package body Competitor is
    ------------ EVALUATE  ------------
    -----------------------------------
    -----------------------------------
-   function Evaluate(driver : CAR_DRIVER_ACCESS ;
-                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT) return FLOAT is
+   procedure Evaluate(driver : CAR_DRIVER_ACCESS ;
+                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT; lengthPath : out FLOAT ; crossingTime_Out : out FLOAT) is
 
       --qua dentro va effettuata la valutazione della traiettoria migliore e calcolato il tempo di attraversamento
       -- da restituire poi a chi invoca questo metodo.
@@ -697,6 +697,8 @@ package body Competitor is
         (Common.FloatToString(driver.auto.TyreUsury)  & "-"
          & Common.FloatToString(Paths2Cross.Get_Length(traiettoriaScelta)) &
          "*1.17/1000.0");
+      --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'onboardcomputer
+      lengthPath := Paths2Cross.Get_Length(traiettoriaScelta);
       --aggiorno il modificatore in base all'angolo
       if Paths2Cross.Get_Angle(traiettoriaScelta) < 45.0 then temp_usury := temp_usury + 0.005;
       elsif Paths2Cross.Get_Angle(traiettoriaScelta) > 45.0 and Paths2Cross.Get_Angle(traiettoriaScelta) < 90.0 then temp_usury := temp_usury + 0.0035;
@@ -731,7 +733,7 @@ package body Competitor is
       -- questo valore può arrivare (in base alla velocità ) fino a 0.75 litri al km
       -- il calcolo è quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
-      return CrossingTime;
+      crossingTime_Out := CrossingTime;
    end evaluate;
 
    -----------------------------------
@@ -748,7 +750,7 @@ package body Competitor is
       DelayTime : FLOAT := 1.0;
       Paths2Cross : CROSSING_POINT;
       MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
-
+lengthPath : FLOAT := 0.0;
       --<minima quantità di tempo per attraversare la pista>
       carDriver : CAR_DRIVER_ACCESS := carDriver_In;--
       MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
@@ -974,7 +976,7 @@ package body Competitor is
          --Fine sezione  per la scelta della traiettoria
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
-         CrossingTime:= Evaluate(carDriver,C_Checkpoint, Paths2Cross);
+         Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
 
          --If a pitstop occured, add the pit stop time to the crossing time
          if (PitStop = true) then
@@ -1027,6 +1029,7 @@ package body Competitor is
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
          Common.Set_Lap(compStats, CurrentLap);
+         Common.Set_LengthPath(compStats, lengthPath);
          carDriver.statsComputer.Add_Data(compStats);
 
          --NEW: moved to onboard computer

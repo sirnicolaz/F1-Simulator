@@ -76,6 +76,7 @@ package Common is
    procedure Set_Time(Stats_In : out COMP_STATS_POINT; Time_In : FLOAT);
    procedure Set_LastCheckInSect(Stats_In : out COMP_STATS_POINT; LastCheck_In : BOOLEAN);
    procedure Set_FirstCheckInSect(Stats_In : out COMP_STATS_POINT; FirstCheck_In : BOOLEAN);
+   procedure Set_LengthPath (Stats_In : out COMP_STATS_POINT ; length_In : FLOAT);
    --procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER);
    procedure Update_Stats(compStats : in out COMP_STATS_POINT);-- global : GLOBAL_STATS_HANDLER_POINT);
 
@@ -86,6 +87,8 @@ package Common is
    function Get_Tyre(Stats_In : COMP_STATS) return FLOAT;--PERCENTAGE;
    function Get_Time(Stats_In : COMP_STATS) return FLOAT;
    function Get_LastCheckInSect(Stats_In : COMP_STATS_POINT) return BOOLEAN;
+   function Get_LengthPath(Stats_In : COMP_STATS_POINT) return FLOAT;
+   function Get_FirstCheckInSect(Stats_In : out COMP_STATS_POINT) return BOOLEAN;
 
 
 private
@@ -106,6 +109,7 @@ private
       --sgs_In : S_GLOB_STATS_POINT;
       updatePeriod_In : FLOAT := 100.0; --TODO : fissare altro valore, valutare
       --global : GLOBAL_STATS_HANDLER_POINT; --:= initGlobalStatsHandler(global, sgs_In, updatePeriod_In);
+      lengthPath : FLOAT;
    end record;
 
 end Common;

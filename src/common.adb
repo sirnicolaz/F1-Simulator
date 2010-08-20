@@ -176,6 +176,10 @@ package body COMMON is
       Stats_In.FirstCheckInSect := FirstCheck_In;
    end Set_FirstCheckInSect;
 
+   procedure Set_LengthPath (Stats_In : out COMP_STATS_POINT ; length_In : FLOAT) IS
+   begin
+      Stats_In.lengthPath := length_In;
+   end Set_LengthPath;
    pragma Warnings(On);
 --     procedure Set_Index(Stats_In : out COMP_STATS_POINT; Index_In : INTEGER) is
 --     begin
@@ -184,6 +188,16 @@ package body COMMON is
    begin
       return Stats_In.LastCheckInSect;
    end Get_LastCheckInSect;
+   function Get_FirstCheckInSect(Stats_In : out COMP_STATS_POINT) return BOOLEAN is
+   begin
+      return Stats_In.FirstCheckInSect;
+   end Get_FirstCheckInSect;
+
+
+   function Get_LengthPath(Stats_In : COMP_STATS_POINT) return FLOAT is
+   begin
+      return Stats_In.lengthPath;
+   end Get_LengthPath;
 
    function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER is
    begin

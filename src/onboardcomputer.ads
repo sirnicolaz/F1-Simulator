@@ -65,6 +65,7 @@ package OnBoardComputer is
       Last_Node : COMP_STATS_NODE_POINT; -- puntatore all'ultimo per ottimizzare l'inserimento
       Updated : BOOLEAN;
       global : GLOBAL_STATS_HANDLER_POINT;
+      sommaLenght : FLOAT := 0.0; -- tengo salvata la lunghezza del settore
    end COMPUTER;
 
    type COMPUTER_POINT is access COMPUTER;
