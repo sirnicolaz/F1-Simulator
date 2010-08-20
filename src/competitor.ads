@@ -45,7 +45,7 @@ package Competitor is
       MaxAcceleration : FLOAT;
       GasTankCapacity : FLOAT;
       Engine : Str.Unbounded_String := Str.Null_Unbounded_String;--STRING(1..6):="xxxxxx";
-      TyreUsury : FLOAT;
+      TyreUsury : Common.PERCENTAGE;
       GasolineLevel : FLOAT;
       -- private subtype TYRE is record
       Mixture : Str.Unbounded_String := Str.Null_Unbounded_String;-- : STRING(1..20):="xxxxxxxxxxxxxxxxxxxx";
@@ -103,17 +103,17 @@ package Competitor is
                            MaxAcceleration_In : FLOAT;
                            GasTankCapacity_In : FLOAT;
                            Engine_In : Str.Unbounded_String;
-                           TyreUsury_In : FLOAT;
+                           TyreUsury_In : Common.PERCENTAGE;
                            GasolineLevel_In : FLOAT;
                            Mixture_In : Str.Unbounded_String;
                            Model_In : Str.Unbounded_String;
                            Type_Tyre_In : Str.Unbounded_String);
 
    procedure Set_Usury(Car_In : in out CAR_DRIVER_ACCESS;
-                       Usury_In : FLOAT);
+                       Usury_In : Common.PERCENTAGE);
    procedure Set_GasLevel(Car_In : in out CAR_DRIVER_ACCESS;
                           GasLevel_In : FLOAT);
-   function Get_Usury(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
+   function Get_Usury(Car_In : CAR_DRIVER_ACCESS) return Common.PERCENTAGE;
    function Get_GasLevel(Car_In : CAR_DRIVER_ACCESS) return FLOAT;
    function Calculate_Status(infoLastSeg : in CAR_DRIVER_ACCESS) return BOOLEAN;
    -- procedure Calculate_Status(infoLastSeg);
