@@ -627,9 +627,12 @@ package body Competitor is
       --++++++   Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : dopo get status");
       for Index in 1..Paths2Cross.Get_Size loop
          --CrossingTime:= 0.0;
-         --++++++         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : Paths2Cross.Get_Size = "&Integer'Image(Paths2Cross.Get_Size));
+
          PathTime := Paths2Cross.Get_PathTime(Index);
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time : " & Common.FloatToString(PathTime));
          WaitingTime := PathTime - CompArrivalTime;
+
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time - compArrivalTime: " & Common.FloatToString(WaitingTime));
          -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time: " &Float'Image(PathTime));
          StartingInstant := PathTime;
          --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" :scorro il path2cross, index = "&Integer'Image(Index));
@@ -642,6 +645,7 @@ package body Competitor is
          --   Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ waiting time DOPO: " &Float'Image(WaitingTime));
 
          CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " crossing time temp : " & Common.FloatToString(CrossingTimeTemp));
          --TODO : Mettere il metodo ritirato. Il controllo sarà simile a questo
          -- if CrossingTimeTemp = qualcosa ritornato dalla CalculateCrossingTime then
          -- metodo ritirato(competitorId)
@@ -662,7 +666,7 @@ package body Competitor is
                                                                          -- istruzione. il total delay minimo è quello che corrisponde a tempo di attesa + tempo di attraversamento minore
                                                                          -- qua devo usare CrossingTimeTemp e WaitingTime perchè altrimenti rischio di usare il CrossingTime che è il miglior tempo di attraversament
                                                                          -- anche nelle iterazioni successive, tanto non può succedere che MinDelay venga aggiornato con TotalDelay nel caso non sia stato aggiornato anche CrossingTime
-         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : total delay = "&Float'Image(TotalDelay));
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : total delay = "&Float'Image(TotalDelay));
          if TotalDelay < MinDelay or else MinDelay < 0.0 then
             MinDelay := TotalDelay;-- MinDelay ha così il valore da scrivere sul path
 
@@ -679,7 +683,7 @@ package body Competitor is
       --  Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$velocità path[ "&Integer'Image(i)&" ]= "&Float'Image(vel_array(i)));
       --end loop;
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : min delay = "&Float'Image(MinDelay));
-      Paths2Cross.Update_Time(pathTimeMinore+MinDelay, traiettoriaScelta);
+      Paths2Cross.Update_Time(MinDelay, traiettoriaScelta);
       driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocità di entrata al tratto successivo
       Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : path scelto = "&Integer'Image(traiettoriaScelta));
       --commentato, serviva solo per test
@@ -687,7 +691,12 @@ package body Competitor is
         -- PathTime := Paths2Cross.Get_PathTime(Index);
          --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
         --end loop;
-      driver.auto.TyreUsury := driver.auto.TyreUsury - (Paths2Cross.Get_Length(traiettoriaScelta)*1.17/1000.0); --TODO : far influire anche altri parametri
+      Ada.Text_IO.Put_Line
+        (Common.FloatToString(driver.auto.TyreUsury)  & "-"
+         & Common.FloatToString(Paths2Cross.Get_Length(traiettoriaScelta)) &
+         "*1.17/1000.0");
+
+      driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*1.17/1000.0); --TODO : far influire anche altri parametri
       driver.auto.GasolineLevel := driver.auto.GasolineLevel - (Paths2Cross.Get_Length(traiettoriaScelta)/1700.0); --TODO : far influire anche altri parametri
       return CrossingTime;
    end evaluate;
@@ -737,6 +746,9 @@ package body Competitor is
       Strategy_FileName : Str.Unbounded_String := Str.Null_Unbounded_String;
       --Strategy got from the box
       BrandNewStrategy : Common.STRATEGY;
+
+      --TODO: remove this test variable;
+      Tmp_Bool : BOOLEAN;
 
       --Helper method (given a file name, it return the strategy object extracted from that file)
       function XML2Strategy( StrategyFile : Str.Unbounded_String) return Common.STRATEGY is
@@ -817,7 +829,7 @@ package body Competitor is
          --Ada.Text_IO.Put_Line("______-------****** ITERAZIONE : "&Integer'Image(i)&" , TASK "&Integer'Image(Id)&"******-------______");
          --Ada.Float_Text_IO.Put(tempoTotale);
 
-
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " lapt " & Integer'Image(CurrentLap));
          --Istante di tempo segnato nel checkpoint attuale per il competitor
          ActualTime := C_Checkpoint.Get_Time(id);
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
@@ -826,7 +838,10 @@ package body Competitor is
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Setting arrival");
 
 
-         if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
+         Tmp_Bool := C_Checkpoint.Set_Arrived(id);
+
+         --if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
+         if( true = false) then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pre box");
 
             -- Ask for the box strategy once the prebox checkpoint is reached
@@ -870,7 +885,7 @@ package body Competitor is
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
 
-         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Get checkpoint position");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Get checkpoint position " & Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
 
          StartingPosition := Get_Position(carDriver.RaceIterator);
 
@@ -883,6 +898,13 @@ package body Competitor is
             Finished := true;
             -- per poi invocare il metodo Add_Data
 
+            --Remove the competitor from the queue of the checkpoint
+            loop
+               Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+               C_Checkpoint.Remove_Competitor(id);
+               exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
+            end loop;
+
             Common.Set_Checkpoint(compStats, i-1);
             Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
             Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
@@ -892,9 +914,11 @@ package body Competitor is
 
             Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
             Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
-            Common.Set_Time(compStats, predictedTime);
+            -- -1 is the flag time for the end of the race
+            Common.Set_Time(compStats, -1.0);
             Common.Set_Lap(compStats, CurrentLap);
             carDriver.statsComputer.Add_Data(compStats);
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" computer updated with last info");
          end if;
 
 
@@ -947,11 +971,7 @@ package body Competitor is
          loop
             Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
-            PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
-            Ada.Text_IO.Put_Line(Common.IntegerToString(carDriver.Id) & ": time " &
-                                 FLOAT'IMAGE(PredictedTime) &
-                                 " set on check " &
-                                 Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
+            PredictedTime := PredictedTime + 0.001;--MinRaceTime - MinSegTime * Float(Index);
             Index := Index + 1;
             j:=j+1;
             exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
