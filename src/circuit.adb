@@ -200,14 +200,19 @@ package body Circuit is
          --         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
 --        Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono signal_arrival e chiamo get_position");
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
+            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " first");
             Changed := false;
             if ( Go2Box = true ) then
+               Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " goes to box");
                Paths2Cross := PreBox(F_Checkpoint.all).Box;
             else
+               Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " doesn't go to box");
                Paths2Cross := F_Checkpoint.PathsCollection;
             end if;
          else
-            requeue Wait; -- TODO: fix this crap
+            Changed := false;
+            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " wait on checkpoint");
+            requeue Wait;
          end if;
 
       end Signal_Arrival;
@@ -223,6 +228,10 @@ package body Circuit is
       begin
          --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : signal leaving");
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
+         --NEW
+         --if Get_IsArrived(F_Checkpoint.Queue.all,1) then
+         --   Changed := TRUE;
+         --end if;
       end Signal_Leaving;
 
 

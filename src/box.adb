@@ -358,15 +358,15 @@ package body Box is
             New_Strategy.PitStopDelay := TyreChangeTime;
          end if;
 
-         -- TODO: implement different type of tyre depending on the weather
-         New_Strategy.Type_Tyre := Old_Strategy.Type_Tyre;
-
       else
          --HACK: Gas level used to compute the mean gas consumption by the
          --+ the box and not used by the competitor
          New_Strategy.GasLevel := New_Info.GasLevel;
 
       end if;
+
+      -- TODO: implement different type of tyre depending on the weather
+      New_Strategy.Type_Tyre := Old_Strategy.Type_Tyre;
 
       return New_Strategy;
 
@@ -670,6 +670,7 @@ package body Box is
       Unbounded_String.To_Unbounded_String("<tyreType>") &
       Strategy_in.Type_Tyre &
       Unbounded_String.To_Unbounded_String("</tyreType>");
+      Ada.Text_IO.Put_Line("First part of the strategy " & Unbounded_String.To_String(XML_String));
 
       Ada.Text_IO.Put_Line("Setting style");
       XML_String := XML_String &

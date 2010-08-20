@@ -705,13 +705,27 @@ package body Competitor is
          Strategy_Doc : DOCUMENT;
 
          Tmp_Strategy : Common.STRATEGY;
+         StyleStr : Str.Unbounded_String := Str.Null_Unbounded_String;
       begin
 
          Strategy_Doc := Common.Get_Document(doc_file => Str.To_String(StrategyFile));
          Config := Get_Elements_By_Tag_Name(Strategy_Doc,"strategy");
          Current_Node := Item(Config,0);
 
-         Tmp_Strategy.GasLevel := 43.0;
+         Tmp_Strategy.Type_Tyre := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreType"))));
+         Tmp_Strategy.GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
+         Tmp_Strategy.PitStopLaps := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopLaps"))));
+         Tmp_Strategy.PitStopDelay := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopDelay"))));
+
+         StyleStr := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"style"))));
+
+         if(StyleStr = "Aggressive") then
+            Tmp_Strategy.Style := Common.AGGRESSIVE;
+         elsif(StyleStr = "Conservative") then
+            Tmp_Strategy.Style := Common.CONSERVATIVE;
+         else
+            Tmp_Strategy.Style := Common.NORMAL;
+         end if;
 
       return Tmp_Strategy;
 
@@ -748,6 +762,14 @@ package body Competitor is
       Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&"Strategy got");
       BrandNewStrategy := XML2Strategy(Strategy_FileName);
 
+      --Updating the driver strategy with the first strategy given
+      --+ by the box. TODO: verify wheter to set the gas level with
+      --+ the one given by the box.
+      carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
+      carDriver.strategia.PitStopLaps := BrandNewStrategy.PitStopLaps;
+      carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
+      carDriver.strategia.Style := BrandNewStrategy.Style;
+
 
       loop
 
@@ -764,20 +786,29 @@ package body Competitor is
 
 
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
-            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pit stop");
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pre box");
 
             -- Ask for the box strategy once the prebox checkpoint is reached
             Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap));
 
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
             --Get the strategy object from the file
             BrandNewStrategy := XML2Strategy(Strategy_FileName);
 
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " verify pitstop");
             --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
             if(BrandNewStrategy.PitStopLaps = 0) then
                PitStop := true;
             end if;
 
-            carDriver.strategia := BrandNewStrategy;
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " updating tyre");
+            carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " uypdateing style");
+
+            carDriver.strategia.Style := BrandNewStrategy.Style;
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " updating pit stop laps");
+            carDriver.strategia.PitStopLaps := BrandNewStrategy.PitStopLaps;
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " done");
          end if;
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Signal arrival");
@@ -875,6 +906,10 @@ package body Competitor is
             Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
             PredictedTime := PredictedTime + 1.0;--MinRaceTime - MinSegTime * Float(Index);
+            Ada.Text_IO.Put_Line(Common.IntegerToString(carDriver.Id) & ": time " &
+                                 FLOAT'IMAGE(PredictedTime) &
+                                 " set on check " &
+                                 Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
             Index := Index + 1;
             j:=j+1;
             exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
@@ -916,6 +951,16 @@ package body Competitor is
 
          -- If it was a pitstop, get the checkpoint following the one of the boxes
          if( PitStop = true) then
+
+            --These update has to be done after the computation related to the prebox
+            --+ segment. That's because the new gas level and tyre usury are effective
+            --+ after the car has done the pitstop.
+            carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
+            carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
+            carDriver.auto.TyreUsury := 0.0;
+
+            PitStop := false;
+
             Get_ExitBoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
             --If there was a pitstop it means that the goal checkpoint was passed
             --+ the boxes
