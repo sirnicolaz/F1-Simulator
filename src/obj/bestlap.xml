@@ -1,5 +1,5 @@
 <bestlap>
   <num>3</num><!--number of lap-->
-  <idComp>1</idComp><!--id ocmpetitor-->
+  <idComp>1</idComp><!--id competitor-->
   <time>150.0</time><!--time of best lap-->
 </bestlap>
