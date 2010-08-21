@@ -221,7 +221,7 @@ package body Queue is
 
    begin
       Current_Position := Get_Position(Queue_In,CompetitorID_In);
-      --Premise: when a competitor gets out of the competition,
+      --Premise: when a competitor get out of the competition,
       --+ the queue of each checkpoint has to be "virtually" shortened.
       --+ In order to do this it's necessary to "tag" the rightmost position
       --+ of the queue somehow. So the queue slot that has to be "removed"

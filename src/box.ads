@@ -31,6 +31,7 @@ package Box is
       Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
+      PathLength : FLOAT;
       --For now it's not necessary. In the future there might be an improvement
       --+ in the strategy computation considering the classific too.
       --Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);

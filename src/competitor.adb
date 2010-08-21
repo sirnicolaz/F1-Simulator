@@ -750,7 +750,7 @@ package body Competitor is
       DelayTime : FLOAT := 1.0;
       Paths2Cross : CROSSING_POINT;
       MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
-lengthPath : FLOAT := 0.0;
+      lengthPath : FLOAT := 0.0;
       --<minima quantità di tempo per attraversare la pista>
       carDriver : CAR_DRIVER_ACCESS := carDriver_In;--
       MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
@@ -870,7 +870,9 @@ lengthPath : FLOAT := 0.0;
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
-         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Setting arrival");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Setting arrival on check " &
+                             Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
+
 
 
          Tmp_Bool := C_Checkpoint.Set_Arrived(id);
@@ -928,7 +930,8 @@ lengthPath : FLOAT := 0.0;
          SectorID:=C_Checkpoint.Get_SectorID;
          --TODO: verificare se va bene controllare la fine della gara adesso o quando
          --+ viene superato il check
-         if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
+         if (C_CheckPoint.Is_Goal or else PitStop = true)
+           and CurrentLap = LastLap then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
             Finished := true;
             -- per poi invocare il metodo Add_Data
@@ -978,7 +981,9 @@ lengthPath : FLOAT := 0.0;
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
 
-         --If a pitstop occured, add the pit stop time to the crossing time
+         --If a pitstop occured, add the pit stop time to the crossing time.
+         --+ We assume that the pitstop is in the first half of the lane, so before
+         --+ the goal.
          if (PitStop = true) then
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
          end if;
@@ -1049,21 +1054,19 @@ lengthPath : FLOAT := 0.0;
 
          -- If it was a pitstop, get the checkpoint following the one of the boxes
          if( PitStop = true) then
-
-            --These update has to be done after the computation related to the prebox
-            --+ segment. That's because the new gas level and tyre usury are effective
-            --+ after the car has done the pitstop.
-            carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
-            carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
-            carDriver.auto.TyreUsury := 0.0;
-
+            Ada.Text_IO.Put_Line("Doing pitstop");
             PitStop := false;
-
-            Get_ExitBoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-            --If there was a pitstop it means that the goal checkpoint was passed
-            --+ the boxes
+            Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            --If pitstop happens, it substitutes the goal
             CurrentLap := CurrentLap + 1;
-            Ada.Text_IO.Put_Line("Pit stop done");
+
+            --Those updates will be effective in the next loop, so
+            --+ they'll be used while doing the after-box path.
+            carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
+            carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
+            carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
+            carDriver.auto.Type_Tyre := BrandNewStrategy.Type_Tyre;
+
          else
             Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
          end if;

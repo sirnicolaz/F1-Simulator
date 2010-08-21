@@ -42,7 +42,7 @@ package body Box is
    --+ of circuit nor to the driving style of the competitor. They're
    --+ ought to be used to calculate the first statistics when
    --+no statistical information are available yet.
-   MeanTyreUsuryPerKm : PERCENTAGE := 1.17;
+   MeanTyreUsuryPerKm : PERCENTAGE := 0.83;
    MeanKmsPerLitre : FLOAT := 1.7;
    -- Depending on the driving style, the mean kilometres per litre
    --+ will change. 1 step is like moving from NORMAL to AGGRESSIVE.
@@ -63,10 +63,10 @@ package body Box is
    -- The strategy factor depends on the box strategy. More risky
    --+ is the strategy, more optimistic is the evaluation of
    --+ doable laps with the given gas level and tyre usury.
-   --+ Cautious -> evaluation assuming 1/3 less then the amount gas given
-   --+ Normal -> evaluation assuming 1/5 less then the amount gas given
-   --+ Risky --> evaluation assuming exactly the same amount of gas given
-   --+ Fool --> evaluation assuming 1/7 more then the amount gas given
+   --+ Cautious -> evaluation assuming 1/3 less than the gas given
+   --+ Normal -> evaluation assuming 1/5 less than the gas given
+   --+ Risky --> evaluation assuming exactly the same gas given
+   --+ Fool --> evaluation assuming 1/7 more than the gas given
    StrategyFactor : FLOAT;
 
    procedure Init(Laps_In : in INTEGER;
@@ -182,13 +182,16 @@ package body Box is
       --+ calculating the number remaining laps.
 
       RemainingDoableLaps_Gas := INTEGER(FLOAT'Floor(
-        (( CurrentGasLevel + (CurrentGasLevel * StrategyFactor) )/ (CircuitLength * MeanGasConsumption))));
+        (( CurrentGasLevel + (CurrentGasLevel * StrategyFactor) )/
+        (CircuitLength * MeanGasConsumption))));
       Ada.Text_IO.Put_Line("Remainin laps with gas " & INTEGER'IMAGE(RemainingDoableLaps_Gas));
 
       -- The MeanTyreUsury expresses how mouch the tyre was usured for each km.
       --+ The value it's calculated considering all the information up to now.
       RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
-        ((100.00 - CurrentTyreUsury) / (CircuitLength * MeanTyreConsumption))));
+        ((100.00 - CurrentTyreUsury) +
+        ((100.00 - CurrentTyreUsury)*(StrategyFactor/10.0))-- StrategyFactor/10.0 because is more logic for the tyre usury
+        / (CircuitLength * MeanTyreConsumption))));
       Ada.Text_IO.Put_Line("Remainin laps with tyre " & INTEGER'IMAGE(RemainingDoableLaps_Tyre));
 
       if( RemainingDoableLaps_Gas < RemainingDoableLaps_Tyre) then
@@ -419,21 +422,28 @@ package body Box is
       loop
          UpdateBuffer.Get_Update(New_Info.all, Index);
 
-         Ada.Text_IO.Put_Line("Partial gas cons " & Common.FloatToString(PartialGasConsumptionMean));
-         Ada.Text_IO.Put_Line("New info gas " & Common.FloatToString(New_Info.GasLevel));
-         Ada.Text_IO.Put_Line("Previous sect gas cons " & Common.FloatToString(PreviousSectorGasLevel));
-         PartialGasConsumptionMean := PartialGasConsumptionMean +
-           (PreviousSectorGasLevel - New_Info.GasLevel); -- the gas level is a decreasing float
+         exit when New_Info.Time = -1.0 or else --The car is out
+         (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
+
+         PartialGasConsumptionMean :=
+           PartialGasConsumptionMean +
+              ((New_Info.PathLength/1000.0)/ -- We want the ratio in Km
+               (PreviousSectorGasLevel - New_Info.GasLevel)
+              );
+
          PreviousSectorGasLevel := New_Info.GasLevel;
          Ada.Text_IO.Put_Line("Partial gas consumption mean " & Common.FloatToString(PartialGasConsumptionMean));
 
-         PartialTyreUsuryMean := PartialTyreUsuryMean +
-           (New_Info.TyreUsury - PreviousSectorTyreUsury); -- the tyre usury is an increasing percentage
+         PartialTyreUsuryMean :=
+           PartialTyreUsuryMean +
+              ((New_Info.PathLength/1000.0)/ -- We want the ratio in Km
+               (New_Info.TyreUsury - PreviousSectorTyreUsury)
+           );
+
          PreviousSectorTyreUsury := New_Info.TyreUsury;
 
          Ada.Text_IO.Put_Line("Done. Time " & COmmon.FloatToString(New_Info.Time));
          Index := Index + 1;
-         exit when New_Info.Time = -1.0;
 
          Ada.Text_IO.Put_Line("Go ahead. Sector: " & INTEGER'IMAGE(Sector) & " out of " & INTEGER'IMAGE(Sector_Qty));
 
@@ -456,8 +466,9 @@ package body Box is
                                          LatestLapMeanTyreUsury
                                                  );
 
-            LatestLapMeanGasConsumption := PartialGasConsumptionMean / CircuitLength;
-            LatestLapMeanTyreUsury := PartialTyreUsuryMean / CircuitLength;
+            --  "/3" because it's the sum of the mean of 3 sectors
+            LatestLapMeanGasConsumption := PartialGasConsumptionMean/3.0;
+            LatestLapMeanTyreUsury := PartialTyreUsuryMean/3.0;
 
             StrategyHistory.AddStrategy(Evolving_Strategy);
             Sector := 0;
@@ -465,11 +476,11 @@ package body Box is
             PartialTyreUsuryMean := 0.0;
             PreviousSectorGasLevel := Evolving_Strategy.GasLevel;
             PreviousSectorTyreUsury := 0.0;--we assume that the tyre are always changed
+
          end if;
 
 
          Sector := Sector + 1;
-         Ada.Text_IO.Put_Line("");
 
       end loop;
 
@@ -756,6 +767,7 @@ package body Box is
       Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
+      PathLength : FLOAT;
 
       --Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
       Success : BOOLEAN := false;
@@ -782,7 +794,8 @@ package body Box is
       Ada.Text_IO.Put_Line("Sector done");
       Time := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
       Ada.Text_IO.Put_Line("Time done");
-
+      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
+      Ada.Text_IO.Put_Line("Path lengt done");
 
       Update.GasLevel := GasLevel;
       Ada.Text_IO.Put_Line("Updating tyre usury");
@@ -791,6 +804,8 @@ package body Box is
       Update.Time := Time;
       Update.Lap := Lap;
       Update.Sector := Sector;
+      Update.PathLength := PathLength;
+
 
       return Update;
    end XML2CompetitionUpdate;

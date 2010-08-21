@@ -185,6 +185,10 @@ package body Circuit is
       --+can lead to a box or not.
       function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN is
       begin
+         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
+                              " sett arrived on check. First time " &
+           Common.FloatToString(
+             Queue.Get_ArrivalTime(F_Checkpoint.Queue.all,1)));
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          return F_Checkpoint.IsPreBox;
       end Set_Arrived;
@@ -316,6 +320,8 @@ package body Circuit is
                  Paths2Cross : out CROSSING_POINT;
                 Go2Box : BOOLEAN) when Changed = TRUE is
       begin
+         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
+                              " retry to signal arrival");
          requeue Signal_Arrival;
 
 --           --++++++Ada.Text_IO.Put_Line("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : sono wait e chiamo get_position, CHANGED= "&Boolean'Image(getChanged));
@@ -566,6 +572,7 @@ package body Circuit is
       --Initialise the box checkpoint that'll take the position 0 of the RaceTrack.
       --+ that position is never inspected by the iteration function.
       --+ Only the Get_BoxCheckPoint directly access that location of the array.
+      Checkpoint_Temp := new Checkpoint;
       Set_Values(Checkpoint_Temp,
                  3, --Sector ID
                  TRUE, --IsGoal
@@ -584,6 +591,7 @@ package body Circuit is
       --+ But the paths after the box should be like the ones after the prebox.
       --+verify TODO
       CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
+      Ada.Text_IO.Put_Line("Length of box " &Common.FloatToString(RaceTrack_In(7).Get_Length));
       RaceTrack_In(0) := CheckpointSynch_Current;
 
    end Init_Racetrack;
@@ -642,16 +650,31 @@ package body Circuit is
       --Ada.Text_IO.Put_Line("^^^^^^^^^________________^^^^^^^^^^^ Competitors'LENGTH: "&Integer'Image(Competitors'LENGTH));
       for ind in 1..Competitors'LENGTH loop
          Times(ind) := Time;
-         Time := Time + 1.0; -- The time gap between 2 following competitors isn't definitive.
+         Time := Time + 1.0; -- TODO: The time gap between 2 following competitors isn't definitive.
       end loop;
 
       Race_Length := Get_RaceLength(Race_It);
-      for index in 1..Race_Length loop
+      for index in 1..Race_Length-1 loop
          Get_Checkpoint(Race_It.Race_Point.all,index).Set_Competitors(Competitors,Times);
          for indez in Times'RANGE loop
             Times(indez) := Times(indez)+1.0;
          end loop;
       end loop;
+
+      --TODO: this method is experimental. The box need to be treated in a different
+      --+ way. All positions are -1 set (competitor removed). When a competitor arrives,
+      --+ he add himself to the checkpoint queue. Once fnished, he remove himself again.
+      --+ The box can be available on demand and even if a .. TODO explanation
+
+      for ind in 1..Competitors'LENGTH loop
+         Times(ind) := -1.0;
+      end loop;
+
+      Get_Checkpoint(Race_It.Race_Point.all,0).Set_Competitors(Competitors,Times);
+      for indez in Competitors'RANGE loop
+         Get_Checkpoint(Race_It.Race_Point.all,0).Remove_Competitor(indez);
+      end loop;
+
    end Set_Competitors;
 
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR is
@@ -711,7 +734,7 @@ package body Circuit is
    begin
       loop
          Get_NextCheckpoint(RaceIterator,Tmp_Checkpoint);
-         exit when Tmp_Checkpoint.Is_PreBox;
+         exit when Tmp_Checkpoint.Is_ExitBox;
       end loop;
 
       ExitBoxCheckpoint := Tmp_Checkpoint;
@@ -726,6 +749,7 @@ package body Circuit is
 
    end Get_BoxCheckpoint;
 
+   --Ti returns the length including the index 0 box
    function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER is
    begin
       return RaceIterator.Race_Point'LENGTH;
