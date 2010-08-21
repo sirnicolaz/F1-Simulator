@@ -1,5 +1,6 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
+with Competition_Monitor;
 --  with ONBOARDCOMPUTER;
 --  use ONBOARDCOMPUTER;
 package body Stats is
@@ -372,6 +373,7 @@ returnNum : INTEGER;
       -- prendo la global_stats che ho a disposizione e confronto settore per settore se ho stabilito un nuovo record
       -- e poi confronto sul giro totale.
       time : FLOAT;
+      upd :  Unbounded_String.Unbounded_String :=Unbounded_String.Null_Unbounded_String;
    begin
       Ada.Text_IO.Put_Line("in comparetime");
       time := Get_BestLapTime(NewStats);
@@ -382,6 +384,12 @@ returnNum : INTEGER;
          NewStats.bestLap.numBestLap := StatsGeneric.bestLap.numBestLap;
          NewStats.bestLap.idCompetitor := StatsGeneric.bestLap.idCompetitor;
          NewStats.bestLap.timeLap := StatsGeneric.bestLap.timeLap;
+         Unbounded_String.Set_Unbounded_String(upd, "<bestlap>"&
+                                               "<num>"&Common.IntegerToString(NewStats.bestLap.numBestLap)&"</num>"&
+                                               "<idComp>"&Common.IntegerToString(NewStats.bestLap.idCompetitor)&"</idComp>"&
+                                               "<time>"&Common.FloatToString(NewStats.bestLap.timeLap)&"</time></bestlap>"
+                                              );
+         Competition_Monitor.setBestLap(upd);
       end if;
       --scorro le generic_stats relative ai tre settori e aggiorno le informazioni se serve
       Ada.Text_IO.Put_Line("in loop");
@@ -392,8 +400,17 @@ returnNum : INTEGER;
             NewStats.bestSector(z).timeSector := StatsGeneric.bestSector(z).timeSector;
             NewStats.bestSector(z).numBestLap := StatsGeneric.bestSector(z).numBestLap;
             NewStats.bestSector(z).idCompetitor := StatsGeneric.bestSector(z).idCompetitor;
-         end if;
-      end loop;
+            Unbounded_String.Set_Unbounded_String(upd,
+              "<bestsector>"&
+              "<numsector>"&Common.IntegerToString(z)&"</numsector>"&
+              "<numlap>"&Common.IntegerToString(NewStats.bestSector(z).numBestLap)&"</numlap>"&
+                "<idcomp>"&Common.IntegerToString(NewStats.bestSector(z).idCompetitor)&"</idcomp>"&
+                "<time>"&Common.FloatToString(NewStats.bestSector(z).timeSector)&"</time></bestsector>"
+               );
+              Competition_Monitor.setBestSector(z,upd);
+              --            Competition_Monitor
+              end if;
+              end loop;
    end compareTime;
 
 

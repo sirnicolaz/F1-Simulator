@@ -93,6 +93,11 @@ begin
                                                              --pritnGlobUPD(global.all);
 
    obc.Init_Computer(1,global);
+   Ada.Text_IO.Put_Line("PRE miglior giro");
+   Ada.Text_IO.Put_Line(Competition_Monitor.getBestLapInfo);
+   Ada.Text_IO.Put_Line("PRE miglior primo settore");
+   Ada.Text_IO.Put_Line(Competition_Monitor.getBestSectorInfo(1));
+
 --creazione giri migliori e tempi su settore migliori per scopi di test
    setGSLAP(temp_new.all, 1, 1, 0.5);
    setGS_SECTOR(temp_new.all,1, 1, 1, 0.3);
@@ -158,6 +163,9 @@ begin
 --     function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT;--_ARRAY;
 --     function Get_BestSectorsLap(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
 --     function Get_BestSectorsId(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER;
-
+   Ada.Text_IO.Put_Line("miglior giro");
+   Ada.Text_IO.Put_Line(Competition_Monitor.getBestLapInfo);
+   Ada.Text_IO.Put_Line("miglior primo settore");
+   Ada.Text_IO.Put_Line(Competition_Monitor.getBestSectorInfo(1));
         --FINE AGGIORNAMENTO ONBOARDCOMPUTER
 end Test;

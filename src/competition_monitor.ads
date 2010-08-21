@@ -56,6 +56,9 @@ package Competition_Monitor is
    --   arrayInfo : INFO_ARRAY_POINT;
    --end record;
 
+   --function getBestLap(id_In : INTEGER ; lap : INTEGER) return STRING;
+   --function getBestSector(id_In : INTEGER; indexIn : INTEGER; lap : INTEGER)return STRING;
+
    function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING;
    procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String);--metodo per settare le informazioni
    type OBC is array (Positive range <>) of ONBOARDCOMPUTER.COMPUTER_POINT;
@@ -73,8 +76,7 @@ package Competition_Monitor is
 
    --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING; TODO per ora commentata, non serve, la classifica viene già ritornata ai box
    --eventualmente la riuseremo per le tv, un po modificata magari.
-   function getBestLap return STRING;
-   function getBestSector(indexIn : INTEGER)return STRING;
+
    --function getCompetitor(Self : access Object; competitorIdIn : CORBA.Short) return CORBA.STRING;
    --function getCompetitorTimeSector(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short) return CORBA.STRING;
    --function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
@@ -84,5 +86,14 @@ package Competition_Monitor is
    --function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
    --function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+   procedure setBestSector(indexIn : INTEGER ; updXml : Unbounded_String.Unbounded_String);
+   procedure setBestLap(updXml : Unbounded_String.Unbounded_String);
+   function getBestLapInfo return STRING;
+   function getBestSectorInfo(indexIn : INTEGER)return STRING;
+private
+   bestLap : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   bestSector1 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   bestSector2 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   bestSector3 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
 end Competition_Monitor;

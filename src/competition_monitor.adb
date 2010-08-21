@@ -282,58 +282,57 @@ package body Competition_Monitor is
       return "";
    end getClassific;
 
-   function getBestLap return STRING is
-      --retString : CORBA.String;
-      ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
-      num : INTEGER;
-      id : INTEGER;
-      time : FLOAT;
-   begin
-      num := Stats.Get_BestLapNum(temp.all);
-      time := Stats.Get_BestLapTime(temp.all);
-      id := Stats.Get_BestLapId(temp.all);
-      Unbounded_String.Set_Unbounded_String(ret,"<bestlap><num>"
-                                            &Integer'Image(num)
-                                            &"</num><idComp>"
-                                            &Integer'Image(id)
-                                            &"</idComp><time>"
-                                            &Float'Image(time)
-                                            &"</time></bestlap>"
-                                           );
-      --retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
-      --return retString;
-
-      return "";
-   end getBestLap;
-
-   function getBestSector(indexIn : INTEGER) return STRING is
-      --retString : CORBA.String;
-
-      temp : GENERIC_STATS_POINT := new GENERIC_STATS;
-      num : INTEGER;
-      id : INTEGER;
-      time : FLOAT;
-      ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-   begin
-      num := Stats.Get_BestSectorsLap(temp.all,Integer(indexIn));
-      time := Stats.Get_BestSectorsTime(temp.all,Integer(indexIn));
-      id := Stats.Get_BestSectorsId(temp.all,Integer(indexIn));
-      Unbounded_String.Set_Unbounded_String(ret ,"<bestsector><numSector>"
-                                            &Integer'Image(Integer(indexIn))
-                                            &"</numSector><numLap>"
-                                            &Integer'Image(num)
-                                            &"</numLap><idComp>"
-                                            &Integer'Image(id)
-                                            &"</idComp><time>"
-                                            &Float'Image(time)
-                                            &"</time></bestsector>"
-                                           );
-      --retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
-      --return retString;
-      return "";
-
-   end getBestSector;
+--     function getBestLap(id_In : INTEGER; lap : INTEGER) return STRING is
+--        --retString : CORBA.String;
+--  --        ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+--  --       -- temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+--  --        num : INTEGER;
+--  --        id : INTEGER;
+--  --        time : FLOAT;
+--     begin
+--  --        num := Stats.Get_BestLapNum(temp.all);
+--  --        time := Stats.Get_BestLapTime(temp.all);
+--  --        id := Stats.Get_BestLapId(temp.all);
+--  --        Unbounded_String.Set_Unbounded_String(ret,"<bestlap><num>"
+--  --                                              &Integer'Image(num)
+--  --                                              &"</num><idComp>"
+--  --                                              &Integer'Image(id)
+--  --                                              &"</idComp><time>"
+--  --                                              &Float'Image(time)
+--  --                                              &"</time></bestlap>"
+--  --                                             );
+--  --        --retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
+--        --return retString;
+--    --    return Corba.To_CORBA_String(Unbounded_String.To_String(arrayComp(id_In).getBestLapInfo));
+--     return arrayComp(id_In).all(lap).getBestLapInfo;
+--     end getBestLap;
+--
+--     function getBestSector(id_In : INTEGER; indexIn : INTEGER; lap : INTEGER) return STRING is
+--        --retString : CORBA.String;
+--        --temp : GENERIC_STATS_POINT := new GENERIC_STATS;
+--  --        num : INTEGER;
+--  --        id : INTEGER;
+--  --        time : FLOAT;
+--  --        ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+--     begin
+--  --        num := Stats.Get_BestSectorsLap(temp.all,Integer(indexIn));
+--  --        time := Stats.Get_BestSectorsTime(temp.all,Integer(indexIn));
+--  --        id := Stats.Get_BestSectorsId(temp.all,Integer(indexIn));
+--  --        Unbounded_String.Set_Unbounded_String(ret ,"<bestsector><numSector>"
+--  --                                              &Integer'Image(Integer(indexIn))
+--  --                                              &"</numSector><numLap>"
+--  --                                              &Integer'Image(num)
+--  --                                              &"</numLap><idComp>"
+--  --                                              &Integer'Image(id)
+--  --                                              &"</idComp><time>"
+--  --                                              &Float'Image(time)
+--  --                                              &"</time></bestsector>"
+--  --                                             );
+--        --retString := Corba.To_CORBA_String(Unbounded_String.To_String(ret));
+--        --return retString;
+--        return arrayComp(id_In).all(lap).getBestSectorInfo(indexIn);
+--
+--     end getBestSector;
 
    function getCompetitor(competitorIdIn : INTEGER) return STRING is
    begin
@@ -355,5 +354,47 @@ package body Competition_Monitor is
  --  begin
   --    arrayStats(IndexIn) := compStats_In;
    --end AddComp;
+
+
+         procedure setBestSector(indexIn : INTEGER; updXml : Unbounded_String.Unbounded_String) is
+      begin
+         Ada.Text_IO.Put_Line("Setting best sector : " & Common.IntegerToString(indexIn));
+         if indexIn = 1 then Competition_Monitor.bestSector1 := updXml;
+         elsif indexIn = 2 then Competition_Monitor.bestSector2 := updXml;
+         else Competition_Monitor.bestSector3 := updXml;
+         end if;
+         -- Updated := true;
+      end setBestSector;
+
+      procedure setBestLap(updXml : Unbounded_String.Unbounded_String) is
+      begin
+         Ada.Text_IO.Put_Line("Setting best Lap ");
+         bestLap := updXml;
+         -- Updated := true;
+      end setBestLap;
+      function getBestLapInfo return STRING is
+      begin
+         if Competition_Monitor.bestLap = Unbounded_String.Null_Unbounded_String then return "<warning>informazione sul miglior giro non disponibile</warning>";
+         else return Unbounded_String.To_String(Competition_Monitor.bestLap);
+            end if;
+      end getBestLapInfo;
+
+      function getBestSectorInfo(indexIn : INTEGER )return STRING is
+      begin
+         if indexIn = 1 then
+            if Competition_Monitor.bestSector1 = Unbounded_String.Null_Unbounded_String then return "<warning>informazione sul miglior primo settore non disponibile</warning>";
+            else return Unbounded_String.To_String(Competition_Monitor.bestSector1);
+            end if;
+         elsif indexIn = 2 then
+            if Competition_Monitor.bestSector2 = Unbounded_String.Null_Unbounded_String then return "<warning>informazione sul miglior secondo settore non disponibile</warning>";
+            else return Unbounded_String.To_String(Competition_Monitor.bestSector2);
+            end if;
+         else
+            if Competition_Monitor.bestSector3 = Unbounded_String.Null_Unbounded_String then return "<warning>informazione sul miglior terzo settore non disponibile</warning>";
+            else return Unbounded_String.To_String(Competition_Monitor.bestSector3);
+            end if;
+         end if;
+      end getBestSectorInfo;
+
 
 end Competition_Monitor;
