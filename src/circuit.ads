@@ -137,7 +137,7 @@ package Circuit is
 
    type CHECKPOINT_SYNCH_POINT is access CHECKPOINT_SYNCH;
    function getChanged (temp : in CHECKPOINT_SYNCH_POINT) return Boolean;
-   type RACETRACK is array(POSITIVE range <>) of CHECKPOINT_SYNCH_POINT;
+   type RACETRACK is array(INTEGER range <>) of CHECKPOINT_SYNCH_POINT;
    type RACETRACK_POINT is access RACETRACK;
 
    --The iterator is supposed to be used by the Competitor, in order
@@ -147,7 +147,7 @@ package Circuit is
                             Document_In : DOCUMENT);
    procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
                          Checkpoint_In : CHECKPOINT_SYNCH_POINT;
-                            Position_In : POSITIVE);
+                            Position_In : INTEGER);
    procedure Set_Competitors(Racetrack_In : in out RACETRACK_POINT;
                              Competitors : in Common.COMPETITOR_LIST);
    function Get_Iterator(Racetrack_In : RACETRACK_POINT) return RACETRACK_ITERATOR;
@@ -158,13 +158,15 @@ package Circuit is
    procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                     PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT);
    procedure Get_ExitBoxCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
-                                    ExitBoxCheckpoint : out CHECKPOINT_SYNCH_POINT);
+                                   ExitBoxCheckpoint : out CHECKPOINT_SYNCH_POINT);
+   procedure Get_BoxCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                               BoxCheckpoint : out CHECKPOINT_SYNCH_POINT);
    function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER;
-   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return POSITIVE;
+   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return INTEGER;
    function Get_IsFinished(RaceIterator : RACETRACK_ITERATOR) return BOOLEAN;
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT;
    function Get_Checkpoint(Racetrack_In : RACETRACK;
-                           Position : POSITIVE) return CHECKPOINT_SYNCH_POINT;
+                           Position : INTEGER) return CHECKPOINT_SYNCH_POINT;
    function Print_Racetrack(Racetrack_In : RACETRACK) return INTEGER;
 
 private
@@ -197,7 +199,7 @@ private
 
    type RACETRACK_ITERATOR is record
       Race_Point : RACETRACK_POINT;
-      Position : POSITIVE := 1;
+      Position : INTEGER := 0;
    end record;
 
 

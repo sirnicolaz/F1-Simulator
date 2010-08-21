@@ -141,14 +141,18 @@ package body Box is
          Ada.Text_IO.Put_Line("Info taken");
          Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
          Ada.Text_IO.Put_Line("Xml->update");
+         Ada.Text_IO.Put_Line("---LAP N. " & Common.IntegerToString(Info.Lap));
+         Ada.Text_IO.Put_Line("Time for LAP " & Common.FloatToString(Info.Time));
          UpdateBuffer.Add_Data(Info);
          Ada.Text_IO.Put_Line("Buffer updated");
-         exit when Info.Time = -1.0;
          Ada.Text_IO.Put_Line("Which sector?");
          if(Sector = Sector_Qty) then
-            Sector := 1;
+            Sector := 0;
             Lap := Lap + 1;
          end if;
+
+         exit when Info.Time = -1.0 or else Lap = Laps;
+
          Sector := Sector + 1;
       end loop;
 
@@ -415,6 +419,9 @@ package body Box is
       loop
          UpdateBuffer.Get_Update(New_Info.all, Index);
 
+         Ada.Text_IO.Put_Line("Partial gas cons " & Common.FloatToString(PartialGasConsumptionMean));
+         Ada.Text_IO.Put_Line("New info gas " & Common.FloatToString(New_Info.GasLevel));
+         Ada.Text_IO.Put_Line("Previous sect gas cons " & Common.FloatToString(PreviousSectorGasLevel));
          PartialGasConsumptionMean := PartialGasConsumptionMean +
            (PreviousSectorGasLevel - New_Info.GasLevel); -- the gas level is a decreasing float
          PreviousSectorGasLevel := New_Info.GasLevel;

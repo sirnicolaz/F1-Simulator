@@ -400,7 +400,7 @@ package body Circuit is
          --Find out the number of checkpoint and allocate the Racetrack
          CheckPoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
          CheckpointQty := Length(CheckPoint_List);
-         Racetrack_In := new RACETRACK(1..CheckpointQty);
+         Racetrack_In := new RACETRACK(0..CheckpointQty);
 
          --Loop through the sectors and, for each one, init the related checkpoints
          Sector_List := Get_Elements_By_Tag_Name(Document_In,"sector");
@@ -541,8 +541,10 @@ package body Circuit is
 
       --Setting the box lane
       ---The method find out the pre-box and the exit-box checkpoint. The
-      --+length between them willl be the total length of the box
+      --+length between them will be the total length of the box.
+      --+ Such lane has a checkpoint in the middle.
       Track_Iterator := Get_Iterator(Racetrack_In);
+
       Get_CurrentCheckpoint(Track_Iterator,CheckpointSynch_Current);
       while CheckpointSynch_Current.Is_PreBox /= true loop
          Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
@@ -550,13 +552,39 @@ package body Circuit is
 
       BoxLane_Length := CheckpointSynch_Current.Get_Length;
 
+      Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
       while CheckpointSynch_Current.Is_ExitBox /= true loop
-         Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
          BoxLane_Length := BoxLane_Length + CheckpointSynch_Current.Get_Length;
+         Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
       end loop;
 
-      Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,BoxLane_Length);
+      --The box lane paths has to be initilised in a different way than the usual
+      --+paths.
+      Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,FLOAT'CEILING(BoxLane_Length/2.0));
       PreBox(PreBox_Checkpoint.all).Box := new CROSSING(PreBox_Paths);
+
+      --Initialise the box checkpoint that'll take the position 0 of the RaceTrack.
+      --+ that position is never inspected by the iteration function.
+      --+ Only the Get_BoxCheckPoint directly access that location of the array.
+      Set_Values(Checkpoint_Temp,
+                 3, --Sector ID
+                 TRUE, --IsGoal
+                 FLOAT'CEILING(BoxLane_Length/2.0), -- Length
+                 180.0, --Angle
+                 5.0, --Grip TODO: give a not standard value to this one and following
+                 1.0, --Difficulty
+                 MaxCompetitors_Qty, -- Multiplicity
+                 MaxCompetitors_Qty,--Competitor quantity
+                 FALSE, -- Is Pre Box
+                 FALSE, -- Is Exit box
+                 FALSE, -- Is first one of the sector
+                 TRUE); -- Is last one of the sector
+
+      --In this way we use the path generator included into the Set values.
+      --+ But the paths after the box should be like the ones after the prebox.
+      --+verify TODO
+      CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
+      RaceTrack_In(0) := CheckpointSynch_Current;
 
    end Init_Racetrack;
 
@@ -584,7 +612,7 @@ package body Circuit is
 
    procedure Set_Checkpoint(Racetrack_In : in out RACETRACK;
                             Checkpoint_In : CHECKPOINT_SYNCH_POINT;
-                            Position_In : POSITIVE) is
+                            Position_In : INTEGER) is
    begin
       if Position_In >= Racetrack_In'FIRST and Position_In <= Racetrack_In'LAST then
          Racetrack_In(Position_In) := Checkpoint_In;
@@ -640,25 +668,37 @@ package body Circuit is
       CurrentCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
    end Get_CurrentCheckpoint;
 
+   --TODO: test
    procedure Get_NextCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                 NextCheckpoint : out CHECKPOINT_SYNCH_POINT) is
    begin
       --++++++Put_Line("Position " & INTEGER'IMAGE(RaceIterator.Position));
-      if RaceIterator.Position /= RaceIterator.Race_Point'LENGTH then
-         RaceIterator.Position := RaceIterator.Position + 1;
-      else
+      if RaceIterator.Position = 0 then
          RaceIterator.Position := 1;
+         Get_CurrentCheckpoint(RaceIterator,
+                               NextCheckpoint);
+         if(NextCheckpoint.Is_ExitBox = false) then
+            Get_ExitBoxCheckpoint(RaceIterator,NextCheckpoint);
+         end if;
+      -- LENGTH - 1 is due to the box in position 0
+      else
+         if RaceIterator.Position /= RaceIterator.Race_Point'LENGTH-1 then
+            RaceIterator.Position := RaceIterator.Position + 1;
+         else
+            RaceIterator.Position := 1;
+         end if;
+         NextCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
       end if;
-      NextCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
    end Get_NextCheckpoint;
 
+   --TODO: update to make it work with Box checkpoint
    procedure Get_PreviousCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
                                     PreviousCheckpoint : out CHECKPOINT_SYNCH_POINT) is
    begin
       if RaceIterator.Position /= 1 then
          RaceIterator.Position := RaceIterator.Position - 1;
       else
-         RaceIterator.Position := RaceIterator.Race_Point'LENGTH;
+         RaceIterator.Position := RaceIterator.Race_Point'LENGTH-1;
       end if;
 
       PreviousCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
@@ -671,18 +711,27 @@ package body Circuit is
    begin
       loop
          Get_NextCheckpoint(RaceIterator,Tmp_Checkpoint);
-         exit when Tmp_Checkpoint.Is_ExitBox;
+         exit when Tmp_Checkpoint.Is_PreBox;
       end loop;
 
       ExitBoxCheckpoint := Tmp_Checkpoint;
    end Get_ExitBoxCheckpoint;
+
+   procedure Get_BoxCheckpoint(RaceIterator : in out RACETRACK_ITERATOR;
+                               BoxCheckpoint : out CHECKPOINT_SYNCH_POINT) is
+   begin
+
+      RaceIterator.Position := 0;
+      BoxCHeckPoint :=  RaceIterator.Race_Point(0);
+
+   end Get_BoxCheckpoint;
 
    function Get_RaceLength(RaceIterator : RACETRACK_ITERATOR) return INTEGER is
    begin
       return RaceIterator.Race_Point'LENGTH;
    end Get_RaceLength;
 
-   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return POSITIVE is
+   function Get_Position(RaceIterator : RACETRACK_ITERATOR) return INTEGER is
    begin
       return RaceIterator.Position;
    end Get_Position;
@@ -695,7 +744,7 @@ package body Circuit is
 
 
    function Get_Checkpoint(Racetrack_In : RACETRACK;
-                           Position : POSITIVE) return CHECKPOINT_SYNCH_POINT is
+                           Position : INTEGER) return CHECKPOINT_SYNCH_POINT is
    begin
       return Racetrack_In(Position);
    end Get_Checkpoint;
