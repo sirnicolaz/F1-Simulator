@@ -634,7 +634,7 @@ package body Competitor is
          Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time : " & Common.FloatToString(PathTime));
          WaitingTime := PathTime - CompArrivalTime;
 
-         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time - compArrivalTime: " & Common.FloatToString(WaitingTime));
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time - compArrivalTime: " & FLOAT'IMAGE(WaitingTime));
          -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time: " &Float'Image(PathTime));
          StartingInstant := PathTime;
          --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" :scorro il path2cross, index = "&Integer'Image(Index));
@@ -877,12 +877,12 @@ package body Competitor is
 
          Tmp_Bool := C_Checkpoint.Set_Arrived(id);
 
-         --if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
-         if( true = false) then
+         if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
+         --if( true = false) then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pre box");
 
             -- Ask for the box strategy once the prebox checkpoint is reached
-            Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap));
+            Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
 
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
             --Get the strategy object from the file
@@ -894,10 +894,7 @@ package body Competitor is
                PitStop := true;
             end if;
 
-            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " updating tyre");
-            carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " uypdateing style");
-
             carDriver.strategia.Style := BrandNewStrategy.Style;
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " updating pit stop laps");
             carDriver.strategia.PitStopLaps := BrandNewStrategy.PitStopLaps;
@@ -948,7 +945,7 @@ package body Competitor is
             Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
             Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
-                                                 --commentato- da correggere il ripo di gaslevel
+                                                    --commentato- da correggere il ripo di gaslevel
 
             Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
             Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
@@ -1030,6 +1027,9 @@ package body Competitor is
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
                                                  --commentato- da correggere il ripo di gaslevel
 
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" gas is " & FLOAT'IMAGE(carDriver.auto.GasolineLevel));
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" gas is " & Common.FloatToString(carDriver.auto.GasolineLevel));
+
          Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
          Common.Set_Time(compStats, predictedTime);
@@ -1057,8 +1057,6 @@ package body Competitor is
             Ada.Text_IO.Put_Line("Doing pitstop");
             PitStop := false;
             Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-            --If pitstop happens, it substitutes the goal
-            CurrentLap := CurrentLap + 1;
 
             --Those updates will be effective in the next loop, so
             --+ they'll be used while doing the after-box path.

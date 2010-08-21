@@ -369,6 +369,7 @@ package body Box is
          --HACK: Gas level used to compute the mean gas consumption by the
          --+ the box and not used by the competitor
          New_Strategy.GasLevel := New_Info.GasLevel;
+         New_Strategy.PitStopDelay := 0.0;
 
       end if;
 
@@ -420,11 +421,14 @@ package body Box is
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
+         Ada.Text_IO.Put_Line("Waitin");
          UpdateBuffer.Get_Update(New_Info.all, Index);
-
+         Ada.Text_IO.Put_Line("INFO GOT " & Common.FloatToString(New_Info.Time) &
+                              " previous gas " & Common.FloatToString(PreviousSectorGasLevel) &
+                              " new gas " & Common.FloatToString(New_Info.GasLevel));
          exit when New_Info.Time = -1.0 or else --The car is out
          (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
-
+         Ada.Text_IO.Put_Line("Calculating partial mean");
          PartialGasConsumptionMean :=
            PartialGasConsumptionMean +
               ((New_Info.PathLength/1000.0)/ -- We want the ratio in Km
@@ -438,7 +442,7 @@ package body Box is
            PartialTyreUsuryMean +
               ((New_Info.PathLength/1000.0)/ -- We want the ratio in Km
                (New_Info.TyreUsury - PreviousSectorTyreUsury)
-           );
+              );
 
          PreviousSectorTyreUsury := New_Info.TyreUsury;
 
@@ -599,7 +603,7 @@ package body Box is
 
       procedure Init( Lap_Qty : in INTEGER ) is
       begin
-         history := new STRATEGY_HISTORY(0..Lap_Qty-1);
+         history := new STRATEGY_HISTORY(0..Lap_Qty);
       end Init;
 
       procedure AddStrategy( Strategy_in : in STRATEGY ) is
@@ -621,7 +625,7 @@ package body Box is
          history.all(history_size) := Strategy_in;
          history_size := history_size + 1;
          Updated := true;
-         Ada.Text_IO.Put_Line("Strategy added");
+         Ada.Text_IO.Put_Line("Strategy "& Common.IntegerToString(history_size-1) & " added");
          exception when Constraint_Error =>
             Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
             Ada.Text_IO.Put("the history array has had an access violation.");
@@ -709,6 +713,7 @@ package body Box is
       Unbounded_String.To_Unbounded_String("</pitStopLaps>");
 
       Ada.Text_IO.Put_Line("Setting pit stop delay");
+      Ada.Text_IO.Put_Line("pit stop delay " & FLOAT'IMAGE(Strategy_in.PitStopDelay));
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<pitStopDelay>") &
       FloatToString(Strategy_in.PitStopDelay) &

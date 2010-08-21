@@ -111,7 +111,7 @@ package body COMMON is
 
       Temp_StringLength := FLOAT'IMAGE(num)'LENGTH;
       Temp_String := new STRING(1..Temp_StringLength);
-      Ada.Float_Text_IO.Put(Temp_String.all,num,0,0);
+      Ada.Float_Text_IO.Put(Temp_String.all,num,8,0);
 
       Temp_UnboundedString := Unbounded_String.To_Unbounded_String(Ada.Strings.Fixed.Trim(Temp_String.all,Ada.Strings.Left));
       return Unbounded_String.To_String(Temp_UnboundedString);

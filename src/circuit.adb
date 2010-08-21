@@ -667,13 +667,13 @@ package body Circuit is
       --+ The box can be available on demand and even if a .. TODO explanation
 
       for ind in 1..Competitors'LENGTH loop
-         Times(ind) := -1.0;
+         Times(ind) := 1.0;
       end loop;
 
       Get_Checkpoint(Race_It.Race_Point.all,0).Set_Competitors(Competitors,Times);
-      for indez in Competitors'RANGE loop
-         Get_Checkpoint(Race_It.Race_Point.all,0).Remove_Competitor(indez);
-      end loop;
+      --for indez in Competitors'RANGE loop
+      --   Get_Checkpoint(Race_It.Race_Point.all,0).Remove_Competitor(indez);
+      --end loop;
 
    end Set_Competitors;
 
