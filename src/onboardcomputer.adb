@@ -217,7 +217,7 @@ end Reset_Node;
       procedure Add_Data(Data : COMP_STATS_POINT) is
          NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
          updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-         sommaLength : FLOAT := 0.0;
+         --sommaLength : FLOAT := 0.0;
       begin
          Ada.Text_IO.Put_Line("inizio add_data");
          Set_Node(Last_Node,Reset_Data(Data));
@@ -228,16 +228,18 @@ end Reset_Node;
 
          -- If the information are related to last checkpoint of the sector
          --+ it's necessary to add those information to the competition monitor
-
+         sommaLength := sommaLength + Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
          if(Common.Get_LastCheckInSect(Data) = true) then
 
-            sommaLenght := Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
-            NewNode := NewNode.Previous;
-            loop exit when Common.Get_LastCheckInSect(NewNode.Value.all); -- esco quando sono arrivato all'ultimo del settore prima
-               sommaLength := sommaLenght + Common.Get_LengthPath(NewNode.Value.all);
-               NewNode := NewNode.Previous;
-            end loop;
-
+--              sommaLength := Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
+--              NewNode := NewNode.Previous;
+--              Ada.Text_IO.Put_Line("valore di getLastCheckInSect = "&Boolean'Image(Common.Get_LastCheckInSect(NewNode.Previous.Value)));
+--              loop exit when Common.Get_LastCheckInSect(NewNode.Value); -- esco quando sono arrivato all'ultimo del settore prima
+--                 sommaLength := sommaLength + Common.Get_LengthPath(NewNode.Value.all);
+--                 Ada.Text_IO.Put_Line("in loop, aggiornamento sommaLength = "&Common.FloatToString(sommaLength));
+--                 NewNode := NewNode.Previous;
+--              end loop;
+--
             Ada.Text_IO.Put_Line("Sector end");
             Unbounded_String.Set_Unbounded_String(updateStr,
                                                   "<?xml version=""1.0""?>" &
@@ -247,12 +249,13 @@ end Reset_Node;
                                                   "<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
                                                   "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
                                                   "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>" &
-                                                  "<metres>" & Common.FloatToString(sommaLenght)&"</metres>"
+                                                  "<metres>" & Common.FloatToString(sommaLength)&"</metres>" &
                                                   "</update>"
                                                  );
-            Ada.Text_IO.Put_Line("Adding news to monitor");
+            Ada.Text_IO.Put_Line("Adding news to monitor : ");
+            Ada.Text_IO.Put_Line(Unbounded_String.To_String(updateStr));
             Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
-            sommaLenght := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
+            sommaLength := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
          end if;
 
 

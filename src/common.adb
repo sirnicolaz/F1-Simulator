@@ -188,13 +188,13 @@ package body COMMON is
    begin
       return Stats_In.LastCheckInSect;
    end Get_LastCheckInSect;
-   function Get_FirstCheckInSect(Stats_In : out COMP_STATS_POINT) return BOOLEAN is
+   function Get_FirstCheckInSect(Stats_In : COMP_STATS_POINT) return BOOLEAN is
    begin
       return Stats_In.FirstCheckInSect;
    end Get_FirstCheckInSect;
 
 
-   function Get_LengthPath(Stats_In : COMP_STATS_POINT) return FLOAT is
+   function Get_LengthPath(Stats_In : COMP_STATS) return FLOAT is
    begin
       return Stats_In.lengthPath;
    end Get_LengthPath;
