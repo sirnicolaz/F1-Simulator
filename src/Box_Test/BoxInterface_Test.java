@@ -18,7 +18,7 @@ public class BoxInterface_Test{
 		
 
 			//Pick up the boxCorbaLoc from the corbaLoc.txt
-			BufferedReader corbaLocFile = new BufferedReader(new FileReader("../corbaLoc.txt"));
+			BufferedReader corbaLocFile = new BufferedReader(new FileReader("../boxCorbaLoc-" + args[0] + ".txt"));
 			configCorbaLoc = corbaLocFile.readLine() ;
 			boxRadioCorbaLoc = corbaLocFile.readLine();
 		}catch(Exception e){}
@@ -40,9 +40,9 @@ public class BoxInterface_Test{
 		//With the information obtained, create a configuration file whose name
 		//has to be passed to the box Configurator:Configure
 		String initialTyreType = "normal";
-		Double gasTankCapacity = 100.0;
+		Double gasTankCapacity = 150.0;
 		String boxStrategy = "NORMAL";
-		Double initialGasLevel = 50.0;
+		Double initialGasLevel = 70.0;
 
 		String boxConfFile = "<?xml version=\"1.0\"?>" +
 					"<config>" + 

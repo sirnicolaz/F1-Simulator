@@ -180,25 +180,17 @@ package body Circuit is
    end CROSSING;
 
    protected body CHECKPOINT_SYNCH is
-      --The method set the "flag" arrived on the checkpoint queue.
-      --+The method returns a boolean indicating whether the checkpoint
-      --+can lead to a box or not.
-      function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN is
-      begin
-         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
-         return F_Checkpoint.IsPreBox;
-      end Set_Arrived;
 
       --The method set the calling task Competitor as arrived.
       --+If he's in the 1st position,
       --+the Path2Cross is initialised,
       --+in order to let the task choose the path and "cross" the segment.
-      entry Signal_Arrival(CompetitorID_In : INTEGER;
+      procedure Signal_Arrival(CompetitorID_In : INTEGER;
                                Paths2Cross : out CROSSING_POINT;
-                               Go2Box : BOOLEAN) when true is
+                               Go2Box : BOOLEAN) is
       begin
-         --         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
---        Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono signal_arrival e chiamo get_position");
+
+         Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
             Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " first");
             Changed := false;
@@ -210,9 +202,8 @@ package body Circuit is
                Paths2Cross := F_Checkpoint.PathsCollection;
             end if;
          else
-            Changed := false;
-            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " wait on checkpoint");
-            requeue Wait;
+            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " null path cuz in pos " & INTEGER'IMAGE(Get_Position(F_Checkpoint.Queue.all,CompetitorID_In)));
+            Paths2Cross := null;
          end if;
 
       end Signal_Arrival;
@@ -316,24 +307,13 @@ package body Circuit is
                  Paths2Cross : out CROSSING_POINT;
                 Go2Box : BOOLEAN) when Changed = TRUE is
       begin
-         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
-                              " retry to signal arrival");
-         requeue Signal_Arrival;
 
---           --++++++Ada.Text_IO.Put_Line("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : sono wait e chiamo get_position, CHANGED= "&Boolean'Image(getChanged));
---           if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
---              Changed := FALSE;
---
---              if ( Go2Box = true ) then
---                 Paths2Cross := PreBox(F_Checkpoint.all).Box;
---              else
---                 Paths2Cross := F_Checkpoint.PathsCollection;
---              end if;
---
---           else
---              requeue Wait;
---           end if;
---         Ada.Text_IO.Put_Line("--------********$$$$$$$$$$$$$$$$$$$$$"&Integer'Image(CompetitorID_In)&" : esco dalla WAIT, CHANGED= "&Boolean'Image(getChanged));
+         if Get_Position(F_Checkpoint.Queue.all, CompetitorID_In) = 1 then
+            Changed := false;
+            Paths2Cross := F_Checkpoint.PathsCollection;
+         end if;
+         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
+                              " retry wait");
       end Wait;
 
       function getChanged return Boolean is

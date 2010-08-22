@@ -231,22 +231,7 @@ end Reset_Node;
          sommaLength := sommaLength + Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
          if(Common.Get_LastCheckInSect(Data) = true) then
 
---              sommaLength := Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
---              NewNode := NewNode.Previous;
---              Ada.Text_IO.Put_Line("valore di getLastCheckInSect = "&Boolean'Image(Common.Get_LastCheckInSect(NewNode.Previous.Value)));
---              loop exit when Common.Get_LastCheckInSect(NewNode.Value); -- esco quando sono arrivato all'ultimo del settore prima
---                 sommaLength := sommaLength + Common.Get_LengthPath(NewNode.Value.all);
---                 Ada.Text_IO.Put_Line("in loop, aggiornamento sommaLength = "&Common.FloatToString(sommaLength));
---                 NewNode := NewNode.Previous;
---              end loop;
---
-            Ada.Text_IO.Put_Line("Sector end");
-            Ada.Text_IO.Put_Line("<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"</gasLevel>");
-            Ada.Text_IO.Put_Line("<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>");
-            --Ada.Text_IO.Put_Line("<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>");
-            Ada.Text_IO.Put_Line("<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>");
-            Ada.Text_IO.Put_Line("<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>");
-            Ada.Text_IO.Put_Line("<metres>" & Common.FloatToString(sommaLength)&"</metres>");
+
             Unbounded_String.Set_Unbounded_String(updateStr,
                                                   "<?xml version=""1.0""?>" &
                                                   "<update>" &

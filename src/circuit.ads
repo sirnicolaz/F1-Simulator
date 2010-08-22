@@ -98,9 +98,7 @@ package Circuit is
 
    protected type CHECKPOINT_SYNCH(Checkpoint_In : POINT_Checkpoint) is
 
-      function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN;
-
-      entry Signal_Arrival(CompetitorID_In : INTEGER;
+      procedure Signal_Arrival(CompetitorID_In : INTEGER;
                                Paths2Cross : out CROSSING_POINT;
                                Go2Box : BOOLEAN);
       procedure Signal_Leaving(CompetitorID_In : INTEGER);

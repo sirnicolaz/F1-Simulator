@@ -1,5 +1,7 @@
 with Ada.Text_IO;
 
+with Common;
+
 with RegistrationHandler.impl;
 with CompetitionConfigurator.impl;
 with Competition_Monitor_Radio.impl;
@@ -81,6 +83,15 @@ begin
          Monitor_Ref := PortableServer.POA.Servant_To_Reference
            (Root_POA, PortableServer.Servant(Monitor_Obj));
          -- CompetitionConfiguration corbaloc
+
+         if(Common.SaveToFile(FileName => "registrationHandler_corbaLoc.txt",
+                              Content  => CORBA.To_Standard_String
+                                (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))
+                              ,
+                              Path     => "")) then
+            Ada.Text_IO.Put_Line("Registration handler corba loc saved");
+         end if;
+
          Ada.Text_IO.Put_Line
            ("CompetitionConfiguration: '"
             & CORBA.To_Standard_String

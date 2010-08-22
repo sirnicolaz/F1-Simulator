@@ -366,14 +366,15 @@ package body Box is
          --+ to refill totally the tank and finish the race without
          --+other stop or keep it half empty and do another stop
          --+For now the first solution is kept.
-         if( RemainingDoableLaps >= CalculateDoableLaps(CurrentGasLevel     => GasTankCapacity,
+         if( Laps2End <= CalculateDoableLaps(CurrentGasLevel     => GasTankCapacity,
                                                         CurrentTyreUsury    => 0.0,
                                                         MeanGasConsumption  => PreviousLapMeanGasConsumption,
                                                         MeanTyreConsumption => PreviousLapMeanTyreUsury))
          then
 
             NewGas := GasTankCapacity;
-            New_Strategy.PitStopLaps := Laps2End;
+            --So it will not stop til the end of the competition
+            New_Strategy.PitStopLaps := Laps2End+1;
 
          else
 
@@ -383,7 +384,7 @@ package body Box is
               ( ( FLOAT( Laps2End / 2 ) * CircuitLength ) *
                  PreviousLapMeanGasConsumption ) *
                 ( 1.0 - StrategyFactor ); -- explain why - StrategyFactor instead of +
-
+            --Ada.Text_IO.Put_Line("New gas " & FLOAT'IMAGE(NewGas));
             New_Strategy.PitStopLaps := Laps2End / 2;
 
          end if;
