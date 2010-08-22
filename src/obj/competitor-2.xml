@@ -8,20 +8,19 @@
 	<car>
 	  <maxspeed>150.0</maxspeed>
 	  <maxacceleration>7.8</maxacceleration>
-	  <gastankcapacity>200</gastankcapacity>
+	  <gastankcapacity>100</gastankcapacity>
 	  <engine>strong</engine>
 	  <tyreusury>0.0</tyreusury>
-	  <gasolinelevel>100</gasolinelevel>
+	  <gasolinelevel>50</gasolinelevel>
 	  <mixture>morbida</mixture>
 	  <model>michelin</model>
 	  <type_tyre>rain</type_tyre>
 	</car>
 	<strategy_car>
-	 <pitstopGasolineLevel>250</pitstopGasolineLevel>
+	 <pitstopGasolineLevel>20</pitstopGasolineLevel>
 	 <pitstopLaps>12</pitstopLaps>
 	 <pitstopCondition>false</pitstopCondition>
 	 <trim>1</trim>
 	 <pitstop>false</pitstop>
 	</strategy_car>
-        <boxCorbaLoc>corbaloc:lamerda@lacacca://vomito</boxCorbaLoc>
 </car_driver>

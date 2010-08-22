@@ -34,15 +34,23 @@ package Competition_Monitor is
                  Laps_In : INTEGER;
                  GlobalStatistics_In : GLOBAL_STATS_HANDLER_POINT ) return STARTSTOPHANDLER_POINT;
 
-   protected type INFO_STRING is -- tipo protetto con le stringhe che poi verranno ritornate (file update.xml)
-      entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String );--ritorna la stringa sul relativo settore
-      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String );--funzione di wait (se non è disponibile la info sul settore)
+    -- tipo protetto con le stringhe che poi verranno ritornate (file update.xml)
+   protected type INFO_STRING is
+      --ritorna la stringa sul relativo settore
+      entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT );
+
+      --funzione di wait (se non è disponibile la info sul settore)
+      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT );
+
       -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
-      procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String);--settaggio della stringa del settore;
+      procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String; time : FLOAT);--settaggio della stringa del settore;
    private
       sector1 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      sector1_time : FLOAT;
       sector2 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      sector2_time : FLOAT;
       sector3 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      sector3_time : FLOAT;
       Updated : Boolean := false;
    end INFO_STRING;
 
@@ -59,8 +67,8 @@ package Competition_Monitor is
    --function getBestLap(id_In : INTEGER ; lap : INTEGER) return STRING;
    --function getBestSector(id_In : INTEGER; indexIn : INTEGER; lap : INTEGER)return STRING;
 
-   function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING;
-   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String);--metodo per settare le informazioni
+   procedure getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String);
+   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String; time :  FLOAT);--metodo per settare le informazioni
    type OBC is array (Positive range <>) of ONBOARDCOMPUTER.COMPUTER_POINT;
    type OBC_POINT is access OBC;
    type compStatsArray is array (Positive range <>) of Common.COMP_STATS_POINT;

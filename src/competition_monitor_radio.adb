@@ -29,6 +29,10 @@ package body Competition_Monitor_Radio is
      PolyORB.Types.To_PolyORB_String
         ("id");
 
+   getInfo_Arg_Name_time_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("time");
+
    getInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
@@ -50,16 +54,18 @@ package body Competition_Monitor_Radio is
    -- getInfo --
    -------------
 
-   function getInfo
+   procedure getInfo
      (Self : Ref;
       lap : CORBA.Short;
       sector : CORBA.Short;
-      id : CORBA.Short)
-     return CORBA.String
+      id : CORBA.Short;
+      time : out CORBA.Float;
+      Returns : out CORBA.String)
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
-      Result_Ü : CORBA.String;
-      pragma Warnings (Off, Result_Ü);
+      Result_Ü : CORBA.String
+        renames Returns;
+      pragma Warnings (Off, Returns);
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
@@ -84,6 +90,14 @@ package body Competition_Monitor_Radio is
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Short,
             Arg_CC_id_Ü'Unchecked_Access);
+      Arg_CC_time_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (time'Unrestricted_Access);
+      Arg_Any_time_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Float,
+            Arg_CC_time_Ü'Unchecked_Access);
+      pragma Warnings (Off, time);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         getInfo_Result_Ü;
@@ -117,6 +131,12 @@ package body Competition_Monitor_Radio is
          PolyORB.Any.Any
            (Arg_Any_id_Ü),
          PolyORB.Any.ARG_IN);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         getInfo_Arg_Name_time_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_time_Ü),
+         PolyORB.Any.ARG_OUT);
       --  Setting the result value
       PolyORB.Any.Set_Value
         (PolyORB.Any.Get_Container
@@ -141,8 +161,6 @@ package body Competition_Monitor_Radio is
         (Request_Ü);
       PolyORB.Requests.Destroy_Request
         (Request_Ü);
-      --  Return value
-      return Result_Ü;
    end getInfo;
 
    getBestLap_Result_Name_Ü : constant PolyORB.Types.Identifier :=

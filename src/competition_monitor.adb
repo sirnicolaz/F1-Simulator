@@ -111,7 +111,8 @@ package body Competition_Monitor is
 
 
    protected body INFO_STRING is
-      entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when true is -- ritorna le info sul settore relativo al giro, se disponibili
+       -- ritorna le info sul settore relativo al giro, se disponibili
+      entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT ) when true is
       begin
          Ada.Text_IO.Put_Line("in getSector");
          if index = 1 then
@@ -121,6 +122,7 @@ package body Competition_Monitor is
                requeue Wait;
             else
                sectorString := sector1;
+               time := sector1_time;
             end if;
          elsif index = 2 then
             if sector2 = Unbounded_String.Null_Unbounded_String then
@@ -129,6 +131,7 @@ package body Competition_Monitor is
                requeue Wait;
             else
                sectorString := sector2;
+               time := sector2_time;
             end if;
          else
             if sector3 = Unbounded_String.Null_Unbounded_String then
@@ -137,28 +140,35 @@ package body Competition_Monitor is
                requeue Wait;
             else
                sectorString := sector3;
+               time := sector3_time;
             end if;
          end if;
       end getSector;
-      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String ) when Updated  is
+      entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT ) when Updated  is
       begin
 --Ada.Text_IO.Put_Line("in wait");
          requeue GetSector;
       end Wait;
       -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
-      procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String) is
+      procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String; time : FLOAT) is
       begin
          Ada.Text_IO.Put_Line("Setting sector " & Common.IntegerToString(index));
-         if index = 1 then sector1 := updXml;
-         elsif index = 2 then sector2 := updXml;
-         else sector3 := updXml;
+         if index = 1 then
+            sector1 := updXml;
+            sector1_time := time;
+         elsif index = 2 then
+            sector2 := updXml;
+            sector2_time := time;
+         else
+            sector3 := updXml;
+            sector3_time := time;
          end if;
          Updated := true;
       end setSector;
    end INFO_STRING;
 
 
-   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String) is
+   procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String; time : FLOAT) is
    begin
 --        if arrayComp = null then
 --           arrayComp := new CompArray(1..CompetitorQty);--TODO : stronzata
@@ -173,7 +183,7 @@ package body Competition_Monitor is
 --        end if;
 --Ada.Text_IO.Put_Line(Unbounded_String.To_String(updXml));
       Ada.Text_IO.Put_Line("Competitor " & Common.IntegerToString(id) & " is addin info of lap " & Common.IntegerToString(lap));
-      arrayComp(id).all(lap).setSector(sector, updXml);
+      arrayComp(id).all(lap).setSector(sector, updXml,time);
    end setInfo;
 
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
@@ -189,7 +199,7 @@ package body Competition_Monitor is
       --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
    --end AddCompId;
 
-   function getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER) return STRING is
+   procedure getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       stringRet : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       class : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..CompetitorQty);
       upd : FLOAT := 100.0;
@@ -203,7 +213,7 @@ package body Competition_Monitor is
       --TODO: si era detto che la classifica non serve qui. Verificare
       --+ ed eventualmente eliminare
 
-      arrayComp(id).all(Lap).getSector(sector,stringRet);
+      arrayComp(id).all(Lap).getSector(sector,stringRet,time);
       Ada.Text_IO.Put_Line("dopo di getSector");
 
       --Unbounded_String.Append(stringRet,"<classific competitors="
@@ -221,7 +231,7 @@ package body Competition_Monitor is
       --                           &"</compId>");
       --end loop;
       --Unbounded_String.Append(stringRet, "</classific></update>");
-      return Unbounded_String.To_String(stringRet);--file update.xml completo
+      updString := stringRet;--file update.xml completo
       --ritorna le info relative all'utente id, del giro lap del settore sector (se non presenti va in wait, il settore è una risorsa protetta)
    end getInfo;
 

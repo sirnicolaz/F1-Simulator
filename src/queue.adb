@@ -7,7 +7,9 @@ package body Queue is
    procedure Init_Queue(Queue_In : in out QUEUE) is
    begin
       for Index in Queue_In'RANGE loop
-         Queue_In(Index) := new QUEUE_CELL'(0,0.0,false);
+         Queue_In(Index) := new QUEUE_CELL'(-1,0.0,false);
+         --NEW CRITICAL: added -1 instead of 0 to deal with boxes
+         --Queue_In(Index) := new QUEUE_CELL'(0,0.0,false);
       end loop;
    end;
 
@@ -144,9 +146,11 @@ package body Queue is
       --         Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima di FindFreePos_Loop");
          FindFreePos_Loop:
          for Index in Queue_In'Range loop
-                  Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in loop, index = "&Integer'Image(Index));
+                  Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in loop, index = "&Integer'Image(Index) &", comp id: " & INTEGER'IMAGE(Queue_In(Index).CompetitorID));
             Position_Old := Position_Old + 1;
-            exit FindFreePos_Loop when Queue_In(Index).CompetitorID = 0;
+            exit FindFreePos_Loop when Queue_In(Index).CompetitorID = -1;
+            --NEW CRITICAL: added -1 instead of 0 to deal with boxes
+            --            exit FindFreePos_Loop when Queue_In(Index).CompetitorID = 0;
          end loop FindFreePos_Loop;
     --           Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima di  add_Competitor2Queue con 4 param");
          Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_Old);

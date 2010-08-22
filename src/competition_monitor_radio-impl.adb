@@ -16,12 +16,17 @@ package body Competition_Monitor_Radio.impl is
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 
-   function getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short) return CORBA.String is
+   procedure getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
+      ReturnStr : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
+      ReturnTime : FLOAT;
    begin
-      return CORBA.To_CORBA_String
-        (Competition_Monitor.getInfo(lap    => INTEGER(lap),
-                                         sector => INTEGER(sector),
-                                         id     => INTEGER(id)));
+        Competition_Monitor.getInfo(lap       => INTEGER(lap),
+                                    sector    => INTEGER(sector),
+                                    id        => INTEGER(id),
+                                    time      => ReturnTime,
+                                    updString => ReturnStr);
+      Returns := CORBA.To_CORBA_String(Common.Unbounded_String.To_String(ReturnStr));
+      time := CORBA.Float(ReturnTime);
    end getInfo;
 
    function getBestLap(Self : access Object) return CORBA.STRING is

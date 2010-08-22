@@ -241,12 +241,18 @@ end Reset_Node;
 --              end loop;
 --
             Ada.Text_IO.Put_Line("Sector end");
+            Ada.Text_IO.Put_Line("<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"</gasLevel>");
+            Ada.Text_IO.Put_Line("<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>");
+            --Ada.Text_IO.Put_Line("<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>");
+            Ada.Text_IO.Put_Line("<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>");
+            Ada.Text_IO.Put_Line("<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>");
+            Ada.Text_IO.Put_Line("<metres>" & Common.FloatToString(sommaLength)&"</metres>");
             Unbounded_String.Set_Unbounded_String(updateStr,
                                                   "<?xml version=""1.0""?>" &
                                                   "<update>" &
                                                   "<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"</gasLevel>" &
                                                   "<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>" &
-                                                  "<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
+                                                  --"<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
                                                   "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
                                                   "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>" &
                                                   "<metres>" & Common.FloatToString(sommaLength)&"</metres>" &
@@ -254,7 +260,9 @@ end Reset_Node;
                                                  );
             Ada.Text_IO.Put_Line("Adding news to monitor : ");
             Ada.Text_IO.Put_Line(Unbounded_String.To_String(updateStr));
-            Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+
+            --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+            Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr,Common.Get_Time(Data.all));
             sommaLength := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
          end if;
 

@@ -185,10 +185,6 @@ package body Circuit is
       --+can lead to a box or not.
       function Set_Arrived(CompetitorID_In : INTEGER) return BOOLEAN is
       begin
-         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
-                              " sett arrived on check. First time " &
-           Common.FloatToString(
-             Queue.Get_ArrivalTime(F_Checkpoint.Queue.all,1)));
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          return F_Checkpoint.IsPreBox;
       end Set_Arrived;
@@ -584,8 +580,8 @@ package body Circuit is
                  MaxCompetitors_Qty,--Competitor quantity
                  FALSE, -- Is Pre Box
                  FALSE, -- Is Exit box
-                 FALSE, -- Is first one of the sector
-                 TRUE); -- Is last one of the sector
+                 TRUE, -- Is first one of the sector
+                 FALSE); -- Is last one of the sector
 
       --In this way we use the path generator included into the Set values.
       --+ But the paths after the box should be like the ones after the prebox.
@@ -671,9 +667,9 @@ package body Circuit is
       end loop;
 
       Get_Checkpoint(Race_It.Race_Point.all,0).Set_Competitors(Competitors,Times);
-      --for indez in Competitors'RANGE loop
-      --   Get_Checkpoint(Race_It.Race_Point.all,0).Remove_Competitor(indez);
-      --end loop;
+      for indez in Competitors'RANGE loop
+         Get_Checkpoint(Race_It.Race_Point.all,0).Remove_Competitor(indez);
+      end loop;
 
    end Set_Competitors;
 

@@ -21,12 +21,13 @@ package Competition_Monitor_Radio is
    Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio:1.0";
 
-   function getInfo
+   procedure getInfo
      (Self : Ref;
       lap : CORBA.Short;
       sector : CORBA.Short;
-      id : CORBA.Short)
-     return CORBA.String;
+      id : CORBA.Short;
+      time : out CORBA.Float;
+      Returns : out CORBA.String);
 
    getInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/getInfo:1.0";

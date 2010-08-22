@@ -35,18 +35,27 @@ package body CompetitorRadio is
       Strategy : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       File_Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
+                           &" Connecting for strategy");
 
       Strategy := Unbounded_String.To_Unbounded_String(
                                                        CORBA.To_Standard_String
                                                          (BoxRadio.RequestStrategy(Radio.Connection,CORBA.Short(Lap))));
+
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
+                           &" connected succesfully");
 
       File_Name := Unbounded_String.To_Unbounded_String("Strategy-" & Common.IntegerToString(Radio.CompetitorID));
       --TODO: in the future implement a way to keep the history of strategies
       if Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
                         Content  => Unbounded_String.To_String(Strategy),
                            Path     => "") then
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
+                           &" saved");
          return Unbounded_String.To_String(File_Name);
       else
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
+                           &" fail");
          return "fail";
       end if;
    end Get_Strategy;

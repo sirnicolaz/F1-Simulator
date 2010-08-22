@@ -623,15 +623,15 @@ package body Competitor is
       temp_usury : Common.PERCENTAGE := 0.0;
       gas_modifier : FLOAT := 0.0;
    begin
-      -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : In evaluate");
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : In evaluate");
       -- loop on paths
       Competitor.Get_Status(driver, Competitor_Status_Tyre, Competitor_Status_Level);
       --++++++   Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : dopo get status");
       for Index in 1..Paths2Cross.Get_Size loop
          --CrossingTime:= 0.0;
-
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : looping");
          PathTime := Paths2Cross.Get_PathTime(Index);
-         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time : " & Common.FloatToString(PathTime));
+         Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time : " & FLOAT'IMAGE(PathTime));
          WaitingTime := PathTime - CompArrivalTime;
 
          Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time - compArrivalTime: " & FLOAT'IMAGE(WaitingTime));
@@ -694,26 +694,30 @@ package body Competitor is
          --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
         --end loop;
       Ada.Text_IO.Put_Line
-        (Common.FloatToString(driver.auto.TyreUsury)  & "-"
-         & Common.FloatToString(Paths2Cross.Get_Length(traiettoriaScelta)) &
+        (Integer'Image(driver.Id)& ":" & FLOAT'IMAGE(driver.auto.TyreUsury)  & "-"
+         & FLOAT'IMAGE(Paths2Cross.Get_Length(traiettoriaScelta)) &
          "*1.17/1000.0");
       --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'onboardcomputer
       lengthPath := Paths2Cross.Get_Length(traiettoriaScelta);
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": path lentgh got");
       --aggiorno il modificatore in base all'angolo
       if Paths2Cross.Get_Angle(traiettoriaScelta) < 45.0 then temp_usury := temp_usury + 0.005;
       elsif Paths2Cross.Get_Angle(traiettoriaScelta) > 45.0 and Paths2Cross.Get_Angle(traiettoriaScelta) < 90.0 then temp_usury := temp_usury + 0.0035;
       else temp_usury := temp_usury + 0.0015;
       end if;
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": temp usury (angle) done");
       --aggiorno il modificatore in base alla mescola
       if driver.auto.Type_Tyre = "Morbida" then temp_usury := temp_usury + 0.03;
       else temp_usury := temp_usury + 0.01;
       end if;
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": temp usury (type) done");
       --aggiorno il modificatore in base alla velocità massima raggiunta
       if vel_array(traiettoriaScelta) >= 300.0 then temp_usury := temp_usury + 0.02;
       elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then temp_usury := temp_usury + 0.01;
       elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then temp_usury := temp_usury + 0.007;
       else temp_usury := temp_usury + 0.005;
       end if;
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": speed done");
       -- adesso in temp_usury è presente una percentuale da sommare a quella statica calcolata.
       -- al massimo il valore di usura arriva a 0.86, nella peggiore delle ipotesi.
       -- il valore di usura si intende ogni 1000 metri
@@ -721,6 +725,7 @@ package body Competitor is
       -- x = (1000*100)/0.86 = 116,279 km
       -- in totale quasi due giri (in media 5.5 km al giro) di differenza
       driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": tyre usury done");
       --il valore di 0.8 è stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
       -- calcolo gas_modifier
       if vel_array(traiettoriaScelta) >= 300.0 then gas_modifier := 0.15;
@@ -728,11 +733,13 @@ package body Competitor is
       elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then gas_modifier := 0.5;
       else gas_modifier := 0.0;
       end if;
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": vel done");
       driver.auto.GasolineLevel := driver.auto.GasolineLevel - ((0.6 + gas_modifier) * Paths2Cross.Get_Length(traiettoriaScelta)/1000.0);
       -- 0.6 è il valore di  litri al km consumati
       -- questo valore può arrivare (in base alla velocità ) fino a 0.75 litri al km
       -- il calcolo è quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
+      Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": gas done");
       crossingTime_Out := CrossingTime;
    end evaluate;
 
@@ -777,13 +784,15 @@ package body Competitor is
       --TODO: chiedere a lorenzo se non era già da qualche altra parte
       CurrentLap : INTEGER := 0;
 
+      PitStopDone : BOOLEAN := false;
+
       --Strategy file name got from the box
       Strategy_FileName : Str.Unbounded_String := Str.Null_Unbounded_String;
       --Strategy got from the box
       BrandNewStrategy : Common.STRATEGY;
 
       --TODO: remove this test variable;
-      Tmp_Bool : BOOLEAN;
+      --Tmp_Bool : BOOLEAN;
 
       --Helper method (given a file name, it return the strategy object extracted from that file)
       function XML2Strategy( StrategyFile : Str.Unbounded_String) return Common.STRATEGY is
@@ -875,7 +884,7 @@ package body Competitor is
 
 
 
-         Tmp_Bool := C_Checkpoint.Set_Arrived(id);
+         --Tmp_Bool := C_Checkpoint.Set_Arrived(id);
 
          if( C_Checkpoint.Set_Arrived(id) = true ) then -- If true, the check point is a prebox
          --if( true = false) then
@@ -939,6 +948,8 @@ package body Competitor is
                C_Checkpoint.Remove_Competitor(id);
                exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
             end loop;
+            Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            C_Checkpoint.Remove_Competitor(carDriver.Id);
 
             Common.Set_Checkpoint(compStats, i-1);
             Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
@@ -995,8 +1006,8 @@ package body Competitor is
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
          --altri checkpoint
 
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(id) & " signal leaving");
          C_Checkpoint.Signal_Leaving(id);
-
 
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
@@ -1005,14 +1016,33 @@ package body Competitor is
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
          j:=0;
+
          loop
             Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
             PredictedTime := PredictedTime + 0.001;--MinRaceTime - MinSegTime * Float(Index);
             Index := Index + 1;
             j:=j+1;
-            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
+            --NEW, ritolto il +1 da startingposition
+            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;
+            --HACK:
+            --+ premise: the Get_NextCheckpoint never picks up the Box checkpoint
+            --+(in the reality it's not a track checkpoint). The starting position
+            --+ in case we are at the box is 0. So the loop will never finish
+            --+ if we keep just the exit statement-
+            --+ Given these premises, once we find that the starting position is
+            --+ 0 we have to reset it to another value to make the loop finish.
+            --+ This value is the position before the ExitBox (the first checkpoint
+            --+ retrieved in this loop). So taking the position of the first checkpoint
+            --+ retrieved in the loop and subtracting one, we have the pre-exitbox checkpoint.
+            if StartingPosition = 0 then
+               StartingPosition := Get_Position(carDriver.RaceIterator)-1;
+            end if;
          end loop;
+
+         if(PitStopDone) then
+            Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+         end if;
         -- Circuit.Get_PreviousCheckpoint(carDriver.RaceIterator,C_Checkpoint);--NEW: rieliminat
          --AGGIORNAMENTO ONBOARDCOMPUTER
          -- qua va creata la statistica da aggiungere al computer di bordo
@@ -1022,13 +1052,18 @@ package body Competitor is
                               & Common.IntegerToString(Get_Position(carDriver.RaceIterator))
                               & " is the last checkpoint in sector " & BOOLEAN'IMAGE(C_Checkpoint.Is_LastOfTheSector));
          Common.Set_LastCheckInSect(compStats,C_Checkpoint.Is_LastOfTheSector);
+
+         if(PitStop = true) then
+            Common.Set_LastCheckInSect(compStats, true);
+         end if;
+
          Common.Set_FirstCheckInSect(compStats,C_Checkpoint.Is_FirstOfTheSector);
          Common.Set_Sector(compStats, SectorID); -- TODO, non abbiamo definito i sector, ritorna sempre uno.
          -- ONBOARDCOMPUTER.Set_Lap(); -- TODO, non ho ancora un modo per sapere il numero di giro
                                                  --commentato- da correggere il ripo di gaslevel
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" gas is " & FLOAT'IMAGE(carDriver.auto.GasolineLevel));
-         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" gas is " & Common.FloatToString(carDriver.auto.GasolineLevel));
+         --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" gas is " & Common.FloatToString(carDriver.auto.GasolineLevel));
 
          Common.Set_Gas(compStats, carDriver.auto.GasolineLevel);
          Common.Set_Tyre(compStats, carDriver.auto.TyreUsury);
@@ -1056,7 +1091,11 @@ package body Competitor is
          if( PitStop = true) then
             Ada.Text_IO.Put_Line("Doing pitstop");
             PitStop := false;
+            PitStopDone := true;
             Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            --HACK: in this way we add the competitor to the box queue (that is empty
+            --+ by default)
+            C_Checkpoint.Set_ArrivalTime(carDriver.Id, predictedTime);
 
             --Those updates will be effective in the next loop, so
             --+ they'll be used while doing the after-box path.
@@ -1065,7 +1104,14 @@ package body Competitor is
             carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
             carDriver.auto.Type_Tyre := BrandNewStrategy.Type_Tyre;
 
+
          else
+
+            if(PitStopDone = true) then
+               PitStopDone := false;
+               C_Checkpoint.Remove_Competitor(carDriver.Id);
+            end if;
+
             Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
          end if;
          --tempoTotale := tempoTotale + PredictedTime;
