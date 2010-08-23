@@ -500,8 +500,11 @@ package body Box is
             Skip := Skip - 1;
             PartialGasConsumptionMean := PartialGasConsumptionMean +
               LatestLapMeanGasConsumption;
+            PreviousSectorGasLevel := New_Info.GasLevel;
+
             PartialTyreUsuryMean := PartialTyreUsuryMean +
               LatestLapMeanTyreUsury;
+            PreviousSectorTyreUsury := New_Info.TyreUsury;
          else
 
             Ada.Text_IO.Put_Line("Calculating partial mean");
@@ -567,8 +570,6 @@ package body Box is
             if(Evolving_Strategy.PitStopLaps = 0) then
                Ada.Text_IO.Put_Line("Gas set on strat (next prev sect): " &
                                     FLOAT'IMAGE(Evolving_Strategy.GasLevel));
-               PreviousSectorGasLevel := Evolving_Strategy.GasLevel;
-               PreviousSectorTyreUsury := 0.0;
                Skip := 2;
             end if;
 
