@@ -731,7 +731,7 @@ package body Competitor is
       -- calcolo gas_modifier
       if vel_array(traiettoriaScelta) >= 300.0 then gas_modifier := 0.15;
       elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then gas_modifier := 0.10;
-      elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then gas_modifier := 0.5;
+      elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then gas_modifier := 0.05;
       else gas_modifier := 0.0;
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": vel done");
