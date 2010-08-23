@@ -878,23 +878,27 @@ package body Competitor is
          --Istante di tempo segnato nel checkpoint attuale per il competitor
          ActualTime := C_Checkpoint.Get_Time(id);
 
-         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&" : 2- actual time : "&Float'Image(ActualTime));
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&
+                              ": SUMMURY lap : " & INTEGER'IMAGE(CurrentLap) &
+                              ", actual time : " & Float'Image(ActualTime) &
+                              ", gas " & Float'IMAGE(carDriver.auto.GasolineLevel) &
+                              ", tyre " & FLoat'IMAGE(carDriver.auto.TyreUsury) &
+                              ", pit stop done " & BOOLEAN'IMAGE(PitStopDone));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Setting arrived on check " &
                              Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
 
          if( C_Checkpoint.Is_PreBox = true ) then -- If true, the check point is a prebox
-         --if( true = false) then
-            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Pre box");
 
             -- Ask for the box strategy once the prebox checkpoint is reached
             Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
 
---              Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
+            --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
             --Get the strategy object from the file
             BrandNewStrategy := XML2Strategy(Strategy_FileName);
 
+            Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" pit stop laps " & INTEGER'IMAGE(BrandNewStrategy.PitStopLaps));
 --              Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " verify pitstop");
             --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
             if(BrandNewStrategy.PitStopLaps = 0) then
@@ -1067,17 +1071,6 @@ package body Competitor is
          Common.Set_LengthPath(compStats, lengthPath);
          carDriver.statsComputer.Add_Data(compStats);
 
-         --NEW: moved to onboard computer
-         --Str.Set_Unbounded_String(updateStr,"<?xml version=""1.0""?><update><gasLevel>"&Float'Image(carDriver.auto.GasolineLevel)
-         --                                      &"<gasLevel><tyreUsury>"&Float'Image(carDriver.auto.TyreUsury)
-         --                                      &"</tyreUsury><time>"
-         --                                      &Float'Image(predictedTime)&"</time><lap>"
-         --                                      &Integer'Image(CurrentLap)&"</lap><sector>"--TODO : MANCA IL NUMERO DI GIRO
-         --                                      &Integer'Image(sectorID)&"</sector>"
-         --                        );
-
-         --Competition_Monitor.impl.setInfo(CurrentLap,sectorID,carDriver.Id,updateStr);--aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
-
          --viene salvata la stringa che va a costruire la parte iniziale di update.xml
 
          --FINE AGGIORNAMENTO ONBOARDCOMPUTER
@@ -1098,7 +1091,8 @@ package body Competitor is
             carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
             carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
             carDriver.auto.Type_Tyre := BrandNewStrategy.Type_Tyre;
-
+            --We assume che every pitstop the tyre are replaced
+            carDriver.auto.TyreUsury := 0.0;
 
          else
 
