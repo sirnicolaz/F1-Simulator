@@ -16,6 +16,13 @@ import org.omg.CosNaming.NamingContextHelper;
 
 
 public class BoxAdminWindow implements AdminPanelInterface{
+//informazioni per la Join Competition
+private String boxCorbaLoc;
+private String monitorCorbaLoc;
+private Short competitorId;
+private Double circuitLength;
+private Short laps;
+
 // private JDialog errorDial;
 //sezione JSlider
 private JSlider sliderTyreUsury;
@@ -570,7 +577,16 @@ return false;
 
 public boolean connect(String corbaloc){
 	try {
-
+Echo comp = Connection.connect(corbaloc);
+if (comp != null) {
+// il metodo di connessione è riuscito a connettersi
+comp.Join_Competition("competitor-"+stringId+".xml", boxCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
+// (,in string boxCorbaLoc, out string monitorCorbaLoc, out short competitorId, out float circuitLength, out short laps)
+}
+else {
+System.out.println("Connessione rifiutata");
+JOptionPane.showMessageDialog(parent, "Attention : connection refused", "Error", JOptionPane.ERROR_MESSAGE);
+}
             //initialize orb
             /*Properties props = System.getProperties();
             props.put("org.omg.CORBA.ORBInitialPort", args[1]);
