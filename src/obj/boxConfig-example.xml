@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config>
+<monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:32863//000000013T1df3161011cca716</monitorCorbaLoc>
+<initialTyreType>normal</initialTyreType>
+<laps>190</laps>
+<circuitLength>1084.0</circuitLength>
+<initialGasLevel>70.0</initialGasLevel>
+<gasTankCapacity>150.0</gasTankCapacity>
+<competitorID>7</competitorID>
+<boxStrategy>NORMAL</boxStrategy>
+</config>

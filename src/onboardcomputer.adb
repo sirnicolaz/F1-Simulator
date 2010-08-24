@@ -248,9 +248,72 @@ end Reset_Node;
 
             --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
             Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr,Common.Get_Time(Data.all));
+
+            --Update the sector statistics
+            declare
+               Sector2Ask : INTEGER;
+               Lap2Ask : INTEGER;
+               CurrentSector : INTEGER := Get_Sector(Data.all);
+               CurrentLap : INTEGER := Get_Lap(Data.all);
+               Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
+            begin
+
+               if(CurrentSector = 1) then
+                  Sector2Ask := 3;
+                  Lap2Ask := CurrentLap - 1;
+               else
+                  Sector2Ask := CurrentSector - 1;
+                  Lap2Ask := CurrentLap;
+               end if;
+
+               --This operation is not blocking because is going to ask
+               --+ information about a previous sector that are for sure
+               --+ in the list
+               pragma Warnings(Off);
+               Get_StatsBySect(Sector    => Sector2Ask,
+                               Lap       => Lap2Ask,
+                               CompStats => Tmp_Stats);
+               pragma Warnings(On);
+
+               if( BestSector_Times(CurrentSector) = -1.0 or else
+                  --The following statement shouldn't be necessary because if the
+                  --+ stats for the given lap is not accessible it means that also
+                  --+ the best sector is set yet
+                  --Get_Checkpoint(Tmp_Stats) = -1 or else
+                    (Get_Time(Data.all) - Get_Time(Tmp_Stats.all)) < BestSector_Times(CurrentSector) ) then
+
+                  BestSector_Times(CurrentSector) := (Get_Time(Data.all) - Get_Time(Tmp_Stats.all));
+
+               end if;
+
+               --Update the lap statistics if the lap is finished
+               if( CurrentSector = 3 ) then
+                  if ( BestLap_Time /= -1.0 ) then
+
+                     --This operation is not blocking because is going to ask
+                     --+ information about a previous sector that are for sure
+                     --+ in the list
+                     pragma Warnings(Off);
+                     Get_StatsByCheck(Checkpoint => 1,
+                                      Lap        => CurrentLap - 1,
+                                      CompStats  => Tmp_Stats);
+                     pragma Warnings(On);
+
+                     if ( Get_Time(Data.all) - Get_Time(Tmp_Stats.all) < BestLap_Time ) then
+                        BestLap_Time := Get_Time(Data.all) - Get_Time(Tmp_Stats.all);
+                        BestLap_Num := CurrentLap;
+                     end if;
+                  else
+                     BestLap_Time := Get_Time(Data.all);
+                     BestLap_Num := CurrentLap;
+                  end if;
+               end if;
+            end;
+
             sommaLength := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
          end if;
 
+         --Update max speed TODO CRITICAL
 
          Updated := true;
          Ada.Text_IO.Put_Line("fine add_data");

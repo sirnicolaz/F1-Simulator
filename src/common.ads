@@ -24,8 +24,6 @@ package Common is
    type FLOAT_POINT is access FLOAT;
    type STRING_POINT is access STRING;
    type FLOAT_LIST is array(INTEGER range <>) of FLOAT;
-   subtype IP_PART is INTEGER range 0..255;
-   type IP_ADDRESS is private;
    type UNBOUNDED_STRING_POINT is access Unbounded_String.Unbounded_String;
 
    type STRATEGY is record
@@ -38,11 +36,7 @@ package Common is
 
    function SaveToFile(FileName : STRING;
                         Content : STRING;
-                        Path : STRING) return BOOLEAN;
-
-   procedure Set_IpAddress(ip_out : out IP_ADDRESS;
-                 ip_string : in STRING);
-   function Get_IpAddress(ip : in IP_ADDRESS) return STRING;
+                       Path : STRING) return BOOLEAN;
 
    -- It returns the distance between to driving styles
    --+ (ie: between NORMAL and AGGRESSIVE there only one step forward, so the distance
@@ -92,8 +86,6 @@ package Common is
 
 
 private
-   type IP_ADDRESS is array(1..4) of INTEGER; -- TODO: bound the INTEGER within 0..255
-
    type COMP_STATS is record
       Checkpoint : INTEGER;
       -- Is this the last check-point in the sector?

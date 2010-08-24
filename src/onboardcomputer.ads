@@ -66,6 +66,13 @@ package OnBoardComputer is
       Updated : BOOLEAN;
       global : GLOBAL_STATS_HANDLER_POINT;
       sommaLength : FLOAT := 0.0; -- tengo salvata la lunghezza del settore
+      -- These values can be calculated dinamically using COMP_STATS list,
+      --+ but for a matter of efficiency we keep the latest computed values
+      --+ here.
+      BestSector_Times : FLOAT_ARRAY(1..3);
+      BestLap_Time : FLOAT;
+      BestLap_Num : INTEGER;
+      MaxSpeed : FLOAT;
    end COMPUTER;
 
    type COMPUTER_POINT is access COMPUTER;
