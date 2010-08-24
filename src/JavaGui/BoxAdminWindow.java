@@ -17,7 +17,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 // private JFrame frame = new JFrame("Competitor");
 //sezione JSlider
 private JSlider sliderTyreUsury;
-private JSlider sliderSerbatoio;
+private JSlider sliderFuelTank;
 private JLabel valueFuelTank;
 private JSlider sliderGasLevel;
 private JSlider sliderSpeed;
@@ -28,15 +28,15 @@ private JLabel labelGasLevel;
 private JLabel valueLevelFuel;
 private JLabel valueSpeed;
 private JLabel labelTyre = new JLabel("Tyre type : ");
-private JLabel labelStrategy = new JLabel("Driver Strategy after Pitstop : ");
-private JLabel labelLap = new JLabel("PitStop lap : ");
-private JLabel labelFuel = new JLabel("Pitsop Fuel : ");
-private JLabel labelPitStop = new JLabel("Tyre Type at PitStop");
+// private JLabel labelStrategy = new JLabel("Driver Strategy after Pitstop : ");
+// private JLabel labelLap = new JLabel("PitStop lap : ");
+// private JLabel labelFuel = new JLabel("Pitsop Fuel : ");
+private JLabel labelBox = new JLabel("Box Strategy : ");
 private JLabel labelName = new JLabel("Name : ");
 private JLabel labelSurname = new JLabel("Surname : ");
 private JLabel labelStable = new JLabel("Racing Stable : ");
 private JLabel labelMixture = new JLabel("Mixture : ");
-private JLabel labelTyrePitStop = new JLabel("Mixture pit stop : ");
+// private JLabel labelTyrePitStop = new JLabel("Mixture pit stop : ");
 private JLabel labelVel = new JLabel("Full Speed : ");
 private JLabel labelCapacityFuel = new JLabel("Fuel Capacity : ");
 private JLabel labelstrps = new JLabel("Driver Strategy : ");
@@ -48,7 +48,7 @@ private JComboBox comboTyre;
 private JComboBox comboStrategy;
 private JComboBox comboPitStop;
 private JComboBox comboTypeTyre;
-private JComboBox comboTypeTyrePitstop;
+private JComboBox comboBox;
 private JComboBox comboStrategypitstop;
 //altri parametri
 private int intTyre;
@@ -75,7 +75,7 @@ private SpinnerNumberModel modelAcc;
 private JLabel valueAcc = new JLabel(" m/s^2");
 //sezione panel
 private JPanel carPanel;
-private JPanel strategyPanel;
+private JPanel boxPanel;
 private JPanel buttonPanel;
 private JPanel dataPanel;
 //sezione JSpinner
@@ -85,7 +85,7 @@ private JSpinner jsVelocita;
 private JSpinner jsAcc;
 //sezione GridBagConstraints
 private GridBagConstraints carConfigurationGrid;
-private GridBagConstraints strategyConfigurationGrid;
+private GridBagConstraints boxConfigurationGrid;
 private GridBagConstraints driverConfigurationGrid;
 //Sezione button
 private JButton resetButton;
@@ -103,20 +103,21 @@ Integer valueFuelInt;
 String tyreUsuryString = new String("<tyreusury>0.15</tyreusury>");
 String gasolineString = new String ("<gasolinelevel>50</gasolinelevel>");
 
-private String stringPitStop = new String("<pitstoptt>Sun</pitstoptt>");
-private String stringTipoGomme = new String("<mixture>Soft Mixture</mixture>");
-private String stringTipoGommePS = new String("<mixtureps>Soft Mixture</mixtureps>");
+// private String stringPitStop = new String("<pitstoptt>Sun</pitstoptt>");
+private String stringTipoGomme = new String("<mixture>Soft</mixture>");
+// private String stringTipoGommePS = new String("<mixtureps>Soft</mixtureps>");
 private String stringGomme = new String("<type_tyre>Sun</type_tyre>");
-private String stringStrategy = new String("<engine>Normal</engine>");
+private String stringStyle = new String("<engine>NORMAL</engine>");
+private String stringStrategy = new String("<boxStrategy>NORMAL</boxStrategy>");
+
 // private String stringStrategyPS = new String("<engineps>Normal</engineps>");
-private String stringStrategypitstop = new String("<engineps>Normal</engineps>");
-private String gasolineStringPS = new String("<pitstopGasolineLevel>50</pitstopGasolineLevel>");
-private String pitstopStringLap= new String("<pitstopLaps>12</pitstopLaps>");
+// private String stringStrategypitstop = new String("<engineps>Normal</engineps>");
+// private String gasolineStringPS = new String("<pitstopGasolineLevel>50</pitstopGasolineLevel>");
+// private String pitstopStringLap= new String("<pitstopLaps>12</pitstopLaps>");
 private String stringSerbatoio = new String("<gastankcapacity>200</gastankcapacity>");
 private String stringMaxAcc = new String("<maxacceleration>7.0</maxacceleration>");
 private String stringMaxSpeed = new String("<maxspeed>300</maxspeed>");
 // private String stringGommePS = new String("<tyrePS>Sun</tyrePS>");
-
 
 private String stringId;
 public BoxAdminWindow(JFrame frame, String param){
@@ -130,10 +131,10 @@ createCar(panel, carConfigurationGrid);
 }
 public void createCar(JPanel panel, GridBagConstraints carConfigurationGrid){
 //impostazione capacità serbatioio
-sliderSerbatoio = new JSlider(200,400);
-sliderSerbatoio.setValue(200);
+sliderFuelTank = new JSlider(200,400);
+sliderFuelTank.setValue(200);
 valueFuelTank = new JLabel ("200 L (200-400)");
-sliderSerbatoio.addChangeListener(new MyChangeAction("L (200-400)", sliderSerbatoio, valueFuelTank));
+sliderFuelTank.addChangeListener(new MyChangeAction("L (200-400)", sliderFuelTank, valueFuelTank));
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 0;
 		carConfigurationGrid.gridy = 0;
@@ -143,7 +144,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 1;
 		carConfigurationGrid.gridy = 0;
 		carConfigurationGrid.ipady = 5;
-		panel.add(sliderSerbatoio, carConfigurationGrid);
+		panel.add(sliderFuelTank, carConfigurationGrid);
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 2;
 		carConfigurationGrid.gridy = 0;
@@ -171,7 +172,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.ipady = 5;
 		panel.add(valuePerCentUsury, carConfigurationGrid);
 //sezione valore benzina
-    sliderGasLevel = new JSlider(0,(Integer)sliderSerbatoio.getValue());
+    sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
     sliderGasLevel.setValue(50);
     valueLevelFuel = new JLabel("50L ");
     sliderGasLevel.addChangeListener(new MyChangeAction("L",sliderGasLevel,  valueLevelFuel));
@@ -192,7 +193,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.ipady = 5;
 		panel.add(valueLevelFuel, carConfigurationGrid);
 //sezione tipologia di gomme montate
-String[] gomme = { "Sun", "Weak Rain", "Rain", "Hard Rain"};
+String[] gomme = { "Sun", "Rain", "Hard Rain"};
 		comboTyre = new JComboBox(gomme);
 		comboTyre.setSelectedIndex(0);
 		comboTyre.addActionListener(new ActionListener() {
@@ -212,7 +213,7 @@ String[] gomme = { "Sun", "Weak Rain", "Rain", "Hard Rain"};
 		carConfigurationGrid.ipady = 5;
 		panel.add(comboTyre, carConfigurationGrid);
 //sezione mescola delle gomme montate
-String[] tipoGomme = { "Soft Mixture", "Hard Mixture"};
+String[] tipoGomme = { "Soft", "Hard"};
 		comboTypeTyre = new JComboBox(tipoGomme);
 		comboTypeTyre.setSelectedIndex(0);
 		comboTypeTyre.addActionListener(new ActionListener() {
@@ -239,7 +240,7 @@ String[] strategypitstop = {"Normal", "Save", "Aggressive"};
 		public void actionPerformed(ActionEvent e) {
 			JComboBox cb = (JComboBox)e.getSource();
 			String s = (String)cb.getSelectedItem();
-			stringStrategypitstop = new String("<engineps>"+s+"</engineps>");
+ 			stringStyle = new String("<engine>"+s.toUpperCase()+"</engine>");
 		}
 	});
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
@@ -252,7 +253,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridy = 5;
 		carConfigurationGrid.ipady = 5;
 		panel.add(comboStrategypitstop, carConfigurationGrid);
-modelAcc = new SpinnerNumberModel(7.00,6.90, 7.10, 0.01);
+modelAcc = new SpinnerNumberModel(12.000,11.01, 12.99, 0.01);
 jsAcc = new JSpinner(modelAcc);
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 0;
@@ -300,19 +301,20 @@ public class MyChangeAction implements ChangeListener{
     valoreT = p_valore;
  }
    public void stateChanged(ChangeEvent ce){
-      int value = sliderT.getValue();
+     Integer value = sliderT.getValue();
       String str = Integer.toString(value);
       valoreT.setText(str+simboloT);
-      Integer a = new Integer((Integer)sliderSerbatoio.getValue()-value);
+      Integer a = new Integer((Integer)sliderFuelTank.getValue()-value);
       if (simboloT == "L") {
-	  if (a < (Integer)jsFuel.getValue()){
-	      jsFuel.setValue((Integer)sliderSerbatoio.getValue() - value);
-	  }
-modelFuel.setMaximum((Integer)sliderSerbatoio.getValue() - (Integer)sliderGasLevel.getValue());	      
-stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderSerbatoio.getValue())+"</gastankcapacity>");
+// 	  if (a < (Integer)jsFuel.getValue()){
+// 	      jsFuel.setValue((Integer)sliderFuelTank.getValue() - value);
+// 	  }
+// modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());	      
+stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderFuelTank.getValue())+"</gastankcapacity>");
+gasolineString = new String("<gasolinelevel>"+value.toString()+"</gasolinelevel>");
       }
-if(simboloT =="L (200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());
-modelFuel.setMaximum((Integer)sliderSerbatoio.getValue() - (Integer)sliderGasLevel.getValue());
+if(simboloT =="L (200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
+modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());*/
  	
 }
     }
@@ -355,117 +357,39 @@ driverConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 }
 }
 
-class strategyConfigurationPanel{
-public strategyConfigurationPanel(JPanel dataPanel, GridBagConstraints d){
-createStrategy(dataPanel, d);
+class boxConfigurationPanel{
+public boxConfigurationPanel(JPanel dataPanel, GridBagConstraints boxConfigurationGrid){
+createStrategy(dataPanel, boxConfigurationGrid);
 }
-private void createStrategy(JPanel dataPanel, GridBagConstraints d){
-//sezione spinner giro di fermata
-valueLap = new Integer(12); 
-minLap = new Integer(0);
-maxLap = new Integer(100);  
-modelLap = new SpinnerNumberModel(valueLap, minLap, maxLap, step); 
-//sezione spinner Quantità di benzina
-valueFuel = new Integer(200 - sliderGasLevel.getValue()); 
-minFuel = new Integer(0);
-maxFuel = new Integer(200 - sliderGasLevel.getValue()); 
-// Integer step = new Integer(1); 
-modelFuel = new SpinnerNumberModel(valueFuel, minFuel, maxFuel, step); 
-jsLap = new JSpinner(modelLap);
-jsFuel = new JSpinner(modelFuel);
-// jsFuel.setEnabled(false); disabilito jspinner fuel prima di
-String[] strategy = {"Normal", "Save", "Aggressive"};
-	comboStrategy = new JComboBox(strategy);
-	comboStrategy.setSelectedIndex(0);
-	comboStrategy.addActionListener(new ActionListener() {
+private void createStrategy(JPanel dataPanel, GridBagConstraints boxConfigurationGrid){
+
+String[] strategy = {"Normal", "Cautious", "Risky", "Fool"};
+	comboBox = new JComboBox(strategy);
+	comboBox.setSelectedIndex(0);
+	comboBox.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			JComboBox cb = (JComboBox)e.getSource();
 			String s = (String)cb.getSelectedItem();
+s=s.toUpperCase();
 stringStrategy = new String("<engine>"+s+"</engine>");
+System.out.println(s);
 		}
 	});
 
-String[] gommePitStop = { "Sun", "Weak Rain", "Rain", "Hard Rain"};
-		comboPitStop = new JComboBox(gommePitStop);
-		comboPitStop.setSelectedIndex(0);
-		comboPitStop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
-				String s = (String)cb.getSelectedItem();
-				stringPitStop = new String("<pitstoptt>"+s+"</pitstoptt>");
-			}
-		});
-
-///////////////tipo gomme pit stop
-String[] tipoGommePitStop = { "Soft Mixture ", "Hard Mixture"};
-		comboTypeTyrePitstop = new JComboBox(tipoGommePitStop);
-		comboTypeTyrePitstop.setSelectedIndex(0);
-		comboTypeTyrePitstop.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
-				String s = (String)cb.getSelectedItem();
-// 				if(s.equals("Mescola Morbida")) {
-				stringTipoGommePS = new String("<mixtureps>"+s+"</mixtureps>");
-// }
-// 				else if(s.equals("Mescola Dura")) {stringTipoGomme = new String();}
-			}
-		});
 //adding component to PitStop configuration
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 0;
-		strategyConfigurationGrid.gridy = 0;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(labelStrategy, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 1;
-		strategyConfigurationGrid.gridy = 0;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(comboStrategy, strategyConfigurationGrid);
-
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 0;
-		strategyConfigurationGrid.gridy = 1;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(labelLap, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 1;
-		strategyConfigurationGrid.gridy = 1;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(jsLap, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 0;
-		strategyConfigurationGrid.gridy = 2;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(labelFuel, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 1;
-		strategyConfigurationGrid.gridy = 2;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(jsFuel, strategyConfigurationGrid);
-
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 0;
-		strategyConfigurationGrid.gridy = 3;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(labelPitStop, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 1;
-		strategyConfigurationGrid.gridy = 3;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(comboPitStop, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 0;
-		strategyConfigurationGrid.gridy = 4;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(labelTyrePitStop, strategyConfigurationGrid);
-strategyConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		strategyConfigurationGrid.gridx = 1;
-		strategyConfigurationGrid.gridy = 4;
-		strategyConfigurationGrid.ipady = 5;
-		strategyPanel.add(comboTypeTyrePitstop, strategyConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 0;
+		boxConfigurationGrid.gridy = 0;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(labelBox, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 1;
+		boxConfigurationGrid.gridy = 0;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(comboBox, boxConfigurationGrid);
 
 }
-}
+ }
 
 class buttonConfigurationPanel{
 public buttonConfigurationPanel(JPanel buttonPanel){
@@ -484,8 +408,6 @@ startButton = new JButton("Join Competition");
 			    valueFuelInt = new Integer((int)sliderGasLevel.getValue());
 			    tyreUsuryString = new String("<tyreusury>"+valueUsuryDouble.toString()+"</tyreusury>");
 			    gasolineString = new String("<gasolinelevel>"+valueFuelInt.toString()+"</gasolinelevel>");
-gasolineStringPS = new String("<pitstopGasolineLevel>"+jsFuel.getValue().toString()+"</pitstopGasolineLevel>");
-pitstopStringLap= new String("<pitstopLaps>"+jsLap.getValue().toString()+"</pitstopLaps>");
 stringMaxAcc = new String("<maxacceleration>"+jsAcc.getValue().toString()+"</maxacceleration>");
 stringMaxSpeed = new String("<maxspeed>"+Integer.toString((Integer)sliderSpeed.getValue())+"</maxspeed>");
 boolean ret = false;
@@ -507,7 +429,6 @@ buttonPanel.add(resetButton);
 }
 
 public void init(JFrame frame){
-// GridBagConstraints strategyConfigurationGrid = new GridBagConstraints();
 // GridBagConstraints 
 carConfigurationGrid = new GridBagConstraints();
 dataPanel = new JPanel(new BorderLayout());
@@ -515,10 +436,10 @@ dataPanel.setLayout(new GridBagLayout());
 dataPanel.setBorder(BorderFactory.createTitledBorder(null, "Competitor Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 driverConfigurationGrid = new GridBagConstraints();
 
-strategyPanel= new JPanel(new BorderLayout());
-strategyPanel.setLayout(new GridBagLayout());
-strategyPanel.setBorder(BorderFactory.createTitledBorder(null, "Pit Stop Strategy", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-strategyConfigurationGrid = new GridBagConstraints();
+boxPanel= new JPanel(new BorderLayout());
+boxPanel.setLayout(new GridBagLayout());
+boxPanel.setBorder(BorderFactory.createTitledBorder(null, "Box Configuration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+boxConfigurationGrid = new GridBagConstraints();
 
 carPanel = new JPanel(new BorderLayout());
 carPanel.setLayout(new GridBagLayout());
@@ -528,17 +449,13 @@ buttonPanel= new JPanel(new BorderLayout());
 buttonPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 buttonPanel.setLayout(new FlowLayout());
 
-
-// createDriver(JPanel driver, GridBagConstraints d);
-// createCar(JPanel car, GridBagConstraints carConfigurationGrid);
-// createStrategy(JPanel car, GridBagConstraints e);
 carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
 driverConfigurationPanel driver = new driverConfigurationPanel(dataPanel, driverConfigurationGrid);
-strategyConfigurationPanel strategy = new strategyConfigurationPanel(strategyPanel, strategyConfigurationGrid);
+boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
 buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
 frame.add(dataPanel,BorderLayout.NORTH);
 frame.add(carPanel, BorderLayout.WEST);
-frame.add(strategyPanel, BorderLayout.EAST);
+frame.add(boxPanel, BorderLayout.EAST);
 frame.add(buttonPanel, BorderLayout.SOUTH);
 frame.pack();
 frame.setVisible(true);
@@ -550,30 +467,23 @@ public void switchPanel(JPanel succPanel){}
 public void resetInfo(){
 			    System.out.println("Reset Field");
 			      sliderTyreUsury.setValue(15);//usura gomme
-// 			      valuePerCentUsury = new JLabel(" 15%"); //usura gomme
 			      sliderGasLevel.setValue(50);//benzina caricata
-// 			      valueLevelFuel = new JLabel(" 50L");//benzina caricata
 			      comboTyre.setSelectedIndex(0);//gomme montate
-			      comboStrategy.setSelectedIndex(0);//tipo di guida
-			      jsLap.setValue(12);//giro del pitstop
-			      comboPitStop.setSelectedIndex(0); // gomme dopo il pitstop
+			      comboBox.setSelectedIndex(0);//tipo di guida
 			      comboTypeTyre.setSelectedIndex(0);//mescola gomme montate
-			      comboTypeTyrePitstop.setSelectedIndex(0);//mescola gomme pitstop
-			      sliderSerbatoio.setValue(200);//capacità serbatoio
-			      comboStrategypitstop.setSelectedIndex(0);//tipo di guida dopo il pitstop
-			      jsAcc.setValue(7.0);//valore accelerazione
+			      sliderFuelTank.setValue(200);//capacità serbatoio
+			      jsAcc.setValue(12.000);//valore accelerazione
 			      textName.setText("Pippo");//nome predefinito
 			      textSurname.setText("Pluto");//cognome predefinito
 			      textTeam.setText("Ferrari");//scuderia predefinita
 			      sliderSpeed.setValue(300);
-			      jsFuel.setValue(50);
 }
 public boolean writerCompetitorXML(){
 try{
 PrintWriter out;
-File f = new File("car_driver.xml");
+File f = new File("competitor-"+stringId+".xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("car_driver.xml"));
+out=new PrintWriter(new File("competitor-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);
@@ -593,22 +503,22 @@ out.println(stringMaxAcc);
 
 // <maxspeed>350</maxspeed>\n<maxacceleration>1.2</maxacceleration>");
 out.println(stringSerbatoio);
-out.println(stringStrategy);  
+out.println(stringStyle);  
 out.println(tyreUsuryString);
 out.println(gasolineString);
 // out.println("<gasolinelevel>50.0</gasolinelevel>");
 out.println(stringTipoGomme);
-out.println("<model>michelin</model>");
-out.println(stringGomme + "\n</car>\n<strategy_car>");
-out.println(gasolineStringPS);
+// out.println("<model>michelin</model>");
+out.println(stringGomme + "\n</car>"); //\n<strategy_car>");
+/*out.println(gasolineStringPS);
 out.println(pitstopStringLap);
 out.println(stringPitStop);
 out.println(stringTipoGommePS);
-out.println(stringStrategypitstop);
+out.println(stringStrategypitstop);*/
 // out.println("<pitstopCondition>false</pitstopCondition>");
 // out.println("<trim>1</trim>");
-out.println("<pitstop>false</pitstop>\n</strategy_car>\n</car_driver>");
-	
+// out.println("<pitstop>false</pitstop>\n</strategy_car>\n</car_driver>");
+out.println("</car_driver>");	
 
 out.close();
 return true;
