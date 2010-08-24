@@ -17,41 +17,43 @@ import org.omg.CosNaming.NamingContextHelper;
 
 public class BoxAdminWindow implements AdminPanelInterface{
 //informazioni per la Join Competition
-private String boxCorbaLoc;
-private String monitorCorbaLoc;
-private Short competitorId;
-private Double circuitLength;
-private Short laps;
+private String boxRadioCorbaLoc;
+private String monitorBoxCorbaLoc;
+private String configuratorCorbaLoc;
+private org.omg.CORBA.ShortHolder competitorId;
+private org.omg.CORBA.FloatHolder circuitLength;
+private org.omg.CORBA.ShortHolder laps;
+private org.omg.CORBA.StringHolder monitorCorbaLoc;
 
-// private JDialog errorDial;
 //sezione JSlider
 private JSlider sliderTyreUsury;
 private JSlider sliderFuelTank;
-private JLabel valueFuelTank;
 private JSlider sliderGasLevel;
 private JSlider sliderSpeed;
 //sezione JLabel
+private JLabel valueFuelTank;
 private JLabel labelUsuryTyre;
 private JLabel valuePerCentUsury;
 private JLabel labelGasLevel;
 private JLabel valueLevelFuel;
 private JLabel valueSpeed;
 private JLabel labelTyre = new JLabel("Tyre type : ");
-// private JLabel labelStrategy = new JLabel("Driver Strategy after Pitstop : ");
-// private JLabel labelLap = new JLabel("PitStop lap : ");
-// private JLabel labelFuel = new JLabel("Pitsop Fuel : ");
 private JLabel labelBox = new JLabel("Box Strategy : ");
 private JLabel labelName = new JLabel("Name : ");
 private JLabel labelSurname = new JLabel("Surname : ");
 private JLabel labelStable = new JLabel("Racing Stable : ");
 private JLabel labelMixture = new JLabel("Mixture : ");
-// private JLabel labelTyrePitStop = new JLabel("Mixture pit stop : ");
 private JLabel labelVel = new JLabel("Full Speed : ");
 private JLabel labelCapacityFuel = new JLabel("Fuel Capacity : ");
 private JLabel labelstrps = new JLabel("Driver Strategy : ");
 private JLabel labelAcc = new JLabel("Speedup : ");
 private JLabel velLab = new JLabel(" km/h");
-// private JLabel labelVel = new JLabel("Velocita' massima : ");
+private JLabel labelTank = new JLabel (" L (200..400)");
+private JLabel valueAcc = new JLabel(" m/s^2");
+private JLabel labelHelp = new JLabel("Insert CorbaLoc of Registration Handler");
+private JLabel labelHelp2 = new JLabel(" ex. \"corbaloc:iiop:1.2@[ip:porta]//{...}\"");
+private JLabel labelCorbaloc = new JLabel("Corbaloc Registration Hanlder : ");
+
 //sezione combobox
 private JComboBox comboTyre;
 private JComboBox comboStrategy;
@@ -59,15 +61,13 @@ private JComboBox comboPitStop;
 private JComboBox comboTypeTyre;
 private JComboBox comboBox;
 private JComboBox comboStrategypitstop;
-//altri parametri
-private int intTyre;
-private int intStrategy;
+
 //sezione spinner giro di fermata
-private Integer valueLap;// = new Integer(12); 
+/*private Integer valueLap;// = new Integer(12); 
 private Integer minLap;// = new Integer(0);
 private Integer maxLap;// = new Integer(100); 
 private Integer step = new Integer(1);;// = new Integer(1); 
-private SpinnerNumberModel modelLap;// = new SpinnerNumberModel(valueLap, minLap, maxLap, step); 
+private SpinnerNumberModel modelLap;// = new SpinnerNumberModel(valueLap, minLap, maxLap, step); */
 //sezione spinner Quantità di benzina
 private Integer valueFuel;// = new Integer(100 - sliderGasLevel.getValue()); 
 private Integer minFuel;// = new Integer(0);
@@ -77,11 +77,9 @@ private SpinnerNumberModel modelFuel;// = new SpinnerNumberModel(valueFuel, minF
 // private Integer valueSerbatorio = new Integer(12); 
 private Integer minTank = new Integer(200);
 private Integer maxTank= new Integer(400); 
-private JLabel labelTank = new JLabel (" L (200..400)");
 // private Integer step;// = new Integer(1); 
 private SpinnerNumberModel modelTank;
 private SpinnerNumberModel modelAcc;
-private JLabel valueAcc = new JLabel(" m/s^2");
 //sezione panel
 private JPanel carPanel;
 private JPanel boxPanel;
@@ -103,42 +101,48 @@ private JButton startButton;
 private JTextField textName = new JTextField("Pippo", 20);
 private JTextField textSurname = new JTextField("Pluto", 20);
 private JTextField textTeam = new JTextField("Ferrari", 20);
-//sezione stringhe per file xml
-String scuderia = new String("<team>Ferrari</team>");
-String nome = new String("<firstname>Pippo</firstname>");
-String cognome = new String("<lastname>Pluto<lastname>");
-Double valueUsuryDouble;
-Integer valueFuelInt;
-String tyreUsuryString = new String("<tyreusury>0.15</tyreusury>");
-String gasolineString = new String ("<gasolinelevel>50</gasolinelevel>");
+private JTextField textCorbaloc = new JTextField("", 30);
 
-// private String stringPitStop = new String("<pitstoptt>Sun</pitstoptt>");
+//sezione stringhe per file xml
+private String scuderia = new String("<team>Ferrari</team>");
+private String nome = new String("<firstname>Pippo</firstname>");
+private String cognome = new String("<lastname>Pluto<lastname>");
+private String tyreUsuryString = new String("<tyreusury>0.15</tyreusury>");
+private String gasolineString = new String ("<gasolinelevel>50</gasolinelevel>");
 private String stringTipoGomme = new String("<mixture>Soft</mixture>");
-// private String stringTipoGommePS = new String("<mixtureps>Soft</mixtureps>");
 private String stringGomme = new String("<type_tyre>Sun</type_tyre>");
 private String stringStyle = new String("<engine>NORMAL</engine>");
 private String stringStrategy = new String("<boxStrategy>NORMAL</boxStrategy>");
-
-// private String stringStrategyPS = new String("<engineps>Normal</engineps>");
-// private String stringStrategypitstop = new String("<engineps>Normal</engineps>");
-// private String gasolineStringPS = new String("<pitstopGasolineLevel>50</pitstopGasolineLevel>");
-// private String pitstopStringLap= new String("<pitstopLaps>12</pitstopLaps>");
 private String stringSerbatoio = new String("<gastankcapacity>200</gastankcapacity>");
 private String stringMaxAcc = new String("<maxacceleration>7.0</maxacceleration>");
 private String stringMaxSpeed = new String("<maxspeed>300</maxspeed>");
-// private String stringGommePS = new String("<tyrePS>Sun</tyrePS>");
-private JLabel labelHelp = new JLabel("Insert CorbaLoc of Registration Handler");
-private JLabel labelHelp2 = new JLabel(" ex. \"corbaloc:iiop:1.2@[ip:porta]//{...}\"");
-private JLabel labelCorbaloc = new JLabel("Corbaloc Registration Hanlder : ");
-private JTextField textCorbaloc = new JTextField("", 30);
 private String stringId;
 public JFrame parent;
+//altri parametri
+private int intTyre;
+private int intStrategy;
+private Double valueUsuryDouble;
+private Integer valueFuelInt;
 public BoxAdminWindow(JFrame frame, String param){
   stringId = param;
-parent=frame;
-// errorDial = errorDialtemp;
+  parent=frame;
   init(frame);
+try{
+// LETTURA IOR DA FILE
+FileReader doc=new FileReader("/boxCorbaLoc-"+stringId+".txt");
+BufferedReader bufRead = new BufferedReader(doc);
+//read boxRadioCorbaloc
+  boxRadioCorbaLoc= bufRead.readLine();
+//read configuratorCorbaloc
+  configuratorCorbaLoc= bufRead.readLine();
+//read monitorBoxCorbaloc
+  monitorBoxCorbaLoc= bufRead.readLine();
+ bufRead.close();
+
 }
+catch (IOException e ){System.out.println("errore di apertura/chiusura del file");}
+catch (Exception e){System.out.println("problemi con la lettura del file");}
+            }
 
 class carConfigurationPanel{
 public carConfigurationPanel(JPanel panel, GridBagConstraints carConfigurationGrid){
@@ -577,10 +581,10 @@ return false;
 
 public boolean connect(String corbaloc){
 	try {
-Echo comp = Connection.connect(corbaloc);
+RegistrationHandler comp = Connection.connect(corbaloc);
 if (comp != null) {
 // il metodo di connessione è riuscito a connettersi
-comp.Join_Competition("competitor-"+stringId+".xml", boxCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
+comp.Join_Competition("competitor-"+stringId+".xml", boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
 // (,in string boxCorbaLoc, out string monitorCorbaLoc, out short competitorId, out float circuitLength, out short laps)
 }
 else {
