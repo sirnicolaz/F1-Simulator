@@ -5,20 +5,20 @@ Box Monitor:
 	uno script in bash per avviare prima il main del box in background e 
 	l'interfaccia, bisognerà passare un parametro a questo script che verrà
 	passato a sua volta al box e all'interfaccia e che i due useranno
-	per creare i nomi dei file di configurazione che creano.
-	a configurazione (dell'interfaccia) avvenuta, dato in input il corbaloc del registration handler (a mano)
+	per creare i nomi dei file di configurazione che creano.(FATTO - PARAMETRO DA PASSARE AL MAIN)
+	a configurazione (dell'interfaccia) avvenuta, dato in input il corbaloc del registration handler (a mano) (FATTO)
 	del server, l'interfaccia deve aprire il file boxCorbaLoc-<identificatiivo>.txt. Qui nella prima riga c'è
-	il corbaloc della radio del box. Nella seconda il corbaloc del configurator. nella terza del monitor del box.
+	il corbaloc della radio del box. Nella seconda il corbaloc del configurator. nella terza del monitor del box. (FATTO)
 	Ora l'interfaccia deve connettersi al registration handler remoto e invocare JoinCompetition. Vai a vederti i 
 	parametri che prende e passagliegli. Alcuni sono dati dall'interfaccia durante la configurazione,
-	altri sono per esempio il corbaloc della radio del box e infine alcuni sono degli "out".
+	altri sono per esempio il corbaloc della radio del box e infine alcuni sono degli "out".(FATTO)
 	Quando il metodo ritorna avrai tutto il necessario
 	per creare un file xml come quello di esempio di boxConfig.xml in obj. Eì' composto
 	da alcune info date nell'interfaccia e da altre tornate dal RegistrationHandler (tipo
-	il competitor ID). Una volta creato l'XML salvalo in un file boxConfig-<stesso identificativo di prima>.xml.
+	il competitor ID). Una volta creato l'XML salvalo in un file boxConfig-<stesso identificativo di prima>.xml.(FATTO)
 	- ora siamo pronti per lo step 2 che consiste nel prendere un riferimento all 'interfaccia di
-	configurazione del box usando il corbaloc del configurator preso su prima. 
-	Invochi il metodo Configure passandogli il nome del file di configurazione creato (compreso il path se ne hai messo uno).
+	configurazione del box usando il corbaloc del configurator preso su prima. (FATTO)
+	Invochi il metodo Configure passandogli il nome del file di configurazione creato (compreso il path se ne hai messo uno).(FATTO)
 	- a questo punto devi avviare un altro pannello dell'interfaccia ( o un'altra finestra, vedi tu) nella quale verranno inserite
 	  tutte le informazioni necessarie al box. Ricorda che al box non gliene sbatte un cazzo di best lap a cazzate varie.
 	  L'interfaccia usa un riferimento al monitor del box per tirare su info. Il metodo si chiama "GetUpdate" e prende come input un numero

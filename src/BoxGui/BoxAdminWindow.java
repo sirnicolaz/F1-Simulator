@@ -116,6 +116,9 @@ private String stringStrategy = new String("<boxStrategy>NORMAL</boxStrategy>");
 private String stringSerbatoio = new String("<gastankcapacity>200</gastankcapacity>");
 private String stringMaxAcc = new String("<maxacceleration>7.0</maxacceleration>");
 private String stringMaxSpeed = new String("<maxspeed>300</maxspeed>");
+private String gasolineStringBox = new String("<initialGasLevel>50</initialGasLevel>");
+private String gasolineTankStringBox = new String("<gasTankCapacity>200</gasTankCapacity>");
+private String stringGommeBox = new String("<initialTyreType>Sun</initialTyreType>");
 private String stringId;
 public JFrame parent;
 //altri parametri
@@ -219,7 +222,9 @@ String[] gomme = { "Sun", "Rain", "Hard Rain"};
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox)e.getSource();
 				String s = (String)cb.getSelectedItem();
-				stringGomme = new String("<type_tyre>"+s+"</type_tyre>");}
+				stringGomme = new String("<type_tyre>"+s+"</type_tyre>");
+				stringGommeBox = new String("<initialTyreType>"+s+"</initialTyreType>");
+ }
 		});
     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 0;
@@ -331,6 +336,9 @@ public class MyChangeAction implements ChangeListener{
 // modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());	      
 stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderFuelTank.getValue())+"</gastankcapacity>");
 gasolineString = new String("<gasolinelevel>"+value.toString()+"</gasolinelevel>");
+gasolineStringBox = new String("<initialGasLevel>"+value.toString()+"</initialGasLevel>");
+gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+"</gasTankCapacity>");
+
       }
 if(simboloT =="L (200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
 modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());*/
@@ -389,11 +397,10 @@ String[] strategy = {"Normal", "Cautious", "Risky", "Fool"};
 			JComboBox cb = (JComboBox)e.getSource();
 			String s = (String)cb.getSelectedItem();
 s=s.toUpperCase();
-stringStrategy = new String("<engine>"+s+"</engine>");
+stringStrategy = new String("<boxStrategy>"+s+"</boxStrategy>");
 System.out.println(s);
 		}
 	});
-
 //adding component to PitStop configuration
 boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		boxConfigurationGrid.gridx = 0;
@@ -537,12 +544,7 @@ out=new PrintWriter(new File("competitor-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);
-}
-// String item=in.next();
-// int number=in.nextInt();
-out.println("<?xml version=\"1.0\"?>\n <car_driver>\n<driver>");
-// out.println();
-// in.close();
+}out.println("<?xml version=\"1.0\"?>\n <car_driver>\n<driver>");
 out.println(scuderia);
 out.println(nome);
 out.println(cognome);
@@ -550,28 +552,45 @@ out.println("</driver>");
 out.println("<car>");
 out.println(stringMaxSpeed);
 out.println(stringMaxAcc);
-
-// <maxspeed>350</maxspeed>\n<maxacceleration>1.2</maxacceleration>");
 out.println(stringSerbatoio);
 out.println(stringStyle);  
 out.println(tyreUsuryString);
 out.println(gasolineString);
-// out.println("<gasolinelevel>50.0</gasolinelevel>");
 out.println(stringTipoGomme);
-// out.println("<model>michelin</model>");
-out.println(stringGomme + "\n</car>"); //\n<strategy_car>");
-/*out.println(gasolineStringPS);
-out.println(pitstopStringLap);
-out.println(stringPitStop);
-out.println(stringTipoGommePS);
-out.println(stringStrategypitstop);*/
-// out.println("<pitstopCondition>false</pitstopCondition>");
-// out.println("<trim>1</trim>");
-// out.println("<pitstop>false</pitstop>\n</strategy_car>\n</car_driver>");
+out.println(stringGomme + "\n</car>");
 out.println("</car_driver>");	
-
 out.close();
 return true;
+}
+catch(IOException e){
+e.printStackTrace();
+return false;
+}
+}
+
+public boolean writerBoxXML(){
+try{
+PrintWriter out;
+File f = new File("obj/boxConfig-"+stringId+".xml");
+if (f.exists() == false ) {
+out=new PrintWriter(new File("obj/boxConfig-"+stringId+".xml"));
+}
+else {
+out=new PrintWriter(f);
+}
+out.println("<?xml version=\"1.0\"?>\n<config>\n");
+out.println("<monitorCorbaLoc>"+(String)MonitorCorbaLoc+"</monitorCorbaLoc>");
+out.println(stringGommeBox);
+out.println("<laps>"+(Integer)laps+"</laps>");
+out.println("<circuitLength>"+(Double)circuitLength+"</circuitLength>");
+out.println("<initialGasLevel>"+gasolineStringBox+"</initialGasLevel>");
+out.println("<gasTankCapacity>"+gasolineTankStringBox+"</gasTankCapacity>");
+out.println("<competitorID>"+(String)competitorId+"</competitorID>");
+out.println(stringStrategy);
+out.println("</config>");
+out.close();
+return true;
+
 }
 catch(IOException e){
 e.printStackTrace();
@@ -585,11 +604,24 @@ RegistrationHandler comp = Connection.connect(corbaloc);
 if (comp != null) {
 // il metodo di connessione è riuscito a connettersi
 comp.Join_Competition("competitor-"+stringId+".xml", boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
-// (,in string boxCorbaLoc, out string monitorCorbaLoc, out short competitorId, out float circuitLength, out short laps)
+//con i metodi di ritorno della Join competition costruisco il file obj/boxConfig-<id>.xml
+writerBoxXML();
+//connessione configurator
+CompetitionConfigurator conf = Connection.connect(configuratorCorbaLoc);
+//invoco il metodo configure
+if (conf != null){}
+conf.configure("obj/boxConfig-"+stringId+".xml");
+//qua va effettuato lo switch panel.
+//da pensare
 }
 else {
-System.out.println("Connessione rifiutata");
-JOptionPane.showMessageDialog(parent, "Attention : connection refused", "Error", JOptionPane.ERROR_MESSAGE);
+System.out.println("Connessione con il CompetitionConfigurator rifiutata");
+JOptionPane.showMessageDialog(parent, "Attention : connection refused by CompetitionConfigurator", "Error", JOptionPane.ERROR_MESSAGE);
+}
+}
+else {
+System.out.println("Connessione con il RegistrationHandler rifiutata");
+JOptionPane.showMessageDialog(parent, "Attention : connection refused by RegistrationHandler", "Error", JOptionPane.ERROR_MESSAGE);
 }
             //initialize orb
             /*Properties props = System.getProperties();
