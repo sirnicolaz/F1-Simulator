@@ -484,8 +484,8 @@ returnNum : INTEGER;
          end if;
       end Get_Classific;
 
-      -- It adds e new row with the given information. If in the current table there are no
-      -- rows with the given COmpetitor_ID, the insert there the new data.
+      -- It add e new row with the given information. If in the current table there are no
+      -- rows with the given COmpetitor_ID, than insert there the new data.
       -- Otherwise, it searches for a table that respects the prerequisite. If no tables are found,
       -- then a new table is created and linked to the last one of the list.
       -- NB: we are sure that previous tables of the list can't have any empty row, because GlobalStats
@@ -530,8 +530,9 @@ returnNum : INTEGER;
          --if Current_Table.This = null then Ada.Text_IO.Put_Line("this null");
          --end if;
          Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
-         -- If competitor's infos are already saved in the current table, control what is the first
-         -- free table
+         -- If competitor's info are already saved in the current table,
+         --+control what is the first
+         --+ free table
          while Competitor_RowIndex /= -1 loop
             -- if there are no free table, create a new one
             if(Get_NextNode(Current_Table) = null) then
