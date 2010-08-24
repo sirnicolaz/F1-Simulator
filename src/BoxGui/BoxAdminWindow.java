@@ -113,12 +113,13 @@ private String stringTipoGomme = new String("<mixture>Soft</mixture>");
 private String stringGomme = new String("<type_tyre>Sun</type_tyre>");
 private String stringStyle = new String("<engine>NORMAL</engine>");
 private String stringStrategy = new String("<boxStrategy>NORMAL</boxStrategy>");
-private String stringSerbatoio = new String("<gastankcapacity>200</gastankcapacity>");
+private String stringSerbatoio = new String("<gastankcapacity>200.0</gastankcapacity>");
 private String stringMaxAcc = new String("<maxacceleration>7.0</maxacceleration>");
-private String stringMaxSpeed = new String("<maxspeed>300</maxspeed>");
-private String gasolineStringBox = new String("<initialGasLevel>50</initialGasLevel>");
-private String gasolineTankStringBox = new String("<gasTankCapacity>200</gasTankCapacity>");
+private String stringMaxSpeed = new String("<maxspeed>300.0</maxspeed>");
+private String gasolineStringBox = new String("<initialGasLevel>50.0</initialGasLevel>");
+private String gasolineTankStringBox = new String("<gasTankCapacity>200.0</gasTankCapacity>");
 private String stringGommeBox = new String("<initialTyreType>Sun</initialTyreType>");
+private String stringModelGomme = new String("<model>michelin</model>");
 private String stringId;
 public JFrame parent;
 //altri parametri
@@ -132,7 +133,7 @@ public BoxAdminWindow(JFrame frame, String param){
   init(frame);
 try{
 // LETTURA IOR DA FILE
-FileReader doc=new FileReader("/boxCorbaLoc-"+stringId+".txt");
+FileReader doc=new FileReader("../boxCorbaLoc-"+stringId+".txt");
 BufferedReader bufRead = new BufferedReader(doc);
 //read boxRadioCorbaloc
   boxRadioCorbaLoc= bufRead.readLine();
@@ -143,8 +144,8 @@ BufferedReader bufRead = new BufferedReader(doc);
  bufRead.close();
 
 }
-catch (IOException e ){System.out.println("errore di apertura/chiusura del file");}
-catch (Exception e){System.out.println("problemi con la lettura del file");}
+catch (IOException e ){System.out.println("costruttore : errore di apertura/chiusura del file");}
+catch (Exception e){System.out.println("costruttore : problemi con la lettura del file");}
             }
 
 class carConfigurationPanel{
@@ -334,10 +335,10 @@ public class MyChangeAction implements ChangeListener{
 // 	      jsFuel.setValue((Integer)sliderFuelTank.getValue() - value);
 // 	  }
 // modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());	      
-stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderFuelTank.getValue())+"</gastankcapacity>");
-gasolineString = new String("<gasolinelevel>"+value.toString()+"</gasolinelevel>");
-gasolineStringBox = new String("<initialGasLevel>"+value.toString()+"</initialGasLevel>");
-gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+"</gasTankCapacity>");
+stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderFuelTank.getValue())+".0</gastankcapacity>");
+gasolineString = new String("<gasolinelevel>"+value.toString()+".0</gasolinelevel>");
+gasolineStringBox = new String("<initialGasLevel>"+value.toString()+".0</initialGasLevel>");
+gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+".0</gasTankCapacity>");
 
       }
 if(simboloT =="L (200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
@@ -452,9 +453,9 @@ startButton = new JButton("Configure Competition");
 			    valueUsuryDouble = new Double ((double)sliderTyreUsury.getValue() / (double)100);
 			    valueFuelInt = new Integer((int)sliderGasLevel.getValue());
 			    tyreUsuryString = new String("<tyreusury>"+valueUsuryDouble.toString()+"</tyreusury>");
-			    gasolineString = new String("<gasolinelevel>"+valueFuelInt.toString()+"</gasolinelevel>");
+			    gasolineString = new String("<gasolinelevel>"+valueFuelInt.toString()+".0</gasolinelevel>");
 stringMaxAcc = new String("<maxacceleration>"+jsAcc.getValue().toString()+"</maxacceleration>");
-stringMaxSpeed = new String("<maxspeed>"+Integer.toString((Integer)sliderSpeed.getValue())+"</maxspeed>");
+stringMaxSpeed = new String("<maxspeed>"+Integer.toString((Integer)sliderSpeed.getValue())+".0</maxspeed>");
 boolean ret = false;
 ret = writerCompetitorXML();
 if (ret=true) {System.out.println("Scrittura riuscita");}
@@ -557,6 +558,7 @@ out.println(stringStyle);
 out.println(tyreUsuryString);
 out.println(gasolineString);
 out.println(stringTipoGomme);
+out.println(stringModelGomme);
 out.println(stringGomme + "\n</car>");
 out.println("</car_driver>");	
 out.close();
@@ -579,13 +581,13 @@ else {
 out=new PrintWriter(f);
 }
 out.println("<?xml version=\"1.0\"?>\n<config>\n");
-out.println("<monitorCorbaLoc>"+(String)MonitorCorbaLoc+"</monitorCorbaLoc>");
+out.println("<monitorCorbaLoc>"+monitorCorbaLoc.toString()+"</monitorCorbaLoc>");
 out.println(stringGommeBox);
-out.println("<laps>"+(Integer)laps+"</laps>");
-out.println("<circuitLength>"+(Double)circuitLength+"</circuitLength>");
+out.println("<laps>"+laps.toString()+"</laps>");
+out.println("<circuitLength>"+circuitLength.toString()+"</circuitLength>");
 out.println("<initialGasLevel>"+gasolineStringBox+"</initialGasLevel>");
 out.println("<gasTankCapacity>"+gasolineTankStringBox+"</gasTankCapacity>");
-out.println("<competitorID>"+(String)competitorId+"</competitorID>");
+out.println("<competitorID>"+competitorId.toString()+"</competitorID>");
 out.println(stringStrategy);
 out.println("</config>");
 out.close();
@@ -600,17 +602,22 @@ return false;
 
 public boolean connect(String corbaloc){
 	try {
-RegistrationHandler comp = Connection.connect(corbaloc);
+RegistrationHandler comp = Connection.connectRH(corbaloc);
 if (comp != null) {
+System.out.println("Comp != null");
 // il metodo di connessione è riuscito a connettersi
-comp.Join_Competition("competitor-"+stringId+".xml", boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
+comp.Join_Competition("BoxGui/competitor-"+stringId+".xml", boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
+System.out.println("After Join Competition");
 //con i metodi di ritorno della Join competition costruisco il file obj/boxConfig-<id>.xml
 writerBoxXML();
+System.out.println("After writerBoxXML");
 //connessione configurator
-CompetitionConfigurator conf = Connection.connect(configuratorCorbaLoc);
+Configurator conf = Connection.connectC(configuratorCorbaLoc);
+System.out.println("Conf init");
 //invoco il metodo configure
-if (conf != null){}
-conf.configure("obj/boxConfig-"+stringId+".xml");
+if (conf != null){
+System.out.println("Conf != null");
+conf.Configure("BoxGui/obj/boxConfig-"+stringId+".xml");
 //qua va effettuato lo switch panel.
 //da pensare
 }

@@ -11,23 +11,24 @@ import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
 
 public class Connection{
-public static RegistrationHandler connect(String corbaloc){
+public static RegistrationHandler connectRH(String corbaloc){
 
 	try {
 System.out.println("Try to connect to Registration Handler");
 String[] temp = {corbaloc};
 	  ORB orb = ORB.init(temp, null);
-System.out.println("ORB initializes");
+System.out.println("ORB initialized");
            //Resolve MessageServer
 	    org.omg.CORBA.Object obj = orb.string_to_object(temp[0]);
 	    RegistrationHandler comp = RegistrationHandlerHelper.narrow(obj);
+System.out.println("Comp initialized");
 	    return comp;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return null;
 	}
    }
-public static CompetitionConfigurator connect(String corbaloc){
+public static Configurator connectC(String corbaloc){
 	try {
 System.out.println("Try to connect to configurator");
 String[] temp = {corbaloc};
@@ -35,8 +36,9 @@ String[] temp = {corbaloc};
 System.out.println("ORB initializes");
            //Resolve MessageServer
 	    org.omg.CORBA.Object obj = orb.string_to_object(temp[0]);
-	    CompetitionConfigurator comp = CompetitionConfiguratorHelper.narrow(obj);
-	    return comp;
+	    Configurator conf = ConfiguratorHelper.narrow(obj);
+System.out.println("Conf initialized");
+	    return conf;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    return null;
