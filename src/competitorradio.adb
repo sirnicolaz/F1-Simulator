@@ -1,5 +1,5 @@
 --with CORBA.Object;
-with COmmon;
+with Common;
 use Common;
 
 package body CompetitorRadio is

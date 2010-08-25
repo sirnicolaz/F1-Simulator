@@ -19,7 +19,7 @@ package body Queue is
    --+the method tries to initialise a position of the queue with a NULL value.
    procedure Set_Competitors(Queue_In : in out QUEUE;
                              Competitors_List : Common.COMPETITOR_LIST;
-                             Times : Common.FLOAT_LIST) is
+                             Times : Common.FLOAT_ARRAY) is
    begin
       for Index in Queue_In'RANGE loop
          if( Index in Competitors_List'RANGE) then

@@ -1,469 +1,369 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
-with Competition_Monitor;
+--with Competition_Monitor;
 
 package body OnBoardComputer is
 
---     procedure Set_Checkpoint(Stats_In : out Common.COMP_STATS_POINT; Checkpoint_In : INTEGER) is
---     begin
---        Stats_In.Checkpoint := Checkpoint_In;
---     end Set_Checkpoint;
---
---     procedure Set_Sector(Stats_In : out COMP_STATS_POINT; Sector_In : INTEGER) is
---     begin
---        Stats_In.Sector := Sector_In;
---     end Set_Sector;
---
---     procedure Set_Lap(Stats_In : out COMP_STATS_POINT; Lap_In : INTEGER) is
---     begin
---        Stats_In.Lap := Lap_In;
---     end Set_Lap;
---
---     procedure Set_Gas(Stats_In : out COMP_STATS_POINT; Gas_In : 	FLOAT) is
---     begin
---        Stats_In.GasLevel := Gas_In;
---     end Set_Gas;
---
---     procedure Set_Tyre(Stats_In : out COMP_STATS_POINT; Tyre_In : FLOAT) is
---     begin
---        Stats_In.TyreUsury := Tyre_In;
---     end Set_Tyre;
---
---     procedure Set_Time(Stats_In : out COMP_STATS_POINT; Time_In : FLOAT) is
---     begin
---        Stats_In.Time := Time_In;
---     end Set_Time;
---
---
---     function Get_Checkpoint(Stats_In : COMP_STATS) return INTEGER is
---     begin
---        return Stats_In.Checkpoint;
---     end Get_Checkpoint;
---
---     function Get_Sector(Stats_In : COMP_STATS) return INTEGER is
---     begin
---        return Stats_In.Sector;
---     end Get_Sector;
---
---     function Get_Lap(Stats_In : COMP_STATS) return INTEGER is
---     begin
---        return Stats_In.Lap;
---     end Get_Lap;
---
---     function Get_Gas(Stats_In : COMP_STATS) return FLOAT is
---     begin
---        return Stats_In.GasLevel;
---     end Get_Gas;
---
---     function Get_Tyre(Stats_In : COMP_STATS) return FLOAT is
---     begin
---        return Stats_In.TyreUsury;
---     end Get_Tyre;
---
---     function Get_Time(Stats_In : COMP_STATS) return FLOAT is
---     begin
---        return Stats_In.Time;
---     end Get_Time;
+   protected body SYNCH_COMP_STATS_HANDLER is
 
-
-
-
-   procedure Reset_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT) is
-   begin
-      Info_Node_Out.Next := Null;
-      Info_Node_Out.Previous := Null;
-      --Info_Node_Out.Value.Checkpoint := -1;
-      --Info_Node_Out.Value :=
-      Set_Checkpoint(Info_Node_Out.Value, -1);
-      --Info_Node_Out.Value.Sector := -1;
-      Set_Sector(Info_Node_Out.Value, -1);
---        Info_Node_Out.Value.Lap := -1;
---        Info_Node_Out.Value.LastCheckInSect := FALSE; -- Se è l'ultimo del settore o meno dipende da quello che verrà dopo
---        Info_Node_Out.Value.FirstCheckInSect := TRUE; -- Se prima non c'è nulla allora è il primo del settore
-        Info_Node_Out.Index := -1;
-
-      Set_Lap(Info_Node_Out.Value, -1);
-      Set_LastCheckInSect(Info_Node_Out.Value, False);
-      Set_FirstCheckInSect(Info_Node_Out.Value, False);
-end Reset_Node;
-
-   --Actually this is a copy function. TODO: change name
-   function Reset_Data(Data : COMP_STATS_POINT) return COMP_STATS_POINT is
-      Data_Copy : Common.COMP_STATS_POINT := new Common.COMP_STATS;
-   begin
---      Ada.Text_IO.Put_Line("in Reset_Data");
-      Data_Copy.all := Data.all;
-
-      --NEW: cosa ci faceva qui
-      --Data_Copy.LastCheckInSect := false;
-      --Set_LastCheckInSect(Data_Copy, false);
-      --Data_Copy.FirstCheckInSect := true;
-      --Set_FirstCheckInSect(Data_Copy, false);
-      return Data_Copy;
-   end Reset_Data;
-
-
-   procedure Set_Node(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : COMP_STATS_POINT) is
-   begin
-      Info_Node_Out := new COMP_STATS_NODE;
-     -- Ada.Text_IO.Put_Line("PRE Info node out : info_node_out.index = " & Integer'Image(Info_Node_Out.Index));
-      Info_Node_Out.Value := Value;--
-      if(Info_Node_Out.Index = -1) then
-         Info_Node_Out.Index := 1;
-      end if;
-      if (Info_Node_Out.Previous /= null) then
-         if (Get_Sector(Info_Node_Out.Previous.Value.all) /= -1) then
-            if (Get_Lap(Info_Node_Out.Previous.Value.all) < Get_Lap(Info_Node_Out.Value.all)) or (Get_Sector(Info_Node_Out.Previous.Value.all) < Get_Sector(Info_Node_Out.Value.all)) then
-               Set_LastCheckInSect(Info_Node_Out.Previous.Value, true);
-               Set_FirstCheckInSect(Info_Node_Out.Previous.Value, true);
-            else
---                 Info_Node_Out.Value.FirstCheckInSect := false;
---                 Info_Node_Out.Previous.Value.LastCheckInSect := false;
-               Set_LastCheckInSect(Info_Node_Out.Previous.Value, false);
-               Set_FirstCheckInSect(Info_Node_Out.Previous.Value, false);
-            end if;
-         end if;
-      end if;
-      if (Info_Node_Out.Next /= null) then
-         if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
-            if (Get_Lap(Info_Node_Out.Next.Value.all) < Get_Lap(Info_Node_Out.Value.all)) or (Get_Sector(Info_Node_Out.Next.Value.all) < Get_Sector(Info_Node_Out.Value.all)) then
-               Set_LastCheckInSect(Info_Node_Out.Next.Value, true);
-               Set_FirstCheckInSect(Info_Node_Out.Next.Value, true);
-            else
---                 Info_Node_Out.Value.FirstCheckInSect := false;
---                 Info_Node_Out.Previous.Value.LastCheckInSect := false;
-               Set_LastCheckInSect(Info_Node_Out.Next.Value, false);
-               Set_FirstCheckInSect(Info_Node_Out.Next.Value, false);
-            end if;
-         end if;
-      end if;
-   end Set_Node;
-
-   procedure Set_PreviousNode(Info_Node_Out : in out COMP_STATS_NODE_POINT ; Value : in out COMP_STATS_NODE_POINT) is
-   begin
-      if(Value /= null) then
-         Info_Node_Out.Previous := Value;
-         Info_Node_Out.Previous.Next := Info_Node_Out;
-         Info_Node_Out.Index := Info_Node_Out.Previous.Index + 1;
-      end if;
-
---        if(Info_Node_Out.Previous.Value.Sector /= -1) then
---           if (Info_Node_Out.Previous.Value.Lap < Info_Node_Out.Value.Lap) or (Info_Node_Out.Previous.Value.Sector < Info_Node_Out.Value.Sector) then
---              Info_Node_Out.Previous.Value.LastCheckInSect := true;
---              Info_Node_Out.Value.FirstCheckInSect := true;
---           else
---              Info_Node_Out.Value.FirstCheckInSect := false;
---              Info_Node_Out.Previous.Value.LastCheckInSect := false;
---           end if;
---        end if;
-      if (Get_Sector(Info_Node_Out.Previous.Value.all) /= -1) then
-            if (Get_Lap(Info_Node_Out.Previous.Value.all) < Get_Lap(Info_Node_Out.Value.all)) or (Get_Sector(Info_Node_Out.Previous.Value.all) < Get_Sector(Info_Node_Out.Value.all)) then
-               Set_LastCheckInSect(Info_Node_Out.Previous.Value, true);
-               Set_FirstCheckInSect(Info_Node_Out.Value, true);
-            else
---                 Info_Node_Out.Value.FirstCheckInSect := false;
---                 Info_Node_Out.Previous.Value.LastCheckInSect := false;
-               Set_LastCheckInSect(Info_Node_Out.Previous.Value, false);
-               Set_FirstCheckInSect(Info_Node_Out.Value, false);
-            end if;
-         end if;
-   end Set_PreviousNode;
-
-   procedure Set_NextNode(Info_Node_Out : in out COMP_STATS_NODE_POINT; Value : in out COMP_STATS_NODE_POINT ) is
-   begin
-      if(Value /= null) then
-         Info_Node_Out.Next := Value;
-         Info_Node_Out.Next.Previous := Info_Node_Out;
-         Info_Node_Out.Next.Index := Info_Node_Out.Index + 1;
---           if(Info_Node_Out.Next.Value.Sector /= -1) then
---              if (Info_Node_Out.Next.Value.Lap > Info_Node_Out.Value.Lap) or (Info_Node_Out.Next.Value.Sector > Info_Node_Out.Value.Sector) then
---                 Info_Node_Out.Next.Value.FirstCheckInSect := true;
---                 Info_Node_Out.Value.LastCheckInSect := true;
---              else
---                 Info_Node_Out.Value.LastCheckInSect := false;
---                 Info_Node_Out.Next.Value.FirstCheckInSect := false;
---              end if;
---           end if;
-         if (Get_Sector(Info_Node_Out.Next.Value.all) /= -1) then
-            if (Get_Lap(Info_Node_Out.Next.Value.all) > Get_Lap(Info_Node_Out.Value.all)) or (Get_Sector(Info_Node_Out.Next.Value.all) > Get_Sector(Info_Node_Out.Value.all)) then
-               Set_LastCheckInSect(Info_Node_Out.Value, true);
-               Set_FirstCheckInSect(Info_Node_Out.Next.Value, true);
-            else
---                 Info_Node_Out.Value.FirstCheckInSect := false;
---                 Info_Node_Out.Previous.Value.LastCheckInSect := false;
-               Set_LastCheckInSect(Info_Node_Out.Value, false);
-               Set_FirstCheckInSect(Info_Node_Out.Next.Value, false);
-            end if;
-         end if;
-      end if;
-
-   end Set_NextNode;
-
-
-   protected body COMPUTER is
-
-      procedure Init_Computer(CompetitorId_In : INTEGER;  tempGlobal : GLOBAL_STATS_HANDLER_POINT) is
+      entry Get_Time( Result : out FLOAT ) when Initialised = TRUE is
       begin
-         Competitor_Id := CompetitorId_In;
-         Current_Node := new COMP_STATS_NODE;
-         Reset_Node(Current_Node);
-         Last_Node := Current_Node;
-         Updated := false;
-         global := tempGlobal;
-         Ada.Text_IO.Put_Line(Integer'Image(Competitor_Id)&" : COMPUTER DI BORDO AVVIATO");
-      end Init_Computer;
+         Result := Statistic.Time;
+      end Get_Time;
 
-      procedure Add_Data(Data : COMP_STATS_POINT) is
-         NewNode : COMP_STATS_NODE_POINT := new COMP_STATS_NODE;
-         updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-         --sommaLength : FLOAT := 0.0;
+      entry Get_Checkpoint (Result : out INTEGER) when Initialised = TRUE is
       begin
-         Ada.Text_IO.Put_Line("inizio add_data");
-         Set_Node(Last_Node,Reset_Data(Data));
-         Reset_Node(NewNode);
+         Result := Statistic.Checkpoint;
+      end Get_Checkpoint;
 
-         Set_NextNode(Last_Node,NewNode);
-         Last_Node := NewNode;
-
-         -- If the information are related to last checkpoint of the sector
-         --+ it's necessary to add those information to the competition monitor
-         sommaLength := sommaLength + Common.Get_LengthPath(Data.all); -- il primo valore lo aggiungo, poi faccio un loop
-         if(Common.Get_LastCheckInSect(Data) = true) then
-
-
-            Unbounded_String.Set_Unbounded_String(updateStr,
-                                                  "<?xml version=""1.0""?>" &
-                                                  "<update>" &
-                                                  "<gasLevel>"& Common.FloatToString(Common.Get_Gas(Data.all)) &"</gasLevel>" &
-                                                  "<tyreUsury>" & Common.FloatToString(Common.Get_Tyre(Data.all)) &"</tyreUsury>" &
-                                                  --"<time>" & Common.FloatToString(Common.Get_Time(Data.all))&"</time>" &
-                                                  "<lap>" & Common.IntegerToString(Common.Get_Lap(Data.all))&"</lap>" &
-                                                  "<sector>" & Common.IntegerToString(Common.Get_Sector(Data.all))&"</sector>" &
-                                                  "<metres>" & Common.FloatToString(sommaLength)&"</metres>" &
-                                                  "</update>"
-                                                 );
-            Ada.Text_IO.Put_Line("Adding news to monitor : ");
-            Ada.Text_IO.Put_Line(Unbounded_String.To_String(updateStr));
-
-            --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
-            Competition_Monitor.setInfo(Common.Get_Lap(Data.all),Common.Get_Sector(Data.all),Competitor_ID,updateStr,Common.Get_Time(Data.all));
-
-            --Update the sector statistics
-            declare
-               Sector2Ask : INTEGER;
-               Lap2Ask : INTEGER;
-               CurrentSector : INTEGER := Get_Sector(Data.all);
-               CurrentLap : INTEGER := Get_Lap(Data.all);
-               Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
-            begin
-
-               if(CurrentSector = 1) then
-                  Sector2Ask := 3;
-                  Lap2Ask := CurrentLap - 1;
-               else
-                  Sector2Ask := CurrentSector - 1;
-                  Lap2Ask := CurrentLap;
-               end if;
-
-               --This operation is not blocking because is going to ask
-               --+ information about a previous sector that are for sure
-               --+ in the list
-               pragma Warnings(Off);
-               Get_StatsBySect(Sector    => Sector2Ask,
-                               Lap       => Lap2Ask,
-                               CompStats => Tmp_Stats);
-               pragma Warnings(On);
-
-               if( BestSector_Times(CurrentSector) = -1.0 or else
-                  --The following statement shouldn't be necessary because if the
-                  --+ stats for the given lap is not accessible it means that also
-                  --+ the best sector is set yet
-                  --Get_Checkpoint(Tmp_Stats) = -1 or else
-                    (Get_Time(Data.all) - Get_Time(Tmp_Stats.all)) < BestSector_Times(CurrentSector) ) then
-
-                  BestSector_Times(CurrentSector) := (Get_Time(Data.all) - Get_Time(Tmp_Stats.all));
-
-               end if;
-
-               --Update the lap statistics if the lap is finished
-               if( CurrentSector = 3 ) then
-                  if ( BestLap_Time /= -1.0 ) then
-
-                     --This operation is not blocking because is going to ask
-                     --+ information about a previous sector that are for sure
-                     --+ in the list
-                     pragma Warnings(Off);
-                     Get_StatsByCheck(Checkpoint => 1,
-                                      Lap        => CurrentLap - 1,
-                                      CompStats  => Tmp_Stats);
-                     pragma Warnings(On);
-
-                     if ( Get_Time(Data.all) - Get_Time(Tmp_Stats.all) < BestLap_Time ) then
-                        BestLap_Time := Get_Time(Data.all) - Get_Time(Tmp_Stats.all);
-                        BestLap_Num := CurrentLap;
-                     end if;
-                  else
-                     BestLap_Time := Get_Time(Data.all);
-                     BestLap_Num := CurrentLap;
-                  end if;
-               end if;
-            end;
-
-            sommaLength := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
-         end if;
-
-         --Update max speed TODO CRITICAL
-
-         Updated := true;
-         Ada.Text_IO.Put_Line("fine add_data");
-         --sezione di controllo nel caso debba aggiornare le statistiche globali
-      end Add_Data;
-
-      function Get_Id return INTEGER is
+      entry Get_Lap (Result : out INTEGER) when Initialised = TRUE is
       begin
-         return Competitor_Id;
-      end Get_Id;
+         Result := Statistic.Lap;
+      end Get_Lap;
 
-      entry Get_StatsBySect(Sector : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT) when true is
+      entry Get_Sector (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.Sector;
+      end Get_Sector;
 
-         Iterator : COMP_STATS_NODE_POINT;
+      entry Get_BestLapNum (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestLapNum;
+      end Get_BestLapNum;
 
-         procedure Get_LastCheckPoint(Found : out BOOLEAN) is
-         begin
-            Found := true;
-            if (Get_LastCheckInSect(Iterator.Value) = true) then
-               CompStats := Iterator.Value;
-            else
-               loop
-                  if (Iterator.Next = null) then
-                     Found := false;
-                     exit;
-                  end if;
-                  Iterator := Iterator.Next;
-                  if (Get_Sector(Iterator.Value.all) > Get_Sector(Iterator.Previous.Value.all)) then
-                     Found := false;
-                     exit;
-                  end if;
-                  exit when (Get_LastCheckInSect(Iterator.Value) = true);
-               end loop;
-               if(Found /= false) then
-                  CompStats := Iterator.Value;
-               end if;
-            end if;
-         end Get_LastCheckPoint;
+      entry Get_BestLapTime (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestLapTime;
+      end Get_BestLapTime;
 
-         StatFound : BOOLEAN;
+      entry Get_BestSectorTime( SectorNum : INTEGER; Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestSectorTimes(SectorNum);
+      end Get_BestSectorTime;
+
+      entry Get_MaxSpeed (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.MaxSpeed;
+      end Get_MaxSpeed;
+
+      entry Get_IsLastCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
+      begin
+         Result := Statistic.LastCheckInSect;
+      end Get_IsLastCheckInSector;
+
+      entry Get_IsFirstCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
+      begin
+         Result := Statistic.FirstCheckInSect;
+      end Get_IsFirstCheckInSector;
+
+      entry Get_PathLength (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.PathLength;
+      end Get_PathLength;
+
+      entry Get_GasLevel (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.GasLevel;
+      end Get_GasLevel;
+
+      entry Get_TyreUsury (Result : out PERCENTAGE) when Initialised = TRUE is
+      begin
+         Result := Statistic.TyreUsury;
+      end Get_TyreUsury;
+
+      entry Get_All( Result : out COMP_STATS) when Initialised = TRUE is
+      begin
+         Result := Statistic;
+      end Get_All;
+
+      entry Initialise(Stats_In : in COMP_STATS) when Initialised = FALSE is
 
       begin
-         Iterator := Current_Node;
-         if (Iterator.Index = -1) then
-            Updated := false;
-            requeue Wait_BySect; -- La lista è ancora vuota;
-         end if;
+         Ada.Text_IO.Put_Line("Adding " & INTEGER'IMAGE(Stats_In.Checkpoint));
+         Statistic := Stats_In;
+         Initialised := TRUE;
+      end Initialise;
 
-         if (Get_Lap(Iterator.Value.all) /= Lap) then
-            if (Get_Lap(Iterator.Value.all) < Lap) then
-               loop
-                  if(Iterator.Next = null) then
-                     Updated := false;
-                     requeue Wait_BySect;
-                  end if;
-                  Iterator := Iterator.Next;
-                  exit when Get_Lap(Iterator.Value.all) = Lap;
-               end loop;
-            else
-               loop
-                  if(Iterator.Previous = null) then
-                     Set_Checkpoint(CompStats,-1);
-                     exit;
-                  end if;
-                  Iterator := Iterator.Previous;
-                  exit when Get_Lap(Iterator.Value.all) = Lap;
-               end loop;
-            end if;
-         end if;
+   end SYNCH_COMP_STATS_HANDLER;
 
-         if(Get_Checkpoint(CompStats.all) /= -1) then
-            if (Get_Sector(Iterator.Value.all) /= Sector) then
-               if (Get_Sector(Iterator.Value.all) < Sector) then
-                  loop
-                     if(Iterator.Next = null) then
-                        Updated := false;
-                        requeue Wait_BySect;
-                     end if;
-                     Iterator := Iterator.Next;
-                     exit when Get_Sector(Iterator.Value.all) = Sector;
-                  end loop;
-               else
-                  loop
-                     if(Iterator.Previous = null) then
-                        Set_Checkpoint(CompStats,-1);
-                        exit;
-                     end if;
-                     Iterator := Iterator.Previous;
-                     exit when Get_Sector(Iterator.Value.all) = Sector;
-                  end loop;
-               end if;
-            end if;
-         end if;
 
-         if Get_Checkpoint(CompStats.all) /= -1 then
-            Updated := false;
-            Get_LastCheckpoint(StatFound);
-            if(StatFound = true) then
-               Current_Node := Iterator;
-            else
-               requeue Wait_BySect;
-            end if;
-         end if;
+   protected body SYNCH_INFO_FOR_BOX is
 
-      end Get_StatsBySect;
-
-      entry Get_StatsByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats : out COMP_STATS_POINT) when true is
-         Position : INTEGER := Lap * Checkpoint;
-         Iterator : COMP_STATS_NODE_POINT;
+      procedure Init(Laps : INTEGER) is
       begin
-
-         Iterator := Current_Node;
-
-         if(Current_Node.Index = -1) then
-            Updated := false;
-            requeue Wait_ByCheck;
-         end if;
-
-         if( Current_Node.Index = Position ) then
-            CompStats := Current_Node.Value;
-         elsif( Current_Node.Index < Position ) then
-            while Iterator.Index /= Position loop
-               if(Iterator.Next = null) then
-
-                  Updated := false;
-                  requeue Wait_ByCheck;
-               end if;
-               Iterator := Iterator.Next;
+         Info := new LAP_INFO(1..Laps);
+         for Index in Info'RANGE loop
+            for Indez in 1..3 loop
+               Info.all(Index)(Indez).UpdateString := Unbounded_String.Null_Unbounded_String;
+               Info.all(Index)(Indez).Time := -1.0;
             end loop;
+         end loop;
+      end Init;
+
+      entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String ) when true is
+      begin
+         if( Info.all(Lap)(Sector).UpdateString = Unbounded_String.Null_Unbounded_String ) then
+            Updated := false;
+            requeue Wait_Info;
          else
-            while Iterator.Index /= Position loop
-               Iterator := Iterator.Previous;
-            end loop;
+            Returns := Info.all(Lap)(Sector).UpdateString;
+            Time := Info.all(Lap)(Sector).Time;
          end if;
-         Current_Node := Iterator; -- normalmente il nodo rischiesto da più clienti di fila è lo stesso
-         CompStats := Iterator.Value;
-         Updated := false;
-      end Get_StatsByCheck;
+      end Get_Info;
 
-      entry Wait_BySect(Sector : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT) when Updated is
+      entry Wait_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String ) when Updated = true is
       begin
-         requeue Get_StatsBySect;
-      end Wait_BySect;
+         requeue Get_Info;
+      end Wait_Info;
 
-
-      entry Wait_ByCheck(Checkpoint : INTEGER; Lap : INTEGER; CompStats: out COMP_STATS_POINT) when Updated is
+      procedure Set_Info( Lap : INTEGER; Sector : INTEGER; Time : FLOAT; UpdateString : Unbounded_String.Unbounded_String) is
       begin
-         requeue Get_StatsByCheck;
-      end Wait_ByCheck;
+         Info.all(Lap)(Sector).UpdateString := UpdateString;
+         Info.all(Lap)(Sector).Time := Time;
+         Updated := TRUE;
+      end Set_Info;
 
-   end COMPUTER;
+   end SYNCH_INFO_FOR_BOX;
+
+   -- This method create a brand new COMPUTER whose current_node and last_node
+   --+ are set to an empty one.
+   procedure Init_Computer(Computer_In : COMPUTER_POINT;
+                           CompetitorId_In : INTEGER;
+                           Laps : INTEGER;
+                           Checkpoints : INTEGER) is
+   begin
+      Computer_In.Competitor_Id := CompetitorId_In;
+      Computer_In.Information := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
+      Computer_In.Checkpoints := Checkpoints;
+      COmputer_In.BoxInformation := new SYNCH_INFO_FOR_BOX;
+      Computer_In.BoxInformation.Init(Laps);
+      Computer_In.CurrentBestSector_Times(1) := -1.0;
+      Computer_In.CurrentBestSector_Times(2) := -1.0;
+      Computer_In.CurrentBestSector_Times(3) := -1.0;
+      Computer_In.CurrentBestLap_Time := -1.0;
+      Computer_In.CurrentBestLap_Num := -1;
+      Computer_In.CurrentMaxSpeed := -1.0;
+      Computer_In.LastSlotAccessed := 1;
+      Computer_In.SectorLength_Helper := 0.0;
+   end Init_Computer;
+
+   -- The method adds new data to the computer. We're sure that data are inserted
+   --+ in time-increasing order because internal clock of competitors grows through each
+   --+ checkpoint (remember that Computer is updated only once a checkpoint is reached)
+   procedure Add_Data(Computer_In : COMPUTER_POINT;
+                      Data : in out COMP_STATS) is
+
+      updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      --
+   begin
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": inizio add_data");
+      -- If the information are related to last checkpoint of the sector
+      --+ it's necessary to add those information to the competition monitor
+
+      COmputer_In.SectorLength_Helper := COmputer_In.SectorLength_Helper + Data.PathLength; -- il primo valore lo aggiungo, poi faccio un loop
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": path length set");
+      if(Data.LastCheckInSect = true) then
+         Ada.Text_IO.Put_Line("Last check in sector");
+         Unbounded_String.Set_Unbounded_String(updateStr,
+                                               "<?xml version=""1.0""?>" &
+                                               "<update>" &
+                                               "<gasLevel>"& Common.FloatToString(Data.GasLevel) &"</gasLevel>" &
+                                               "<tyreUsury>" & Common.FloatToString(Data.TyreUsury) &"</tyreUsury>" &
+                                               "<lap>" & Common.IntegerToString(Data.Lap)&"</lap>" &
+                                               "<sector>" & Common.IntegerToString(Data.Sector)&"</sector>" &
+                                               "<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
+                                               "</update>"
+                                              );
+         Ada.Text_IO.Put_Line("Adding news to monitor : ");
+
+         --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
+         Computer_In.BoxInformation.Set_Info(Lap          => Data.Lap+1,
+                                             Sector       => Data.Sector,
+                                             Time => Data.Time,
+                                             UpdateString => updateStr);
+
+         --Update the sector statistics
+         declare
+            Sector2Ask : INTEGER;
+            Lap2Ask : INTEGER;
+            CurrentSector : INTEGER := Data.Sector;
+            CurrentLap : INTEGER := Data.Lap+1;
+            Tmp_Stats  : COMP_STATS_POINT := new COMP_STATS;
+         begin
+
+            if(CurrentSector = 1) then
+               Sector2Ask := 3;
+               Lap2Ask := CurrentLap - 1;
+            else
+               Sector2Ask := CurrentSector - 1;
+               Lap2Ask := CurrentLap;
+            end if;
+
+            if(Lap2Ask > 0) then
+               Get_StatsBySect(Computer_In, Sector2Ask, Lap2Ask, Tmp_Stats);
+            end if;
+
+            if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 ) then
+               --It's the first time we try to find it
+               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time;
+            elsif (Data.Time - Tmp_Stats.Time) < Computer_In.CurrentBestSector_Times(CurrentSector)
+               --The following statement shouldn't be necessary because if the
+               --+ stats for the given lap is not accessible it means that also
+               --+ the best sector is set yet
+               --Get_Checkpoint(Tmp_Stats) = -1 or else
+                 then
+
+               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time - Tmp_Stats.Time;
+
+            end if;
+            Ada.Text_IO.Put_Line("Best sector calculated");
+            --Update the lap statistics if the lap is finished
+            if( CurrentSector = 3 ) then
+               if ( Computer_In.CurrentBestLap_Time /= -1.0 ) then
+
+                  Get_StatsByCheck(Computer_In, 1, CurrentLap - 1, Tmp_Stats);
+
+                  if ( Data.Time - Tmp_Stats.Time < Computer_In.CurrentBestLap_Time ) then
+                     Computer_In.CurrentBestLap_Time := Data.Time - Tmp_Stats.Time;
+                     Computer_In.CurrentBestLap_Num := CurrentLap;
+                  end if;
+               else
+                  Computer_In.CurrentBestLap_Time := Data.Time;
+                  Computer_In.CurrentBestLap_Num := CurrentLap;
+               end if;
+            end if;
+         end;
+
+         Computer_In.SectorLength_Helper := 0.0; -- risetto a 0 la somma in modo da averla giusta nel prossimo settore
+
+      end if;
+
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": out of the huge if");
+      --Update max speed TODO CRITICAL
+      if (Computer_In.CurrentMaxSpeed < Data.MaxSpeed ) then
+         Computer_In.CurrentMaxSpeed := Data.MaxSpeed;
+      end if;
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": speed set");
+      Data.BestLapNum := Computer_In.CurrentBestLap_Num;
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": best lap num set");
+      Data.BestLaptime := Computer_In.CurrentBestLap_Time;
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": best lap time set");
+      for Index in 1..3 loop
+         Data.BestSectorTimes(Index) := Computer_In.CurrentBestSector_Times(Index);
+      end loop;
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": sectors time set");
+
+      Data.MaxSpeed := Computer_In.CurrentMaxSpeed;
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": data speed set");
+      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": Registering data of lap : " &
+                           INTEGER'IMAGE(Data.Lap+1) &
+                           " and sector " & INTEGER'IMAGE(Data.Checkpoint) &
+                           " at index " & INTEGER'IMAGE((Data.Lap*Computer_In.Checkpoints) + Data.Checkpoint));
+      Computer_In.Information.all((Data.Lap*Computer_In.Checkpoints) + Data.Checkpoint).Initialise(Data);
+
+      Ada.Text_IO.Put_Line("fine add_data");
+
+   end Add_Data;
+
+
+   -- It sets the CompStats parameter with the statistics related to the given sector and lap
+   procedure Get_StatsBySect(Computer_In : COMPUTER_POINT;
+                             Sector : INTEGER;
+                             Lap : INTEGER;
+                             Stats_In : out COMP_STATS_POINT) is
+      Index : INTEGER := Lap+1; -- laps start from 0, information are store starting from 1
+      Tmp_Sector : INTEGER;
+      Tmp_Bool : BOOLEAN;
+   begin
+      Computer_In.Information(Index).Get_Sector(Tmp_Sector);
+      Computer_In.Information(Index).Get_IsLastCheckInSector (Tmp_Bool);
+
+      while Tmp_Sector = Sector and then Tmp_Bool loop
+         Index := Index + 1;
+         Computer_In.Information(Index).Get_Sector(Tmp_Sector);
+         Computer_In.Information(Index).Get_IsLastCheckInSector (Tmp_Bool);
+      end loop;
+      Computer_In.LastSlotAccessed := Index;
+
+      if( Stats_In = null ) then
+        Stats_In := new COMP_STATS;
+      end if;
+
+      Computer_In.Information(Index).Get_All(Stats_In.all);
+
+   end Get_StatsBySect;
+
+   -- It returns the competitor ID related to this Computer
+   function Get_Id(Computer_In : COMPUTER_POINT) return INTEGER is
+   begin
+      return Computer_In.Competitor_Id;
+   end Get_Id;
+
+   -- It return a statistic related to a certain time. If the statistic is not
+   --+ initialised yet, the requesting task will wait on the resource Information
+   --+ as long as it's been initialised
+   procedure Get_StatsByTime(Computer_In : COMPUTER_POINT;
+                            Time : FLOAT;
+                            Stats_In : out COMP_STATS_POINT) is
+
+      Index : INTEGER := Computer_In.LastSlotAccessed;
+      Tmp_Time : FLOAT;
+   begin
+      Computer_In.Information(Index).Get_Time(Tmp_Time);
+      if (Tmp_Time >= Time ) then
+         Index := Index - 1;
+         Computer_In.Information(Index).Get_Time(Tmp_Time);
+         while Index = -1 or else Tmp_Time > Time loop
+            Index := Index - 1;
+            Computer_In.Information(Index).Get_Time(Tmp_Time);
+         end loop;
+
+         if( Stats_In = null ) then
+            Stats_In := new COMP_STATS;
+         end if;
+
+         Computer_In.Information(Index+1).Get_All(Stats_In.all);
+
+      else
+         Index := Index + 1;
+         Computer_In.Information(Index).Get_Time(Tmp_Time);
+         while Tmp_Time < Time loop
+            Index := Index + 1;
+            Computer_In.Information(Index).Get_Time(Tmp_Time);
+         end loop;
+
+         COmputer_In.Information(Index).Get_All(Stats_In.all);
+
+      end if;
+
+      Computer_In.LastSlotAccessed := Index;
+
+   end Get_StatsByTime;
+
+   -- It sets the CompStats parameter with the statistics related to the given check-point and lap
+   procedure Get_StatsByCheck(Computer_In : COMPUTER_POINT;
+                              Checkpoint : INTEGER;
+                              Lap : INTEGER;
+                              Stats_In : out COMP_STATS_POINT) is
+   begin
+
+      if( Stats_In = null ) then
+        Stats_In := new COMP_STATS;
+      end if;
+
+      Computer_In.Information((Lap+1)*Checkpoint).Get_All(Stats_In.all);
+      Computer_In.LastSlotAccessed := (Lap+1)*Checkpoint;
+   end Get_StatsByCheck;
+
+   procedure Get_BoxInfo(Computer_In : COMPUTER_POINT;
+                         Lap : INTEGER;
+                         Sector : INTEGER;
+                         UpdateString_In : out Unbounded_String.Unbounded_String;
+                         Time_In : out FLOAT) is
+   begin
+      Ada.Text_IO.Put_Line("In onboard computer");
+      Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In);
+   end Get_BoxInfo;
 
 end OnBoardComputer;

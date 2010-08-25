@@ -104,9 +104,6 @@ package Box is
                                InitialTyreType : Common.STRING_POINT) is
    end STRATEGY_UPDATER;
 
-   -- BOX RADIO TYPES AND METHODS DEFINITION --
-   type BOX_RADIO is private;
-
    --Temporary test function DEL
    function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING;
    function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING;
@@ -140,10 +137,5 @@ private
 --        PitStopLap : INTEGER;
 --        PitStopDelay : FLOAT;
 --     end record;
-
-   type BOX_RADIO is record
-      CompetitionAddress : IP_ADDRESS;
-      -- TODO: add the IOR or whatelse is needed to connect to the competition
-   end record;
 
 end Box;

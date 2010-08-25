@@ -210,7 +210,7 @@ package body Circuit is
 
 
       procedure Set_Competitors(Competitors : Common.COMPETITOR_LIST;
-                                Times : Common.FLOAT_LIST) is
+                                Times : Common.FLOAT_ARRAY) is
       begin
          Set_Competitors(F_Checkpoint.Queue.all,Competitors,Times);
       end Set_Competitors;
@@ -570,6 +570,8 @@ package body Circuit is
       Ada.Text_IO.Put_Line("Length of box " &Common.FloatToString(RaceTrack_In(7).Get_Length));
       RaceTrack_In(0) := CheckpointSynch_Current;
 
+      -- "-1" because the box has not to be included in the number of checkpoints
+      Checkpoints_Qty := RaceTrack_In'LENGTH-1;
    end Init_Racetrack;
 
    function Get_Racetrack(Racetrack_File : STRING) return RACETRACK_POINT is
@@ -620,7 +622,7 @@ package body Circuit is
                              Competitors : in Common.COMPETITOR_LIST) is
       Race_Length : INTEGER;
       Race_It : RACETRACK_ITERATOR := Get_Iterator(Racetrack_In);
-      Times : Common.FLOAT_LIST(1..Competitors'LENGTH);
+      Times : Common.FLOAT_ARRAY(1..Competitors'LENGTH);
       Time : FLOAT := 0.0;
    begin
       --Ada.Text_IO.Put_Line("^^^^^^^^^________________^^^^^^^^^^^ Competitors'LENGTH: "&Integer'Image(Competitors'LENGTH));

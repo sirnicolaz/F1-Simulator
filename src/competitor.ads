@@ -18,9 +18,6 @@ use Ada.Text_IO;
 with Ada.Strings;
 with Ada.Strings.Unbounded;
 
-with Stats;
-use Stats;
-
 with CompetitorRadio;
 use CompetitorRadio;
 
@@ -76,8 +73,9 @@ package Competitor is
    function Init_Competitor(xml_file : STRING;
                             RaceIterator : RACETRACK_ITERATOR;
                             id_In : INTEGER;
-                            BoxRadio_CorbaLoc : in STRING;
-                            GlobalStatsHandler : GLOBAL_STATS_HANDLER_POINT) return CAR_DRIVER_ACCESS;
+                            laps_In : INTEGER;
+                            checkpoints_In : INTEGER;
+                            BoxRadio_CorbaLoc : in STRING) return CAR_DRIVER_ACCESS;
   -- procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
 -- set and get function for tyre into car
    function Get_Mixture(Car_In : CAR_DRIVER_ACCESS) return Str.Unbounded_String;

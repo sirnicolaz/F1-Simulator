@@ -106,7 +106,7 @@ package Circuit is
                                 Time_In : FLOAT);
       procedure Remove_Competitor(CompetitorID_In : INTEGER);
       procedure Set_Competitors(Competitors : Common.COMPETITOR_LIST;
-                                Times : Common.FLOAT_LIST);
+                                Times : Common.FLOAT_ARRAY);
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT;
 
       function Is_PreBox return BOOLEAN;

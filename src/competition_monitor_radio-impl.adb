@@ -1,7 +1,7 @@
 with Competition_Monitor_Radio.Skel;
 pragma Warnings (Off, Competition_Monitor_Radio.Skel);
 
-with Stats;
+--with Stats;
 with Competition_Monitor;
 
 with Common;
@@ -20,11 +20,14 @@ package body Competition_Monitor_Radio.impl is
       ReturnStr : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
       ReturnTime : FLOAT;
    begin
-        Competition_Monitor.getInfo(lap       => INTEGER(lap),
-                                    sector    => INTEGER(sector),
-                                    id        => INTEGER(id),
-                                    time      => ReturnTime,
-                                    updString => ReturnStr);
+      Ada.Text_IO.Put_Line("Asking for info: lap " & INTEGER'IMAGE(INTEGER(lap)) &
+                           ", sector " & INTEGER'IMAGE(INTEGER(sector)));
+      Competition_Monitor.getInfo(lap       => INTEGER(lap),
+                                  sector    => INTEGER(sector),
+                                  id        => INTEGER(id),
+                                  time      => ReturnTime,
+                                  updString => ReturnStr);
+      Ada.Text_IO.Put_Line("Converting for info");
       Returns := CORBA.To_CORBA_String(Common.Unbounded_String.To_String(ReturnStr));
       time := CORBA.Float(ReturnTime);
    end getInfo;

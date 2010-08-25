@@ -19,7 +19,7 @@ package Queue is
    procedure Init_Queue(Queue_In : in out QUEUE);
    procedure Set_Competitors(Queue_In : in out QUEUE;
                              Competitors_List : Common.COMPETITOR_LIST;
-                             Times : Common.FLOAT_LIST);
+                             Times : Common.FLOAT_ARRAY);
    procedure Add_Competitor2Queue(Queue_In : in out QUEUE;
                                   CompetitorID_In : INTEGER;
                              	  ArrivalTime_In : FLOAT;

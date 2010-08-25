@@ -38,7 +38,7 @@ package Stats is
       bestSector : SECTOR_ARRAY :=(new GS_SECTOR(1,-1,-1,new Float'(-1.0)),new GS_SECTOR(2,-1,-1,new Float'(-1.0)),new GS_SECTOR(3,-1,-1,new Float'(-1.0)));-- array of GS_SECTOR to save information about three sector of the racetrack
    end record;
 
-   type GENERIC_STATS_POINT is access GENERIC_STATS;
+	type GENERIC_STATS_POINT is access GENERIC_STATS;
 
    procedure setGSLAP(genStats_In : in out GENERIC_STATS; numBestLap : INTEGER; idCompetitor : INTEGER; timeLap : FLOAT);
    procedure setGS_SECTOR(genStats_In : in out GENERIC_STATS; numSector : INTEGER; numBestLap : INTEGER; idCompetitor : INTEGER; timeSector : FLOAT);
@@ -159,7 +159,7 @@ package Stats is
       entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE);
    private
       GlobStats : GLOBAL_STATS_POINT := new GLOBAL_STATS(sgs_In, updatePeriod_In);
-   end SYNCH_GLOBAL_STATS;
+end SYNCH_GLOBAL_STATS;
 
 
    type S_GLOB_STATS_POINT is access SYNCH_GLOBAL_STATS;
@@ -185,12 +185,10 @@ package Stats is
                                    updatePeriod_In : FLOAT);
 private
 
-   type GLOBAL_STATISTICS is record
-      BestLap_Num : INTEGER := -1;
-      BestLap_CompetitorID : INTEGER := -1;
-      BestLap_Time : FLOAT := -1.0;
-      BestSector_Times : FLOAT_ARRAY(1..3);
-      BestSector_RelatedCompetitorID : FLOAT_ARRAY(1..3);
+   type GS_LAP is record
+      numBestLap : INTEGER := -1;
+      idCompetitor : INTEGER := -1;
+      timeLap : FLOAT := -1.0;
    end record;
 
 --     type GS_SECTOR(numSector_In : INTEGER; numBestLap_In : INTEGER; idCompetitor_In : INTEGER;timeSector_In : FLOAT) is record

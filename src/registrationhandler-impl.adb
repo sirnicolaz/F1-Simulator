@@ -22,19 +22,25 @@ package body RegistrationHandler.impl is
                               CircuitLength : out CORBA.Float;
                               Laps : out CORBA.Short) is
       Competitor_ID_INT : INTEGER;
+      Laps_Out : INTEGER;
+      CIrcuitLength_Out : FLOAT;
+      MonitorCorbaLoc_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
       Ada.Text_IO.Put_Line("registering....");
       Comp.Register_NewCompetitor(CORBA.To_Standard_String(CompetitorDescriptor),
                                   CORBA.To_Standard_String(BoxCorbaLOC),
-                                  Competitor_ID_INT);
+                                  Competitor_ID_INT,
+                                  Laps_out,
+                                  CircuitLength_out,
+                                  MonitorCorbaLoc_Out);
 
-      Laps := CORBA.Short(Comp.Get_Laps);
-      CircuitLength := CORBA.Float(Comp.Get_CircuitLength);
+      Laps := CORBA.Short(Laps_out);
+      CircuitLength := CORBA.Float(CircuitLength_out);
       Ada.Text_IO.Put_Line("ID int " & Common.IntegerToString(Competitor_ID_INT));
       Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
-      MonitorCorbaLOC := CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
+      MonitorCorbaLOC := CORBA.To_CORBA_String(Unbounded_String.To_String(MonitorCorbaLoc_Out));
    end Join_Competition;
 
    -- When the box joining request has been accepted, the box wait that

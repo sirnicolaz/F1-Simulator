@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 
 with Common;
-with Stats;
+--with Stats;
 
 --pragma Warnings (Off); -- TODO: delete
 package body Competition is
@@ -31,8 +31,11 @@ package body Competition is
    protected body SYNCH_COMPETITION is
 
       entry Register_NewCompetitor(CompetitorDescriptor : in STRING;
-                                       Box_CorbaLOC : in STRING;
-                                       Given_Id : out INTEGER) when Registrations_Open is
+                                   Box_CorbaLOC : in STRING;
+                                   Given_Id : out INTEGER;
+                                   Laps_Out : out INTEGER;
+                                   CircuitLength_Out : out FLOAT;
+                                   Monitor_CorbaLoc_Out : out Unbounded_String.Unbounded_String) when Registrations_Open is
          ID : INTEGER;
          Driver : CAR_DRIVER_ACCESS;
 
@@ -74,8 +77,9 @@ package body Competition is
             Driver := Init_Competitor(Unbounded_String.To_String(File_Name),
                                       Circuit.Get_Iterator(Track),
                                       ID,
-                                      Box_CorbaLOC,
-                                      GlobalStatistics);
+                                      Laps,
+                                      Checkpoint_Qty,
+                                      Box_CorbaLOC);
             --Initialise the task competitor
             Ada.Text_IO.Put_Line("Init task...");
             Competitors.all(ID) := new TASKCOMPETITOR(Driver);
@@ -84,9 +88,14 @@ package body Competition is
 
             Comp_List(ID) := ID;
 
+            Laps_Out := Laps;
+            CircuitLength_Out := Circuit_Length;
+            Monitor_CorbaLoc_Out := Monitor_CorbaLoc;
+
             Ada.Text_IO.Put_Line("Competitor ID : " & INTEGER'IMAGE(Given_ID));
             Ada.Text_IO.Put_Line("Name : " & Unbounded_String.To_String(Competitor.Get_FirstName(Competitor_In => Driver)));
 
+            --TODO fix
             if ( Next_ID = Competitors'LENGTH + 1 ) then
                Stop_Joining := true;
             end if;
@@ -162,17 +171,18 @@ package body Competition is
          Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
+         Checkpoint_Qty := Circuit.Checkpoints_Qty;
+         Ada.Text_IO.Put_Line("Checkpoints " & INTEGER'IMAGE(Checkpoint_Qty));
 
          Registrations_Open := True;
 
-         GenericStatistics := new Stats.GENERIC_STATS;
-         GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
-           (new FLOAT'(ClassificRefreshTime_in),
-            GenericStatistics);
+         --GenericStatistics := new Stats.GENERIC_STATS;
+         --GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
+          -- (new FLOAT'(ClassificRefreshTime_in),
+          --  GenericStatistics);
          Ada.Text_IO.Put_Line("initializing monitor");
          Monitor := Competition_Monitor.Init(MaxCompetitors,
-                                             Laps_In,
-                                             GlobalStatistics);
+                                             Laps_In);
 
          --NEW: moved to init.adb procedure
          --Starter := new Competition_Monitor.impl.MonitorStarter;

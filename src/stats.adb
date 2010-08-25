@@ -557,7 +557,8 @@ returnNum : INTEGER;
       end Update_Stats;
    end SYNCH_GLOBAL_STATS;
 
-   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
+   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT;
+                                  competitorID_In : INTEGER;
                                   competitorInfo_In : COMP_STATS_POINT)is
       tempCheck : INTEGER;
       tempLap : INTEGER;
@@ -622,3 +623,4 @@ returnNum : INTEGER;
 
 
 end Stats;
+

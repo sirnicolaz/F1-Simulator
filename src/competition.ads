@@ -11,7 +11,7 @@ with Ada.Strings.Unbounded;
 
 with Common;
 
-with Stats;
+--with Stats;
 with Competition_Monitor;
 
 package Competition is
@@ -24,8 +24,11 @@ package Competition is
    protected type SYNCH_COMPETITION is
 
       entry Register_NewCompetitor(CompetitorDescriptor : in STRING;
-                                       Box_CorbaLOC : in STRING;
-                                       Given_Id : out INTEGER);
+                                   Box_CorbaLOC : in STRING;
+                                   Given_Id : out INTEGER;
+                                   Laps_Out : out INTEGER;
+                                   CircuitLength_Out : out FLOAT;
+                                   Monitor_CorbaLoc_Out : out Unbounded_String.Unbounded_String);
 
       procedure Configure( MaxCompetitors : in POSITIVE;
                           ClassificRefreshTime_in : in FLOAT;
@@ -51,6 +54,7 @@ package Competition is
       Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Laps : INTEGER;
       Circuit_Length : FLOAT;
+      Checkpoint_Qty : INTEGER;
       Competitors : access CompetitorTask_Array;
       -- The ID to assign to the next competitor that will apply for joining
       --+ the competition
@@ -61,8 +65,8 @@ package Competition is
       Comp_List : access Common.COMPETITOR_LIST;
       Monitor : Competition_monitor.STARTSTOPHANDLER_POINT;
       --TODO: verify if really needed
-      GlobalStatistics : Stats.GLOBAL_STATS_HANDLER_POINT;
-      GenericStatistics : Stats.GENERIC_STATS_POINT;
+      --GlobalStatistics : Stats.GLOBAL_STATS_HANDLER_POINT;
+      --GenericStatistics : Stats.GENERIC_STATS_POINT;
       Monitor_CorbaLoc : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    end SYNCH_COMPETITION;
 
