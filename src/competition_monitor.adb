@@ -4,6 +4,7 @@ with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 
 with Common;
+use Common;
 
 with Stats;
 use Stats;
@@ -289,11 +290,17 @@ package body Competition_Monitor is
       Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
       Tmp_StatsString : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
       Tmp_CompLocation : access STRING;
+
+      Tmp_BestLapTime : FLOAT;
+      Tmp_BestLapNum : INTEGER;
+      Tmp_BestLapCompetitor : INTEGER;
+      Tmp_BestSectorTimes : FLOAT_ARRAY(1..3);
+      Tmp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
    begin
       Ada.Text_IO.Put_Line("A TV is really asking");
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
-         "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """>");
+         "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
          Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
          Stats.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
@@ -323,8 +330,41 @@ package body Competition_Monitor is
             "</competitor>");
       end loop;
 
+      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
+
+      --Retrieving best performances
+      Stats.Get_BestLap(TimeInstant,
+                        LapTime       => Tmp_BestLapTime,
+                        LapNum        => Tmp_BestLapNum,
+                        Competitor_ID => Tmp_BestLapCompetitor);
+
+      Stats.Get_BestSectorTimes(TimeInstant,
+                                Times          => Tmp_BestSectorTimes,
+                                Competitor_IDs => Tmp_BestSectorCompetitors);
+
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-        ("</competitionStatus>");
+        ("<bestTimes>" &
+         "<lap num=""" & Common.IntegerToString(Tmp_BestLapNum) & """></lap>" &
+         "<time>" & FLOAT'IMAGE(Tmp_BestLapTime) & "</time>" & --TODO perform a better conversion to string
+         "<competitorId>" & Common.IntegerToString(Tmp_BestLapCompetitor) & "</competitorId>" &
+         "<sectors>"
+        );
+
+      for i in 1..3 loop
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+           ("<sector num=""" & Common.IntegerToString(i) & """>" &
+            "<time>" & FLOAT'IMAGE(Tmp_BestSectorTimes(i)) & "</time>" &
+            "<competitorId>" & Common.IntegerToString(Tmp_BestSectorCompetitors(i)) & "</competitorId>" &
+            "</sector>"
+           );
+      end loop;
+
+
+      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+        ("</sectors>" &
+         "</bestTimes>" &
+         "</competitionStatus>"
+        );
 
       return Tmp_StatsString;
 

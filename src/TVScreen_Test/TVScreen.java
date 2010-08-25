@@ -50,10 +50,29 @@ public class TVScreen{
 
 			//Take the root node "competitionStatus"
 			nodes_i = document.getDocumentElement().getChildNodes(); 
+			//nodes_i = competitors,bestTimes. Use this loop to find the related indexes
+			int competitorsIndex = 0;
+			int bestTimesIndex = 0;
+			
+			for( int x = 0; x < nodes_i.getLength(); x++){
+			  Node node_i = nodes_i.item(x);
+				if(node_i.getNodeType() == Node.ELEMENT_NODE &&
+				   ((Element) node_i).getTagName().equals("competitors")){
+				      competitorsIndex = x;
+				}
+				if(node_i.getNodeType() == Node.ELEMENT_NODE &&
+				   ((Element) node_i).getTagName().equals("bestTimes")){
+				      bestTimesIndex = x;
+				}
+			}
+
+			NodeList competitors = nodes_i.item(competitorsIndex).getChildNodes();
+			NodeList bestTimes = nodes_i.item(bestTimesIndex).getChildNodes();
+
 
 			//loop thorugh the children "competitor"
-			for(int j = 0; j < nodes_i.getLength(); j++){
-				Node node_i = nodes_i.item(j);
+			for(int j = 0; j < competitors.getLength(); j++){
+				Node node_i = competitors.item(j);
 				if(node_i.getNodeType() == Node.ELEMENT_NODE &&
 				   ((Element) node_i).getTagName().equals("competitor")){
 
@@ -83,6 +102,72 @@ public class TVScreen{
 					System.out.println();
 				}
 			}
+			
+			//loop thorugh the children "best times"
+			for(int j = 0; j < bestTimes.getLength(); j++){
+				Node node_i = competitors.item(j);
+				if(node_i.getNodeType() == Node.ELEMENT_NODE &&
+				   ((Element) node_i).getTagName().equals("lap")){
+
+					int id;
+					int num;
+					String timeLap;
+
+					Element bestLap = (Element)node_i;
+					num = Integer.parseInt(bestLap.getAttribute("num"));
+					System.out.print("Best lap " + num + ":");
+
+
+					NodeList bestLap_stuff = bestLap.getChildNodes();
+					for( int featureIndex = 0; featureIndex < bestLap_stuff.getLength(); featureIndex++){
+						Node feature = bestLap_stuff.item(featureIndex);
+						if(feature.getNodeType()==Node.ELEMENT_NODE){
+							//Pick up the name of the tag and the value
+							Element featureElement = (Element)feature;
+							NodeList featureNodes = featureElement.getChildNodes();
+							System.out.print(featureElement.getTagName() + "= " + (featureNodes.item(0)).getNodeValue() + ",");
+							
+							//If it's a checkpoint, verify the attribute "compPosition"
+						}
+					}
+					System.out.println();
+				}
+				if(node_i.getNodeType() == Node.ELEMENT_NODE &&
+				   ((Element) node_i).getTagName().equals("sectors")){
+					NodeList sectors = node_i.getChildNodes();
+					for( int sectIndex = 0; sectIndex < sectors.getLength(); sectIndex++){
+					    Node sector = sectors.item(sectIndex);
+					    if(sector.getNodeType() == Node.ELEMENT_NODE &&
+						((Element) sector).getTagName().equals("sector")){
+						      int id;
+						      int num;
+						      String timeSect;
+						      Element bestSector = (Element)sector;
+						      num = Integer.parseInt(bestSector.getAttribute("num"));
+						      System.out.print("Best sector " + num + ":");
+
+
+						      NodeList bestSector_stuff = sector.getChildNodes();
+						      for( int featureIndex = 0; featureIndex < bestSector_stuff.getLength(); featureIndex++){
+							      Node feature = bestSector_stuff.item(featureIndex);
+							      if(feature.getNodeType()==Node.ELEMENT_NODE){
+								//Pick up the name of the tag and the value
+								Element featureElement = (Element)feature;
+								NodeList featureNodes = featureElement.getChildNodes();
+								System.out.print(featureElement.getTagName() + "= " + (featureNodes.item(0)).getNodeValue() + ",");
+								
+								//If it's a checkpoint, verify the attribute "compPosition"
+								}
+						      }
+						      System.out.println();
+						      
+						}
+					
+					}
+				   
+				   }
+			}
+			
 			System.out.println("-----------------------------------------");
 			time = refreshTime + time;
 

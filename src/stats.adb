@@ -229,12 +229,15 @@ package body Stats is
       --+ That's why that operation is done before the update of the statistic.
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
+      Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific");
       if(Data.LastCheckInSect and Data.Sector = 3) then
-         Update_Classific(Competitor_ID,
-                          Data.Lap,
-                          Data.Time);
+         --Update_Classific(Competitor_ID,
+         --                 Data.Lap,
+         --                 Data.Time);
+         null; --TODO
       end if;
       --Update the statistics
+      Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
    end Add_Stat;
 
@@ -254,6 +257,89 @@ package body Stats is
    end Update_Classific;
 
 
+   procedure Get_BestLap(TimeInstant : FLOAT;
+                         LapTime : out FLOAT;
+                         LapNum : out INTEGER;
+                         Competitor_ID : out INTEGER) is
+      Temp_Stats : COMP_STATS_POINT := new COMP_STATS;
+      Temp_BestLapNum : INTEGER := -1;
+      Temp_BestLapTime : FLOAT := -1.0;
+      Temp_BestLapCompetitor : INTEGER := -1;
+   begin
+
+      --Retrieve all the information related to the give time for each competitor
+      for Index in 1..Competitor_Statistics.all'LENGTH loop
+         Get_StatsByTime(Competitor_ID => Index,
+                         Time          => TimeInstant,
+                         Stats_In      => Temp_Stats);
+
+         --compare the "bestlap" values and find out the best one
+         if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
+              Temp_BestLapTime = -1.0 ) then
+            Temp_BestLapTime := Temp_Stats.BestLaptime;
+            Temp_BestLapNum := Temp_Stats.BestLapNum;
+            Temp_BestLapCompetitor := Index;
+         end if;
+
+      end loop;
+
+      --initialize che out variables correctly
+      LapTime := Temp_BestLapTime;
+      LapNum := Temp_BestLapNum;
+      Competitor_ID := Temp_BestLapCompetitor;
+
+   end Get_BestLap;
+
+   procedure Get_BestSectorTimes(TimeInstant : FLOAT;
+                                 Times : out FLOAT_ARRAY;
+                                 Competitor_IDs : out INTEGER_ARRAY) is
+      Temp_BestSectorTimes : FLOAT_ARRAY(1..3);
+      Temp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
+      Temp_Stats : COMP_STATS_POINT := new COMP_STATS;
+   begin
+
+      for i in 1..3 loop
+         Temp_BestSectorTimes(i) := -1.0;
+         Temp_BestSectorCompetitors(i) := -1;
+      end loop;
+
+      --Retrieve all the information related to the give time for each competitor
+      for Index in 1..Competitor_Statistics.all'LENGTH loop
+         Get_StatsByTime(Competitor_ID => Index,
+                         Time          => TimeInstant,
+                         Stats_In      => Temp_Stats);
+
+         --compare the "bestlap" values and find out the best one
+         for i in 1..3 loop
+            if( (Temp_Stats.BestSectorTimes(i) /= -1.0 and Temp_Stats.BestSectorTimes(i) < Temp_BestSectorTimes(i)) or
+                 Temp_BestSectorTimes(i) = -1.0 ) then
+               Temp_BestSectorTimes(i) := Temp_Stats.BestSectorTimes(i);
+               Temp_BestSectorCompetitors(i) := Index;
+            end if;
+         end loop;
+
+      end loop;
+
+      Times := Temp_BestSectorTimes;
+      Competitor_IDs := Temp_BestSectorCompetitors;
+
+   end Get_BestSectorTimes;
+
+   procedure Get_LapTime(Competitor_ID : INTEGER;
+                         Lap : INTEGER;
+                         Time : out FLOAT) is
+   begin
+      null;
+   end Get_LapTime;
+
+
+   procedure Get_LappedCompetitor(TimeInstant : FLOAT;
+                                  CurrentLap : INTEGER;
+                                  Competitor_IDs : access INTEGER_ARRAY;
+                                  Competitor_Lap : access INTEGER_ARRAY) is
+   begin
+      null;
+   end Get_LappedCompetitor;
 
    function print return BOOLEAN is
    begin

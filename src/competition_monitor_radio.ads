@@ -43,11 +43,10 @@ package Competition_Monitor_Radio is
    Get_CompetitorInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitorInfo:1.0";
 
-   procedure Get_CompetitionInfo
+   function Get_CompetitionInfo
      (Self : Ref;
-      timeInstant : CORBA.Float;
-      times : out Competition_Monitor_Radio.ClassificationTimes;
-      Returns : out CORBA.String);
+      timeInstant : CORBA.Float)
+     return CORBA.String;
 
    Get_CompetitionInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitionInfo:1.0";

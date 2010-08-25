@@ -14,7 +14,6 @@ with PolyORB.Types;
 with PolyORB.Requests;
 with PolyORB.CORBA_P.Interceptors_Hooks;
 with PolyORB.CORBA_P.Exceptions;
-with Competition_Monitor_Radio.Helper;
 
 package body Competition_Monitor_Radio is
 
@@ -168,10 +167,6 @@ package body Competition_Monitor_Radio is
      PolyORB.Types.To_PolyORB_String
         ("timeInstant");
 
-   Get_CompetitionInfo_Arg_Name_times_Ü : constant PolyORB.Types.Identifier :=
-     PolyORB.Types.To_PolyORB_String
-        ("times");
-
    Get_CompetitionInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
@@ -193,16 +188,14 @@ package body Competition_Monitor_Radio is
    -- Get_CompetitionInfo --
    -------------------------
 
-   procedure Get_CompetitionInfo
+   function Get_CompetitionInfo
      (Self : Ref;
-      timeInstant : CORBA.Float;
-      times : out Competition_Monitor_Radio.ClassificationTimes;
-      Returns : out CORBA.String)
+      timeInstant : CORBA.Float)
+     return CORBA.String
    is
       Argument_List_Ü : PolyORB.Any.NVList.Ref;
-      Result_Ü : CORBA.String
-        renames Returns;
-      pragma Warnings (Off, Returns);
+      Result_Ü : CORBA.String;
+      pragma Warnings (Off, Result_Ü);
       Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
         CORBA.Wrap
            (Result_Ü'Unrestricted_Access);
@@ -213,15 +206,6 @@ package body Competition_Monitor_Radio is
         CORBA.Internals.Get_Wrapper_Any
            (CORBA.TC_Float,
             Arg_CC_timeInstant_Ü'Unchecked_Access);
-      Arg_CC_times_Ü : aliased PolyORB.Any.Content'Class :=
-        Competition_Monitor_Radio.Helper.Internals.Wrap
-           (Competition_Monitor_Radio.IDL_SEQUENCE_float.Sequence
-              (times)'Unrestricted_Access);
-      Arg_Any_times_Ü : constant CORBA.Any :=
-        CORBA.Internals.Get_Wrapper_Any
-           (Competition_Monitor_Radio.Helper.TC_ClassificationTimes,
-            Arg_CC_times_Ü'Unchecked_Access);
-      pragma Warnings (Off, times);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
         Get_CompetitionInfo_Result_Ü;
@@ -243,12 +227,6 @@ package body Competition_Monitor_Radio is
          PolyORB.Any.Any
            (Arg_Any_timeInstant_Ü),
          PolyORB.Any.ARG_IN);
-      PolyORB.Any.NVList.Add_Item
-        (Argument_List_Ü,
-         Get_CompetitionInfo_Arg_Name_times_Ü,
-         PolyORB.Any.Any
-           (Arg_Any_times_Ü),
-         PolyORB.Any.ARG_OUT);
       --  Setting the result value
       PolyORB.Any.Set_Value
         (PolyORB.Any.Get_Container
@@ -273,6 +251,8 @@ package body Competition_Monitor_Radio is
         (Request_Ü);
       PolyORB.Requests.Destroy_Request
         (Request_Ü);
+      --  Return value
+      return Result_Ü;
    end Get_CompetitionInfo;
 
    getBestLap_Result_Name_Ü : constant PolyORB.Types.Identifier :=
