@@ -17,44 +17,44 @@ with PolyORB.CORBA_P.Exceptions;
 
 package body Competition_Monitor_Radio is
 
-   getInfo_Arg_Name_lap_Ü : constant PolyORB.Types.Identifier :=
+   Get_CompetitorInfo_Arg_Name_lap_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("lap");
 
-   getInfo_Arg_Name_sector_Ü : constant PolyORB.Types.Identifier :=
+   Get_CompetitorInfo_Arg_Name_sector_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("sector");
 
-   getInfo_Arg_Name_id_Ü : constant PolyORB.Types.Identifier :=
+   Get_CompetitorInfo_Arg_Name_id_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("id");
 
-   getInfo_Arg_Name_time_Ü : constant PolyORB.Types.Identifier :=
+   Get_CompetitorInfo_Arg_Name_time_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("time");
 
-   getInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+   Get_CompetitorInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
         ("Result");
 
-   ----------------------
-   -- getInfo_Result_Ü --
-   ----------------------
+   ---------------------------------
+   -- Get_CompetitorInfo_Result_Ü --
+   ---------------------------------
 
-   function getInfo_Result_Ü return PolyORB.Any.NamedValue is
-      pragma Inline (getInfo_Result_Ü);
+   function Get_CompetitorInfo_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Get_CompetitorInfo_Result_Ü);
    begin
-      return (Name => getInfo_Result_Name_Ü,
+      return (Name => Get_CompetitorInfo_Result_Name_Ü,
       Argument => CORBA.Internals.Get_Empty_Any
         (CORBA.TC_String),
       Arg_Modes => 0);
-   end getInfo_Result_Ü;
+   end Get_CompetitorInfo_Result_Ü;
 
-   -------------
-   -- getInfo --
-   -------------
+   ------------------------
+   -- Get_CompetitorInfo --
+   ------------------------
 
-   procedure getInfo
+   procedure Get_CompetitorInfo
      (Self : Ref;
       lap : CORBA.Short;
       sector : CORBA.Short;
@@ -100,7 +100,7 @@ package body Competition_Monitor_Radio is
       pragma Warnings (Off, time);
       Request_Ü : PolyORB.Requests.Request_Access;
       Result_Nv_Ü : PolyORB.Any.NamedValue :=
-        getInfo_Result_Ü;
+        Get_CompetitorInfo_Result_Ü;
    begin
       if CORBA.Object.Is_Nil
         (CORBA.Object.Ref
@@ -115,25 +115,25 @@ package body Competition_Monitor_Radio is
       --  Fill the Argument list
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getInfo_Arg_Name_lap_Ü,
+         Get_CompetitorInfo_Arg_Name_lap_Ü,
          PolyORB.Any.Any
            (Arg_Any_lap_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getInfo_Arg_Name_sector_Ü,
+         Get_CompetitorInfo_Arg_Name_sector_Ü,
          PolyORB.Any.Any
            (Arg_Any_sector_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getInfo_Arg_Name_id_Ü,
+         Get_CompetitorInfo_Arg_Name_id_Ü,
          PolyORB.Any.Any
            (Arg_Any_id_Ü),
          PolyORB.Any.ARG_IN);
       PolyORB.Any.NVList.Add_Item
         (Argument_List_Ü,
-         getInfo_Arg_Name_time_Ü,
+         Get_CompetitorInfo_Arg_Name_time_Ü,
          PolyORB.Any.Any
            (Arg_Any_time_Ü),
          PolyORB.Any.ARG_OUT);
@@ -147,7 +147,7 @@ package body Competition_Monitor_Radio is
         (Target => CORBA.Object.Internals.To_PolyORB_Ref
            (CORBA.Object.Ref
               (Self)),
-         Operation => "getInfo",
+         Operation => "Get_CompetitorInfo",
          Arg_List => Argument_List_Ü,
          Result => Result_Nv_Ü,
          Req => Request_Ü);
@@ -161,7 +161,99 @@ package body Competition_Monitor_Radio is
         (Request_Ü);
       PolyORB.Requests.Destroy_Request
         (Request_Ü);
-   end getInfo;
+   end Get_CompetitorInfo;
+
+   Get_CompetitionInfo_Arg_Name_timeInstant_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("timeInstant");
+
+   Get_CompetitionInfo_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   ----------------------------------
+   -- Get_CompetitionInfo_Result_Ü --
+   ----------------------------------
+
+   function Get_CompetitionInfo_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Get_CompetitionInfo_Result_Ü);
+   begin
+      return (Name => Get_CompetitionInfo_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_String),
+      Arg_Modes => 0);
+   end Get_CompetitionInfo_Result_Ü;
+
+   -------------------------
+   -- Get_CompetitionInfo --
+   -------------------------
+
+   function Get_CompetitionInfo
+     (Self : Ref;
+      timeInstant : CORBA.Float)
+     return CORBA.String
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Result_Ü : CORBA.String;
+      pragma Warnings (Off, Result_Ü);
+      Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (Result_Ü'Unrestricted_Access);
+      Arg_CC_timeInstant_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (timeInstant'Unrestricted_Access);
+      Arg_Any_timeInstant_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Float,
+            Arg_CC_timeInstant_Ü'Unchecked_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Get_CompetitionInfo_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Get_CompetitionInfo_Arg_Name_timeInstant_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_timeInstant_Ü),
+         PolyORB.Any.ARG_IN);
+      --  Setting the result value
+      PolyORB.Any.Set_Value
+        (PolyORB.Any.Get_Container
+           (Result_Nv_Ü.Argument).all,
+         Arg_CC_Result_Ü_Ü'Unrestricted_Access);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Get_CompetitionInfo",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+      --  Return value
+      return Result_Ü;
+   end Get_CompetitionInfo;
 
    getBestLap_Result_Name_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String

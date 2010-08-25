@@ -10,7 +10,9 @@ package Competition_Monitor_Radio.impl is
                   CompetitorID : Corba.SHORT) return BOOLEAN;
 
     -- metodo che ritorna le informazioni in base a giro, settore e id concorrente (metodo invocato da remoto)
-   procedure getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING);
+   procedure Get_CompetitorInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING);
+
+   function Get_CompetitionInfo(Self : access Object; timeInstant : CORBA.FLOAT) return CORBA.String;
 
    function getBestLap(Self : access Object) return CORBA.STRING;
 

@@ -310,34 +310,46 @@ package body OnBoardComputer is
       Index : INTEGER := Computer_In.LastSlotAccessed;
       Tmp_Time : FLOAT;
    begin
+      Ada.Text_IO.Put_Line("TV asking by time");
       Computer_In.Information(Index).Get_Time(Tmp_Time);
+      Ada.Text_IO.Put_Line("TV time got");
       if (Tmp_Time >= Time ) then
+         Ada.Text_IO.Put_Line("TV backward");
          Index := Index - 1;
-         Computer_In.Information(Index).Get_Time(Tmp_Time);
-         while Index = -1 or else Tmp_Time > Time loop
+         if(Index /= 0) then
+            Computer_In.Information(Index).Get_Time(Tmp_Time);
+         end if;
+         while Index > 1 and then Tmp_Time > Time loop
             Index := Index - 1;
+            Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
             Computer_In.Information(Index).Get_Time(Tmp_Time);
          end loop;
 
          if( Stats_In = null ) then
             Stats_In := new COMP_STATS;
          end if;
+         Ada.Text_IO.Put_Line("TV out");
 
          Computer_In.Information(Index+1).Get_All(Stats_In.all);
+         Computer_In.LastSlotAccessed := Index + 1;
+         Ada.Text_IO.Put_Line("TV get all done");
 
       else
+         Ada.Text_IO.Put_Line("TV forward");
          Index := Index + 1;
          Computer_In.Information(Index).Get_Time(Tmp_Time);
          while Tmp_Time < Time loop
+            Ada.Text_IO.Put_Line("TV cycle");
             Index := Index + 1;
             Computer_In.Information(Index).Get_Time(Tmp_Time);
          end loop;
 
+         Ada.Text_IO.Put_Line("TV getting");
          COmputer_In.Information(Index).Get_All(Stats_In.all);
+         Computer_In.LastSlotAccessed := Index;
 
       end if;
-
-      Computer_In.LastSlotAccessed := Index;
+      Ada.Text_IO.Put_Line("TV got");
 
    end Get_StatsByTime;
 

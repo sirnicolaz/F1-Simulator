@@ -2,11 +2,6 @@ with System;
 with Ada.Text_IO;
 
 with Ada.Strings.Unbounded;
---with Sax.Readers; use Sax.Readers;
---with DOM.Readers; use DOM.Readers;
---with DOM.Core; use DOM.Core;
---with DOM.Core.Documents; use DOM.Core.Documents;
---with DOM.Core.Nodes; use DOM.Core.Nodes;
 
 with Common;
 
@@ -20,10 +15,6 @@ package body Competition_Monitor is
 
    --per avere gli onboardcomputer di ogni concorrente
    arrayComputer : access OBC;
-   --per avere le statistiche
-   --arrayStats : access compStatsArray;
-   --per avere l'array con i dati relativi a ogni concorrente (l'id del concorrente è l'indice dell'array)
-   --arrayComp : access compArray;
 
    function getBool return Boolean is
    begin
@@ -85,17 +76,6 @@ package body Competition_Monitor is
       Laps := Laps_In;
 
       arrayComputer := new OBC(1..CompetitorQty);
-      --arrayStats := new compStatsArray(1..CompetitorQty);
-      --arrayComp := new compArray(1..CompetitorQty);
-
-      --Init the INFO_ARRAY_POINT
-      --for Index in 1..CompetitorQty loop
-      --   arrayComp(Index) := new INFO_ARRAY(0..Laps-1);
-      --   for Indez in 0..Laps-1 loop
-      --      arrayComp(Index).all(Indez) := new INFO_STRING;
-      --   end loop;
-      --end loop;
-
 
       CompetitionHandler := new STARTSTOPHANDLER;
       CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
@@ -107,98 +87,12 @@ package body Competition_Monitor is
       return CompetitionHandler;
    end Init;
 
-
-
---     protected body INFO_STRING is
---         -- ritorna le info sul settore relativo al giro, se disponibili
---        entry getSector (index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT ) when true is
---        begin
---           Ada.Text_IO.Put_Line("in getSector");
---           if index = 1 then
---              if sector1 = Unbounded_String.Null_Unbounded_String then
---                 Ada.Text_IO.Put_Line("in getSector,settore 1 NULL");
---                 Updated := false;
---                 requeue Wait;
---              else
---                 sectorString := sector1;
---                 time := sector1_time;
---              end if;
---           elsif index = 2 then
---              if sector2 = Unbounded_String.Null_Unbounded_String then
---                 Ada.Text_IO.Put_Line("in getSector,settore 2 NULL");
---                 Updated := false;
---                 requeue Wait;
---              else
---                 sectorString := sector2;
---                 time := sector2_time;
---              end if;
---           else
---              if sector3 = Unbounded_String.Null_Unbounded_String then
---                 Ada.Text_IO.Put_Line("in getSector,settore 3 NULL");
---                 Updated := false;
---                 requeue Wait;
---              else
---                 sectorString := sector3;
---                 time := sector3_time;
---              end if;
---           end if;
---        end getSector;
---        entry Wait(index : INTEGER; sectorString : out Unbounded_String.Unbounded_String; time : out FLOAT ) when Updated  is
---        begin
---  --Ada.Text_IO.Put_Line("in wait");
---           requeue GetSector;
---        end Wait;
---        -- function getInfoSector (index : INTEGER) return Unbounded_String.Unbounded_String;
---        procedure setSector(index : INTEGER; updXml : Unbounded_String.Unbounded_String; time : FLOAT) is
---        begin
---           Ada.Text_IO.Put_Line("Setting sector " & Common.IntegerToString(index));
---           if index = 1 then
---              sector1 := updXml;
---              sector1_time := time;
---           elsif index = 2 then
---              sector2 := updXml;
---              sector2_time := time;
---           else
---              sector3 := updXml;
---              sector3_time := time;
---           end if;
---           Updated := true;
---        end setSector;
---     end INFO_STRING;
-
-
---     procedure setInfo(lap : INTEGER; sector : INTEGER; id : INTEGER; updXml : Unbounded_String.Unbounded_String; time : FLOAT) is
---     begin
---  --        if arrayComp = null then
---  --           arrayComp := new CompArray(1..CompetitorQty);--TODO : stronzata
---  --           Ada.Text_IO.Put_Line("arrayComp init");
---  --        end if;
---  --         if arrayComp = null then
---  --           Ada.Text_IO.Put_Line("arrayComp NULL");
---  --        end if;
---
---  --         if arrayComp(id).arrayInfo = null then
---  --           Ada.Text_IO.Put_Line("arrayInfo NULL");
---  --        end if;
---  --Ada.Text_IO.Put_Line(Unbounded_String.To_String(updXml));
---        Ada.Text_IO.Put_Line("Competitor " & Common.IntegerToString(id) & " is addin info of lap " & Common.IntegerToString(lap));
---        arrayComp(id).all(lap).setSector(sector, updXml,time);
---     end setInfo;
-
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;
-      --AddCompId(indexIn);
    end AddOBC;
 
-   --procedure AddCompId (IdComp :  INTEGER) is
-      --arr : INFO_POINT;
-   --begin
-      --arrayComp(IdComp).arrayInfo := new InfoArray(0..Laps);
-      --inizializzazione dell'infoArray relativo al concorrente di ID = IDComp
-   --end AddCompId;
-
-   procedure getInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
+   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       ComputerIndex : INTEGER := 1;
    begin
 
@@ -212,7 +106,7 @@ package body Competition_Monitor is
                                   updString,
                                   time);
 
-   end getInfo;
+   end Get_CompetitorInfo;
 
    pragma Warnings(off);
    function getClassific(idComp_In : INTEGER) return STRING is
@@ -388,15 +282,17 @@ package body Competition_Monitor is
       return "";
    end getBestSectorInfo;
 
-   function Get_Info( TimeInstant : FLOAT) return STRING is
+   function Get_CompetitionInfo( TimeInstant : FLOAT) return Unbounded_String.Unbounded_String is
       Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
       Tmp_StatsString : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
       Tmp_CompLocation : access STRING;
    begin
+      Ada.Text_IO.Put_Line("A TV is really asking");
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """>");
       for Index in arrayComputer'RANGE loop
+         Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
          OnboardComputer.Get_StatsByTime(Computer_In => arrayComputer(Index),
                                          Time        => TimeInstant,
                                          Stats_In    => Tmp_Stats);
@@ -427,9 +323,9 @@ package body Competition_Monitor is
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</competitionStatus>");
 
-      return Common.Unbounded_String.To_String(Tmp_StatsString);
+      return Tmp_StatsString;
 
-   end Get_Info;
+   end Get_CompetitionInfo;
 
 
 end Competition_Monitor;

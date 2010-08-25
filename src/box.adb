@@ -133,7 +133,7 @@ package body Box is
       loop
 
          Ada.Text_IO.Put_Line("Getting info");
-         Competition_Monitor_Radio.getInfo
+         Competition_Monitor_Radio.Get_CompetitorInfo
            (
             Radio,
             CORBA.Short(Lap),

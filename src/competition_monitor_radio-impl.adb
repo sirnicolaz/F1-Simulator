@@ -7,7 +7,12 @@ with Competition_Monitor;
 with Common;
 with Ada.Text_IO;
 
+with Ada.Strings.Unbounded;
+
 package body Competition_Monitor_Radio.impl is
+
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
 
    function Ready( Self : access Object;
                   CompetitorID : Corba.SHORT) return BOOLEAN is
@@ -16,21 +21,29 @@ package body Competition_Monitor_Radio.impl is
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 
-   procedure getInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
-      ReturnStr : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
+   procedure Get_CompetitorInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
+      ReturnStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       ReturnTime : FLOAT;
    begin
       Ada.Text_IO.Put_Line("Asking for info: lap " & INTEGER'IMAGE(INTEGER(lap)) &
                            ", sector " & INTEGER'IMAGE(INTEGER(sector)));
-      Competition_Monitor.getInfo(lap       => INTEGER(lap),
+      Competition_Monitor.Get_CompetitorInfo(lap       => INTEGER(lap),
                                   sector    => INTEGER(sector),
                                   id        => INTEGER(id),
                                   time      => ReturnTime,
                                   updString => ReturnStr);
       Ada.Text_IO.Put_Line("Converting for info");
-      Returns := CORBA.To_CORBA_String(Common.Unbounded_String.To_String(ReturnStr));
+      Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(ReturnStr));
       time := CORBA.Float(ReturnTime);
-   end getInfo;
+   end Get_CompetitorInfo;
+
+   function Get_CompetitionInfo(Self : access Object; timeInstant : CORBA.FLOAT) return CORBA.STRING is
+      Tmp_String : Unbounded_String.Unbounded_String;
+   begin
+      Ada.Text_IO.Put_Line("A screen is asking");
+      Tmp_String := Competition_Monitor.Get_CompetitionInfo(FLOAT(timeInstant));
+      return CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
+   end Get_CompetitionInfo;
 
    function getBestLap(Self : access Object) return CORBA.STRING is
    begin
