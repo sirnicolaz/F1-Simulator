@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+<competitionUpdate>
+<competitors>
+    <competitor id="1">
+	<checkpoint compPosition="passed" >12</checkpoint>
+	<lap>3</lap>
+	<sector>3</sector>
+    </competitor>
+    <competitor id="2">
+	<checkpoint compPosition="passed" >12</checkpoint>
+	<lap>1</lap>
+	<sector>3</sector>
+    </competitor>
+<competitors>
+<bestTimes>
+    <lap num="3">
+      <time>34.0000</time>
+      <competitorId>4</time>
+    </lap>
+    <sectors>
+	<sector num="1">
+	    <time>10.0</time>
+	    <competitorId>3</competitorId>
+	</sector>
+	<sector num="2">
+	    <time>15.1</time>
+	    <competitorId>3</competitorId>
+	</sector>
+	<sector num="3">
+	    <time>5.3</time>
+	    <competitorId>3</competitorId>
+	</sector>
+    </sectors>
+</bestTimes>
+<classification>
+<!-- Competitors are ordered by classification position -->
+<!-- When a competitor has the time tag it means that has not been lapped (doppiato)-->
+<!-- Otherwise the lap number show the lap where the competitor is in the moment the first 
+<!-- driver pass through the goal -->
+  <competitor id="3">
+      <lap>4</lap>
+      <time>456.00</time>
+  </competitor>
+  <competitor id="5">
+      <lap>3</lap>
+  </competitor>
+  <competitor id="1">
+      <lap>2</lap>
+  </competitor>
+</classification>
+</competitionUpdate>
