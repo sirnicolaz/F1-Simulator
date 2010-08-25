@@ -5,89 +5,6 @@ use Ada.Text_IO;
 
 package body OnBoardComputer is
 
-   protected body SYNCH_COMP_STATS_HANDLER is
-
-      entry Get_Time( Result : out FLOAT ) when Initialised = TRUE is
-      begin
-         Result := Statistic.Time;
-      end Get_Time;
-
-      entry Get_Checkpoint (Result : out INTEGER) when Initialised = TRUE is
-      begin
-         Result := Statistic.Checkpoint;
-      end Get_Checkpoint;
-
-      entry Get_Lap (Result : out INTEGER) when Initialised = TRUE is
-      begin
-         Result := Statistic.Lap;
-      end Get_Lap;
-
-      entry Get_Sector (Result : out INTEGER) when Initialised = TRUE is
-      begin
-         Result := Statistic.Sector;
-      end Get_Sector;
-
-      entry Get_BestLapNum (Result : out INTEGER) when Initialised = TRUE is
-      begin
-         Result := Statistic.BestLapNum;
-      end Get_BestLapNum;
-
-      entry Get_BestLapTime (Result : out FLOAT) when Initialised = TRUE is
-      begin
-         Result := Statistic.BestLapTime;
-      end Get_BestLapTime;
-
-      entry Get_BestSectorTime( SectorNum : INTEGER; Result : out FLOAT) when Initialised = TRUE is
-      begin
-         Result := Statistic.BestSectorTimes(SectorNum);
-      end Get_BestSectorTime;
-
-      entry Get_MaxSpeed (Result : out FLOAT) when Initialised = TRUE is
-      begin
-         Result := Statistic.MaxSpeed;
-      end Get_MaxSpeed;
-
-      entry Get_IsLastCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
-      begin
-         Result := Statistic.LastCheckInSect;
-      end Get_IsLastCheckInSector;
-
-      entry Get_IsFirstCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
-      begin
-         Result := Statistic.FirstCheckInSect;
-      end Get_IsFirstCheckInSector;
-
-      entry Get_PathLength (Result : out FLOAT) when Initialised = TRUE is
-      begin
-         Result := Statistic.PathLength;
-      end Get_PathLength;
-
-      entry Get_GasLevel (Result : out FLOAT) when Initialised = TRUE is
-      begin
-         Result := Statistic.GasLevel;
-      end Get_GasLevel;
-
-      entry Get_TyreUsury (Result : out PERCENTAGE) when Initialised = TRUE is
-      begin
-         Result := Statistic.TyreUsury;
-      end Get_TyreUsury;
-
-      entry Get_All( Result : out COMP_STATS) when Initialised = TRUE is
-      begin
-         Result := Statistic;
-      end Get_All;
-
-      entry Initialise(Stats_In : in COMP_STATS) when Initialised = FALSE is
-
-      begin
-         Ada.Text_IO.Put_Line("Adding " & INTEGER'IMAGE(Stats_In.Checkpoint));
-         Statistic := Stats_In;
-         Initialised := TRUE;
-      end Initialise;
-
-   end SYNCH_COMP_STATS_HANDLER;
-
-
    protected body SYNCH_INFO_FOR_BOX is
 
       procedure Init(Laps : INTEGER) is
@@ -130,12 +47,10 @@ package body OnBoardComputer is
    --+ are set to an empty one.
    procedure Init_Computer(Computer_In : COMPUTER_POINT;
                            CompetitorId_In : INTEGER;
-                           Laps : INTEGER;
-                           Checkpoints : INTEGER) is
+                           Laps : INTEGER) is
    begin
       Computer_In.Competitor_Id := CompetitorId_In;
-      Computer_In.Information := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
-      Computer_In.Checkpoints := Checkpoints;
+      --Computer_In.Information := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
       COmputer_In.BoxInformation := new SYNCH_INFO_FOR_BOX;
       Computer_In.BoxInformation.Init(Laps);
       Computer_In.CurrentBestSector_Times(1) := -1.0;
@@ -161,7 +76,7 @@ package body OnBoardComputer is
       -- If the information are related to last checkpoint of the sector
       --+ it's necessary to add those information to the competition monitor
 
-      COmputer_In.SectorLength_Helper := COmputer_In.SectorLength_Helper + Data.PathLength; -- il primo valore lo aggiungo, poi faccio un loop
+      Computer_In.SectorLength_Helper := COmputer_In.SectorLength_Helper + Data.PathLength; -- il primo valore lo aggiungo, poi faccio un loop
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": path length set");
       if(Data.LastCheckInSect = true) then
          Ada.Text_IO.Put_Line("Last check in sector");
@@ -201,7 +116,7 @@ package body OnBoardComputer is
             end if;
 
             if(Lap2Ask > 0) then
-               Get_StatsBySect(Computer_In, Sector2Ask, Lap2Ask, Tmp_Stats);
+               Stats.Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
             end if;
 
             if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 ) then
@@ -222,7 +137,7 @@ package body OnBoardComputer is
             if( CurrentSector = 3 ) then
                if ( Computer_In.CurrentBestLap_Time /= -1.0 ) then
 
-                  Get_StatsByCheck(Computer_In, 1, CurrentLap - 1, Tmp_Stats);
+                  Stats.Get_StatsByCheck(Get_ID(Computer_In), 1, CurrentLap - 1, Tmp_Stats);
 
                   if ( Data.Time - Tmp_Stats.Time < Computer_In.CurrentBestLap_Time ) then
                      Computer_In.CurrentBestLap_Time := Data.Time - Tmp_Stats.Time;
@@ -258,41 +173,16 @@ package body OnBoardComputer is
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": data speed set");
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": Registering data of lap : " &
                            INTEGER'IMAGE(Data.Lap+1) &
-                           " and sector " & INTEGER'IMAGE(Data.Checkpoint) &
-                           " at index " & INTEGER'IMAGE((Data.Lap*Computer_In.Checkpoints) + Data.Checkpoint));
-      Computer_In.Information.all((Data.Lap*Computer_In.Checkpoints) + Data.Checkpoint).Initialise(Data);
+                           " and sector " & INTEGER'IMAGE(Data.Checkpoint));
+
+      --TODO if the lap is finished, update the classific
+
+      Stats.Add_Stat(Computer_In.Competitor_Id,Data);
 
       Ada.Text_IO.Put_Line("fine add_data");
 
    end Add_Data;
 
-
-   -- It sets the CompStats parameter with the statistics related to the given sector and lap
-   procedure Get_StatsBySect(Computer_In : COMPUTER_POINT;
-                             Sector : INTEGER;
-                             Lap : INTEGER;
-                             Stats_In : out COMP_STATS_POINT) is
-      Index : INTEGER := Lap+1; -- laps start from 0, information are store starting from 1
-      Tmp_Sector : INTEGER;
-      Tmp_Bool : BOOLEAN;
-   begin
-      Computer_In.Information(Index).Get_Sector(Tmp_Sector);
-      Computer_In.Information(Index).Get_IsLastCheckInSector (Tmp_Bool);
-
-      while Tmp_Sector = Sector and then Tmp_Bool loop
-         Index := Index + 1;
-         Computer_In.Information(Index).Get_Sector(Tmp_Sector);
-         Computer_In.Information(Index).Get_IsLastCheckInSector (Tmp_Bool);
-      end loop;
-      Computer_In.LastSlotAccessed := Index;
-
-      if( Stats_In = null ) then
-        Stats_In := new COMP_STATS;
-      end if;
-
-      Computer_In.Information(Index).Get_All(Stats_In.all);
-
-   end Get_StatsBySect;
 
    -- It returns the competitor ID related to this Computer
    function Get_Id(Computer_In : COMPUTER_POINT) return INTEGER is
@@ -300,74 +190,9 @@ package body OnBoardComputer is
       return Computer_In.Competitor_Id;
    end Get_Id;
 
-   -- It return a statistic related to a certain time. If the statistic is not
-   --+ initialised yet, the requesting task will wait on the resource Information
-   --+ as long as it's been initialised
-   procedure Get_StatsByTime(Computer_In : COMPUTER_POINT;
-                            Time : FLOAT;
-                            Stats_In : out COMP_STATS_POINT) is
 
-      Index : INTEGER := Computer_In.LastSlotAccessed;
-      Tmp_Time : FLOAT;
-   begin
-      Ada.Text_IO.Put_Line("TV asking by time");
-      Computer_In.Information(Index).Get_Time(Tmp_Time);
-      Ada.Text_IO.Put_Line("TV time got");
-      if (Tmp_Time >= Time ) then
-         Ada.Text_IO.Put_Line("TV backward");
-         Index := Index - 1;
-         if(Index /= 0) then
-            Computer_In.Information(Index).Get_Time(Tmp_Time);
-         end if;
-         while Index > 1 and then Tmp_Time > Time loop
-            Index := Index - 1;
-            Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
-            Computer_In.Information(Index).Get_Time(Tmp_Time);
-         end loop;
-
-         if( Stats_In = null ) then
-            Stats_In := new COMP_STATS;
-         end if;
-         Ada.Text_IO.Put_Line("TV out");
-
-         Computer_In.Information(Index+1).Get_All(Stats_In.all);
-         Computer_In.LastSlotAccessed := Index + 1;
-         Ada.Text_IO.Put_Line("TV get all done");
-
-      else
-         Ada.Text_IO.Put_Line("TV forward");
-         Index := Index + 1;
-         Computer_In.Information(Index).Get_Time(Tmp_Time);
-         while Tmp_Time < Time loop
-            Ada.Text_IO.Put_Line("TV cycle");
-            Index := Index + 1;
-            Computer_In.Information(Index).Get_Time(Tmp_Time);
-         end loop;
-
-         Ada.Text_IO.Put_Line("TV getting");
-         COmputer_In.Information(Index).Get_All(Stats_In.all);
-         Computer_In.LastSlotAccessed := Index;
-
-      end if;
-      Ada.Text_IO.Put_Line("TV got");
-
-   end Get_StatsByTime;
-
-   -- It sets the CompStats parameter with the statistics related to the given check-point and lap
-   procedure Get_StatsByCheck(Computer_In : COMPUTER_POINT;
-                              Checkpoint : INTEGER;
-                              Lap : INTEGER;
-                              Stats_In : out COMP_STATS_POINT) is
-   begin
-
-      if( Stats_In = null ) then
-        Stats_In := new COMP_STATS;
-      end if;
-
-      Computer_In.Information((Lap+1)*Checkpoint).Get_All(Stats_In.all);
-      Computer_In.LastSlotAccessed := (Lap+1)*Checkpoint;
-   end Get_StatsByCheck;
-
+   --This method retrieve the information related to a sector and a lap. Information useful
+   --+ to the box.
    procedure Get_BoxInfo(Computer_In : COMPUTER_POINT;
                          Lap : INTEGER;
                          Sector : INTEGER;

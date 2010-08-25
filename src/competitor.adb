@@ -13,6 +13,9 @@ with Common;
 with Ada.Calendar;
 use Ada.Calendar;
 
+with Stats;
+use Stats;
+
 package body Competitor is
 
    --THis value has to be the same for oeveryone
@@ -236,7 +239,6 @@ package body Competitor is
                             RaceIterator : RACETRACK_ITERATOR;
                             id_In : INTEGER;
                             laps_In : INTEGER;
-                            checkpoints_In : INTEGER;
                             BoxRadio_CorbaLOC : STRING) return CAR_DRIVER_ACCESS is
       --parametri
       Input : File_Input;
@@ -433,8 +435,7 @@ package body Competitor is
       --Init onboard computer
       OnboardComputer.Init_Computer(Computer_In     => carDriver.statsComputer,
                                     CompetitorId_In => id_in,
-                                    Laps            => laps_in,
-                                    Checkpoints     => checkpoints_in);
+                                    Laps            => laps_in);
       --Initializing onboard computer references in the Competition Monitor
       Competition_Monitor.AddOBC(carDriver.statsComputer,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds

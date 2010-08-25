@@ -5,6 +5,9 @@ with Ada.Strings.Unbounded;
 
 with Common;
 
+with Stats;
+use Stats;
+
 package body Competition_Monitor is
 
    CompetitionHandler : StartStopHandler_POINT;
@@ -293,9 +296,9 @@ package body Competition_Monitor is
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """>");
       for Index in arrayComputer'RANGE loop
          Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
-         OnboardComputer.Get_StatsByTime(Computer_In => arrayComputer(Index),
-                                         Time        => TimeInstant,
-                                         Stats_In    => Tmp_Stats);
+         Stats.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
+                               Time        => TimeInstant,
+                               Stats_In    => Tmp_Stats);
 
          -- In this case the competitor is arriving to the checkpoint
          if( Tmp_Stats.Time < TimeInstant ) then

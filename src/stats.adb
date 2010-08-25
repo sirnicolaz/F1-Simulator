@@ -1,9 +1,237 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
-with Competition_Monitor;
---  with ONBOARDCOMPUTER;
---  use ONBOARDCOMPUTER;
+
 package body Stats is
+
+
+
+   --Singleton
+   Competitor_Statistics : STATISTIC_COLLECTION_POINT;
+   Classification_Tables : SOCT_ARRAY_POINT;
+
+   Checkpoints : INTEGER;
+
+
+   protected body SYNCH_COMP_STATS_HANDLER is
+
+      entry Get_Time( Result : out FLOAT ) when Initialised = TRUE is
+      begin
+         Result := Statistic.Time;
+      end Get_Time;
+
+      entry Get_Checkpoint (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.Checkpoint;
+      end Get_Checkpoint;
+
+      entry Get_Lap (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.Lap;
+      end Get_Lap;
+
+      entry Get_Sector (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.Sector;
+      end Get_Sector;
+
+      entry Get_BestLapNum (Result : out INTEGER) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestLapNum;
+      end Get_BestLapNum;
+
+      entry Get_BestLapTime (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestLapTime;
+      end Get_BestLapTime;
+
+      entry Get_BestSectorTime( SectorNum : INTEGER; Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.BestSectorTimes(SectorNum);
+      end Get_BestSectorTime;
+
+      entry Get_MaxSpeed (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.MaxSpeed;
+      end Get_MaxSpeed;
+
+      entry Get_IsLastCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
+      begin
+         Result := Statistic.LastCheckInSect;
+      end Get_IsLastCheckInSector;
+
+      entry Get_IsFirstCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
+      begin
+         Result := Statistic.FirstCheckInSect;
+      end Get_IsFirstCheckInSector;
+
+      entry Get_PathLength (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.PathLength;
+      end Get_PathLength;
+
+      entry Get_GasLevel (Result : out FLOAT) when Initialised = TRUE is
+      begin
+         Result := Statistic.GasLevel;
+      end Get_GasLevel;
+
+      entry Get_TyreUsury (Result : out PERCENTAGE) when Initialised = TRUE is
+      begin
+         Result := Statistic.TyreUsury;
+      end Get_TyreUsury;
+
+      entry Get_All( Result : out COMP_STATS) when Initialised = TRUE is
+      begin
+         Result := Statistic;
+      end Get_All;
+
+      entry Initialise(Stats_In : in COMP_STATS) when Initialised = FALSE is
+
+      begin
+         Ada.Text_IO.Put_Line("Adding " & INTEGER'IMAGE(Stats_In.Checkpoint));
+         Statistic := Stats_In;
+         Initialised := TRUE;
+      end Initialise;
+
+   end SYNCH_COMP_STATS_HANDLER;
+
+
+
+   -- It sets the CompStats parameter with the statistics related to the given sector and lap
+   procedure Get_StatsBySect(Competitor_ID : INTEGER;
+                             Sector : INTEGER;
+                             Lap : INTEGER;
+                             Stats_In : out COMP_STATS_POINT) is
+      Index : INTEGER := Lap+1; -- laps start from 0, information are store starting from 1
+      Tmp_Sector : INTEGER;
+      Tmp_Bool : BOOLEAN;
+   begin
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
+
+      while Tmp_Sector = Sector and then Tmp_Bool loop
+         Index := Index + 1;
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
+      end loop;
+      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
+
+      if( Stats_In = null ) then
+        Stats_In := new COMP_STATS;
+      end if;
+
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
+
+   end Get_StatsBySect;
+
+    -- It return a statistic related to a certain time. If the statistic is not
+   --+ initialised yet, the requesting task will wait on the resource Information
+   --+ as long as it's been initialised
+   procedure Get_StatsByTime(Competitor_ID : INTEGER;
+                            Time : FLOAT;
+                            Stats_In : out COMP_STATS_POINT) is
+
+      Index : INTEGER := Competitor_Statistics.all(Competitor_ID).LastAccessedPosition;
+      Tmp_Time : FLOAT;
+   begin
+      Ada.Text_IO.Put_Line("TV asking by time");
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+      Ada.Text_IO.Put_Line("TV time got");
+      if (Tmp_Time >= Time ) then
+         Ada.Text_IO.Put_Line("TV backward");
+         Index := Index - 1;
+         if(Index /= 0) then
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+         end if;
+         while Index > 1 and then Tmp_Time > Time loop
+            Index := Index - 1;
+            Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+         end loop;
+
+         if( Stats_In = null ) then
+            Stats_In := new COMP_STATS;
+         end if;
+         Ada.Text_IO.Put_Line("TV out");
+
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_All(Stats_In.all);
+         Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index + 1;
+         Ada.Text_IO.Put_Line("TV get all done");
+
+      else
+         Ada.Text_IO.Put_Line("TV forward");
+         Index := Index + 1;
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+         while Tmp_Time < Time loop
+            Ada.Text_IO.Put_Line("TV cycle");
+            Index := Index + 1;
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+         end loop;
+
+         Ada.Text_IO.Put_Line("TV getting");
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
+         Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
+
+      end if;
+      Ada.Text_IO.Put_Line("TV got");
+
+   end Get_StatsByTime;
+
+   -- It sets the CompStats parameter with the statistics related to the given check-point and lap
+   procedure Get_StatsByCheck(Competitor_ID : INTEGER;
+                              Checkpoint : INTEGER;
+                              Lap : INTEGER;
+                              Stats_In : out COMP_STATS_POINT) is
+   begin
+
+      if( Stats_In = null ) then
+        Stats_In := new COMP_STATS;
+      end if;
+
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Lap+1)*Checkpoint).Get_All(Stats_In.all);
+      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := (Lap+1)*Checkpoint;
+   end Get_StatsByCheck;
+
+   --It Just initializes the Statistic_Collection with the right size
+   procedure Init_Stats(Competitor_Qty : INTEGER;
+                        Laps : INTEGER;
+                        Checkpoints_In : INTEGER) is
+      Tmp_Collection : STATISTIC_COLLECTION_POINT := new ALL_COMPETITOR_STAT_COLLECTION(1..Competitor_Qty);
+
+   begin
+
+      Checkpoints := Checkpoints_In;
+
+      for Index in Tmp_Collection'RANGE loop
+         Tmp_Collection.all(Index) := new STATS_ARRAY_OPTIMIZER;
+         Tmp_Collection.all(Index).Competitor_Info := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..(Laps*Checkpoints));
+      end loop;
+
+      Competitor_Statistics := Tmp_Collection;
+      Classification_Tables := new SOCT_ARRAY(1..Laps);
+      for Index in Classification_Tables'RANGE loop
+         Classification_Tables.all(Index) := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+         Classification_Tables.all(Index).Init_Table(Competitor_Qty);
+      end loop;
+
+   end Init_Stats;
+
+
+   procedure Add_Stat(Competitor_ID : INTEGER;
+                       Data : COMP_STATS) is
+   begin
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
+   end Add_Stat;
+
+   procedure Update_Classific(Competitor_ID : INTEGER;
+                              CompletedLap : INTEGER;
+                              Time : FLOAT) is
+   begin
+      --Find the right table for this lap
+      --Add the information inside
+      --Done
+      null;
+   end Update_Classific;
+
 
    function print return BOOLEAN is
    begin
@@ -13,13 +241,11 @@ package body Stats is
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
                          Lap_Num_In : INTEGER;
-                         Checkpoint_Num_In : INTEGER;
                          Time_In : FLOAT) return STATS_ROW is
       Row2Return : STATS_ROW;
    begin
       Row2Return.Competitor_Id := Competitor_Id_In;
       Row2Return.Lap_Num := Lap_Num_In;
-      Row2Return.Checkpoint_Num := Checkpoint_Num_In;
       Row2Return.Time := Time_In;
       return Row2Return;
    end Get_StatsRow;
@@ -34,11 +260,6 @@ package body Stats is
       return Row.Lap_Num;
    end Get_Lap;
 
-   function Get_CheckPoint(Row : STATS_ROW) return INTEGER is
-   begin
-      return Row.Checkpoint_Num;
-   end Get_CheckPoint;
-
    function Get_Time(Row : STATS_ROW) return FLOAT is
    begin
       return Row.Time;
@@ -49,11 +270,7 @@ package body Stats is
    function "<" (Left, Right : STATS_ROW) return BOOLEAN is
    begin
 
-      if(Left.Lap_Num < Right.Lap_Num) then
-         return true;
-      elsif(Left.Lap_Num = Right.Lap_Num) and (Left.Checkpoint_Num < Right.Checkpoint_Num) then
-         return true;
-      elsif(Left.Lap_Num = Right.Lap_Num) and (Left.Checkpoint_Num = Right.Checkpoint_Num) and (Left.Time > Right.Time) then
+      if(Left.Time < Right.Time) then
          return true;
       else
          return false;
@@ -67,7 +284,6 @@ package body Stats is
       begin
          NullRow.Competitor_Id := -1;
          NullRow.Lap_Num := -1;
-         NullRow.Checkpoint_Num := -1;
          NullRow.Time := -1.0;
          Statistics := new CLASSIFICATION_TABLE(1..NumRows);
          for index in Statistics'RANGE loop
@@ -263,156 +479,6 @@ package body Stats is
 
    -- TODO: Remove and Delete this, previous, next node;
 
-   function Get_BestLapNum(StatsContainer : GENERIC_STATS) return INTEGER is
-   begin
---        if(StatsContainer.BestLap_Num'LENGTH <= RequestedIndex) then
---           return StatsContainer.BestLap_Num(RequestedIndex);
---        end if;
---        return -1;
-      return StatsContainer.bestLap.numBestLap;
-   end Get_BestLapNum;
-
-   function Get_BestLapTime(StatsContainer : GENERIC_STATS) return FLOAT is
-   begin
---        if(StatsContainer.BestLap_Time'LENGTH <= RequestedIndex) then
---           return StatsContainer.BestLap_Time(RequestedIndex);
---        end if;
---        return -1.0;
-      return StatsContainer.bestLap.timeLap;
-   end Get_BestLapTime;
-
-   --TODO: perchè è commentata?
-   --function getLapTime(computerIn : COMP_STATS_NODE_POINT; competitorId_In : in INTEGER; numLap : in INTEGER ) return FLOAT is
-   --begin
-  --        computerIn
-   --end getLapTime;
-
-   funCtion Get_BestLapId(StatsContainer : GENERIC_STATS) return INTEGER IS
-   begin
-      return StatsContainer.bestLap.idCompetitor;
-   end Get_BestLapId;
-
-   function Get_BestSectorsTime(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return FLOAT is--FLOAT_ARRAY is
---        Current_BST : FLOAT_ARRAY_LIST_NODE;
---        Null_Array : FLOAT_ARRAY := (1 => -1.0);
-returnNum : INTEGER;
-   begin
-      for z in 1..3
-      loop
-         if StatsContainer.bestSector(z).numSector = RequestedIndex then
-             returnNum := StatsContainer.bestSector(z).numSector;
-         end if;
-      end loop;
-      return StatsContainer.bestSector(returnNum).timeSector;
---        if(StatsContainer.BestSectors_Time.Index <= RequestedIndex) then
---           Current_BST := StatsContainer.BestSectors_Time;
---           while Current_BST.Index = RequestedIndex loop
---              exit when Current_BST.Previous = null;
---              Current_BST := Current_BST.Previous.all;
---           end loop;
---        end if;
---        if(Current_BST.Index = RequestedIndex) then
---           return Current_BST.This.all;
---        else
---           return Null_Array;
---        end if;
-   end Get_BestSectorsTime;
-
-   function Get_BestSectorsId(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER Is
-      returnNum : INTEGER;
-   begin
-      for z in 1..3
-      loop
-         if StatsContainer.bestSector(z).numSector = RequestedIndex then
-             returnNum := StatsContainer.bestSector(z).numSector;
-         end if;
-      end loop;
-      return StatsContainer.bestSector(returnNum).idCompetitor;
-   end Get_BestSectorsId;
-
-   function Get_BestSectorsLap(StatsContainer : GENERIC_STATS; RequestedIndex : INTEGER ) return INTEGER Is
-      returnNum : INTEGER;
-   begin
-      for z in 1..3
-      loop
-         if StatsContainer.bestSector(z).numSector = RequestedIndex then
-             returnNum := StatsContainer.bestSector(z).numSector;
-         end if;
-      end loop;
-      return StatsContainer.bestSector(returnNum).numBestLap;
-   end Get_BestSectorsLap;
-   --procedure Update_Stats_Lap( StatsContainer : in out GENERIC_STATS;
-   --                           BestLapNum_In : INTEGER;
-   --                           BestLapTime_In : FLOAT) is
-   --begin
-   --   StatsContainer.BestLap_Num := BestLapNum_In;
-   --   StatsContainer.BestLap_Time := BestLapTime_In;
-   --end Update_Stats_Lap;
-
-   --procedure Update_Stats_Sector( StatsContainer : in out GENERIC_STATS;
-   --                              BestSectorNum_In : INTEGER;
-   --                              BestSectorTime_In : FLOAT) is
-   --begin
-   --   StatsContainer.BestSectors_Time(BestSectorNum_In) := BestSectorTime_In;
-   --end Update_Stats_Sector;
-
-   procedure initGlobalStatsHandler(globalStatsHandler : in out GLOBAL_STATS_HANDLER_POINT; sgs_In : in S_GLOB_STATS_POINT;
-                                   updatePeriod_In : FLOAT) is
-   begin
-      globalStatsHandler.global := sgs_In; -- inizializzazione SYNCH_GLOBAL_STATS
-      globalStatsHandler.updatePeriod := updatePeriod_In;
-   end initGlobalStatsHandler;
-
-   function getUpdateTime(global : in GLOBAL_STATS_HANDLER) return FLOAT is
-   begin
-      return global.updatePeriod;
-   end getUpdateTime;
-
-
-   procedure compareTime(StatsGeneric : in GENERIC_STATS;  NewStats : in out GENERIC_STATS) is
-      -- prendo la global_stats che ho a disposizione e confronto settore per settore se ho stabilito un nuovo record
-      -- e poi confronto sul giro totale.
-      time : FLOAT;
-      upd :  Unbounded_String.Unbounded_String :=Unbounded_String.Null_Unbounded_String;
-   begin
-      Ada.Text_IO.Put_Line("in comparetime");
-      time := Get_BestLapTime(NewStats);
-      Ada.Text_IO.Put_Line("Get_BestLapTime(StatsGeneric) = "&Float'Image(time));
-      Ada.Text_IO.Put_Line("StatsGeneric.bestLap.timeLap"&Float'Image(StatsGeneric.bestLap.timeLap));
-      if time > StatsGeneric.bestLap.timeLap or else time < 0.0 then
-         Ada.Text_IO.Put_Line("in comparetime, time > statsgeneric.bestLap.timeLap");
-         NewStats.bestLap.numBestLap := StatsGeneric.bestLap.numBestLap;
-         NewStats.bestLap.idCompetitor := StatsGeneric.bestLap.idCompetitor;
-         NewStats.bestLap.timeLap := StatsGeneric.bestLap.timeLap;
-         Unbounded_String.Set_Unbounded_String(upd, "<bestlap>"&
-                                               "<num>"&Common.IntegerToString(NewStats.bestLap.numBestLap)&"</num>"&
-                                               "<idComp>"&Common.IntegerToString(NewStats.bestLap.idCompetitor)&"</idComp>"&
-                                               "<time>"&Common.FloatToString(NewStats.bestLap.timeLap)&"</time></bestlap>"
-                                              );
-         Competition_Monitor.setBestLap(upd);
-      end if;
-      --scorro le generic_stats relative ai tre settori e aggiorno le informazioni se serve
-      Ada.Text_IO.Put_Line("in loop");
-      for z in 1..3
-      loop
-         if NewStats.bestSector(z).timeSector > StatsGeneric.bestSector(z).timeSector or else NewStats.bestSector(z).timeSector < 0.0 then
-            Ada.Text_IO.Put_Line("NewStats.bestSector(z).timeSector > StatsGeneric.bestSector(z).timeSector");
-            NewStats.bestSector(z).timeSector := StatsGeneric.bestSector(z).timeSector;
-            NewStats.bestSector(z).numBestLap := StatsGeneric.bestSector(z).numBestLap;
-            NewStats.bestSector(z).idCompetitor := StatsGeneric.bestSector(z).idCompetitor;
-            Unbounded_String.Set_Unbounded_String(upd,
-              "<bestsector>"&
-              "<numsector>"&Common.IntegerToString(z)&"</numsector>"&
-              "<numlap>"&Common.IntegerToString(NewStats.bestSector(z).numBestLap)&"</numlap>"&
-                "<idcomp>"&Common.IntegerToString(NewStats.bestSector(z).idCompetitor)&"</idcomp>"&
-                "<time>"&Common.FloatToString(NewStats.bestSector(z).timeSector)&"</time></bestsector>"
-               );
-              Competition_Monitor.setBestSector(z,upd);
-              --            Competition_Monitor
-              end if;
-              end loop;
-   end compareTime;
-
 
    protected body SYNCH_GLOBAL_STATS is
 
@@ -438,15 +504,6 @@ returnNum : INTEGER;
          --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
          -------------------------------------------------
          GlobStats.Update_Interval := Update_Interval_in;
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.idCompetitor : " & Integer'Image(GlobStats.genStats.bestLap.idCompetitor));
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.numBestLap : " & Integer'Image(GlobStats.genStats.bestLap.numBestLap));
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestLap.timeLap : " & Float'Image(GlobStats.genStats.bestLap.timeLap));
-
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).idCompetitor : " & Integer'Image(GlobStats.genStats.bestSector(3).idCompetitor));
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numSector : " & Integer'Image(GlobStats.genStats.bestSector(3).numSector));
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).numBestLap : " & Integer'Image(GlobStats.genStats.bestSector(3).numBestLap));
-         Ada.Text_IO.Put_Line("GlobStats.genStats.bestSector(i).timeSector : " & Float'Image(GlobStats.genStats.bestSector(3).timeSector));
-
       end Init_GlobalStats;
 
       procedure Set_CompetitorsQty (CompetitorsQty : INTEGER) is
@@ -541,7 +598,7 @@ returnNum : INTEGER;
             Current_Table := Get_NextNode(Current_Table);
             Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
          end loop;
-         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Checkpoint_In,Time_In));
+         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Time_In));
 
          -- Se la riga è stata aggiunta alla tabella attualmente riferita dal GlobStats, allora
          -- bisogna verificare se è piena. In tal caso bisogna crearne una nuova vuota da far puntare
@@ -556,71 +613,6 @@ returnNum : INTEGER;
          end if;
       end Update_Stats;
    end SYNCH_GLOBAL_STATS;
-
-   procedure updateCompetitorInfo(global_In : in out GLOBAL_STATS_HANDLER_POINT;
-                                  competitorID_In : INTEGER;
-                                  competitorInfo_In : COMP_STATS_POINT)is
-      tempCheck : INTEGER;
-      tempLap : INTEGER;
-      tempTime : FLOAT;
-   begin
-      Ada.Text_IO.Put_Line("in updateCompetitorInfo");
-      tempCheck := Common.Get_Checkpoint(competitorInfo_In.all); -- numero checkpoint
-      tempLap := Common.Get_Lap(competitorInfo_In.all); -- numero giro
-      Ada.Text_IO.Put_Line("tempLap : "&Integer'Image(tempLap));
-      tempTime := Common.Get_Time(competitorInfo_In.all); -- tempo
-      Ada.Text_IO.Put_Line(" creazione singoli campi");
-      global_In.global.Update_Stats(CompetitorId_In,tempLap,tempCheck, tempTime); -- aggiornamento tabella
-      Ada.Text_IO.Put_Line("aggiornamento tabella completato");
-      --controllo se migliori prestazioni
-     -- if global_In
-   end updateCompetitorInfo;
-
---     function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE --return the last classific available
---     is
---        Classific_Out : CLASSIFICATION_TABLE_POINT := new CLASSIFICATION_TABLE(1..global_In.global.Get_CompetitorsQty);
---        RequestedIndex : INTEGER := 0;
---     begin
---        global_In.global.Get_Classific(RequestedIndex ,Classific_Out.all );
---
---        return Classific_Out.all;
---     end getClassification;
---
-   -- return the last classificationtable complete
-   function lastClassificUpdate(global_In : in GLOBAL_STATS_POINT) return CLASSIFICATION_TABLE is
-   begin
-      Ada.Text_IO.Put_Line("lastClassificUpdate");
-      return global_In.lastClassificUpdate.This.Test_Get_Classific;
-   end lastClassificUpdate;
-
-   -- updated the calssificationtable with the info of the competitor
-
---     procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
---                                    competitorInfo_In : COMP_STATS);
-
-   procedure printGlobUPD(gl : GLOBAL_STATS_HANDLER) is
-   begin
-      Ada.Text_IO.Put_Line("global update time : "&Float'Image(gl.updatePeriod));
-      end printGlobUPD;
-
-
-   procedure setGSLAP(genStats_In : in out GENERIC_STATS; numBestLap : INTEGER; idCompetitor : INTEGER; timeLap : FLOAT) IS
-   begin
-      genStats_In.bestLap.numBestLap := numBestLap;
-      genStats_In.bestLap.idCompetitor := idCompetitor;
-      genStats_In.bestLap.timeLap := timeLap;
-      Ada.Text_IO.Put_Line("Generic stats.GS_LAP ok");
-   end setGSLAP;
-
-   procedure setGS_SECTOR(genStats_In : in out GENERIC_STATS; numSector : INTEGER; numBestLap : INTEGER; idCompetitor : INTEGER; timeSector : FLOAT) is
-   begin
-      genStats_In.bestSector(numSector).numSector := numSector;
-      genStats_In.bestSector(numSector).numBestLap := numBestLap;
-      genStats_In.bestSector(numSector).idCompetitor := idCompetitor;
-      genStats_In.bestSector(numSector).timeSector := timeSector;
-      Ada.Text_IO.Put_Line("Generic stats.GS_SECTOR("&Integer'Image(numSector)&") ok");
-   end setGS_SECTOR;
-
 
 end Stats;
 

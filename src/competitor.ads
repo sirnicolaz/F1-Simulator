@@ -74,7 +74,6 @@ package Competitor is
                             RaceIterator : RACETRACK_ITERATOR;
                             id_In : INTEGER;
                             laps_In : INTEGER;
-                            checkpoints_In : INTEGER;
                             BoxRadio_CorbaLoc : in STRING) return CAR_DRIVER_ACCESS;
   -- procedure Set_Id(Car_In : in out CAR_DRIVER_ACCESS; Id_In : INTEGER);
 -- set and get function for tyre into car

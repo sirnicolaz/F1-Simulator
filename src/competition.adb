@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 
 with Common;
---with Stats;
+with Stats;
 
 --pragma Warnings (Off); -- TODO: delete
 package body Competition is
@@ -78,7 +78,6 @@ package body Competition is
                                       Circuit.Get_Iterator(Track),
                                       ID,
                                       Laps,
-                                      Checkpoint_Qty,
                                       Box_CorbaLOC);
             --Initialise the task competitor
             Ada.Text_IO.Put_Line("Init task...");
@@ -162,16 +161,20 @@ package body Competition is
          ClassificRefreshTime := ClassificRefreshTime_In;
 
 
-         Ada.Text_IO.Put_Line("Initilizing competitor array");
-         Competitor.Set_Laps(Laps_In);
-         Competitors := new CompetitorTask_Array(1..MaxCompetitors);
-
-
          Ada.Text_IO.Put_Line("Getting racetrack file: " & Circuit_File);
          Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
          Checkpoint_Qty := Circuit.Checkpoints_Qty;
+
+         Ada.Text_IO.Put_Line("Initilizing competitor array");
+         Competitor.Set_Laps(Laps_In);
+         Competitors := new CompetitorTask_Array(1..MaxCompetitors);
+
+         Stats.Init_Stats(Competitor_Qty => MaxCompetitors,
+                          Laps           => Laps_In,
+                          Checkpoints_In => Checkpoint_Qty);
+
          Ada.Text_IO.Put_Line("Checkpoints " & INTEGER'IMAGE(Checkpoint_Qty));
 
          Registrations_Open := True;
