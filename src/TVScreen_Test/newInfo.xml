@@ -1,1 +1,38 @@
-<?xml version="1.0"?><competitionStatus time=" 4.60000E+01"><competitor id="1"><checkpoint compPosition="passed" >12</checkpoint><lap>3</lap><sector>3</sector></competitor><competitor id="2"><checkpoint compPosition="passed" >12</checkpoint><lap>1</lap><sector>3</sector></competitor><competitor id="3"><checkpoint compPosition="passed" >13</checkpoint><lap>1</lap><sector>3</sector></competitor><competitor id="4"><checkpoint compPosition="passed" >14</checkpoint><lap>2</lap><sector>3</sector></competitor><competitor id="5"><checkpoint compPosition="passed" >12</checkpoint><lap>3</lap><sector>3</sector></competitor><competitor id="6"><checkpoint compPosition="passed" >13</checkpoint><lap>0</lap><sector>3</sector></competitor><competitor id="7"><checkpoint compPosition="passed" >13</checkpoint><lap>2</lap><sector>3</sector></competitor></competitionStatus>
+<?xml version="1.0"?>
+<competitionStatus time=" 4.60000E+01">
+<competitor id="1">
+<checkpoint compPosition="passed" >12</checkpoint>
+<lap>3</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="2">
+<checkpoint compPosition="passed" >12</checkpoint>
+<lap>1</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="3">
+<checkpoint compPosition="passed" >13</checkpoint>
+<lap>1</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="4">
+<checkpoint compPosition="passed" >14</checkpoint>
+<lap>2</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="5">
+<checkpoint compPosition="passed" >12</checkpoint>
+<lap>3</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="6">
+<checkpoint compPosition="passed" >13</checkpoint>
+<lap>0</lap>
+<sector>3</sector>
+</competitor>
+<competitor id="7">
+<checkpoint compPosition="passed" >13</checkpoint>
+<lap>2</lap>
+<sector>3</sector>
+</competitor>
+</competitionStatus>

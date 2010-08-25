@@ -219,18 +219,40 @@ package body Stats is
    procedure Add_Stat(Competitor_ID : INTEGER;
                        Data : COMP_STATS) is
    begin
+
+      --NB: the order of these 2 operations is really important.
+      --+ When a Competitor_Statistic is added, it might be that if someone
+      --+ was waiting for it and it finds that a competitor has just finished
+      --+ a lap, it may ask for the time instant (in order to fill the classific).
+      --+ So, to retrieve this time istant it will ask for the row in the classification
+      --+ table related to that event. This row has to be already filled with the value
+      --+ That's why that operation is done before the update of the statistic.
+
+      --If the checkpoint is the last one of the circuit, update the classification table as well
+      if(Data.LastCheckInSect and Data.Sector = 3) then
+         Update_Classific(Competitor_ID,
+                          Data.Lap,
+                          Data.Time);
+      end if;
+      --Update the statistics
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
    end Add_Stat;
 
    procedure Update_Classific(Competitor_ID : INTEGER;
                               CompletedLap : INTEGER;
                               Time : FLOAT) is
+      Row : STATS_ROW;
    begin
       --Find the right table for this lap
+      Row.Competitor_Id := Competitor_ID;
+      Row.Time := Time;
+
       --Add the information inside
+      Classification_Tables(CompletedLap).Add_Row(Row_In => Row);
       --Done
-      null;
+
    end Update_Classific;
+
 
 
    function print return BOOLEAN is
@@ -240,12 +262,10 @@ package body Stats is
    end print;
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
-                         Lap_Num_In : INTEGER;
                          Time_In : FLOAT) return STATS_ROW is
       Row2Return : STATS_ROW;
    begin
       Row2Return.Competitor_Id := Competitor_Id_In;
-      Row2Return.Lap_Num := Lap_Num_In;
       Row2Return.Time := Time_In;
       return Row2Return;
    end Get_StatsRow;
@@ -254,11 +274,6 @@ package body Stats is
    begin
       return Row.Competitor_Id;
    end Get_CompetitorId;
-
-   function Get_Lap(Row : STATS_ROW) return INTEGER is
-   begin
-      return Row.Lap_Num;
-   end Get_Lap;
 
    function Get_Time(Row : STATS_ROW) return FLOAT is
    begin
@@ -283,7 +298,6 @@ package body Stats is
          NullRow : STATS_ROW;
       begin
          NullRow.Competitor_Id := -1;
-         NullRow.Lap_Num := -1;
          NullRow.Time := -1.0;
          Statistics := new CLASSIFICATION_TABLE(1..NumRows);
          for index in Statistics'RANGE loop
@@ -598,7 +612,7 @@ package body Stats is
             Current_Table := Get_NextNode(Current_Table);
             Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
          end loop;
-         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Lap_In,Time_In));
+         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Time_In));
 
          -- Se la riga è stata aggiunta alla tabella attualmente riferita dal GlobStats, allora
          -- bisogna verificare se è piena. In tal caso bisogna crearne una nuova vuota da far puntare

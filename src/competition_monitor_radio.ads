@@ -10,6 +10,7 @@ pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 with CORBA.Object;
 with PolyORB.Std;
+with CORBA.Sequences.Unbounded;
 with CORBA;
 pragma Elaborate_All (CORBA);
 
@@ -20,6 +21,16 @@ package Competition_Monitor_Radio is
 
    Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio:1.0";
+
+   package IDL_SEQUENCE_float is
+     new CORBA.Sequences.Unbounded
+        (CORBA.Float);
+
+   type ClassificationTimes is
+     new Competition_Monitor_Radio.IDL_SEQUENCE_float.Sequence;
+
+   ClassificationTimes_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor_Radio/ClassificationTimes:1.0";
 
    procedure Get_CompetitorInfo
      (Self : Ref;
@@ -32,10 +43,11 @@ package Competition_Monitor_Radio is
    Get_CompetitorInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitorInfo:1.0";
 
-   function Get_CompetitionInfo
+   procedure Get_CompetitionInfo
      (Self : Ref;
-      timeInstant : CORBA.Float)
-     return CORBA.String;
+      timeInstant : CORBA.Float;
+      times : out Competition_Monitor_Radio.ClassificationTimes;
+      Returns : out CORBA.String);
 
    Get_CompetitionInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitionInfo:1.0";

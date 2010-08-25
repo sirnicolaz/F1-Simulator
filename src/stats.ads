@@ -90,7 +90,6 @@ package Stats is
                               Stats_In : out COMP_STATS_POINT);
 
 
-
   type GENERIC_STATS is record
       bestLap : INTEGER;
       bestSector : FLOAT_ARRAY(1..3);
@@ -106,11 +105,9 @@ package Stats is
    type STATS_ROW is private;
    --     -- These functions are only for test purpose
    function Get_StatsRow(Competitor_Id_In : INTEGER;
-                         Lap_Num_In : INTEGER;
                          Time_In : FLOAT) return STATS_ROW;
 
    function Get_CompetitorId(Row : STATS_ROW) return INTEGER;
-   function Get_Lap(Row : STATS_ROW) return INTEGER;
    function Get_Time(Row : STATS_ROW) return FLOAT;
    -- end test functions ----------------------------
 
@@ -247,7 +244,6 @@ private
 
    type STATS_ROW is record
       Competitor_Id : INTEGER;
-      Lap_Num : INTEGER;
       Time : FLOAT;
    end record;
 

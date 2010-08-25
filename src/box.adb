@@ -19,9 +19,6 @@ with ADA.Float_Text_IO;
 with Common;
 use Common;
 
---with PolyORB.Setup.Client;
---pragma Warnings (Off, PolyORB.Setup.Client);
-
 package body Box is
 
 
