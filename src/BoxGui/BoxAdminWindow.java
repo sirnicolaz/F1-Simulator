@@ -20,10 +20,10 @@ public class BoxAdminWindow implements AdminPanelInterface{
 private String boxRadioCorbaLoc;
 private String monitorBoxCorbaLoc;
 private String configuratorCorbaLoc;
-private org.omg.CORBA.ShortHolder competitorId;
-private org.omg.CORBA.FloatHolder circuitLength;
-private org.omg.CORBA.ShortHolder laps;
-private org.omg.CORBA.StringHolder monitorCorbaLoc;
+private org.omg.CORBA.ShortHolder competitorId = new org.omg.CORBA.ShortHolder();
+private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
+private org.omg.CORBA.ShortHolder laps = new org.omg.CORBA.ShortHolder();
+private org.omg.CORBA.StringHolder monitorCorbaLoc = new org.omg.CORBA.StringHolder();
 
 //sezione JSlider
 private JSlider sliderTyreUsury;
@@ -121,6 +121,8 @@ private String gasolineTankStringBox = new String("<gasTankCapacity>200.0</gasTa
 private String stringGommeBox = new String("<initialTyreType>Sun</initialTyreType>");
 private String stringModelGomme = new String("<model>michelin</model>");
 private String stringId;
+private String competitorXML;
+
 public JFrame parent;
 //altri parametri
 private int intTyre;
@@ -135,10 +137,11 @@ try{
 // LETTURA IOR DA FILE
 FileReader doc=new FileReader("../boxCorbaLoc-"+stringId+".txt");
 BufferedReader bufRead = new BufferedReader(doc);
-//read boxRadioCorbaloc
-  boxRadioCorbaLoc= bufRead.readLine();
 //read configuratorCorbaloc
   configuratorCorbaLoc= bufRead.readLine();
+System.out.println("corbaloc configurator : "+configuratorCorbaLoc);
+//read boxRadioCorbaloc
+  boxRadioCorbaLoc= bufRead.readLine();
 //read monitorBoxCorbaloc
   monitorBoxCorbaLoc= bufRead.readLine();
  bufRead.close();
@@ -545,12 +548,16 @@ out=new PrintWriter(new File("competitor-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);
-}out.println("<?xml version=\"1.0\"?>\n <car_driver>\n<driver>");
+}
+out.println("<?xml version=\"1.0\"?>\n <car_driver>\n<driver>");
+competitorXML = new String("<?xml version=\"1.0\"?>\n <car_driver>\n<driver>");
 out.println(scuderia);
 out.println(nome);
 out.println(cognome);
+competitorXML = competitorXML + '\n' + scuderia + '\n' +  nome + '\n' + cognome;
 out.println("</driver>");
 out.println("<car>");
+competitorXML = competitorXML +new String("</driver>\n<car>");
 out.println(stringMaxSpeed);
 out.println(stringMaxAcc);
 out.println(stringSerbatoio);
@@ -559,6 +566,7 @@ out.println(tyreUsuryString);
 out.println(gasolineString);
 out.println(stringTipoGomme);
 out.println(stringModelGomme);
+competitorXML = competitorXML + stringMaxSpeed +'\n'+ stringMaxAcc +'\n'+ stringSerbatoio +'\n'+ stringStyle +'\n'+ tyreUsuryString +'\n'+ gasolineString +'\n'+ stringTipoGomme +'\n'+ stringModelGomme + '\n' + stringGomme + "\n</car>\n </car_driver>";
 out.println(stringGomme + "\n</car>");
 out.println("</car_driver>");	
 out.close();
@@ -573,21 +581,21 @@ return false;
 public boolean writerBoxXML(){
 try{
 PrintWriter out;
-File f = new File("obj/boxConfig-"+stringId+".xml");
+File f = new File("../obj/boxConfig-"+stringId+".xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("obj/boxConfig-"+stringId+".xml"));
+out=new PrintWriter(new File("../obj/boxConfig-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);
 }
-out.println("<?xml version=\"1.0\"?>\n<config>\n");
-out.println("<monitorCorbaLoc>"+monitorCorbaLoc.toString()+"</monitorCorbaLoc>");
+out.println("<?xml version=\"1.0\"?>\n<config>");
+out.println("<monitorCorbaLoc>"+monitorCorbaLoc.value+"</monitorCorbaLoc>");
 out.println(stringGommeBox);
-out.println("<laps>"+laps.toString()+"</laps>");
-out.println("<circuitLength>"+circuitLength.toString()+"</circuitLength>");
-out.println("<initialGasLevel>"+gasolineStringBox+"</initialGasLevel>");
-out.println("<gasTankCapacity>"+gasolineTankStringBox+"</gasTankCapacity>");
-out.println("<competitorID>"+competitorId.toString()+"</competitorID>");
+out.println("<laps>"+laps.value+"</laps>");
+out.println("<circuitLength>"+circuitLength.value+"</circuitLength>");
+out.println(gasolineStringBox);
+out.println(gasolineTankStringBox);
+out.println("<competitorID>"+competitorId.value+"</competitorID>");
 out.println(stringStrategy);
 out.println("</config>");
 out.close();
@@ -602,22 +610,42 @@ return false;
 
 public boolean connect(String corbaloc){
 	try {
-RegistrationHandler comp = Connection.connectRH(corbaloc);
+// RegistrationHandler comp = Connection.connectRH(corbaloc);
+System.out.println("Try to connect to Registration Handler");
+ String[] temp = {"ORB"};
+ORB orb = ORB.init(temp, null);
+// ORB orb =org.omg.CORBA.ORB.Initialize("ORB");
+System.out.println("ORB initialized");
+           //Resolve MessageServer
+	    org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
+	    RegistrationHandler comp = RegistrationHandlerHelper.narrow(obj);
+System.out.println("Comp initialized");
 if (comp != null) {
 System.out.println("Comp != null");
+System.out.println(competitorXML);
 // il metodo di connessione è riuscito a connettersi
-comp.Join_Competition("BoxGui/competitor-"+stringId+".xml", boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
+System.out.println(boxRadioCorbaLoc);
+comp.Join_Competition(competitorXML, boxRadioCorbaLoc, monitorCorbaLoc, competitorId, circuitLength, laps);
 System.out.println("After Join Competition");
 //con i metodi di ritorno della Join competition costruisco il file obj/boxConfig-<id>.xml
 writerBoxXML();
 System.out.println("After writerBoxXML");
 //connessione configurator
-Configurator conf = Connection.connectC(configuratorCorbaLoc);
+
+// Configurator conf = Connection.connectC(configuratorCorbaLoc);
+System.out.println("Try to connect to configurator with corbaloc : "+configuratorCorbaLoc);
+// 	  ORB orb = ORB.init(temp, null);
+// System.out.println("ORB initializes");
+           //Resolve MessageServer
+org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
+System.out.println("chiamo ConfiguratorHelper.narrow");
+Configurator conf = ConfiguratorHelper.narrow(conf_obj);
+System.out.println("Conf initialized");
 System.out.println("Conf init");
 //invoco il metodo configure
 if (conf != null){
 System.out.println("Conf != null");
-conf.Configure("BoxGui/obj/boxConfig-"+stringId+".xml");
+conf.Configure("obj/boxConfig-"+stringId+".xml");
 //qua va effettuato lo switch panel.
 //da pensare
 }
@@ -688,6 +716,8 @@ JOptionPane.showMessageDialog(parent, "Attention : connection refused by Registr
 
 
 	} catch (Exception e) {
+JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+// e.getMessage();
 	    e.printStackTrace();
 	}
  return true;
