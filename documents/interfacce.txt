@@ -8,7 +8,7 @@ Box Monitor:
 	per creare i nomi dei file di configurazione che creano.(FATTO - PARAMETRO DA PASSARE AL MAIN)
 	a configurazione (dell'interfaccia) avvenuta, dato in input il corbaloc del registration handler (a mano) (FATTO)
 	del server, l'interfaccia deve aprire il file boxCorbaLoc-<identificatiivo>.txt. Qui nella prima riga c'è
-	il corbaloc della radio del box. Nella seconda il corbaloc del configurator. nella terza del monitor del box. (FATTO)
+	il  corbaloc del configurator. Nella seconda il corbaloc della radio del box. nella terza del monitor del box. (FATTO)
 	Ora l'interfaccia deve connettersi al registration handler remoto e invocare JoinCompetition. Vai a vederti i 
 	parametri che prende e passagliegli. Alcuni sono dati dall'interfaccia durante la configurazione,
 	altri sono per esempio il corbaloc della radio del box e infine alcuni sono degli "out".(FATTO)

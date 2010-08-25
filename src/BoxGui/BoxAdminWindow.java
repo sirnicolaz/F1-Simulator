@@ -26,7 +26,7 @@ private org.omg.CORBA.ShortHolder competitorId = new org.omg.CORBA.ShortHolder()
 private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
 private org.omg.CORBA.ShortHolder laps = new org.omg.CORBA.ShortHolder();
 private org.omg.CORBA.StringHolder monitorCorbaLoc = new org.omg.CORBA.StringHolder();
-
+private ORB orb;
 //sezione JSlider
 private JSlider sliderTyreUsury;
 private JSlider sliderFuelTank;
@@ -134,7 +134,7 @@ private Integer valueFuelInt;
 public BoxAdminWindow(JFrame frame, String param){
   stringId = param;
   parent=frame;
-  init(frame);
+//   init(frame);
 try{
 // LETTURA IOR DA FILE
 FileReader doc=new FileReader("../boxCorbaLoc-"+stringId+".txt");
@@ -524,9 +524,8 @@ frame.pack();
 frame.setVisible(true);
 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 }
-public boolean verifySetting(){return true;}
-public void confirmSetting(){}
-public void switchPanel(JPanel succPanel){}
+// public boolean verifySetting(){return true;}
+// public void confirmSetting(){}
 public void resetInfo(){
 			    System.out.println("Reset Field");
 			      sliderTyreUsury.setValue(15);//usura gomme
@@ -610,12 +609,23 @@ return false;
 }
 }
 
-public boolean connect(String corbaloc){
+public void switchPanel(){
+BoxMonitor p = new BoxMonitor(stringId);
+System.out.println("id del boxmonitor : "+stringId);
+parent.dispose();
+// private String boxRadioCorbaLoc;
+// private String monitorBoxCorbaLoc;
+// private String monitorCorbaLoc.value
+// private String configuratorCorbaLoc;
+p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb);
+}
+
+public void connect(String corbaloc){
 	try {
 // RegistrationHandler comp = Connection.connectRH(corbaloc);
 System.out.println("Try to connect to Registration Handler");
  String[] temp = {"ORB"};
-ORB orb = ORB.init(temp, null);
+orb = ORB.init(temp, null);
 // ORB orb =org.omg.CORBA.ORB.Initialize("ORB");
 System.out.println("ORB initialized");
            //Resolve MessageServer
@@ -649,7 +659,7 @@ if (conf != null){
 System.out.println("Conf != null");
 conf.Configure("obj/boxConfig-"+stringId+".xml");
 //qua va effettuato lo switch panel.
-//da pensare
+switchPanel();
 }
 else {
 System.out.println("Connessione con il CompetitionConfigurator rifiutata");
@@ -722,7 +732,8 @@ JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), 
 // e.getMessage();
 	    e.printStackTrace();
 	}
- return true;
+//  return true;
+
    }
 
 
@@ -733,5 +744,9 @@ JFrame j = new JFrame("Box Admin Window");
 // JDialog errorDialtemp = new JDialog(j, "Error");
 // errorDial = errorDialtemp;
 BoxAdminWindow boxWindow = new BoxAdminWindow(j, args[0]);
+boxWindow.init(j);
+// j.dispose();
+
+
 }
 }

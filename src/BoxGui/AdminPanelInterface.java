@@ -4,7 +4,7 @@ public interface AdminPanelInterface{
   public void init(JFrame frame);//dovrà essere un JFrame
   //public boolean verifySetting();
   //public void confirmSetting();
-  public void switchPanel(JPanel succPanel);//dovrà essere un JPanel
+//   public void switchPanel();//dovrà essere un JPanel
   public void resetInfo();
-//   public boolean connect(String corbaloc);
+  public void connect(String corbaloc);
 }

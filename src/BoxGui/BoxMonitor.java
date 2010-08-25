@@ -41,10 +41,16 @@ private JLabel labelTyre = new JLabel(" % / km ");
 private JLabel labelGasExpl = new JLabel("Mean Fuel Consumption");
 private JLabel labelTyreExpl = new JLabel("Mean Tyre Consumption");
 
+private String boxCorbaLoc;
+private String monitorBoxCorbaLoc;
+private String configuratorCorbaLoc;
+private String monitorCorbaLoc;
+private ORB orb;
+
 BoxMonitor(String id_In){
 id=id_In;
-parent = new JFrame("BoxMonitor n° "+id);
-init();
+parent = new JFrame("BoxMonitor n° "+id_In);
+// init();
 }
 
 public void createBoxOutput(){
@@ -142,7 +148,13 @@ tablePanel.setVerticalScrollBar(new JScrollBar());
 }
 
 
-public void init(){
+public void init(String boxCorbaLocIn, String monitorBoxCorbaLocIn, String configuratorCorbaLocIn, String monitorCorbaLocIn, ORB orbIn){
+System.out.println("BoxMonitor.init");
+boxCorbaLoc = boxCorbaLocIn;
+monitorBoxCorbaLoc = monitorBoxCorbaLocIn;
+configuratorCorbaLoc = configuratorCorbaLocIn;
+monitorCorbaLoc = monitorCorbaLocIn;
+orb = orbIn;
 createBoxOutput();
 createConsumptionMeans();
 createTableOutput();
@@ -168,8 +180,26 @@ parent.add(startButton, BorderLayout.SOUTH);
 parent.pack();
 parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+try{
+org.omg.CORBA.Object obj = orb.string_to_object(monitorBoxCorbaLoc);
+BoxRadio comp = BoxRadioHelper.narrow(obj);
+for(short i=0; i<100; i++)
+comp.RequestStrategy(i);
+model.insertRow(0,new Object[]{i.toString(), "1","t.toString()", "q.toString()", "150.3", "10.0 %", "150.0"});
+// model.addRow(new Object[]{i.toString(), "1","2"});
+ListSelectionModel selectionModel = outTable.getSelectionModel();
+selectionModel.setSelectionInterval(0,0);
+
+System.out.println("casnio");
 }
-public static void main(String[] args){
-BoxMonitor b = new BoxMonitor("1");
+catch (Exception e){
+System.out.println("Connessione con il BoxRadioHelper rifiutata");
+JOptionPane.showMessageDialog(parent, "Attention : connection refused by BoxRadioHelper", "Error", JOptionPane.ERROR_MESSAGE);
+
 }
+}
+// public static void main(String[] args){
+// BoxMonitor b = new BoxMonitor(args[0]);
+// b.init();
+// }
 }
