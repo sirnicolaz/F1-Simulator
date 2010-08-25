@@ -14,6 +14,8 @@ import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
 
+import javax.swing.JPanel;
+import javax.swing.JFrame;
 
 public class BoxAdminWindow implements AdminPanelInterface{
 //informazioni per la Join Competition
