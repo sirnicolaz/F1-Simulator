@@ -47,7 +47,7 @@ private String configuratorCorbaLoc;
 private String monitorCorbaLoc;
 private ORB orb;
 
-BoxMonitor(String id_In){
+public BoxMonitor(String id_In){
 id=id_In;
 parent = new JFrame("BoxMonitor n° "+id_In);
 // init();
