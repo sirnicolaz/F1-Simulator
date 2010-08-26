@@ -176,6 +176,11 @@ begin
       GasTankCapacity : FLOAT := -1.0;
 
    begin
+
+      Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
+      Box_Monitor_Radio.impl.Init(CompetitionUpdates_Buffer => Update_Buffer);
+
+
       Corbaloc_Storage.Get_CorbaLOC(BoxRadio_CorbaLOC, C_BOX_RADIO);
       Corbaloc_Storage.Get_CorbaLOC(Monitor_CorbaLOC, C_MONITOR);
       Corbaloc_Storage.Get_CorbaLOC(Configurator_CorbaLOC, C_CONFIGURATOR);
@@ -212,7 +217,6 @@ begin
       Ada.Text_IO.Put_Line("Box package initialized");
 
       -- Resourced shared between tasks
-      Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
       History := new Box.SYNCH_STRATEGY_HISTORY;
       Ada.Text_IO.Put_Line("init History");
       History.Init(Laps);
