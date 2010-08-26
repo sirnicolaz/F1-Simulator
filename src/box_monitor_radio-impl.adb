@@ -1,9 +1,9 @@
-with Monitor.Skel;
-pragma Warnings (Off, Monitor.Skel);
+with Box_Monitor_Radio.Skel;
+pragma Warnings (Off, Box_Monitor_Radio.Skel);
 
 with Box;
 
-package body Monitor.impl is
+package body Box_Monitor_Radio.impl is
 
    Buffer : access Box.SYNCH_COMPETITION_UPDATES;
 
@@ -32,4 +32,4 @@ package body Monitor.impl is
       return CORBA.To_CORBA_String(Box.CompetitionUpdateToXML(NewInfo.all));
    end GetUpdate;
 
-end Monitor.impl;
+end Box_Monitor_Radio.impl;
