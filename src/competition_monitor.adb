@@ -296,6 +296,12 @@ package body Competition_Monitor is
       Tmp_BestLapCompetitor : INTEGER;
       Tmp_BestSectorTimes : FLOAT_ARRAY(1..3);
       Tmp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
+
+      HighestCompletedLap : INTEGER := -1;
+      CompetitorID_InClassific : INTEGER_ARRAY_POINT;
+      Times_InClassific : FLOAT_ARRAY_POINT;
+      LappedCompetitors_ID : INTEGER_ARRAY_POINT;
+      LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
       Ada.Text_IO.Put_Line("A TV is really asking");
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
@@ -328,6 +334,10 @@ package body Competition_Monitor is
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
+         if(Tmp_Stats.Lap-1 > HighestCompletedLap ) then
+            HighestCompletedLap := Tmp_Stats.Lap-1;
+         end if;
+
       end loop;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
@@ -362,9 +372,48 @@ package body Competition_Monitor is
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</sectors>" &
-         "</bestTimes>" &
-         "</competitionStatus>"
+         "</bestTimes>"
         );
+
+      if(HighestCompletedLap /= -1) then
+
+         Stats.Get_LapClassific(HighestCompletedLap,
+                                TimeInstant,
+                                CompetitorID_InClassific,
+                                Times_InClassific,
+                                LappedCompetitors_ID,
+                                LappedCompetitors_CurrentLap);
+
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+           ("<classification>");
+
+         for Index in 1..CompetitorID_InClassific.all'LENGTH loop
+
+            Ada.Text_IO.Put_Line("Creating classific");
+            Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+              ("<competitor id=""" & Common.IntegerToString(CompetitorID_InClassific(Index)) & """>" &
+               "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
+               "<time>" & FLOAT'IMAGE(Times_InClassific(Index)) & "</time>" &
+               "</competitor>");
+         end loop;
+
+         if(LappedCompetitors_ID /= null) then
+            for Index in 1..LappedCompetitors_ID.all'LENGTH loop
+               Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+                 ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
+                  "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
+                  "</competitor>");
+            end loop;
+         end if;
+
+
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+           ("</classification>");
+
+      end if;
+
+      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+        ("</competitionStatus>");
 
       return Tmp_StatsString;
 

@@ -24,7 +24,9 @@ package Common is
    type FLOAT_POINT is access FLOAT;
    type STRING_POINT is access STRING;
    type FLOAT_ARRAY is array(INTEGER range <>) of FLOAT;
+   type FLOAT_ARRAY_POINT is access FLOAT_ARRAY;
    type INTEGER_ARRAY is array(INTEGER range <>) of INTEGER;
+   type INTEGER_ARRAY_POINT is access INTEGER_ARRAY;
    type UNBOUNDED_STRING_POINT is access Unbounded_String.Unbounded_String;
 
    type STRATEGY is record

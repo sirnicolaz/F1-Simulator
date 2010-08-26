@@ -102,15 +102,20 @@ package Stats is
                          Lap : INTEGER;
                          Time : out FLOAT);
 
-
+   procedure Get_LapClassific(Lap : INTEGER;
+                              TimeInstant : FLOAT;
+                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                              Times_InClassific : out FLOAT_ARRAY_POINT;
+                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
    --It returs the competitors who have been lapped at a certain time instant
    --+ (the lap it's necessary to optimize the retrieval: only the competitors
    --+ riding in a previous lap during the given instant will be kept in consideration).
-   procedure Get_LappedCompetitor(TimeInstant : FLOAT;
+   procedure Get_LappedCompetitors(TimeInstant : FLOAT;
                                   CurrentLap : INTEGER;
-                                  Competitor_IDs : access INTEGER_ARRAY;
-                                  Competitor_Lap : access INTEGER_ARRAY);
+                                  Competitor_IDs : out INTEGER_ARRAY_POINT;
+                                  Competitor_Lap : out INTEGER_ARRAY_POINT);
 
   type GENERIC_STATS is record
       bestLap : INTEGER;

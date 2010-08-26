@@ -229,12 +229,13 @@ package body Stats is
       --+ That's why that operation is done before the update of the statistic.
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
-      Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific");
-      if(Data.LastCheckInSect and Data.Sector = 3) then
-         --Update_Classific(Competitor_ID,
-         --                 Data.Lap,
-         --                 Data.Time);
-         null; --TODO
+      if(Data.LastCheckInSect = true and Data.Sector = 3) then
+
+         Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific for lap " & Common.IntegerToString(Data.Lap+1) & " with time " & FLOAT'IMAGE(Data.Time));
+         Update_Classific(Competitor_ID,
+                          Data.Lap+1,--Count starts from 1 in the table, lap are counted from 0 instead
+                          Data.Time);
+
       end if;
       --Update the statistics
       Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
@@ -251,7 +252,7 @@ package body Stats is
       Row.Time := Time;
 
       --Add the information inside
-      Classification_Tables(CompletedLap).Add_Row(Row_In => Row);
+      Classification_Tables.all(CompletedLap).Add_Row(Row);
       --Done
 
    end Update_Classific;
@@ -333,13 +334,151 @@ package body Stats is
    end Get_LapTime;
 
 
-   procedure Get_LappedCompetitor(TimeInstant : FLOAT;
-                                  CurrentLap : INTEGER;
-                                  Competitor_IDs : access INTEGER_ARRAY;
-                                  Competitor_Lap : access INTEGER_ARRAY) is
+   procedure Get_LapClassific(Lap : INTEGER;
+                              TimeInstant : FLOAT;
+                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                              Times_InClassific : out FLOAT_ARRAY_POINT;
+                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
+      Tmp_Row : STATS_ROW;
+      InClassific_Count : INTEGER := 0;
+      ExitLoop : BOOLEAN := FALSE;
    begin
-      null;
-   end Get_LappedCompetitor;
+      Ada.Text_IO.Put_Line("Calculating classific for lap " & Common.IntegerToString(Lap));
+      for Index in 1..Classification_Tables.all(Lap+1).Get_Size loop
+         Tmp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
+         Ada.Text_IO.Put_Line("Verifying " & FLOAT'IMAGE(Tmp_Row.Time) & "<=" & FLOAT'IMAGE(TimeInstant));
+         --Competitor in classific
+         if(Tmp_Row.Competitor_Id /= -1 and Tmp_Row.Time <= TimeInstant) then
+            Ada.Text_IO.Put_Line("One in classific");
+            InClassific_Count := InClassific_Count + 1;
+         else
+            -- it means that the following rows have either a greater time instant
+            --+ or are not set yet (and they will be set in a time instatn greater than
+            --+ the asked one)
+            ExitLoop := TRUE;
+         end if;
+
+         exit when ExitLoop = true;
+      end loop;
+
+      Ada.Text_IO.Put_Line("Comps in classific " & Common.IntegerToString(InClassific_Count));
+
+      CompetitorID_InClassific := new INTEGER_ARRAY(1..InClassific_Count);
+      Times_InClassific := new FLOAT_ARRAY(1..InClassific_Count);
+      ExitLoop := FALSE;
+
+      for Index in 1..InClassific_Count loop
+         Tmp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
+         if(Tmp_Row.Competitor_Id /= -1 and then Tmp_Row.Time <= TimeInstant) then
+            --Rows are already ordered by arrival time, so we can keep this order for
+            --+ writing the classific in the array
+            CompetitorID_InClassific.all(Index) := Tmp_Row.Competitor_Id;
+            Times_InClassific.all(Index) := Tmp_Row.Time;
+         else
+            ExitLoop := TRUE;
+         end if;
+
+         exit when ExitLoop = TRUE;
+      end loop;
+
+      Ada.Text_IO.Put_Line("Getting lapped");
+      Get_LappedCompetitors(TimeInstant,
+                            CurrentLap     => Lap,
+                            Competitor_IDs => LappedCompetitors_ID,
+                            Competitor_Lap => LappedCompetitors_CurrentLap);
+
+   end Get_LapClassific;
+
+
+   procedure Get_LappedCompetitors(TimeInstant : FLOAT;
+                                   CurrentLap : INTEGER;
+                                   Competitor_IDs : out INTEGER_ARRAY_POINT;
+                                   Competitor_Lap : out INTEGER_ARRAY_POINT) is
+      Temp_Row : STATS_ROW;
+      PolePosition_Time : FLOAT;
+      CompetitorQty : INTEGER := Classification_Tables.all(CurrentLap+1).Get_Size;
+      ProcessedCompetitors_IdList : INTEGER_ARRAY(1..CompetitorQty);--alias for CompetitorQty
+      NotLapped_Count : INTEGER := 0;
+      Lapped_Competitors : INTEGER := 0;
+      Lapped_Count : INTEGER := 0;
+      ExitLoop : BOOLEAN := false;
+   begin
+      --Init the processed competitors id list array: when the array position is filled with 1 it means that the
+      --+ competitor with id corresponding to that index has not been processed yet (we don't know whether he
+      --+ has been lapped or not)
+      for id in ProcessedCompetitors_IdList'RANGE loop
+         ProcessedCompetitors_IdList(id) := 0;
+      end loop;
+
+      --Pick up the pole position time in the classification table related the CurrentLap
+      PolePosition_Time := Classification_Tables.all(CurrentLap+1).Get_Row(1).Time;
+
+      -- search backward (in the table list) the lap of the lapped competitors. It will be (for each competitor)
+      --+ the index of the first table where the competitor has written a time less then the best time
+      --+ found at the beginning of the method. If such table is the one before the current one, it's not lapped.
+
+      --Find out the competitors already into the previous table after the pole position time.
+      --+Those competitors will not be counted in the lapped list.
+      if( CurrentLap > 0) then
+         for Index in 1..CompetitorQty loop
+            Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
+            if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
+               ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
+               NotLapped_Count := NotLapped_Count + 1;
+            else
+               ExitLoop := true;
+            end if;
+
+            exit when ExitLoop = true;
+         end loop;
+
+         Competitor_IDs := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
+         Competitor_Lap := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
+         --Initialise these 2 arrays
+         for i in Competitor_Lap'RANGE loop
+            Competitor_IDs.all(i) := -1;
+            Competitor_Lap.all(i) := -1;
+         end loop;
+
+         ExitLoop := false;
+         --Loop backward in the classification table list and find id and lap of lapped competitors
+         for Index in reverse 1..CurrentLap-1 loop
+
+            for i in 1..CompetitorQty loop
+               Temp_Row := Classification_Tables.all(Index).Get_Row(i);
+               if (Temp_Row.Time /= -1.0 and
+                     Temp_Row.Time <= PolePosition_Time and
+                       ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) = 0 ) then
+
+                  Lapped_Count := Lapped_Count + 1;
+                  ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
+                  Competitor_IDs.all(Lapped_Count) := Temp_Row.Competitor_Id;
+                  Competitor_Lap.all(Lapped_Count) := Index;--In the interface lap are counted starting by 0
+               end if;
+
+            end loop;
+
+         end loop;
+
+         --If a competitor is still riding in the first lap, he will not appear in the tables.
+         --+ So let's fill up the remaining positions of the lapped array
+         for Index in 1..ProcessedCompetitors_IdList'LENGTH loop
+            if(ProcessedCompetitors_IdList(Index) = 0) then
+               Lapped_Count := Lapped_Count + 1;
+               ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
+               Competitor_IDs.all(Lapped_Count) := Index;
+               Competitor_Lap.all(Lapped_Count) := 0;
+            end if;
+         end loop;
+
+      else
+         --If the lap is the first one, impossible to have lapped competitors
+         Competitor_IDs := null;
+         Competitor_Lap := null;
+      end if;
+
+   end Get_LappedCompetitors;
 
    function print return BOOLEAN is
    begin
@@ -401,16 +540,24 @@ package body Stats is
 
       procedure Add_Row(Row_In : STATS_ROW) is
       begin
+
+      Ada.Text_IO.Put_Line("Adding roq");
          if (Statistics(1).Competitor_Id = -1) then
             Add_Row(Row_In,1);
          else
             for index in Statistics'RANGE loop
-               if(Statistics(index) < Row_In ) then
+               if(Row_In < Statistics(index) ) then
                   if(Find_RowIndex(Row_In.Competitor_Id) /= -1) then
                      Delete_Row(Find_RowIndex(Row_In.Competitor_Id));
                   end if;
                   Shift_Down(index);
                   Add_Row(Row_In,index);
+
+                  Ada.Text_IO.Put_Line("Row added");
+                  exit;
+               elsif(Statistics(index).Competitor_Id = -1) then
+                  Add_Row(Row_In,index);
+                  Ada.Text_IO.Put_Line("Row added");
                   exit;
                end if;
             end loop;
