@@ -2,6 +2,7 @@ with CORBA;
 with PortableServer;
 
 with Box;
+with Box_Data;
 
 package Box_Monitor_Radio.impl is
 
@@ -9,7 +10,7 @@ package Box_Monitor_Radio.impl is
 
    type Object_Acc is access Object;
 
-   procedure Init( CompetitionUpdates_Buffer : access Box.SYNCH_COMPETITION_UPDATES );
+   procedure Init( CompetitionUpdates_Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT);
 
    procedure GetUpdate(Self : access Object;
                        num : in CORBA.Short;

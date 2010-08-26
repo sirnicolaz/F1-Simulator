@@ -2,6 +2,7 @@ with Ada.Text_IO;
 with Ada.Command_Line;
 
 with Box;
+with Box_Data;
 with BoxRadio.impl;
 with Box_Monitor_Radio.impl;
 with Configurator.Impl;
@@ -157,8 +158,9 @@ begin
       Corbaloc_Storage : SYNCH_CORBALOC_POINT := new SYNCH_CORBALOC;
       Start : access Starter := new Starter(Corbaloc_Storage);
 
-      Update_Buffer : Box.SYNCH_COMPETITION_UPDATES_POINT;
-      History : Box.SYNCH_STRATEGY_HISTORY_POINT;
+      Update_Buffer : Box_Data.SYNCH_COMPETITION_UPDATES_POINT;
+      History : Box_Data.SYNCH_STRATEGY_HISTORY_POINT;
+      AllInfo_Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT;
       -- Resources for writing corbalocs into file
       CorbaLOC_File : Ada.Text_IO.FILE_TYPE;
 
@@ -177,8 +179,8 @@ begin
 
    begin
 
-      Update_Buffer := new Box.SYNCH_COMPETITION_UPDATES;
-      Box_Monitor_Radio.impl.Init(CompetitionUpdates_Buffer => Update_Buffer);
+      Update_Buffer := new Box_Data.SYNCH_COMPETITION_UPDATES;
+      Box_Monitor_Radio.impl.Init(CompetitionUpdates_Buffer => AllInfo_Buffer);
 
 
       Corbaloc_Storage.Get_CorbaLOC(BoxRadio_CorbaLOC, C_BOX_RADIO);
@@ -217,9 +219,12 @@ begin
       Ada.Text_IO.Put_Line("Box package initialized");
 
       -- Resourced shared between tasks
-      History := new Box.SYNCH_STRATEGY_HISTORY;
+      History := new Box_Data.SYNCH_STRATEGY_HISTORY;
       Ada.Text_IO.Put_Line("init History");
       History.Init(Laps);
+
+      AllInfo_Buffer := new Box_Data.SYNCH_ALL_INFO_BUFFER;
+      AllInfo_Buffer.Init(Laps*3);
       -- TODO: initialize the Box with Init
 
       -- Initialize all the resources and tasks needed box side.
@@ -241,7 +246,8 @@ begin
          Updater : access Box.STRATEGY_UPDATER := new Box.STRATEGY_UPDATER(Update_Buffer,
                                                                            History,
                                                                            InitialGasLevel,
-                                                                           InitialTyreType_StdStr
+                                                                           InitialTyreType_StdStr,
+                                                                           AllInfo_Buffer
                                                                           );
 
          BoxMonitor : access Box.UPDATE_RETRIEVER := new Box.UPDATE_RETRIEVER(Update_Buffer,

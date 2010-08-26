@@ -2,12 +2,18 @@ with Box_Monitor_Radio.Skel;
 pragma Warnings (Off, Box_Monitor_Radio.Skel);
 
 with Box;
+with Box_Data;
+
+with Ada.Strings.Unbounded;
 
 package body Box_Monitor_Radio.impl is
 
-   Buffer : access Box.SYNCH_COMPETITION_UPDATES;
+   Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT;
 
-   procedure Init( CompetitionUpdates_Buffer : access Box.SYNCH_COMPETITION_UPDATES ) is
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
+
+   procedure Init( CompetitionUpdates_Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT ) is
    begin
       Buffer := CompetitionUpdates_Buffer;
    end Init;
@@ -21,16 +27,18 @@ package body Box_Monitor_Radio.impl is
       pragma Unreferenced (Self);
       pragma Warnings (On);
 
-      NewInfo : access Box.COMPETITION_UPDATE;
+      NewInfo : Box_Data.ALL_INFO;
+      Temp_String : Unbounded_String.Unbounded_String;
    begin
       -- Add the new strategy somewhere
 
       -- The NewInfo is initialised to 1 for construction constraints.
       --+ The get update method will "update" the variable to the right value.
-      NewInfo := new Box.COMPETITION_UPDATE;
-      Buffer.Get_Update(NewInfo.all,INTEGER(num));
-      Returns := CORBA.To_CORBA_String(Box.CompetitionUpdateToXML(NewInfo.all));
-      time := Corba.FLOAT(NewInfo.Time);
+      Buffer.Get_Info(Num  => INTEGER(num),
+                      Info => NewInfo);
+      Temp_String := Box_Data.Get_UpdateXML(NewInfo) & Box_Data.Get_StrategyXML(NewInfo);
+      Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
+      time := Corba.FLOAT(Box_Data.Get_Time(NewInfo));
    end GetUpdate;
 
 end Box_Monitor_Radio.impl;
