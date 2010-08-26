@@ -182,7 +182,7 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 try{
 org.omg.CORBA.Object obj = orb.string_to_object(monitorBoxCorbaLoc);
-BoxRadio comp = BoxRadioHelper.narrow(obj);
+Box_Monitor_Radio comp = Box_Monitor_RadioHelper.narrow(obj);
 for(short i=0; i<100; i++)
 comp.RequestStrategy(i);
 model.insertRow(0,new Object[]{i.toString(), "1","t.toString()", "q.toString()", "150.3", "10.0 %", "150.0"});
