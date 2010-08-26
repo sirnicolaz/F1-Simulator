@@ -8,10 +8,10 @@ use Common;
 
 package body BoxRadio.impl is
 
-   StrategyHistory : Box.SYNCH_STRATEGY_HISTORY_POINT;
+   StrategyHistory : Box_Data.SYNCH_STRATEGY_HISTORY_POINT;
 
 
-   procedure Init( StrategyHistory_Buffer : Box.SYNCH_STRATEGY_HISTORY_POINT ) is
+   procedure Init( StrategyHistory_Buffer : Box_Data.SYNCH_STRATEGY_HISTORY_POINT ) is
    begin
       StrategyHistory := StrategyHistory_Buffer;
    end Init;

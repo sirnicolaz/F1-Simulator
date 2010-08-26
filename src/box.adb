@@ -439,6 +439,7 @@ package body Box is
       Index : INTEGER := 1;
       New_Info : COMPETITION_UPDATE_POINT;
       Evolving_Strategy : STRATEGY;
+      AllInfo : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT := ALlInfo_Buffer;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
       StrategyHistory : SYNCH_STRATEGY_HISTORY_POINT := SharedHistory;
 
@@ -458,6 +459,7 @@ package body Box is
       Sector : INTEGER := 2;
 
       Skip : INTEGER := 0;
+      ExtendedInformation : EXT_COMPETITION_UPDATE;
    begin
 
       Ada.Text_IO.Put_Line("Init Strategy updater");
@@ -483,6 +485,9 @@ package body Box is
          Ada.Text_IO.Put_Line("INFO GOT " &
                               " previous gas " & Common.FloatToString(PreviousSectorGasLevel) &
                               " new gas " & Common.FloatToString(New_Info.GasLevel));
+
+         Box_Data.COMPETITION_UPDATE(ExtendedInformation) := New_Info.all;
+
          exit when New_Info.Time = -1.0 or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
@@ -499,9 +504,15 @@ package body Box is
               LatestLapMeanGasConsumption;
             PreviousSectorGasLevel := New_Info.GasLevel;
 
+            ExtendedInformation.MeanGasConsumption := LatestLapMeanGasConsumption;
+
             PartialTyreUsuryMean := PartialTyreUsuryMean +
               LatestLapMeanTyreUsury;
             PreviousSectorTyreUsury := New_Info.TyreUsury;
+
+            ExtendedInformation.TyreUsury := LatestLapMeanTyreUsury;
+
+            --TODO: don't use so stupid values for the means
          else
 
             Ada.Text_IO.Put_Line("Calculating partial mean");
@@ -511,6 +522,10 @@ package body Box is
                  (New_Info.PathLength/1000.0) -- We want the ratio in Km
 
               );
+
+            ExtendedInformation.MeanGasConsumption :=
+              (PreviousSectorGasLevel - New_Info.GasLevel)/
+              (New_Info.PathLength/1000.0);
 
             Ada.Text_IO.Put_Line("Previous sector gas " &
                                  FLOAT'IMAGE(PreviousSectorGasLevel));
@@ -523,7 +538,11 @@ package body Box is
                 (New_Info.TyreUsury - PreviousSectorTyreUsury)/
                 ((New_Info.PathLength/1000.0) -- We want the ratio in Km
 
-              );
+                );
+
+            ExtendedInformation.MeanTyreUsury :=
+              (New_Info.TyreUsury - PreviousSectorTyreUsury)/
+                (New_Info.PathLength/1000.0);
 
             PreviousSectorTyreUsury := New_Info.TyreUsury;
          end if;
@@ -564,11 +583,18 @@ package body Box is
             PartialGasConsumptionMean := 0.0;
             PartialTyreUsuryMean := 0.0;
 
+            AllInfo.Add_Info(Update_In   => ExtendedInformation,
+                             Strategy_In => Evolving_Strategy);
+
             if(Evolving_Strategy.PitStopLaps = 0) then
                Ada.Text_IO.Put_Line("Gas set on strat (next prev sect): " &
                                     FLOAT'IMAGE(Evolving_Strategy.GasLevel));
                Skip := 2;
             end if;
+
+         else
+
+            AllInfo.Add_Info(Update_In   => ExtendedInformation);
 
          end if;
 
@@ -583,167 +609,6 @@ package body Box is
 
    --StrategyUpdater_Task : access STRATEGY_UPDATER;
 
-   procedure Set_Node(Info_Node_Out : in out INFO_NODE_POINT; Value : COMPETITION_UPDATE ) is
-   begin
-      Info_Node_Out.This := new COMPETITION_UPDATE;
-      Info_Node_Out.This.all := Value;
-   end Set_Node;
-
-   procedure Set_PreviousNode(Info_Node_Out : in out Info_Node_POINT ; Value : in out Info_Node_POINT) is
-   begin
-      if(Value /= null) then
-         Info_Node_Out.Previous := Value;
-         Info_Node_Out.Previous.Next := Info_Node_Out;
-         Info_Node_Out.Index := Info_Node_Out.Previous.Index + 1;
-      end if;
-   end Set_PreviousNode;
-
-   procedure Set_NextNode(Info_Node_Out : in out Info_Node_POINT; Value : in out Info_Node_POINT ) is
-   begin
-      if(Value /= null) then
-         Value.Previous := Info_Node_Out;
-         Value.Index := Info_Node_Out.Index + 1;
-         Info_Node_Out.Next := Value;
-      end if;
-   end Set_NextNode;
-
-   function Search_Node( Starting_Node : in INFO_NODE_POINT;
-                        Num : in INTEGER) return INFO_NODE_POINT is
-      Iterator : INFO_NODE_POINT := Starting_Node;
-   begin
-      if (Iterator /= null) then
-         if (Iterator.Index < Num ) then
-            --Search forward
-            loop
-               Iterator := Iterator.Next;
-               exit when Iterator = null or else Iterator.Index = Num;
-            end loop;
-         elsif (Iterator.Index > Num) then
-            --Search backward
-            loop
-               Iterator := Iterator.Previous;
-               exit when Iterator.Previous = null or else Iterator.Index = Num;
-            end loop;
-         end if;
-      end if;
-
-      return Iterator;
-
-   end Search_Node;
-
-
-   protected body SYNCH_COMPETITION_UPDATES is
-
-      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE_POINT) is
-         New_Update : INFO_NODE_POINT := new INFO_NODE;
-      begin
-         -- If info related to a time interval are already saved, do nothing.
-         if(Updates_Last = null) then
-            New_Update.This := new COMPETITION_UPDATE;
-            New_Update.This.all := CompetitionUpdate_In.all;
-            Updates_Last := New_Update;
-            Updates_Last.Index := 1;
-            Updates_Last.Previous := null;
-            Updates_Last.Next := null;
-            Updates_Current := Updates_Last;
-            Updated := true;
-         elsif (Updates_Last.This.Time < CompetitionUpdate_In.Time) then
-
-            New_Update.This := new COMPETITION_UPDATE;
-            New_Update.This.all := CompetitionUpdate_In.all;
-
-            Set_NextNode(Updates_Last,New_Update);
-
-            Updates_Last := New_Update;
-            Updated := True;
-         end if;
-      exception when Program_Error =>
-            Ada.Text_IO.Put_Line("Constraint error adding update");
-
-
-      end Add_Data;
-
-      entry Wait(NewInfo : out COMPETITION_UPDATE;
-                 Num : in INTEGER) when Updated is
-      begin
-         requeue Get_Update;
-      end Wait;
-
-      entry Get_Update( NewInfo : out COMPETITION_UPDATE;
-                       Num : INTEGER ) when true is
-      begin
-         if ( Updates_Last = null or else Updates_Last.Index < Num ) then
-            Updated := false;
-            requeue Wait;
-         else
-            Updates_Current := Search_Node(Updates_Current, Num);
-            NewInfo := Updates_Current.This.all;
-         end if;
-      end Get_Update;
-
-      function IsUpdated return BOOLEAN is
-      begin
-         return Updated;
-      end;
-
-   end SYNCH_COMPETITION_UPDATES;
-
-   protected body SYNCH_STRATEGY_HISTORY is
-
-      procedure Init( Lap_Qty : in INTEGER ) is
-      begin
-         history := new STRATEGY_HISTORY(0..Lap_Qty);
-      end Init;
-
-      procedure AddStrategy( Strategy_in : in STRATEGY ) is
-      begin
-         Ada.Text_IO.Put_Line("Adding strategy with");
-         Ada.Text_IO.Put_Line("gas: " & FLOAT'IMAGE(Strategy_In.GasLevel));
-         Ada.Text_IO.Put_Line("tyre: " & Unbounded_String.To_String(Strategy_In.Type_Tyre));
-         Ada.Text_IO.Put_Line("pit stop laps:" & INTEGER'IMAGE(Strategy_In.PitStopLaps));
-
-
-         Ada.Text_IO.Put_Line("History size " & INTEGER'IMAGE(history_size));
-
-         history.all(history_size) := Strategy_in;
-         history_size := history_size + 1;
-         Updated := true;
-         Ada.Text_IO.Put_Line("Strategy "& Common.IntegerToString(history_size-1) & " added");
-         exception when Constraint_Error =>
-            Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
-            Ada.Text_IO.Put("the history array has had an access violation.");
-      end AddStrategy;
-
-      entry Get_Strategy( NewStrategy : out STRATEGY ;
-                 Lap : in INTEGER) when Updated is
-      begin
-         Ada.Text_IO.Put_Line("Retrieving new strategy for lap " & Common.IntegerToString(Lap));
-         Ada.Text_IO.Put_Line("History size " & Common.IntegerToString(history_size));
-         --TODO: verify whether to put <= or <
-         if Lap < history_size then
-            Ada.Text_IO.Put_Line("Strategy got");
-            NewStrategy := history.all(Lap);
-         else
-            Ada.Text_IO.Put_Line("Strategy missing");
-            Updated := false;
-            requeue Get_Strategy;
-         end if;
-
-      end Get_Strategy;
-
-      -- TODO: test it
-      function Get_PitStopDone return INTEGER is
-         TotalPitStops : INTEGER := 0;
-      begin
-         for Index in 1..history_size loop
-            if history(Index).PitStopLaps = 0 then
-               TotalPitStops := TotalPitStops + 1;
-            end if;
-            end loop;
-         return TotalPitStops;
-      end Get_PitStopDone;
-
-   end SYNCH_STRATEGY_HISTORY;
 
    function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING is
 
