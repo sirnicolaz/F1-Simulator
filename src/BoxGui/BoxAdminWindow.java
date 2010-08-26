@@ -617,11 +617,8 @@ public void switchPanel(){
 BoxMonitor p = new BoxMonitor(stringId);
 System.out.println("id del boxmonitor : "+stringId);
 parent.dispose();
-// private String boxRadioCorbaLoc;
-// private String monitorBoxCorbaLoc;
-// private String monitorCorbaLoc.value
-// private String configuratorCorbaLoc;
-p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb);
+p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb, laps.value);
+p.start();
 }
 
 public void connect(String corbaloc){
@@ -655,102 +652,24 @@ System.out.println("Try to connect to configurator with corbaloc : "+configurato
            //Resolve MessageServer
 org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
 System.out.println("chiamo ConfiguratorHelper.narrow");
-// Configurator conf = ConfiguratorHelper.narrow(conf_obj);
-// System.out.println("Conf initialized");
-// System.out.println("Conf init");
-// //invoco il metodo configure
-// if (conf != null){
-// System.out.println("Conf != null");
-// conf.Configure("obj/boxConfig-"+stringId+".xml");
 //qua va effettuato lo switch panel.
 switchPanel();
-// }
-// else {
-// System.out.println("Connessione con il CompetitionConfigurator rifiutata");
-// JOptionPane.showMessageDialog(parent, "Attention : connection refused by CompetitionConfigurator", "Error", JOptionPane.ERROR_MESSAGE);
-// }
+
 }
 else {
 System.out.println("Connessione con il RegistrationHandler rifiutata");
 JOptionPane.showMessageDialog(parent, "Attention : connection refused by RegistrationHandler", "Error", JOptionPane.ERROR_MESSAGE);
 }
-            //initialize orb
-            /*Properties props = System.getProperties();
-            props.put("org.omg.CORBA.ORBInitialPort", args[1]);
-            //Replace MyHost with the name of the host on which you are running the server
-            props.put("org.omg.CORBA.ORBInitialHost", args[0]);
-            ORB orb = ORB.init(args, props);
-	    */
-//LETTURA IOR DA FILE
-// 	    FileReader doc=new FileReader("/ior/ior.txt");
-// BufferedReader bufRead = new BufferedReader(doc);
-// String ior;    // String that holds current file line
-//  int count = 0;  // Line number of count 
-            
-            // Read first line
-//             ior = bufRead.readLine();
-//             count++;
-//             
-//             // Read through file one line at time. Print line # and line
-//            while (ior != null){
-//                 ior = ior+bufRead.readLine();
-//                 count++;
-//             }
-//             bufRead.close();
-// 
-// //inizializzazione e comunicazione con la logica.
-// // 	    ORB orb = ORB.init(ior, null);
-// 	    System.out.println("Initialized ORB");
-
-            //Instantiate Servant and create reference
-// 	    POA rootPOA = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
-           
-            //rootPOA.activate_object(listener);
-	    //Echo ref = EchoHelper.narrow(
-              //  rootPOA.servant_to_reference(listener));
-
-            //Resolve MessageServer
-// 	    org.omg.CORBA.Object obj = orb.string_to_object(ior);
-// 	    Echo comp = EchoHelper.narrow(obj);
-	/*	
-	    Echo msgServer = EchoHelper.narrow(
-	        orb.string_to_object("corbaloc:iiop:1.2@"+args[0]+":"+args[1]+"//"+args[2]));*/
-
-            //Register listener reference (callback object) with MessageServer
-           
-//             System.out.println("Listener registered with MessageServer :" + comp.echoQuarantadue("sono client java - echoQuarantadue"));
-//             System.out.println("Listener registered with MessageServer :" + comp.echoString("sono client java - echoString"));
-// 	    org.omg.CORBA.IntHolder pippo = new org.omg.CORBA.IntHolder();
-// 	    comp.echoProcedure("sono client java - echoProcedure", pippo);
-//             System.out.println("Listener registered with MessageServer :");
-
-	    //Activate rootpoa
-            //rootPOA.the_POAManager().activate();
-
-            //Wait for messages
-            //orb.run();
-
-
-	} catch (Exception e) {
+} catch (Exception e) {
 JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
-// e.getMessage();
-	    e.printStackTrace();
+e.printStackTrace();
 	}
-//  return true;
-
-   }
-
-
-
+}
 
 public static void main(String[] args){
 JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
-// JDialog errorDialtemp = new JDialog(j, "Error");
-// errorDial = errorDialtemp;
 BoxAdminWindow boxWindow = new BoxAdminWindow(j, args[0]);
 boxWindow.init(j);
-// j.dispose();
-
 
 }
 }

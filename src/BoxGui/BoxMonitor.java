@@ -16,8 +16,14 @@ import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
 
-public class BoxMonitor {
+import java.lang.*;
+import javax.xml.parsers.*;
+import org.xml.sax.InputSource;
+import org.w3c.dom.*;
+
+public class BoxMonitor extends Thread{
 private Integer i= new Integer(0);
+private Integer laps;
 private String id;
 private JFrame parent;
 private JTextArea outArea;
@@ -47,6 +53,16 @@ private String configuratorCorbaLoc;
 private String monitorCorbaLoc;
 private ORB orb;
 private String ritorno = new String();
+
+private Double gasLevelValue;
+private Double tyreUsuryValue;
+private Integer sectorValue;
+private Integer lapsValue;
+private Double metresValue;
+private Double meandSpeedValue;
+private Double meanTyreUsuryValue;
+private Double meanGasConsumption;
+
 public BoxMonitor(String id_In){
 id=id_In;
 parent = new JFrame("BoxMonitor n° "+id_In);
@@ -147,35 +163,40 @@ tablePanel.setVerticalScrollBar(new JScrollBar());
 
 }
 
+// public void addInfo(Box_Monitor_Radio comp_radio, short i, org.omg.CORBA.FloatHolder j){
+// while(true){
+// String temp = comp_radio.GetUpdate(i,j);
+// // outArea.append("\ntemp = "+temp);
+// model.insertRow(0,new Object[]{temp, "1",j.value, "", "150.3", "10.0 %", "150.0"});
+// // model.addRow(new Object[]{i.toString(), "1","2"});
+// ListSelectionModel selectionModel = outTable.getSelectionModel();
+// selectionModel.setSelectionInterval(0,0);
+// i=(short)(i+1);
+// }
+// }
 
-public void init(String boxCorbaLocIn, String monitorBoxCorbaLocIn, String configuratorCorbaLocIn, String monitorCorbaLocIn, ORB orbIn){
-System.out.println("BoxMonitor.init");
-boxCorbaLoc = boxCorbaLocIn;
-monitorBoxCorbaLoc = monitorBoxCorbaLocIn;
-configuratorCorbaLoc = configuratorCorbaLocIn;
-monitorCorbaLoc = monitorCorbaLocIn;
-orb = orbIn;
+public void run(){
 createBoxOutput();
 createConsumptionMeans();
 createTableOutput();
 parent.add(tablePanel, BorderLayout.EAST);
 parent.add(outPanel,BorderLayout.WEST);
 parent.add(meanPanel,BorderLayout.NORTH);
-JButton startButton = new JButton("Aggiungi Riga");
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-Integer t = new Integer(i/3);
-Integer q = new Integer(i%3);
-model.insertRow(0,new Object[]{i.toString(), "1",t.toString(), q.toString(), "150.3", "10.0 %", "150.0"});
-// model.addRow(new Object[]{i.toString(), "1","2"});
-ListSelectionModel selectionModel = outTable.getSelectionModel();
-selectionModel.setSelectionInterval(0,0);
-
-System.out.println("casnio");
-i=i+1;
-			}
-		});
-parent.add(startButton, BorderLayout.SOUTH);
+// JButton startButton = new JButton("Aggiungi Riga");
+// 		startButton.addActionListener(new ActionListener() {
+// 			public void actionPerformed(ActionEvent e) {
+// Integer t = new Integer(i/3);
+// Integer q = new Integer(i%3);
+// model.insertRow(0,new Object[]{i.toString(), "1",t.toString(), q.toString(), "150.3", "10.0 %", "150.0"});
+// // model.addRow(new Object[]{i.toString(), "1","2"});
+// ListSelectionModel selectionModel = outTable.getSelectionModel();
+// selectionModel.setSelectionInterval(0,0);
+// 
+// System.out.println("casnio");
+// i=i+1;
+// 			}
+// 		});
+// parent.add(startButton, BorderLayout.SOUTH);
 
 parent.pack();
 parent.setVisible(true);
@@ -208,10 +229,34 @@ org.omg.CORBA.Object obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
 outArea.append("\n pre narrow box_monitor");
 Box_Monitor_Radio comp_radio = Box_Monitor_RadioHelper.narrow(obj_radio);
 outArea.append("\npre getupdate");
-short i=0;
-String temp = comp_radio.GetUpdate(i);
-outArea.append("\ntemp = "+temp);
+short i=1;
+short qee=1;
+org.omg.CORBA.FloatHolder j=new org.omg.CORBA.FloatHolder(0);
+String temp;
+while(i<=laps*3){
+temp = comp_radio.GetUpdate(i,j);
+readXml(temp);
+if(j.value == -1){
+model.insertRow(0,new Object[]{i,id,lapsValue,sectorValue,gasLevelValue,tyreUsuryValue, "RITIRED"});
+ListSelectionModel selectionModel = outTable.getSelectionModel();
+selectionModel.setSelectionInterval(0,0);
+i=(short)((laps*3)+1);
+}
+else{model.insertRow(0,new Object[]{i,id,lapsValue, sectorValue, gasLevelValue, tyreUsuryValue, j.value});
+ListSelectionModel selectionModel = outTable.getSelectionModel();
+selectionModel.setSelectionInterval(0,0);
+System.out.println(temp);
+i=(short)(i+1);
+System.out.println("after run invoke");
+this.sleep(1000);
+// parent.repaint();
 // }
+}
+ }
+model.insertRow(0,new Object[]{"---", "---","---", "---", "---", "---", "---"});
+ListSelectionModel selectionModel = outTable.getSelectionModel();
+selectionModel.setSelectionInterval(0,0);
+
 }
 catch (Exception e){
 System.out.println("Connessione con il BoxRadioHelper rifiutata");
@@ -219,6 +264,85 @@ JOptionPane.showMessageDialog(parent, "Attention : connection refused by BoxRadi
 e.printStackTrace();
 }
 }
+
+
+public void init(String boxCorbaLocIn, String monitorBoxCorbaLocIn, String configuratorCorbaLocIn, String monitorCorbaLocIn, ORB orbIn, short lapsIn){
+System.out.println("BoxMonitor.init");
+boxCorbaLoc = boxCorbaLocIn;
+monitorBoxCorbaLoc = monitorBoxCorbaLocIn;
+configuratorCorbaLoc = configuratorCorbaLocIn;
+monitorCorbaLoc = monitorCorbaLocIn;
+orb = orbIn;
+laps = new Integer(lapsIn);
+}
+
+public void readXml(String xmlRecords){
+// String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
+    try {
+        DocumentBuilderFactory dbf =
+            DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlRecords));
+
+        Document doc = db.parse(is);
+        NodeList nodes = doc.getElementsByTagName("update");
+
+	int i=0;
+        Element element = (Element) nodes.item(i);
+        NodeList gasLevel = element.getElementsByTagName("gasLevel");
+        Element line = (Element) gasLevel.item(0);
+//            System.out.println("gasLevel: " + getCharacterDataFromElement(line));
+	gasLevelValue = new Double(getCharacterDataFromElement(line));
+        
+	NodeList tyreUsury = element.getElementsByTagName("tyreUsury");
+        line = (Element) tyreUsury.item(0);
+//            System.out.println("tyreUsury: " + getCharacterDataFromElement(line));
+	tyreUsuryValue = new Double(getCharacterDataFromElement(line));
+
+	NodeList lap = element.getElementsByTagName("lap");
+        line = (Element) lap.item(0);
+        System.out.println("lap: " + getCharacterDataFromElement(line));
+	lapsValue = new Integer(getCharacterDataFromElement(line));
+
+        NodeList sector = element.getElementsByTagName("sector");
+        line = (Element) sector.item(0);
+//            System.out.println("sector: " + getCharacterDataFromElement(line));
+	sectorValue = new Integer(getCharacterDataFromElement(line));
+
+        NodeList metres = element.getElementsByTagName("metres");
+        line = (Element) metres.item(0);
+//            System.out.println("metres: " + getCharacterDataFromElement(line));
+	metresValue = new Double(getCharacterDataFromElement(line));
+/*
+	NodeList meanSpeed = element.getElementsByTagName("meandSpeed");
+        line = (Element) meandSpeed.item(0);
+//            System.out.println("metres: " + getCharacterDataFromElement(line));
+	meanSpeedValue = new Double(getCharacterDataFromElement(line));
+
+	NodeList meanTyreUsury = element.getElementsByTagName("meanTyreUsury");
+        line = (Element) meandSpeed.item(0);
+//            System.out.println("metres: " + getCharacterDataFromElement(line));
+	meanTyreUsuryValue = new Double(getCharacterDataFromElement(line));
+
+	NodeList meanGasConsumption = element.getElementsByTagName("meanGasConsumption");
+        line = (Element) meandSpeed.item(0);
+//            System.out.println("metres: " + getCharacterDataFromElement(line));
+	meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));*/
+
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+  public static String getCharacterDataFromElement(Element e) {
+    Node child = e.getFirstChild();
+    if (child instanceof CharacterData) {
+       CharacterData cd = (CharacterData) child;
+       return cd.getData();
+    }
+    return "-";
+  }
 // public static void main(String[] args){
 // BoxMonitor b = new BoxMonitor(args[0]);
 // b.init();
