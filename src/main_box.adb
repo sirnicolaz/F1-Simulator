@@ -3,7 +3,7 @@ with Ada.Command_Line;
 
 with Box;
 with BoxRadio.impl;
-with Monitor.impl;
+with Box_Monitor_Radio.impl;
 with Configurator.Impl;
 --with Configurator.Impl.Competitor;
 
@@ -115,7 +115,7 @@ begin
                BoxRadio_Ref : CORBA.Object.Ref;
                BoxRadio_Obj : constant CORBA.Impl.Object_Ptr := new BoxRadio.Impl.Object;
                Monitor_Ref : CORBA.Object.Ref;
-               Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Monitor.Impl.Object;
+               Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Box_Monitor_Radio.Impl.Object;
                Configurator_Ref : CORBA.Object.Ref;
                Configurator_Obj : constant CORBA.Impl.Object_Ptr := new Configurator.Impl.Object;
             begin

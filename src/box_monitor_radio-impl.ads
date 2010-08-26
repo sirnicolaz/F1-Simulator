@@ -3,7 +3,7 @@ with PortableServer;
 
 with Box;
 
-package Monitor.impl is
+package Box_Monitor_Radio.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
 
@@ -14,4 +14,4 @@ package Monitor.impl is
    function GetUpdate(Self : access Object;
                       num : in CORBA.Short) return CORBA.String;
 
-end Monitor.impl;
+end Box_Monitor_Radio.impl;
