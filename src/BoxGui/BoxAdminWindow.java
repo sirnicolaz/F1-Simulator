@@ -740,7 +740,7 @@ JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), 
 
 
 public static void main(String[] args){
-JFrame j = new JFrame("Box Admin Window");
+JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
 // JDialog errorDialtemp = new JDialog(j, "Error");
 // errorDial = errorDialtemp;
 BoxAdminWindow boxWindow = new BoxAdminWindow(j, args[0]);
