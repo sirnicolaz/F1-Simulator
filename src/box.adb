@@ -824,12 +824,13 @@ package body Box is
 
       XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
                                                          "<update>" &
-                                                         "<gasLevel>" & Common.FloatToString(update.GasLevel) & "<gasLevel> <!-- % -->" &
+                                                         "<gasLevel>" & Common.FloatToString(update.GasLevel) & "</gasLevel> <!-- % -->" &
                                                          "<tyreUsury>" & Common.FloatToString(update.TyreUsury) & "</tyreUsury> <!-- % -->" &
                                                          --"<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
                                                          --"<meanGasConsumption>" & Common.FloatToString(update.MeanGasConsumption) & "</meanGasConsumption> <!-- l/h --> " &
                                                          "<lap>" & Common.IntegerToString(update.Lap) & "</lap> " &
-                                                         "<sector>" & Common.IntegerToString(update.Sector) & "</sector> " );-- &
+                                                         "<sector>" & Common.IntegerToString(update.Sector) & "</sector>" &
+                                                         "</update>" );-- &
                                                          --"<classific competitors="" " & Common.IntegerToString(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");
       -- The classific is expressed as an integer sequence where the first place
       --+ in the competition is related to the first position in the array.
