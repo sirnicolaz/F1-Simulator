@@ -11,7 +11,9 @@ package Box_Monitor_Radio.impl is
 
    procedure Init( CompetitionUpdates_Buffer : access Box.SYNCH_COMPETITION_UPDATES );
 
-   function GetUpdate(Self : access Object;
-                      num : in CORBA.Short) return CORBA.String;
+   procedure GetUpdate(Self : access Object;
+                       num : in CORBA.Short;
+                       time : out CORBA.Float;
+                       Returns : out CORBA.String);
 
 end Box_Monitor_Radio.impl;

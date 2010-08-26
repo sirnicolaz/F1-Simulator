@@ -826,10 +826,8 @@ package body Box is
                                                          "<update>" &
                                                          "<gasLevel>" & Common.FloatToString(update.GasLevel) & "<gasLevel> <!-- % -->" &
                                                          "<tyreUsury>" & Common.FloatToString(update.TyreUsury) & "</tyreUsury> <!-- % -->" &
-                                                         "<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
-                                                         "<meanGasConsumption>" & Common.FloatToString(update.MeanGasConsumption) & "</meanGasConsumption> <!-- l/h --> " &
-                                                         --TODO: change, it's not possible to send time via XML
-                                                         "<time>" & Common.FloatToString(update.Time) & "</time> <!-- time instant --> " &
+                                                         --"<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
+                                                         --"<meanGasConsumption>" & Common.FloatToString(update.MeanGasConsumption) & "</meanGasConsumption> <!-- l/h --> " &
                                                          "<lap>" & Common.IntegerToString(update.Lap) & "</lap> " &
                                                          "<sector>" & Common.IntegerToString(update.Sector) & "</sector> " );-- &
                                                          --"<classific competitors="" " & Common.IntegerToString(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");

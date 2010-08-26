@@ -12,10 +12,10 @@ package body Box_Monitor_Radio.impl is
       Buffer := CompetitionUpdates_Buffer;
    end Init;
 
-   function GetUpdate
-     (Self : access Object;
-      num : in CORBA.Short)
-     return CORBA.STRING
+   procedure GetUpdate(Self : access Object;
+                       num : in CORBA.Short;
+                       time : out CORBA.Float;
+                       Returns : out CORBA.String)
    is
       pragma Warnings (Off);
       pragma Unreferenced (Self);
@@ -29,7 +29,8 @@ package body Box_Monitor_Radio.impl is
       --+ The get update method will "update" the variable to the right value.
       NewInfo := new Box.COMPETITION_UPDATE;
       Buffer.Get_Update(NewInfo.all,INTEGER(num));
-      return CORBA.To_CORBA_String(Box.CompetitionUpdateToXML(NewInfo.all));
+      Returns := CORBA.To_CORBA_String(Box.CompetitionUpdateToXML(NewInfo.all));
+      time := Corba.FLOAT(NewInfo.Time);
    end GetUpdate;
 
 end Box_Monitor_Radio.impl;
