@@ -46,7 +46,7 @@ private String monitorBoxCorbaLoc;
 private String configuratorCorbaLoc;
 private String monitorCorbaLoc;
 private ORB orb;
-
+private String ritorno = new String();
 public BoxMonitor(String id_In){
 id=id_In;
 parent = new JFrame("BoxMonitor n° "+id_In);
@@ -181,21 +181,42 @@ parent.pack();
 parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 try{
-org.omg.CORBA.Object obj = orb.string_to_object(monitorBoxCorbaLoc);
-Box_Monitor_Radio comp = Box_Monitor_RadioHelper.narrow(obj);
-for(short i=0; i<100; i++)
-comp.RequestStrategy(i);
-model.insertRow(0,new Object[]{i.toString(), "1","t.toString()", "q.toString()", "150.3", "10.0 %", "150.0"});
-// model.addRow(new Object[]{i.toString(), "1","2"});
-ListSelectionModel selectionModel = outTable.getSelectionModel();
-selectionModel.setSelectionInterval(0,0);
-
-System.out.println("casnio");
+org.omg.CORBA.Object obj = orb.string_to_object(configuratorCorbaLoc);
+outArea.setText("Pre narrow");
+// Box_Monitor_Radio comp = Box_Monitor_RadioHelper.narrow(obj);
+Configurator conf = ConfiguratorHelper.narrow(obj);
+outArea.append("\nConf initialized, invoke configure");
+// System.out.println("Conf init");
+//invoco il metodo configure
+// if (conf != null){
+// System.out.println("Conf != null");
+conf.Configure("obj/boxConfig-"+id+".xml");
+// }
+// System.out.println("After configure");
+outArea.append("\nAfter configure");
+// for(short i=0; i<100; i++){
+// // ritorno = comp.GetUpdate(i);
+// Short s = new Short(i);
+// model.insertRow(0,new Object[]{s.toString(), "1","t.toString()", "q.toString()", "150.3", "10.0 %", ritorno});
+// // model.addRow(new Object[]{i.toString(), "1","2"});
+// ListSelectionModel selectionModel = outTable.getSelectionModel();
+// selectionModel.setSelectionInterval(0,0);
+// 
+// System.out.println("casnio");
+outArea.append("\n pre string_to_object");
+org.omg.CORBA.Object obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
+outArea.append("\n pre narrow box_monitor");
+Box_Monitor_Radio comp_radio = Box_Monitor_RadioHelper.narrow(obj_radio);
+outArea.append("\npre getupdate");
+short i=0;
+String temp = comp_radio.GetUpdate(i);
+outArea.append("\ntemp = "+temp);
+// }
 }
 catch (Exception e){
 System.out.println("Connessione con il BoxRadioHelper rifiutata");
 JOptionPane.showMessageDialog(parent, "Attention : connection refused by BoxRadioHelper", "Error", JOptionPane.ERROR_MESSAGE);
-
+e.printStackTrace();
 }
 }
 // public static void main(String[] args){

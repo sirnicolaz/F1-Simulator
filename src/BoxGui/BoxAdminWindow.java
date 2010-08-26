@@ -144,8 +144,12 @@ BufferedReader bufRead = new BufferedReader(doc);
 System.out.println("corbaloc configurator : "+configuratorCorbaLoc);
 //read boxRadioCorbaloc
   boxRadioCorbaLoc= bufRead.readLine();
+System.out.println("corbaloc boxRadio : "+ boxRadioCorbaLoc);
+
 //read monitorBoxCorbaloc
   monitorBoxCorbaLoc= bufRead.readLine();
+System.out.println("corbaloc monitorBox : "+monitorBoxCorbaLoc);
+
  bufRead.close();
 
 }
@@ -651,20 +655,20 @@ System.out.println("Try to connect to configurator with corbaloc : "+configurato
            //Resolve MessageServer
 org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
 System.out.println("chiamo ConfiguratorHelper.narrow");
-Configurator conf = ConfiguratorHelper.narrow(conf_obj);
-System.out.println("Conf initialized");
-System.out.println("Conf init");
-//invoco il metodo configure
-if (conf != null){
-System.out.println("Conf != null");
-conf.Configure("obj/boxConfig-"+stringId+".xml");
+// Configurator conf = ConfiguratorHelper.narrow(conf_obj);
+// System.out.println("Conf initialized");
+// System.out.println("Conf init");
+// //invoco il metodo configure
+// if (conf != null){
+// System.out.println("Conf != null");
+// conf.Configure("obj/boxConfig-"+stringId+".xml");
 //qua va effettuato lo switch panel.
 switchPanel();
-}
-else {
-System.out.println("Connessione con il CompetitionConfigurator rifiutata");
-JOptionPane.showMessageDialog(parent, "Attention : connection refused by CompetitionConfigurator", "Error", JOptionPane.ERROR_MESSAGE);
-}
+// }
+// else {
+// System.out.println("Connessione con il CompetitionConfigurator rifiutata");
+// JOptionPane.showMessageDialog(parent, "Attention : connection refused by CompetitionConfigurator", "Error", JOptionPane.ERROR_MESSAGE);
+// }
 }
 else {
 System.out.println("Connessione con il RegistrationHandler rifiutata");
