@@ -26,6 +26,7 @@ package body Box is
    --TODO:if possible, sooner or later try to use the cmpetitor classific
    --+ for calculating the strategy
 
+
    --Competitor information
    CompetitorID : INTEGER;
    GasTankCapacity : FLOAT;
@@ -609,70 +610,6 @@ package body Box is
 
    --StrategyUpdater_Task : access STRATEGY_UPDATER;
 
-
-   function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING is
-
-      Style : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-
-      XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-
-   begin
-      Ada.Text_IO.Put_Line("Producing xml strategy...");
-
-      case Strategy_in.Style is
-         when AGGRESSIVE =>
-            Style := Unbounded_String.To_Unbounded_String("Aggressive");
-         when NORMAL =>
-            Style := Unbounded_String.To_Unbounded_String("Normal");
-         when CONSERVATIVE =>
-            Style := Unbounded_String.To_Unbounded_String("Conservative");
-         when others =>
-            Ada.Text_IO.Put_Line("Error, no style set");
-      end case;
-
-      Ada.Text_IO.Put_Line("Creating xml string");
-      XML_String := Unbounded_String.To_Unbounded_String
-        ("<?xml version=""1.0""?>" &
-         "<strategy>");
-
-      Ada.Text_IO.Put_Line("Setting tyre");
-      XML_STring := XML_String &
-      Unbounded_String.To_Unbounded_String("<tyreType>") &
-      Strategy_in.Type_Tyre &
-      Unbounded_String.To_Unbounded_String("</tyreType>");
-      Ada.Text_IO.Put_Line("First part of the strategy " & Unbounded_String.To_String(XML_String));
-
-      Ada.Text_IO.Put_Line("Setting style");
-      XML_String := XML_String &
-      Unbounded_String.To_Unbounded_String("<style>") &
-      Style &
-      Unbounded_String.To_Unbounded_String("</style>");
-
-      Ada.Text_IO.Put_Line("Setting gas level");
-      XML_String := XML_String &
-      Unbounded_String.To_Unbounded_String("<gasLevel>") &
-      FloatToString(Strategy_in.GasLevel) &
-      Unbounded_String.To_Unbounded_String("</gasLevel>");
-
-      Ada.Text_IO.Put_Line("Setting put stop laps" & Common.IntegerToString(Strategy_in.PitStopLaps));
-      XML_String := XML_String &
-      Unbounded_String.To_Unbounded_String("<pitStopLaps>") &
-      IntegerToString(Strategy_in.PitStopLaps) &
-      Unbounded_String.To_Unbounded_String("</pitStopLaps>");
-
-      Ada.Text_IO.Put_Line("Setting pit stop delay");
-      Ada.Text_IO.Put_Line("pit stop delay " & FLOAT'IMAGE(Strategy_in.PitStopDelay));
-      XML_String := XML_String &
-      Unbounded_String.To_Unbounded_String("<pitStopDelay>") &
-      FloatToString(Strategy_in.PitStopDelay) &
-      Unbounded_String.To_Unbounded_String("</pitStopDelay>" &
-                                           "</strategy>");
-
-      Ada.Text_IO.Put_Line("Strategy done");
-
-      return Unbounded_String.To_String(XML_String);
-   end BoxStrategyToXML;
-
    -- Used to send to the client interface the information concerning the competition
    function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING is
 
@@ -687,8 +624,7 @@ package body Box is
         -- Competitor_Qty := update.Classific'LENGTH;
       --end if;
 
-      XML_String := Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?>" &
-                                                         "<update>" &
+      XML_String := Unbounded_String.To_Unbounded_String("<update>" &
                                                          "<gasLevel>" & Common.FloatToString(update.GasLevel) & "</gasLevel> <!-- % -->" &
                                                          "<tyreUsury>" & Common.FloatToString(update.TyreUsury) & "</tyreUsury> <!-- % -->" &
                                                          --"<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &

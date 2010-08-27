@@ -36,7 +36,11 @@ package body Box_Monitor_Radio.impl is
       --+ The get update method will "update" the variable to the right value.
       Buffer.Get_Info(Num  => INTEGER(num),
                       Info => NewInfo);
-      Temp_String := Box_Data.Get_UpdateXML(NewInfo) & Box_Data.Get_StrategyXML(NewInfo);
+      Temp_String :=
+        Unbounded_String.To_Unbounded_String("<update>") &
+      Box_Data.Get_UpdateXML(NewInfo) & Box_Data.Get_StrategyXML(NewInfo) &
+      Unbounded_String.To_Unbounded_String("</update>");
+
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
       time := Corba.FLOAT(Box_Data.Get_Time(NewInfo));
    end GetUpdate;

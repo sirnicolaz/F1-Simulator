@@ -44,8 +44,6 @@ package Box is
    end STRATEGY_UPDATER;
 
    --Temporary test function DEL
-   function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING;
-   function CompetitionUpdateToXML(update : COMPETITION_UPDATE) return STRING;
    function XML2CompetitionUpdate(UpdateStr_In : STRING;
                                   Temporary_StringName : STRING) return COMPETITION_UPDATE_POINT;
    -- Local methods --
