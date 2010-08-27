@@ -34,15 +34,15 @@ package body Box_Monitor_Radio.impl is
 
       -- The NewInfo is initialised to 1 for construction constraints.
       --+ The get update method will "update" the variable to the right value.
-      Ada.Text_IO.Put_Line("Getting info from buffer, step 1");
+      Ada.Text_IO.Put_Line("DEBUG Getting info from buffer, step 1");
       Buffer.Get_Info(Num  => INTEGER(num),
                       Info => NewInfo);
-      Ada.Text_IO.Put_Line("Info got, converting to xml");
+      Ada.Text_IO.Put_Line("DEBUG Info got, converting to xml");
       Temp_String :=
         Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?><update>") &
       Box_Data.Get_UpdateXML(NewInfo) & Box_Data.Get_StrategyXML(NewInfo) &
       Unbounded_String.To_Unbounded_String("</update>");
-      Ada.Text_IO.Put_Line("Done, returning");
+      Ada.Text_IO.Put_Line("DEBUG Done, returning");
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
       time := Corba.FLOAT(Box_Data.Get_Time(NewInfo));
    end GetUpdate;
