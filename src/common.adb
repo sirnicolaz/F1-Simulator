@@ -90,7 +90,7 @@ package body COMMON is
       return true;
    end SaveToFile;
 
-   protected type WAITING_BLOCK is
+   protected body WAITING_BLOCK is
       entry Wait when IsWait = true is
       begin
          IsWait := true;
@@ -101,7 +101,7 @@ package body COMMON is
          IsWait := false;
       end Notify;
 
-   end WAITING_BLOC;
+   end WAITING_BLOCK;
 
    function FloatToString( num : FLOAT ) return STRING is
       Temp_StringLength : INTEGER;

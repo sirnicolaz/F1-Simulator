@@ -37,7 +37,7 @@ package body Box_Monitor_Radio.impl is
       Buffer.Get_Info(Num  => INTEGER(num),
                       Info => NewInfo);
       Temp_String :=
-        Unbounded_String.To_Unbounded_String("<update>") &
+        Unbounded_String.To_Unbounded_String("<?xml version=""1.0""?><update>") &
       Box_Data.Get_UpdateXML(NewInfo) & Box_Data.Get_StrategyXML(NewInfo) &
       Unbounded_String.To_Unbounded_String("</update>");
 

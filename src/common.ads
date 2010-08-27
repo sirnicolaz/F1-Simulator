@@ -40,10 +40,10 @@ package Common is
    --Used to simulate wait and notify
    protected type WAITING_BLOCK is
       entry Wait;
-      entry Notify;
+      procedure Notify;
    private
       IsWait : BOOLEAN := FALSE;
-   end WAITING_BLOC;
+   end WAITING_BLOCK;
 
    type WAITING_BLOCK_ARRAY is array(POSITIVE range <>) of access WAITING_BLOCK;
 
