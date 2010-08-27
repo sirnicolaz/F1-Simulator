@@ -39,22 +39,22 @@ private JLabel valuePerCentUsury;
 private JLabel labelGasLevel;
 private JLabel valueLevelFuel;
 private JLabel valueSpeed;
-private JLabel labelTyre = new JLabel("Tyre type : ");
-private JLabel labelBox = new JLabel("Box Strategy : ");
-private JLabel labelName = new JLabel("Name : ");
-private JLabel labelSurname = new JLabel("Surname : ");
-private JLabel labelStable = new JLabel("Racing Stable : ");
-private JLabel labelMixture = new JLabel("Mixture : ");
-private JLabel labelVel = new JLabel("Full Speed : ");
-private JLabel labelCapacityFuel = new JLabel("Fuel Capacity : ");
-private JLabel labelstrps = new JLabel("Driver Strategy : ");
-private JLabel labelAcc = new JLabel("Speedup : ");
-private JLabel velLab = new JLabel(" km/h");
+private JLabel labelTyre = new JLabel("Tyre type");
+private JLabel labelBox = new JLabel("Box Strategy");
+private JLabel labelName = new JLabel("Name");
+private JLabel labelSurname = new JLabel("Surname");
+private JLabel labelStable = new JLabel("Racing Stable");
+private JLabel labelMixture = new JLabel("Mixture");
+private JLabel labelVel = new JLabel("Full Speed");
+private JLabel labelCapacityFuel = new JLabel("Tank Capacity");
+private JLabel labelstrps = new JLabel("Driver Strategy");
+private JLabel labelAcc = new JLabel("Speedup");
+private JLabel velLab = new JLabel("km/h");
 private JLabel labelTank = new JLabel (" L (200..400)");
-private JLabel valueAcc = new JLabel(" m/s^2");
-private JLabel labelHelp = new JLabel("Insert CorbaLoc of Registration Handler");
-private JLabel labelHelp2 = new JLabel(" ex. \"corbaloc:iiop:1.2@[ip:porta]//{...}\"");
-private JLabel labelCorbaloc = new JLabel("Corbaloc Registration Hanlder : ");
+private JLabel valueAcc = new JLabel("m/s^2");
+private JLabel labelHelp = new JLabel("CorbaLoc of Registration Handler");
+// private JLabel labelHelp2 = new JLabel(" ex. \"corbaloc:iiop:1.2@[ip:porta]//{...}\"");
+private JLabel labelCorbaloc = new JLabel("Corbaloc of Registration Hanlder");
 
 //sezione combobox
 private JComboBox comboTyre;
@@ -100,10 +100,10 @@ private GridBagConstraints driverConfigurationGrid;
 private JButton resetButton;
 private JButton startButton;
 //sezione JTextField
-private JTextField textName = new JTextField("Pippo", 20);
-private JTextField textSurname = new JTextField("Pluto", 20);
-private JTextField textTeam = new JTextField("Ferrari", 20);
-private JTextField textCorbaloc = new JTextField("", 30);
+private JTextField textName = new JTextField("Pippo", 10);
+private JTextField textSurname = new JTextField("Pluto", 10);
+private JTextField textTeam = new JTextField("Ferrari", 10);
+private JTextField textCorbaloc = new JTextField("", 5);
 
 //sezione stringhe per file xml
 private String scuderia = new String("<team>Ferrari</team>");
@@ -165,8 +165,8 @@ public void createCar(JPanel panel, GridBagConstraints carConfigurationGrid){
 //impostazione capacità serbatioio
 sliderFuelTank = new JSlider(200,400);
 sliderFuelTank.setValue(200);
-valueFuelTank = new JLabel ("200 L (200-400)");
-sliderFuelTank.addChangeListener(new MyChangeAction("L (200-400)", sliderFuelTank, valueFuelTank));
+valueFuelTank = new JLabel ("200 L(200-400)");
+sliderFuelTank.addChangeListener(new MyChangeAction("L(200-400)", sliderFuelTank, valueFuelTank));
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 0;
 		carConfigurationGrid.gridy = 0;
@@ -185,7 +185,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 //sezione usura gomme
     sliderTyreUsury = new JSlider();
     sliderTyreUsury.setValue(15);
-    valuePerCentUsury = new JLabel("15% ");
+    valuePerCentUsury = new JLabel("15%");
     sliderTyreUsury.addChangeListener(new MyChangeAction("%", sliderTyreUsury, valuePerCentUsury));
     labelUsuryTyre  = new JLabel("Tyre Usury");
     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
@@ -206,7 +206,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 //sezione valore benzina
     sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
     sliderGasLevel.setValue(50);
-    valueLevelFuel = new JLabel("50L ");
+    valueLevelFuel = new JLabel("50L");
     sliderGasLevel.addChangeListener(new MyChangeAction("L",sliderGasLevel,  valueLevelFuel));
     labelGasLevel  = new JLabel("Gasoline Level");
     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
@@ -307,8 +307,8 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 //slider max velocita 250 - 400
 sliderSpeed = new JSlider(200,400);
 sliderSpeed.setValue(300);
-valueSpeed = new JLabel(" 300 km/h");
-sliderSpeed.addChangeListener(new MyChangeAction(" km/h",sliderSpeed,  valueSpeed));
+valueSpeed = new JLabel("300 km/h");
+sliderSpeed.addChangeListener(new MyChangeAction("km/h",sliderSpeed,  valueSpeed));
 carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridx = 0;
 		carConfigurationGrid.gridy = 7;
@@ -324,6 +324,20 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridy = 7;
 		carConfigurationGrid.ipady = 5;
 		panel.add(valueSpeed, carConfigurationGrid);
+
+
+carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		carConfigurationGrid.gridx = 0;
+		carConfigurationGrid.gridy = 8;
+		carConfigurationGrid.ipady = 5;
+		carConfigurationGrid.gridwidth= 2;
+		panel.add(labelCorbaloc, carConfigurationGrid);
+// carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		carConfigurationGrid.gridx = 0;
+		carConfigurationGrid.gridy = 9;
+		carConfigurationGrid.ipady = 5;
+		carConfigurationGrid.gridwidth= 3;
+		panel.add(textCorbaloc, carConfigurationGrid);
 }
 public class MyChangeAction implements ChangeListener{
  private String simboloT;
@@ -350,7 +364,7 @@ gasolineStringBox = new String("<initialGasLevel>"+value.toString()+".0</initial
 gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+".0</gasTankCapacity>");
 
       }
-if(simboloT =="L (200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
+if(simboloT =="L(200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
 modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());*/
  	
 }
@@ -412,37 +426,70 @@ System.out.println(s);
 		}
 	});
 //adding component to PitStop configuration
+/*boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 0;
+		boxConfigurationGrid.gridy = 1;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(labelHelp, boxConfigurationGrid);*/
+// boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+// 		boxConfigurationGrid.gridx = 1;
+// 		boxConfigurationGrid.gridy = 1;
+// 		boxConfigurationGrid.ipady = 5;
+// 		boxPanel.add(labelHelp2, boxConfigurationGrid);
+
+// boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+// 		boxConfigurationGrid.gridx = 0;
+// 		boxConfigurationGrid.gridy = 2;
+// 		boxConfigurationGrid.ipady = 5;
+// 		boxPanel.add(labelCorbaloc, boxConfigurationGrid);
+// boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+// 		boxConfigurationGrid.gridx = 0;
+// 		boxConfigurationGrid.gridy = 3;
+// 		boxConfigurationGrid.ipady = 5;
+// 		boxPanel.add(textCorbaloc, boxConfigurationGrid);
+
+
+
 boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		boxConfigurationGrid.gridx = 0;
 		boxConfigurationGrid.gridy = 0;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(labelName, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 1;
+		boxConfigurationGrid.gridy = 0;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(textName, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 0;
+		boxConfigurationGrid.gridy = 1;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(labelSurname, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 1;
+		boxConfigurationGrid.gridy = 1;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(textSurname, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 0;
+		boxConfigurationGrid.gridy = 2;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(labelStable, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 1;
+		boxConfigurationGrid.gridy = 2;
+		boxConfigurationGrid.ipady = 5;
+		boxPanel.add(textTeam, boxConfigurationGrid);
+boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		boxConfigurationGrid.gridx = 0;
+		boxConfigurationGrid.gridy = 3;
 		boxConfigurationGrid.ipady = 5;
 		boxPanel.add(labelBox, boxConfigurationGrid);
 boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		boxConfigurationGrid.gridx = 1;
-		boxConfigurationGrid.gridy = 0;
+		boxConfigurationGrid.gridy = 3;
 		boxConfigurationGrid.ipady = 5;
 		boxPanel.add(comboBox, boxConfigurationGrid);
-boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		boxConfigurationGrid.gridx = 0;
-		boxConfigurationGrid.gridy = 1;
-		boxConfigurationGrid.ipady = 5;
-		boxPanel.add(labelHelp, boxConfigurationGrid);
-boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		boxConfigurationGrid.gridx = 1;
-		boxConfigurationGrid.gridy = 1;
-		boxConfigurationGrid.ipady = 5;
-		boxPanel.add(labelHelp2, boxConfigurationGrid);
-boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		boxConfigurationGrid.gridx = 0;
-		boxConfigurationGrid.gridy = 2;
-		boxConfigurationGrid.ipady = 5;
-		boxPanel.add(labelCorbaloc, boxConfigurationGrid);
-boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-		boxConfigurationGrid.gridx = 1;
-		boxConfigurationGrid.gridy = 2;
-		boxConfigurationGrid.ipady = 5;
-		boxPanel.add(textCorbaloc, boxConfigurationGrid);
-
 }
  }
 
@@ -489,8 +536,21 @@ resetButton = new JButton("Reset Field");
 			      resetInfo();			}
 		});
 //adding button to buttonPane
+/*buttonPanel.add(labelCorbaloc);
+buttonPanel.add(textCorbaloc);*/
 buttonPanel.add(startButton);
 buttonPanel.add(resetButton);
+/*
+buttonConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		buttonConfigurationGrid.gridx = 0;
+		buttonConfigurationGrid.gridy = 0;
+		buttonConfigurationGrid.ipady = 5;
+		buttonPanel.add(labelCorbaloc, buttonConfigurationGrid);
+buttonConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
+		buttonConfigurationGrid.gridx = 0;
+		buttonConfigurationGrid.gridy = 1;
+		buttonConfigurationGrid.ipady = 5;
+		buttonPanel.add(textCorbaloc, buttonConfigurationGrid);*/
 
 }
 }
@@ -498,14 +558,14 @@ buttonPanel.add(resetButton);
 public void init(JFrame frame){
 // GridBagConstraints 
 carConfigurationGrid = new GridBagConstraints();
-dataPanel = new JPanel(new BorderLayout());
-dataPanel.setLayout(new GridBagLayout());
-dataPanel.setBorder(BorderFactory.createTitledBorder(null, "Competitor Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-driverConfigurationGrid = new GridBagConstraints();
+// dataPanel = new JPanel(new BorderLayout());
+// dataPanel.setLayout(new GridBagLayout());
+// dataPanel.setBorder(BorderFactory.createTitledBorder(null, "Competitor Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+// driverConfigurationGrid = new GridBagConstraints();
 
 boxPanel= new JPanel(new BorderLayout());
 boxPanel.setLayout(new GridBagLayout());
-boxPanel.setBorder(BorderFactory.createTitledBorder(null, "Box Configuration", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+boxPanel.setBorder(BorderFactory.createTitledBorder(null, "Driver & Box", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 boxConfigurationGrid = new GridBagConstraints();
 
 carPanel = new JPanel(new BorderLayout());
@@ -517,12 +577,12 @@ buttonPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", ja
 buttonPanel.setLayout(new FlowLayout());
 
 carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
-driverConfigurationPanel driver = new driverConfigurationPanel(dataPanel, driverConfigurationGrid);
+// driverConfigurationPanel driver = new driverConfigurationPanel(dataPanel, driverConfigurationGrid);
 boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
 buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
-frame.add(dataPanel,BorderLayout.NORTH);
+// frame.add(dataPanel,BorderLayout.NORTH);
 frame.add(carPanel, BorderLayout.WEST);
-frame.add(boxPanel, BorderLayout.EAST);
+frame.add(boxPanel, BorderLayout.NORTH);
 frame.add(buttonPanel, BorderLayout.SOUTH);
 frame.pack();
 frame.setVisible(true);

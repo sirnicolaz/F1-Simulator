@@ -356,6 +356,60 @@ System.out.println("strategia non presente");}
 System.out.println("eccezione in readXml");
     }
 }
+
+public void readXmlCompetitor(String xmlRecords){
+    try {
+        DocumentBuilderFactory dbf =
+        DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlRecords));
+
+        Document doc = db.parse(is);
+//         NodeList nodes3 = doc.getElementsByTagName("update");
+	NodeList nodes = doc.getElementsByTagName("driver");
+// 	Element element = (Element) nodes.item(i);
+
+	int i=0;
+        Element element = (Element) nodes.item(i);
+        NodeList gasLevel = element.getElementsByTagName("gasLevel");
+        Element line = (Element) gasLevel.item(0);
+	gasLevelValue = new Double(getCharacterDataFromElement(line));
+System.out.println("gaslevelvalue : "+gasLevelValue);
+// <?xml version="1.0"?>
+// <car_driver>
+// 	<driver>
+// 	  <team>Ferrari</team>
+// 	  <firstname>Fernando</firstname>
+// 	  <lastname>Burlin</lastname>
+// 	</driver>
+// 	<car>
+// 	  <maxspeed>400.0</maxspeed>
+// 	  <maxacceleration>7.75</maxacceleration>
+// 	  <gastankcapacity>150</gastankcapacity>
+// 	  <engine>strong</engine>
+// 	  <tyreusury>0.0</tyreusury>
+// 	  <gasolinelevel>70</gasolinelevel>
+// 	  <mixture>morbida</mixture>
+// 	  <model>michelin</model>
+// 	  <type_tyre>normal</type_tyre>
+// 	</car>
+// 	<strategy_car>
+// 	 <pitstopGasolineLevel>40</pitstopGasolineLevel>
+// 	 <pitstopLaps>12</pitstopLaps>
+// 	 <pitstopCondition>false</pitstopCondition>
+// 	 <trim>1</trim>
+// 	 <pitstop>false</pitstop>
+// 	</strategy_car>
+// </car_driver>
+
+
+
+
+}
+catch (Exception e){}
+
+}
   public static String getCharacterDataFromElement(Element e) {
     Node child = e.getFirstChild();
     if (child instanceof CharacterData) {
@@ -364,6 +418,8 @@ System.out.println("eccezione in readXml");
     }
     return "-";
   }
+
+
 // public static void main(String[] args){
 // BoxMonitor b = new BoxMonitor(args[0]);
 // b.init();
