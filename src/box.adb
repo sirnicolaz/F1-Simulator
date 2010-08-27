@@ -378,31 +378,26 @@ package body Box is
       if ( New_Strategy.PitStopLaps = 0 ) then
          Ada.Text_IO.Put_Line("Lap  = 0 now");
 
-         --TODO: discuss about whether it would be better to
-         --+ to refill totally the tank and finish the race without
-         --+other stop or keep it half empty and do another stop
-         --+For now the first solution is kept.
-         if( Laps2End <= CalculateDoableLaps(CurrentGasLevel     => GasTankCapacity,
-                                                        CurrentTyreUsury    => 0.0,
-                                                        MeanGasConsumption  => PreviousLapMeanGasConsumption,
-                                                        MeanTyreConsumption => PreviousLapMeanTyreUsury))
-         then
 
-            NewGas := GasTankCapacity;
-            --So it will not stop til the end of the competition
+         --Calculate the amount of gas needed to reach the end of the race
+         NewGas :=
+           ( ( FLOAT( Laps2End ) * CircuitLength ) *
+              PreviousLapMeanGasConsumption ) *
+             ( 1.0 - StrategyFactor );
 
-         else
+         --If it's more than the gas thank capacity, calculate the amount
+         --+ to run until the half of the competition
+         if(NewGas >= GasTankCapacity) then
 
-            -- Calculate the amount of gas needed to reach the next pitstop (set on the
-            --+ half of the remaining laps).
             NewGas :=
               ( ( FLOAT( Laps2End / 2 ) * CircuitLength ) *
                  PreviousLapMeanGasConsumption ) *
-                ( 1.0 - StrategyFactor ); -- explain why - StrategyFactor instead of +
-            --Ada.Text_IO.Put_Line("New gas " & FLOAT'IMAGE(NewGas));
-
+                ( 1.0 - StrategyFactor );
          end if;
 
+         --Even if the refilled amount of gas is not enough for reaching the
+         --+ foreseen number of laps, the pitstop lap will be calculated at the beginning
+         --+ of the next invokation of the function considering the new amount of gas
          if(New_Info.GasLevel < NewGas ) then
             New_Strategy.GasLevel := NewGas;
          end if;
