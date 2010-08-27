@@ -3,6 +3,6 @@
 	<name>Indianapolis</name>
 	<circuitConfigFile>obj/race.xml</circuitConfigFile>
 	<classificRefreshTime>43.0</classificRefreshTime> <!-- float - seconds. This is the time interval between each snapshot of the classific -->
-	<competitorQty>1</competitorQty> <!-- int -->
-	<laps>5</laps> <!-- int --><!-- with 20 and race.xml short and 2 competitors it works--><!-- with 60 float problems -->
+	<competitorQty>3</competitorQty> <!-- int -->
+	<laps>20</laps> <!-- int --><!-- with 20 and race.xml short and 2 competitors it works--><!-- with 60 float problems -->
 </config>

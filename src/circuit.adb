@@ -244,6 +244,7 @@ package body Circuit is
          --+ necessary to notify that competitor about the change setting
          --+ the variable "CHANGED" as we do for the Set_ArrivalTime procedure.
          if Get_IsArrived(F_Checkpoint.Queue.all,1) then
+            WaitBlock_Chain.all(Get_CompetitorID(F_Checkpoint.Queue.all,1)).Notify;
             Changed := TRUE;
          end if;
       end Remove_Competitor;
