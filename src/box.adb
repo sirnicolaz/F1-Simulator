@@ -489,8 +489,9 @@ package body Box is
 
          Box_Data.COMPETITION_UPDATE(ExtendedInformation) := New_Info.all;
 
-         exit when New_Info.Time = -1.0 or else --The car is out
-           (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
+         if( New_Info.GasLevel < 0.0 ) then
+            New_Info.GasLevel := 0.0;
+         end if;
 
          -- The following 7 lines handle the problem of the pitstop lap.
          --+ When the car does the pitstop, the statystics of bot the 3rd
@@ -552,6 +553,9 @@ package body Box is
 
          Ada.Text_IO.Put_Line("Go ahead. Sector: " & INTEGER'IMAGE(Sector) & " out of " & INTEGER'IMAGE(Sector_Qty));
 
+         exit when New_Info.Time = -1.0 or else --The car is out
+           (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
+
 
          if(Sector = Sector_Qty) then
 
@@ -603,6 +607,8 @@ package body Box is
          Sector := Sector + 1;
 
       end loop;
+
+      AllInfo.Add_Info(Update_In   => ExtendedInformation);
 
       Ada.Text_IO.Put_Line("Competition over");
 

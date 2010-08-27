@@ -103,7 +103,7 @@ package body OnBoardComputer is
             Sector2Ask : INTEGER;
             Lap2Ask : INTEGER;
             CurrentSector : INTEGER := Data.Sector;
-            CurrentLap : INTEGER := Data.Lap+1;
+            CurrentLap : INTEGER := Data.Lap;
             Tmp_Stats  : COMP_STATS_POINT := new COMP_STATS;
          begin
 
@@ -115,7 +115,7 @@ package body OnBoardComputer is
                Lap2Ask := CurrentLap;
             end if;
 
-            if(Lap2Ask > 0) then
+            if(Lap2Ask >= 0) then
                Stats.Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
             end if;
 

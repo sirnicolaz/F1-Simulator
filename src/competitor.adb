@@ -1063,6 +1063,8 @@ package body Competitor is
             compStats.LastCheckInSect := true;
          end if;
 
+         Ada.Text_IO.Put_Line("DEBUG adding lap " & Common.IntegerToString(compStats.Lap) & " and check " & Common.IntegerToString(compStats.Checkpoint) &
+                              " is it last? " & BOOLEAN'IMAGE(compStats.LastCheckInSect));
          OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                   Data        => compStats);
 

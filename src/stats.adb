@@ -101,7 +101,7 @@ package body Stats is
                              Sector : INTEGER;
                              Lap : INTEGER;
                              Stats_In : out COMP_STATS_POINT) is
-      Index : INTEGER := Lap+1; -- laps start from 0, information are store starting from 1
+      Index : INTEGER := (Lap*Checkpoints)+1; -- laps start from 0, information are store starting from 1
       Tmp_Sector : INTEGER;
       Tmp_Bool : BOOLEAN;
    begin
