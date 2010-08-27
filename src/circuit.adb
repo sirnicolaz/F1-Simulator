@@ -235,6 +235,7 @@ package body Circuit is
          --+ about the change. In this way he can start to cross the checkpoint.
          --+ The notification is sent setting the variable "CHANGED".
          if Get_IsArrived(F_Checkpoint.Queue.all,1) then
+
             Changed := TRUE;
          end if;
 

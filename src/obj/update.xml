@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <update>
 	<status>
-		<gasLevel>43<gasLevel> <!-- l -->
+		<gasLevel>43</gasLevel> <!-- l -->
 		<tyreUsury>38</tyreUsury> <!-- % -->
 		<meanSpeed>270</meanSpead> <!-- km/h -->
 		<meanGasConsumption>14</meanGasConsumption> <!-- l/h -->
-		<time>1984.42</time> <!-- time instant -->
+		<metres>1984.42</metres> 
 		<lap>3</lap> 
 		<sector>2</sector> 
-	<status>
+	</status>
 	<strategy>
 	        <tyreType>rain tyre</tyreType>
 	        <style>aggressive</style>
