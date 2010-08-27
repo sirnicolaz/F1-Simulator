@@ -40,12 +40,12 @@ public DefaultTableModel model = new DefaultTableModel();
 private GridBagConstraints meanPanelGrid;
 
 private JTextField textBoxGas = new JTextField("",15);
-private JTextField textBoxTyre = new JTextField("",15);
+private JTextField textBoxVel = new JTextField("",15);
 
 private JLabel labelGas = new JLabel(" l / km ");
-private JLabel labelTyre = new JLabel(" % / km ");
+private JLabel labelVel = new JLabel(" km / h ");
 private JLabel labelGasExpl = new JLabel("Mean Fuel Consumption");
-private JLabel labelTyreExpl = new JLabel("Mean Tyre Consumption");
+private JLabel labelVelExpl = new JLabel("Mean Speed");
 
 private String boxCorbaLoc;
 private String monitorBoxCorbaLoc;
@@ -59,9 +59,14 @@ private Double tyreUsuryValue;
 private Integer sectorValue;
 private Integer lapsValue;
 private Double metresValue;
-private Double meandSpeedValue;
+private Double meanSpeedValue;
 private Double meanTyreUsuryValue;
-private Double meanGasConsumption;
+private Double meanGasConsumptionValue;
+private String styleValue;
+private String tyreValue;
+private Double gasLevelStrategyValue;
+private Integer pitstopLapValue;
+private Double pitstopDelayValue;
 
 public BoxMonitor(String id_In){
 id=id_In;
@@ -81,11 +86,11 @@ outPanel.add(outArea);
 public void createConsumptionMeans(){
 
 textBoxGas.setEditable(false);
-textBoxTyre.setEditable(false);
+textBoxVel.setEditable(false);
 meanPanelGrid = new GridBagConstraints();
 meanPanel = new JPanel(new BorderLayout());
 meanPanel.setLayout(new GridBagLayout());
-meanPanel.setBorder(BorderFactory.createTitledBorder(null, "Consumption means", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+meanPanel.setBorder(BorderFactory.createTitledBorder(null, "Means", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 0;
@@ -108,27 +113,22 @@ meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 0;
 		meanPanelGrid.gridy = 2;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(labelTyreExpl, meanPanelGrid);
+		meanPanel.add(labelVelExpl, meanPanelGrid);
 
 meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 0;
 		meanPanelGrid.gridy = 3;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(textBoxTyre, meanPanelGrid);
+		meanPanel.add(textBoxVel, meanPanelGrid);
 meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 1;
 		meanPanelGrid.gridy = 3;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(labelTyre, meanPanelGrid);
+		meanPanel.add(labelVel, meanPanelGrid);
 
 }
 
 public void createTableOutput(){
-// tablePanel = new JScrollPane();
-// ScrollPaneLayout o = new ScrollPaneLayout();
-// tablePanel.setLayout(o);
-// outTable = new JTable(model);
-// // Create a couple of columns 
 model.addColumn("Id Row");
 model.addColumn("Id Comp"); 
 model.addColumn("Lap");
@@ -136,20 +136,6 @@ model.addColumn("Sector");
 model.addColumn("Fuel Level");
 model.addColumn("Tyre Usury");
 model.addColumn("Time");
-// // Append a row 
-// model.addRow(new Object[]{"v1", "v2"}); 
-// // there are now 2 rows with 2 columns 
-// // Append a row with fewer values than columns. 
-// // The left-most fields in the new row are populated 
-// // with the supplied values (left-to-right) and fields 
-// // without values are set to null. 
-// // model.addRow(new Object[]{"v1"}); 
-// // there are now 3 rows with 2 columns 
-// // Append a row with more values than columns. 
-// // The extra values are ignored. 
-// /*model.addRow(new Object[]{"v1", "v2", "v3"});*/ 
-// o.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
-// o.addLayoutComponent(JScrollPane.COLUMN_HEADER ,outTable);
 
 outTable = new JTable(model);
 // outTable = new JTable(0,5);
@@ -163,18 +149,6 @@ tablePanel.setVerticalScrollBar(new JScrollBar());
 
 }
 
-// public void addInfo(Box_Monitor_Radio comp_radio, short i, org.omg.CORBA.FloatHolder j){
-// while(true){
-// String temp = comp_radio.GetUpdate(i,j);
-// // outArea.append("\ntemp = "+temp);
-// model.insertRow(0,new Object[]{temp, "1",j.value, "", "150.3", "10.0 %", "150.0"});
-// // model.addRow(new Object[]{i.toString(), "1","2"});
-// ListSelectionModel selectionModel = outTable.getSelectionModel();
-// selectionModel.setSelectionInterval(0,0);
-// i=(short)(i+1);
-// }
-// }
-
 public void run(){
 createBoxOutput();
 createConsumptionMeans();
@@ -182,21 +156,6 @@ createTableOutput();
 parent.add(tablePanel, BorderLayout.EAST);
 parent.add(outPanel,BorderLayout.WEST);
 parent.add(meanPanel,BorderLayout.NORTH);
-// JButton startButton = new JButton("Aggiungi Riga");
-// 		startButton.addActionListener(new ActionListener() {
-// 			public void actionPerformed(ActionEvent e) {
-// Integer t = new Integer(i/3);
-// Integer q = new Integer(i%3);
-// model.insertRow(0,new Object[]{i.toString(), "1",t.toString(), q.toString(), "150.3", "10.0 %", "150.0"});
-// // model.addRow(new Object[]{i.toString(), "1","2"});
-// ListSelectionModel selectionModel = outTable.getSelectionModel();
-// selectionModel.setSelectionInterval(0,0);
-// 
-// System.out.println("casnio");
-// i=i+1;
-// 			}
-// 		});
-// parent.add(startButton, BorderLayout.SOUTH);
 
 parent.pack();
 parent.setVisible(true);
@@ -204,26 +163,10 @@ parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 try{
 org.omg.CORBA.Object obj = orb.string_to_object(configuratorCorbaLoc);
 outArea.setText("Pre narrow");
-// Box_Monitor_Radio comp = Box_Monitor_RadioHelper.narrow(obj);
 Configurator conf = ConfiguratorHelper.narrow(obj);
 outArea.append("\nConf initialized, invoke configure");
-// System.out.println("Conf init");
-//invoco il metodo configure
-// if (conf != null){
-// System.out.println("Conf != null");
 conf.Configure("obj/boxConfig-"+id+".xml");
-// }
-// System.out.println("After configure");
 outArea.append("\nAfter configure");
-// for(short i=0; i<100; i++){
-// // ritorno = comp.GetUpdate(i);
-// Short s = new Short(i);
-// model.insertRow(0,new Object[]{s.toString(), "1","t.toString()", "q.toString()", "150.3", "10.0 %", ritorno});
-// // model.addRow(new Object[]{i.toString(), "1","2"});
-// ListSelectionModel selectionModel = outTable.getSelectionModel();
-// selectionModel.setSelectionInterval(0,0);
-// 
-// System.out.println("casnio");
 outArea.append("\n pre string_to_object");
 org.omg.CORBA.Object obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
 outArea.append("\n pre narrow box_monitor");
@@ -246,6 +189,11 @@ else{model.insertRow(0,new Object[]{i,id,lapsValue, sectorValue, gasLevelValue, 
 ListSelectionModel selectionModel = outTable.getSelectionModel();
 selectionModel.setSelectionInterval(0,0);
 System.out.println(temp);
+textBoxGas.setText(meanGasConsumptionValue.toString());//aggiorno consumo medio
+textBoxVel.setText(meanSpeedValue.toString());//aggiorno velocità media
+outArea.setText("Strategy:");
+outArea.append("Laps to pitstop : "+pitstopLapValue.toString());
+outArea.append("Style of guide : "+ styleValue);
 i=(short)(i+1);
 System.out.println("after run invoke");
 this.sleep(1000);
@@ -258,9 +206,13 @@ ListSelectionModel selectionModel = outTable.getSelectionModel();
 selectionModel.setSelectionInterval(0,0);
 
 }
+catch(NullPointerException e){
+e.printStackTrace();
+JOptionPane.showMessageDialog(parent, "Attention : NullPointerException", "Error", JOptionPane.ERROR_MESSAGE);
+}
 catch (Exception e){
-System.out.println("Connessione con il BoxRadioHelper rifiutata");
-JOptionPane.showMessageDialog(parent, "Attention : connection refused by BoxRadioHelper", "Error", JOptionPane.ERROR_MESSAGE);
+System.out.println("Eccezione");
+JOptionPane.showMessageDialog(parent, "Attention : Exception", "Error", JOptionPane.ERROR_MESSAGE);
 e.printStackTrace();
 }
 }
@@ -288,48 +240,70 @@ public void readXml(String xmlRecords){
         Document doc = db.parse(is);
         NodeList nodes = doc.getElementsByTagName("update");
 
-	int i=0;
+	int i=1;
         Element element = (Element) nodes.item(i);
         NodeList gasLevel = element.getElementsByTagName("gasLevel");
         Element line = (Element) gasLevel.item(0);
-//            System.out.println("gasLevel: " + getCharacterDataFromElement(line));
 	gasLevelValue = new Double(getCharacterDataFromElement(line));
+System.out.println("gaslevelvalue : "+gasLevelValue);
         
 	NodeList tyreUsury = element.getElementsByTagName("tyreUsury");
         line = (Element) tyreUsury.item(0);
-//            System.out.println("tyreUsury: " + getCharacterDataFromElement(line));
 	tyreUsuryValue = new Double(getCharacterDataFromElement(line));
+System.out.println("tyre usury : "+tyreUsuryValue);
 
 	NodeList lap = element.getElementsByTagName("lap");
         line = (Element) lap.item(0);
         System.out.println("lap: " + getCharacterDataFromElement(line));
 	lapsValue = new Integer(getCharacterDataFromElement(line));
+System.out.println("laps : "+lapsValue);
 
         NodeList sector = element.getElementsByTagName("sector");
         line = (Element) sector.item(0);
-//            System.out.println("sector: " + getCharacterDataFromElement(line));
 	sectorValue = new Integer(getCharacterDataFromElement(line));
+System.out.println("sector : "+sectorValue);
 
         NodeList metres = element.getElementsByTagName("metres");
         line = (Element) metres.item(0);
-//            System.out.println("metres: " + getCharacterDataFromElement(line));
 	metresValue = new Double(getCharacterDataFromElement(line));
-/*
-	NodeList meanSpeed = element.getElementsByTagName("meandSpeed");
-        line = (Element) meandSpeed.item(0);
-//            System.out.println("metres: " + getCharacterDataFromElement(line));
-	meanSpeedValue = new Double(getCharacterDataFromElement(line));
+System.out.println("metres : "+metresValue);
 
-	NodeList meanTyreUsury = element.getElementsByTagName("meanTyreUsury");
-        line = (Element) meandSpeed.item(0);
-//            System.out.println("metres: " + getCharacterDataFromElement(line));
-	meanTyreUsuryValue = new Double(getCharacterDataFromElement(line));
+	NodeList meanSpeed = element.getElementsByTagName("meanSpeed");
+        line = (Element) meanSpeed.item(0);
+	meanSpeedValue = new Double(getCharacterDataFromElement(line));
+System.out.println("meanspeed : "+meanSpeedValue);
 
 	NodeList meanGasConsumption = element.getElementsByTagName("meanGasConsumption");
-        line = (Element) meandSpeed.item(0);
-//            System.out.println("metres: " + getCharacterDataFromElement(line));
-	meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));*/
+        line = (Element) meanGasConsumption.item(0);
+	meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));
+System.out.println("meanGasConsumption :"+meanGasConsumptionValue);
+try{
 
+        NodeList nodes2 = doc.getElementsByTagName("strategy");
+	Element element2 = (Element) nodes2.item(i);
+
+	NodeList tyreType = element2.getElementsByTagName("tyreType");
+        line = (Element) tyreType.item(0);
+	tyreValue = new String(getCharacterDataFromElement(line));
+
+        NodeList style = element2.getElementsByTagName("style");
+        line = (Element) style.item(0);
+	styleValue = new String(getCharacterDataFromElement(line));
+
+	NodeList gasLevel2 = element2.getElementsByTagName("gasLevel");
+        line = (Element) gasLevel2.item(0);
+	gasLevelStrategyValue = new Double(getCharacterDataFromElement(line));
+
+	NodeList pitStopLaps = element2.getElementsByTagName("pitStopLaps");
+        line = (Element) pitStopLaps.item(0);
+	pitstopLapValue = new Integer(getCharacterDataFromElement(line));
+
+	NodeList pitStopDelay = element2.getElementsByTagName("pitStopDelay");
+        line = (Element) pitStopDelay.item(0);
+	pitstopDelayValue = new Double(getCharacterDataFromElement(line));
+}
+catch(Exception e){
+System.out.println("strategia non presente");}
     }
     catch (Exception e) {
         e.printStackTrace();
