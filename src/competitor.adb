@@ -828,9 +828,34 @@ package body Competitor is
             Tmp_Strategy.Style := Common.NORMAL;
          end if;
 
-      return Tmp_Strategy;
+         return Tmp_Strategy;
 
-   end XML2Strategy;
+      end XML2Strategy;
+
+      procedure Remove_CompetitorFromRace(Iterator_In : out Circuit.RACETRACK_ITERATOR;
+                                          PitStopDone_In : in BOOLEAN;
+                                          Competitor_ID : INTEGER) is
+         StartingPosition_P : INTEGER;
+         Checkpoint_P : CHECKPOINT_SYNCH_POINT;
+      begin
+         -- per poi invocare il metodo Add_Data
+            StartingPosition_P := Get_Position(Iterator_In);
+
+            --Remove the competitor from the queue of the checkpoint
+            loop
+               Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
+               C_Checkpoint.Remove_Competitor(Competitor_ID);
+               exit when Get_Position(Iterator_In) = StartingPosition_P;--NEW, ritolto il +1
+               if StartingPosition_P = 0 then
+                  StartingPosition_P := Get_Position(Iterator_In)-1;
+               end if;
+            end loop;
+
+            if(PitStopDone_In = true) then
+               Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
+               C_Checkpoint.Remove_Competitor(Competitor_ID);
+            end if;
+      end Remove_CompetitorFromRace;
 
    begin
 
@@ -963,25 +988,6 @@ package body Competitor is
 --           Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
 
-         if(carDriver.auto.GasolineLevel < 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
-            Ada.Text_IO.Put_Line("Sending last info to the sector. The competition is over for this unlucky competitor.");
-            compStats.Checkpoint := CurrentCheckpoint;
-            compStats.LastCheckInSect := TRUE; -- to force the update of the box
-            compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
-            compStats.Sector := SectorID;
-            compStats.GasLevel := carDriver.auto.GasolineLevel;
-            compStats.TyreUsury := carDriver.auto.TyreUsury;
-            compStats.Time := -1.0; -- sentinel warning about the end of the race
-            compStats.Lap := CurrentLap;
-            compStats.PathLength := 0.0;
-
-            OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
-                                     Data        => compStats);
-
-            Finished := TRUE;
-         end if;
-         exit when Finished = TRUE;
-
          --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
          --quindi può essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
@@ -1002,6 +1008,28 @@ package body Competitor is
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
 
+         if(carDriver.auto.GasolineLevel < 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
+            Ada.Text_IO.Put_Line("Sending last info to the sector. The competition is over for this unlucky competitor.");
+            compStats.Checkpoint := CurrentCheckpoint;
+            compStats.LastCheckInSect := TRUE; -- to force the update of the box
+            compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
+            compStats.Sector := SectorID;
+            compStats.GasLevel := carDriver.auto.GasolineLevel;
+            compStats.TyreUsury := carDriver.auto.TyreUsury;
+            compStats.Time := -1.0; -- sentinel warning about the end of the race
+            compStats.Lap := CurrentLap;
+            compStats.PathLength := -1.0;
+
+            OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                                     Data        => compStats);
+
+            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
+                                      PitStopDone_In => PitStopDone,
+                                      Competitor_ID => carDriver.Id);
+
+            Finished := TRUE;
+         end if;
+         exit when Finished = TRUE;
 
          --If the checkpoint is the prebox, it's necessary to update all
          --+ the statistics from the prebox to the goal
@@ -1190,24 +1218,10 @@ package body Competitor is
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
             Finished := true;
-            -- per poi invocare il metodo Add_Data
-            StartingPosition := Get_Position(carDriver.RaceIterator);
 
-            --Remove the competitor from the queue of the checkpoint
-            loop
-               Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-               C_Checkpoint.Remove_Competitor(id);
-               exit when Get_Position(carDriver.RaceIterator) = StartingPosition;--NEW, ritolto il +1
-               if StartingPosition = 0 then
-                  StartingPosition := Get_Position(carDriver.RaceIterator)-1;
-               end if;
-            end loop;
-
-            if(PitStopDone = true) then
-               Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
-               C_Checkpoint.Remove_Competitor(carDriver.Id);
-               PitStopDone := false;
-            end if;
+            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
+                                      PitStopDone_In => PitStopDone,
+                                      Competitor_ID => carDriver.Id);
 
             --Not necessary to send last information to box because it should
             --+ already know that the last lap has been reached
