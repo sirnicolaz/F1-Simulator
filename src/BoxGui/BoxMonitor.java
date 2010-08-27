@@ -230,6 +230,7 @@ laps = new Integer(lapsIn);
 }
 
 public void readXml(String xmlRecords){
+System.out.println("stringa da parsare : \n"+xmlRecords);
 // String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
     try {
         DocumentBuilderFactory dbf =
