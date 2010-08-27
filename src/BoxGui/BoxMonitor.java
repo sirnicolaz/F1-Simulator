@@ -130,12 +130,12 @@ meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 
 public void createTableOutput(){
 // model.addColumn("Id Row");
-model.addColumn("Id Comp"); 
+// model.addColumn("Id Comp"); 
 model.addColumn("Lap");
 model.addColumn("Sector");
-model.addColumn("Fuel Level");
-model.addColumn("Tyre Usury");
-model.addColumn("Time");
+model.addColumn("Fuel Level (l)");
+model.addColumn("Tyre Usury (%)");
+model.addColumn("Time (h:m:s:mll)");
 
 outTable = new JTable(model);
 // outTable = new JTable(0,5);
@@ -143,10 +143,17 @@ outTable = new JTable(model);
 tablePanel = new JScrollPane(outTable);
 // tablePanel.getViewport().add(outTable);
 tablePanel.setVerticalScrollBar(new JScrollBar());
+tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 // tablePanel.validate();
 
-
+// Disable auto resizing 
+outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Set the first visible column to 100 pixels wide 
+TableColumn col = outTable.getColumnModel().getColumn(0); 
+int width = 35; 
+col.setPreferredWidth(width); 
+TableColumn col2 = outTable.getColumnModel().getColumn(1); 
+col2.setPreferredWidth(width); 
 }
 
 public void run(){
@@ -176,17 +183,48 @@ short i=1;
 short qee=1;
 org.omg.CORBA.FloatHolder j=new org.omg.CORBA.FloatHolder(0);
 String temp;
-while(i<=(laps*3)+1){
+while(i<=(laps*3)){
 temp = comp_radio.GetUpdate(i,j);
 readXml(temp);
+
+double gas=(double)(gasLevelValue);
+double tyre=(double)(tyreUsuryValue);
+int decimal=1000; //3 cifre decimali
+int  gasInt= (int)(decimal*gas);
+int tyreInt = (int)(decimal*tyre);
+double gasPrint=(double)gasInt/(double)decimal;
+double tyrePrint=(double)tyreInt/(double)decimal;
+int ore = (int)(j.value/3600);
+int minuti = (int)(j.value/60);
+int secondi = (int)(j.value-(minuti*60+ore*3600));
+int millesimi = (int)((j.value - (minuti*60+ore*3600+secondi))*1000);
+String time;
+if(secondi <10){
+if(millesimi<10){
+time = new String(ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":0"+secondi+":"+millesimi);}
+}
+else{
+if(millesimi<10){
+time = new String(ore+":"+minuti+":"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
+}
 if(j.value == -1){
-model.insertRow(0,new Object[]{id,lapsValue,sectorValue,gasLevelValue,tyreUsuryValue, "RITIRED"});
+model.insertRow(0,new Object[]{lapsValue,sectorValue,gasPrint,tyrePrint, "RITIRED"});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
+outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 selectionModel.setSelectionInterval(0,0);
 i=(short)((laps*3)+1);
 }
-else{model.insertRow(0,new Object[]{id,lapsValue, sectorValue, gasLevelValue, tyreUsuryValue, j.value});
+else{model.insertRow(0,new Object[]{lapsValue, sectorValue, gasPrint,tyrePrint, time});//j.value});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
+outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 selectionModel.setSelectionInterval(0,0);
 System.out.println(temp);
 textBoxGas.setText(meanGasConsumptionValue.toString());//aggiorno consumo medio
@@ -195,10 +233,11 @@ if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
 outArea.append("\n-Laps to pitstop : \n ---"+pitstopLapValue.toString());
 outArea.append("\n-Style of guide : \n ---"+ styleValue);
+outArea.append("\n\n\n ");
 }
 i=(short)(i+1);
 System.out.println("after run invoke");
-this.sleep(1000);
+this.sleep(500);
 // parent.repaint();
 // }
 }
