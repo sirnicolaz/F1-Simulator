@@ -308,6 +308,7 @@ System.out.println("strategia non presente");}
     }
     catch (Exception e) {
         e.printStackTrace();
+System.out.println("eccezione in readXml");
     }
 }
   public static String getCharacterDataFromElement(Element e) {
