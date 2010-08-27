@@ -45,6 +45,10 @@ package Queue is
    function Get_Position(Queue_In : QUEUE;
                          CompetitorID_In : INTEGER) return INTEGER;
 
+   --Get the competitor id in the given position
+   function Get_CompetitorID(Queue_In : QUEUE;
+                             Position : INTEGER) return INTEGER;
+
    -- SORTED_QUEUE Structure definition. It's the same as QUEUE, but with methods defined to maintain the queue sorted by arrival time.
    subtype SORTED_QUEUE is QUEUE;
 

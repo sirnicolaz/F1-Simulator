@@ -228,6 +228,7 @@ package body Circuit is
 
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT) is
+         x : INTEGER;
       begin
          Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
          -- If in the 1st position of the queue now there is a competitor who's
@@ -235,7 +236,7 @@ package body Circuit is
          --+ about the change. In this way he can start to cross the checkpoint.
          --+ The notification is sent setting the variable "CHANGED".
          if Get_IsArrived(F_Checkpoint.Queue.all,1) then
-
+            x := Get_CompetitorID(F_Checkpoint.Queue.all,1);
             Changed := TRUE;
          end if;
 

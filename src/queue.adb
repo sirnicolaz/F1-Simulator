@@ -116,6 +116,16 @@ package body Queue is
       return 0;
    end;
 
+   function Get_CompetitorID(Queue_In : QUEUE;
+                             Position : INTEGER) return INTEGER is
+   begin
+      if(Position in Queue_In'RANGE) then
+         return Queue_In(Position).CompetitorID;
+      else
+         return -1;
+      end if;
+   end;
+
    procedure Set_Arrived(Queue_In : in out QUEUE;
                          CompetitorID_In : INTEGER;
                          IsArrived_In : BOOLEAN) is
