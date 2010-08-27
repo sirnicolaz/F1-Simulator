@@ -5,6 +5,7 @@ pragma Warnings (Off, Competition_Monitor_Radio.Skel);
 with Competition_Monitor;
 
 with Common;
+use Common;
 with Ada.Text_IO;
 
 with Ada.Strings.Unbounded;
@@ -37,12 +38,27 @@ package body Competition_Monitor_Radio.impl is
       time := CORBA.Float(ReturnTime);
    end Get_CompetitorInfo;
 
-   function Get_CompetitionInfo(Self : access Object; timeInstant : CORBA.FLOAT) return CORBA.STRING is
+   procedure Get_CompetitionInfo
+     (Self : access Object;
+      timeInstant : CORBA.FLOAT;
+      xmlInfo : out CORBA.String;
+      Returns : out Competition_Monitor_Radio.float_sequence) is
+
+      use IDL_SEQUENCE_float;
       Tmp_String : Unbounded_String.Unbounded_String;
+      Tmp_TimesArray : FLOAT_ARRAY_POINT;
    begin
-      Ada.Text_IO.Put_Line("A screen is asking");
-      Tmp_String := Competition_Monitor.Get_CompetitionInfo(FLOAT(timeInstant));
-      return CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
+      Competition_Monitor.Get_CompetitionInfo(FLOAT(timeInstant),Tmp_TimesArray,Tmp_String);
+
+      if(Tmp_TimesArray /= null) then
+         for Index in Tmp_TimesArray.all'RANGE loop
+            Ada.Text_IO.Put_Line("DEBUG Taking time");
+            Append(Returns,CORBA.FLOAT(Tmp_TimesArray.all(Index)));
+         end loop;
+      end if;
+      Ada.Text_IO.Put_Line("DEBUG xmlInfo " &
+                           Unbounded_String.To_String(Tmp_String));
+      xmlInfo := CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
    end Get_CompetitionInfo;
 
    function getBestLap(Self : access Object) return CORBA.STRING is

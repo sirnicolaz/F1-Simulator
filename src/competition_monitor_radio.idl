@@ -1,8 +1,8 @@
  interface Competition_Monitor_Radio {
-	typedef sequence<float> ClassificationTimes;
+	typedef sequence<float> float_sequence;
 
 	string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time);
-	string Get_CompetitionInfo(in float timeInstant);
+	float_sequence Get_CompetitionInfo(in float timeInstant, out string xmlInfo);
 	string getBestLap();
 	string getBestSector( in short index );
 	boolean ready( in short competitorId );

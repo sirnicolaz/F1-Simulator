@@ -6,7 +6,7 @@
 	  <lastname>Burlin</lastname>
 	</driver>
 	<car>
-	  <maxspeed>150.0</maxspeed>
+	  <maxspeed>400.0</maxspeed>
 	  <maxacceleration>7.8</maxacceleration>
 	  <gastankcapacity>150</gastankcapacity>
 	  <engine>strong</engine>

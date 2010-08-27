@@ -27,21 +27,30 @@ public class TVScreen{
 		//Get the refresh time
 		float refreshTime = Float.parseFloat(args[0]);
 		float time = refreshTime;
-		String newUpdate = "";
 		int loops = Integer.parseInt(args[2]);
 		Document document;
 		NodeList nodes_i;
 
 		//Loop until the competition end
 		boolean exit = false;
+		org.omg.CORBA.StringHolder newUpdate = new org.omg.CORBA.StringHolder();
+		float[] classificationTimes;
+
 		for(int i = 0; i<loops && exit==false; i++){
-			newUpdate = competition_mon.Get_CompetitionInfo(time);
+			classificationTimes = competition_mon.Get_CompetitionInfo(time,newUpdate);
+			//float[] example = Competition_Monitor_RadioPackage.float_sequenceHelper.extract(classificationTimes);
+
+			if(classificationTimes != null){
+				for( int index = 0; index < classificationTimes.length; index++){
+					System.out.print(classificationTimes[index] + ",");
+				}
+			}
 
 			//Write new info to file
 			try{
 				FileWriter fstream = new FileWriter("newInfo.xml");
 				BufferedWriter out = new BufferedWriter(fstream);
-				out.write(newUpdate);
+				out.write(newUpdate.value);
 				out.close();
 				builder = (DocumentBuilderFactory.newInstance()).newDocumentBuilder();
 				System.out.println("Opening file");

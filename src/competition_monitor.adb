@@ -286,7 +286,9 @@ package body Competition_Monitor is
       return "";
    end getBestSectorInfo;
 
-   function Get_CompetitionInfo( TimeInstant : FLOAT) return Unbounded_String.Unbounded_String is
+   procedure Get_CompetitionInfo( TimeInstant : FLOAT;
+                                 ClassificationTimes : out FLOAT_ARRAY_POINT;
+                                 XMLInfo : out Unbounded_String.Unbounded_String) is
       Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
       Tmp_StatsString : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
       Tmp_CompLocation : access STRING;
@@ -299,7 +301,6 @@ package body Competition_Monitor is
 
       HighestCompletedLap : INTEGER := -1;
       CompetitorID_InClassific : INTEGER_ARRAY_POINT;
-      Times_InClassific : FLOAT_ARRAY_POINT;
       LappedCompetitors_ID : INTEGER_ARRAY_POINT;
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
@@ -380,7 +381,7 @@ package body Competition_Monitor is
          Stats.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
-                                Times_InClassific,
+                                ClassificationTimes,
                                 LappedCompetitors_ID,
                                 LappedCompetitors_CurrentLap);
 
@@ -393,7 +394,6 @@ package body Competition_Monitor is
             Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
               ("<competitor id=""" & Common.IntegerToString(CompetitorID_InClassific(Index)) & """>" &
                "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
-               "<time>" & FLOAT'IMAGE(Times_InClassific(Index)) & "</time>" &
                "</competitor>");
          end loop;
 
@@ -415,7 +415,7 @@ package body Competition_Monitor is
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</competitionStatus>");
 
-      return Tmp_StatsString;
+      XMLInfo := Tmp_StatsString;
 
    end Get_CompetitionInfo;
 

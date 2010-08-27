@@ -59,7 +59,9 @@ package Competition_Monitor is
 
    --This method return the information related to the competitors (current checkpoint,
    --+ lap and sector, speed ecc ) at a given time
-   function Get_CompetitionInfo( TimeInstant : FLOAT) return Unbounded_String.Unbounded_String;
+   procedure Get_CompetitionInfo( TimeInstant : FLOAT;
+                                 ClassificationTimes : out Common.FLOAT_ARRAY_POINT;
+                                 XMLInfo : out Unbounded_String.Unbounded_String);
 
 --  private
 --     bestLap : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;

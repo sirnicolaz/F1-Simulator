@@ -26,11 +26,11 @@ package Competition_Monitor_Radio is
      new CORBA.Sequences.Unbounded
         (CORBA.Float);
 
-   type ClassificationTimes is
+   type float_sequence is
      new Competition_Monitor_Radio.IDL_SEQUENCE_float.Sequence;
 
-   ClassificationTimes_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor_Radio/ClassificationTimes:1.0";
+   float_sequence_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor_Radio/float_sequence:1.0";
 
    procedure Get_CompetitorInfo
      (Self : Ref;
@@ -43,10 +43,11 @@ package Competition_Monitor_Radio is
    Get_CompetitorInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitorInfo:1.0";
 
-   function Get_CompetitionInfo
+   procedure Get_CompetitionInfo
      (Self : Ref;
-      timeInstant : CORBA.Float)
-     return CORBA.String;
+      timeInstant : CORBA.Float;
+      xmlInfo : out CORBA.String;
+      Returns : out Competition_Monitor_Radio.float_sequence);
 
    Get_CompetitionInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitionInfo:1.0";

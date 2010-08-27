@@ -34,13 +34,12 @@
 </bestTimes>
 <classification>
 <!-- Competitors are ordered by classification position -->
-<!-- When a competitor has the time tag it means that has not been lapped (doppiato)-->
-<!-- Otherwise the lap number show the lap where the competitor is in the moment the first 
-<!-- driver pass through the goal -->
+<!-- i tempi arrivano come array di float. Sono ordinati per ordine cresence di arrivo come i competitor qui sotto. Ci osno solo i-->
+<!-- tempi dei concorrenti in classifica e non dei doppiati-->
   <competitor id="3">
       <lap>4</lap>
-      <time>456.00</time>
   </competitor>
+<!-- Tu qui puoi sapere che questi sono fuori classifica perchè mostrano una lap più bassa di quella corrente -->
   <competitor id="5">
       <lap>3</lap>
   </competitor>
