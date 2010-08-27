@@ -246,7 +246,7 @@ package body Box_Data is
          "<meanGasConsumption>" & Common.FloatToString(Data.PerSectorUpdate.MeanGasConsumption) & "</meanGasConsumption>" &
          "</status>" );
 
-      return Unbounded_String.To_Unbounded_String("");
+      return Tmp_String;
    end Get_UpdateXML;
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT is
