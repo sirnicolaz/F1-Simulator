@@ -129,7 +129,7 @@ meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 }
 
 public void createTableOutput(){
-model.addColumn("Id Row");
+// model.addColumn("Id Row");
 model.addColumn("Id Comp"); 
 model.addColumn("Lap");
 model.addColumn("Sector");
@@ -176,16 +176,16 @@ short i=1;
 short qee=1;
 org.omg.CORBA.FloatHolder j=new org.omg.CORBA.FloatHolder(0);
 String temp;
-while(i<=laps*3){
+while(i<=(laps*3)+1){
 temp = comp_radio.GetUpdate(i,j);
 readXml(temp);
 if(j.value == -1){
-model.insertRow(0,new Object[]{i,id,lapsValue,sectorValue,gasLevelValue,tyreUsuryValue, "RITIRED"});
+model.insertRow(0,new Object[]{id,lapsValue,sectorValue,gasLevelValue,tyreUsuryValue, "RITIRED"});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
 selectionModel.setSelectionInterval(0,0);
 i=(short)((laps*3)+1);
 }
-else{model.insertRow(0,new Object[]{i,id,lapsValue, sectorValue, gasLevelValue, tyreUsuryValue, j.value});
+else{model.insertRow(0,new Object[]{id,lapsValue, sectorValue, gasLevelValue, tyreUsuryValue, j.value});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
 selectionModel.setSelectionInterval(0,0);
 System.out.println(temp);
