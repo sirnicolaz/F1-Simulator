@@ -80,7 +80,7 @@ outPanel.setLayout(new FlowLayout());
 outPanel.setBorder(BorderFactory.createTitledBorder(null, "Box Output", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // boxConfigurationGrid = new GridBagConstraints();
 // outArea = new JTextArea(35,30);
-outArea = new JTextArea(25,20);
+outArea = new JTextArea(10,35);
 outPanel.add(outArea);
 }
 public void createConsumptionMeans(){
@@ -138,9 +138,25 @@ model.addColumn("Tyre Usury (%)");
 model.addColumn("Time (h:m:s:mll)");
 
 outTable = new JTable(model);
+// TableColumn col = outTable.getColumnModel().getColumn(0); 
+// int width = 35; 
+// col.setPreferredWidth(10); 
+// TableColumn col2 = outTable.getColumnModel().getColumn(1); 
+// col2.setPreferredWidth(10); 
+// 
+// TableColumn col3 = outTable.getColumnModel().getColumn(2); 
+// col3.setPreferredWidth(15); 
+// 
+// TableColumn col4 = outTable.getColumnModel().getColumn(3); 
+// col4.setPreferredWidth(15); 
+// 
+// TableColumn col5 = outTable.getColumnModel().getColumn(4); 
+// col5.setPreferredWidth(25); 
 // outTable = new JTable(0,5);
 // outTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
 tablePanel = new JScrollPane(outTable);
+// tablePanel.setPreferredSize(new Dimension( , 110));
+
 // tablePanel.getViewport().add(outTable);
 tablePanel.setVerticalScrollBar(new JScrollBar());
 tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -148,12 +164,9 @@ tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 // tablePanel.validate();
 
 // Disable auto resizing 
-outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Set the first visible column to 100 pixels wide 
-TableColumn col = outTable.getColumnModel().getColumn(0); 
-int width = 35; 
-col.setPreferredWidth(width); 
-TableColumn col2 = outTable.getColumnModel().getColumn(1); 
-col2.setPreferredWidth(width); 
+// outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Set the first visible column to 100 pixels wide 
+
+
 }
 
 public void run(){
@@ -161,7 +174,7 @@ createBoxOutput();
 createConsumptionMeans();
 createTableOutput();
 parent.add(tablePanel, BorderLayout.EAST);
-parent.add(outPanel,BorderLayout.WEST);
+parent.add(outPanel,BorderLayout.SOUTH);
 parent.add(meanPanel,BorderLayout.NORTH);
 
 parent.pack();
@@ -215,25 +228,25 @@ time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
 else{
 time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
 }
-if(j.value == -1){
-model.insertRow(0,new Object[]{lapsValue,sectorValue,gasPrint,tyrePrint, "RITIRED"});
+if(metresValue == -1.0){
+model.insertRow(0,new Object[]{lapsValue,sectorValue,"RITIRED","RITIRED",time});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
-outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+// outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 selectionModel.setSelectionInterval(0,0);
 i=(short)((laps*3)+1);
 }
 else{model.insertRow(0,new Object[]{lapsValue, sectorValue, gasPrint,tyrePrint, time});//j.value});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
-outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+// outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 selectionModel.setSelectionInterval(0,0);
 System.out.println(temp);
 textBoxGas.setText(meanGasConsumptionValue.toString());//aggiorno consumo medio
 textBoxTyre.setText(meanTyreUsuryValue.toString());//aggiorno velocità media
 if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
-outArea.append("\n-Laps to pitstop : \n ---"+pitstopLapValue.toString());
-outArea.append("\n-Style of guide : \n ---"+ styleValue);
-outArea.append("\n\n\n ");
+outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
+outArea.append("\n-Style of guide :"+ styleValue);
+outArea.append(" ");
 }
 i=(short)(i+1);
 System.out.println("after run invoke");
@@ -372,10 +385,18 @@ public void readXmlCompetitor(String xmlRecords){
 
 	int i=0;
         Element element = (Element) nodes.item(i);
-        NodeList gasLevel = element.getElementsByTagName("gasLevel");
+        NodeList gasLevel = element.getElementsByTagName("team");
         Element line = (Element) gasLevel.item(0);
-	gasLevelValue = new Double(getCharacterDataFromElement(line));
-System.out.println("gaslevelvalue : "+gasLevelValue);
+	teamValue = new Double(getCharacterDataFromElement(line));
+System.out.println("team : "+teamValue);
+
+// private String teamValue;
+// private String firstnameValue;
+// private String lastnameValue;
+// private Double maxspeedValue;
+// private Double maxaccelerationValue;
+// private Integer gastankcapacityValue;
+// private String engineValue
 // <?xml version="1.0"?>
 // <car_driver>
 // 	<driver>
