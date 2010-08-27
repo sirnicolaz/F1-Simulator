@@ -94,7 +94,7 @@ outPanel.setLayout(new FlowLayout());
 outPanel.setBorder(BorderFactory.createTitledBorder(null, "Box Output", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // boxConfigurationGrid = new GridBagConstraints();
 // outArea = new JTextArea(35,30);
-outArea = new JTextArea(10,35);
+outArea = new JTextArea(20,35);
 outPanel.add(outArea);
 }
 public void createConsumptionMeans(){
@@ -260,6 +260,11 @@ if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
 outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
 outArea.append("\n-Style of guide :"+ styleValue);
+if (pitstopLapValue == 0){
+outArea.append("\nPITSTOP --> tempo totale del pitstop : "+pitstopDelayValue+" secondi");
+}
+
+
 outArea.append("\n----------\nInitial Configuration");
 outArea.append("\nTeam "+teamValue+", Competitor "+firstnameValue+" "+lastnameValue);
 outArea.append("\nmax speed = "+maxspeedValue.toString()+", max acceleration = "+maxaccelerationValue.toString()+"\ntank capacity = "+gastankcapacityValue.toString()+"style = "+engineValue+"\ntyre usury = "+tyreUsuryCarValue.toString()+" , fuel level = "+gasLevelCarValue.toString()+"\ntype tye ="+typetyreValue+", mixture = "+mixtureValue);
