@@ -74,16 +74,17 @@ private String firstnameValue;
 private String lastnameValue;
 private Double maxspeedValue;
 private Double maxaccelerationValue;
-private Integer gastankcapacityValue;
+private Double gastankcapacityValue;
 private String engineValue;
 private Double tyreUsuryCarValue;
 private Double gasLevelCarValue;
-private String mixtureValure;
+private String mixtureValue;
 private String typetyreValue;
 
-public BoxMonitor(String id_In){
+public BoxMonitor(String id_In, String xmlCompetitor){
 id=id_In;
 parent = new JFrame("BoxMonitor n° "+id_In);
+readXmlCompetitor(xmlCompetitor);
 // init();
 }
 
@@ -259,7 +260,15 @@ if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
 outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
 outArea.append("\n-Style of guide :"+ styleValue);
-outArea.append(" ");
+outArea.append("\n----------\nInitial Configuration");
+outArea.append("\nTeam "+teamValue+", Competitor "+firstnameValue+" "+lastnameValue);
+outArea.append("\nmax speed = "+maxspeedValue.toString()+", max acceleration = "+maxaccelerationValue.toString()+"\ntank capacity = "+gastankcapacityValue.toString()+"style = "+engineValue+"\ntyre usury = "+tyreUsuryCarValue.toString()+" , fuel level = "+gasLevelCarValue.toString()+"\ntype tye ="+typetyreValue+", mixture = "+mixtureValue);
+
+/*
+private Double ;
+private Double ;
+private String ;
+private String ;*/
 }
 i=(short)(i+1);
 System.out.println("after run invoke");
@@ -394,27 +403,30 @@ public void readXmlCompetitor(String xmlRecords){
         Document doc = db.parse(is);
 //         NodeList nodes3 = doc.getElementsByTagName("update");
 	NodeList nodes = doc.getElementsByTagName("driver");
+// nodes = doc.getElementsByTagName("car_driver");
 // 	Element element = (Element) nodes.item(i);
 
 	int i=0;
 
         Element element = (Element) nodes.item(i);
         NodeList team = element.getElementsByTagName("team");
-        line = (Element) team.item(0);
-	teamValue = new Double(getCharacterDataFromElement(line));
+        Element line = (Element) team.item(0);
+	teamValue = new String(getCharacterDataFromElement(line));
+System.out.println("team value "+ teamValue);
 
         element = (Element) nodes.item(i);
         NodeList firstname = element.getElementsByTagName("firstname");
         line = (Element) firstname.item(0);
-	firstnameValue = new Double(getCharacterDataFromElement(line));
+	firstnameValue = new String(getCharacterDataFromElement(line));
+System.out.println("first "+firstnameValue);
 
         element = (Element) nodes.item(i);
         NodeList lastname = element.getElementsByTagName("lastname");
         line = (Element) lastname.item(0);
-	lastnameValue = new Double(getCharacterDataFromElement(line));
+	lastnameValue = new String(getCharacterDataFromElement(line));
 
       nodes = doc.getElementsByTagName("car");
-
+System.out.println("in car");
         element = (Element) nodes.item(i);
         NodeList maxspeed = element.getElementsByTagName("maxspeed");
         line = (Element) maxspeed.item(0);
@@ -425,39 +437,37 @@ public void readXmlCompetitor(String xmlRecords){
         line = (Element) maxacceleration.item(0);
 	maxaccelerationValue = new Double(getCharacterDataFromElement(line));
 
-// private Double maxspeedValue;
-// private Double maxaccelerationValue;
-// private Integer gastankcapacityValue;
-// private String engineValue;
-// private Double tyreUsuryCarValue;
-// private Double gasLevelCarValue;
-// private String mixtureValure;
-// private String typetyreValue;
+	element = (Element) nodes.item(i);
+        NodeList gastank = element.getElementsByTagName("gastankcapacity");
+        line = (Element) gastank.item(0);
+	gastankcapacityValue = new Double(getCharacterDataFromElement(line));
 
-// 	  <maxspeed>400.0</maxspeed>
-// 	  <maxacceleration>7.75</maxacceleration>
-// 	  <gastankcapacity>150</gastankcapacity>
-// 	  <engine>strong</engine>
-// 	  <tyreusury>0.0</tyreusury>
-// 	  <gasolinelevel>70</gasolinelevel>
-// 	  <mixture>morbida</mixture>
-// 	  <model>michelin</model>
-// 	  <type_tyre>normal</type_tyre>
-// 	</car>
-// 	<strategy_car>
-// 	 <pitstopGasolineLevel>40</pitstopGasolineLevel>
-// 	 <pitstopLaps>12</pitstopLaps>
-// 	 <pitstopCondition>false</pitstopCondition>
-// 	 <trim>1</trim>
-// 	 <pitstop>false</pitstop>
-// 	</strategy_car>
-// </car_driver>
+	element = (Element) nodes.item(i);
+        NodeList engine = element.getElementsByTagName("engine");
+        line = (Element) engine.item(0);
+	engineValue = new String(getCharacterDataFromElement(line));
 
+	element = (Element) nodes.item(i);
+        NodeList tyre = element.getElementsByTagName("tyreusury");
+        line = (Element) tyre.item(0);
+	tyreUsuryCarValue = new Double(getCharacterDataFromElement(line));
 
+	element = (Element) nodes.item(i);
+        NodeList level = element.getElementsByTagName("gasolinelevel");
+        line = (Element) level.item(0);
+	gasLevelCarValue = new Double(getCharacterDataFromElement(line));
 
+	element = (Element) nodes.item(i);
+        NodeList mixture = element.getElementsByTagName("mixture");
+        line = (Element) mixture.item(0);
+	mixtureValue = new String(getCharacterDataFromElement(line));
 
+	element = (Element) nodes.item(i);
+        NodeList type = element.getElementsByTagName("type_tyre");
+        line = (Element) type.item(0);
+	typetyreValue = new String(getCharacterDataFromElement(line));
 }
-catch (Exception e){}
+catch (Exception e){e.printStackTrace();}
 
 }
   public static String getCharacterDataFromElement(Element e) {

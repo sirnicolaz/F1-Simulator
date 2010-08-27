@@ -674,7 +674,7 @@ return false;
 }
 
 public void switchPanel(){
-BoxMonitor p = new BoxMonitor(stringId);
+BoxMonitor p = new BoxMonitor(stringId, competitorXML);
 System.out.println("id del boxmonitor : "+stringId);
 parent.dispose();
 p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb, laps.value);
