@@ -180,6 +180,8 @@ begin
    begin
 
       Update_Buffer := new Box_Data.SYNCH_COMPETITION_UPDATES;
+      AllInfo_Buffer := new Box_Data.SYNCH_ALL_INFO_BUFFER;
+
       Box_Monitor_Radio.impl.Init(CompetitionUpdates_Buffer => AllInfo_Buffer);
 
 
@@ -223,7 +225,6 @@ begin
       Ada.Text_IO.Put_Line("init History");
       History.Init(Laps);
 
-      AllInfo_Buffer := new Box_Data.SYNCH_ALL_INFO_BUFFER;
       AllInfo_Buffer.Init(Laps*3);
       -- TODO: initialize the Box with Init
 

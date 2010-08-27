@@ -174,9 +174,10 @@ package body Box_Data is
       procedure Init( Size : POSITIVE) is
       begin
          Info_List := new ALL_INFO_ARRAY(1..Size);
+         Ready := true;
       end Init;
 
-      entry Get_Info( Num : POSITIVE; Info : out ALL_INFO ) when true is
+      entry Get_Info( Num : POSITIVE; Info : out ALL_INFO ) when Ready = true is
       begin
          Ada.Text_IO.Put_Line("DEBUG Getting info");
          if( Num <= Info_Qty ) then

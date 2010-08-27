@@ -97,6 +97,7 @@ package Box_Data is
       Updated : BOOLEAN := false;
       Info_Qty : INTEGER := 0;
       Info_List : access ALL_INFO_ARRAY;
+      Ready : BOOLEAN := FALSE;
    end SYNCH_ALL_INFO_BUFFER;
 
    type SYNCH_ALL_INFO_BUFFER_POINT is access SYNCH_ALL_INFO_BUFFER;
