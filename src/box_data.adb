@@ -178,9 +178,12 @@ package body Box_Data is
 
       entry Get_Info( Num : POSITIVE; Info : out ALL_INFO ) when true is
       begin
+         Ada.Text_IO.Put_Line("Getting info");
          if( Num <= Info_Qty ) then
+            Ada.Text_IO.Put_Line("Info ready");
             Info := Info_List.all(Num);
          else
+            Ada.Text_IO.Put_Line("Info not ready");
             Updated := false;
             requeue Wait;
          end if;
@@ -188,11 +191,13 @@ package body Box_Data is
 
       entry Wait( Num : POSITIVE; Info : out ALL_INFO ) when Updated = true is
       begin
+         Ada.Text_IO.Put_Line("Stop waiting");
          requeue Get_Info;
       end Wait;
 
       procedure Add_Info(Update_In : EXT_COMPETITION_UPDATE ) is
       begin
+         Ada.Text_IO.Put_Line("Adding extended info to buffer");
          Info_Qty := Info_Qty + 1;
          Info_List.all(Info_Qty).PerSectorUpdate := new EXT_COMPETITION_UPDATE;
          Info_List.all(Info_Qty).PerSectorUpdate.all := Update_In;
@@ -203,6 +208,7 @@ package body Box_Data is
                          Strategy_In : STRATEGY) is
       begin
          Add_Info(Update_In);
+         Ada.Text_IO.Put_Line("Adding strategy to buffer");
          Info_List.all(Info_Qty).StrategyUpdate := new STRATEGY;
          Info_List.all(Info_Qty).StrategyUpdate.all := Strategy_In;
       end Add_Info;
@@ -214,6 +220,7 @@ package body Box_Data is
    function Get_StrategyXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String is
       Tmp_String : Unbounded_String.Unbounded_String;
    begin
+      Ada.Text_IO.Put_Line("Getting xml strategy");
       if(Data.StrategyUpdate /= null) then
          Tmp_String := Unbounded_String.To_Unbounded_String(BoxStrategyToXML(Data.StrategyUpdate.all));
       else
@@ -226,6 +233,7 @@ package body Box_Data is
    function Get_UpdateXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String is
       Tmp_String : Unbounded_String.Unbounded_String;
    begin
+      Ada.Text_IO.Put_Line("Getting xml update");
       Tmp_String := Unbounded_String.To_Unbounded_String
         ("<status>" &
          "<gasLevel>" & Common.FloatToString(Data.PerSectorUpdate.GasLevel) & "</gasLevel>" &
@@ -242,6 +250,7 @@ package body Box_Data is
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT is
    begin
+      Ada.Text_IO.Put_Line("Getting time");
       return Data.PerSectorUpdate.Time;
    end Get_Time;
 
