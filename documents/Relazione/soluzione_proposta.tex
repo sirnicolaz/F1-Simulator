@@ -1,4 +1,4 @@
-%%%Architettura alto livello%%%
+'%%%Architettura alto livello%%%
 \subsection{Architettura ad alto livello}
 Nella seguente sezione verr\`{a} illustrata l'architettura ad alto livello del sistema sviluppato, 
 escludendo i dettagli implementativi e legati al linguaggio.
@@ -7,8 +7,8 @@ escludendo i dettagli implementativi e legati al linguaggio.
 Le principali componenti del sistema sono:
 \begin{description}
 \item{Competition}
-La \emph{Competition} è l'unità atta ad orchestrare l'avvio e la conclusione della corsa. Tale componente, dunque, è stata concepita per 
-offrire le seguenti funzionalità:
+La \emph{Competition} \`{e} l'unit\`{a} atta ad orchestrare l'avvio e la conclusione della corsa. Tale componente, dunque, \`{e} stata concepita per 
+offrire le seguenti funzionalit\`{a}:
 \begin{itemize}
 \item Configurazione parametri di gara:
 	\begin{itemize}
@@ -20,35 +20,56 @@ offrire le seguenti funzionalità:
 \item Avvio delle componenti necessarie al monitoraggio della gara (quali ad esempio \emph{Monitor})
 \item Avvio controllato della competizione vera e propria nel momento in cui tutti i prerequisiti di inizio sono soddisfatti, ovvero:
 \begin{itemize}
-\item la competizione è stata configurata correttamente;
+\item la competizione \`{e} stata configurata correttamente;
 \item le componenti di controllo e gestione della competizione sono attive e in attesa di comandi;
 \item i concorrenti sono stati correttamente registrati alla competizione e in attesa di partire;
 \end{itemize}
 \end{itemize}
 \item{Competitor}
-Il \emph{Competitor} è l'entità pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
+Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
 \begin{itemize}
 \item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto, ovvero:
 	\begin{itemize}
 		\item motore;
-		\item capacità del serbatoio;
+		\item capacit\`{a} del serbatoio;
 		\item massima accelerazione;
-		\item massima velocità;
+		\item massima velocit\`{a};
 		\item gomme montate (mescola, modello, tipo);
 		\item livello usura gomme;
 		\item livello della benzina nel serbatoio;
 	\end{itemize}
-\item \textbf{Concorrente}, cioè le informazioni che descrivono più dettagliatamente il concorrente in gara:
+\item \textbf{Guidatore}, cio\`{e} le informazioni che descrivono pi\`{u} dettagliatamente il concorrente in gara:
 	\begin{itemize}
 		\item nome e cognome pilota;
-		\item nome scuderia;
+		\item nome scuderia
 	\end{itemize}
-\item
-\item
-\end{itemize}
+\item \textbf{Strategia}, ovvero la strategia che sta adottando il pilota, suggerita dai box e dinamica nel corso della gara:
 	\begin{itemize}
-		\item scegliere al momento giusto la miglior traiettoria da seguire a partire dalla configurazione
-			del concorrente (che
+		\item style di guida, variabile tra conservativo, normale, aggressivo, a seconda dello stato della macchina e delle
+			previsioni fatte dai box
+		\item numero di lap prima del pit stop
+		\item addizionalmente, quando viene fatto un pit stop, la strategia determina anche quali siano le nuove gomme da montare,
+		 	la quantit\`{a} di benzina da avere nel serbatoio e il tempo impiegato per il pit stop.
+	\end{itemize}
+\end{itemize}
+Tutte queste informazioni insieme creano quello che viene definito il concorrente di gara. 
+Tali informazioni verranno poi usate nel corso della gara per:
+	\begin{itemize}
+		\item scegliere al momento giusto la miglior traiettoria da seguire, in base alla presenza o meno di altri concorrenti
+			nelle vicinanze e alla difficolt\`{a} del tratto;
+		\item fornire costantemente aggiornamenti sul suo stato (tramite una parte del modulo \emph{Stats}, informando il computer di bordo
+			riguardo a:
+			\begin{itemize}
+				\item livello di usura gomme;
+				\item livello di benzina;
+				\item checkpoint attraversato con tempo di arrivo;
+				\item insieme al checkpoint verranno aggiornate le informazioni relative a settore e lap;
+				\item velocit\`{a} massima raggiunta.
+			\end{itemize}
+		\item contattare ad ogni giro il box per ottenere una strategia aggiornata;
+		\item se suggerito dai box, effettuare un pitstop;
+		\item ritirarsi dalla gara una volta che le condizione dell'auto non permettano di poter correre ulteriormente;
+		\item banalmente, continuare a correre fino alla fine delle lap prestabilite, dopodich\`{e} fermarsi.
 	\end{itemize}
 \item{Circuit}
 \item{Stats}
