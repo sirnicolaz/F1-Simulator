@@ -385,7 +385,7 @@ package body Box is
 
          --If it's more than the gas thank capacity, calculate the amount
          --+ to run until the half of the competition
-         if(NewGas >= GasTankCapacity) then
+         if(NewGas > GasTankCapacity) then
 
             NewGas :=
               ( ( FLOAT( Laps2End / 2 ) * CircuitLength ) *

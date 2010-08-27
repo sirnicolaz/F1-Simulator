@@ -168,11 +168,11 @@ package body Configurator.Impl is
       CompetitorID := INTEGER'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorID"))));
       BoxStrategy_Str := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"boxStrategy"))));
 
-      if(BoxStrategy_Str = "cautious" ) then
+      if(BoxStrategy_Str = "CAUTIOUS" ) then
          BoxStrategy := Box.CAUTIOUS;
-      elsif ( BoxStrategy_Str = "risky" ) then
+      elsif ( BoxStrategy_Str = "RISKY" ) then
          BoxStrategy := Box.RISKY;
-      elsif (BoxStrategy_Str = "fool") then
+      elsif (BoxStrategy_Str = "FOOL") then
          BoxStrategy := Box.FOOL;
       else
          BoxStrategy := Box.NORMAL;
