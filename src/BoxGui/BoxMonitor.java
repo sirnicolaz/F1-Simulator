@@ -68,6 +68,19 @@ private Double gasLevelStrategyValue;
 private Integer pitstopLapValue;
 private Double pitstopDelayValue;
 
+
+private String teamValue;
+private String firstnameValue;
+private String lastnameValue;
+private Double maxspeedValue;
+private Double maxaccelerationValue;
+private Integer gastankcapacityValue;
+private String engineValue;
+private Double tyreUsuryCarValue;
+private Double gasLevelCarValue;
+private String mixtureValure;
+private String typetyreValue;
+
 public BoxMonitor(String id_In){
 id=id_In;
 parent = new JFrame("BoxMonitor n° "+id_In);
@@ -384,27 +397,43 @@ public void readXmlCompetitor(String xmlRecords){
 // 	Element element = (Element) nodes.item(i);
 
 	int i=0;
-        Element element = (Element) nodes.item(i);
-        NodeList gasLevel = element.getElementsByTagName("team");
-        Element line = (Element) gasLevel.item(0);
-	teamValue = new Double(getCharacterDataFromElement(line));
-System.out.println("team : "+teamValue);
 
-// private String teamValue;
-// private String firstnameValue;
-// private String lastnameValue;
+        Element element = (Element) nodes.item(i);
+        NodeList team = element.getElementsByTagName("team");
+        line = (Element) team.item(0);
+	teamValue = new Double(getCharacterDataFromElement(line));
+
+        element = (Element) nodes.item(i);
+        NodeList firstname = element.getElementsByTagName("firstname");
+        line = (Element) firstname.item(0);
+	firstnameValue = new Double(getCharacterDataFromElement(line));
+
+        element = (Element) nodes.item(i);
+        NodeList lastname = element.getElementsByTagName("lastname");
+        line = (Element) lastname.item(0);
+	lastnameValue = new Double(getCharacterDataFromElement(line));
+
+      nodes = doc.getElementsByTagName("car");
+
+        element = (Element) nodes.item(i);
+        NodeList maxspeed = element.getElementsByTagName("maxspeed");
+        line = (Element) maxspeed.item(0);
+	maxspeedValue = new Double(getCharacterDataFromElement(line));
+
+        element = (Element) nodes.item(i);
+        NodeList maxacceleration = element.getElementsByTagName("maxacceleration");
+        line = (Element) maxacceleration.item(0);
+	maxaccelerationValue = new Double(getCharacterDataFromElement(line));
+
 // private Double maxspeedValue;
 // private Double maxaccelerationValue;
 // private Integer gastankcapacityValue;
-// private String engineValue
-// <?xml version="1.0"?>
-// <car_driver>
-// 	<driver>
-// 	  <team>Ferrari</team>
-// 	  <firstname>Fernando</firstname>
-// 	  <lastname>Burlin</lastname>
-// 	</driver>
-// 	<car>
+// private String engineValue;
+// private Double tyreUsuryCarValue;
+// private Double gasLevelCarValue;
+// private String mixtureValure;
+// private String typetyreValue;
+
 // 	  <maxspeed>400.0</maxspeed>
 // 	  <maxacceleration>7.75</maxacceleration>
 // 	  <gastankcapacity>150</gastankcapacity>
