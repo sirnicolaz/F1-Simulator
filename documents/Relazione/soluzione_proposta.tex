@@ -1,7 +1,61 @@
 %%%Architettura alto livello%%%
 \subsection{Architettura ad alto livello}
+Nella seguente sezione verr\`{a} illustrata l'architettura ad alto livello del sistema sviluppato, 
+escludendo i dettagli implementativi e legati al linguaggio.
 % Componenti del sistema
 \subsubsection{Componenti di sistema}
+Le principali componenti del sistema sono:
+\begin{description}
+\item{Competition}
+La \emph{Competition} è l'unità atta ad orchestrare l'avvio e la conclusione della corsa. Tale componente, dunque, è stata concepita per 
+offrire le seguenti funzionalità:
+\begin{itemize}
+\item Configurazione parametri di gara:
+	\begin{itemize}
+		\item numero di giri;
+		\item numero di concorrenti;
+		\item circuito;
+	\end{itemize}
+\item Gestione della sessione di iscrizione e accettazione concorrenti (configurati a livello della componente \emph{Box})
+\item Avvio delle componenti necessarie al monitoraggio della gara (quali ad esempio \emph{Monitor})
+\item Avvio controllato della competizione vera e propria nel momento in cui tutti i prerequisiti di inizio sono soddisfatti, ovvero:
+\begin{itemize}
+\item la competizione è stata configurata correttamente;
+\item le componenti di controllo e gestione della competizione sono attive e in attesa di comandi;
+\item i concorrenti sono stati correttamente registrati alla competizione e in attesa di partire;
+\end{itemize}
+\end{itemize}
+\item{Competitor}
+Il \emph{Competitor} è l'entità pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
+\begin{itemize}
+\item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto, ovvero:
+	\begin{itemize}
+		\item motore;
+		\item capacità del serbatoio;
+		\item massima accelerazione;
+		\item massima velocità;
+		\item gomme montate (mescola, modello, tipo);
+		\item livello usura gomme;
+		\item livello della benzina nel serbatoio;
+	\end{itemize}
+\item \textbf{Concorrente}, cioè le informazioni che descrivono più dettagliatamente il concorrente in gara:
+	\begin{itemize}
+		\item nome e cognome pilota;
+		\item nome scuderia;
+	\end{itemize}
+\item
+\item
+\end{itemize}
+	\begin{itemize}
+		\item scegliere al momento giusto la miglior traiettoria da seguire a partire dalla configurazione
+			del concorrente (che
+	\end{itemize}
+\item{Circuit}
+\item{Stats}
+\item{Box}
+\item{Radio}
+\item{Monitor}
+\end{description}
  - lista delle componenti con descrizione ad alto livello del loro scopo
  - se necessario fornire un diagramma delle componenti
 % Interazione fra le componenti

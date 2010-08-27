@@ -52,13 +52,6 @@ package Competitor is
       --end record;
 
    end record;
-   type STRATEGY_CAR is record
-      pitstopGasolineLevel : FLOAT;
-      pitstopLaps : INTEGER;
-      pitstopCondition : BOOLEAN; -- correggere il tipo
-      trim : INTEGER; -- correggere il tipo
-      pitstop : BOOLEAN;
-   end record;
 
    type CAR_DRIVER is tagged record
       auto : CAR;
@@ -69,6 +62,7 @@ package Competitor is
       statsComputer : COMPUTER_POINT := new COMPUTER;
       Radio : BOX_CONNECTION;
    end record;
+
    type CAR_DRIVER_ACCESS is access CAR_DRIVER;
    function Init_Competitor(xml_file : STRING;
                             RaceIterator : RACETRACK_ITERATOR;
