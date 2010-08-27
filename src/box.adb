@@ -153,7 +153,7 @@ package body Box is
             Lap := Lap + 1;
          end if;
 
-         exit when Info.Time = -1.0 or else Lap = Laps;
+         exit when Info.PathLength = -1.0 or else Lap = Laps;
 
          Sector := Sector + 1;
       end loop;
@@ -249,11 +249,11 @@ package body Box is
          TotalStyleModifierTyre := DrivingStyle1StepModifierTyre * FLOAT(Common.Style_Distance(OldStyle,NewStyle));
          Ada.Text_IO.Put_Line("Calculate total gas needed");
          GasNeeded := (PreviousLapMeanGasConsumption + TotalStyleModifierGas) *
-           (CircuitLength * FLOAT(Laps2Simulate));
+           (CircuitLength * FLOAT(Laps2Simulate) * (1.0 - StrategyFactor));
 
          TyreNeeded :=
            (PreviousLapMeanTyreUsury + TotalStyleModifierTyre)
-           * (CircuitLength * FLOAT(Laps2Simulate));
+           * (CircuitLength * FLOAT(Laps2Simulate) * (1.0 - StrategyFactor/10.0));
          Ada.Text_IO.Put_Line("Tyre needed " & FLOAT'IMAGE(TyreNeeded));
          Ada.Text_IO.Put_Line("Calculate minor");
          if ( GasNeeded > GasLevel_In ) then
@@ -342,11 +342,9 @@ package body Box is
                   Ada.Text_IO.Put_Line("Can be more conservative");
                   -- Try, if possible, to drive faster
                   if( Old_Strategy.Style /= Common.NORMAL ) then
-                     Ada.Text_IO.Put_Line("Try to be NORMAL");
                      Style2Simulate := Common.NORMAL;
                      Doable := SimulateDrivingStyleChange(Old_Strategy.Style,Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                      if ( Doable /= true ) then
-                        Ada.Text_IO.Put_Line("Can also do it!");
                         Style2Simulate := Common.CONSERVATIVE;
                      end if;
                   end if;
@@ -548,7 +546,7 @@ package body Box is
 
          Ada.Text_IO.Put_Line("Go ahead. Sector: " & INTEGER'IMAGE(Sector) & " out of " & INTEGER'IMAGE(Sector_Qty));
 
-         exit when New_Info.Time = -1.0 or else --The car is out
+         exit when New_Info.PathLength = -1.0 or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
 
