@@ -40,12 +40,12 @@ public DefaultTableModel model = new DefaultTableModel();
 private GridBagConstraints meanPanelGrid;
 
 private JTextField textBoxGas = new JTextField("",15);
-private JTextField textBoxVel = new JTextField("",15);
+private JTextField textBoxTyre = new JTextField("",15);
 
 private JLabel labelGas = new JLabel(" l / km ");
-private JLabel labelVel = new JLabel(" km / h ");
+private JLabel labelTyre = new JLabel(" % / km ");
 private JLabel labelGasExpl = new JLabel("Mean Fuel Consumption");
-private JLabel labelVelExpl = new JLabel("Mean Speed");
+private JLabel labelTyreExpl = new JLabel("Mean Tyre Usury");
 
 private String boxCorbaLoc;
 private String monitorBoxCorbaLoc;
@@ -85,8 +85,8 @@ outPanel.add(outArea);
 }
 public void createConsumptionMeans(){
 
-textBoxGas.setEditable(false);
-textBoxVel.setEditable(false);
+// textBoxGas.setEditable(false);
+// textBoxTyre.setEditable(false);
 meanPanelGrid = new GridBagConstraints();
 meanPanel = new JPanel(new BorderLayout());
 meanPanel.setLayout(new GridBagLayout());
@@ -113,18 +113,18 @@ meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 0;
 		meanPanelGrid.gridy = 2;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(labelVelExpl, meanPanelGrid);
+		meanPanel.add(labelTyreExpl, meanPanelGrid);
 
 meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 0;
 		meanPanelGrid.gridy = 3;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(textBoxVel, meanPanelGrid);
+		meanPanel.add(textBoxTyre, meanPanelGrid);
 meanPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 		meanPanelGrid.gridx = 1;
 		meanPanelGrid.gridy = 3;
 		meanPanelGrid.ipady = 5;
-		meanPanel.add(labelVel, meanPanelGrid);
+		meanPanel.add(labelTyre, meanPanelGrid);
 
 }
 
@@ -190,10 +190,12 @@ ListSelectionModel selectionModel = outTable.getSelectionModel();
 selectionModel.setSelectionInterval(0,0);
 System.out.println(temp);
 textBoxGas.setText(meanGasConsumptionValue.toString());//aggiorno consumo medio
-textBoxVel.setText(meanSpeedValue.toString());//aggiorno velocità media
+textBoxTyre.setText(meanTyreUsuryValue.toString());//aggiorno velocità media
+if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
-outArea.append("Laps to pitstop : "+pitstopLapValue.toString());
-outArea.append("Style of guide : "+ styleValue);
+outArea.append("\n-Laps to pitstop : \n ---"+pitstopLapValue.toString());
+outArea.append("\n-Style of guide : \n ---"+ styleValue);
+}
 i=(short)(i+1);
 System.out.println("after run invoke");
 this.sleep(1000);
@@ -234,15 +236,17 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 // String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
     try {
         DocumentBuilderFactory dbf =
-            DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(xmlRecords));
 
         Document doc = db.parse(is);
-        NodeList nodes = doc.getElementsByTagName("update");
+//         NodeList nodes3 = doc.getElementsByTagName("update");
+	NodeList nodes = doc.getElementsByTagName("status");
+// 	Element element = (Element) nodes.item(i);
 
-	int i=1;
+	int i=0;
         Element element = (Element) nodes.item(i);
         NodeList gasLevel = element.getElementsByTagName("gasLevel");
         Element line = (Element) gasLevel.item(0);
@@ -270,16 +274,17 @@ System.out.println("sector : "+sectorValue);
 	metresValue = new Double(getCharacterDataFromElement(line));
 System.out.println("metres : "+metresValue);
 
-	NodeList meanSpeed = element.getElementsByTagName("meanSpeed");
-        line = (Element) meanSpeed.item(0);
-	meanSpeedValue = new Double(getCharacterDataFromElement(line));
-System.out.println("meanspeed : "+meanSpeedValue);
+	NodeList meanTyreUsury = element.getElementsByTagName("meanTyreUsury");
+        line = (Element) meanTyreUsury.item(0);
+	meanTyreUsuryValue = new Double(getCharacterDataFromElement(line));
+System.out.println("meantyreusury : "+meanSpeedValue);
 
 	NodeList meanGasConsumption = element.getElementsByTagName("meanGasConsumption");
         line = (Element) meanGasConsumption.item(0);
 	meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));
 System.out.println("meanGasConsumption :"+meanGasConsumptionValue);
 try{
+System.out.println("nel try della parte della strategia");
 
         NodeList nodes2 = doc.getElementsByTagName("strategy");
 	Element element2 = (Element) nodes2.item(i);
