@@ -210,6 +210,7 @@ catch(NullPointerException e){
 e.printStackTrace();
 JOptionPane.showMessageDialog(parent, "Attention : NullPointerException", "Error", JOptionPane.ERROR_MESSAGE);
 }
+// catch()
 catch (Exception e){
 System.out.println("Eccezione");
 JOptionPane.showMessageDialog(parent, "Attention : Exception", "Error", JOptionPane.ERROR_MESSAGE);
