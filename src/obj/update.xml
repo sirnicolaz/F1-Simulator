@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <update>
-	<gasLevel>43<gasLevel> <!-- % -->
-	<tyreUsury>38</tyreUsury> <!-- % -->
-	<meanSpeed>270</meanSpead> <!-- km/h -->
-	<meanGasConsumption>14</meanGasConsumption> <!-- l/h -->
-	<time>1984.42</time> <!-- time instant -->
-	<lap>3</lap> 
-	<sector>2</sector> 
-	<classific competitors="7" >   <!-- competitor ids, pol position = first one -->
-		<competitor id="4" >0.0</compId> <!-- distance (in second) from the first one-->
-		<competitor id="1" >0.2</compId> <!-- distance (in second) from the first one-->
-		<competitor id="2" >0.3</compId> <!-- distance (in second) from the first one-->
-		<competitor id="5" >0.4</compId> <!-- distance (in second) from the first one-->
-		<competitor id="3" >0.5</compId> <!-- distance (in second) from the first one-->
-		<competitor id="6" >0.6</compId> <!-- distance (in second) from the first one-->
-		<competitor id="7" >0.7</compId> <!-- distance (in second) from the first one-->
-	</classific>
+	<status>
+		<gasLevel>43<gasLevel> <!-- l -->
+		<tyreUsury>38</tyreUsury> <!-- % -->
+		<meanSpeed>270</meanSpead> <!-- km/h -->
+		<meanGasConsumption>14</meanGasConsumption> <!-- l/h -->
+		<time>1984.42</time> <!-- time instant -->
+		<lap>3</lap> 
+		<sector>2</sector> 
+	<status>
+	<strategy>
+	        <tyreType>rain tyre</tyreType>
+	        <style>aggressive</style>
+	        <gasLevel>20%</gasLevel>
+	        <pitStopLaps>3</pitStopLaps> <!-- se è 0 significa che alla fine del settore dopo ci sarà un pitstop -->
+        	<pitStopDelay>0.0</pitStopDelay>
+	</strategy>
 </update>
 
 

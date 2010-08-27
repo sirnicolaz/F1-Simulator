@@ -37,6 +37,16 @@ package Common is
       PitStopDelay : FLOAT;
    end record;
 
+   --Used to simulate wait and notify
+   protected type WAITING_BLOCK is
+      entry Wait;
+      entry Notify;
+   private
+      IsWait : BOOLEAN := FALSE;
+   end WAITING_BLOC;
+
+   type WAITING_BLOCK_ARRAY is array(POSITIVE range <>) of access WAITING_BLOCK;
+
    function SaveToFile(FileName : STRING;
                         Content : STRING;
                        Path : STRING) return BOOLEAN;

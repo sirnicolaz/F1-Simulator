@@ -90,6 +90,19 @@ package body COMMON is
       return true;
    end SaveToFile;
 
+   protected type WAITING_BLOCK is
+      entry Wait when IsWait = true is
+      begin
+         IsWait := true;
+      end Wait;
+
+      procedure Notify is
+      begin
+         IsWait := false;
+      end Notify;
+
+   end WAITING_BLOC;
+
    function FloatToString( num : FLOAT ) return STRING is
       Temp_StringLength : INTEGER;
       Temp_String : access STRING;
