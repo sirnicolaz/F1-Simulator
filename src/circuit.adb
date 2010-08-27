@@ -185,25 +185,14 @@ package body Circuit is
       --+If he's in the 1st position,
       --+the Path2Cross is initialised,
       --+in order to let the task choose the path and "cross" the segment.
-      procedure Signal_Arrival(CompetitorID_In : INTEGER;
-                               Paths2Cross : out CROSSING_POINT;
-                               Go2Box : BOOLEAN) is
+      procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
 
+         Ada.Text_IO.Put_Line("Setting arrived");
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
-            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " first");
-            Changed := false;
-            if ( Go2Box = true ) then
-               Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " goes to box");
-               Paths2Cross := PreBox(F_Checkpoint.all).Box;
-            else
-               Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " doesn't go to box");
-               Paths2Cross := F_Checkpoint.PathsCollection;
-            end if;
-         else
-            Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) & " null path cuz in pos " & INTEGER'IMAGE(Get_Position(F_Checkpoint.Queue.all,CompetitorID_In)));
-            Paths2Cross := null;
+            Ada.Text_IO.Put_Line("Length : " & Common.IntegerToString(WaitBlock_Chain'LENGTH));
+            WaitBlock_Chain.all(CompetitorID_In).Notify;
          end if;
 
       end Signal_Arrival;
@@ -213,6 +202,7 @@ package body Circuit is
                                 Times : Common.FLOAT_ARRAY) is
       begin
          Set_Competitors(F_Checkpoint.Queue.all,Competitors,Times);
+         WaitBlock_Chain := new WAITING_BLOCK_ARRAY(1..Competitors'LENGTH);
       end Set_Competitors;
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
@@ -228,7 +218,6 @@ package body Circuit is
 
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT) is
-         x : INTEGER;
       begin
          Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
          -- If in the 1st position of the queue now there is a competitor who's
@@ -236,7 +225,7 @@ package body Circuit is
          --+ about the change. In this way he can start to cross the checkpoint.
          --+ The notification is sent setting the variable "CHANGED".
          if Get_IsArrived(F_Checkpoint.Queue.all,1) then
-            x := Get_CompetitorID(F_Checkpoint.Queue.all,1);
+            WaitBlock_Chain.all(Get_CompetitorID(F_Checkpoint.Queue.all,1)).Notify;
             Changed := TRUE;
          end if;
 
@@ -301,22 +290,26 @@ package body Circuit is
          return F_Checkpoint.SectorID;
       end Get_SectorID;
 
+      entry Wait_Ready(Competitor_ID : INTEGER) when true is
+      begin
+         requeue WaitBlock_Chain.all(Competitor_ID).Wait;
+      end Wait_Ready;
+
       --Method that allows the tasks Competitor to Wait till they reach
       --the 1st position in the checkpoint queue. Once one of them is first,
       --his Paths2Cross is initialized with the corresponding CROSSING_POINT,
       --in order to let it "cross" the segment.
-      entry Wait(CompetitorID_In : INTEGER;
-                 Paths2Cross : out CROSSING_POINT;
-                Go2Box : BOOLEAN) when Changed = TRUE is
+      procedure Get_Paths(Paths2Cross : out CROSSING_POINT;
+                          Go2Box : BOOLEAN) is
       begin
 
-         if Get_Position(F_Checkpoint.Queue.all, CompetitorID_In) = 1 then
-            Changed := false;
+         if ( Go2Box = true ) then
+            Paths2Cross := PreBox(F_Checkpoint.all).Box;
+         else
             Paths2Cross := F_Checkpoint.PathsCollection;
          end if;
-         Ada.Text_IO.Put_Line(Common.IntegerToString(CompetitorID_In) &
-                              " retry wait");
-      end Wait;
+
+      end Get_Paths;
 
       function getChanged return Boolean is
       begin

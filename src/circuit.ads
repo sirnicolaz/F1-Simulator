@@ -22,7 +22,7 @@ package Circuit is
    --Default value for Checkpoints and max competitors qty, used
    --+ in case of troubles with conf file
    Checkpoints_Qty : POSITIVE := 2;--TODO: verify if it's necessary
-   MaxCompetitors_Qty : POSITIVE := 5;--4;
+   MaxCompetitors_Qty : INTEGER;--4;
 
    procedure Set_CheckpointsQty (Qty_In : POSITIVE);
    procedure Set_MaxCompetitorsQty ( Qty_In : POSITIVE);
@@ -98,9 +98,7 @@ package Circuit is
 
    protected type CHECKPOINT_SYNCH(Checkpoint_In : POINT_Checkpoint) is
 
-      procedure Signal_Arrival(CompetitorID_In : INTEGER;
-                               Paths2Cross : out CROSSING_POINT;
-                               Go2Box : BOOLEAN);
+      procedure Signal_Arrival(CompetitorID_In : INTEGER);
       procedure Signal_Leaving(CompetitorID_In : INTEGER);
       procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
                                 Time_In : FLOAT);
@@ -123,12 +121,14 @@ package Circuit is
 
       function getChanged return Boolean;
 
-      entry Wait(CompetitorID_In : INTEGER;
-                 Paths2Cross : out CROSSING_POINT;
-                 Go2Box : BOOLEAN);
+      entry Wait_Ready(Competitor_ID : INTEGER);
+
+      procedure Get_Paths(Paths2Cross : out CROSSING_POINT;
+                          Go2Box : BOOLEAN);
 
    private
       F_Checkpoint : POINT_Checkpoint := Checkpoint_In;
+      WaitBlock_Chain : access WAITING_BLOCK_ARRAY;
       Changed : BOOLEAN := false;
    end CHECKPOINT_SYNCH;
 

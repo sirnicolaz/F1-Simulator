@@ -923,13 +923,22 @@ package body Competitor is
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Signal arrival");
 
-         C_Checkpoint.Signal_Arrival(id,Paths2Cross,PitStop);
+         C_Checkpoint.Signal_Arrival(id);
+
+         --When the competitor will be at the top of the list, he will be notified to
+         --+ go ahead
+         C_Checkpoint.Wait_Ready(carDriver.Id);
+
+         --Now the competitor is for sure first and he can pick up the paths collection
+         --+ evaluate the best way to take
+         C_Checkpoint.Get_Paths(Paths2Cross,
+                                Go2Box      => PitStop);
          --altrimenti si comincia ad attendere il proprio turno
          --era while ... loop
 
-         while Paths2Cross = null loop
-            C_Checkpoint.Wait(id,Paths2Cross,PitStop);
-         end loop;
+         --while Paths2Cross = null loop
+         --   C_Checkpoint.Wait(id,Paths2Cross,PitStop);
+         --end loop;
 
          --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
          --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino

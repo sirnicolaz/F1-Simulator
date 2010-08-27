@@ -91,13 +91,14 @@ package body COMMON is
    end SaveToFile;
 
    protected body WAITING_BLOCK is
-      entry Wait when IsWait = true is
+      entry Wait(Competitor_ID : INTEGER) when IsWait = false is
       begin
          IsWait := true;
       end Wait;
 
       procedure Notify is
       begin
+         Ada.Text_IO.Put_Line("Notifying");
          IsWait := false;
       end Notify;
 

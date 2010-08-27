@@ -39,13 +39,13 @@ package Common is
 
    --Used to simulate wait and notify
    protected type WAITING_BLOCK is
-      entry Wait;
+      entry Wait(Competitor_ID : INTEGER);
       procedure Notify;
    private
-      IsWait : BOOLEAN := FALSE;
+      IsWait : BOOLEAN := TRUE;
    end WAITING_BLOCK;
 
-   type WAITING_BLOCK_ARRAY is array(POSITIVE range <>) of access WAITING_BLOCK;
+   type WAITING_BLOCK_ARRAY is array(POSITIVE range <>) of WAITING_BLOCK;
 
    function SaveToFile(FileName : STRING;
                         Content : STRING;
