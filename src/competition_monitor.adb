@@ -298,6 +298,7 @@ package body Competition_Monitor is
       Tmp_BestLapCompetitor : INTEGER;
       Tmp_BestSectorTimes : FLOAT_ARRAY(1..3);
       Tmp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
+      Tmp_BestSectorLaps : INTEGER_ARRAY(1..3);
 
       HighestCompletedLap : INTEGER := -1;
       CompetitorID_InClassific : INTEGER_ARRAY_POINT;
@@ -351,7 +352,8 @@ package body Competition_Monitor is
 
       Stats.Get_BestSectorTimes(TimeInstant,
                                 Times          => Tmp_BestSectorTimes,
-                                Competitor_IDs => Tmp_BestSectorCompetitors);
+                                Competitor_IDs => Tmp_BestSectorCompetitors,
+                                Laps => Tmp_BestSectorLaps);
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("<bestTimes>" &
@@ -366,6 +368,7 @@ package body Competition_Monitor is
            ("<sector num=""" & Common.IntegerToString(i) & """>" &
             "<time>" & FLOAT'IMAGE(Tmp_BestSectorTimes(i)) & "</time>" &
             "<competitorId>" & Common.IntegerToString(Tmp_BestSectorCompetitors(i)) & "</competitorId>" &
+            "<lap>" & Common.IntegerToString(Tmp_BestSectorLaps(i)) & "</lap>" &
             "</sector>"
            );
       end loop;
