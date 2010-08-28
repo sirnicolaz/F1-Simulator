@@ -293,7 +293,8 @@ package body Stats is
 
    procedure Get_BestSectorTimes(TimeInstant : FLOAT;
                                  Times : out FLOAT_ARRAY;
-                                 Competitor_IDs : out INTEGER_ARRAY) is
+                                 Competitor_IDs : out INTEGER_ARRAY;
+                                 Laps : out INTEGER_ARRAY) is
       Temp_BestSectorTimes : FLOAT_ARRAY(1..3);
       Temp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
       Temp_Stats : COMP_STATS_POINT := new COMP_STATS;
@@ -323,6 +324,25 @@ package body Stats is
 
       Times := Temp_BestSectorTimes;
       Competitor_IDs := Temp_BestSectorCompetitors;
+
+      --Find out the lap when the best time was done
+      declare
+         Temp_Time : FLOAT;
+      begin
+         --Given the competitor that broke the record and the time for each sector (of index i),
+         --+ loop thtough the competitor statistics as long as the first stat with that best sector time
+         --+ is found. Essentialy pick up the Lap number related to that stat.
+         for i in 1..3 loop
+            for Index in 1..Competitor_Statistics.all(Competitor_IDs(i)).Competitor_Info'LENGTH loop
+               Competitor_Statistics.all(Competitor_IDs(i)).Competitor_Info.all(Index).Get_BestSectorTime(i,Temp_Time);
+               if( Temp_Time = Times(i) ) then
+                  -- return lap
+                  Competitor_Statistics.all(Competitor_IDs(i)).Competitor_Info.all(Index).Get_Lap(Result => Laps(i));
+                  exit;
+               end if;
+            end loop;
+         end loop;
+      end;
 
    end Get_BestSectorTimes;
 

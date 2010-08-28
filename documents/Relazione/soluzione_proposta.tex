@@ -1,4 +1,4 @@
-'%%%Architettura alto livello%%%
+%%%Architettura alto livello%%%
 \subsection{Architettura ad alto livello}
 Nella seguente sezione verr\`{a} illustrata l'architettura ad alto livello del sistema sviluppato, 
 escludendo i dettagli implementativi e legati al linguaggio.
@@ -6,7 +6,7 @@ escludendo i dettagli implementativi e legati al linguaggio.
 \subsubsection{Componenti di sistema}
 Le principali componenti del sistema sono:
 \begin{description}
-\item{Competition}
+\item{\textbf{Competition}}\\
 La \emph{Competition} \`{e} l'unit\`{a} atta ad orchestrare l'avvio e la conclusione della corsa. Tale componente, dunque, \`{e} stata concepita per 
 offrire le seguenti funzionalit\`{a}:
 \begin{itemize}
@@ -25,7 +25,7 @@ offrire le seguenti funzionalit\`{a}:
 \item i concorrenti sono stati correttamente registrati alla competizione e in attesa di partire;
 \end{itemize}
 \end{itemize}
-\item{Competitor}
+\item{\textbf{Competitor}}\\
 Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
 \begin{itemize}
 \item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto, ovvero:
@@ -45,7 +45,7 @@ Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} carat
 	\end{itemize}
 \item \textbf{Strategia}, ovvero la strategia che sta adottando il pilota, suggerita dai box e dinamica nel corso della gara:
 	\begin{itemize}
-		\item style di guida, variabile tra conservativo, normale, aggressivo, a seconda dello stato della macchina e delle
+		\item stile di guida, variabile tra conservativo, normale, aggressivo, a seconda dello stato della macchina e delle
 			previsioni fatte dai box
 		\item numero di lap prima del pit stop
 		\item addizionalmente, quando viene fatto un pit stop, la strategia determina anche quali siano le nuove gomme da montare,
@@ -71,19 +71,38 @@ Tali informazioni verranno poi usate nel corso della gara per:
 		\item ritirarsi dalla gara una volta che le condizione dell'auto non permettano di poter correre ulteriormente;
 		\item banalmente, continuare a correre fino alla fine delle lap prestabilite, dopodich\`{e} fermarsi.
 	\end{itemize}
-\item{Circuit}
-Il circuito è una risorsa finalizzata ad offrire il piano su cui svolgere la competizione. \`{E} condivisa fra tutti i concorrenti in gara e
-offre un insieme di funzionalità per poter conoscere le caratteristiche dei vari tratti della pista (compresi i concorrenti presenti
+\item{\textbf{Circuit}}\\
+Il circuito \`{e} una risorsa finalizzata ad offrire il piano su cui svolgere la competizione. \`{E} condivisa fra tutti i concorrenti in gara e
+offre un insieme di funzionalit\`{a} per poter conoscere le caratteristiche dei vari tratti della pista (compresi i concorrenti presenti
 al momento dell'attraversamento). \`{E} composto dalle seguenti sottocomponenti:
 \begin{itemize}
-\item \textbf{Checkpoint}
-\item \textbf{Path}
-\item \textbf{}
+\item \textbf{Checkpoint}:
+i \emph{Checkpoint} rappresentano punti di arrivo intermedi del circuito. Come una suddivisione in fette da 1 secondo possono discretizzare 1 minuto,
+cos\`{i} i \emph{Checkpoint} discretizzano il circuito. Ogni \emph{Checkpoint} introduce un tratto della pista potenzialmente diverso da quello precedente.
+Per esempio, il $\emph{Checkpoint}_n$ potrebbe essere il punto di entrata di un tratto della pista accessibile ad un numero massimo di 4 concorrenti insieme,
+mentre il successivo $\emph{Checkpoint}_{n+1}$ potrebbe esporre un tratto pi`{u} stretto e quindi accessibile solo a 2 concorrenti. Schematizzando, 
+il \emph{Checkpoint} \`{e} caratterizzato da:
+\begin{itemize}
+\item \textbf{molteplicit\`{a}}: ovvero il numero di concorrenti che possono trovarsi contemporaneamente nel tratto a seguire;
+\item \textbf{posizione nella pista}: un \emph{Checkpoint} pu\`{u} essere il traguardo, l'inizio del settore, la fine di un settore, all'uscita dei box, l'entrata
+					per i box, i box oppure un punto intermedio fra altri due \emph{Checkpoint};
+\item \textbf{tempi di arrivo}: ogni \emph{Checkpoint} tiene traccia dell'istante in cui un concorrente ci \`{e} passato sopra.
 \end{itemize}
-\item{Stats}
-\item{Box}
-\item{Radio}
-\item{Monitor}
+\item \textbf{Path}: rappresenta una delle possibili traiettorie da usare per andare da un \emph{Checkpoint} a quello successivo. La traiettoria presenta
+	un numero di \emph{Path} uguale alla molteplicit\`{a} del \emph{Checkpoint} che la precede. Ogni \emph{Path} \`{e} descritto da:
+	\begin{itemize}
+		\item lunghezza
+		\item angolo
+		\item grip, ovvero l'aderenza sul tratto
+	\end{itemize}
+Normalmente i path appartenenti allo stesso tratto differiscono di poco.
+\item \textbf{Iteratore}: l'unit\`{a} permette di sapere la struttura della pista. Si suppone venga usata per sapere quale \emph{Checkpoint} ne segue un altro,
+	oppure per sapere dove sia il \emph{Checkpoint} di inizio box. 
+\end{itemize}
+\item{\textbf{Stats}}\\
+\item{\textbf{Box}}\\
+\item{\textbf{Radio}}\\
+\item{\textbf{Monitor}}\\
 \end{description}
  - lista delle componenti con descrizione ad alto livello del loro scopo
  - se necessario fornire un diagramma delle componenti

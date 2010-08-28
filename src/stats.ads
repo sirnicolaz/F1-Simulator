@@ -96,7 +96,8 @@ package Stats is
 
    procedure Get_BestSectorTimes(TimeInstant : FLOAT;
                                  Times : out FLOAT_ARRAY;
-                                 Competitor_IDs : out INTEGER_ARRAY);
+                                 Competitor_IDs : out INTEGER_ARRAY;
+                                 Laps : out INTEGER_ARRAY);
 
    procedure Get_LapTime(Competitor_ID : INTEGER;
                          Lap : INTEGER;
