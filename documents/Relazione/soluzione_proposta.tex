@@ -100,7 +100,42 @@ Normalmente i path appartenenti allo stesso tratto differiscono di poco.
 	oppure per sapere dove sia il \emph{Checkpoint} di inizio box. 
 \end{itemize}
 \item{\textbf{Stats}}\\
+Questa componente mantiene la storia della gara e offre un insieme di funzionalit\`{a} che permettono di elaborare tali dati per offrirne differenti viste:
+	\begin{itemize}
+		\item migliori performance in un determinato istante di tempo
+		\item classifica aggiornata per istante di tempo
+		\item informazioni sui concorrenti relative ad un particolare lap, checkpoint o settore (in una specifica lap);
+	\end{itemize}
 \item{\textbf{Box}}\\
+Il \emph{Box} \`{e} l'entit\`{a} che si occupa di gestire la configurazione e la corsa di un concorrente. Durante la competizione, il \emph{Box} verifica costantemente
+lo stato dell'auto e fornisce eventuali cambi di strategia se ritenuto opportuno. Inoltre decide quando i pitstop del concorrente con tutte le caratteristiche 
+ad esso legate, quali:
+	\begin{itemize}
+		\item benzina da aggiungere nel serbatoio
+		\item gomme da montare
+	\end{itemize}
+Ogni \emph{Box} \`{e} caratterizzato da uno fra 4 tipi di strategia, diversi per grado di ``ottimismo'' nelle valutazioni e nei calcoli dati lo stato della 
+macchina, le medie calcolate e lo stile di guida del concorrente:
+	\begin{enumerate}
+		\item \textbf{Cautious}: cauto, sottostima il numero di giri ancora fattibili;
+		\item \textbf{Nodmal}: stima abbastanza realistica delle possibilit\`{a} del concorrente, considera anche un margine di errore nei calcoli
+			per effettuare una valutazione;
+		\item \textbf{Risky}: le stime vengono effettuate in base a calcoli esatti che di solito non tengono in considerazione fattori che nella
+			realt\`{a} possono incidere in modo negativo;
+		\item \textbf{Fool}: nella realt\`{a} normalmente non si arriva a tanto, ma per fini di test \`{e} stato inserito anche un tipo di strategia
+			che sovrastima le possibilit\`{a} del concorrente, portandolo a squalifica quasi certa.
+	\end{enumerate}
+Ci\`{o} che il box suggerisce al concorrente durante la gara \`{e}:
+	\begin{itemize}
+		\item stile di guida. Verr\`{a} suggerito uno stile pi\`{u} conservativo se i consumi si sono rivelati maggiori del previsto e viceversa;
+		\item numero di lap al pitstop
+	\end{itemize}
+Il \emph{Box} riceve informazioni sullo stato del concorrente alla fine di ogni settore e ricalcola la strategia alla fine del secondo settore. Il concorrente
+richiede la nuova strategia al box in prossimit\`{a} del checkpoint dove \`{e} possibile proguire o andare ai box.\\
+\`{E} sembrato pi\`{u} realistica la scelta di non calcolare la strategia alla fine del terzo settore, perch\`{e} si suppone che nella realt\`{a} non si possa essere
+cos\`{i} veloci da calcolare una nuova strategia istantaneamente alla fine del circuito con i dati del terzo settore. \`{E} piuttosto pi\`{u} probabile che 
+qualunque cambio di strategia o richiesta di rientro ai box venga stabilita gi\`{a} alla fine del secondo settore. In modo che in prossimit\`{a} dei box il concorrente
+possa ottenere l'informazione istantaneamente e possa quindi decidere come e dove procedere.
 \item{\textbf{Radio}}\\
 \item{\textbf{Monitor}}\\
 \end{description}
