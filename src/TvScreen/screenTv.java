@@ -32,7 +32,9 @@ private JFrame parent;
 private JScrollPane tablePanel;
 private JTable tableAll;
 
-private DefaultTableModel model = new DefaultTableModel(); 
+private DefaultTableModel model_1 = new DefaultTableModel(); 
+private DefaultTableModel model_2 = new DefaultTableModel(); 
+
 private DefaultTableModel modelAll = new DefaultTableModel(); 
 private FlowLayout f = new FlowLayout();
 private GridBagConstraints classificGrid = new GridBagConstraints();
@@ -85,28 +87,33 @@ corbaloc = corbalocIn;
 
 }
 public void addTables(){
-model.addColumn("Position");
-model.addColumn("Id Comp"); 
-model.addColumn("Lap");
-model.addColumn("Time");
-classific_1 = new JTable(model);
-classific_2 = new JTable(model);
+model_1.addColumn("Position");
+model_1.addColumn("Id Comp"); 
+model_1.addColumn("Lap");
+model_1.addColumn("Time");
+model_2.addColumn("Position");
+model_2.addColumn("Id Comp"); 
+model_2.addColumn("Lap");
+model_2.addColumn("Time");
+classific_1 = new JTable(model_1);
+classific_2 = new JTable(model_2);
 
 panelCl_1 = new JScrollPane(classific_1);
-panelCl_2 = new JScrollPane(classific_2);//classific_1);
-classificPanel = new JPanel(new BorderLayout());
+panelCl_2 = new JScrollPane(classific_2);
+// panelCl_2 = new JScrollPane(classific_2);//classific_1);
+/*classificPanel = new JPanel(new BorderLayout());
 classificPanel.setLayout(new GridBagLayout());
 classificPanel.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 classificGrid.fill = GridBagConstraints.HORIZONTAL;
 		classificGrid.gridx = 0;
 		classificGrid.gridy = 0;
 		classificGrid.ipady = 5;
-		classificPanel.add(panelCl_1, classificGrid);
-classificGrid.fill = GridBagConstraints.HORIZONTAL;
+		classificPanel.add(panelCl_1, classificGrid);*/
+/*classificGrid.fill = GridBagConstraints.HORIZONTAL;
 		classificGrid.gridx = 1;
 		classificGrid.gridy = 0;
 		classificGrid.ipady = 5;
-		classificPanel.add(panelCl_2, classificGrid);
+		classificPanel.add(panelCl_2, classificGrid);*/
 }
 public void addBest(){
 bestPanel = new JPanel(new BorderLayout());
@@ -261,11 +268,13 @@ public void run(){
 addTables();
 addBest();
 addTablesAll();
-parent.add(classificPanel, BorderLayout.CENTER);
+parent.add(panelCl_1, BorderLayout.EAST);
+parent.add(panelCl_2, BorderLayout.WEST);
 parent.add(bestPanel,BorderLayout.NORTH);
 parent.add(tablePanel, BorderLayout.SOUTH);
 
-readXml("<?xml version=\"1.0\"?><competitionUpdate><competitors><competitor id=\"1\"><checkpoint compPosition=\"passed\" >12</checkpoint><lap>42</lap><sector>3</sector></competitor><competitor id=\"2\"><checkpoint compPosition=\"passed\" >13</checkpoint><lap>43</lap><sector>2</sector> </competitor></competitors><bestTimes><lap num=\"3\"><time>34.0000</time><competitorId>4</competitorId></lap><sectors><sector num=\"1\"><time>10.0</time><competitorId>3</competitorId><lap>45</lap></sector><sector num=\"2\"><time>15.1</time><competitorId>4</competitorId><lap>99</lap></sector><sector num=\"3\"><time>5.3</time><competitorId>5</competitorId><lap>66</lap></sector></sectors></bestTimes></competitionUpdate>");
+readXml("<?xml version=\"1.0\"?><competitionUpdate><competitors><competitor id=\"1\"><checkpoint compPosition=\"passed\" >12</checkpoint><lap>42</lap><sector>3</sector></competitor><competitor id=\"2\"><checkpoint compPosition=\"passed\" >13</checkpoint><lap>43</lap><sector>2</sector> </competitor></competitors><bestTimes><lap num=\"3\"><time>34.0000</time><competitorId>4</competitorId></lap><sectors><sector num=\"1\"><time>10.0</time><competitorId>3</competitorId><lap>45</lap></sector><sector num=\"2\"><time>15.1</time><competitorId>4</competitorId><lap>99</lap></sector><sector num=\"3\"><time>5.3</time><competitorId>5</competitorId><lap>66</lap></sector></sectors></bestTimes>"
++"<classification><competitor id=\"3\"><lap>4</lap></competitor><competitor id=\"5\"><lap>3</lap></competitor><competitor id=\"1\"><lap>2</lap></competitor></classification></competitionUpdate>");
 
 parent.pack();
 parent.setVisible(true);
@@ -281,7 +290,7 @@ catch(Exception e){}
 public void readXml(String xmlRecords){
 System.out.println("stringa da parsare : \n"+xmlRecords);
 // String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
-try {
+ try {
         DocumentBuilderFactory dbf =
         DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -290,11 +299,12 @@ try {
 
         Document doc = db.parse(is);
 
-	NodeList nodes234 = doc.getElementsByTagName("competitors");
-	Element prova234 = (Element) nodes234.item(0);
+	NodeList nodes32 = doc.getElementsByTagName("competitors");
+	Element prova32 = (Element) nodes32.item(0);
 
-NodeList nodes = doc.getElementsByTagName("competitor");
+	NodeList nodes = prova32.getElementsByTagName("competitor");
 	Element prova = (Element) nodes.item(0);
+
 //qua conto i figli
 
 	for (int i=0; i < nodes.getLength(); i++) {
@@ -316,12 +326,12 @@ NodeList nodes = doc.getElementsByTagName("competitor");
 	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
 	System.out.println("lap : "+getNode("lap", element));
 	System.out.println("sector : "+getNode("sector", element));
-
 modelAll.insertRow(0,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), 150.0});
-ListSelectionModel selectionModel = tableAll.getSelectionModel();
-selectionModel.setSelectionInterval(0,0);
+// ListSelectionModel selectionModel = tableAll.getSelectionModel();
+// selectionModel.setSelectionInterval(0,0);
 	}
 	
+System.out.println("bestTimes");
 	NodeList best = doc.getElementsByTagName("bestTimes");
         Element element = (Element)best.item(0);
 	
@@ -381,12 +391,15 @@ textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Time.setText(getNode("time", line));	
 
 	try{
-	NodeList cl = doc.getElementsByTagName("classification");
-        element = (Element)cl.item(0);
-	for (int i=0; i < cl.getLength(); i++) {
-        element = (Element) cl.item(i);
-        NodeList comp42 = doc.getElementsByTagName("competitor");
-        line = (Element) comp42.item(i);
+NodeList cl = doc.getElementsByTagName("classification");
+        Element elementTemp = (Element)cl.item(0);
+	
+	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
+        Element compEl = (Element) comp42.item(0);
+	for (int i=0; i < comp42.getLength(); i++) {
+        element = (Element) comp42.item(i);
+//         NodeList compIn = comp42.getElementsByTagName("competitor");
+         line = (Element) comp42.item(i);
 	System.out.println("----competitor: " + getCharacterDataFromElement(line)+" length ="+comp42.getLength());
 	NamedNodeMap attributiComp =line.getAttributes();
 
@@ -394,6 +407,7 @@ textBoxSector3Time.setText(getNode("time", line));
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
+model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), 150.0});
 	}
 	
 	}
