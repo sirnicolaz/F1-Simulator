@@ -5,7 +5,6 @@
 \setcounter{tocdepth}{4}
 \usepackage[latin1]{inputenc}
 \usepackage[italian]{babel}
-\usepackage{marvosym}
 \usepackage{graphicx}
 \usepackage{lscape}
 \usepackage{fancyhdr}
@@ -20,10 +19,10 @@
 
 \usepackage{fancyhdr}
 \newcommand{\fncyblank}{\fancyhf{}}
-\newenvironment{abstract}%
-{\fncyblank\null\vfill\begin{center}%
-\bfseries\abstractname\end{center}}%
-{\vfill\null}
+%\newenvironment{abstract}%
+%{\fncyblank\null\vfill\begin{center}%
+%\bfseries\abstractname\end{center}}%
+%{\vfill\null}
 
 \renewcommand{\baselinestretch}{1.25}
 
@@ -45,7 +44,7 @@
 \data={02 Luglio 2009}
 
 % Informazioni documento (tokens)
-\filename={Telemedicina.pdf}
+\filename={F1\_Sym.pdf}
 \versione={0.3}
 \distribuzione={Prof. Vardanega Tullio \\
 		     	& Miotto Nicola \\
@@ -78,7 +77,7 @@
 % Sommario
 \begin{abstract} 
 \begin{center}
-Realzione sul progetto di Sistemi Concorrenti e Distribuiti.
+Relazione sul progetto di Sistemi Concorrenti e Distribuiti.
 \end{center}
 \end{abstract}
 \vspace{1,50 cm}
@@ -96,17 +95,16 @@ Realzione sul progetto di Sistemi Concorrenti e Distribuiti.
 \newpage
 
 \tableofcontents
-
-\chapter{Descrizione del progetto}
+\newpage
+%\chapter{Descrizione del progetto}
 \input{descrizione_progetto}
-\chapter{Problematiche}
-\section{Introduzione}
+\section{Problematiche}
+\subsection{Introduzione}
 In questo capitolo verranno analizzate le problematiche legate alla realizzazione di un sistema concorrente e distribuito.
-\section{Problematiche di concorrenza}
+\subsection{Problematiche di concorrenza}
 \input{problematiche_concorrenza}
-\section{Problematiche di distribuzione}
+\subsection{Problematiche di distribuzione}
 \input{problematiche_distribuzione}
-\chapter{Soluzione proposta}
 \input{soluzione_proposta}
 %\section{Competizione}
 %\section{Circuito}

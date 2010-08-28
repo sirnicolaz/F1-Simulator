@@ -1,12 +1,18 @@
-%%%Architettura alto livello%%%
-\subsection{Architettura ad alto livello}
+	%%%Architettura alto livello%%%
+\section{Architettura ad alto livello}
 Nella seguente sezione verr\`{a} illustrata l'architettura ad alto livello del sistema sviluppato, 
-escludendo i dettagli implementativi e legati al linguaggio.
+escludendo i dettagli implementativi e legati al linguaggio. Viene fornito un diagramma delle componenti per mostrare
+molto ad alto livello l'architettura del sistema.\\
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ComponentDiagram.jpg}
+	\caption{Diagramma delle componenti}
+\end{figure}
+\end{center}
 % Componenti del sistema
-\subsubsection{Componenti di sistema}
+\subsection{Componenti di sistema}
 Le principali componenti del sistema sono:
-\begin{description}
-\item{\textbf{Competition}}\\
+\subsubsection{Competition}
 La \emph{Competition} \`{e} l'unit\`{a} atta ad orchestrare l'avvio e la conclusione della corsa. Tale componente, dunque, \`{e} stata concepita per 
 offrire le seguenti funzionalit\`{a}:
 \begin{itemize}
@@ -25,7 +31,7 @@ offrire le seguenti funzionalit\`{a}:
 \item i concorrenti sono stati correttamente registrati alla competizione e in attesa di partire;
 \end{itemize}
 \end{itemize}
-\item{\textbf{Competitor}}\\
+\subsubsection{Competitor}
 Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
 \begin{itemize}
 \item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto, ovvero:
@@ -71,7 +77,7 @@ Tali informazioni verranno poi usate nel corso della gara per:
 		\item ritirarsi dalla gara una volta che le condizione dell'auto non permettano di poter correre ulteriormente;
 		\item banalmente, continuare a correre fino alla fine delle lap prestabilite, dopodich\`{e} fermarsi.
 	\end{itemize}
-\item{\textbf{Circuit}}\\
+\subsubsection{Circuit}
 Il circuito \`{e} una risorsa finalizzata ad offrire il piano su cui svolgere la competizione. \`{E} condivisa fra tutti i concorrenti in gara e
 offre un insieme di funzionalit\`{a} per poter conoscere le caratteristiche dei vari tratti della pista (compresi i concorrenti presenti
 al momento dell'attraversamento). \`{E} composto dalle seguenti sottocomponenti:
@@ -99,14 +105,14 @@ Normalmente i path appartenenti allo stesso tratto differiscono di poco.
 \item \textbf{Iteratore}: l'unit\`{a} permette di sapere la struttura della pista. Si suppone venga usata per sapere quale \emph{Checkpoint} ne segue un altro,
 	oppure per sapere dove sia il \emph{Checkpoint} di inizio box. 
 \end{itemize}
-\item{\textbf{Stats}}\\
+\subsubsection{Stats}
 Questa componente mantiene la storia della gara e offre un insieme di funzionalit\`{a} che permettono di elaborare tali dati per offrirne differenti viste:
 	\begin{itemize}
 		\item migliori performance in un determinato istante di tempo
 		\item classifica aggiornata per istante di tempo
 		\item informazioni sui concorrenti relative ad un particolare lap, checkpoint o settore (in una specifica lap);
 	\end{itemize}
-\item{\textbf{Box}}\\
+\subsubsection{Box}
 Il \emph{Box} \`{e} l'entit\`{a} che si occupa di gestire la configurazione e la corsa di un concorrente. Durante la competizione, il \emph{Box} verifica costantemente
 lo stato dell'auto e fornisce eventuali cambi di strategia se ritenuto opportuno. Inoltre decide quando i pitstop del concorrente con tutte le caratteristiche 
 ad esso legate, quali:
@@ -118,7 +124,7 @@ Ogni \emph{Box} \`{e} caratterizzato da uno fra 4 tipi di strategia, diversi per
 macchina, le medie calcolate e lo stile di guida del concorrente:
 	\begin{enumerate}
 		\item \textbf{Cautious}: cauto, sottostima il numero di giri ancora fattibili;
-		\item \textbf{Nodmal}: stima abbastanza realistica delle possibilit\`{a} del concorrente, considera anche un margine di errore nei calcoli
+		\item \textbf{Normal}: stima abbastanza realistica delle possibilit\`{a} del concorrente, considera anche un margine di errore nei calcoli
 			per effettuare una valutazione;
 		\item \textbf{Risky}: le stime vengono effettuate in base a calcoli esatti che di solito non tengono in considerazione fattori che nella
 			realt\`{a} possono incidere in modo negativo;
@@ -136,14 +142,177 @@ richiede la nuova strategia al box in prossimit\`{a} del checkpoint dove \`{e} p
 cos\`{i} veloci da calcolare una nuova strategia istantaneamente alla fine del circuito con i dati del terzo settore. \`{E} piuttosto pi\`{u} probabile che 
 qualunque cambio di strategia o richiesta di rientro ai box venga stabilita gi\`{a} alla fine del secondo settore. In modo che in prossimit\`{a} dei box il concorrente
 possa ottenere l'informazione istantaneamente e possa quindi decidere come e dove procedere.
-\item{\textbf{Radio}}\\
-\item{\textbf{Monitor}}\\
-\end{description}
- - lista delle componenti con descrizione ad alto livello del loro scopo
- - se necessario fornire un diagramma delle componenti
+\subsubsection{Monitor}
+La componente \emph{Monitor} e costituita dall'insieme delle unit\`{a} concepite per esporre le informazioni e i dati prodotti a basso livello
+dal simulatore. Ne esistono due tipi:
+\begin{itemize}
+	\item \textbf{monitor di competizione}: utilizzato per offrire informazioni riguardanti la gara e i singoli concorrenti;
+	\item \textbf{monitor di box}: utilizzato per esporre i dati relativi alle computazioni del box, e le informazioni grezze legate al
+		concorrente appartenente alla sua scuderia e i dati rielaborati di settore in settore per formulare nuove strategie.
+\end{itemize}
+\subsubsection{Screen} 
+Gli \emph{Screen} sono la parte pi\`{u} alta del sistema. Servono a mettere in connessione l'utente finale e la parte logica del simulatore.
+Tramite gli \emph{Screen} \`{e} possibile ricevere aggiornamenti grafici (di base) sullo stato di avanzamento della simulazione sotto il punto di vista 
+dei singoli box o della gara complessiva.
+\subsubsection{Configurator}
+Questa componente offre la possibilit\`{a} di configurare le parti parametriche del sistema, ovvero:
+\begin{itemize}
+	\item concorrenti 
+	\item competizione (i parametri elencati nella sezione \emph{Competition}
+	\item box
+\end{itemize}
+Il \emph{Configurator} ha inoltre l'onere di inviare i parametri cos\`{i} configurati alle componenti opportune.
+
+ \subsubsection{Radio}
+La componente radio \`{e} stata creata per gestire la comunicazione remota fra le componenti distribuite.\\
+Il sistema inizialmente \`{e} stato implementato con supporto solo all'esecuzione locale. Si conoscevano le componenti che sarebbero state distribuite,
+ma il processo di separazione \`{e} avvenuto successivamente. Quindi per agevolare tale processo si \`{e} pensato di demandare l'onere della comunicazione 
+tra queste componenti a unit\`{a} specializzate, chiamate appunto radio. In questo modo \`{e} stato pi\`{u} soft il passaggio da locale a distribuito,
+che ha richiesto di rivedere solo le componenti \emph{Radio}.\\\\
+\emph{\textsc{Nota Bene}}:\\
+La componente \emph{Radio} costituisce un layer di supporto alla comunicazione 
+distribuita delle componenti. Considerando che a questo livello del documento non \`{e} ancora il momento di scendere nei dettagli fino a discutere 
+della distribuzione, si pensa sia sufficiente averla nominata nella descrizione delle componenti. Verr\`{a} ripresa
+in considerazione successivamente nel documento. Inserendola ora nei diagrammi delle componenti rischierebbe di confondere la visione di insieme
+del sistema.
 % Interazione fra le componenti
-\subsubsection{Interazione fra le componenti}
- - descrivere ad alto livello l'interazione fra componenti e se necessario aiutarsi con OCR cards
+\subsection{Interazione fra le componenti}
+Nella seguente sezione verranno spiegate le interazione principali fra le componenti.\\\\
+\subsubsection{Configurator-Competition}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg}
+\caption{Interface component diagram - Configurator/Competition}
+\end{figure}
+\end{center}
+Al livello pi\`{u} alto della fase di configurazione c'\`{e} la componente \emph{Configurator}, la quale viene utilizzata per impostare i parametri
+relativi alla \emph{Competition}. Tali parametri vengono prima impostati dall'utente (o letti da file) tramite le interfacce \textbf{SetupCompetitor},
+\textbf{SetupCompetition} e \textbf{SetupCircuit} e successivamente inviati alla componente \emph{Competition} per l'inizializzazione.\\
+\textbf{RegisterCompetitor} \`{e} utilizzata una volta per ogni competitor da iscrivere.
+\subsubsection{Competition-Competitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg}
+\caption{Interface component diagram - Competition/Competitor}
+\end{figure}
+\end{center}
+L'interazione fra la \emph{Competition} e il \emph{Competitor} avviene, come per le altre interazioni \emph{Competition}-componente in fase di configurazione
+e avvio. La \emph{Competition} si occupa di ricevere i parametri relativi a ogni \emph{Competitor} dal \emph{Configurator} (come verr\`{a} spiegato fra poco) per 
+poi inizalizzare il competitor. Quando tutti i concorrenti sono pronti e anche i \emph{Box}, l'interfaccia \textbf{Start} verr\`{a} utilizzata per dare il
+via ai concorrenti.
+\subsubsection{Competition-Monitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg}
+\caption{Interface component diagram - Competition/Monitor}
+\end{figure}
+\end{center}
+L'interazione \emph{Competition}-\emph{Monitor} riguarda solo una piccola fase dell'inizializzazione, processo che verr\`{a} esplicato in dettaglio in seguito.
+A concorrenti registrati, la \emph{Competition} sfruttera un interfaccia offerta dal monitor per sapere quando tutti i \emph{Box} sono pronti e avviati.
+L'interfaccia \`{e} l'unica illustrata in figura.
+\subsubsection{Competition-Circuit}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg}
+\caption{Interface component diagram - Competition/Circuit}
+\end{figure}
+\end{center}
+Anche in questo caso, l'interazione \emph{Competition}-\emph{Circuit} si ha in fase di inizializzazione quando le due componenti entrano in contatto
+per la configurazione. La \emph{Competition} inizializza cio\`{e} il circuito impostando i parametri che lo caratterizzano, quali:
+	\begin{itemize}
+		\item numero di checkpoint
+		\item caratteristiche dei tratti fra checkpoint (lunghezza, angolo ...)
+		\item posizione dei checkpoint di entrata e uscita box
+		\item posizione del checkpoint traguardo
+	\end{itemize}
+\subsubsection{Competition-Stats}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg}
+\caption{Interface component diagram - Competition/Stats}
+\end{figure}
+\end{center}
+La componente \emph{Stats} ottiene i parametri di configurazione in fase di inizalizzazione dalla \emph{Competition}, tramite
+\textbf{InitilizeStatistics}.
+\subsubsection{Competitor-Stats}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg}
+\caption{Interface component diagram - Competitor/Stats}
+\end{figure}
+\end{center}
+La componente \emph{Stats} offre al \emph{Competitor} l'interfaccia \textbf{AddInfo} che il concorrente utilizza per fornire costantemente a \emph{Stats}
+dati aggiornati riguardo alla gara in corso (dati relativi al singolo concorrente). Ad ogni checkpoint quindi il concorrente manda un aggiornamento
+a \emph{Stats} che poi verranno utilizzate per effettuare calcoli di insieme riguardo alla gara o per essere mandate a chi le richiedesse.
+\subsubsection{Competitor-Circuit}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg}
+\caption{Interface component diagram - Competitor/Circuit}
+\end{figure}
+\end{center}
+L'interazione \emph{Competitor}-\emph{Circuit} avviene durante lo svolgimento della competizione. Il concorrente sfrutta le interfacce del \emph{Circuit}
+per ottenere informazioni sul circuito e ``informarlo'' degli spostamenti nel corso della gara.\\
+\textbf{GetCheckpoint} garantisce che il concorrente ottenga sempre il checkpoint corretto a seconda della posizione corrente.
+\textbf{GetPathCondition} permette di ottenere informazioni sulle caratteristiche statiche e dinamiche della tratto da attraversare. Le caratteristiche 
+dinamiche sono legate ai concorrenti attualmente presenti sul tratto.
+\textbf{CrossSegment} assicura che il tratto possa essere attraversato senza collisioni e che il \emph{Circuit} possa tracciare l'avvenuto passaggio 
+dell'auto.
+\subsubsection{Monitor-Stats}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg}
+\caption{Interface component diagram - Monitor/Stats}
+\end{figure}
+\end{center}
+La componente \emph{Monitor} si appoggia a \emph{Stats} per poter reperire le informazioni da essere esposte. Per questo motivo
+\emph{Stats} offre un insieme di interfacce finalizzate a fornire i dati grezzi di competizione sotto forma di viste utili alla ``pubblicazione''.\\
+\textbf{GetBestPerformance} fornisce i migliori tempi relativi a settori e giro.\\
+\textbf{GetCompetitorInfo} reperisce informazioni legate al singolo concorrente, come ad esempio lo stato della macchina ad un determinato istante.\\
+\textbf{GetClassification}, come dice il nome, ritorna informazioni legate alla classifica.\\
+\textbf{GetCompetitionStatus} espone informazioni legate alla competizione nel suo insieme, come ad esempio la posizione dei concorrenti nel circuio
+in un determinato istante di tempo.
+\subsubsection{Configurator-Box}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg}
+\caption{Interface component diagram - Configurator/Box}
+\end{figure}
+\end{center}
+La componente \emph{Configurator} offre anche la possibilit\`{a} di configurare un \emph{Box}. Per questo motivo il \emph{Box} espone un'interfaccia
+da utilizzare per sottomettere i parametri di configurazione. 
+\subsubsection{Box-Monitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg}
+\caption{Interface component diagram - Box/Monitor}
+\end{figure}
+\end{center}
+La prima interazione che la componente \emph{Box} ha con il \emph{Monitor} \`{e} in fase di inizializzazione della gara. La sequenza di azioni verr\`{a} esplicata
+dettagliatamente in seguito, per ora basti sapere che il \emph{Box}, una volta configurato e pronto per monitorare la gara ed elaborare i dati del suo
+concorrente, dovr\`{a} mandare una notifica tramine la componente \emph{Monitor} utilizzando \textbf{NotifyBoxReadyState}.\\
+Le rimanenti due interfacce sono utilizzate per reperire informazioni sullo stato del concorrente (livello di benzina rimasta, usura gomme...) e
+aggiornamenti riguardo al posizionamento e tempi del concorrente durante la gara.
+\subsubsection{Screen-Monitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg}
+\caption{Interface component diagram - Screen/Monitor}
+\end{figure}
+\end{center}
+La componente \emph{Screen} comunica con il \emph{Monitor} per ottenere informazioni utili da esporre graficamente all'utente. Tali
+informazioni possono riguardare la competizione in senso globale, oppure essere legate ai singoli concorrenti e box.
+\subsubsection{Competitor-Box}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.55]{img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg}
+\caption{Interface component diagram - Competitor/Box}
+\end{figure}
+\end{center}
+Man mano che la competizione procede, il \emph{Box} collezione i dati di gara del rispettivo concorrente per calcolarne medie e statistiche. A partire da 
+queste informazioni produce una nuova statistica ogni giro. Per questo offre un'interfaccia \textbf{RequestStrategy} che il concorrente
+utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La strategia fornita dal \emph{Box} potrebbe anche richiedere un pitstop
+per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
 \subsubsection{Strategia adottata per la correttezza temporale}
 % Dimostrazione dell'assenza di stallo
