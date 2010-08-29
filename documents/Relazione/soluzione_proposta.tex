@@ -315,10 +315,10 @@ utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La
 un pitstop per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
 \subsubsection{Strategia di simulazione}
-In questa sezione viene spiegata la strategia che è stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
-affrontare sono già state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
-La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entità di supporto per evitare 
-i problemi visti. Tali entità sono:
+In questa sezione viene spiegata la strategia che \`{e} stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
+affrontare sono gi\`{a} state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
+La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entit\`{a} di supporto per evitare 
+i problemi visti. Tali entit\`{a} sono:
 \begin{itemize}
   \item \textbf{coda al checkpoint}: ogni checkpoint introduce tratti di circuito con caratteristiche diverse rispetto a quello precedente.
 	      \`{E} quindi possibile che 
@@ -328,19 +328,122 @@ i problemi visti. Tali entità sono:
 \end{itemize}
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
-
+\newpage
 %%% Architettura in dettaglio %%
-\subsection{Architettura in dettaglio}
+\section{Architettura in dettaglio}
+Si spiegher\`{a} ora con maggior dettaglio l'architettura di sistema, esplicando come le principali classi implementate svolgono le funzionalit\`{a}
+esposte dalle interfacce illustrate nel capitolo precedente.
+\subsection{Diagrammi delle classi}
+\subsubsection{Competition}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/CompetitionClassDiagram.jpg}
+\caption{Class diagram - Competition}
+\end{figure}
+\end{center}
+La \emph{Competition} \`{e}, come gi\`{a} accennato, una componente di init.\\
+Il tutto ha inizio a partire da \textbf{Main\_Competition} che, come dice il nome, \`{e} l'unit\`{a} di avvio.\\
+\textbf{Main\_Competition} si occupa di istanziare gli oggetti necessari all'avvio e configurazione della competizione. Per la configurazione
+vengono istanziati \textbf{RegistrationHandler} e \textbf{CompetitionConfigurator} (della componente \emph{Configurator}).
+Per l'avvio invece \textbf{Starter}. \\
+Ad orchestrare la scena, un unica istanza del \textbf{Synch\_Competition} condivisa fra le altre 3 unit\`{a}. Il loro scopo \`{e}:
+\begin{itemize}
+\item \textbf{Synch\_Competition}, \`{e} una risorsa protetta che gestisce l'accesso in mutua esclusione alla configurazione della competizione
+e dell'inizializzazione dei concorrenti. La risorsa assicura tramite \emph{entry} a guardia booleana
+che avvengano in ordine prima la configurazione
+della competizione (da parte del \textbf{CompetitionConfigurator}) e poi la registrazione dei concorrenti (per opera del \textbf{RegistrationHandler}).
+Questo vincolo \`{e} dato dal fatto che alcune impostazioni di competizioni devono essere fornite ai box dopo la configurazione del concorrente, 
+come ad esempio il numero di lap. Inoltre fra i parametri configurabili vi \`{e} anche il numero massimo di partecipanti alla gara. Di conseguenza
+\`{e} prima necessario conoscere il limite per poi poter regolare il flusso di registrazioni.\\
+Durante la fase di configurazione (metodo \underline{Configure}), vengono inizializzati \emph{Circuit} e \emph{Stats} tramite le interfacce
+illustrate nel diagramma.\\
+A configurazione di competizione avvenuta, verr\`{a} aperta le entry \underline{Register\_NewCompetitor}, utilizzata dal \textbf{RegistrationHandler}
+per registrare i vari concorrenti. Ad ogni invocazione verr\`{a} inizializzato un concorrente (\textbf{TaskCompetitor}) con un iteratore al circuito
+e le impostazioni passate in input. Il task del concorrente cos\`{i} istanziato rimarr\`{a} in attesa dello ``start''.\\
+Oltre alla funzionalit\`{a} di configurazione, questa classe offre anche la funzionalit\`{a} di avvio (metodo \underline{Start}).
+Tale entry si aprir\`{a} solo quando tutti i concorrenti previsti sono stati iscritti. Viene invocata dall'unit\`{a} \textbf{Starter}.
+Il metodo mette il task richiedente in attesa sulla risorsa \textbf{StartHandler} (componente \emph{Monitor}) sull'entry \underline{MonitorBoxReadyState}.
+Quanto tutti i box avranno dato il loro ok (maggiori dettagli a seguire), il thread potr\`{a} continuare la sua esecuzione e passare allo \underline{Start}
+di tutti i concorrenti in attesa di partire.
+\item \textbf{Starter} \`{e} il task finalizzato a gestire l'avvio della competizione. Una volta avviato dal main, il task utilizza il metodo \underline{Ready}
+offerto dal package \emph{Competition} per manovrare l'avvio. All'interno del metodo, prima si mette in attesa che tutti i concorrenti
+si siano iscritti (utilizzando il metodo \underline{Wait} del singleton di \textbf{Synch\_Competition}) per poi invocare il metodo \underline{Start} dello
+stesso \textbf{Synch\_Competition}, descritto poche righe pi\`{u} sopra.
+\item \textbf{RegistrationHandler} \`{e} l'oggetto che rimane in attesa di concorrenti. Pi\`{u} precisamente, \`{e} un server dedicato ad accogliere
+le richieste di registrazione dei concorrenti. Con il supporto di Polyorb \`{e} possibile invocare questo oggetto da remoto. Ad ogni richiesta,
+vengono salvati i parametri di configurazione in un file xml il cui nome e locazione verranno passati a \textbf{Synch\_Competition} per
+i effettuare il resto delle procedure di inizializzazione del concorrente. Di ritorno ci saranno l'ID del concorrente, il numero di lap,
+la lunghezza del circuito e il corbaloc 
+del \textbf{Competition\_Monitor} che il \emph{Box} dovr\`{a} utilizzare per rimanere sincronizzato sugli sviluppi del rispettivo concorrente.
+\end{itemize}
+\subsubsection{Competitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/CompetitorClassDiagram.jpg}
+\caption{Class diagram - Competitor}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Circuit}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/CircuitClassDiagram.jpg}
+\caption{Class diagram - Circuit}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Stats}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/StatsClassDiagram.jpg}
+\caption{Class diagram - Stats}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Monitor}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/MonitorClassDiagram.jpg}
+\caption{Class diagram - Monitor}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Box}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/BoxClassDiagram.jpg}
+\caption{Class diagram - Box}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Configurator}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/ConfiguratorClassDiagram.jpg}
+\caption{Class diagram - Configurator}
+\end{figure}
+\end{center}
+\newpage
+\subsubsection{Screen}
+\begin{center}
+\begin{figure}[h!]
+	\includegraphics[scale=0.50]{img/ClassDiagrams/ScreenClassDiagram.jpg}
+\caption{Class diagram - Screen}
+\end{figure}
+\end{center}
+%Diagrammi delle classi per ogni componente
+%
+
 % Elenco dei task con descrizione
-\subsubsection{Risorse attive}
+\subsection{Risorse attive}
 % Elenco risorse condivise con descrizione
-\subsubsection{Risorse passive}
+\subsection{Risorse passive}
 \begin{itemize}
 \item{Risorse protette}
 \item{Altre risorse}
 \end{itemize}
 %"Analisi della concorrenza"
-\subsubsection{Analisi della concorrenza}
+\subsection{Analisi della concorrenza}
 	%. analisi dell'interazione risorse e task (senza menzionare la distribuzione)
 	%. dimostrazione assenza di racecondition
 	%. dimostrazione assenza di starvation
@@ -350,7 +453,7 @@ i problemi visti. Tali entità sono:
 \item{Assenza di starvation}
 \end{itemize}
 %"Distribuzione"
-\subsubsection{Distribuzione}
+\subsection{Distribuzione}
 	%. Elenco risorse distribuite
 	%. Interazione risorse distribuite
 	%. Misure di fault tolerance
