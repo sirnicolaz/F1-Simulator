@@ -21,7 +21,7 @@ pragma Warnings (Off, PolyORB.Setup.Thread_Pool_Server);
 with Competition;
 use Competition;
 
-procedure Init_Competition is
+procedure Main_Competition is
 begin
    Ada.Text_IO.Put_Line("Very beginning");
 
@@ -131,4 +131,4 @@ begin
       end;
    end;
 
-end Init_Competition;
+end Main_Competition;

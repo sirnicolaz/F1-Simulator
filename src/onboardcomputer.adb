@@ -9,7 +9,7 @@ package body OnBoardComputer is
 
       procedure Init(Laps : INTEGER) is
       begin
-         Info := new LAP_INFO(1..Laps);
+         Info := new LAP_UPDATE_ARRAY(1..Laps);
          for Index in Info'RANGE loop
             for Indez in 1..3 loop
                Info.all(Index)(Indez).UpdateString := Unbounded_String.Null_Unbounded_String;
@@ -50,7 +50,7 @@ package body OnBoardComputer is
                            Laps : INTEGER) is
    begin
       Computer_In.Competitor_Id := CompetitorId_In;
-      --Computer_In.Information := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
+      --Computer_In.Information := new SYNCH_COMPETITOR_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
       COmputer_In.BoxInformation := new SYNCH_INFO_FOR_BOX;
       Computer_In.BoxInformation.Init(Laps);
       Computer_In.CurrentBestSector_Times(1) := -1.0;
@@ -67,7 +67,7 @@ package body OnBoardComputer is
    --+ in time-increasing order because internal clock of competitors grows through each
    --+ checkpoint (remember that Computer is updated only once a checkpoint is reached)
    procedure Add_Data(Computer_In : COMPUTER_POINT;
-                      Data : in out COMP_STATS) is
+                      Data : in out COMPETITOR_STATS) is
 
       updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       --
@@ -104,7 +104,7 @@ package body OnBoardComputer is
             Lap2Ask : INTEGER;
             CurrentSector : INTEGER := Data.Sector;
             CurrentLap : INTEGER := Data.Lap;
-            Tmp_Stats  : COMP_STATS_POINT := new COMP_STATS;
+            Tmp_Stats  : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
          begin
 
             if(CurrentSector = 1) then

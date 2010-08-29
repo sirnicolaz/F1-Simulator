@@ -1,7 +1,7 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  configurator.idl
+--  boxConfigurator.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
@@ -13,13 +13,13 @@ with PolyORB.Std;
 with CORBA;
 pragma Elaborate_All (CORBA);
 
-package Configurator is
+package BoxConfigurator is
 
    type Ref is
      new CORBA.Object.Ref with null record;
 
    Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Configurator:1.0";
+     "IDL:BoxConfigurator:1.0";
 
    function Configure
      (Self : Ref;
@@ -27,7 +27,7 @@ package Configurator is
      return CORBA.String;
 
    Configure_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Configurator/Configure:1.0";
+     "IDL:BoxConfigurator/Configure:1.0";
 
    function Is_A
      (Self : Ref;
@@ -39,4 +39,4 @@ private
      (Logical_Type_Id : PolyORB.Std.String)
      return CORBA.Boolean;
 
-end Configurator;
+end BoxConfigurator;

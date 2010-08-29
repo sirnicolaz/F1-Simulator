@@ -17,7 +17,7 @@ package CompetitorRadio is
                                  ID : INTEGER;
                                  Success : out BOOLEAN);
 
-   procedure Close_BOxCOnnection ( Radio : out BOX_CONNECTION);
+   procedure Close_BoxConnection ( Radio : out BOX_CONNECTION);
 
    function Get_Strategy( Radio : BOX_CONNECTION;
                          Lap : in INTEGER) return STRING;

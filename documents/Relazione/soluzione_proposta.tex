@@ -309,14 +309,26 @@ informazioni possono riguardare la competizione in senso globale, oppure essere 
 \caption{Interface component diagram - Competitor/Box}
 \end{figure}
 \end{center}
-Man mano che la competizione procede, il \emph{Box} collezione i dati di gara del rispettivo concorrente per calcolarne medie e statistiche. A partire da 
-queste informazioni produce una nuova statistica ogni giro. Per questo offre un'interfaccia \textbf{RequestStrategy} che il concorrente
-utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La strategia fornita dal \emph{Box} potrebbe anche richiedere un pitstop
-per un rifornimento benzina e cambio gomme.
+Man mano che la competizione procede, il \emph{Box} colleziona i dati di gara del rispettivo concorrente per calcolarne medie e statistiche. 
+A partire da queste informazioni produce una nuova strategia ogni giro. Per questo offre un'interfaccia \textbf{RequestStrategy} che il concorrente
+utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La strategia fornita dal \emph{Box} potrebbe anche richiedere 
+un pitstop per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
-\subsubsection{Strategia adottata per la correttezza temporale}
+\subsubsection{Strategia di simulazione}
+In questa sezione viene spiegata la strategia che è stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
+affrontare sono già state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
+La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entità di supporto per evitare 
+i problemi visti. Tali entità sono:
+\begin{itemize}
+  \item \textbf{coda al checkpoint}: ogni checkpoint introduce tratti di circuito con caratteristiche diverse rispetto a quello precedente.
+	      \`{E} quindi possibile che 
+  \item \textbf{istante di arrivo}:
+  \item \textbf{istante limite di arrivo previsto}:
+  \item \textbf{istante di liberazione traiettoria}:
+\end{itemize}
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
+
 %%% Architettura in dettaglio %%
 \subsection{Architettura in dettaglio}
 % Elenco dei task con descrizione

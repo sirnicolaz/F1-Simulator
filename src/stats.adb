@@ -12,7 +12,7 @@ package body Stats is
    Checkpoints : INTEGER;
 
 
-   protected body SYNCH_COMP_STATS_HANDLER is
+   protected body SYNCH_COMPETITOR_STATS_HANDLER is
 
       entry Get_Time( Result : out FLOAT ) when Initialised = TRUE is
       begin
@@ -79,12 +79,12 @@ package body Stats is
          Result := Statistic.TyreUsury;
       end Get_TyreUsury;
 
-      entry Get_All( Result : out COMP_STATS) when Initialised = TRUE is
+      entry Get_All( Result : out COMPETITOR_STATS) when Initialised = TRUE is
       begin
          Result := Statistic;
       end Get_All;
 
-      entry Initialise(Stats_In : in COMP_STATS) when Initialised = FALSE is
+      entry Initialise(Stats_In : in COMPETITOR_STATS) when Initialised = FALSE is
 
       begin
          Ada.Text_IO.Put_Line("Adding " & INTEGER'IMAGE(Stats_In.Checkpoint));
@@ -92,7 +92,7 @@ package body Stats is
          Initialised := TRUE;
       end Initialise;
 
-   end SYNCH_COMP_STATS_HANDLER;
+   end SYNCH_COMPETITOR_STATS_HANDLER;
 
 
 
@@ -100,7 +100,7 @@ package body Stats is
    procedure Get_StatsBySect(Competitor_ID : INTEGER;
                              Sector : INTEGER;
                              Lap : INTEGER;
-                             Stats_In : out COMP_STATS_POINT) is
+                             Stats_In : out COMPETITOR_STATS_POINT) is
       Index : INTEGER := (Lap*Checkpoints)+1; -- laps start from 0, information are store starting from 1
       Tmp_Sector : INTEGER;
       Tmp_Bool : BOOLEAN;
@@ -116,7 +116,7 @@ package body Stats is
       Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
 
       if( Stats_In = null ) then
-        Stats_In := new COMP_STATS;
+        Stats_In := new COMPETITOR_STATS;
       end if;
 
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
@@ -128,7 +128,7 @@ package body Stats is
    --+ as long as it's been initialised
    procedure Get_StatsByTime(Competitor_ID : INTEGER;
                             Time : FLOAT;
-                            Stats_In : out COMP_STATS_POINT) is
+                            Stats_In : out COMPETITOR_STATS_POINT) is
 
       Index : INTEGER := Competitor_Statistics.all(Competitor_ID).LastAccessedPosition;
       Tmp_Time : FLOAT;
@@ -149,7 +149,7 @@ package body Stats is
          end loop;
 
          if( Stats_In = null ) then
-            Stats_In := new COMP_STATS;
+            Stats_In := new COMPETITOR_STATS;
          end if;
          Ada.Text_IO.Put_Line("TV out");
 
@@ -180,11 +180,11 @@ package body Stats is
    procedure Get_StatsByCheck(Competitor_ID : INTEGER;
                               Checkpoint : INTEGER;
                               Lap : INTEGER;
-                              Stats_In : out COMP_STATS_POINT) is
+                              Stats_In : out COMPETITOR_STATS_POINT) is
    begin
 
       if( Stats_In = null ) then
-        Stats_In := new COMP_STATS;
+        Stats_In := new COMPETITOR_STATS;
       end if;
 
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Lap+1)*Checkpoint).Get_All(Stats_In.all);
@@ -203,7 +203,7 @@ package body Stats is
 
       for Index in Tmp_Collection'RANGE loop
          Tmp_Collection.all(Index) := new STATS_ARRAY_OPTIMIZER;
-         Tmp_Collection.all(Index).Competitor_Info := new SYNCH_COMP_STATS_HANDLER_ARRAY(1..(Laps*Checkpoints));
+         Tmp_Collection.all(Index).Competitor_Info := new SYNCH_COMPETITOR_STATS_HANDLER_ARRAY(1..(Laps*Checkpoints));
       end loop;
 
       Competitor_Statistics := Tmp_Collection;
@@ -217,7 +217,7 @@ package body Stats is
 
 
    procedure Add_Stat(Competitor_ID : INTEGER;
-                       Data : COMP_STATS) is
+                       Data : COMPETITOR_STATS) is
    begin
 
       --NB: the order of these 2 operations is really important.
@@ -262,7 +262,7 @@ package body Stats is
                          LapTime : out FLOAT;
                          LapNum : out INTEGER;
                          Competitor_ID : out INTEGER) is
-      Temp_Stats : COMP_STATS_POINT := new COMP_STATS;
+      Temp_Stats : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
       Temp_BestLapNum : INTEGER := -1;
       Temp_BestLapTime : FLOAT := -1.0;
       Temp_BestLapCompetitor : INTEGER := -1;
@@ -297,7 +297,7 @@ package body Stats is
                                  Laps : out INTEGER_ARRAY) is
       Temp_BestSectorTimes : FLOAT_ARRAY(1..3);
       Temp_BestSectorCompetitors : INTEGER_ARRAY(1..3);
-      Temp_Stats : COMP_STATS_POINT := new COMP_STATS;
+      Temp_Stats : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
    begin
 
       for i in 1..3 loop
@@ -648,20 +648,6 @@ package body Stats is
          return Statistics'LENGTH;
       end Get_Size;
 
-      function Test_Get_Classific return CLASSIFICATION_TABLE is
-      begin
-         return Statistics.all;
-      end Test_Get_Classific;
-
-      -- Per mantenere il vincolo di sottotipo con la Get_Classific nel SYNCH_GLOBAL_STATS
-      -- e poter così utilizzare la requeue, si è dovuto tenere il primo parametro intero.
-      -- TODO: studiare un modo per ovviare a questo spreco di parametri formali.
-      entry Get_Classific(Garbage : INTEGER; Classific_Out : out CLASSIFICATION_TABLE) when Full is
-      begin
-         Classific_Out := Statistics.all;
-      end Get_Classific;
-
-
    end SYNCH_ORDERED_CLASSIFICATION_TABLE;
 
    function Get_New_SOCT_NODE(Size : INTEGER) return SOCT_NODE_POINT is
@@ -744,142 +730,6 @@ package body Stats is
       end if;
    end Set_NextNode;
 
-   -- TODO: Remove and Delete this, previous, next node;
-
-
-   protected body SYNCH_GLOBAL_STATS is
-
-      -- function to init reference to global_stats
-      procedure Init_GlobalStats(genStats_In : in GENERIC_STATS_POINT;CompetitorsQty : in INTEGER ; Update_Interval_in : FLOAT) is
-      begin
-         --GlobStats := new GLOBAL_STATS(genStats_In, Update_Interval_in); --inizializzo il campo dati per poi assegnarci i valori, altrimenti eccezione
-         GlobStats.firstTableFree :=1;
-         GlobStats.lastClassificUpdate := new SOCT_NODE;
-         GlobStats.genStats := genStats_In.all; -- init generic_stats
-         Set_CompetitorsQty (CompetitorsQty);
-         --GlobStats.BestLap_Num := 0;
-         --GlobStats.BestLap_Time := 0.0;
-         -- Temp
-         --GlobStats.BestSectors_Time := new BESTSECTORS_TIME(0..2);
-         --GlobStats.BestSectors_Time(0) := 0.0;
-         --GlobStats.BestSectors_Time(1) := 0.0;
-         --GlobStats.BestSectors_Time(2) := 0.0;
-         --GlobStats.BestLap_CompetitorId := 0;
-         --GlobStats.BestTimePerSector_CompetitorId := new BESTSECTORS_TIME_COMPETITORSID(0..2);
-         --GlobStats.BestTimePerSector_CompetitorId(0) := 0;
-         --GlobStats.BestTimePerSector_CompetitorId(1) := 0;
-         --GlobStats.BestTimePerSector_CompetitorId(2) := 0;
-         -------------------------------------------------
-         GlobStats.Update_Interval := Update_Interval_in;
-      end Init_GlobalStats;
-
-      procedure Set_CompetitorsQty (CompetitorsQty : INTEGER) is
-      begin
-         GlobStats.competitorNum := CompetitorsQty;
-      end Set_CompetitorsQty;
-
-      function Get_CompetitorsQty return INTEGER IS
-      begin
-         return
-           GlobStats.competitorNum;
-      end Get_CompetitorsQty;
-
-
-      function Test_Get_Classific return CLASSIFICATION_TABLE is
-      begin
-         Ada.Text_IO.Put_Line("init get_classific");
-         return GlobStats.lastClassificUpdate.This.Test_Get_Classific;--.Get_Classific;--Statistics_Table.This.Test_Get_Classific;
-      end Test_Get_Classific;
-
-      entry Get_Classific(RequestedIndex : INTEGER; Classific_Out : out CLASSIFICATION_TABLE) when true is
-         CurrentIndex : INTEGER := GlobStats.firstTableFree;--Statistics_Table.Index;
-         TempStatsTable : SOCT_NODE_POINT;
-      begin
-         if (CurrentIndex = RequestedIndex) then
-            requeue GlobStats.lastClassificUpdate.This.Get_Classific;-- .Statistics_Table.This.Get_Classific;
-         else
-            CurrentIndex := CurrentIndex - 1;
-            TempStatsTable := GlobStats.lastClassificUpdate.Previous;--Statistics_Table.Previous;
-            while CurrentIndex /= RequestedIndex loop
-               TempStatsTable := TempStatsTable.Previous;
-               CurrentIndex := CurrentIndex - 1;
-            end loop;
-            requeue TempStatsTable.This.Get_Classific;
-         end if;
-      end Get_Classific;
-
-      -- It add e new row with the given information. If in the current table there are no
-      -- rows with the given COmpetitor_ID, than insert there the new data.
-      -- Otherwise, it searches for a table that respects the prerequisite. If no tables are found,
-      -- then a new table is created and linked to the last one of the list.
-      -- NB: we are sure that previous tables of the list can't have any empty row, because GlobalStats
-      -- always references as the current table the one immediatly following the last full one.
-      procedure Update_Stats(CompetitorId_In : INTEGER;
-                             Lap_In : INTEGER;
-                             Checkpoint_In : INTEGER;
-                             Time_In : FLOAT) is
-         Competitor_RowIndex : INTEGER;
-         Current_Table : SOCT_NODE_POINT := GlobStats.lastClassificUpdate;--Statistics_Table;
-         Control_Var : BOOLEAN;
-         procedure Create_New(Previous : in out SOCT_NODE_POINT) is
-            Temp_NewTable : SOCT_NODE_POINT;
-         begin
-            Ada.Text_IO.Put_Line("in create new");
-            Temp_NewTable := Get_New_SOCT_NODE(Previous.This.Get_Size);
-            Set_NextNode(Previous,Temp_NewTable);
-
-            -- Every row that has time <= the time represented by the new table has to be
-            -- inserted in the new table.
-            for index in 1..Previous.This.Get_Size loop
-               -- Se il tempo di un concorrente nella tabella precedente è maggiore anche della barriera
-               -- rappresentata dalla nuova tabella, allora va salvato. Infatti nel caso venga chiesta una
-               -- classifica aggiornata dell'istante di tempo inerente a questa tabella, il concorrente
-               -- sarà nella stessa posizione (ovvero tratto checkpoint e lap) di quella precedente.
-               if(Previous.This.Get_Row(index).Time >= FLOAT(Temp_NewTable.Index) * GlobStats.Update_Interval) then
-                  Temp_NewTable.This.Add_Row(Previous.This.Get_Row(index));
-               end if;
-            end loop;
-
-         end Create_New;
-
-      begin
-         if Current_Table.This = null then
-            Init_Node(Current_Table);
-            Current_Table.This := new SYNCH_ORDERED_CLASSIFICATION_TABLE;--inizializzo un nodo, se non esiste.
-            Current_Table.This.Init_Table(10);-- inizializzare il campo this
-            Ada.Text_IO.Put_Line("init node & table");
-         end if;
---           Current_Table.This :=
-           -- Create_New(Current_Table);
-         --if Current_Table.This = null then Ada.Text_IO.Put_Line("this null");
-         --end if;
-         Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
-         -- If competitor's info are already saved in the current table,
-         --+control what is the first
-         --+ free table
-         while Competitor_RowIndex /= -1 loop
-            -- if there are no free table, create a new one
-            if(Get_NextNode(Current_Table) = null) then
-               Create_New(Current_Table);
-            end if;
-            Current_Table := Get_NextNode(Current_Table);
-            Competitor_RowIndex := Current_Table.This.Find_RowIndex(CompetitorId_In);
-         end loop;
-         Current_Table.This.Add_Row(Get_StatsRow(CompetitorId_In,Time_In));
-
-         -- Se la riga è stata aggiunta alla tabella attualmente riferita dal GlobStats, allora
-         -- bisogna verificare se è piena. In tal caso bisogna crearne una nuova vuota da far puntare
-         -- al globStats per mantere valida l'invariante secondo cui la tabella riferita dal GlobStat
-         -- è sempre quella non piena subito dopo l'ultima piena della lista.
-         GlobStats.lastClassificUpdate.This.Is_Full(Control_Var);--Statistics_Table.This.Is_Full(Control_Var);
-         if(Control_Var) then
-            if(Get_NextNode(GlobStats.lastClassificUpdate) = null) then--Statistics_Table) = null) then
-               Create_New(GlobStats.lastClassificUpdate);--Statistics_Table);
-            end if;
-            GlobStats.lastClassificUpdate := Get_NextNode(GlobStats.lastClassificUpdate);--Statistics_Table);
-         end if;
-      end Update_Stats;
-   end SYNCH_GLOBAL_STATS;
 
 end Stats;
 

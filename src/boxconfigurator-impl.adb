@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 
-with Configurator.Skel;
-pragma Warnings (Off, Configurator.Skel);
+with BoxConfigurator.Skel;
+pragma Warnings (Off, BoxConfigurator.Skel);
 
 with CORBA;
 with Ada.Strings.Unbounded;
@@ -13,7 +13,7 @@ with DOM.Core.Nodes; use DOM.Core.Nodes;
 
 with Common;
 
-package body Configurator.Impl is
+package body BoxConfigurator.Impl is
 
    protected body SYNCH_COMPETITION_SETTINGS is
       entry Get_Laps ( Laps_Out : out INTEGER) when Initialized is
@@ -194,4 +194,4 @@ package body Configurator.Impl is
    end Configure;
 
 
-end Configurator.Impl;
+end BoxConfigurator.Impl;

@@ -5,7 +5,7 @@ with Box;
 with Box_Data;
 with BoxRadio.impl;
 with Box_Monitor_Radio.impl;
-with Configurator.Impl;
+with BoxConfigurator.Impl;
 --with Configurator.Impl.Competitor;
 
 with Ada.Strings.Unbounded;
@@ -118,7 +118,7 @@ begin
                Monitor_Ref : CORBA.Object.Ref;
                Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Box_Monitor_Radio.Impl.Object;
                Configurator_Ref : CORBA.Object.Ref;
-               Configurator_Obj : constant CORBA.Impl.Object_Ptr := new Configurator.Impl.Object;
+               Configurator_Obj : constant CORBA.Impl.Object_Ptr := new BoxConfigurator.Impl.Object;
             begin
                -- Retrieve the Root POA
                Root_POA := PortableServer.POA.Helper.To_Local_Ref
@@ -165,7 +165,7 @@ begin
       CorbaLOC_File : Ada.Text_IO.FILE_TYPE;
 
       --Settings resource (shared with the configurator)
-      Settings : access Configurator.Impl.SYNCH_COMPETITION_SETTINGS;
+      Settings : access BoxConfigurator.Impl.SYNCH_COMPETITION_SETTINGS;
       --Settings
       CompetitionMonitor_CorbaLOC : Common.UNBOUNDED_STRING_POINT := new Unbounded_String.Unbounded_String;
       Laps : INTEGER := -1;
@@ -199,7 +199,7 @@ begin
 
       Ada.Text_IO.Close(CorbaLOC_File);
 
-      Settings := Configurator.Impl.Get_SettingsResource;
+      Settings := BoxConfigurator.Impl.Get_SettingsResource;
       Ada.Text_IO.Put_Line("Getting parameters");
       Settings.Get_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC.all);
       Ada.Text_IO.Put_Line("Corbaloc got: " & Unbounded_String.To_String(CompetitionMonitor_CorbaLOC.all));

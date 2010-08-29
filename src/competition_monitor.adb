@@ -121,7 +121,7 @@ package body Competition_Monitor is
       ret : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       --retString : CORBA.String;
       index : INTEGER := 0;
-      tempStats : COMP_STATS;
+      tempStats : COMPETITOR_STATS;
       lap : INTEGER;
       sector : INTEGER;
       checkpoint : INTEGER;
@@ -238,7 +238,7 @@ package body Competition_Monitor is
 
    end getCompetitorTimeSector;
 
---   procedure AddComp (compStats_In : Common.COMP_STATS_POINT; indexIn : INTEGER) is
+--   procedure AddComp (compStats_In : Common.COMPETITOR_STATS_POINT; indexIn : INTEGER) is
  --  begin
   --    arrayStats(IndexIn) := compStats_In;
    --end AddComp;
@@ -289,7 +289,7 @@ package body Competition_Monitor is
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String) is
-      Tmp_Stats : COMP_STATS_POINT := new COMP_STATS;
+      Tmp_Stats : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
       Tmp_StatsString : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
       Tmp_CompLocation : access STRING;
 

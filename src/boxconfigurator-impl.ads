@@ -5,7 +5,7 @@ with Ada.Strings.Unbounded;
 with Box;
 use Box;
 
-package Configurator.Impl is
+package BoxConfigurator.Impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -50,4 +50,4 @@ package Configurator.Impl is
 
    function Configure(Self : access Object;
                       config_file : CORBA.STRING) return CORBA.STRING;
-end Configurator.Impl;
+end BoxConfigurator.Impl;

@@ -37,7 +37,7 @@ package body Competition is
                                    CircuitLength_Out : out FLOAT;
                                    Monitor_CorbaLoc_Out : out Unbounded_String.Unbounded_String) when Registrations_Open is
          ID : INTEGER;
-         Driver : CAR_DRIVER_ACCESS;
+         Driver : CAR_AND_DRIVER_ACCESS;
 
          --Generic state boolean
          Result : BOOLEAN := false;

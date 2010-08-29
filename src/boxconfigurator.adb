@@ -1,7 +1,7 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  configurator.idl
+--  boxConfigurator.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
@@ -15,7 +15,7 @@ with PolyORB.Requests;
 with PolyORB.CORBA_P.Interceptors_Hooks;
 with PolyORB.CORBA_P.Exceptions;
 
-package body Configurator is
+package body BoxConfigurator is
 
    Configure_Arg_Name_config_Ü : constant PolyORB.Types.Identifier :=
      PolyORB.Types.To_PolyORB_String
@@ -139,11 +139,11 @@ package body Configurator is
    begin
       return ((CORBA.Is_Equivalent
         (Logical_Type_Id,
-         Configurator.Repository_Id)
+         BoxConfigurator.Repository_Id)
          or else CORBA.Is_Equivalent
            (Logical_Type_Id,
             "IDL:omg.org/CORBA/Object:1.0"))
          or else False);
    end Is_A;
 
-end Configurator;
+end BoxConfigurator;
