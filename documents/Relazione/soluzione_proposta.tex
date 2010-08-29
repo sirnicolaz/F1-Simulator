@@ -315,6 +315,7 @@ utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La
 un pitstop per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
 \subsubsection{Strategia di simulazione}
+\label{strategia_simulazione}
 In questa sezione viene spiegata la strategia che \`{e} stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
 affrontare sono gi\`{a} state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
 La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entit\`{a} di supporto per evitare 
@@ -383,6 +384,7 @@ del \textbf{Competition\_Monitor} che il \emph{Box} dovr\`{a} utilizzare per rim
 \caption{Class diagram - Competitor}
 \end{figure}
 \end{center}
+
 \newpage
 \subsubsection{Circuit}
 \begin{center}
@@ -391,6 +393,84 @@ del \textbf{Competition\_Monitor} che il \emph{Box} dovr\`{a} utilizzare per rim
 \caption{Class diagram - Circuit}
 \end{figure}
 \end{center}
+Il circuito prende forma a partire da \textbf{Racetrack}. Questa unit\`{a} si occupa di leggere e parsare il file xml dato in input e ricavarne
+i parametri per la creazione del circuito. Il file XML descrittore del circuito elenca i checkpoint presenti in ogni settore (che sono
+3 costanti) e per ognuno specifica le caratteristiche del tratto di pista a seguire:
+\begin{itemize}
+  \item lunghezza
+  \item angolo
+  \item molteplicit\`{a} (numero di concorrenti che possono attraversare contemporaneamente il tratto)
+  \item grip, ovvero aderenza sul tratto
+\end{itemize}
+Vi sono inoltre 3 checkpoint che dovranno avere uno dei seguenti attributi booleani:
+\begin{itemize}
+\item goal, ovvero il checkpoint \`{e} il primo della pista
+\item prebox, ovvero dal checkpoint \`{e} possibile raggiungere i box
+\item exitbox, ovvero il checkpoint di arrivo una volta vuori dalla corsia dei box
+\end{itemize}
+Dati questi parametri, vengono inizalizzati tutti i checkpoint stabiliti ed inseriti in un array chiamato \textsc{Racetrack}. Questo
+sar\`{a} l'array iterato dal \textbf{Race\_Iterator}.\\
+
+Ogni checkpoint \`{e} del tipo \textbf{Checkpoint}, il quale contiene tutte le informazioni elencate in precedenza oltre ad una coda per gestire
+i concorrenti che tentano di accedere al tratto. Il \textbf{Checkpoint} \`{e} poi inserito in una struttura protetta denominata 
+\textbf{Checkpoint\_Synch} finalizzata a regolare l'accesso in mutua esclusione. La risorsa inoltre incapsula la lista di \textbf{Path}
+che costituiscono il tratto associato al checkpoint. Infine offre una serie di metodi da utilizzarsi per interagire con le risorse sottostanti.\\
+I \textbf{Path} appena accennati vengono generati in fase di creazione del \textbf{Checkpoint} a partire dalle informazioni di base
+reperite dal file di configurazione. Vengono generati tanti \textbf{Path} quanto la molteplicit\`{a} impostata del tratto. Ogni \textbf{Path} 
+riceve valori di lunghezza che possono variare. Bisogna assicurare 1.5 m di larghezza per ogni macchina (approssimativamente). La prima
+riceve i valori di base e viene virtualmente posizionata su un bordo del tratto. Le altre vengono posizionate man mano una di fianco all'altra,
+quindi la lunghezza della traiettoria cresce in rapporto alla distanza dalla prima e all'angolo del tratto. Tutti i \textbf{Path} di un tratto
+vengono incapsulati in una risorsa protetta denominata \textbf{Crossing} che ne regola l'accesso in mutua esclusione e offre i metodi di 
+accesso pubblici.\\
+Infine viene creata una corsia dei box coerente con la distanza fra i checkpoint ``prebox'' e l'``exitbox''. I tratti prima e dopo il checkpoint
+dei box sono a molteplicit\`{a} uguale al numero di concorrenti. Questo perch\`{e} potenzialmente ai box potrebbero esserci contemporaneamente tutte
+le auto. Inoltre si \`{e} deciso di posizionare il checkpoint del box in coincidenza con il traguardo. Quindi ogni box \`{e} anche un goal.\\\\
+Verranno ora elencati metodi pi\`{u} rilevanti esposti dal \textbf{Checkpoint\_Synch} 
+per poter mettere in pratica la strategia di attraversamento descritta nella sezione \ref{strategia_simulazione}:
+\begin{description}
+\item{\textbf{procedure Signal\_Arrival(CompetitorID\_In : INTEGER)}}\\
+Il metodo marca nella coda del checkpoint l'arrivo effettivo del concorrente;
+\item{\textbf{procedure Signal\_Leaving(CompetitorID\_In : INTEGER)}}\\
+Il metodo marca nella coda del checkpoint l'uscita del concorrente;
+\item{\textbf{procedure Set\_ArrivalTime(CompetitorID\_In : INTEGER; Time\_In : FLOAT)}}\\
+Il metodo segna il tempo previsto di arrivo del concorrente nella coda del checkpoint;
+\item{\textbf{procedure Remove\_Competitor(CompetitorID\_In : INTEGER)}}\\
+Il metodo rimuove il competitor dalla coda. Ci\`{o} significa che l'id e il tempo del competitor non apparir\`{a} pi\`{u}
+nella coda. Questo metodo \`{e} utilizzato, per esempio, quando un concorrente finisce la gara prima di altri
+e deve quindi liberare i checkpoint per evitare di creare starvation;
+\item{\textbf{function Get\_Time(CompetitorID\_In : INTEGER) return FLOAT}}
+La funzione ritorna il tempo segnato sulla coda del concorrente con ID dato in input;
+\item{\textbf{entry Wait\_Ready(Competitor\_ID : INTEGER)}}
+Nel momento in cui un concorrente arriva fisicamente su un checkpoint, dopo aver marcato il suo arrivo
+utilizza questo metodo per sapere quando arriva il suo turno per attraversare (viene cio\`{e} posizionato nella prima posizione della coda);
+\item{\textbf{procedure Get\_Paths(Paths2Cross : out CROSSING\_POINT;  Go2Box : BOOLEAN)}}
+Quando il concorrente sa di essere primo sulla coda del \textbf{Checkpoint}
+(in seguito all'invocazione del metodo \underline{Wait\_Ready}), potr\`{a} invocare questa procedura per
+ottenere l'insieme di \textbf{Path} che costituiscono il tratto e procedere alla valutazione. Il booleano ``Go2Box'', se valorizzato a ``true'',
+impone al \textbf{Checkpoint\_Synch} di tornare (se presente) l'insieme di \textbf{Path} relativi alla corsia dei box.
+Si \`{e} sicuri che nessuno star\`{a} effettuando operazioni sul tratto nel frattempo perch\`{e} tale azione da parte
+degli altri concorrenti non \`{e} ammisibile fino a che il \textbf{Competitor} corrente non abbia segnalato la sua partenza dal checkpoint
+tramite \underline{Signal\_Leaving}.
+\end{description}
+I metodi della risorsa \textbf{Crossing} invece servono a ritornare le caratteristiche di ogni \textbf{Path} (a partire dall'indice) e a aggiornare
+l'istante temporale segnato nel path.\\\\
+Infine sono offerti un insieme di metodi da utilizzare insieme al \textbf{RaceTrack\_Iterator} per navigare iterare il circuito. I metodi sono pi\`{u}
+rilevanti sono:
+\begin{description}
+\item{\textbf{procedure Get\_CurrentCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; CurrentCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
+Per ottenere il checkpoint correntemente ``puntato'' dall'iteratore;
+\item{\textbf{procedure Get\_NextCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; NextCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
+Per ottenere il checkpoint successivo. Nota Bene: il checkpoint dei box non \`{e} previsto essere ritornato da questo metodo. Per ottenere il
+checkpoint dei box \`{e} necessario utilizzare \underline{Get\_BoxCheckpoint};
+\item{\textbf{procedure Get\_PreviousCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; PreviousCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
+Per ottenere il checkpoint precedente, con le stesse regole del metodo precedente;
+\item{\textbf{procedure Get\_ExitBoxCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; ExitBoxCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
+Per ottenere il checkpoint all'uscita della corsia dei box;	
+\item{\textbf{procedure Get\_BoxCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; BoxCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
+Per ottenere il checkpoint del box;
+\item{\textbf{function Get\_Position(RaceIterator : RACETRACK\_ITERATOR) return INTEGER}}\\
+Per tornare la posizione corrente dell'iteratore.
+\end{description}
 \newpage
 \subsubsection{Stats}
 \begin{center}
