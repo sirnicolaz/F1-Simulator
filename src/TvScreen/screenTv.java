@@ -32,7 +32,7 @@ private JFrame parent;
 private JScrollPane tablePanel;
 private JTable tableAll;
 
-private int lapNum;
+private Integer lapNum= new Integer(0);
 
 private DefaultTableModel model_1 = new DefaultTableModel(); 
 private DefaultTableModel model_2 = new DefaultTableModel(); 
@@ -300,7 +300,7 @@ arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
 q=(float)(q+1);
-sleep(500);
+// sleep(500);
 }
 }
 catch(Exception e){e.printStackTrace();}
@@ -328,6 +328,7 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 //qua conto i figli
 
 	for (int i=0; i < nodes.getLength(); i++) {
+
         Element element = (Element) nodes.item(i);
         NodeList comp = doc.getElementsByTagName("competitor");
         Element line = (Element) comp.item(i);
@@ -421,7 +422,9 @@ textBoxSector3Time.setText(getNode("time", line));
 // classific_1.removeColumnSelectionInterval(0,row-1);
 // int row2 = model_2.getRowCount();
 // classific_2.removeColumnSelectionInterval(0,row2-1);
+
 	for (int i=0; i < comp42.getLength(); i++) {
+
         element = (Element) comp42.item(i);
 //         NodeList compIn = comp42.getElementsByTagName("competitor");
          line = (Element) comp42.item(i);
@@ -432,9 +435,15 @@ textBoxSector3Time.setText(getNode("time", line));
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-if(lapNum%2 == 0){
-	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-else{model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+// if(lapNum.intValue()<getNode("lap", line))
+// if(lapNum%2 == 0){
+// 	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+// else{model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+
+model_1.setValueAt(i,i, 1);
+model_1.setValueAt(attributeComp.getNodeValue(),i, 2);
+model_1.setValueAt(getNode("lap", line), i, 3);
+ 
 	}
 	
 	}
