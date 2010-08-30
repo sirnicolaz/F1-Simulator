@@ -137,6 +137,7 @@ package body CompetitionComputer is
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
       Ada.Text_IO.Put_Line("TV time got");
       if (Tmp_Time >= Time ) then
+
          Ada.Text_IO.Put_Line("TV backward");
          Index := Index - 1;
          if(Index /= 0) then
