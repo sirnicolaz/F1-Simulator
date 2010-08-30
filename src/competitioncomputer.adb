@@ -168,11 +168,10 @@ package body CompetitionComputer is
             Index := Index + 1;
             --Handle the case when an information cronologically after the end of the competition
             --+ is asked
-            if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
-               Index := Index - 1;
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+            if(Index = Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
                ExitLoop := true;
             end if;
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
          end loop;
 
          Ada.Text_IO.Put_Line("TV getting");

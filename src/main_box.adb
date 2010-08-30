@@ -4,6 +4,7 @@ with Ada.Command_Line;
 with Box;
 with Box_Data;
 with BoxRadio.impl;
+with Box_Monitor;
 with Box_Monitor_Radio.impl;
 with BoxConfigurator.Impl;
 --with Configurator.Impl.Competitor;
@@ -182,7 +183,7 @@ begin
       Update_Buffer := new Box_Data.SYNCH_COMPETITION_UPDATES;
       AllInfo_Buffer := new Box_Data.SYNCH_ALL_INFO_BUFFER;
 
-      Box_Monitor_Radio.impl.Init(CompetitionUpdates_Buffer => AllInfo_Buffer);
+      Box_Monitor.Init(CompetitionUpdates_Buffer => AllInfo_Buffer);
 
 
       Corbaloc_Storage.Get_CorbaLOC(BoxRadio_CorbaLOC, C_BOX_RADIO);
