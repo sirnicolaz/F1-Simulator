@@ -291,6 +291,9 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
+for(int index = 0; index<10; index++){
+model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
+}
 float q =(float)1.0;
 org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
@@ -441,8 +444,9 @@ textBoxSector3Time.setText(getNode("time", line));
 // else{model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
 
 model_1.setValueAt(i,i, 1);
-model_1.setValueAt(attributeComp.getNodeValue(),i, 2);
+model_1.setValueAt(attributoComp.getNodeValue(),i, 2);
 model_1.setValueAt(getNode("lap", line), i, 3);
+model_1.setValueAt(arrayInfo[i], i, 4);
  
 	}
 	
