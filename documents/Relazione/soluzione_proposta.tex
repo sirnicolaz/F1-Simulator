@@ -408,7 +408,7 @@ Vi sono inoltre 3 checkpoint che dovranno avere uno dei seguenti attributi boole
 \item prebox, ovvero dal checkpoint \`{e} possibile raggiungere i box
 \item exitbox, ovvero il checkpoint di arrivo una volta vuori dalla corsia dei box
 \end{itemize}
-Dati questi parametri, vengono inizalizzati tutti i checkpoint stabiliti ed inseriti in un array chiamato \textsc{Racetrack}. Questo
+Dati questi parametri, vengono inizalizzati tutti i checkpoint stabiliti ed inseriti in un array chiamato \textbf{Racetrack}. Questo
 sar\`{a} l'array iterato dal \textbf{Race\_Iterator}.\\
 
 Ogni checkpoint \`{e} del tipo \textbf{Checkpoint}, il quale contiene tutte le informazioni elencate in precedenza oltre ad una coda per gestire
@@ -465,12 +465,14 @@ checkpoint dei box \`{e} necessario utilizzare \underline{Get\_BoxCheckpoint};
 \item{\textbf{procedure Get\_PreviousCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; PreviousCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
 Per ottenere il checkpoint precedente, con le stesse regole del metodo precedente;
 \item{\textbf{procedure Get\_ExitBoxCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; ExitBoxCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
-Per ottenere il checkpoint all'uscita della corsia dei box;	
+Per ottenere il checkpoint all'uscita della corsia dei box;
 \item{\textbf{procedure Get\_BoxCheckpoint(RaceIterator : in out RACETRACK\_ITERATOR; BoxCheckpoint : out CHECKPOINT\_SYNCH\_POINT)}}\\
 Per ottenere il checkpoint del box;
 \item{\textbf{function Get\_Position(RaceIterator : RACETRACK\_ITERATOR) return INTEGER}}\\
 Per tornare la posizione corrente dell'iteratore.
 \end{description}
+Non è stato necessario inserire \texbtf{Racetrack} o il suo iteratore in una risorsa protetta perchè ogni concorrente disponde della
+sua copia dell'\textbf{Racetrack\_Iterator}.
 \newpage
 \subsubsection{Stats}
 \begin{center}
@@ -479,6 +481,13 @@ Per tornare la posizione corrente dell'iteratore.
 \caption{Class diagram - Stats}
 \end{figure}
 \end{center}
+La componente \emph{Stats} è implicitamente suddivisa in 2 sottocomponenti:
+\begin{itemize}
+\item un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
+per aggiornare le statistiche di checkpoint in checkpoint. Più precisamente, ogni concorrente possiede un'istanza di \textbf{Computer}, un record
+che colleziona le statistiche del singolo concorrente e le informazioni sulla configurazione della competizione.\\
+Il \emph{Competitor} utilizza il metodo \underline{AddInfo}
+\end{itemize}
 \newpage
 \subsubsection{Monitor}
 \begin{center}

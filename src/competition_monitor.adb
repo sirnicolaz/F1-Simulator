@@ -6,8 +6,8 @@ with Ada.Strings.Unbounded;
 with Common;
 use Common;
 
-with Stats;
-use Stats;
+with CompetitionComputer;
+use CompetitionComputer;
 
 package body Competition_Monitor is
 
@@ -311,7 +311,7 @@ package body Competition_Monitor is
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
          Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
-         Stats.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
+         CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
 
@@ -345,12 +345,12 @@ package body Competition_Monitor is
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
 
       --Retrieving best performances
-      Stats.Get_BestLap(TimeInstant,
+      CompetitionComputer.Get_BestLap(TimeInstant,
                         LapTime       => Tmp_BestLapTime,
                         LapNum        => Tmp_BestLapNum,
                         Competitor_ID => Tmp_BestLapCompetitor);
 
-      Stats.Get_BestSectorTimes(TimeInstant,
+      CompetitionComputer.Get_BestSectorTimes(TimeInstant,
                                 Times          => Tmp_BestSectorTimes,
                                 Competitor_IDs => Tmp_BestSectorCompetitors,
                                 Laps => Tmp_BestSectorLaps);
@@ -381,7 +381,7 @@ package body Competition_Monitor is
 
       if(HighestCompletedLap /= -1) then
 
-         Stats.Get_LapClassific(HighestCompletedLap,
+         CompetitionComputer.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
                                 ClassificationTimes,

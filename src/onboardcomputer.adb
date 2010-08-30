@@ -116,7 +116,7 @@ package body OnBoardComputer is
             end if;
 
             if(Lap2Ask >= 0) then
-               Stats.Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
+               Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
             end if;
 
             if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 ) then
@@ -137,7 +137,7 @@ package body OnBoardComputer is
             if( CurrentSector = 3 ) then
                if ( Computer_In.CurrentBestLap_Time /= -1.0 ) then
 
-                  Stats.Get_StatsByCheck(Get_ID(Computer_In), 1, CurrentLap - 1, Tmp_Stats);
+                  Get_StatsByCheck(Get_ID(Computer_In), 1, CurrentLap - 1, Tmp_Stats);
 
                   if ( Data.Time - Tmp_Stats.Time < Computer_In.CurrentBestLap_Time ) then
                      Computer_In.CurrentBestLap_Time := Data.Time - Tmp_Stats.Time;
@@ -177,7 +177,7 @@ package body OnBoardComputer is
 
       --TODO if the lap is finished, update the classific
 
-      Stats.Add_Stat(Computer_In.Competitor_Id,Data);
+      Add_Stat(Computer_In.Competitor_Id,Data);
 
       Ada.Text_IO.Put_Line("fine add_data");
 

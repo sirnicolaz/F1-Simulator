@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 
 with Common;
-with Stats;
+with CompetitionComputer;
 
 --pragma Warnings (Off); -- TODO: delete
 package body Competition is
@@ -171,7 +171,7 @@ package body Competition is
          Competitor.Set_Laps(Laps_In);
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
 
-         Stats.Init_Stats(Competitor_Qty => MaxCompetitors,
+         CompetitionComputer.Init_Stats(Competitor_Qty => MaxCompetitors,
                           Laps           => Laps_In,
                           Checkpoints_In => Checkpoint_Qty);
 

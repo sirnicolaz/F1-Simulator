@@ -1,7 +1,7 @@
 with Common;
 use Common;
 
-package Stats is
+package CompetitionComputer is
 
 
    type COMPETITOR_STATS is record
@@ -228,4 +228,4 @@ private
       Time : FLOAT;
    end record;
 
-end Stats;
+end CompetitionComputer;

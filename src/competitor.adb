@@ -13,8 +13,8 @@ with Common;
 with Ada.Calendar;
 use Ada.Calendar;
 
-with Stats;
-use Stats;
+with CompetitionComputer;
+use CompetitionComputer;
 
 package body Competitor is
 
