@@ -197,7 +197,7 @@ parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 try{
 org.omg.CORBA.Object obj = orb.string_to_object(configuratorCorbaLoc);
 outArea.setText("Pre narrow");
-Configurator conf = ConfiguratorHelper.narrow(obj);
+BoxConfigurator conf = BoxConfiguratorHelper.narrow(obj);
 outArea.append("\nConf initialized, invoke configure");
 conf.Configure("obj/boxConfig-"+id+".xml");
 outArea.append("\nAfter configure");

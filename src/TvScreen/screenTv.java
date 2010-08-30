@@ -436,8 +436,13 @@ public static String getNode(String tag, Element element){
     return "-";
   }
 
+public void connect(){
+
+}
+
 public static void main(String[] args){
-screenTv s= new screenTv("1234");
+screenTv s= new screenTv(args[0]);
+// corbaloc = args[0];
 s.start();
 }
 }
