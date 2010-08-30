@@ -523,18 +523,49 @@ Si ricorda infatti che il \emph{Box} riceve le informazioni aggiornate alla fine
 controlli e per essere salvate.
 \end{itemize}
 \item \textbf{CompetitionComputer}:\\
-\`{e} invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione che coinvolga
-il confronto fra i dati di due o pi\`{u} concorrenti \`{e} da richiedere a questa entit\`{a}. Il \textbf{CompetitionComputer} si appoggia a due risorse
-per l'archiviazione e l'organizzazione dei dati:
+\`{e} invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione 
+che riguardi uno o pi\`{u} concorrenti \`{e} da richiedere a questa entit\`{a}. 
+Il \textbf{CompetitionComputer} si appoggia a due risorse per l'archiviazione e l'organizzazione dei dati:
 \begin{description}
-\item{\textbf{All\_Competitor\_Stats\_Collection}}: la risorsa è destinata a mantenere la storia degli aggiornamenti di tutti i concorrenti. 
-Ad ogni competitor è dedicato un array di \textbf{Synch\_Competitor\_Stats\_Handler}. Questa entità serve ad racchiudere un \textbf{Competitor\_Stats}
-nel corpo di una risorsa protetta. L'array è inizializzato con capacità pari a N$^{\circ}$ Lap * N$^{\circ}$ Checkpoint, poichè le informazioni
-vengono aggiunte ad ogni checkpoint.
-\item{\textbf{SOCT\_Array}}:
+\item{\textbf{All\_Competitor\_Stats\_Collection}}: la risorsa \`{e} destinata a mantenere la storia degli aggiornamenti di tutti i concorrenti. 
+Ad ogni competitor \`{e} dedicato un array di \textbf{Synch\_Competitor\_Stats\_Handler}. Questa entit\`{a} serve ad racchiudere un \textbf{Competitor\_Stats}
+nel corpo di una risorsa protetta. L'array \`{e} inizializzato con capacit\`{a} pari a N$^{\circ}$ Lap * N$^{\circ}$ Checkpoint, poich\`{e} le informazioni
+vengono aggiunte ad ogni checkpoint. Ogni posizione dell'array quindi fa riferimento ad un checkpoint e l'array \`{e} intrinsecamente ordinato per 
+tempo crescente.\\
+\textbf{Synch\_Competitor\_Stats\_Handler} mette a disposizione un entry di get (\underline{Get\_All}) che si apre solo nel momento in cui
+la risorsa \`{e} inizializzata. Questo permette di mettere in attesa i client che richiederanno informazioni non ancora disponibili.
+\item{\textbf{SOCT\_Array}}: questo array \`{e} la parte pi\`{u} alta di una struttura utilizzata per il supporto alla creazione della classifica.
+Nel punto pi\`{u} basso c'\`{e} \textbf{Classification\_Table}, unit\`{a} finalizzata a raccogliere i tempi di lap dei concorrenti. A gestire questa 
+tabella virtuale c'\`{e} \textbf{Synch\_Ordered\_Classification\_Table}, che permette di mantenere la tabella ordinata in base ai tempi e offre un set
+di metodi per il reperimento dei dati. Infine \textbf{SOCT\_Array} (SOCT sta per Synch Ordered Classification Table) \`{e} un array in cui
+ogni posizione rimanda ad alla tabella della classifica della lap corrispondente all'indice. 
 \end{description}
-Il \textbf{Computer} utilizza il metodo \underline{Add\_Stat} per inviare i pacchetti con gli aggiornamenti.
+Tramite il metodo \underline{Add\_Stat}, il \textbf{Computer} di \textbf{OnboardComputer} invia i pacchetti con gli aggiornamenti. Prima
+di salvare definitivamente un aggiornamento, viene verificato se fa riferimento ad un checkpoint di fine lap. In tal caso viene prima aggiornata
+la tabella della classifica corrispondente alla lap appena percorsa con l'istante di tempo segnato. Successivamente l'aggiornamento
+viene salvato nell'array di riferimento del concorrente, aprendo cos\`{i} la risorsa a chiunque la richieda o la stesse gi\`{a} richiedendo.\\\\
+Quanto descritto costituisce le fondamenta di \textbf{CompetitionComputer}. Il metodi offerti navigano queste strutture per ottenere
+i dati richiesti:
+\begin{description}
+\item{\textbf{procedure Get\_StatsByTime(Competitor\_ID : INTEGER; Time : FLOAT;  Stats\_In : out COMPETITOR\_STATS\_POINT);}}\\
+fornisce il primo aggiornamento con tempo maggiore o uguale all'istante dato;
+\item{\textbf{procedure Get\_StatsBySect(Competitor\_ID : INTEGER; Sector : INTEGER;  Lap : INTEGER;  Stats\_In : out COMPETITOR\_STATS\_POINT);}}\\
+fornisce le statistiche del concorrente \textsc{Competitor\_ID} inerenti alla fine del settore richiesto nella lap richiesta;
+\item{\textbf{procedure Get\_StatsByCheck(Competitor\_ID : INTEGER; Checkpoint : INTEGER; Lap : INTEGER; Stats\_In : out COMPETITOR\_STATS\_POINT);}}\\
+fornisce le statistiche del concorrente \textsc{Competitor\_ID} inerenti al checkpoint e lap richiesti;
+\item{\textbf{procedure Get\_BestLap(TimeInstant : FLOAT; LapTime : out FLOAT; LapNum : out INTEGER; Competitor\_ID : out INTEGER);}}\\
+fornisce il miglior giro, il tempo di tale giro e il concorrente che fatto il record;
+\item{\textbf{procedure Get\_BestSectorTimes(TimeInstant : FLOAT;  Times : out FLOAT\_ARRAY;  Competitor\_IDs : out INTEGER\_ARRAY; Laps : out INTEGER\_ARRAY);}}\\
+fornisce il miglior tempo per ogni settore con i concorrenti che hanno fatto il record.
+\item{\textbf{procedure Get\_LapClassific(Lap : INTEGER; TimeInstant : FLOAT; CompetitorID\_InClassific : out INTEGER\_ARRAY\_POINT; 
+Times\_InClassific : out FLOAT\_ARRAY\_POINT; LappedCompetitors\_ID : out INTEGER\_ARRAY\_POINT; LappedCompetitor\_CurrentLap : out INTEGER\_ARRAY\_POINT);}}\\
+dato l'istante di tempo in input, il metodo fornisce la classifica pi\`{u} aggiornata con i tempi per quell'istante, compresi i concorrenti doppiati in ordine
+di posizione e la lap che stanno percorrendo. I concorrenti che invece non sono doppiati ma devono ancora finire la lap a cui la classifica si
+riferisce non vengono inclusi nella lista.
+\end{description}
 \end{itemize}
+Il \textbf{Competition\_Monitor}, (come vedremo poi pi\`{u} in dettaglio è una sottocomponente di \emph{Monitor}) fa riferimento al \textbf{CompetitionComputer} per 
+ottenere le informazioni di competizione.
 \newpage
 \subsubsection{Monitor}
 \begin{center}
