@@ -67,7 +67,7 @@ public class BoxInterface_Test{
 
 		org.omg.CORBA.Object configurator_obj = orb.string_to_object(configCorbaLoc);
 		System.out.println("Getting registration reference");
-                Configurator config = ConfiguratorHelper.narrow(configurator_obj);
+                BoxConfigurator config = BoxConfiguratorHelper.narrow(configurator_obj);
 
 		config.Configure("obj/boxConfig.xml");
 

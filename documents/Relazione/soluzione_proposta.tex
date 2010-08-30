@@ -288,11 +288,21 @@ da utilizzare per sottomettere i parametri di configurazione.
 \caption{Interface component diagram - Box/Monitor}
 \end{figure}
 \end{center}
-La prima interazione che la componente \emph{Box} ha con il \emph{Monitor} \`{e} in fase di inizializzazione della gara. La sequenza di azioni verr\`{a} esplicata
-dettagliatamente in seguito, per ora basti sapere che il \emph{Box}, una volta configurato e pronto per monitorare la gara ed elaborare i dati del suo
-concorrente, dovr\`{a} mandare una notifica tramine la componente \emph{Monitor} utilizzando \textbf{NotifyBoxReadyState}.\\
-Le rimanenti due interfacce sono utilizzate per reperire informazioni sullo stato del concorrente (livello di benzina rimasta, usura gomme...) e
-aggiornamenti riguardo al posizionamento e tempi del concorrente durante la gara.
+La prima interazione che la componente \emph{Box} ha con il \emph{Monitor} \`{e} in fase di inizializzazione della gara. 
+La sequenza di azioni verr\`{a} esplicata
+dettagliatamente in seguito, per ora basti sapere che il \emph{Box}, una volta configurato e pronto per monitorare 
+la gara ed elaborare i dati del suo
+concorrente, dovr\`{a} mandare una notifica tramite la componente \emph{Monitor} utilizzando \textbf{NotifyBoxReadyState}.\\
+Le rimanenti due interfacce offerte dal \emph{Monitor} al \emph{Box} sono utilizzate per reperire informazioni sullo stato del 
+concorrente (livello di benzina rimasta, usura gomme...) e
+aggiornamenti riguardo al posizionamento e tempi del concorrente durante la gara.\\
+Vi sono poi altre due interfacce offerte dal \emph{Box} al \emph{Monitor}. Per quanto possa sembrare un po' paradossale, l'architettura
+acquisisce senso se si pensa che la componente \emph{Monitor}, ad alto livello, \`{e} stata pensata per pubblicare informazioni. Tali
+informazioni possono riguardare il singolo concorrente e quindi essere utili al \emph{Box}. Altre possono invece riguardare il \emph{Box} e 
+i suoi calcoli per essere esposte ad un utente (per esempio). Le due interfacce offerte dal \emph{Box} infatti servono per ottenere
+aggiornamenti sulle operazioni interne del \emph{Box} qualora essere dovessero essere esposte ad un qualunque client. Come vedremo pi\`{u}
+in dettaglio in seguito, questa componente \`{e} in realt\`{a} costituita da due sottocomponenti, una dedicata a \emph{Competition} e l'altra a
+\emph{Box}.
 \subsubsection{Screen-Monitor}
 \begin{center}
 \begin{figure}[h!]
@@ -564,7 +574,7 @@ di posizione e la lap che stanno percorrendo. I concorrenti che invece non sono 
 riferisce non vengono inclusi nella lista.
 \end{description}
 \end{itemize}
-Il \textbf{Competition\_Monitor}, (come vedremo poi pi\`{u} in dettaglio è una sottocomponente di \emph{Monitor}) fa riferimento al \textbf{CompetitionComputer} per 
+Il \textbf{Competition\_Monitor}, (come vedremo poi pi\`{u} in dettaglio \`{e} una sottocomponente di \emph{Monitor}) fa riferimento al \textbf{CompetitionComputer} per 
 ottenere le informazioni di competizione.
 \newpage
 \subsubsection{Monitor}
@@ -574,6 +584,16 @@ ottenere le informazioni di competizione.
 \caption{Class diagram - Monitor}
 \end{figure}
 \end{center}
+\emph{Monitor} si suddivide in due sottocomponenti: \textbf{Box\_Monitor} e \textbf{Competition\_Monitor}. La prima è dedicata alle informazioni
+esposte dal \emph{Box}, l'altra a quelle esposte dalla \emph{Competition}.\\
+\textbf{Box\_Monitor} produce i dati interrogando la componente \emph{Box}, precisamente \textbf{Box\_Data}, unità che vedremo in seguito,
+tramite il metodo \underline{Get\_Info}, grazie al quale si ottiene un oggetto che contiene le informazioni inerenti all'ultimo settore
+completato dal concorrente (comprese le medie di consumo) e, se disponibile la strategia calcolata dal \emph{Box} per la lap successiva.\\\\
+\texbtf{Competition\_Monitor} si appoggia a \emph{Stats} per reperire le informazioni richieste. I metodi che espone sono:
+\begin{description}
+\item\textbf{procedure Get\_CompetitionInfo( TimeInstant : FLOAT; ClassificationTimes : out Common.FLOAT\_ARRAY\_POINT; XMLInfo : out Unbounded\_String.Unbounded\_String);}}
+\item\textbf{procedure Get\_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded\_String.Unbounded\_String);}}
+\end{description}
 \newpage
 \subsubsection{Box}
 \begin{center}

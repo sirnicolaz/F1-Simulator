@@ -165,6 +165,12 @@ package body CompetitionComputer is
          while Tmp_Time < Time loop
             Ada.Text_IO.Put_Line("TV cycle");
             Index := Index + 1;
+            --Handle the case when an information cronologically after the end of the competition
+            --+ is asked
+            if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
+               Index := Index - 1;
+               exit;
+            end if;
             Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
          end loop;
 
