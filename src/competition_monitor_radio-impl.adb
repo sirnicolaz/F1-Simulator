@@ -61,16 +61,6 @@ package body Competition_Monitor_Radio.impl is
       xmlInfo := CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
    end Get_CompetitionInfo;
 
-   function getBestLap(Self : access Object) return CORBA.STRING is
-   begin
-      return CORBA.To_CORBA_String(COmpetition_Monitor.getBestLapInfo);
-   end getBestLap;
-
-   function getBestSector(Self : access Object; index : CORBA.Short) return CORBA.String is
-   begin
-      return CORBA.To_CORBA_String(Competition_Monitor.getBestSectorInfo(INTEGER(index)));
-   end getBestSector;
-
    --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING is
    --begin
 

@@ -1,9 +1,6 @@
 with CORBA;
 with PortableServer;
 
-with Box;
-with Box_Data;
-
 package Box_Monitor_Radio.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
