@@ -438,15 +438,18 @@ textBoxSector3Time.setText(getNode("time", line));
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-// if(lapNum.intValue()<getNode("lap", line))
+// if(lapNum.intValue()<negetNode("lap", line))
 // if(lapNum%2 == 0){
-// 	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-// else{model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-
+	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// }
+// else{
+model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// }
+/*
 model_1.setValueAt(i,i, 1);
 model_1.setValueAt(attributoComp.getNodeValue(),i, 2);
 model_1.setValueAt(getNode("lap", line), i, 3);
-model_1.setValueAt(arrayInfo[i], i, 4);
+model_1.setValueAt(arrayInfo[i], i, 4);*/
  
 	}
 	
