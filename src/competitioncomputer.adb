@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
-package body Stats is
+package body CompetitionComputer is
 
 
 
@@ -731,5 +731,5 @@ package body Stats is
    end Set_NextNode;
 
 
-end Stats;
+end CompetitionComputer;
 

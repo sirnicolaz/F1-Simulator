@@ -1,0 +1,6 @@
+Nomi classi, tipi o package = textbf
+Nomi funzioni = underline
+Nomi compenenti = emph
+
+Per descrivere elenco metodi = begin{description}
+				\item{\textbf{Metodo}}\\ descrizione

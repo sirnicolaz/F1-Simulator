@@ -3,8 +3,8 @@ use Common;
 
 with Ada.Strings.Unbounded;
 
-with Stats;
-use Stats;
+with CompetitionComputer;
+use CompetitionComputer;
 
 --This package represents the statistics of each competitor.
 package OnBoardComputer is
