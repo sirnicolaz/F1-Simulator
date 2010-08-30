@@ -471,7 +471,7 @@ Per ottenere il checkpoint del box;
 \item{\textbf{function Get\_Position(RaceIterator : RACETRACK\_ITERATOR) return INTEGER}}\\
 Per tornare la posizione corrente dell'iteratore.
 \end{description}
-Non è stato necessario inserire \textbf{Racetrack} o il suo iteratore in una risorsa protetta perchè ogni concorrente disponde della
+Non \`{e} stato necessario inserire \textbf{Racetrack} o il suo iteratore in una risorsa protetta perch\`{e} ogni concorrente disponde della
 sua copia dell'\textbf{Racetrack\_Iterator}.
 \newpage
 \subsubsection{Stats}
@@ -481,34 +481,34 @@ sua copia dell'\textbf{Racetrack\_Iterator}.
 \caption{Class diagram - Stats}
 \end{figure}
 \end{center}
-La componente \emph{Stats} è implicitamente suddivisa in 2 sottocomponenti: \textbf{OnboardComputer} e \textbf{CompetitionComputer}. 
-Prima di discutere dei dettagli delle due, è necesario introdurre la struttura di una risorsa che viene utilizzata come
-pacchetto per il trasporto degli aggiornamenti tra \emph{Competitor}, \textbf{OnboardComputer} e \textbf{CompetitionComputer}. La risorsa è 
+La componente \emph{Stats} \`{e} implicitamente suddivisa in 2 sottocomponenti: \textbf{OnboardComputer} e \textbf{CompetitionComputer}. 
+Prima di discutere dei dettagli delle due, \`{e} necesario introdurre la struttura di una risorsa che viene utilizzata come
+pacchetto per il trasporto degli aggiornamenti tra \emph{Competitor}, \textbf{OnboardComputer} e \textbf{CompetitionComputer}. La risorsa \`{e} 
 un tipo record denominato \textbf{Competitor\_Stats}, contenente i seguenti dati:
-\begin{itemize}[.]
+\begin{itemize}
       \item\textbf{Time : FLOAT;}\\l'istante a cui fa riferimento l'aggiornamento
-      \item\textbf{Checkpoint : INTEGER;}\\il checkpoint che introduceva il tratto che è stato attraversato (completato) all'istante \textsc{Time}
-      \item\textbf{LastCheckInSect : BOOLEAN;}\\se true, il checkpoint è l'ultimo di un settore
-      \item\textbf{FirstCheckInSect : BOOLEAN;}\\su treu, il checkpoint è il primo del settore
+      \item\textbf{Checkpoint : INTEGER;}\\il checkpoint che introduceva il tratto che \`{e} stato attraversato (completato) all'istante \textsc{Time}
+      \item\textbf{LastCheckInSect : BOOLEAN;}\\se true, il checkpoint \`{e} l'ultimo di un settore
+      \item\textbf{FirstCheckInSect : BOOLEAN;}\\su treu, il checkpoint \`{e} il primo del settore
       \item\textbf{Sector : INTEGER;}\\il settore a cui appartiene il checkpoint
       \item\textbf{Lap : INTEGER;}\\la lap in cui a cui l'aggiornamento fa riferimento
-      \item\textbf{GasLevel : FLOAT;}\\il livello di gas presente nel serbatoio al momento in cui il tratto è stato attraversato (completato)
-      \item\textbf{TyreUsury : PERCENTAGE;}\\la percentuale di usura gomme al momento in cui il tratto è stato attraversato (completato)
+      \item\textbf{GasLevel : FLOAT;}\\il livello di gas presente nel serbatoio al momento in cui il tratto \`{e} stato attraversato (completato)
+      \item\textbf{TyreUsury : PERCENTAGE;}\\la percentuale di usura gomme al momento in cui il tratto \`{e} stato attraversato (completato)
       \item\textbf{BestLapNum : INTEGER;}\\la miglior lap fatta dal concorrente dall'inizio della gara all'istante \textsc{Time}
       \item\textbf{BestLaptime : FLOAT;}\\il tempo della miglior lap fatta dal concorrente dall'inizio della gara all'istante \textsc{Time}
-      \item\textbf{BestSectorTimes : FLOAT_ARRAY(1..3);}\\ogni indice dell'array indica un settore (quindi indice 1 indica il settore 1). Detto ciò,
+      \item\textbf{BestSectorTimes : FLOAT\_ARRAY(1..3);}\\ogni indice dell'array indica un settore (quindi indice 1 indica il settore 1). Detto ci\`{o},
       l'array contiene il miglior tempo fatto dal concorrente per ogni settore dall'inizio della gara all'istante \textsc{Time}
-      \item\textbf{MaxSpeed : FLOAT;}\\la massima velocità raggiunta dall'inizio della gara all'istante \textsc{Time}
+      \item\textbf{MaxSpeed : FLOAT;}\\la massima velocit\`{a} raggiunta dall'inizio della gara all'istante \textsc{Time}
       \item\textbf{PathLength : FLOAT;}\\la lunghezza della traiettoria scelta per attraversare il tratto
 \end{itemize}
-Ora vediamo piu dettagliatamente le due sottocomponenti accennato precedentemente:
+Ora vediamo piu dettagliatamente le due sottocomponenti accennate precedentemente:
 \begin{itemize}
 \item \textbf{OnboardComputer}:\\
-è un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
-per aggiornare le statistiche di checkpoint in checkpoint. Più precisamente, ogni concorrente possiede un'istanza di \textbf{Computer}, un record
+\`{e} un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
+per aggiornare le statistiche di checkpoint in checkpoint. Pi\`{u} precisamente, ogni concorrente possiede un'istanza di \textbf{Computer}, un record
 che colleziona le statistiche del singolo concorrente e le informazioni statiche sulla configurazione della competizione.\\
-Ogni \textbf{Computer} mantiene inoltre un riferimento ad una risorsa che nel diagramma è \textbf{Synch\_Info\_For\_Box}. Tale risorsa
-viene utilizzata per mantenere la lista delle informazioni necessarie al box. \`{E} più che altro un meccanismo di ottimizzazione per avere
+Ogni \textbf{Computer} mantiene inoltre un riferimento ad una risorsa che nel diagramma \`{e} \textbf{Synch\_Info\_For\_Box}. Tale risorsa
+viene utilizzata per mantenere la lista delle informazioni necessarie al box. \`{E} pi\`{u} che altro un meccanismo di ottimizzazione per avere
 gli aggiornamenti sul singolo competitor immediatamente disponibili quando il \emph{Box} ne richiede.\\\\
 Il \emph{Competitor} utilizza il metodo \underline{AddInfo} di \textbf{OnBoardComputer} 
 per inviare le informazioni relative al tratto appena attraversato. Da quando tali informazioni sono sottomesse, vengono effettuati i seguenti
@@ -523,11 +523,14 @@ Si ricorda infatti che il \emph{Box} riceve le informazioni aggiornate alla fine
 controlli e per essere salvate.
 \end{itemize}
 \item \textbf{CompetitionComputer}:\\
-è invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione che coinvolga
-il confronto fra i dati di due o più concorrenti è da richiedere a questa entità. Il \textbf{CompetitionComputer} si appoggia a due risorse
+\`{e} invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione che coinvolga
+il confronto fra i dati di due o pi\`{u} concorrenti \`{e} da richiedere a questa entit\`{a}. Il \textbf{CompetitionComputer} si appoggia a due risorse
 per l'archiviazione e l'organizzazione dei dati:
 \begin{description}
-\item{\textbf{All\_Competitor\_Stats\_Collection}}:
+\item{\textbf{All\_Competitor\_Stats\_Collection}}: la risorsa è destinata a mantenere la storia degli aggiornamenti di tutti i concorrenti. 
+Ad ogni competitor è dedicato un array di \textbf{Synch\_Competitor\_Stats\_Handler}. Questa entità serve ad racchiudere un \textbf{Competitor\_Stats}
+nel corpo di una risorsa protetta. L'array è inizializzato con capacità pari a N$^{\circ}$ Lap * N$^{\circ}$ Checkpoint, poichè le informazioni
+vengono aggiunte ad ogni checkpoint.
 \item{\textbf{SOCT\_Array}}:
 \end{description}
 Il \textbf{Computer} utilizza il metodo \underline{Add\_Stat} per inviare i pacchetti con gli aggiornamenti.

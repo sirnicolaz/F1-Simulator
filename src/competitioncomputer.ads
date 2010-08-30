@@ -9,6 +9,7 @@ package CompetitionComputer is
       -- Is this the last check-point in the sector?
       LastCheckInSect : BOOLEAN;
       -- Is this the first check-point in the sector?
+      IsPitStop : BOOLEAN;
       FirstCheckInSect : BOOLEAN;
       Sector : INTEGER;
       Lap : INTEGER;

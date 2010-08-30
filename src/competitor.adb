@@ -1019,6 +1019,9 @@ package body Competitor is
             compStats.Time := -1.0; -- sentinel warning about the end of the race
             compStats.Lap := CurrentLap;
             compStats.PathLength := -1.0;
+            if(PitStopDone = true) then
+               compStats.IsPitStop := true;
+            end if;
 
             OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                      Data        => compStats);
@@ -1038,9 +1041,14 @@ package body Competitor is
             declare
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
                Iterator_InitialPosition : INTEGER := Get_Position(carDriver.RaceIterator);
-
+               Step : FLOAT := 0.0001;
+               UpdatedCheckpoints : FLOAT := 1.0;
             begin
-
+               --Get current time   |
+               --Get predicted time |--> crossing time
+               --Get number of checkpoint between prebox and box
+               -- step = predicted - current / number
+               -- increase by step the time in checkpoint stats
                Get_NextCheckpoint( carDriver.RaceIterator,Temp_Checkpoint);
                --Update all the statistics up to the goal checkpoint
                while Get_Position(carDriver.RaceIterator) /= Circuit.Checkpoints_Qty  loop
@@ -1052,7 +1060,10 @@ package body Competitor is
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
                   compStats.GasLevel := -1.0;
                   compStats.TyreUsury := 0.0;
-                  compStats.Time := PredictedTime;
+                  compStats.IsPitStop := false;
+                  --TODO: explane the "Step" purpose
+                  compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
+                  UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
@@ -1081,7 +1092,7 @@ package body Competitor is
          compStats.Time := PredictedTime;
          compStats.Lap := CurrentLap;
          compStats.PathLength := lengthPath;
-
+         compStats.IsPitStop := FALSE;
 
          -- The prebox might be way before the last checkpoint in the sector.
          --+ It's necessary though to set the field to TRUE to allow the update
@@ -1089,6 +1100,9 @@ package body Competitor is
          --+ of this lap would never be add.
          if(PitStop = true) then
             compStats.LastCheckInSect := true;
+         end if;
+         if(PitStopDone = true) then
+            compStats.IsPitStop := TRUE;
          end if;
 
          Ada.Text_IO.Put_Line("DEBUG adding lap " & Common.IntegerToString(compStats.Lap) & " and check " & Common.IntegerToString(compStats.Checkpoint) &
@@ -1104,7 +1118,8 @@ package body Competitor is
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
                Iterator_InitialPosition : INTEGER := 1;
                ExitBox_Position : INTEGER;
-
+               Step : FLOAT := 0.0001;
+               UpdatedCheckpoints : FLOAT := 1.0;
             begin
                --Find the exit box positino
                Get_ExitBoxCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
@@ -1126,7 +1141,9 @@ package body Competitor is
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
                   compStats.GasLevel := -1.0;
                   compStats.TyreUsury := 0.0;
-                  compStats.Time := PredictedTime;
+                  compStats.IsPitStop := TRUE;
+                  compStats.Time := PredictedTime - (Step * UpdatedCheckpoints);
+                  UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
