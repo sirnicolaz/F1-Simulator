@@ -52,21 +52,6 @@ package Competition_Monitor_Radio is
    Get_CompetitionInfo_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/Get_CompetitionInfo:1.0";
 
-   function getBestLap
-     (Self : Ref)
-     return CORBA.String;
-
-   getBestLap_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor_Radio/getBestLap:1.0";
-
-   function getBestSector
-     (Self : Ref;
-      index : CORBA.Short)
-     return CORBA.String;
-
-   getBestSector_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:Competition_Monitor_Radio/getBestSector:1.0";
-
    function ready
      (Self : Ref;
       competitorId : CORBA.Short)
