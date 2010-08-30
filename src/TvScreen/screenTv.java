@@ -73,6 +73,7 @@ private JLabel labelSector3Time = new JLabel(" in time : ");
 private String corbaloc;
 private ORB orb;
 private int numComp;
+private float[] arrayInfo;
 
 //parsing xml
 private Integer idCompetitor;
@@ -84,7 +85,9 @@ public screenTv(String corbalocIn){
 parent = new JFrame("TV Monitor");
 corbaloc = corbalocIn;
 //effettua la connessione
-
+System.out.println("Try to connect to Competition");
+ String[] temp = {"ORB"};
+orb = ORB.init(temp, null);
 }
 public void addTables(){
 model_1.addColumn("Position");
@@ -272,22 +275,29 @@ parent.add(panelCl_1, BorderLayout.EAST);
 parent.add(panelCl_2, BorderLayout.WEST);
 parent.add(bestPanel,BorderLayout.NORTH);
 parent.add(tablePanel, BorderLayout.SOUTH);
-
-readXml("<?xml version=\"1.0\"?><competitionUpdate><competitors><competitor id=\"1\"><checkpoint compPosition=\"passed\" >12</checkpoint><lap>42</lap><sector>3</sector></competitor><competitor id=\"2\"><checkpoint compPosition=\"passed\" >13</checkpoint><lap>43</lap><sector>2</sector> </competitor></competitors><bestTimes><lap num=\"3\"><time>34.0000</time><competitorId>4</competitorId></lap><sectors><sector num=\"1\"><time>10.0</time><competitorId>3</competitorId><lap>45</lap></sector><sector num=\"2\"><time>15.1</time><competitorId>4</competitorId><lap>99</lap></sector><sector num=\"3\"><time>5.3</time><competitorId>5</competitorId><lap>66</lap></sector></sectors></bestTimes>"
-+"<classification><competitor id=\"3\"><lap>4</lap></competitor><competitor id=\"5\"><lap>3</lap></competitor><competitor id=\"1\"><lap>2</lap></competitor></classification></competitionUpdate>");
+// readXml("<?xml version=\"1.0\"?><competitionUpdate><competitors><competitor id=\"1\"><checkpoint compPosition=\"passed\" >12</checkpoint><lap>42</lap><sector>3</sector></competitor><competitor id=\"2\"><checkpoint compPosition=\"passed\" >13</checkpoint><lap>43</lap><sector>2</sector> </competitor></competitors><bestTimes><lap num=\"3\"><time>34.0000</time><competitorId>4</competitorId></lap><sectors><sector num=\"1\"><time>10.0</time><competitorId>3</competitorId><lap>45</lap></sector><sector num=\"2\"><time>15.1</time><competitorId>4</competitorId><lap>99</lap></sector><sector num=\"3\"><time>5.3</time><competitorId>5</competitorId><lap>66</lap></sector></sectors></bestTimes>"
+// +"<classification><competitor id=\"3\"><lap>4</lap></competitor><competitor id=\"5\"><lap>3</lap></competitor><competitor id=\"1\"><lap>2</lap></competitor></classification></competitionUpdate>");
 
 parent.pack();
 parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-
+float q =(float)1.0;
+org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
+Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
+while(true){
+org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
+arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
+readXml(updateString.value, q);
+q=(float)(q+1);
 }
-catch(Exception e){}
+}
+catch(Exception e){e.printStackTrace();}
 }
 
 // parsing xml
-public void readXml(String xmlRecords){
+public void readXml(String xmlRecords, float istant){
 System.out.println("stringa da parsare : \n"+xmlRecords);
 // String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
  try {
@@ -326,7 +336,7 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
 	System.out.println("lap : "+getNode("lap", element));
 	System.out.println("sector : "+getNode("sector", element));
-modelAll.insertRow(0,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), 150.0});
+modelAll.insertRow(0,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // ListSelectionModel selectionModel = tableAll.getSelectionModel();
 // selectionModel.setSelectionInterval(0,0);
 	}
@@ -407,7 +417,7 @@ NodeList cl = doc.getElementsByTagName("classification");
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), 150.0});
+model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
 	}
 	
 	}
