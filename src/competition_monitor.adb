@@ -11,7 +11,7 @@ use CompetitionComputer;
 
 package body Competition_Monitor is
 
-   CompetitionHandler : StartStopHandler_POINT;
+   CompetitionHandler : StartStopHandler_POINT := new StartStopHandler;
    --GlobalStatistics : GLOBAL_STATS_HANDLER_POINT;
    CompetitorQty : INTEGER;
    Laps : INTEGER;
@@ -81,7 +81,7 @@ package body Competition_Monitor is
 
       arrayComputer := new OBC(1..CompetitorQty);
 
-      CompetitionHandler := new STARTSTOPHANDLER;
+      --CompetitionHandler := new STARTSTOPHANDLER;
       CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
 
       --GlobalStatistics := GlobalStatistics_In;
@@ -305,6 +305,7 @@ package body Competition_Monitor is
       LappedCompetitors_ID : INTEGER_ARRAY_POINT;
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
+      CompetitionHandler.WaitReady;
       Ada.Text_IO.Put_Line("A TV is really asking");
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &

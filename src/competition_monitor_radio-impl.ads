@@ -24,8 +24,4 @@ package Competition_Monitor_Radio.impl is
       xmlInfo : out CORBA.String;
       Returns : out Competition_Monitor_Radio.float_sequence );
 
-   function getBestLap(Self : access Object) return CORBA.STRING;
-
-   function getBestSector(Self : access Object; index : CORBA.Short) return CORBA.String;
-
 end Competition_Monitor_Radio.impl;

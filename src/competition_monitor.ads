@@ -23,7 +23,7 @@ package Competition_Monitor is
       --Through this method the competition knows when to start the competitors
       entry WaitReady;
    private
-      ExpectedBoxes : INTEGER := 0;
+      ExpectedBoxes : INTEGER := -1;
    end StartStopHandler;
 
    type STARTSTOPHANDLER_POINT is access STARTSTOPHANDLER;

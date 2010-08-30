@@ -163,18 +163,18 @@ Questa componente offre la possibilit\`{a} di configurare le parti parametriche 
 \end{itemize}
 Il \emph{Configurator} ha inoltre l'onere di inviare i parametri cos\`{i} configurati alle componenti opportune.
 
- \subsubsection{Radio}
-La componente radio \`{e} stata creata per gestire la comunicazione remota fra le componenti distribuite.\\
-Il sistema inizialmente \`{e} stato implementato con supporto solo all'esecuzione locale. Si conoscevano le componenti che sarebbero state distribuite,
-ma il processo di separazione \`{e} avvenuto successivamente. Quindi per agevolare tale processo si \`{e} pensato di demandare l'onere della comunicazione 
-tra queste componenti a unit\`{a} specializzate, chiamate appunto radio. In questo modo \`{e} stato pi\`{u} soft il passaggio da locale a distribuito,
-che ha richiesto di rivedere solo le componenti \emph{Radio}.\\\\
-\emph{\textsc{Nota Bene}}:\\
-La componente \emph{Radio} costituisce un layer di supporto alla comunicazione 
-distribuita delle componenti. Considerando che a questo livello del documento non \`{e} ancora il momento di scendere nei dettagli fino a discutere 
-della distribuzione, si pensa sia sufficiente averla nominata nella descrizione delle componenti. Verr\`{a} ripresa
-in considerazione successivamente nel documento. Inserendola ora nei diagrammi delle componenti rischierebbe di confondere la visione di insieme
-del sistema.
+%\subsubsection{Radio}
+%La componente radio \`{e} stata creata per gestire la comunicazione remota fra le componenti distribuite.\\
+%Il sistema inizialmente \`{e} stato implementato con supporto solo all'esecuzione locale. Si conoscevano le componenti che sarebbero state distribuite,
+%ma il processo di separazione \`{e} avvenuto successivamente. Quindi per agevolare tale processo si \`{e} pensato di demandare l'onere della comunicazione 
+%tra queste componenti a unit\`{a} specializzate, chiamate appunto radio. In questo modo \`{e} stato pi\`{u} soft il passaggio da locale a distribuito,
+%che ha richiesto di rivedere solo le componenti \emph{Radio}.\\\\
+%\emph{\textsc{Nota Bene}}:\\
+%La componente \emph{Radio} costituisce un layer di supporto alla comunicazione 
+%distribuita delle componenti. Considerando che a questo livello del documento non \`{e} ancora il momento di scendere nei dettagli fino a discutere 
+%della distribuzione, si pensa sia sufficiente averla nominata nella descrizione delle componenti. Verr\`{a} ripresa
+%in considerazione successivamente nel documento. Inserendola ora nei diagrammi delle componenti rischierebbe di confondere la visione di insieme
+%del sistema.
 % Interazione fra le componenti
 \subsection{Interazione fra le componenti}
 Nella seguente sezione verranno spiegate le interazione principali fra le componenti.\\\\
@@ -471,7 +471,7 @@ Per ottenere il checkpoint del box;
 \item{\textbf{function Get\_Position(RaceIterator : RACETRACK\_ITERATOR) return INTEGER}}\\
 Per tornare la posizione corrente dell'iteratore.
 \end{description}
-Non è stato necessario inserire \texbtf{Racetrack} o il suo iteratore in una risorsa protetta perchè ogni concorrente disponde della
+Non è stato necessario inserire \textbf{Racetrack} o il suo iteratore in una risorsa protetta perchè ogni concorrente disponde della
 sua copia dell'\textbf{Racetrack\_Iterator}.
 \newpage
 \subsubsection{Stats}
@@ -481,12 +481,56 @@ sua copia dell'\textbf{Racetrack\_Iterator}.
 \caption{Class diagram - Stats}
 \end{figure}
 \end{center}
-La componente \emph{Stats} è implicitamente suddivisa in 2 sottocomponenti:
+La componente \emph{Stats} è implicitamente suddivisa in 2 sottocomponenti: \textbf{OnboardComputer} e \textbf{CompetitionComputer}. 
+Prima di discutere dei dettagli delle due, è necesario introdurre la struttura di una risorsa che viene utilizzata come
+pacchetto per il trasporto degli aggiornamenti tra \emph{Competitor}, \textbf{OnboardComputer} e \textbf{CompetitionComputer}. La risorsa è 
+un tipo record denominato \textbf{Competitor\_Stats}, contenente i seguenti dati:
+\begin{itemize}[.]
+      \item\textbf{Time : FLOAT;}\\l'istante a cui fa riferimento l'aggiornamento
+      \item\textbf{Checkpoint : INTEGER;}\\il checkpoint che introduceva il tratto che è stato attraversato (completato) all'istante \textsc{Time}
+      \item\textbf{LastCheckInSect : BOOLEAN;}\\se true, il checkpoint è l'ultimo di un settore
+      \item\textbf{FirstCheckInSect : BOOLEAN;}\\su treu, il checkpoint è il primo del settore
+      \item\textbf{Sector : INTEGER;}\\il settore a cui appartiene il checkpoint
+      \item\textbf{Lap : INTEGER;}\\la lap in cui a cui l'aggiornamento fa riferimento
+      \item\textbf{GasLevel : FLOAT;}\\il livello di gas presente nel serbatoio al momento in cui il tratto è stato attraversato (completato)
+      \item\textbf{TyreUsury : PERCENTAGE;}\\la percentuale di usura gomme al momento in cui il tratto è stato attraversato (completato)
+      \item\textbf{BestLapNum : INTEGER;}\\la miglior lap fatta dal concorrente dall'inizio della gara all'istante \textsc{Time}
+      \item\textbf{BestLaptime : FLOAT;}\\il tempo della miglior lap fatta dal concorrente dall'inizio della gara all'istante \textsc{Time}
+      \item\textbf{BestSectorTimes : FLOAT_ARRAY(1..3);}\\ogni indice dell'array indica un settore (quindi indice 1 indica il settore 1). Detto ciò,
+      l'array contiene il miglior tempo fatto dal concorrente per ogni settore dall'inizio della gara all'istante \textsc{Time}
+      \item\textbf{MaxSpeed : FLOAT;}\\la massima velocità raggiunta dall'inizio della gara all'istante \textsc{Time}
+      \item\textbf{PathLength : FLOAT;}\\la lunghezza della traiettoria scelta per attraversare il tratto
+\end{itemize}
+Ora vediamo piu dettagliatamente le due sottocomponenti accennato precedentemente:
 \begin{itemize}
-\item un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
+\item \textbf{OnboardComputer}:\\
+è un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
 per aggiornare le statistiche di checkpoint in checkpoint. Più precisamente, ogni concorrente possiede un'istanza di \textbf{Computer}, un record
-che colleziona le statistiche del singolo concorrente e le informazioni sulla configurazione della competizione.\\
-Il \emph{Competitor} utilizza il metodo \underline{AddInfo}
+che colleziona le statistiche del singolo concorrente e le informazioni statiche sulla configurazione della competizione.\\
+Ogni \textbf{Computer} mantiene inoltre un riferimento ad una risorsa che nel diagramma è \textbf{Synch\_Info\_For\_Box}. Tale risorsa
+viene utilizzata per mantenere la lista delle informazioni necessarie al box. \`{E} più che altro un meccanismo di ottimizzazione per avere
+gli aggiornamenti sul singolo competitor immediatamente disponibili quando il \emph{Box} ne richiede.\\\\
+Il \emph{Competitor} utilizza il metodo \underline{AddInfo} di \textbf{OnBoardComputer} 
+per inviare le informazioni relative al tratto appena attraversato. Da quando tali informazioni sono sottomesse, vengono effettuati i seguenti
+passaggi:
+\begin{itemize}
+\item se la fine del tratto coincide con la fine del settore, viene verificato il tempo impiegato per attraversare tale settore (facendo riferimento
+anche ai dati passati) e se migliore di quello precedentemente salvato (in \textbf{Computer}), viene aggiornato quello vecchio.
+\item se la fine del tratto coincide con la fine del settore vengono anche aggiornate le informazioni in \textbf{Synch\_Info\_For\_Box}. 
+Si ricorda infatti che il \emph{Box} riceve le informazioni aggiornate alla fine di ogni settore.
+\item se la fine del tratto corrisponde con la fine del giro, vengono aggiornato il miglior tempo di giro come fatto per i settori.
+\item una volta effettuati tutti i controlli, le informazioni vengono impacchettate e inviate a \textbf{CompetitionComputer} per ulteriori
+controlli e per essere salvate.
+\end{itemize}
+\item \textbf{CompetitionComputer}:\\
+è invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione che coinvolga
+il confronto fra i dati di due o più concorrenti è da richiedere a questa entità. Il \textbf{CompetitionComputer} si appoggia a due risorse
+per l'archiviazione e l'organizzazione dei dati:
+\begin{description}
+\item{\textbf{All\_Competitor\_Stats\_Collection}}:
+\item{\textbf{SOCT\_Array}}:
+\end{description}
+Il \textbf{Computer} utilizza il metodo \underline{Add\_Stat} per inviare i pacchetti con gli aggiornamenti.
 \end{itemize}
 \newpage
 \subsubsection{Monitor}
