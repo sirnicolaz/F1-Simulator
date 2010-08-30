@@ -132,6 +132,7 @@ package body CompetitionComputer is
 
       Index : INTEGER := Competitor_Statistics.all(Competitor_ID).LastAccessedPosition;
       Tmp_Time : FLOAT;
+      ExitLoop : BOOLEAN := FALSE;
    begin
       Ada.Text_IO.Put_Line("TV asking by time");
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
@@ -162,14 +163,14 @@ package body CompetitionComputer is
          Ada.Text_IO.Put_Line("TV forward");
          Index := Index + 1;
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-         while Tmp_Time < Time loop
+         while Tmp_Time < Time and ExitLoop = false loop
             Ada.Text_IO.Put_Line("TV cycle");
             Index := Index + 1;
             --Handle the case when an information cronologically after the end of the competition
             --+ is asked
             if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
                Index := Index - 1;
-               exit;
+               ExitLoop := true;
             end if;
             Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
          end loop;

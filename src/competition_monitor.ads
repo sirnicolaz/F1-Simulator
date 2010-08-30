@@ -38,19 +38,10 @@ package Competition_Monitor is
    type OBC_POINT is access OBC;
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
 
-   function getBestLapInfo return STRING;
-   function getBestSectorInfo(indexIn : INTEGER)return STRING;
-
-   --This method return the information related to the competitors (current checkpoint,
+  --This method return the information related to the competitors (current checkpoint,
    --+ lap and sector, speed ecc ) at a given time
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out Common.FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String);
-
---  private
---     bestLap : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
---     bestSector1 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
---     bestSector2 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
---     bestSector3 : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
 end Competition_Monitor;

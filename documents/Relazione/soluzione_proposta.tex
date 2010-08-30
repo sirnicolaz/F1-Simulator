@@ -591,9 +591,19 @@ tramite il metodo \underline{Get\_Info}, grazie al quale si ottiene un oggetto c
 completato dal concorrente (comprese le medie di consumo) e, se disponibile la strategia calcolata dal \emph{Box} per la lap successiva.\\\\
 \texbtf{Competition\_Monitor} si appoggia a \emph{Stats} per reperire le informazioni richieste. I metodi che espone sono:
 \begin{description}
-\item\textbf{procedure Get\_CompetitionInfo( TimeInstant : FLOAT; ClassificationTimes : out Common.FLOAT\_ARRAY\_POINT; XMLInfo : out Unbounded\_String.Unbounded\_String);}}
-\item\textbf{procedure Get\_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded\_String.Unbounded\_String);}}
+\item\textbf{procedure Get\_CompetitionInfo( TimeInstant : FLOAT; ClassificationTimes : out Common.FLOAT\_ARRAY\_POINT; XMLInfo : out Unbounded\_String.Unbounded\_String);}}\\
+la procedura inizializza la stringa con le informazioni di competizione in formato XML. Tali informazioni riguardano il posizionamento
+dei concorrenti all'istante dato (quale tratto stanno percorrendo e in che lap), le migliori performance fino all'istante dato e la classifica
+aggiornata all'ultima lap in corso, con tempi e concorrenti doppiati. Il metodo si appoggia ai metodi forniti da \textbf{Competition\_Stats}
+per reperire le inormazioni necessarie.
+\item\textbf{procedure Get\_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded\_String.Unbounded\_String);}}\\
+la procedura fornisce le informazioni di un concorrente aggiornate al settore e lap richieste. Il metodo si appoggia a \textbf{OnBoardComputer}
+per reperire le informazioni date, precisamente utilizzando il metodo \underline{Get_BoxInfo} utilizzando come parametro un riferimento
+al \textbf{Computer} del concorrente di cui si richiedono le informazioni.
 \end{description}
+Queste classi non comunicano direttamente con i loro clienti, ma comunicano tramite un intermediario: \textbf{Box\_Monitor\_Radio} e 
+\textbf{Competition\_Monitor\_Radio}, ai quali viene demandato il compito di gestire le comunicazione distribuito tramite Polyorb (usando
+il protocollo CORBA).
 \newpage
 \subsubsection{Box}
 \begin{center}
