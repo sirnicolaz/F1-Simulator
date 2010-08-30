@@ -99,7 +99,7 @@ package body Competition_Monitor is
    procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       ComputerIndex : INTEGER := 1;
    begin
-
+Ada.Text_IO.Put_Line("DEBUG_LORY : in get_CompetitorInfo");
       while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
          ComputerIndex := ComputerIndex + 1;
       end loop;
@@ -109,6 +109,7 @@ package body Competition_Monitor is
                                   sector,
                                   updString,
                                   time);
+      Ada.Text_IO.Put_Line("DEBUG_LORY : Get_BoxInfo con paramentri : computerIndex : "& Integer'Image(ComputerIndex) &", lap ="&Integer'Image(lap)&", sector = "&Integer'Image(sector)&", updString = "&Unbounded_String.To_String(updString)&", time= "& Float'Image(time));
 
    end Get_CompetitorInfo;
 

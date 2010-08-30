@@ -28,4 +28,5 @@ read Q
 
 echo "Killing boxes..."
 killall -9 main_box
+killall -9 BoxMonitor
 echo "Done"

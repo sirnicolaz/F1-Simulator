@@ -32,6 +32,8 @@ private JFrame parent;
 private JScrollPane tablePanel;
 private JTable tableAll;
 
+private Integer lapNum= new Integer(0);
+
 private DefaultTableModel model_1 = new DefaultTableModel(); 
 private DefaultTableModel model_2 = new DefaultTableModel(); 
 
@@ -86,8 +88,14 @@ parent = new JFrame("TV Monitor");
 corbaloc = corbalocIn;
 //effettua la connessione
 System.out.println("Try to connect to Competition");
+try{
  String[] temp = {"ORB"};
 orb = ORB.init(temp, null);
+}
+catch (Exception e){
+System.out.println("Eccezione");
+e.printStackTrace();
+}
 }
 public void addTables(){
 model_1.addColumn("Position");
@@ -289,8 +297,10 @@ Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
 while(true){
 org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
+lapNum = (int)q;
 readXml(updateString.value, q);
 q=(float)(q+1);
+// sleep(500);
 }
 }
 catch(Exception e){e.printStackTrace();}
@@ -318,6 +328,7 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 //qua conto i figli
 
 	for (int i=0; i < nodes.getLength(); i++) {
+
         Element element = (Element) nodes.item(i);
         NodeList comp = doc.getElementsByTagName("competitor");
         Element line = (Element) comp.item(i);
@@ -335,6 +346,7 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	Attr attributoCheck = (Attr) attributiCheck.item(0);
 	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
 	System.out.println("lap : "+getNode("lap", element));
+/*lap = new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
 modelAll.insertRow(0,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // ListSelectionModel selectionModel = tableAll.getSelectionModel();
@@ -401,12 +413,18 @@ textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Time.setText(getNode("time", line));	
 
 	try{
-NodeList cl = doc.getElementsByTagName("classification");
+	NodeList cl = doc.getElementsByTagName("classification");
         Element elementTemp = (Element)cl.item(0);
 	
 	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
         Element compEl = (Element) comp42.item(0);
+// int row = model_1.getRowCount();
+// classific_1.removeColumnSelectionInterval(0,row-1);
+// int row2 = model_2.getRowCount();
+// classific_2.removeColumnSelectionInterval(0,row2-1);
+
 	for (int i=0; i < comp42.getLength(); i++) {
+
         element = (Element) comp42.item(i);
 //         NodeList compIn = comp42.getElementsByTagName("competitor");
          line = (Element) comp42.item(i);
@@ -417,7 +435,15 @@ NodeList cl = doc.getElementsByTagName("classification");
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// if(lapNum.intValue()<getNode("lap", line))
+// if(lapNum%2 == 0){
+// 	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+// else{model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+
+model_1.setValueAt(i,i, 1);
+model_1.setValueAt(attributeComp.getNodeValue(),i, 2);
+model_1.setValueAt(getNode("lap", line), i, 3);
+ 
 	}
 	
 	}
