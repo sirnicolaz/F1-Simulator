@@ -457,39 +457,39 @@ textBoxSector3Time.setText(getNode("time", line));
 	
 	System.out.println("------lap : "+getNode("lap", line));
 datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
+model_1.insertRow(0,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// if(new Integer(getNode("lap", line)).intValue()==current_lap){
+// // model_1.removeRow(i);
+// model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// }
+// else{
+// if(new Integer(getNode("lap", line)).intValue()>current_lap){
+// //devo aggiornare il boolean, devo copiare la tabella vecchia e scrivere quella nuova
+// new_table = true;
+// //copio la vecchia tabella
+// Vector data = model_1.getDataVector();
+// for(int w=0; w<classific_1.getRowCount();w++){
+// // model_2.removeRow(w);
+// // model_1.moveRow(w, w, model_2.getRowCount());
+// model_2.insertRow(w,new Object[]{data.get(w)});
+// }
+// model_1 = new DefaultTableModel();
+// model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// }
+// else {//il valore è minore
+// if(new_table ==  true){
+// model_2.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+// else{
+// model_1.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+// }
+//   }
 
-if(new Integer(getNode("lap", line)).intValue()==current_lap){
-// model_1.removeRow(i);
-model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-}
-else{
-if(new Integer(getNode("lap", line)).intValue()>current_lap){
-//devo aggiornare il boolean, devo copiare la tabella vecchia e scrivere quella nuova
-new_table = true;
-//copio la vecchia tabella
-Vector data = model_1.getDataVector();
-for(int w=0; w<classific_1.getRowCount();w++){
-// model_2.removeRow(w);
-// model_1.moveRow(w, w, model_2.getRowCount());
-model_2.insertRow(w,new Object[]{data.get(w)});
-}
-model_1 = new DefaultTableModel();
-model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-}
-else {//il valore è minore
-if(new_table ==  true){
-model_2.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-else{
-model_1.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-}
-  }
-
 
 }
-if(new_table == true){
-current_lap = current_lap+1;
-new_table =false;
-}
+// if(new_table == true){
+// current_lap = current_lap+1;
+// new_table =false;
+// }
 	}
 	catch (Exception e){
 	System.out.println("classification non presente");
