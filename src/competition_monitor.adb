@@ -144,7 +144,7 @@ package body Competition_Monitor is
          -- In this case the competitor is arriving to the checkpoint
          if( Tmp_Stats.Time < TimeInstant ) then
             Tmp_CompLocation := new STRING(1..8);
-            Tmp_CompLocation.all := "arriving";
+            Tmp_CompLocation.all := "passed";
             --In this case the competitor is exaclty on the checkpoint
          elsif( Tmp_Stats.Time = TimeInstant) then
             Tmp_CompLocation := new STRING(1..4);
@@ -153,7 +153,7 @@ package body Competition_Monitor is
             --+ not arrived to the following one yet
          else
             Tmp_CompLocation := new STRING(1..6);
-            Tmp_CompLocation.all := "passed";
+            Tmp_CompLocation.all := "arriving";
          end if;
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String

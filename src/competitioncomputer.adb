@@ -162,15 +162,20 @@ package body CompetitionComputer is
       else
          Ada.Text_IO.Put_Line("TV forward");
          Index := Index + 1;
+         if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
+            Index := Index - 1;
+         end if;
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
          while Tmp_Time < Time and ExitLoop = false loop
             Ada.Text_IO.Put_Line("TV cycle");
             Index := Index + 1;
             --Handle the case when an information cronologically after the end of the competition
             --+ is asked
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-            if(Index = Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
+            if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
                ExitLoop := true;
+               Index := Index - 1;
+            else
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             end if;
          end loop;
 
