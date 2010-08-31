@@ -7,6 +7,7 @@ import javax.swing.table.*;
 // import java.awt.Dialog.*;
 import javax.swing.JDialog.*;
 import java.awt.Rectangle;
+import java.util.Vector;
 
 import java.util.Properties;
 import org.omg.CORBA.ORB;
@@ -21,7 +22,12 @@ import javax.xml.parsers.*;
 import org.xml.sax.InputSource;
 import org.w3c.dom.*;
 
+import java.lang.reflect.Array;
+
 public class screenTv extends Thread{
+private int[] provaArray = new int[10];
+private dati[] datiArray = new dati[10];
+private int tabellaCorrente =1;
 private JTable classific_1;
 private JTable classific_2;
 private JScrollPane panelCl_1;
@@ -82,6 +88,9 @@ private Integer idCompetitor;
 private String stateValue;
 private Integer checkpointValue;
 private Integer sectorValue;
+
+private int current_lap =0;
+private boolean new_table = false;
 
 public screenTv(String corbalocIn){
 parent = new JFrame("TV Monitor");
@@ -291,9 +300,11 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<10; index++){
-model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
-}
+// for(int index = 0; index<10; index++){
+// model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
+// model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
+// 
+// }
 float q =(float)1.0;
 org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
@@ -302,8 +313,15 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
+//ho i dati nell'array dati
+// if(q>20.0){
+// for(int y=0; y<Array.getLength(datiArray); y++){
+// System.out.println("dati["+y+"].id="+datiArray[y].id);
+// model_1.removeRow(y);
+// model_1.insertRow(y,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+// }}
 q=(float)(q+1);
-// sleep(500);
+sleep(500);
 }
 }
 catch(Exception e){e.printStackTrace();}
@@ -438,21 +456,40 @@ textBoxSector3Time.setText(getNode("time", line));
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-// if(lapNum.intValue()<negetNode("lap", line))
-// if(lapNum%2 == 0){
-	model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-// }
-// else{
-model_2.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-// }
-/*
-model_1.setValueAt(i,i, 1);
-model_1.setValueAt(attributoComp.getNodeValue(),i, 2);
-model_1.setValueAt(getNode("lap", line), i, 3);
-model_1.setValueAt(arrayInfo[i], i, 4);*/
- 
-	}
-	
+datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
+
+if(new Integer(getNode("lap", line)).intValue()==current_lap){
+// model_1.removeRow(i);
+model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+}
+else{
+if(new Integer(getNode("lap", line)).intValue()>current_lap){
+//devo aggiornare il boolean, devo copiare la tabella vecchia e scrivere quella nuova
+new_table = true;
+//copio la vecchia tabella
+Vector data = model_1.getDataVector();
+for(int w=0; w<classific_1.getRowCount();w++){
+// model_2.removeRow(w);
+// model_1.moveRow(w, w, model_2.getRowCount());
+model_2.insertRow(w,new Object[]{data.get(w)});
+}
+model_1 = new DefaultTableModel();
+model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+}
+else {//il valore è minore
+if(new_table ==  true){
+model_2.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+else{
+model_1.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
+}
+  }
+
+
+}
+if(new_table == true){
+current_lap = current_lap+1;
+new_table =false;
+}
 	}
 	catch (Exception e){
 	System.out.println("classification non presente");
@@ -487,5 +524,17 @@ public static void main(String[] args){
 screenTv s= new screenTv(args[0]);
 // corbaloc = args[0];
 s.start();
+}
+}
+
+class dati{
+public int lap;
+public int id;
+public int position;
+public dati(int lapIn, int idIn, int positionIn){
+lap = lapIn;
+id = idIn;
+position = positionIn;
+
 }
 }
