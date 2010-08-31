@@ -26,7 +26,8 @@ import java.lang.reflect.Array;
 
 public class screenTv extends Thread{
 private int[] provaArray = new int[10];
-private dati[] datiArray = new dati[10];
+private dati[] datiArray = new dati[3];
+private dati[] datiOldArray = new dati[3];
 private int tabellaCorrente =1;
 private JTable classific_1;
 private JTable classific_2;
@@ -82,6 +83,7 @@ private String corbaloc;
 private ORB orb;
 private int numComp;
 private float[] arrayInfo;
+private float[] arrayOldInfo;
 
 //parsing xml
 private Integer idCompetitor;
@@ -300,11 +302,11 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-// for(int index = 0; index<10; index++){
-// model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
-// model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
-// 
-// }
+for(int index = 0; index<1; index++){
+model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
+model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
+
+}
 float q =(float)1.0;
 org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
@@ -313,13 +315,75 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
+//ho l'array con la classifica letta, provo a stamparla.
+
+for(int y=0; y<Array.getLength(datiArray); y++){
+try{
+System.out.println("dati["+y+"].id="+datiArray[y].id+", lap = "+datiArray[y].lap+", position = "+datiArray[y].position);
+model_1.addRow(new Object[]{y,datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+}
+catch(Exception e){
+y=Array.getLength(datiArray)+1;
+e.printStackTrace();
+}
+
+}
+
+//stampo le classifiche del giro pari su cl_1 e quelle dei giri dispari su cl_2
+// for(int y=0; y<Array.getLength(datiArray); y++){
+// try{
+// if(datiArray[y].lap%2==0){
+// if(datiArray[y].position < model_1.getRowCount()){
+// model_1.removeRow(datiArray[y].position);}
+// model_1.insertRow(datiArray[y].position,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+// }
+// else{
+// if(datiArray[y].position < model_1.getRowCount()){
+// model_2.removeRow(datiArray[y].position);}
+// model_2.insertRow(datiArray[y].position,new Object[]{datiArray[y].position, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+// }
+// }
+// catch(Exception e){
+// y=Array.getLength(datiArray)+1;
+// }
+// }
 //ho i dati nell'array dati
 // if(q>20.0){
 // for(int y=0; y<Array.getLength(datiArray); y++){
+// try{
+// if(datiArray[y].lap == current_lap){
+// new_table=false;
+// System.out.println("Length array = "+Array.getLength(datiArray));
 // System.out.println("dati["+y+"].id="+datiArray[y].id);
-// model_1.removeRow(y);
+// // model_1.removeRow(y);
+// model_1.insertRow(0,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+// datiOldArray[y]= datiArray[y];
+// arrayOldInfo[y]=arrayInfo[y];
+// }
+// else{
+// if(datiArray[y].lap > current_lap){
+// //copiare dati vecchi nella nuova tabella
+// // for(int r=0; r<Array.getLength(datiArray); r++){
+// // model_2.removeRow(r);}
+// for(int x=0 ; x<Array.getLength(datiOldArray); x++){
+// // model_2 = insertRow(x, model_1.getRow(x));
+// // Object[] obj1 = {(classific_1, 0, 0), GetData(classific_1, 0, 1),GetData(classific_1, 0, 2),GetData(classific_1, 0, 3)};
+// model_2.insertRow(x, new Object[]{y, datiOldArray[x].id, datiOldArray[x].lap, arrayOldInfo[x]});
+// model_1.removeRow(0);
+// }
+// //scrivere nuovi dati nella nuova tabella
 // model_1.insertRow(y,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
-// }}
+// new_table=true;
+// }
+// }
+// if(new_table == true){
+// current_lap = current_lap +1;
+// }
+// }
+// catch(Exception e){
+// y=Array.getLength(datiArray)+1;
+// }
+// }
 q=(float)(q+1);
 sleep(500);
 }
@@ -369,7 +433,11 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("lap : "+getNode("lap", element));
 /*lap = new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
-modelAll.insertRow(0,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+// try{
+// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
+// }catch(Exception e) {}
+// modelAll.removeRow(i);
+modelAll.insertRow(i,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // ListSelectionModel selectionModel = tableAll.getSelectionModel();
 // selectionModel.setSelectionInterval(0,0);
 	}
@@ -443,7 +511,9 @@ textBoxSector3Time.setText(getNode("time", line));
 // classific_1.removeColumnSelectionInterval(0,row-1);
 // int row2 = model_2.getRowCount();
 // classific_2.removeColumnSelectionInterval(0,row2-1);
-
+for(int y=0; y<Array.getLength(datiArray); y++){
+datiArray[y] = null;
+}
 	for (int i=0; i < comp42.getLength(); i++) {
 
         element = (Element) comp42.item(i);
@@ -457,7 +527,7 @@ textBoxSector3Time.setText(getNode("time", line));
 	
 	System.out.println("------lap : "+getNode("lap", line));
 datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
-model_1.insertRow(0,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
+// model_1.insertRow(0,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
 // if(new Integer(getNode("lap", line)).intValue()==current_lap){
 // // model_1.removeRow(i);
 // model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
