@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Init ada part...";
-./main_competition > log-simulazione.txt &
+./main_competition &
 echo "Entering interface dir.."
 cd ConfigurationInterface
 echo "Initing configuration.."

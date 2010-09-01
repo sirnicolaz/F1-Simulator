@@ -291,7 +291,12 @@ for(int index = 0; index<1; index++){
 model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
 model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
 }
+for(int i=0; i<Array.getLength(storicodatiArray);i++){
+storicodatiArray[i] = new arrayDati(new dati[3]);
+}
+current_lap=0;
 float q =(float)1.0;
+int i=0;
 org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
 while(true){
@@ -299,11 +304,98 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
-//ho l'array con la classifica provo a stamparla.
+
+for(int r=0; r<Array.getLength(datiArray);r++){
+try{
+System.out.println("DEBUG : ITERAZIONE r = "+r);
+System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ --- datiArray["+r+"] .id= "+datiArray[r].id+" ,  lap = "+datiArray[r].lap+" , position = "+datiArray[r].position);
+//se esiste la cella devo
+//1-controllare di non averla già inserita
+//2-se già inserite saltare, altrimenti scriverla
+//3-se ho un nuovo lap scrivere i doppiati in quella del lap precedente
+//4-inizializzare il nuovo campo dell'array
+if(datiArray[r].lap == current_lap){
+System.out.println("datiArray["+r+"].lap == current_lap ==" +current_lap);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position "+datiArray[r].position);
+
+//il giro è quello attuale
+// if(storicodatiArray[current_lap].arrayD[datiArray[r].position].id!=datiArray[r].id){
+// System.out.println("current_lap].arrayD[datiArray["+r+"].position].id!=datiArray["+r+"].id");
+// //se sono diversi non ho già il dato che mi serve, quindi lo salvo
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+/*if (storicodatiArray[current_lap].arrayD[r]==null){
+storicodatiArray[current_lap].arrayD[r] = new dati[3];
+}*/
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+// }
+}
+if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
+if(new_table==false){new_table=true;}
+System.out.println("datiArray["+r+"].lap > current_lap ==" +current_lap);
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+//salvo il nuovo giroarrayD[3]
+// storicodatiArray[current_lap+1].arrayD = arrayDati[3];
+
+// storicodatiArray[current_lap+1].arrayD[datiArray[r].position]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+storicodatiArray[current_lap+1].arrayD[r]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+//salvo un boolean per sapere che devo scrivere i doppiati
+
+}
+if(datiArray[r].lap < current_lap && new_table == true){
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+System.out.println("datiArray["+r+"].lap < current_lap ==" +current_lap+" && new_table == true");
+//inserisco i doppiati
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+}
+}
+catch(Exception e ){
+System.out.println("ecc in salvataggio");
+e.printStackTrace();}
+}
+
+System.out.println("Classifica : ");
+for(int e=0; e<Array.getLength(storicodatiArray); e++){
+// for(int w=0; w<=current_lap; w++){
+try{
+if(current_lap%2 == 0){
+
+// model_1.removeRow(e);
+model_1.addRow(new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
+else{
+// model_2.removeRow(e);
+model_2.addRow( new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
+
+System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
+}
+catch(Exception ecc){System.out.println("ecc");
+ecc.printStackTrace();}
+}
+// }
+
+if(new_table == true){
+System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
+current_lap = current_lap +1;
+new_table = false;
+}
 
 q=(float)(q+1);
 sleep(500);
 }
+// catch(Exception e){}
+// }
 }
 catch(Exception e){e.printStackTrace();}
 }
@@ -349,7 +441,8 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("lap : "+getNode("lap", element));
 /*lap = new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
-modelAll.insertRow(i,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
 	
 System.out.println("bestTimes");
@@ -473,9 +566,9 @@ s.start();
 }
 
 class dati{
-public int lap;
-public int id;
-public int position;
+public int lap=-1;
+public int id=-1;
+public int position=-1;
 public dati(int lapIn, int idIn, int positionIn){
 lap = lapIn;
 id = idIn;
@@ -483,5 +576,8 @@ position = positionIn;
 }
 }
 class arrayDati{
+public arrayDati(dati[] a){
+arrayD=a;
+}
 public dati[] arrayD;
 }
