@@ -401,11 +401,15 @@ for(int e=0; e<Array.getLength(storicodatiArray); e++){
 try{
 // if(current_lap%2 == 0){
 if(new_table_temp==true){
-// for(int w=0; w<modelClassific[current_index].getRowCount();w++){//scrivo tutta la classifica prima
+for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
 // modelClassific[current_index].removeRow(w);
-// }
+try{
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,"doppiato"});
+}catch(Exception exx){w=Array.getLength(storicodatiArray[current_lap].arrayD)+1;}
+}
 
 current_index=(current_index+1)%2;
+current_lap=current_lap+1;
 new_table_temp = false;
 for(int w=0; w<modelClassific[current_index].getRowCount();w++){//rimuovo la vecchia classifica scritta su questa tabella.
 System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
@@ -430,7 +434,7 @@ e= Array.getLength(storicodatiArray)+1;
 
 if(new_table == true){
 System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
-current_lap = current_lap +1;
+/*current_lap = current_lap +1;*/
 new_table = false;
 }
 
