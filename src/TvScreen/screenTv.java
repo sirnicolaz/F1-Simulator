@@ -66,7 +66,8 @@ private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
 private JLabel labelSector1Id = new JLabel(" by competitor : ");
 private JLabel labelSector1Time = new JLabel(" in time : ");
 
-
+private DefaultTableModel[] modelClassific = new DefaultTableModel[]{model_1, model_2};
+private int current_index =0;
 
 private JTextField textBoxSector2Lap = new JTextField("-",3);
 private JTextField textBoxSector2Id = new JTextField("-",2);
@@ -138,8 +139,8 @@ panelCl_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 panel1 = new JPanel(new BorderLayout());
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-panel1.add(panelCl_1, BorderLayout.EAST);
-panel1.add(panelCl_2, BorderLayout.WEST);
+panel1.add(panelCl_1, BorderLayout.WEST);
+panel1.add(panelCl_2, BorderLayout.EAST);
 
 }
 public void addBest(){
@@ -288,9 +289,12 @@ tableAll = new JTable(modelAll);
 tablePanel = new JPanel(new BorderLayout());
 tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 tableSPanel = new JScrollPane(tableAll);
-tableSPanel.setVerticalScrollBar(new JScrollBar());
-tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+tableSPanel.setPreferredSize(new Dimension(0, 70));// 35 moltiplicato per il numero di concorrenti
+
+// tableSPanel.setVerticalScrollBar(new JScrollBar());
+// tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 tablePanel.add(tableSPanel, BorderLayout.CENTER);
+// tablePanel.add(tableSPanel, BorderLayout.CENTER);
 
 }
 public void run(){
@@ -385,25 +389,37 @@ System.out.println("dopo scrittura ");
 }
 catch(Exception e ){
 System.out.println("ecc in salvataggio");
-e.printStackTrace();}
+e.printStackTrace();
+r=Array.getLength(datiArray) +1;
+}
 }
 
 System.out.println("Classifica : ");
+boolean new_table_temp = new_table;
 for(int e=0; e<Array.getLength(storicodatiArray); e++){
 // for(int w=0; w<=current_lap; w++){
 try{
-if(current_lap%2 == 0){
+// if(current_lap%2 == 0){
+if(new_table_temp==true){
+current_index=(current_index+1)%2;
+new_table_temp = false;
+/*for(int w=0; w<2;w++){
+modelClassific[current_index].removeRow(w);
+}*/
+}
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
 
-// model_1.removeRow(e);
-model_1.addRow(new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
-else{
-// model_2.removeRow(e);
-model_2.addRow( new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
+modelClassific[current_index].removeRow(e+1);
+// else{
+// // model_2.removeRow(e);
+// model_2.addRow( new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
 
 System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
 }
 catch(Exception ecc){System.out.println("ecc");
-ecc.printStackTrace();}
+ecc.printStackTrace();
+e= Array.getLength(storicodatiArray)+1;
+}
 }
 // }
 
