@@ -312,7 +312,7 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<2; index++){
+for(int index = 0; index<3; index++){
 model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
 model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
 modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
@@ -401,11 +401,16 @@ for(int e=0; e<Array.getLength(storicodatiArray); e++){
 try{
 // if(current_lap%2 == 0){
 if(new_table_temp==true){
+// for(int w=0; w<modelClassific[current_index].getRowCount();w++){//scrivo tutta la classifica prima
+// modelClassific[current_index].removeRow(w);
+// }
+
 current_index=(current_index+1)%2;
 new_table_temp = false;
-/*for(int w=0; w<2;w++){
+for(int w=0; w<modelClassific[current_index].getRowCount();w++){//rimuovo la vecchia classifica scritta su questa tabella.
+System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
 modelClassific[current_index].removeRow(w);
-}*/
+}
 }
 modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
 
