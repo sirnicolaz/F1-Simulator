@@ -37,9 +37,11 @@ private JPanel classificPanel;
 private JScrollPane panelCl_2;
 private JPanel bestPanel;
 private JFrame parent;
-private JScrollPane tablePanel;
+private JPanel tablePanel;
+private JScrollPane tableSPanel;
 private JTable tableAll;
 
+private JPanel panel1;
 
 private Integer lapNum= new Integer(0);
 
@@ -50,33 +52,33 @@ private DefaultTableModel modelAll = new DefaultTableModel();
 private FlowLayout f = new FlowLayout();
 private GridBagConstraints classificGrid = new GridBagConstraints();
 private GridBagConstraints bestGrid = new GridBagConstraints();
-private JTextField textBoxLap = new JTextField("",3);
-private JTextField textBoxLapId = new JTextField("",2);
-private JTextField textBoxLapTime = new JTextField("",10);
+private JTextField textBoxLap = new JTextField("-",3);
+private JTextField textBoxLapId = new JTextField("-",2);
+private JTextField textBoxLapTime = new JTextField("-",10);
 private JLabel labelLap = new JLabel("Best lap n° : ");
 private JLabel labelLapId = new JLabel(" by competitor : ");
 private JLabel labelLapTime = new JLabel(" in time : ");
 
-private JTextField textBoxSector1Lap = new JTextField("",3);
-private JTextField textBoxSector1Id = new JTextField("",2);
-private JTextField textBoxSector1Time = new JTextField("",10);
+private JTextField textBoxSector1Lap = new JTextField("-",3);
+private JTextField textBoxSector1Id = new JTextField("-",2);
+private JTextField textBoxSector1Time = new JTextField("-",10);
 private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
 private JLabel labelSector1Id = new JLabel(" by competitor : ");
 private JLabel labelSector1Time = new JLabel(" in time : ");
 
 
 
-private JTextField textBoxSector2Lap = new JTextField("",3);
-private JTextField textBoxSector2Id = new JTextField("",2);
-private JTextField textBoxSector2Time = new JTextField("",10);
+private JTextField textBoxSector2Lap = new JTextField("-",3);
+private JTextField textBoxSector2Id = new JTextField("-",2);
+private JTextField textBoxSector2Time = new JTextField("-",10);
 private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
 private JLabel labelSector2Id = new JLabel(" by competitor : ");
 private JLabel labelSector2Time = new JLabel(" in time : ");
 
 
-private JTextField textBoxSector3Lap = new JTextField("",3);
-private JTextField textBoxSector3Id = new JTextField("",2);
-private JTextField textBoxSector3Time = new JTextField("",10);
+private JTextField textBoxSector3Lap = new JTextField("-",3);
+private JTextField textBoxSector3Id = new JTextField("-",2);
+private JTextField textBoxSector3Time = new JTextField("-",10);
 private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
 private JLabel labelSector3Id = new JLabel(" by competitor : ");
 private JLabel labelSector3Time = new JLabel(" in time : ");
@@ -122,8 +124,23 @@ model_2.addColumn("Time");
 classific_1 = new JTable(model_1);
 classific_2 = new JTable(model_2);
 
+
 panelCl_1 = new JScrollPane(classific_1);
 panelCl_2 = new JScrollPane(classific_2);
+
+panelCl_1.setVerticalScrollBar(new JScrollBar());
+panelCl_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+panelCl_2.setVerticalScrollBar(new JScrollBar());
+panelCl_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+
+panel1 = new JPanel(new BorderLayout());
+// panel1.setLayout(new FlowLayout());
+panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+panel1.add(panelCl_1, BorderLayout.EAST);
+panel1.add(panelCl_2, BorderLayout.WEST);
+
 }
 public void addBest(){
 bestPanel = new JPanel(new BorderLayout());
@@ -268,9 +285,12 @@ modelAll.addColumn("State");
 modelAll.addColumn("Time (h:m:s:mll)");
 
 tableAll = new JTable(modelAll);
-tablePanel = new JScrollPane(tableAll);
-tablePanel.setVerticalScrollBar(new JScrollBar());
-tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+tablePanel = new JPanel(new BorderLayout());
+tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+tableSPanel = new JScrollPane(tableAll);
+tableSPanel.setVerticalScrollBar(new JScrollBar());
+tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+tablePanel.add(tableSPanel, BorderLayout.CENTER);
 
 }
 public void run(){
@@ -278,8 +298,9 @@ public void run(){
 addTables();
 addBest();
 addTablesAll();
-parent.add(panelCl_1, BorderLayout.EAST);
-parent.add(panelCl_2, BorderLayout.WEST);
+/*parent.add(panelCl_1, BorderLayout.EAST);*/
+parent.add(panel1, BorderLayout.CENTER);
+// parent.add(panelCl_2, BorderLayout.WEST);
 parent.add(bestPanel,BorderLayout.NORTH);
 parent.add(tablePanel, BorderLayout.SOUTH);
 parent.pack();
@@ -287,9 +308,10 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<1; index++){
-model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
-model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
+for(int index = 0; index<2; index++){
+model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
+model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
+modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
 }
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
 storicodatiArray[i] = new arrayDati(new dati[3]);
@@ -441,6 +463,7 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("lap : "+getNode("lap", element));
 /*lap = new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
@@ -456,12 +479,13 @@ System.out.println("bestTimes");
 
 	Attr attributoLap = (Attr) attributiLap.item(0);
 	System.out.println("attributo lap "+getCharacterDataFromElement(line)+" : "+attributoLap.getNodeValue());
-	
+if(new Integer(attributoLap.getNodeValue()).intValue() !=-1){	
 textBoxLap.setText(attributoLap.getNodeValue());
 	System.out.println("time : "+getNode("time", element));
 textBoxLapTime.setText(getNode("time", element));
 	System.out.println("competitor Id : "+getNode("competitorId", element));
 textBoxLapId.setText(getNode("competitorId", element));
+}
 
 	
 	NodeList bestSector = doc.getElementsByTagName("sectors");
@@ -475,11 +499,12 @@ textBoxLapId.setText(getNode("competitorId", element));
 	System.out.println("--time : "+getNode("time", line));
 
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector1Id.setText(getNode("competitorId", line));
 textBoxSector1Lap.setText(getNode("lap", line));
 textBoxSector1Id.setText(getNode("competitorId", line));
 textBoxSector1Time.setText(getNode("time", line));	
-
+}
 	sector = element.getElementsByTagName("sector");
         line = (Element) sector.item(1);
 	attributiSector =line.getAttributes();
@@ -487,11 +512,12 @@ textBoxSector1Time.setText(getNode("time", line));
 	System.out.println("attributo sector 2 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector2Id.setText(getNode("competitorId", line));
 textBoxSector2Lap.setText(getNode("lap", line));
 textBoxSector2Id.setText(getNode("competitorId", line));
 textBoxSector2Time.setText(getNode("time", line));	
-	
+	}
 	sector = element.getElementsByTagName("sector");
         line = (Element) sector.item(2);
 	attributiSector =line.getAttributes();
@@ -499,11 +525,12 @@ textBoxSector2Time.setText(getNode("time", line));
 	System.out.println("attributo sector 3"+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Lap.setText(getNode("lap", line));
 textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Time.setText(getNode("time", line));	
-
+}
 	try{
 	NodeList cl = doc.getElementsByTagName("classification");
         Element elementTemp = (Element)cl.item(0);
