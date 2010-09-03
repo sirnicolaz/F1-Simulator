@@ -26,8 +26,9 @@ import java.lang.reflect.Array;
 
 public class screenTv extends Thread{
 private int[] provaArray = new int[10];
+private arrayDati[] storicodatiArray = new arrayDati[5];
 private dati[] datiArray = new dati[3];
-private dati[] datiOldArray = new dati[3];
+// private dati[] datiOldArray = new dati[5];
 private int tabellaCorrente =1;
 private JTable classific_1;
 private JTable classific_2;
@@ -36,8 +37,11 @@ private JPanel classificPanel;
 private JScrollPane panelCl_2;
 private JPanel bestPanel;
 private JFrame parent;
-private JScrollPane tablePanel;
+private JPanel tablePanel;
+private JScrollPane tableSPanel;
 private JTable tableAll;
+
+private JPanel panel1;
 
 private Integer lapNum= new Integer(0);
 
@@ -48,33 +52,34 @@ private DefaultTableModel modelAll = new DefaultTableModel();
 private FlowLayout f = new FlowLayout();
 private GridBagConstraints classificGrid = new GridBagConstraints();
 private GridBagConstraints bestGrid = new GridBagConstraints();
-private JTextField textBoxLap = new JTextField("",3);
-private JTextField textBoxLapId = new JTextField("",2);
-private JTextField textBoxLapTime = new JTextField("",10);
+private JTextField textBoxLap = new JTextField("-",3);
+private JTextField textBoxLapId = new JTextField("-",2);
+private JTextField textBoxLapTime = new JTextField("-",10);
 private JLabel labelLap = new JLabel("Best lap n° : ");
 private JLabel labelLapId = new JLabel(" by competitor : ");
 private JLabel labelLapTime = new JLabel(" in time : ");
 
-private JTextField textBoxSector1Lap = new JTextField("",3);
-private JTextField textBoxSector1Id = new JTextField("",2);
-private JTextField textBoxSector1Time = new JTextField("",10);
+private JTextField textBoxSector1Lap = new JTextField("-",3);
+private JTextField textBoxSector1Id = new JTextField("-",2);
+private JTextField textBoxSector1Time = new JTextField("-",10);
 private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
 private JLabel labelSector1Id = new JLabel(" by competitor : ");
 private JLabel labelSector1Time = new JLabel(" in time : ");
 
+private DefaultTableModel[] modelClassific = new DefaultTableModel[]{model_1, model_2};
+private int current_index =0;
 
-
-private JTextField textBoxSector2Lap = new JTextField("",3);
-private JTextField textBoxSector2Id = new JTextField("",2);
-private JTextField textBoxSector2Time = new JTextField("",10);
+private JTextField textBoxSector2Lap = new JTextField("-",3);
+private JTextField textBoxSector2Id = new JTextField("-",2);
+private JTextField textBoxSector2Time = new JTextField("-",10);
 private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
 private JLabel labelSector2Id = new JLabel(" by competitor : ");
 private JLabel labelSector2Time = new JLabel(" in time : ");
 
 
-private JTextField textBoxSector3Lap = new JTextField("",3);
-private JTextField textBoxSector3Id = new JTextField("",2);
-private JTextField textBoxSector3Time = new JTextField("",10);
+private JTextField textBoxSector3Lap = new JTextField("-",3);
+private JTextField textBoxSector3Id = new JTextField("-",2);
+private JTextField textBoxSector3Time = new JTextField("-",10);
 private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
 private JLabel labelSector3Id = new JLabel(" by competitor : ");
 private JLabel labelSector3Time = new JLabel(" in time : ");
@@ -120,22 +125,23 @@ model_2.addColumn("Time");
 classific_1 = new JTable(model_1);
 classific_2 = new JTable(model_2);
 
+
 panelCl_1 = new JScrollPane(classific_1);
 panelCl_2 = new JScrollPane(classific_2);
-// panelCl_2 = new JScrollPane(classific_2);//classific_1);
-/*classificPanel = new JPanel(new BorderLayout());
-classificPanel.setLayout(new GridBagLayout());
-classificPanel.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-classificGrid.fill = GridBagConstraints.HORIZONTAL;
-		classificGrid.gridx = 0;
-		classificGrid.gridy = 0;
-		classificGrid.ipady = 5;
-		classificPanel.add(panelCl_1, classificGrid);*/
-/*classificGrid.fill = GridBagConstraints.HORIZONTAL;
-		classificGrid.gridx = 1;
-		classificGrid.gridy = 0;
-		classificGrid.ipady = 5;
-		classificPanel.add(panelCl_2, classificGrid);*/
+
+panelCl_1.setVerticalScrollBar(new JScrollBar());
+panelCl_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+panelCl_2.setVerticalScrollBar(new JScrollBar());
+panelCl_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+
+panel1 = new JPanel(new BorderLayout());
+// panel1.setLayout(new FlowLayout());
+panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+panel1.add(panelCl_1, BorderLayout.WEST);
+panel1.add(panelCl_2, BorderLayout.EAST);
+
 }
 public void addBest(){
 bestPanel = new JPanel(new BorderLayout());
@@ -280,9 +286,15 @@ modelAll.addColumn("State");
 modelAll.addColumn("Time (h:m:s:mll)");
 
 tableAll = new JTable(modelAll);
-tablePanel = new JScrollPane(tableAll);
-tablePanel.setVerticalScrollBar(new JScrollBar());
-tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+tablePanel = new JPanel(new BorderLayout());
+tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+tableSPanel = new JScrollPane(tableAll);
+tableSPanel.setPreferredSize(new Dimension(0, 70));// 35 moltiplicato per il numero di concorrenti
+
+// tableSPanel.setVerticalScrollBar(new JScrollBar());
+// tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+tablePanel.add(tableSPanel, BorderLayout.CENTER);
+// tablePanel.add(tableSPanel, BorderLayout.CENTER);
 
 }
 public void run(){
@@ -290,24 +302,27 @@ public void run(){
 addTables();
 addBest();
 addTablesAll();
-parent.add(panelCl_1, BorderLayout.EAST);
-parent.add(panelCl_2, BorderLayout.WEST);
+/*parent.add(panelCl_1, BorderLayout.EAST);*/
+parent.add(panel1, BorderLayout.CENTER);
+// parent.add(panelCl_2, BorderLayout.WEST);
 parent.add(bestPanel,BorderLayout.NORTH);
 parent.add(tablePanel, BorderLayout.SOUTH);
-// readXml("<?xml version=\"1.0\"?><competitionUpdate><competitors><competitor id=\"1\"><checkpoint compPosition=\"passed\" >12</checkpoint><lap>42</lap><sector>3</sector></competitor><competitor id=\"2\"><checkpoint compPosition=\"passed\" >13</checkpoint><lap>43</lap><sector>2</sector> </competitor></competitors><bestTimes><lap num=\"3\"><time>34.0000</time><competitorId>4</competitorId></lap><sectors><sector num=\"1\"><time>10.0</time><competitorId>3</competitorId><lap>45</lap></sector><sector num=\"2\"><time>15.1</time><competitorId>4</competitorId><lap>99</lap></sector><sector num=\"3\"><time>5.3</time><competitorId>5</competitorId><lap>66</lap></sector></sectors></bestTimes>"
-// +"<classification><competitor id=\"3\"><lap>4</lap></competitor><competitor id=\"5\"><lap>3</lap></competitor><competitor id=\"1\"><lap>2</lap></competitor></classification></competitionUpdate>");
-
 parent.pack();
 parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<1; index++){
-model_1.insertRow(index,new Object[]{index, "---","---","---","---",});
-model_2.insertRow(index,new Object[]{index, "---","---","---","---",});
-
+for(int index = 0; index<3; index++){
+model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
+model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
+modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
 }
+for(int i=0; i<Array.getLength(storicodatiArray);i++){
+storicodatiArray[i] = new arrayDati(new dati[3]);
+}
+current_lap=0;
 float q =(float)1.0;
+int i=0;
 org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
 while(true){
@@ -315,78 +330,119 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
-//ho l'array con la classifica letta, provo a stamparla.
 
-for(int y=0; y<Array.getLength(datiArray); y++){
+for(int r=0; r<Array.getLength(datiArray);r++){
 try{
-System.out.println("dati["+y+"].id="+datiArray[y].id+", lap = "+datiArray[y].lap+", position = "+datiArray[y].position);
-model_1.addRow(new Object[]{y,datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+System.out.println("DEBUG : ITERAZIONE r = "+r);
+System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ --- datiArray["+r+"] .id= "+datiArray[r].id+" ,  lap = "+datiArray[r].lap+" , position = "+datiArray[r].position);
+//se esiste la cella devo
+//1-controllare di non averla già inserita
+//2-se già inserite saltare, altrimenti scriverla
+//3-se ho un nuovo lap scrivere i doppiati in quella del lap precedente
+//4-inizializzare il nuovo campo dell'array
+if(datiArray[r].lap == current_lap){
+System.out.println("datiArray["+r+"].lap == current_lap ==" +current_lap);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position "+datiArray[r].position);
+
+//il giro è quello attuale
+// if(storicodatiArray[current_lap].arrayD[datiArray[r].position].id!=datiArray[r].id){
+// System.out.println("current_lap].arrayD[datiArray["+r+"].position].id!=datiArray["+r+"].id");
+// //se sono diversi non ho già il dato che mi serve, quindi lo salvo
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+/*if (storicodatiArray[current_lap].arrayD[r]==null){
+storicodatiArray[current_lap].arrayD[r] = new dati[3];
+}*/
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+// }
 }
-catch(Exception e){
-y=Array.getLength(datiArray)+1;
+if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
+if(new_table==false){new_table=true;}
+System.out.println("datiArray["+r+"].lap > current_lap ==" +current_lap);
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+//salvo il nuovo giroarrayD[3]
+// storicodatiArray[current_lap+1].arrayD = arrayDati[3];
+
+// storicodatiArray[current_lap+1].arrayD[datiArray[r].position]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+storicodatiArray[current_lap+1].arrayD[r]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+//salvo un boolean per sapere che devo scrivere i doppiati
+
+}
+if(datiArray[r].lap < current_lap && new_table == true){
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+System.out.println("datiArray["+r+"].lap < current_lap ==" +current_lap+" && new_table == true");
+//inserisco i doppiati
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+}
+}
+catch(Exception e ){
+System.out.println("ecc in salvataggio");
 e.printStackTrace();
+r=Array.getLength(datiArray) +1;
+}
 }
 
+System.out.println("Classifica : ");
+boolean new_table_temp = new_table;
+for(int e=0; e<Array.getLength(storicodatiArray); e++){
+// for(int w=0; w<=current_lap; w++){
+try{
+// if(current_lap%2 == 0){
+if(new_table_temp==true){
+for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
+// modelClassific[current_index].removeRow(w);
+try{
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,"doppiato"});
+}catch(Exception exx){w=Array.getLength(storicodatiArray[current_lap].arrayD)+1;}
 }
 
-//stampo le classifiche del giro pari su cl_1 e quelle dei giri dispari su cl_2
-// for(int y=0; y<Array.getLength(datiArray); y++){
-// try{
-// if(datiArray[y].lap%2==0){
-// if(datiArray[y].position < model_1.getRowCount()){
-// model_1.removeRow(datiArray[y].position);}
-// model_1.insertRow(datiArray[y].position,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
-// }
+current_index=(current_index+1)%2;
+current_lap=current_lap+1;
+new_table_temp = false;
+for(int w=0; w<modelClassific[current_index].getRowCount();w++){//rimuovo la vecchia classifica scritta su questa tabella.
+System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
+modelClassific[current_index].removeRow(w);
+}
+}
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
+
+modelClassific[current_index].removeRow(e+1);
 // else{
-// if(datiArray[y].position < model_1.getRowCount()){
-// model_2.removeRow(datiArray[y].position);}
-// model_2.insertRow(datiArray[y].position,new Object[]{datiArray[y].position, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
+// // model_2.removeRow(e);
+// model_2.addRow( new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
+
+System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
+}
+catch(Exception ecc){System.out.println("ecc");
+ecc.printStackTrace();
+e= Array.getLength(storicodatiArray)+1;
+}
+}
 // }
-// }
-// catch(Exception e){
-// y=Array.getLength(datiArray)+1;
-// }
-// }
-//ho i dati nell'array dati
-// if(q>20.0){
-// for(int y=0; y<Array.getLength(datiArray); y++){
-// try{
-// if(datiArray[y].lap == current_lap){
-// new_table=false;
-// System.out.println("Length array = "+Array.getLength(datiArray));
-// System.out.println("dati["+y+"].id="+datiArray[y].id);
-// // model_1.removeRow(y);
-// model_1.insertRow(0,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
-// datiOldArray[y]= datiArray[y];
-// arrayOldInfo[y]=arrayInfo[y];
-// }
-// else{
-// if(datiArray[y].lap > current_lap){
-// //copiare dati vecchi nella nuova tabella
-// // for(int r=0; r<Array.getLength(datiArray); r++){
-// // model_2.removeRow(r);}
-// for(int x=0 ; x<Array.getLength(datiOldArray); x++){
-// // model_2 = insertRow(x, model_1.getRow(x));
-// // Object[] obj1 = {(classific_1, 0, 0), GetData(classific_1, 0, 1),GetData(classific_1, 0, 2),GetData(classific_1, 0, 3)};
-// model_2.insertRow(x, new Object[]{y, datiOldArray[x].id, datiOldArray[x].lap, arrayOldInfo[x]});
-// model_1.removeRow(0);
-// }
-// //scrivere nuovi dati nella nuova tabella
-// model_1.insertRow(y,new Object[]{y, datiArray[y].id, datiArray[y].lap, arrayInfo[y]});
-// new_table=true;
-// }
-// }
-// if(new_table == true){
-// current_lap = current_lap +1;
-// }
-// }
-// catch(Exception e){
-// y=Array.getLength(datiArray)+1;
-// }
-// }
+
+if(new_table == true){
+System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
+/*current_lap = current_lap +1;*/
+new_table = false;
+}
+
 q=(float)(q+1);
 sleep(500);
 }
+// catch(Exception e){}
+// }
 }
 catch(Exception e){e.printStackTrace();}
 }
@@ -394,7 +450,6 @@ catch(Exception e){e.printStackTrace();}
 // parsing xml
 public void readXml(String xmlRecords, float istant){
 System.out.println("stringa da parsare : \n"+xmlRecords);
-// String xmlRecords ="<?xml version=\"1.0\"?><update><gasLevel>35.58887482</gasLevel><!--prova--><tyreUsury>17.07367134</tyreUsury><lap>18</lap><sector>3</sector><metres>686.00000000</metres></update>";
  try {
         DocumentBuilderFactory dbf =
         DocumentBuilderFactory.newInstance();
@@ -433,13 +488,9 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("lap : "+getNode("lap", element));
 /*lap = new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
-// try{
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
-// }catch(Exception e) {}
-// modelAll.removeRow(i);
-modelAll.insertRow(i,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
-// ListSelectionModel selectionModel = tableAll.getSelectionModel();
-// selectionModel.setSelectionInterval(0,0);
 	}
 	
 System.out.println("bestTimes");
@@ -453,12 +504,13 @@ System.out.println("bestTimes");
 
 	Attr attributoLap = (Attr) attributiLap.item(0);
 	System.out.println("attributo lap "+getCharacterDataFromElement(line)+" : "+attributoLap.getNodeValue());
-	
+if(new Integer(attributoLap.getNodeValue()).intValue() !=-1){	
 textBoxLap.setText(attributoLap.getNodeValue());
 	System.out.println("time : "+getNode("time", element));
 textBoxLapTime.setText(getNode("time", element));
 	System.out.println("competitor Id : "+getNode("competitorId", element));
 textBoxLapId.setText(getNode("competitorId", element));
+}
 
 	
 	NodeList bestSector = doc.getElementsByTagName("sectors");
@@ -472,11 +524,12 @@ textBoxLapId.setText(getNode("competitorId", element));
 	System.out.println("--time : "+getNode("time", line));
 
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector1Id.setText(getNode("competitorId", line));
 textBoxSector1Lap.setText(getNode("lap", line));
 textBoxSector1Id.setText(getNode("competitorId", line));
 textBoxSector1Time.setText(getNode("time", line));	
-
+}
 	sector = element.getElementsByTagName("sector");
         line = (Element) sector.item(1);
 	attributiSector =line.getAttributes();
@@ -484,11 +537,12 @@ textBoxSector1Time.setText(getNode("time", line));
 	System.out.println("attributo sector 2 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector2Id.setText(getNode("competitorId", line));
 textBoxSector2Lap.setText(getNode("lap", line));
 textBoxSector2Id.setText(getNode("competitorId", line));
 textBoxSector2Time.setText(getNode("time", line));	
-	
+	}
 	sector = element.getElementsByTagName("sector");
         line = (Element) sector.item(2);
 	attributiSector =line.getAttributes();
@@ -496,21 +550,18 @@ textBoxSector2Time.setText(getNode("time", line));
 	System.out.println("attributo sector 3"+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
 textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Lap.setText(getNode("lap", line));
 textBoxSector3Id.setText(getNode("competitorId", line));
 textBoxSector3Time.setText(getNode("time", line));	
-
+}
 	try{
 	NodeList cl = doc.getElementsByTagName("classification");
         Element elementTemp = (Element)cl.item(0);
 	
 	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
         Element compEl = (Element) comp42.item(0);
-// int row = model_1.getRowCount();
-// classific_1.removeColumnSelectionInterval(0,row-1);
-// int row2 = model_2.getRowCount();
-// classific_2.removeColumnSelectionInterval(0,row2-1);
 for(int y=0; y<Array.getLength(datiArray); y++){
 datiArray[y] = null;
 }
@@ -527,39 +578,8 @@ datiArray[y] = null;
 	
 	System.out.println("------lap : "+getNode("lap", line));
 datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
-// model_1.insertRow(0,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-// if(new Integer(getNode("lap", line)).intValue()==current_lap){
-// // model_1.removeRow(i);
-// model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-// }
-// else{
-// if(new Integer(getNode("lap", line)).intValue()>current_lap){
-// //devo aggiornare il boolean, devo copiare la tabella vecchia e scrivere quella nuova
-// new_table = true;
-// //copio la vecchia tabella
-// Vector data = model_1.getDataVector();
-// for(int w=0; w<classific_1.getRowCount();w++){
-// // model_2.removeRow(w);
-// // model_1.moveRow(w, w, model_2.getRowCount());
-// model_2.insertRow(w,new Object[]{data.get(w)});
-// }
-// model_1 = new DefaultTableModel();
-// model_1.insertRow(i,new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});
-// }
-// else {//il valore è minore
-// if(new_table ==  true){
-// model_2.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-// else{
-// model_1.addRow(new Object[]{i, attributoComp.getNodeValue(), getNode("lap", line), arrayInfo[i]});}
-// }
-//   }
-
 
 }
-// if(new_table == true){
-// current_lap = current_lap+1;
-// new_table =false;
-// }
 	}
 	catch (Exception e){
 	System.out.println("classification non presente");
@@ -598,13 +618,18 @@ s.start();
 }
 
 class dati{
-public int lap;
-public int id;
-public int position;
+public int lap=-1;
+public int id=-1;
+public int position=-1;
 public dati(int lapIn, int idIn, int positionIn){
 lap = lapIn;
 id = idIn;
 position = positionIn;
-
 }
+}
+class arrayDati{
+public arrayDati(dati[] a){
+arrayD=a;
+}
+public dati[] arrayD;
 }
