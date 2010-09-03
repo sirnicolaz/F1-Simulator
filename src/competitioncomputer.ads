@@ -64,6 +64,14 @@ package CompetitionComputer is
                         Laps : INTEGER;
                         Checkpoints_In : INTEGER);
 
+   function Has_CompetitorFinished(Competitor_ID : INTEGER;
+                                   Time : FLOAT) return BOOLEAN;
+
+
+   function Is_CompetitorOut(Competitor_ID : INTEGER;
+                             Time : FLOAT) return BOOLEAN;
+
+
    --Method to be used by the onboard computer to add new stats to the competitor id related array
    procedure Add_Stat(Competitor_ID : INTEGER;
                       Data : COMPETITOR_STATS);
@@ -212,8 +220,13 @@ private
    type STATS_ARRAY_OPTIMIZER is record
       Competitor_Info : access SYNCH_COMPETITOR_STATS_HANDLER_ARRAY;
       LastAccessedPosition : INTEGER := 1;
-      --This time will be updated as soon as the competitor get out the competition
+      --This time will be updated as soon as the competitor get off the competition
       Retired_Time : FLOAT := -1.0;
+      Competition_Finished : BOOLEAN := FALSE;
+      --If the competitor has retired for any anomaly, the 2 following variables will
+      --+ mark when the competitor went out.
+      Last_Checkpoint : INTEGER := -1;
+      Last_Lap : INTEGER := -1;
    end record;
 
 

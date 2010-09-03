@@ -153,7 +153,7 @@ package body Box is
             Lap := Lap + 1;
          end if;
 
-         exit when Info.PathLength = -1.0 or else Lap = Laps;
+         exit when (Info.GasLevel <= 0.0 or Info.TyreUsury >= 100.0) or else Lap = Laps;
 
          Sector := Sector + 1;
       end loop;
@@ -546,7 +546,7 @@ package body Box is
 
          Ada.Text_IO.Put_Line("Go ahead. Sector: " & INTEGER'IMAGE(Sector) & " out of " & INTEGER'IMAGE(Sector_Qty));
 
-         exit when New_Info.PathLength = -1.0 or else --The car is out
+         exit when (New_Info.GasLevel <= 0.0 or New_Info.TyreUsury >= 100.0) or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
 

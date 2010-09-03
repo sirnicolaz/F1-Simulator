@@ -1016,9 +1016,9 @@ package body Competitor is
             compStats.Sector := SectorID;
             compStats.GasLevel := carDriver.auto.GasolineLevel;
             compStats.TyreUsury := carDriver.auto.TyreUsury;
-            compStats.Time := -1.0; -- sentinel warning about the end of the race
+            compStats.Time := PredictedTime;
             compStats.Lap := CurrentLap;
-            compStats.PathLength := -1.0;
+            compStats.PathLength := lengthPath; -- TODO: write the length of the crossed path before being out of gas (or tyre)
             if(PitStopDone = true) then
                compStats.IsPitStop := true;
             end if;

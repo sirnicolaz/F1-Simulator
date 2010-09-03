@@ -123,66 +123,108 @@ package body CompetitionComputer is
 
    end Get_StatsBySect;
 
-    -- It return a statistic related to a certain time. If the statistic is not
+   function Has_CompetitorFinished(Competitor_ID : INTEGER;
+                                   Time : FLOAT) return BOOLEAN is
+      Temp_Time : FLOAT;
+   begin
+      if(Competitor_Statistics.all(Competitor_ID).Competition_Finished = TRUE) then
+         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all
+           (Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LAST).Get_Time(Temp_Time);
+         if(Temp_Time <= Time) then
+            return TRUE;
+         end if;
+      end if;
+
+      return FALSE;
+
+   end Has_CompetitorFinished;
+
+
+   function Is_CompetitorOut(Competitor_ID : INTEGER;
+                             Time : FLOAT) return BOOLEAN is
+   begin
+
+      if(Competitor_Statistics.all(Competitor_ID).Retired_Time /= -1.0 and
+           Competitor_Statistics.all(Competitor_ID).Retired_Time <= Time) then
+         return TRUE;
+      else
+         return FALSE;
+      end if;
+
+   end Is_CompetitorOut;
+
+   -- It return a statistic related to a certain time. If the statistic is not
    --+ initialised yet, the requesting task will wait on the resource Information
    --+ as long as it's been initialised
    procedure Get_StatsByTime(Competitor_ID : INTEGER;
-                            Time : FLOAT;
-                            Stats_In : out COMPETITOR_STATS_POINT) is
+                             Time : FLOAT;
+                             Stats_In : out COMPETITOR_STATS_POINT) is
 
       Index : INTEGER := Competitor_Statistics.all(Competitor_ID).LastAccessedPosition;
       Tmp_Time : FLOAT;
       ExitLoop : BOOLEAN := FALSE;
    begin
-      Ada.Text_IO.Put_Line("TV asking by time");
-      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-      Ada.Text_IO.Put_Line("TV time got");
-      if (Tmp_Time >= Time ) then
+   Ada.Text_IO.Put_Line("TV asking by time");
 
-         Ada.Text_IO.Put_Line("TV backward");
-         Index := Index - 1;
-         if(Index /= 0) then
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-         end if;
-         while Index > 1 and then Tmp_Time > Time loop
-            Index := Index - 1;
-            Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-         end loop;
+      if( Stats_In = null ) then
+         Stats_In := new COMPETITOR_STATS;
+      end if;
 
-         if( Stats_In = null ) then
-            Stats_In := new COMPETITOR_STATS;
-         end if;
-         Ada.Text_IO.Put_Line("TV out");
+      --Verify whether the competitor is out the competition
+      if(Is_CompetitorOut(Competitor_ID,Time) = TRUE) then
 
-         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_All(Stats_In.all);
-         Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index + 1;
-         Ada.Text_IO.Put_Line("TV get all done");
+      --The competitor is out, so get the last information available
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all
+        ((Competitor_Statistics.all(Competitor_ID).Last_Lap * Checkpoints) +
+           Competitor_Statistics.all(Competitor_ID).Last_Checkpoint).Get_All(Stats_In.all);
 
       else
-         Ada.Text_IO.Put_Line("TV forward");
-         Index := Index + 1;
-         if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
-            Index := Index - 1;
-         end if;
+
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-         while Tmp_Time < Time and ExitLoop = false loop
-            Ada.Text_IO.Put_Line("TV cycle");
-            Index := Index + 1;
-            --Handle the case when an information cronologically after the end of the competition
-            --+ is asked
-            if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
-               ExitLoop := true;
-               Index := Index - 1;
-            else
+         Ada.Text_IO.Put_Line("TV time got");
+         if (Tmp_Time >= Time ) then
+
+            Ada.Text_IO.Put_Line("TV backward");
+            Index := Index - 1;
+            if(Index /= 0) then
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             end if;
-         end loop;
+            while Index > 1 and then Tmp_Time > Time loop
+               Index := Index - 1;
+               Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+            end loop;
+            Ada.Text_IO.Put_Line("TV out");
 
-         Ada.Text_IO.Put_Line("TV getting");
-         Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
-         Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_All(Stats_In.all);
+            Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index + 1;
+            Ada.Text_IO.Put_Line("TV get all done");
 
+         else
+            Ada.Text_IO.Put_Line("TV forward");
+            Index := Index + 1;
+            if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
+               Index := Index - 1;
+            end if;
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+            while Tmp_Time < Time and ExitLoop = false loop
+               Ada.Text_IO.Put_Line("TV cycle");
+               Index := Index + 1;
+               --Handle the case when an information cronologically after the end of the competition
+               --+ is asked
+               if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
+                  ExitLoop := true;
+                  Index := Index - 1;
+               else
+                  Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
+               end if;
+            end loop;
+
+            Ada.Text_IO.Put_Line("TV getting");
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
+            Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
+
+         end if;
       end if;
       Ada.Text_IO.Put_Line("TV got");
 
@@ -237,7 +279,7 @@ package body CompetitionComputer is
 
    procedure Add_Stat(Competitor_ID : INTEGER;
                        Data : COMPETITOR_STATS) is
-   begin
+begin
 
       --NB: the order of these 2 operations is really important.
       --+ When a Competitor_Statistic is added, it might be that if someone
@@ -248,7 +290,8 @@ package body CompetitionComputer is
       --+ That's why that operation is done before the update of the statistic.
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
-      if(Data.LastCheckInSect = true and Data.Sector = 3) then
+      if(Data.LastCheckInSect = true and Data.Sector = 3 and
+           Data.GasLevel > 0.0 and Data.TyreUsury < 100.0) then
 
          Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific for lap " & Common.IntegerToString(Data.Lap+1) & " with time " & FLOAT'IMAGE(Data.Time));
          Update_Classific(Competitor_ID,
@@ -256,14 +299,42 @@ package body CompetitionComputer is
                           Data.Time);
 
       end if;
-      --The competitor is out
-      --if(Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0) then
-      --   CompetitorOut(Competitor_ID, Data.Lap+1);
-      --end if;
+
       --Update the statistics
       Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
-      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
-   end Add_Stat;
+   Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
+
+   --The competitor is out
+   if(Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0) then
+      CompetitorOut(Competitor_ID, Data.Lap+1) ;
+      --Mark the exit time, checkpoint and lap
+      Competitor_Statistics.all(Competitor_ID).Retired_Time := Data.Time;
+      Competitor_Statistics.all(Competitor_ID).Last_Checkpoint := Data.Checkpoint;
+      Competitor_Statistics.all(Competitor_ID).Last_Lap := Data.Lap;
+      Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
+
+      --Initialize all the remaining position of the array to open all the guards
+      declare
+         Starting_Position : INTEGER := (Data.Lap*Checkpoints) + Data.Checkpoint + 1;
+         Last_Position : INTEGER := Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH;
+         Temp_Stats : COMPETITOR_STATS;
+      begin
+         --We update all the position with the same data. No further information available.
+         Temp_Stats := Data;
+         for Index in Starting_Position..Last_Position loop
+            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Initialise(Temp_Stats);
+         end loop;
+      end;
+
+   else
+      --If not retired and the array is full, the competition is regularly finished
+      if(((Data.Lap*Checkpoints) + Data.Checkpoint) =
+           Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH ) then
+         Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
+      end if;
+   end if;
+
+end Add_Stat;
 
    procedure Update_Classific(Competitor_ID : INTEGER;
                               CompletedLap : INTEGER;
@@ -289,23 +360,24 @@ package body CompetitionComputer is
       Temp_BestLapNum : INTEGER := -1;
       Temp_BestLapTime : FLOAT := -1.0;
       Temp_BestLapCompetitor : INTEGER := -1;
-   begin
+begin
 
-      --Retrieve all the information related to the give time for each competitor
-      for Index in 1..Competitor_Statistics.all'LENGTH loop
-         Get_StatsByTime(Competitor_ID => Index,
-                         Time          => TimeInstant,
-                         Stats_In      => Temp_Stats);
+      --Retrieve all the information related to the given time for each competitor
+   for Index in 1..Competitor_Statistics.all'LENGTH loop
 
-         --compare the "bestlap" values and find out the best one
-         if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
-              Temp_BestLapTime = -1.0 ) then
-            Temp_BestLapTime := Temp_Stats.BestLaptime;
-            Temp_BestLapNum := Temp_Stats.BestLapNum;
-            Temp_BestLapCompetitor := Index;
-         end if;
+            Get_StatsByTime(Competitor_ID => Index,
+                            Time          => TimeInstant,
+                            Stats_In      => Temp_Stats);
 
-      end loop;
+            --compare the "bestlap" values and find out the best one
+            if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
+                 Temp_BestLapTime = -1.0 ) then
+               Temp_BestLapTime := Temp_Stats.BestLaptime;
+               Temp_BestLapNum := Temp_Stats.BestLapNum;
+               Temp_BestLapCompetitor := Index;
+            end if;
+
+         end loop;
 
       --initialize che out variables correctly
       LapTime := Temp_BestLapTime;
@@ -451,7 +523,13 @@ package body CompetitionComputer is
       --+ competitor with id corresponding to that index has not been processed yet (we don't know whether he
       --+ has been lapped or not)
       for id in ProcessedCompetitors_IdList'RANGE loop
-         ProcessedCompetitors_IdList(id) := 0;
+         if(Is_CompetitorOut(id,TimeInstant) = TRUE) then
+            --The competitor is no longer in the classific
+            ProcessedCompetitors_IdList(id) := 1;
+            NotLapped_Count := NotLapped_Count + 1;
+         else
+            ProcessedCompetitors_IdList(id) := 0;
+         end if;
       end loop;
 
       --Pick up the pole position time in the classification table related the CurrentLap
