@@ -26,7 +26,7 @@ import java.lang.reflect.Array;
 
 public class screenTv extends Thread{
 private int[] provaArray = new int[10];
-private arrayDati[] storicodatiArray = new arrayDati[5];
+private arrayDati[] storicodatiArray = new arrayDati[150];
 private dati[] datiArray = new dati[3];
 // private dati[] datiOldArray = new dati[5];
 private int tabellaCorrente =1;
@@ -404,8 +404,18 @@ if(new_table_temp==true){
 for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
 // modelClassific[current_index].removeRow(w);
 try{
+// if(storicodatiArray[current_lap].arrayD[w].lap == current_lap){
+// try{
+// modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,arrayOldInfo[w]});
+// }
+// catch(Exception eff){JOptionPane.showMessageDialog(parent, "", "Error: storicodatiArray[current_lap].arrayD[w].lap == current_lap", JOptionPane.ERROR_MESSAGE);}
+// }
+// else{
 modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,"doppiato"});
-}catch(Exception exx){w=Array.getLength(storicodatiArray[current_lap].arrayD)+1;}
+// }
+}catch(Exception exx){
+// w=Array.getLength(storicodatiArray[current_lap].arrayD)+1;
+}
 }
 
 current_index=(current_index+1)%2;
@@ -439,7 +449,7 @@ new_table = false;
 }
 
 q=(float)(q+1);
-sleep(500);
+sleep(250);
 }
 // catch(Exception e){}
 // }
@@ -477,6 +487,11 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 // 	NamedNodeMap attributiComp =line.getAttributes();
 
 	Attr attributoComp =  line.getAttributeNode("id");//(Attr) attributiComp.item(0);
+
+	Attr attributoCompEnd =  line.getAttributeNode("end");//(Attr) attributiComp.item(0);
+
+	Attr attributoCompRit =  line.getAttributeNode("retired");//(Attr) attributiComp.item(0);
+
 	System.out.println("attributo id : "+attributoComp.getNodeValue());
 	
 	NodeList check = element.getElementsByTagName("checkpoint");
@@ -487,22 +502,40 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
 	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
 String temp = attributoCheck.getNodeValue();
 	Attr attributoCheck_2 = line.getAttributeNode("pitstop");
-	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
+	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck_2.getNodeValue());
 	System.out.println("lap : "+getNode("lap", element));
 // 	new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
-if(attributoCheck_2.getNodeValue().equals("true")){// sono al pitstop?
+if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
+JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 if(new Integer(getNode("checkpoint",element)).intValue() == 1){
 if (temp.equals("arriving")){
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  "leaving box", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", istant});
+JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  "in box", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", istant});
+JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 
 }
+if(attributoCompEnd.equals("TRUE")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "FINE GARA ", istant});
+JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+}
+if(attributoCompRit.equals("TRUE")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "RITIRATO", istant});
+
+JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+
+}
+
+
 }
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 // modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
