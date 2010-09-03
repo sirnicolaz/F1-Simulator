@@ -844,7 +844,7 @@ package body Competitor is
             --Remove the competitor from the queue of the checkpoint
             loop
                Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
-               C_Checkpoint.Remove_Competitor(Competitor_ID);
+               Checkpoint_P.Remove_Competitor(Competitor_ID);
                exit when Get_Position(Iterator_In) = StartingPosition_P;--NEW, ritolto il +1
                if StartingPosition_P = 0 then
                   StartingPosition_P := Get_Position(Iterator_In)-1;
@@ -1008,7 +1008,7 @@ package body Competitor is
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
 
-         if(carDriver.auto.GasolineLevel < 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
+         if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
             Ada.Text_IO.Put_Line("Sending last info to the sector. The competition is over for this unlucky competitor.");
             compStats.Checkpoint := CurrentCheckpoint;
             compStats.LastCheckInSect := TRUE; -- to force the update of the box

@@ -153,6 +153,7 @@ package CompetitionComputer is
    -- synch_ordered_classification_table : ordered table with all methods to insert, delete, .. in the classification_table
    protected type SYNCH_ORDERED_CLASSIFICATION_TABLE is
       procedure Init_Table(NumRows : INTEGER);
+      procedure Remove_Competitor;
       procedure Add_Row(Row_In : STATS_ROW;
                         Index_In : INTEGER);
       procedure Add_Row(Row_In : STATS_ROW);
@@ -211,6 +212,8 @@ private
    type STATS_ARRAY_OPTIMIZER is record
       Competitor_Info : access SYNCH_COMPETITOR_STATS_HANDLER_ARRAY;
       LastAccessedPosition : INTEGER := 1;
+      --This time will be updated as soon as the competitor get out the competition
+      Retired_Time : FLOAT := -1.0;
    end record;
 
 

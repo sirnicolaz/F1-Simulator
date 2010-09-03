@@ -227,6 +227,13 @@ package body CompetitionComputer is
 
    end Init_Stats;
 
+   procedure CompetitorOut(Competitor_ID : INTEGER;
+                           Lap : INTEGER) is
+   begin
+      for Index in Lap..Classification_Tables.all'LENGTH loop
+         Classification_Tables.all(Index).Remove_Competitor;
+      end loop;
+   end CompetitorOut;
 
    procedure Add_Stat(Competitor_ID : INTEGER;
                        Data : COMPETITOR_STATS) is
@@ -241,13 +248,17 @@ package body CompetitionComputer is
       --+ That's why that operation is done before the update of the statistic.
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
-      if(Data.LastCheckInSect = true and Data.Sector = 3) then
+      if(Data.LastCheckInSect = true and Data.Sector = 3 and (Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0)) then
 
          Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific for lap " & Common.IntegerToString(Data.Lap+1) & " with time " & FLOAT'IMAGE(Data.Time));
          Update_Classific(Competitor_ID,
                           Data.Lap+1,--Count starts from 1 in the table, lap are counted from 0 instead
                           Data.Time);
 
+      end if;
+      --The competitor is out
+      if(Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0) then
+         CompetitorOut(Competitor_ID, Data.Lap+1);
       end if;
       --Update the statistics
       Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
@@ -453,7 +464,7 @@ package body CompetitionComputer is
       --Find out the competitors already into the previous table after the pole position time.
       --+Those competitors will not be counted in the lapped list.
       if( CurrentLap > 0) then
-         for Index in 1..CompetitorQty loop
+         for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
             Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
             if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
                ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
@@ -477,7 +488,7 @@ package body CompetitionComputer is
          --Loop backward in the classification table list and find id and lap of lapped competitors
          for Index in reverse 1..CurrentLap-1 loop
 
-            for i in 1..CompetitorQty loop
+            for i in 1..Classification_Tables.all(Index).Get_Size loop
                Temp_Row := Classification_Tables.all(Index).Get_Row(i);
                if (Temp_Row.Time /= -1.0 and
                      Temp_Row.Time <= PolePosition_Time and
@@ -486,7 +497,7 @@ package body CompetitionComputer is
                   Lapped_Count := Lapped_Count + 1;
                   ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
                   Competitor_IDs.all(Lapped_Count) := Temp_Row.Competitor_Id;
-                  Competitor_Lap.all(Lapped_Count) := Index;--In the interface lap are counted starting by 0
+                  Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
                end if;
 
             end loop;
@@ -562,6 +573,20 @@ package body CompetitionComputer is
          end loop;
 
       end Init_Table;
+
+      procedure Remove_Competitor is
+         Tmp_Stats : CLASSIFICATION_TABLE_POINT;
+         New_Size : INTEGER := Statistics'LENGTH - 1;
+      begin
+         Tmp_Stats := new CLASSIFICATION_TABLE(1..New_Size);
+
+         --Copy elements from old array to new one
+         for Index in Tmp_Stats'RANGE loop
+            Tmp_Stats.all(Index).Competitor_Id := Statistics.all(Index).Competitor_Id;
+            Tmp_Stats.all(Index).Time := Statistics.all(Index).Time;
+         end loop;
+         Statistics := Tmp_Stats;
+      end Remove_Competitor;
 
       procedure Add_Row(Row_In : STATS_ROW;
                         Index_In : INTEGER) is
