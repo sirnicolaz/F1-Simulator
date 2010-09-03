@@ -279,7 +279,7 @@ package body CompetitionComputer is
 
    procedure Add_Stat(Competitor_ID : INTEGER;
                        Data : COMPETITOR_STATS) is
-begin
+   begin
 
       --NB: the order of these 2 operations is really important.
       --+ When a Competitor_Statistic is added, it might be that if someone
@@ -678,8 +678,10 @@ begin
 
       Ada.Text_IO.Put_Line("Adding roq");
          if (Statistics(1).Competitor_Id = -1) then
+            Ada.Text_IO.Put_Line("In if");
             Add_Row(Row_In,1);
          else
+            Ada.Text_IO.Put_Line("In else");
             for index in Statistics'RANGE loop
                if(Row_In < Statistics(index) ) then
                   if(Find_RowIndex(Row_In.Competitor_Id) /= -1) then
