@@ -248,7 +248,7 @@ package body CompetitionComputer is
       --+ That's why that operation is done before the update of the statistic.
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
-      if(Data.LastCheckInSect = true and Data.Sector = 3 and (Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0)) then
+      if(Data.LastCheckInSect = true and Data.Sector = 3) then
 
          Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific for lap " & Common.IntegerToString(Data.Lap+1) & " with time " & FLOAT'IMAGE(Data.Time));
          Update_Classific(Competitor_ID,
@@ -257,9 +257,9 @@ package body CompetitionComputer is
 
       end if;
       --The competitor is out
-      if(Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0) then
-         CompetitorOut(Competitor_ID, Data.Lap+1);
-      end if;
+      --if(Data.GasLevel <= 0.0 or Data.TyreUsury >= 100.0) then
+      --   CompetitorOut(Competitor_ID, Data.Lap+1);
+      --end if;
       --Update the statistics
       Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
