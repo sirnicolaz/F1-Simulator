@@ -474,24 +474,45 @@ System.out.println("stringa da parsare : \n"+xmlRecords);
         Element line = (Element) comp.item(i);
 	System.out.println("competitor: " + getCharacterDataFromElement(line)+" length ="+nodes.getLength());
 
-	NamedNodeMap attributiComp =line.getAttributes();
+// 	NamedNodeMap attributiComp =line.getAttributes();
 
-	Attr attributoComp = (Attr) attributiComp.item(0);
+	Attr attributoComp =  line.getAttributeNode("id");//(Attr) attributiComp.item(0);
 	System.out.println("attributo id : "+attributoComp.getNodeValue());
 	
 	NodeList check = element.getElementsByTagName("checkpoint");
         line = (Element) check.item(0);
-	NamedNodeMap attributiCheck =line.getAttributes();
+// 	NamedNodeMap attributiCheck =line.getAttributes();
 
-	Attr attributoCheck = (Attr) attributiCheck.item(0);
+	Attr attributoCheck =  line.getAttributeNode("compPosition");//(Attr) attributiCheck.item(0);
+	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
+String temp = attributoCheck.getNodeValue();
+	Attr attributoCheck_2 = line.getAttributeNode("pitstop");
 	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
 	System.out.println("lap : "+getNode("lap", element));
-/*lap = new Integer(getNode("lap", element));*/
+// 	new Integer(getNode("lap", element));*/
 	System.out.println("sector : "+getNode("sector", element));
+if(attributoCheck_2.getNodeValue().equals("true")){// sono al pitstop?
+if(new Integer(getNode("checkpoint",element)).intValue() == 1){
+if (temp.equals("arriving")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  "leaving box", istant});
+}
+else{
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  "in box", istant});
+}
+
+}
+}
+// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+// modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+// modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX ", getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+else{ 
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
+}
 	
 System.out.println("bestTimes");
 	NodeList best = doc.getElementsByTagName("bestTimes");
