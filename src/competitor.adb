@@ -1016,9 +1016,9 @@ package body Competitor is
             compStats.Sector := SectorID;
             compStats.GasLevel := carDriver.auto.GasolineLevel;
             compStats.TyreUsury := carDriver.auto.TyreUsury;
-            compStats.Time := -1.0; -- sentinel warning about the end of the race
+            compStats.Time := PredictedTime;
             compStats.Lap := CurrentLap;
-            compStats.PathLength := -1.0;
+            compStats.PathLength := lengthPath; -- TODO: write the length of the crossed path before being out of gas (or tyre)
             if(PitStopDone = true) then
                compStats.IsPitStop := true;
             end if;
@@ -1049,7 +1049,7 @@ package body Competitor is
                --Get number of checkpoint between prebox and box
                -- step = predicted - current / number
                -- increase by step the time in checkpoint stats
-               Get_NextCheckpoint( carDriver.RaceIterator,Temp_Checkpoint);
+               Get_CurrentCheckpoint( carDriver.RaceIterator,Temp_Checkpoint);--NEW
                --Update all the statistics up to the goal checkpoint
                while Get_Position(carDriver.RaceIterator) /= Circuit.Checkpoints_Qty  loop
                   --Update the statistic to send to the OnboardComputer
@@ -1058,8 +1058,8 @@ package body Competitor is
                   compStats.LastCheckInSect := FALSE;
                   compStats.FirstCheckInSect := FALSE;
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
-                  compStats.GasLevel := -1.0;
-                  compStats.TyreUsury := 0.0;
+                  compStats.GasLevel := carDriver.auto.GasolineLevel;
+                  compStats.TyreUsury := carDriver.auto.TyreUsury;
                   compStats.IsPitStop := false;
                   --TODO: explane the "Step" purpose
                   compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
@@ -1139,8 +1139,8 @@ package body Competitor is
                   compStats.LastCheckInSect := FALSE;
                   compStats.FirstCheckInSect := FALSE;
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
-                  compStats.GasLevel := -1.0;
-                  compStats.TyreUsury := 0.0;
+                  compStats.GasLevel := carDriver.auto.GasolineLevel;
+                  compStats.TyreUsury := carDriver.auto.TyreUsury;
                   compStats.IsPitStop := TRUE;
                   compStats.Time := PredictedTime - (Step * UpdatedCheckpoints);
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
