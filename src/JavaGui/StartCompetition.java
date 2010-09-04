@@ -3,6 +3,15 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.*;
+import java.io.*;
+
+import java.util.Properties;
+import org.omg.CORBA.ORB;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.POAHelper;
+import org.omg.CosNaming.NameComponent;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextHelper;
 
 
 public class StartCompetition {
@@ -14,7 +23,7 @@ private JLabel labelLap = new JLabel("3: Numero di giri per la gara : ");
 private JLabel labelName = new JLabel("4: Nome del circuito : ");
 /*private JLabel p_label5 = new JLabel("5 SConfigura la competizione");
 private JLabel p_label6 = new JLabel("6 SConfigura la competizione");*/
-private JTextField fileRacetrack = new JTextField("../obj/racetrack.xml", 15);
+private JTextField fileRacetrack = new JTextField("obj/race.xml", 15);
 /*private JTextField  numCompetitor = new JTextField("6");
 private JTextField numLap = new JTextField("10");*/
 /*private JTextField p_Text4 = new JTextField("testo 4");
@@ -33,6 +42,8 @@ private JSpinner jsConc = new JSpinner(modelConc);
 private JSpinner jsLap = new JSpinner(modelLap);
 private void init(JFrame p){
 parent=p;
+
+
 JPanel buttonPane = new JPanel(new BorderLayout());
 JPanel contentPane = new JPanel(new BorderLayout());
 // contentPane.setLayout(new GridLayout(0, 1));
@@ -60,7 +71,9 @@ openButton = new JButton("Sfoglia...");
 			public void actionPerformed(ActionEvent e) {
 			    System.out.println("Competizione avviata");
 if(writexml()== true){
+parent.dispose();
 conf.Configure("obj/comp_config.xml");
+
 //avvio competizione
 }
 			    //comando per avviare la competizione.
@@ -89,7 +102,7 @@ contentPane.add(p_label2, BorderLayout.PAGE_END);*/
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileRacetrack.setText("../obj/racetrack.xml");
+			    fileRacetrack.setText("obj/race.xml");
 			    jsLap.setValue(10);
 			    jsConc.setValue(5);
 			    textName.setText("Monza");
@@ -159,43 +172,7 @@ contentPane.add(p_label2, BorderLayout.PAGE_END);*/
 		p.add(buttonPane, BorderLayout.PAGE_END);
 }
 
-    public StartCompetition(){
-      JFrame frame = new JFrame("Configure Competition");
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      init(frame);
-//      frame.getContentPane().add(p_label, BorderLayout.CENTER);
-      frame.pack();
-      frame.setVisible(true);
-}
-
-public boolean writexml(){
-try{
-PrintWriter out;
-File f = new File("obj/comp_config.xml");
-if (f.exists() == false ) {
-out=new PrintWriter(new File("obj/comp_config.xml"));
-}
-else {
-out=new PrintWriter(f);
-}
-out.println("<?xml version=\"1.0\"?>\n<config>\n<name>");
-out.println(textName.getText());
-out.println("</name>\n<circuitConfigFile>");
-out.println(fileRacetrack.getText());
-out.println("</circuitConfigFile>\n<competitorQty>");
-out.println(jsConc.getValue());
-out.println("</competitorQty>\n<lap>");
-out.println(jsLap.getValue());	
-out.close("</lap></config>");
-return true;
-}
-catch(IOException e){
-e.printStackTrace();
-return false;
-}
-}
-
-    public static void main(String[] args) {
+    public StartCompetition(String[] args){
 try{
 //    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -208,14 +185,52 @@ try{
 BufferedReader corbaLocFile = new BufferedReader(new FileReader("../competition_corbaLoc.txt"));
               configCorbaLoc = corbaLocFile.readLine() ;
 }catch(Exception e){}
-               org.omg.CORBA.Object competition_obj = orb.string_to_object(configCorbaLoc);
-               conf = CompetitionConfiguratorHelper.narrow(competition_obj);
+      org.omg.CORBA.Object competition_obj = orb.string_to_object(configCorbaLoc);
+      conf = CompetitionConfiguratorHelper.narrow(competition_obj);
+      JFrame frame = new JFrame("Configure Competition");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      init(frame);
+//      frame.getContentPane().add(p_label, BorderLayout.CENTER);
+      frame.pack();
+      frame.setVisible(true);
 
-    StartCompetition p=new StartCompetition();
 }
 catch(Exception e){
 e.printStackTrace();
 }
+}
+
+public boolean writexml(){
+try{
+PrintWriter out;
+File f = new File("../obj/comp_config.xml");
+if (f.exists() == false ) {
+out=new PrintWriter(new File("../obj/comp_config.xml"));
+}
+else {
+out=new PrintWriter(f);
+}
+out.println("<?xml version=\"1.0\"?>\n<config>\n<name>");
+out.print(textName.getText());
+out.print("</name>\n<circuitConfigFile>");
+out.print(fileRacetrack.getText());
+out.print("</circuitConfigFile>\n<classificRefreshTime>43.0</classificRefreshTime>\n<competitorQty>");
+out.print(jsConc.getValue());
+out.print("</competitorQty>\n<laps>");
+out.print(jsLap.getValue());	
+out.print("</laps>\n</config>");
+out.close();
+return true;
+}
+catch(IOException e){
+e.printStackTrace();
+return false;
+}
+}
+
+    public static void main(String[] args) {
+    StartCompetition p=new StartCompetition(args);
+
 }
 }
 
