@@ -60,7 +60,7 @@ openButton = new JButton("Sfoglia...");
 			public void actionPerformed(ActionEvent e) {
 			    System.out.println("Competizione avviata");
 if(writexml()== true){
-conf.
+conf.Configure("obj/comp_config.xml");
 //avvio competizione
 }
 			    //comando per avviare la competizione.
@@ -168,12 +168,12 @@ contentPane.add(p_label2, BorderLayout.PAGE_END);*/
       frame.setVisible(true);
 }
 
-public void writexml(){
+public boolean writexml(){
 try{
 PrintWriter out;
-File f = new File("comp_config.xml");
+File f = new File("obj/comp_config.xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("comp_config.xml"));
+out=new PrintWriter(new File("obj/comp_config.xml"));
 }
 else {
 out=new PrintWriter(f);
@@ -194,7 +194,7 @@ e.printStackTrace();
 return false;
 }
 }
-}
+
     public static void main(String[] args) {
 try{
 //    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -218,3 +218,6 @@ e.printStackTrace();
 }
 }
 }
+
+
+
