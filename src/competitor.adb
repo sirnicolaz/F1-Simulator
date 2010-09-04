@@ -853,7 +853,7 @@ package body Competitor is
 
             if(PitStopDone_In = true) then
                Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
-               C_Checkpoint.Remove_Competitor(Competitor_ID);
+               Checkpoint_P.Remove_Competitor(Competitor_ID);
             end if;
       end Remove_CompetitorFromRace;
 
