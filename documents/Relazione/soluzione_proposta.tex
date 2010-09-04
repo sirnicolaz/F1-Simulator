@@ -612,7 +612,23 @@ il protocollo CORBA).
 \caption{Class diagram - Box}
 \end{figure}
 \end{center}
-
+Il \emph{Box} `{e} una componente che si occupa di assistere la gara del concorrete. A tale scopo sono stati previsti due task con le seguenti 
+caratteristiche:
+\begin{description}
+\item{\textbf{Update\_Retriever}}:\\
+Come il nome suggerisce, questa unit`{a} `{e} finalizzata a recuperare gli aggiornamenti di gara relativi al concorrente associato al box.
+A tale scopo, il task si connette al \textbf{Competition\_Monitor} per ottenere un pacchetto di informazioni aggiornato alla fine di ogni 
+settore. Tali informazioni vengono convertite in un formato compatibile con il sistema (vengono ricevute in XML e convertite in un oggetto
+\textbf{Competition\_Update}). Fatto ci`{o}, gli aggiornamenti vengono inseriti nel buffer \textbf{Synch\_Competition\_Updates}. Il task
+\textbf{Strategy\_Updater} potr`{a} cos`{i} leggere gli aggiornamenti non appena disponibili (essendo tale buffer condiviso fra i due task).
+\item{\textbf{Strategy\_Updated}}:\\
+L'entit`{a} rappresenta l'``intelligenza artificiale'' del sistema. Raccoglie gli aggiornamenti di gara dal buffer \textbf{Synch\_Competition\_Updates}
+man mano che essi vengono aggiunti. Tali aggiornamenti vengono di volta in volta usati utilizzati per aggiornare le medie sui consumi
+e aggiornare la strategia di gara. L'aggiornamento della strategia avviene alla fine di ogni secondo settore.
+Una volta ottenuto l'aggiornamento del secondo settore, vengono usate le informazioni relative al 3$^{\circ}$ settore del giro precedente e quelle
+relative al 1$^{\circ}$ e 2$^{\circ}$ settore del giro corrente per computare una nuova strategia. Una volta che la strategia `{e} stata calcolata
+viene inserita nel buffer \textbf{Strategy\_History}, da dove diventa disponibile nel caso il concorrente la richieda.
+\end{description}
 \newpage
 \subsubsection{Configurator}
 \begin{center}
