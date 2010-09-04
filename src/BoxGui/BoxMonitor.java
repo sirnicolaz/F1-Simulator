@@ -242,7 +242,7 @@ time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
 else{
 time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
 }
-if(metresValue == -1.0){
+if( gas <= 0.0 || tyre >100.0 ){
 model.insertRow(0,new Object[]{lapsValue,sectorValue,"RITIRED","RITIRED",time});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
 // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
