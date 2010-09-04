@@ -314,17 +314,17 @@ package body CompetitionComputer is
       Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
 
       --Initialize all the remaining position of the array to open all the guards
-      declare
-         Starting_Position : INTEGER := (Data.Lap*Checkpoints) + Data.Checkpoint + 1;
-         Last_Position : INTEGER := Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH;
-         Temp_Stats : COMPETITOR_STATS;
-      begin
-         --We update all the position with the same data. No further information available.
-         Temp_Stats := Data;
-         for Index in Starting_Position..Last_Position loop
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Initialise(Temp_Stats);
-         end loop;
-      end;
+      --declare
+      --   Starting_Position : INTEGER := (Data.Lap*Checkpoints) + Data.Checkpoint + 1;
+      --   Last_Position : INTEGER := Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH;
+      --   Temp_Stats : COMPETITOR_STATS;
+      --begin
+      --   --We update all the position with the same data. No further information available.
+      --   Temp_Stats := Data;
+      --   for Index in Starting_Position..Last_Position loop
+      --      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Initialise(Temp_Stats);
+      --   end loop;
+      --end;
 
    else
       --If not retired and the array is full, the competition is regularly finished

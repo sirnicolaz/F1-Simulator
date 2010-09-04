@@ -1139,6 +1139,43 @@ package body Competitor is
 
          if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
 
+            --Update all the remaining information in the stats
+            declare
+               Starting_Position : INTEGER := Get_Position(RaceIterator => carDriver.RaceIterator);
+               Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
+               Temp_CheckpointPos : INTEGER;
+               Temp_Lap : INTEGER := CurrentLap;
+            begin
+
+               loop
+
+                  Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
+                  Temp_CheckpointPos := Get_Position(RaceIterator => carDriver.RaceIterator);
+
+                  if(Temp_Checkpoint.Is_Goal) then
+                     Temp_Lap := Temp_Lap + 1;
+                  end if;
+
+                  exit when Temp_Lap = LastLap;
+
+                  compStats.Checkpoint := Temp_CheckpointPos;
+                  compStats.LastCheckInSect := Temp_Checkpoint.Is_LastOfTheSector;
+                  compStats.FirstCheckInSect := Temp_Checkpoint.Is_FirstOfTheSector;
+                  compStats.Sector := Temp_Checkpoint.Get_SectorID;
+                  compStats.GasLevel := carDriver.auto.GasolineLevel;
+                  compStats.TyreUsury := carDriver.auto.TyreUsury;
+                  compStats.IsPitStop := FALSE;
+                  compStats.Time := PredictedTime;
+                  compStats.Lap := Temp_Lap;
+                  compStats.PathLength := 0.0;
+
+                  OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                                           Data        => compStats);
+
+               end loop;
+
+            end;
+
 
             Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
                                       PitStopDone_In => PitStopDone,
