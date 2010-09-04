@@ -839,22 +839,22 @@ package body Competitor is
          Checkpoint_P : CHECKPOINT_SYNCH_POINT;
       begin
          -- per poi invocare il metodo Add_Data
-            StartingPosition_P := Get_Position(Iterator_In);
+         --NEW
+         Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
+         StartingPosition_P := Get_Position(Iterator_In);
+
+            --StartingPosition_P := Get_Position(Iterator_In);
 
             --Remove the competitor from the queue of the checkpoint
-            loop
-               Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
-               Checkpoint_P.Remove_Competitor(Competitor_ID);
-               exit when Get_Position(Iterator_In) = StartingPosition_P;--NEW, ritolto il +1
-               if StartingPosition_P = 0 then
-                  StartingPosition_P := Get_Position(Iterator_In)-1;
-               end if;
-            end loop;
+         loop
+            Checkpoint_P.Remove_Competitor(Competitor_ID);
+            Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
+            exit when Get_Position(Iterator_In) = StartingPosition_P;
+         end loop;
 
-            if(PitStopDone_In = true) then
-               Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
-               Checkpoint_P.Remove_Competitor(Competitor_ID);
-            end if;
+         Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
+         Checkpoint_P.Remove_Competitor(Competitor_ID);
+
       end Remove_CompetitorFromRace;
 
    begin
@@ -997,6 +997,7 @@ package body Competitor is
          --If a pitstop occured, add the pit stop time to the crossing time.
          --+ We assume that the pitstop is in the first half of the lane, so before
          --+ the goal.
+         -- TODO: add the time when the competitor has to leave the box
          if (PitStop = true) then
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
          end if;
