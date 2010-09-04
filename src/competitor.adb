@@ -1009,32 +1009,6 @@ package body Competitor is
          PredictedTime := ActualTime + CrossingTime;
          --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
 
-         if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
-            Ada.Text_IO.Put_Line("Sending last info to the sector. The competition is over for this unlucky competitor.");
-            compStats.Checkpoint := CurrentCheckpoint;
-            compStats.LastCheckInSect := TRUE; -- to force the update of the box
-            compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
-            compStats.Sector := SectorID;
-            compStats.GasLevel := carDriver.auto.GasolineLevel;
-            compStats.TyreUsury := carDriver.auto.TyreUsury;
-            compStats.Time := PredictedTime;
-            compStats.Lap := CurrentLap;
-            compStats.PathLength := lengthPath; -- TODO: write the length of the crossed path before being out of gas (or tyre)
-            if(PitStopDone = true) then
-               compStats.IsPitStop := true;
-            end if;
-
-            OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
-                                     Data        => compStats);
-
-            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
-                                      PitStopDone_In => PitStopDone,
-                                      Competitor_ID => carDriver.Id);
-
-            Finished := TRUE;
-         end if;
-         exit when Finished = TRUE;
-
          --If the checkpoint is the prebox, it's necessary to update all
          --+ the statistics from the prebox to the goal
          if(PitStop = TRUE) then
@@ -1081,6 +1055,7 @@ package body Competitor is
             end;
 
          end if;
+
 
 
          --Update the statistic to send to the OnboardComputer
@@ -1160,6 +1135,18 @@ package body Competitor is
             end;
 
          end if;
+
+
+         if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
+
+
+            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
+                                      PitStopDone_In => PitStopDone,
+                                      Competitor_ID => carDriver.Id);
+
+            Finished := TRUE;
+         end if;
+         exit when Finished = TRUE;
 
          -- UPdate the time signed in the checkpoint queues. The first
          --+ one with the predicted time (the time the car will arrive)
