@@ -1,11 +1,11 @@
 #!/bin/bash
 
 echo "Init ada part...";
-./main_competition > logXnicola.txt &
+./main_competition > logConGui.txt&
 echo "Entering interface dir.."
-cd ConfigurationInterface
+cd JavaGui
 echo "Initing configuration.."
-java ConfigurationInterface_Test 
+java StartCompetition 
 echo "Configuration Done"
 read Q
 killall -9 main_competition
