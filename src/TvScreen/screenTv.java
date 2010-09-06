@@ -198,7 +198,7 @@ System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
 modelClassific[current_index].removeRow(w);
 }
 }
-modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, convert(arrayInfo[e])});
 
 modelClassific[current_index].removeRow(e+1);
 
@@ -282,12 +282,12 @@ System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if(new Integer(getNode("checkpoint",element)).intValue() == 1){
 if (temp.equals("arriving")){
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", convert(istant)});
 JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", convert(istant)});
 JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 }
@@ -299,7 +299,7 @@ if(attributoCompEnd.getValue().equals("TRUE")){
 // JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" FINE GARA","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint",element),getNode("sector", element), getNode("lap", element), "FINE GARA ", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint",element),getNode("sector", element), getNode("lap", element), "FINE GARA ", convert(istant)});
 if(endRace[ind-1]== false){
 JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 endRace[ind-1] = true;
@@ -313,13 +313,13 @@ ritRace[ind-1] = true;
 }
 
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element), "RITIRATO", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element), "RITIRATO", convert(istant)});
 // JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), convert(istant)});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
 }
@@ -448,6 +448,32 @@ System.out.println("Eccezione");
 e.printStackTrace();
 return false;
 }
+}
+
+public String convert(float timeIn){
+
+int ore = (int)(timeIn/3600);
+int minuti = (int)(timeIn/60);
+int secondi = (int)(timeIn-(minuti*60+ore*3600));
+int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+String time;
+if(secondi <10){
+if(millesimi<10){
+time = new String(ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":0"+secondi+":"+millesimi);}
+}
+else{
+if(millesimi<10){
+time = new String(ore+":"+minuti+":"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
+}
+return time;
 }
 
 public static void main(String[] args){
