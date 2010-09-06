@@ -1,3 +1,5 @@
+/*TODO : controllare le dimensioni dei vari array, in quanto ancora non vengono ritornati dalla competizione i valore per il numero di giri da effettuare (valore che si usa per l'array storicodatiArray), il numero di concorrenti (che si usa per endRace, ritRace, datiArray, dimensioni finestra di log e classifiche).
+*/
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
