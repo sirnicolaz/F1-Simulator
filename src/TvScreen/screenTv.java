@@ -24,13 +24,15 @@ import org.w3c.dom.*;
 
 import java.lang.reflect.Array;
 
-public class screenTv extends Thread{
+public class screenTv extends Thread implements TvPanelInterface{
+private boolean inWhile = true;
 private boolean[] endRace =  new boolean[]{false,false,false};
 private boolean[] ritRace=  new boolean[]{false,false,false};
-classificationTable classTable = new classificationTable();
-logBox log = new logBox();
-bestPerformance best = new bestPerformance();
-
+private classificationTable classTable = new classificationTable();
+private logBox log = new logBox();
+private bestPerformance best = new bestPerformance();
+private Competition_Monitor_Radio monitor;
+private org.omg.CORBA.Object obj;
 private int[] provaArray = new int[10];
 private arrayDati[] storicodatiArray = new arrayDati[10];
 private dati[] datiArray = new dati[3];
@@ -70,19 +72,11 @@ public screenTv(String corbalocIn){
 parent = new JFrame("TV Monitor");
 corbaloc = corbalocIn;
 //effettua la connessione
-System.out.println("Try to connect to Competition");
-try{
- String[] temp = {"ORB"};
-orb = ORB.init(temp, null);
-}
-catch (Exception e){
-System.out.println("Eccezione");
-e.printStackTrace();
-}
 }
 
 
 public void run(){
+
 // readXml()
 classTable.addTables(model_1, model_2);
 // best.addBest();
@@ -109,9 +103,14 @@ storicodatiArray[i] = new arrayDati(new dati[3]);
 current_lap=0;
 float q =(float)1.0;
 int i=0;
-org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
-Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
-while(true){
+if(connect()!= true){
+System.out.println("ERRORE DI CONNESSIONE");
+inWhile=false;
+JOptionPane.showMessageDialog(parent, "Connection Error", "Error",JOptionPane.ERROR_MESSAGE);
+parent.dispose();
+}
+while(inWhile){
+boolean exit=true;
 org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
@@ -218,6 +217,16 @@ new_table = false;
 
 q=(float)(q+1);
 sleep(250);
+for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
+if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
+exit=false;
+boolArray=Array.getLength(endRace)+1;
+}
+}
+if(exit==false){//se non tutti hanno finito continua altrimenti esci dal ciclo
+inWhile=true;
+}
+else{inWhile=false;};
 }
 }
 catch(Exception e){e.printStackTrace();}
@@ -425,8 +434,20 @@ public static String getNode(String tag, Element element){
     return "-";
   }
 
-public void connect(){
-
+public boolean connect(){
+System.out.println("Try to connect to Competition");
+try{
+ String[] temp = {"ORB"};
+orb = ORB.init(temp, null);
+obj = orb.string_to_object(corbaloc);
+monitor = Competition_Monitor_RadioHelper.narrow(obj);
+return true;
+}
+catch (Exception e){
+System.out.println("Eccezione");
+e.printStackTrace();
+return false;
+}
 }
 
 public static void main(String[] args){
