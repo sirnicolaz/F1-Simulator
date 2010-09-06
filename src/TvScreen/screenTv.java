@@ -336,7 +336,9 @@ System.out.println("bestTimes");
 	Attr attributoLap = (Attr) attributiLap.item(0);
 	System.out.println("attributo lap "+getCharacterDataFromElement(line)+" : "+attributoLap.getNodeValue());
 if(new Integer(attributoLap.getNodeValue()).intValue() !=-1){
-	best.setBestLap(attributoLap.getNodeValue(),getNode("time", element), getNode("competitorId", element));
+Float f=new Float(getNode("time", element));
+
+	best.setBestLap(attributoLap.getNodeValue(),convert(f.floatValue()), getNode("competitorId", element));
 /*textBoxLap.setText(attributoLap.getNodeValue());
 	System.out.println("time : "+getNode("time", element));
 textBoxLapTime.setText(getNode("time", element));
@@ -357,7 +359,8 @@ textBoxLapId.setText(getNode("competitorId", element));*/
 
 	System.out.println("--id : "+getNode("competitorId", line));
 if(new Double(getNode("time",line)).intValue() !=-1.0){	
-best.setBestSector(1, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+Float f=new Float(getNode("time", line));
+best.setBestSector(1, getNode("competitorId", line), getNode("lap", line), convert(f.floatValue()));
 /*textBoxSector1Id.setText(getNode("competitorId", line));
 textBoxSector1Lap.setText(getNode("lap", line));
 textBoxSector1Id.setText(getNode("competitorId", line));
@@ -371,7 +374,8 @@ textBoxSector1Time.setText(getNode("time", line));	*/
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
 if(new Double(getNode("time",line)).intValue() !=-1.0){	
-best.setBestSector(2, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+Float f=new Float(getNode("time", line));
+best.setBestSector(2, getNode("competitorId", line), getNode("lap", line), convert(f.floatValue()));
 	
 	}
 	sector = element.getElementsByTagName("sector");
@@ -382,7 +386,8 @@ best.setBestSector(2, getNode("competitorId", line), getNode("lap", line), getNo
 	System.out.println("--time : "+getNode("time", line));
 	System.out.println("--id : "+getNode("competitorId", line));
 if(new Double(getNode("time",line)).intValue() !=-1.0){	
-best.setBestSector(3, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+Float f=new Float(getNode("time", line));
+best.setBestSector(3, getNode("competitorId", line), getNode("lap", line), convert(f.floatValue()));
 }
 	try{
 	NodeList cl = doc.getElementsByTagName("classification");
@@ -523,8 +528,11 @@ classific_2 = new JTable(model_2);
 
 
 panelCl_1 = new JScrollPane(classific_1);
+// panelCl_1.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+
 panelCl_2 = new JScrollPane(classific_2);
 
+/*panelCl_2.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti*/
 panelCl_1.setVerticalScrollBar(new JScrollBar());
 panelCl_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -535,6 +543,8 @@ panelCl_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 panel1 = new JPanel(new BorderLayout());
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+// JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+panel1.setPreferredSize(new Dimension(950  , 200));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panel1.add(panelCl_1, BorderLayout.WEST);
 panel1.add(panelCl_2, BorderLayout.EAST);
 
