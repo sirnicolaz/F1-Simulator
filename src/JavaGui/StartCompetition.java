@@ -17,10 +17,11 @@ import org.omg.CosNaming.NamingContextHelper;
 public class StartCompetition {
 private org.omg.CORBA.ORB orb;
 private CompetitionConfigurator conf;
-private JLabel labelFile = new JLabel("1: File della pista : ");
-private JLabel labelCompetitor = new JLabel("2: Numero massimo concorrenti : ");
-private JLabel labelLap = new JLabel("3: Numero di giri per la gara : ");
-private JLabel labelName = new JLabel("4: Nome del circuito : ");
+private JLabel labelFile = new JLabel("1: File of racetrack : ");
+private JLabel labelCompetitor = new JLabel("2: Maximum number of competitor : ");
+private JLabel labelLap = new JLabel("3: Number  : ");
+private JLabel labelName = new JLabel("4: Name of circuit : ");
+private JLabel labelRefresh = new JLabel("5 : Refresh Time : ");
 /*private JLabel p_label5 = new JLabel("5 SConfigura la competizione");
 private JLabel p_label6 = new JLabel("6 SConfigura la competizione");*/
 private JTextField fileRacetrack = new JTextField("obj/race.xml", 15);
@@ -36,10 +37,12 @@ private JButton startButton;
 // private JButton undoButton;
 private JButton resetButton;
 private int intName=0;
-SpinnerNumberModel modelConc = new SpinnerNumberModel(5, 1, 20, 1); 
+SpinnerNumberModel modelConc = new SpinnerNumberModel(3, 1, 20, 1); 
 SpinnerNumberModel modelLap = new SpinnerNumberModel(10, 1, 100, 1);
+SpinnerNumberModel modelRefresh = new SpinnerNumberModel(43,35,50,1);
 private JSpinner jsConc = new JSpinner(modelConc);
 private JSpinner jsLap = new JSpinner(modelLap);
+private JSpinner jsRefresh = new JSpinner(modelRefresh);
 private void init(JFrame p){
 parent=p;
 
@@ -74,31 +77,9 @@ if(writexml()== true){
 parent.dispose();
 conf.Configure("obj/comp_config.xml");
 
-//avvio competizione
 }
-			    //comando per avviare la competizione.
-			    //avvio pannelli della competizione
 			}
 		});
-
-/*contentPane.add(p_label, BorderLayout.CENTER);
-contentPane.add(p_label2, BorderLayout.PAGE_END);*/
-
-// 		String[] meteo = { "Sun", "Weak Rain", "Rain", "Hard Rain"};
-// 		comboName = new JComboBox(meteo);
-// 		comboName.setSelectedIndex(0);
-// 		comboName.addActionListener(new ActionListener() {
-// 			public void actionPerformed(ActionEvent e) {
-// 				JComboBox cb = (JComboBox)e.getSource();
-// 				String s = (String)cb.getSelectedItem();
-// 				if(s.equals("Sun")) {intName = 0;}
-// 				else if(s.equals("Weak Rain")) {intName = 1;}
-// 				else if(s.equals("Rain")) {intName = 2;}
-// 				else if(s.equals("Hard Rain")) {intName = 3;}
-// 			}
-// 		});
-
-
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,6 +87,7 @@ contentPane.add(p_label2, BorderLayout.PAGE_END);*/
 			    jsLap.setValue(10);
 			    jsConc.setValue(5);
 			    textName.setText("Monza");
+			    jsRefresh.setValue(43);
 			    
 		}
 		});
@@ -161,8 +143,19 @@ contentPane.add(p_label2, BorderLayout.PAGE_END);*/
 		c.gridy = 3;
 		c.ipady = 5;
 		contentPane.add(textName, c);
+
 // p.getContentPane().add(contentPane);
 
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 4;
+		c.ipady = 5;
+		contentPane.add(labelRefresh, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 4;
+		c.ipady = 5;
+		contentPane.add(jsRefresh, c);
 
 //BUTTON PANEL
 		buttonPane.setLayout(new FlowLayout());
@@ -193,7 +186,6 @@ BufferedReader corbaLocFile = new BufferedReader(new FileReader("../competition_
 //      frame.getContentPane().add(p_label, BorderLayout.CENTER);
       frame.pack();
       frame.setVisible(true);
-
 }
 catch(Exception e){
 e.printStackTrace();
@@ -214,7 +206,7 @@ out.println("<?xml version=\"1.0\"?>\n<config>\n<name>");
 out.print(textName.getText());
 out.print("</name>\n<circuitConfigFile>");
 out.print(fileRacetrack.getText());
-out.print("</circuitConfigFile>\n<classificRefreshTime>43.0</classificRefreshTime>\n<competitorQty>");
+out.print("</circuitConfigFile>\n<classificRefreshTime>"+jsRefresh.getValue()+".0</classificRefreshTime>\n<competitorQty>");
 out.print(jsConc.getValue());
 out.print("</competitorQty>\n<laps>");
 out.print(jsLap.getValue());	
