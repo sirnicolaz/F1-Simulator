@@ -25,6 +25,8 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread{
+private boolean[] endRace =  new boolean[]{false,false,false};
+private boolean[] ritRace=  new boolean[]{false,false,false};
 classificationTable classTable = new classificationTable();
 logBox log = new logBox();
 bestPerformance best = new bestPerformance();
@@ -130,26 +132,15 @@ System.out.println("lap "+datiArray[r].lap);
 System.out.println(" id "+datiArray[r].id);
 System.out.println("position "+datiArray[r].position);
 
-//il giro è quello attuale
-// if(storicodatiArray[current_lap].arrayD[datiArray[r].position].id!=datiArray[r].id){
-// System.out.println("current_lap].arrayD[datiArray["+r+"].position].id!=datiArray["+r+"].id");
-// //se sono diversi non ho già il dato che mi serve, quindi lo salvo
-// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-/*if (storicodatiArray[current_lap].arrayD[r]==null){
-storicodatiArray[current_lap].arrayD[r] = new dati[3];
-}*/
+
 storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
 System.out.println("dopo scrittura ");
-// }
 }
 if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
 if(new_table==false){new_table=true;}
 System.out.println("datiArray["+r+"].lap > current_lap ==" +current_lap);
 if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
 //salvo il nuovo giroarrayD[3]
-// storicodatiArray[current_lap+1].arrayD = arrayDati[3];
-
-// storicodatiArray[current_lap+1].arrayD[datiArray[r].position]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
 System.out.println("lap "+datiArray[r].lap);
 System.out.println(" id "+datiArray[r].id);
 System.out.println("position"+datiArray[r].position);
@@ -196,6 +187,7 @@ modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].
 
 }
 }catch(Exception exx){
+exx.printStackTrace();
 }
 }
 
@@ -290,24 +282,39 @@ modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Ob
 JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 }
-if(attributoCompEnd.equals("TRUE")){
+}
+// System.out.println("ATTRIBUTO END = "+attributoCompEnd.getValue());
+int ind = new Integer(attributoComp.getNodeValue()).intValue();
+if(attributoCompEnd.getValue().equals("TRUE")){
+// System.out.println(" FINE GARA = TRUE ");
+// JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" FINE GARA","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "FINE GARA ", istant});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint",element),getNode("sector", element), getNode("lap", element), "FINE GARA ", istant});
+if(endRace[ind-1]== false){
 JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+endRace[ind-1] = true;
 }
-if(attributoCompRit.equals("TRUE")){
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "RITIRATO", istant});
+}
+else {
+if(attributoCompRit.getValue().equals("TRUE")){
+if(ritRace[ind-1]== false){
 JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+ritRace[ind-1] = true;
 }
+
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element), "RITIRATO", istant});
+// JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
-else{ 
+
+else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
 }
-	
+}	
 System.out.println("bestTimes");
 	NodeList bestT = doc.getElementsByTagName("bestTimes");
         Element element = (Element)bestT.item(0);
