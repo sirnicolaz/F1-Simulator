@@ -262,9 +262,10 @@ if (pitstopLapValue !=null){
 outArea.setText("Strategy:");
 outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
 outArea.append("\n-Style of guide :"+ styleValue);
-if (pitstopLapValue == 0){
-JOptionPane.showMessageDialog(parent, "Tempo totale del pitstop = "+convert(pitstopDelayValue), "Message from competition", JOptionPane.WARNING_MESSAGE);
+if (pitstopLapValue == 0 && pitstopDelayValue !=-1.0){
+JOptionPane.showMessageDialog(parent, "Total time for change tyre and refill fuel = "+convert(pitstopDelayValue), "Message from competition", JOptionPane.WARNING_MESSAGE);
 // outArea.append("\nPITSTOP --> tempo totale del pitstop : "+pitstopDelayValue+" secondi");
+pitstopDelayValue = (float)-1.0;
 }
 
 

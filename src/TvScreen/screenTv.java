@@ -291,12 +291,12 @@ if(new Integer(getNode("checkpoint",element)).intValue() == 1){
 if (temp.equals("arriving")){
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", convert(istant)});
-JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+// JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
 modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", convert(istant)});
-JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+// JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 }
 }
