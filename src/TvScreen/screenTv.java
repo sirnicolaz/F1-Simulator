@@ -25,64 +25,29 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread{
+classificationTable classTable = new classificationTable();
+logBox log = new logBox();
+bestPerformance best = new bestPerformance();
+
 private int[] provaArray = new int[10];
-private arrayDati[] storicodatiArray = new arrayDati[150];
+private arrayDati[] storicodatiArray = new arrayDati[10];
 private dati[] datiArray = new dati[3];
 // private dati[] datiOldArray = new dati[5];
-private int tabellaCorrente =1;
-private JTable classific_1;
-private JTable classific_2;
-private JScrollPane panelCl_1;
-private JPanel classificPanel;
-private JScrollPane panelCl_2;
-private JPanel bestPanel;
 private JFrame parent;
-private JPanel tablePanel;
-private JScrollPane tableSPanel;
-private JTable tableAll;
 
-private JPanel panel1;
 
 private Integer lapNum= new Integer(0);
 
 private DefaultTableModel model_1 = new DefaultTableModel(); 
 private DefaultTableModel model_2 = new DefaultTableModel(); 
-
 private DefaultTableModel modelAll = new DefaultTableModel(); 
+
 private FlowLayout f = new FlowLayout();
 private GridBagConstraints classificGrid = new GridBagConstraints();
-private GridBagConstraints bestGrid = new GridBagConstraints();
-private JTextField textBoxLap = new JTextField("-",3);
-private JTextField textBoxLapId = new JTextField("-",2);
-private JTextField textBoxLapTime = new JTextField("-",10);
-private JLabel labelLap = new JLabel("Best lap n° : ");
-private JLabel labelLapId = new JLabel(" by competitor : ");
-private JLabel labelLapTime = new JLabel(" in time : ");
-
-private JTextField textBoxSector1Lap = new JTextField("-",3);
-private JTextField textBoxSector1Id = new JTextField("-",2);
-private JTextField textBoxSector1Time = new JTextField("-",10);
-private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
-private JLabel labelSector1Id = new JLabel(" by competitor : ");
-private JLabel labelSector1Time = new JLabel(" in time : ");
 
 private DefaultTableModel[] modelClassific = new DefaultTableModel[]{model_1, model_2};
 private int current_index =0;
 
-private JTextField textBoxSector2Lap = new JTextField("-",3);
-private JTextField textBoxSector2Id = new JTextField("-",2);
-private JTextField textBoxSector2Time = new JTextField("-",10);
-private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
-private JLabel labelSector2Id = new JLabel(" by competitor : ");
-private JLabel labelSector2Time = new JLabel(" in time : ");
-
-
-private JTextField textBoxSector3Lap = new JTextField("-",3);
-private JTextField textBoxSector3Id = new JTextField("-",2);
-private JTextField textBoxSector3Time = new JTextField("-",10);
-private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
-private JLabel labelSector3Id = new JLabel(" by competitor : ");
-private JLabel labelSector3Time = new JLabel(" in time : ");
 
 private String corbaloc;
 private ORB orb;
@@ -113,7 +78,384 @@ System.out.println("Eccezione");
 e.printStackTrace();
 }
 }
-public void addTables(){
+
+
+public void run(){
+// readXml()
+classTable.addTables(model_1, model_2);
+// best.addBest();
+log.addTablesAll(modelAll);
+best.addBest();
+/*parent.add(panelCl_1, BorderLayout.EAST);*/
+parent.add(classTable.panel1, BorderLayout.CENTER);
+// parent.add(panelCl_2, BorderLayout.WEST);
+parent.add(best.bestPanel,BorderLayout.NORTH);
+parent.add(log.tablePanel, BorderLayout.SOUTH);
+parent.pack();
+parent.setVisible(true);
+parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+try{
+for(int index = 0; index<3; index++){
+model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
+model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
+modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
+}
+for(int i=0; i<Array.getLength(storicodatiArray);i++){
+storicodatiArray[i] = new arrayDati(new dati[3]);
+}
+current_lap=0;
+float q =(float)1.0;
+int i=0;
+org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
+Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
+while(true){
+org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
+arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
+lapNum = (int)q;
+readXml(updateString.value, q);
+
+for(int r=0; r<Array.getLength(datiArray);r++){
+try{
+System.out.println("DEBUG : ITERAZIONE r = "+r);
+System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ --- datiArray["+r+"] .id= "+datiArray[r].id+" ,  lap = "+datiArray[r].lap+" , position = "+datiArray[r].position);
+//se esiste la cella devo
+//1-controllare di non averla già inserita
+//2-se già inserite saltare, altrimenti scriverla
+//3-se ho un nuovo lap scrivere i doppiati in quella del lap precedente
+//4-inizializzare il nuovo campo dell'array
+if(datiArray[r].lap == current_lap){
+System.out.println("datiArray["+r+"].lap == current_lap ==" +current_lap);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position "+datiArray[r].position);
+
+//il giro è quello attuale
+// if(storicodatiArray[current_lap].arrayD[datiArray[r].position].id!=datiArray[r].id){
+// System.out.println("current_lap].arrayD[datiArray["+r+"].position].id!=datiArray["+r+"].id");
+// //se sono diversi non ho già il dato che mi serve, quindi lo salvo
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+/*if (storicodatiArray[current_lap].arrayD[r]==null){
+storicodatiArray[current_lap].arrayD[r] = new dati[3];
+}*/
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+// }
+}
+if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
+if(new_table==false){new_table=true;}
+System.out.println("datiArray["+r+"].lap > current_lap ==" +current_lap);
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+//salvo il nuovo giroarrayD[3]
+// storicodatiArray[current_lap+1].arrayD = arrayDati[3];
+
+// storicodatiArray[current_lap+1].arrayD[datiArray[r].position]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+storicodatiArray[current_lap+1].arrayD[r]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+//salvo un boolean per sapere che devo scrivere i doppiati
+
+}
+if(datiArray[r].lap < current_lap && new_table == true){
+if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
+System.out.println("datiArray["+r+"].lap < current_lap ==" +current_lap+" && new_table == true");
+//inserisco i doppiati
+System.out.println("lap "+datiArray[r].lap);
+System.out.println(" id "+datiArray[r].id);
+System.out.println("position"+datiArray[r].position);
+
+// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+}
+}
+catch(Exception e ){
+System.out.println("ecc in salvataggio");
+e.printStackTrace();
+r=Array.getLength(datiArray) +1;
+}
+}
+
+System.out.println("Classifica : ");
+boolean new_table_temp = new_table;
+for(int e=0; e<Array.getLength(storicodatiArray); e++){
+// for(int w=0; w<=current_lap; w++){
+try{
+if(new_table_temp==true){
+for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
+try{
+
+int lapGap = storicodatiArray[current_lap+1].arrayD[0].lap - storicodatiArray[current_lap].arrayD[w].lap;
+if (lapGap == 1){
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id," + "+lapGap+" giro","doppiato"});
+}
+else{
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id," + "+lapGap+" giri","doppiato"});
+
+}
+}catch(Exception exx){
+}
+}
+
+current_index=(current_index+1)%2;
+current_lap=current_lap+1;
+new_table_temp = false;
+for(int w=0; w<modelClassific[current_index].getRowCount();w++){//rimuovo la vecchia classifica scritta su questa tabella.
+System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
+modelClassific[current_index].removeRow(w);
+}
+}
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
+
+modelClassific[current_index].removeRow(e+1);
+
+System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
+}
+catch(Exception ecc){System.out.println("ecc");
+ecc.printStackTrace();
+e= Array.getLength(storicodatiArray)+1;
+}
+}
+
+if(new_table == true){
+System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
+new_table = false;
+}
+
+q=(float)(q+1);
+sleep(250);
+}
+}
+catch(Exception e){e.printStackTrace();}
+}
+// parsing xml
+public void readXml(String xmlRecords, float istant){
+System.out.println("stringa da parsare : \n"+xmlRecords);
+ try {
+        DocumentBuilderFactory dbf =
+        DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlRecords));
+
+        Document doc = db.parse(is);
+
+	NodeList nodes32 = doc.getElementsByTagName("competitors");
+	Element prova32 = (Element) nodes32.item(0);
+
+	NodeList nodes = prova32.getElementsByTagName("competitor");
+	Element prova = (Element) nodes.item(0);
+
+//qua conto i figli
+
+	for (int i=0; i < nodes.getLength(); i++) {
+
+        Element element = (Element) nodes.item(i);
+        NodeList comp = doc.getElementsByTagName("competitor");
+        Element line = (Element) comp.item(i);
+	System.out.println("competitor: " + getCharacterDataFromElement(line)+" length ="+nodes.getLength());
+
+	Attr attributoComp =  line.getAttributeNode("id");//(Attr) attributiComp.item(0);
+
+	Attr attributoCompEnd =  line.getAttributeNode("end");//(Attr) attributiComp.item(0);
+
+	Attr attributoCompRit =  line.getAttributeNode("retired");//(Attr) attributiComp.item(0);
+
+	System.out.println("attributo id : "+attributoComp.getNodeValue());
+	
+	NodeList check = element.getElementsByTagName("checkpoint");
+        line = (Element) check.item(0);
+
+	Attr attributoCheck =  line.getAttributeNode("compPosition");//(Attr) attributiCheck.item(0);
+	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
+String temp = attributoCheck.getNodeValue();
+	Attr attributoCheck_2 = line.getAttributeNode("pitstop");
+	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck_2.getNodeValue());
+	System.out.println("lap : "+getNode("lap", element));
+	System.out.println("sector : "+getNode("sector", element));
+if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
+JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+if(new Integer(getNode("checkpoint",element)).intValue() == 1){
+if (temp.equals("arriving")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", istant});
+JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+}
+else{
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", istant});
+JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+}
+}
+if(attributoCompEnd.equals("TRUE")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "FINE GARA ", istant});
+JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+}
+if(attributoCompRit.equals("TRUE")){
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "RITIRATO", istant});
+JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+}
+}
+else{ 
+modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
+// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
+	}
+}
+	
+System.out.println("bestTimes");
+	NodeList bestT = doc.getElementsByTagName("bestTimes");
+        Element element = (Element)bestT.item(0);
+	
+	NodeList lap = element.getElementsByTagName("lap");
+        Element line = (Element) lap.item(0);
+	NamedNodeMap attributiLap =line.getAttributes();
+
+
+	Attr attributoLap = (Attr) attributiLap.item(0);
+	System.out.println("attributo lap "+getCharacterDataFromElement(line)+" : "+attributoLap.getNodeValue());
+if(new Integer(attributoLap.getNodeValue()).intValue() !=-1){
+	best.setBestLap(attributoLap.getNodeValue(),getNode("time", element), getNode("competitorId", element));
+/*textBoxLap.setText(attributoLap.getNodeValue());
+	System.out.println("time : "+getNode("time", element));
+textBoxLapTime.setText(getNode("time", element));
+	System.out.println("competitor Id : "+getNode("competitorId", element));
+textBoxLapId.setText(getNode("competitorId", element));*/
+}
+
+	
+	NodeList bestSector = doc.getElementsByTagName("sectors");
+        element = (Element)bestSector.item(0);
+
+	NodeList sector = element.getElementsByTagName("sector");
+        line = (Element) sector.item(0);
+	NamedNodeMap attributiSector =line.getAttributes();
+	Attr attributoSector = (Attr) attributiSector.item(0);
+	System.out.println("attributo sector 1 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
+	System.out.println("--time : "+getNode("time", line));
+
+	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
+best.setBestSector(1, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+/*textBoxSector1Id.setText(getNode("competitorId", line));
+textBoxSector1Lap.setText(getNode("lap", line));
+textBoxSector1Id.setText(getNode("competitorId", line));
+textBoxSector1Time.setText(getNode("time", line));	*/
+}
+	sector = element.getElementsByTagName("sector");
+        line = (Element) sector.item(1);
+	attributiSector =line.getAttributes();
+	attributoSector = (Attr) attributiSector.item(0);
+	System.out.println("attributo sector 2 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
+	System.out.println("--time : "+getNode("time", line));
+	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
+best.setBestSector(2, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+	
+	}
+	sector = element.getElementsByTagName("sector");
+        line = (Element) sector.item(2);
+	attributiSector =line.getAttributes();
+	attributoSector = (Attr) attributiSector.item(0);
+	System.out.println("attributo sector 3"+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
+	System.out.println("--time : "+getNode("time", line));
+	System.out.println("--id : "+getNode("competitorId", line));
+if(new Double(getNode("time",line)).intValue() !=-1.0){	
+best.setBestSector(3, getNode("competitorId", line), getNode("lap", line), getNode("time", line));
+}
+	try{
+	NodeList cl = doc.getElementsByTagName("classification");
+        Element elementTemp = (Element)cl.item(0);
+	
+	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
+        Element compEl = (Element) comp42.item(0);
+for(int y=0; y<Array.getLength(datiArray); y++){
+datiArray[y] = null;
+}
+	for (int i=0; i < comp42.getLength(); i++) {
+
+        element = (Element) comp42.item(i);
+//         NodeList compIn = comp42.getElementsByTagName("competitor");
+         line = (Element) comp42.item(i);
+	System.out.println("----competitor: " + getCharacterDataFromElement(line)+" length ="+comp42.getLength());
+	NamedNodeMap attributiComp =line.getAttributes();
+
+	Attr attributoComp = (Attr) attributiComp.item(0);
+	System.out.println("------attributo id : "+attributoComp.getNodeValue());
+	
+	System.out.println("------lap : "+getNode("lap", line));
+datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
+
+}
+	}
+	catch (Exception e){
+	System.out.println("classification non presente");
+	}
+	
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+System.out.println("eccezione in readXml");
+    }
+}
+public static String getNode(String tag, Element element){
+	NodeList compId = element.getElementsByTagName(tag);
+        Element line = (Element) compId.item(0);
+// 	System.out.println("Id Comp : "+getCharacterDataFromElement(line));
+	return getCharacterDataFromElement(line);
+}
+ public static String getCharacterDataFromElement(Element e) {
+    Node child = e.getFirstChild();
+    if (child instanceof CharacterData) {
+       CharacterData cd = (CharacterData) child;
+       return cd.getData();
+    }
+    return "-";
+  }
+
+public void connect(){
+
+}
+
+public static void main(String[] args){
+screenTv s= new screenTv(args[0]);
+// corbaloc = args[0];
+s.start();
+}
+}
+
+class dati{
+public int lap=-1;
+public int id=-1;
+public int position=-1;
+public dati(int lapIn, int idIn, int positionIn){
+lap = lapIn;
+id = idIn;
+position = positionIn;
+}
+}
+class arrayDati{
+public arrayDati(dati[] a){
+arrayD=a;
+}
+public dati[] arrayD;
+}
+//oggetto tabella con classifiche
+class classificationTable{
+private int tabellaCorrente =1;
+private JTable classific_1;
+private JTable classific_2;
+private JScrollPane panelCl_1;
+private JPanel classificPanel;
+private JScrollPane panelCl_2;
+public JPanel panel1;
+
+public void addTables(DefaultTableModel model_1, DefaultTableModel model_2){
 model_1.addColumn("Position");
 model_1.addColumn("Id Comp"); 
 model_1.addColumn("Lap");
@@ -143,6 +485,66 @@ panel1.add(panelCl_1, BorderLayout.WEST);
 panel1.add(panelCl_2, BorderLayout.EAST);
 
 }
+}
+
+//oggetto tabella di log
+class logBox{
+private JTable tableAll;
+public JPanel tablePanel;
+private JScrollPane tableSPanel;
+
+public void addTablesAll(DefaultTableModel modelAll){
+modelAll.addColumn("Id competitor");
+modelAll.addColumn("Checkpoint");
+modelAll.addColumn("Sector");
+modelAll.addColumn("Lap");
+modelAll.addColumn("State");
+modelAll.addColumn("Time (h:m:s:mll)");
+
+tableAll = new JTable(modelAll);
+tablePanel = new JPanel(new BorderLayout());
+tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+tableSPanel = new JScrollPane(tableAll);
+tableSPanel.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+tablePanel.add(tableSPanel, BorderLayout.CENTER);
+
+}
+}
+
+class bestPerformance{
+public JPanel bestPanel;
+
+private GridBagConstraints bestGrid = new GridBagConstraints();
+private JTextField textBoxLap = new JTextField("-",3);
+private JTextField textBoxLapId = new JTextField("-",2);
+private JTextField textBoxLapTime = new JTextField("-",10);
+private JLabel labelLap = new JLabel("Best lap n° : ");
+private JLabel labelLapId = new JLabel(" by competitor : ");
+private JLabel labelLapTime = new JLabel(" in time : ");
+
+private JTextField textBoxSector1Lap = new JTextField("-",3);
+private JTextField textBoxSector1Id = new JTextField("-",2);
+private JTextField textBoxSector1Time = new JTextField("-",10);
+private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
+private JLabel labelSector1Id = new JLabel(" by competitor : ");
+private JLabel labelSector1Time = new JLabel(" in time : ");
+
+
+private JTextField textBoxSector2Lap = new JTextField("-",3);
+private JTextField textBoxSector2Id = new JTextField("-",2);
+private JTextField textBoxSector2Time = new JTextField("-",10);
+private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
+private JLabel labelSector2Id = new JLabel(" by competitor : ");
+private JLabel labelSector2Time = new JLabel(" in time : ");
+
+
+private JTextField textBoxSector3Lap = new JTextField("-",3);
+private JTextField textBoxSector3Id = new JTextField("-",2);
+private JTextField textBoxSector3Time = new JTextField("-",10);
+private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
+private JLabel labelSector3Id = new JLabel(" by competitor : ");
+private JLabel labelSector3Time = new JLabel(" in time : ");
+
 public void addBest(){
 bestPanel = new JPanel(new BorderLayout());
 bestPanel.setLayout(new GridBagLayout());
@@ -277,413 +679,29 @@ bestGrid.fill = GridBagConstraints.HORIZONTAL;
 
 }
 
-public void addTablesAll(){
-modelAll.addColumn("Id competitor");
-modelAll.addColumn("Checkpoint");
-modelAll.addColumn("Sector");
-modelAll.addColumn("Lap");
-modelAll.addColumn("State");
-modelAll.addColumn("Time (h:m:s:mll)");
-
-tableAll = new JTable(modelAll);
-tablePanel = new JPanel(new BorderLayout());
-tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-tableSPanel = new JScrollPane(tableAll);
-tableSPanel.setPreferredSize(new Dimension(0, 70));// 35 moltiplicato per il numero di concorrenti
-
-// tableSPanel.setVerticalScrollBar(new JScrollBar());
-// tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-tablePanel.add(tableSPanel, BorderLayout.CENTER);
-// tablePanel.add(tableSPanel, BorderLayout.CENTER);
+public void setBestLap(String lap,String  time,String  id){
+textBoxLap.setText(lap);
+textBoxLapTime.setText(time);
+textBoxLapId.setText(id);
 
 }
-public void run(){
-// readXml()
-addTables();
-addBest();
-addTablesAll();
-/*parent.add(panelCl_1, BorderLayout.EAST);*/
-parent.add(panel1, BorderLayout.CENTER);
-// parent.add(panelCl_2, BorderLayout.WEST);
-parent.add(bestPanel,BorderLayout.NORTH);
-parent.add(tablePanel, BorderLayout.SOUTH);
-parent.pack();
-parent.setVisible(true);
-parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-try{
-for(int index = 0; index<3; index++){
-model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
-model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
-modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
+public void setBestSector(int sector, String id, String lap, String time){
+if(sector == 1){
+textBoxSector1Lap.setText(lap);
+textBoxSector1Id.setText(id);
+textBoxSector1Time.setText(time);
 }
-for(int i=0; i<Array.getLength(storicodatiArray);i++){
-storicodatiArray[i] = new arrayDati(new dati[3]);
+if(sector == 2){
+textBoxSector2Lap.setText(lap);
+textBoxSector2Id.setText(id);
+textBoxSector2Time.setText(time);
 }
-current_lap=0;
-float q =(float)1.0;
-int i=0;
-org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
-Competition_Monitor_Radio monitor = Competition_Monitor_RadioHelper.narrow(obj);
-while(true){
-org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
-arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
-lapNum = (int)q;
-readXml(updateString.value, q);
-
-for(int r=0; r<Array.getLength(datiArray);r++){
-try{
-System.out.println("DEBUG : ITERAZIONE r = "+r);
-System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ --- datiArray["+r+"] .id= "+datiArray[r].id+" ,  lap = "+datiArray[r].lap+" , position = "+datiArray[r].position);
-//se esiste la cella devo
-//1-controllare di non averla già inserita
-//2-se già inserite saltare, altrimenti scriverla
-//3-se ho un nuovo lap scrivere i doppiati in quella del lap precedente
-//4-inizializzare il nuovo campo dell'array
-if(datiArray[r].lap == current_lap){
-System.out.println("datiArray["+r+"].lap == current_lap ==" +current_lap);
-System.out.println("lap "+datiArray[r].lap);
-System.out.println(" id "+datiArray[r].id);
-System.out.println("position "+datiArray[r].position);
-
-//il giro è quello attuale
-// if(storicodatiArray[current_lap].arrayD[datiArray[r].position].id!=datiArray[r].id){
-// System.out.println("current_lap].arrayD[datiArray["+r+"].position].id!=datiArray["+r+"].id");
-// //se sono diversi non ho già il dato che mi serve, quindi lo salvo
-// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-/*if (storicodatiArray[current_lap].arrayD[r]==null){
-storicodatiArray[current_lap].arrayD[r] = new dati[3];
-}*/
-storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-System.out.println("dopo scrittura ");
-// }
-}
-if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
-if(new_table==false){new_table=true;}
-System.out.println("datiArray["+r+"].lap > current_lap ==" +current_lap);
-if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
-//salvo il nuovo giroarrayD[3]
-// storicodatiArray[current_lap+1].arrayD = arrayDati[3];
-
-// storicodatiArray[current_lap+1].arrayD[datiArray[r].position]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-System.out.println("lap "+datiArray[r].lap);
-System.out.println(" id "+datiArray[r].id);
-System.out.println("position"+datiArray[r].position);
-storicodatiArray[current_lap+1].arrayD[r]= new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-System.out.println("dopo scrittura ");
-//salvo un boolean per sapere che devo scrivere i doppiati
-
-}
-if(datiArray[r].lap < current_lap && new_table == true){
-if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
-System.out.println("datiArray["+r+"].lap < current_lap ==" +current_lap+" && new_table == true");
-//inserisco i doppiati
-System.out.println("lap "+datiArray[r].lap);
-System.out.println(" id "+datiArray[r].id);
-System.out.println("position"+datiArray[r].position);
-
-// storicodatiArray[current_lap].arrayD[datiArray[r].position]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
-System.out.println("dopo scrittura ");
-}
-}
-catch(Exception e ){
-System.out.println("ecc in salvataggio");
-e.printStackTrace();
-r=Array.getLength(datiArray) +1;
-}
-}
-
-System.out.println("Classifica : ");
-boolean new_table_temp = new_table;
-for(int e=0; e<Array.getLength(storicodatiArray); e++){
-// for(int w=0; w<=current_lap; w++){
-try{
-// if(current_lap%2 == 0){
-if(new_table_temp==true){
-for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
-// modelClassific[current_index].removeRow(w);
-try{
-// if(storicodatiArray[current_lap].arrayD[w].lap == current_lap){
-// try{
-// modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,arrayOldInfo[w]});
-// }
-// catch(Exception eff){JOptionPane.showMessageDialog(parent, "", "Error: storicodatiArray[current_lap].arrayD[w].lap == current_lap", JOptionPane.ERROR_MESSAGE);}
-// }
-// else{
-modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id,storicodatiArray[current_lap].arrayD[w].lap,"doppiato"});
-// }
-}catch(Exception exx){
-// w=Array.getLength(storicodatiArray[current_lap].arrayD)+1;
-}
-}
-
-current_index=(current_index+1)%2;
-current_lap=current_lap+1;
-new_table_temp = false;
-for(int w=0; w<modelClassific[current_index].getRowCount();w++){//rimuovo la vecchia classifica scritta su questa tabella.
-System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
-modelClassific[current_index].removeRow(w);
-}
-}
-modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});
-
-modelClassific[current_index].removeRow(e+1);
-// else{
-// // model_2.removeRow(e);
-// model_2.addRow( new Object[]{storicodatiArray[current_lap].arrayD[e].position+1,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, arrayInfo[e]});}
-
-System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
-}
-catch(Exception ecc){System.out.println("ecc");
-ecc.printStackTrace();
-e= Array.getLength(storicodatiArray)+1;
-}
-}
-// }
-
-if(new_table == true){
-System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
-/*current_lap = current_lap +1;*/
-new_table = false;
-}
-
-q=(float)(q+1);
-sleep(250);
-}
-// catch(Exception e){}
-// }
-}
-catch(Exception e){e.printStackTrace();}
-}
-
-// parsing xml
-public void readXml(String xmlRecords, float istant){
-System.out.println("stringa da parsare : \n"+xmlRecords);
- try {
-        DocumentBuilderFactory dbf =
-        DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        InputSource is = new InputSource();
-        is.setCharacterStream(new StringReader(xmlRecords));
-
-        Document doc = db.parse(is);
-
-	NodeList nodes32 = doc.getElementsByTagName("competitors");
-	Element prova32 = (Element) nodes32.item(0);
-
-	NodeList nodes = prova32.getElementsByTagName("competitor");
-	Element prova = (Element) nodes.item(0);
-
-//qua conto i figli
-
-	for (int i=0; i < nodes.getLength(); i++) {
-
-        Element element = (Element) nodes.item(i);
-        NodeList comp = doc.getElementsByTagName("competitor");
-        Element line = (Element) comp.item(i);
-	System.out.println("competitor: " + getCharacterDataFromElement(line)+" length ="+nodes.getLength());
-
-// 	NamedNodeMap attributiComp =line.getAttributes();
-
-	Attr attributoComp =  line.getAttributeNode("id");//(Attr) attributiComp.item(0);
-
-	Attr attributoCompEnd =  line.getAttributeNode("end");//(Attr) attributiComp.item(0);
-
-	Attr attributoCompRit =  line.getAttributeNode("retired");//(Attr) attributiComp.item(0);
-
-	System.out.println("attributo id : "+attributoComp.getNodeValue());
-	
-	NodeList check = element.getElementsByTagName("checkpoint");
-        line = (Element) check.item(0);
-// 	NamedNodeMap attributiCheck =line.getAttributes();
-
-	Attr attributoCheck =  line.getAttributeNode("compPosition");//(Attr) attributiCheck.item(0);
-	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck.getNodeValue());
-String temp = attributoCheck.getNodeValue();
-	Attr attributoCheck_2 = line.getAttributeNode("pitstop");
-	System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck_2.getNodeValue());
-	System.out.println("lap : "+getNode("lap", element));
-// 	new Integer(getNode("lap", element));*/
-	System.out.println("sector : "+getNode("sector", element));
-if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
-JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-if(new Integer(getNode("checkpoint",element)).intValue() == 1){
-if (temp.equals("arriving")){
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", istant});
-JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-}
-else{
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", istant});
-JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-}
-
-}
-if(attributoCompEnd.equals("TRUE")){
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "FINE GARA ", istant});
-JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-}
-if(attributoCompRit.equals("TRUE")){
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element), "RITIRATO", istant});
-
-JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-
+if(sector == 3){
+textBoxSector3Lap.setText(lap);
+textBoxSector3Id.setText(id);
+textBoxSector3Time.setText(time);
 }
 
 
 }
-// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-// modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
-// modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX ", getNode("lap", element),  attributoCheck.getNodeValue(), istant});
-else{ 
-modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), istant});
-// modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
-	}
-}
-	
-System.out.println("bestTimes");
-	NodeList best = doc.getElementsByTagName("bestTimes");
-        Element element = (Element)best.item(0);
-	
-	NodeList lap = element.getElementsByTagName("lap");
-        Element line = (Element) lap.item(0);
-	NamedNodeMap attributiLap =line.getAttributes();
-
-
-	Attr attributoLap = (Attr) attributiLap.item(0);
-	System.out.println("attributo lap "+getCharacterDataFromElement(line)+" : "+attributoLap.getNodeValue());
-if(new Integer(attributoLap.getNodeValue()).intValue() !=-1){	
-textBoxLap.setText(attributoLap.getNodeValue());
-	System.out.println("time : "+getNode("time", element));
-textBoxLapTime.setText(getNode("time", element));
-	System.out.println("competitor Id : "+getNode("competitorId", element));
-textBoxLapId.setText(getNode("competitorId", element));
-}
-
-	
-	NodeList bestSector = doc.getElementsByTagName("sectors");
-        element = (Element)bestSector.item(0);
-
-	NodeList sector = element.getElementsByTagName("sector");
-        line = (Element) sector.item(0);
-	NamedNodeMap attributiSector =line.getAttributes();
-	Attr attributoSector = (Attr) attributiSector.item(0);
-	System.out.println("attributo sector 1 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
-	System.out.println("--time : "+getNode("time", line));
-
-	System.out.println("--id : "+getNode("competitorId", line));
-if(new Double(getNode("time",line)).intValue() !=-1.0){	
-textBoxSector1Id.setText(getNode("competitorId", line));
-textBoxSector1Lap.setText(getNode("lap", line));
-textBoxSector1Id.setText(getNode("competitorId", line));
-textBoxSector1Time.setText(getNode("time", line));	
-}
-	sector = element.getElementsByTagName("sector");
-        line = (Element) sector.item(1);
-	attributiSector =line.getAttributes();
-	attributoSector = (Attr) attributiSector.item(0);
-	System.out.println("attributo sector 2 "+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
-	System.out.println("--time : "+getNode("time", line));
-	System.out.println("--id : "+getNode("competitorId", line));
-if(new Double(getNode("time",line)).intValue() !=-1.0){	
-textBoxSector2Id.setText(getNode("competitorId", line));
-textBoxSector2Lap.setText(getNode("lap", line));
-textBoxSector2Id.setText(getNode("competitorId", line));
-textBoxSector2Time.setText(getNode("time", line));	
-	}
-	sector = element.getElementsByTagName("sector");
-        line = (Element) sector.item(2);
-	attributiSector =line.getAttributes();
-	attributoSector = (Attr) attributiSector.item(0);
-	System.out.println("attributo sector 3"+getCharacterDataFromElement(line)+" : "+attributoSector.getNodeValue());
-	System.out.println("--time : "+getNode("time", line));
-	System.out.println("--id : "+getNode("competitorId", line));
-if(new Double(getNode("time",line)).intValue() !=-1.0){	
-textBoxSector3Id.setText(getNode("competitorId", line));
-textBoxSector3Lap.setText(getNode("lap", line));
-textBoxSector3Id.setText(getNode("competitorId", line));
-textBoxSector3Time.setText(getNode("time", line));	
-}
-	try{
-	NodeList cl = doc.getElementsByTagName("classification");
-        Element elementTemp = (Element)cl.item(0);
-	
-	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
-        Element compEl = (Element) comp42.item(0);
-for(int y=0; y<Array.getLength(datiArray); y++){
-datiArray[y] = null;
-}
-	for (int i=0; i < comp42.getLength(); i++) {
-
-        element = (Element) comp42.item(i);
-//         NodeList compIn = comp42.getElementsByTagName("competitor");
-         line = (Element) comp42.item(i);
-	System.out.println("----competitor: " + getCharacterDataFromElement(line)+" length ="+comp42.getLength());
-	NamedNodeMap attributiComp =line.getAttributes();
-
-	Attr attributoComp = (Attr) attributiComp.item(0);
-	System.out.println("------attributo id : "+attributoComp.getNodeValue());
-	
-	System.out.println("------lap : "+getNode("lap", line));
-datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
-
-}
-	}
-	catch (Exception e){
-	System.out.println("classification non presente");
-	}
-	
-    }
-    catch (Exception e) {
-        e.printStackTrace();
-System.out.println("eccezione in readXml");
-    }
-}
-public static String getNode(String tag, Element element){
-	NodeList compId = element.getElementsByTagName(tag);
-        Element line = (Element) compId.item(0);
-// 	System.out.println("Id Comp : "+getCharacterDataFromElement(line));
-	return getCharacterDataFromElement(line);
-}
- public static String getCharacterDataFromElement(Element e) {
-    Node child = e.getFirstChild();
-    if (child instanceof CharacterData) {
-       CharacterData cd = (CharacterData) child;
-       return cd.getData();
-    }
-    return "-";
-  }
-
-public void connect(){
-
-}
-
-public static void main(String[] args){
-screenTv s= new screenTv(args[0]);
-// corbaloc = args[0];
-s.start();
-}
-}
-
-class dati{
-public int lap=-1;
-public int id=-1;
-public int position=-1;
-public dati(int lapIn, int idIn, int positionIn){
-lap = lapIn;
-id = idIn;
-position = positionIn;
-}
-}
-class arrayDati{
-public arrayDati(dati[] a){
-arrayD=a;
-}
-public dati[] arrayD;
 }
