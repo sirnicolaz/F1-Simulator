@@ -66,7 +66,7 @@ private String styleValue;
 private String tyreValue;
 private Double gasLevelStrategyValue;
 private Integer pitstopLapValue;
-private Double pitstopDelayValue;
+private float pitstopDelayValue;
 
 
 private String teamValue;
@@ -221,6 +221,8 @@ int  gasInt= (int)(decimal*gas);
 int tyreInt = (int)(decimal*tyre);
 double gasPrint=(double)gasInt/(double)decimal;
 double tyrePrint=(double)tyreInt/(double)decimal;
+String time = convert(j.value);
+/*
 int ore = (int)(j.value/3600);
 int minuti = (int)(j.value/60);
 int secondi = (int)(j.value-(minuti*60+ore*3600));
@@ -241,7 +243,7 @@ else if(millesimi<100){
 time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
 else{
 time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
-}
+}*/
 if( gas <= 0.0 || tyre >100.0 ){
 model.insertRow(0,new Object[]{lapsValue,sectorValue,"RITIRED","RITIRED",time});
 ListSelectionModel selectionModel = outTable.getSelectionModel();
@@ -261,7 +263,8 @@ outArea.setText("Strategy:");
 outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
 outArea.append("\n-Style of guide :"+ styleValue);
 if (pitstopLapValue == 0){
-outArea.append("\nPITSTOP --> tempo totale del pitstop : "+pitstopDelayValue+" secondi");
+JOptionPane.showMessageDialog(parent, "Tempo totale del pitstop = "+convert(pitstopDelayValue), "Message from competition", JOptionPane.WARNING_MESSAGE);
+// outArea.append("\nPITSTOP --> tempo totale del pitstop : "+pitstopDelayValue+" secondi");
 }
 
 
@@ -386,7 +389,7 @@ System.out.println("nel try della parte della strategia");
 
 	NodeList pitStopDelay = element2.getElementsByTagName("pitStopDelay");
         line = (Element) pitStopDelay.item(0);
-	pitstopDelayValue = new Double(getCharacterDataFromElement(line));
+	pitstopDelayValue = new Float(getCharacterDataFromElement(line)).floatValue();
 }
 catch(Exception e){
 System.out.println("strategia non presente");}
@@ -483,7 +486,30 @@ catch (Exception e){e.printStackTrace();}
     }
     return "-";
   }
-
+public String convert(float timeIn){
+int ore = (int)(timeIn/3600);
+int minuti = (int)(timeIn/60);
+int secondi = (int)(timeIn-(minuti*60+ore*3600));
+int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+String time;
+if(secondi <10){
+if(millesimi<10){
+time = new String(ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":0"+secondi+":"+millesimi);}
+}
+else{
+if(millesimi<10){
+time = new String(ore+":"+minuti+":"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
+else{
+time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
+}
+return time;
+}
 
 // public static void main(String[] args){
 // BoxMonitor b = new BoxMonitor(args[0]);
