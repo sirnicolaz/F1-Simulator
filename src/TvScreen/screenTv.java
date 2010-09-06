@@ -70,14 +70,20 @@ private Integer sectorValue;
 private int current_lap =0;
 private boolean new_table = false;
 
-public screenTv(String corbalocIn){
+public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn){
 parent = new JFrame("TV Monitor");
+// JOptionPane.showMessageDialog(parent, "Screen TV "+corbalocIn, "Screen tv init", JOptionPane.WARNING_MESSAGE);
+
 corbaloc = corbalocIn;
+// orb = orbIn;
+// obj = objIn;
+monitor = monitorIn;
 //effettua la connessione
 }
 
 
 public void run(){
+// JOptionPane.showMessageDialog(parent, "Attention : screen tv started", "Error", JOptionPane.WARNING_MESSAGE);
 
 // readXml()
 classTable.addTables(model_1, model_2);
@@ -105,12 +111,12 @@ storicodatiArray[i] = new arrayDati(new dati[3]);
 current_lap=0;
 float q =(float)1.0;
 int i=0;
-if(connect()!= true){
-System.out.println("ERRORE DI CONNESSIONE");
-inWhile=false;
-JOptionPane.showMessageDialog(parent, "Connection Error", "Error",JOptionPane.ERROR_MESSAGE);
-parent.dispose();
-}
+// if(connect()!= true){
+// System.out.println("ERRORE DI CONNESSIONE");
+// inWhile=false;
+// JOptionPane.showMessageDialog(parent, "Connection Error", "Error",JOptionPane.ERROR_MESSAGE);
+// parent.dispose();
+// }
 while(inWhile){
 boolean exit=true;
 org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
@@ -441,21 +447,21 @@ public static String getNode(String tag, Element element){
     return "-";
   }
 
-public boolean connect(){
-System.out.println("Try to connect to Competition");
-try{
- String[] temp = {"ORB"};
-orb = ORB.init(temp, null);
-obj = orb.string_to_object(corbaloc);
-monitor = Competition_Monitor_RadioHelper.narrow(obj);
-return true;
-}
-catch (Exception e){
-System.out.println("Eccezione");
-e.printStackTrace();
-return false;
-}
-}
+// public boolean connect(){
+// System.out.println("Try to connect to Competition");
+// try{
+//  String[] temp = {"ORB"};
+// orb = ORB.init(temp, null);
+// obj = orb.string_to_object(corbaloc);
+// monitor = Competition_Monitor_RadioHelper.narrow(obj);
+// return true;
+// }
+// catch (Exception e){
+// System.out.println("Eccezione");
+// e.printStackTrace();
+// return false;
+// }
+// }
 
 public String convert(float timeIn){
 
@@ -483,11 +489,11 @@ time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
 return time;
 }
 
-public static void main(String[] args){
-screenTv s= new screenTv(args[0]);
-// corbaloc = args[0];
-s.start();
-}
+// public static void main(String[] args){
+// screenTv s= new screenTv(args[0]);
+// // corbaloc = args[0];
+// s.start();
+// }
 }
 
 class dati{
