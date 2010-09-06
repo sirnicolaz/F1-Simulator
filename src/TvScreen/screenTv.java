@@ -18,6 +18,7 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
+// import java.net.*;
 
 import java.lang.*;
 import javax.xml.parsers.*;
@@ -27,6 +28,7 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread implements TvPanelInterface{
+private int tentativi = 5;
 private boolean inWhile = true;
 private boolean[] endRace =  new boolean[]{false,false,false};
 private boolean[] ritRace=  new boolean[]{false,false,false};
@@ -118,6 +120,7 @@ int i=0;
 // parent.dispose();
 // }
 while(inWhile){
+try{
 boolean exit=true;
 org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
@@ -235,6 +238,15 @@ if(exit==false){//se non tutti hanno finito continua altrimenti esci dal ciclo
 inWhile=true;
 }
 else{inWhile=false;};
+}
+catch(org.omg.CORBA.COMM_FAILURE connEcc){
+JOptionPane.showMessageDialog(parent, "Attention : problem with connection..attend 5 seconds\n remaining attempts = "+tentativi,"Connection Error",JOptionPane.ERROR_MESSAGE);
+if(tentativi == 0 ){
+inWhile=false;
+}
+tentativi = tentativi -1;
+this.sleep(500);
+}
 }
 }
 catch(Exception e){e.printStackTrace();}
