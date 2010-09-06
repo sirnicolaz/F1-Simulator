@@ -716,6 +716,44 @@ al \emph{Box} tramite il \textbf{BoxConfigurator}.
 %"Analisi della concorrenza"
 \subsection{Analisi della concorrenza}
 	%. analisi dell'interazione risorse e task (senza menzionare la distribuzione)
+	  %TaskCompetitor - Synch_Checkpoint
+\subsubsection{Interazione Competitor - Circuit}
+La strategia adottata per permettere ai concorrenti di percorrere la pista \`{e} stata descritta ad alto livello nel capitolo \ref{strategia_simulazione}.
+Tale strategia \`{e} indipendente dal linguaggio o dall'implementazione, quindi il codice scritto ha semplicemente tradotto la teoria in pratica.
+Gli aspetti legati all'implementazione a cui si \`{e} dovuto prestare attenzione invece sono descritti di seguito:
+\begin{description}
+\item{Accesso simultaneo ai checkpoint}\\
+Per garantire che il checkpoint sia acceduto in modo mutamente esclusivo fra task, \`{e} stato sufficiente inserirlo in una risorsa protetta:
+\textbf{Synch\_Checkpoint}. Tale risorsa offre i metodi necessari ai \textbf{TaskCompetitor} per segnalare il proprio arrivo sulla coda,
+``scrivere'' il tempo di arrivo limite ecc. in modo da evitare race condition.
+\item{Prima posizione raggiunta}\\
+Come si \`{e} visto, quando un concorrente arriva ad un checkpoint deve segnalare il suo arrivo effettivo e, una volta raggiunta la prima posizione
+nella coda del checkpoint, iniziare a valutare il path da percorrere. Per mettere in pratica il sistema progettato, \`{e} stato necessario avvalersi
+di un'ulteriore risorsa protetta chiamata \textbf{Waiting\_Block}. Ne viene istanziata una lista in ogni \textbf{Synch\_Checkpoint} (una lista
+lunga quanto il numero di concorrenti). Quando un concorrente necessita di attendere su una qualunque condizione, viene messo in attesa
+sul suo rispettivo \textbf{Waiting\_Block}. Quando la condizione si verifica, il thread che ha causato il cambio
+di condizione invoca il metodo \underline{Notify} nel \textbf{Waitin\_Block}, che risveglia il thread che era in attesa.
+La condizione per cui viene utilizzata questa struttura \`{e} il raggiungimento della prima posizione nella coda del checkpoint. Il seguente diagramma
+descrive la sequenza di eventi che portano il \textbf{TaskCompetitor} da segnalare il suo arrivo al checkpoint all'ottenere i path tra cui
+scegliere per effettuare l'attraversamento del tratto.
+\begin{center}
+\begin{figure}[h!]
+\advance\leftskip-2.2cm
+	\includegraphics[scale=0.50]{img/SequenceDiagrams/ArriveAndCross.jpg}
+\caption{Sequence Diagram - Arrivo al checkpoint e recupero lista traiettorie}
+\end{figure}
+\end{center}
+Prima di passare alla spiegazione del diagramma \`{e} necessario premettere in quali casi un concorrente pu\`{o} cambiare stato nella coda del \textbf{Synch\_Checkpoint}:
+\begin{itemize}
+\item \textsc{cambio posizione}: pu\`{o} avvenire quando un qualunque concorrente segna un nuovo tempo minimo di arrivo con \underline{Set\_ArrivalTime} o
+quando un concorrente viene rimosso dal checkpoint con il metodo \underline{Remove\_Competitor};
+\item \textsc{da ``in arrivo'' ad ``arrivato'' e vicevarsa}: avviene su invocazione del metodo \underline{Signal\_Arrival}, quando il concorrente
+arriva (passando da ``in arrivo'' ad arrivato) o del metodo \underline{Signal\_Leaving}, quando il concorrente ha finito ed \`{e} pronto
+a lasciare il checkpoint (passando da ``arrivato'' a ``in arrivo'').
+\end{itemize}
+\end{description}
+\subsubsection{Consumatori esterni - Stats}
+\subsubsection{Risorse a due consumatori}
 	%. dimostrazione assenza di racecondition
 	%. dimostrazione assenza di starvation
 \begin{itemize}
