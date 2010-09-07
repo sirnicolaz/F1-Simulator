@@ -372,7 +372,7 @@ begin
                             Stats_In      => Temp_Stats);
 
             --compare the "bestlap" values and find out the best one
-         Ada.Text_IO.Put_Line("CC: comp n. " & INTEGER'IMAGE(Index) & ", best lap time " & FLOAT'IMAGE(Temp_Stats.BestLaptime));
+         Ada.Text_IO.Put_Line("CC: comp n. " & INTEGER'IMAGE(Index) & ", best lap time " & FLOAT'IMAGE(Temp_Stats.BestLaptime) & ",old one " & FLOAT'IMAGE(Temp_BestLapTime));
             if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
                  Temp_BestLapTime = -1.0 ) then
                Temp_BestLapTime := Temp_Stats.BestLaptime;
