@@ -101,7 +101,7 @@ package body CompetitionComputer is
                              Sector : INTEGER;
                              Lap : INTEGER;
                              Stats_In : out COMPETITOR_STATS_POINT) is
-      Index : INTEGER := (Lap*Checkpoints)+1; -- laps start from 0, information are store starting from 1
+      Index : INTEGER := (Lap*Checkpoints)+1; -- laps start from 0, information are stored starting from 1
       Tmp_Sector : INTEGER;
       Tmp_Bool : BOOLEAN;
    begin
@@ -372,6 +372,7 @@ begin
                             Stats_In      => Temp_Stats);
 
             --compare the "bestlap" values and find out the best one
+         Ada.Text_IO.Put_Line("CC: comp n. " & INTEGER'IMAGE(Index) & ", best lap time " & FLOAT'IMAGE(Temp_Stats.BestLaptime));
             if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
                  Temp_BestLapTime = -1.0 ) then
                Temp_BestLapTime := Temp_Stats.BestLaptime;

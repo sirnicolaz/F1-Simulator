@@ -115,7 +115,7 @@ begin
          Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "competition_corbaLoc.txt");
          Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
                               (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(CompConfiguration_Ref)));
-         Ada.Text_IO.Put_Line(CORBA.To_Standard_String
+         Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
                               (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref)));
          Ada.Text_IO.Close(CorbaLOC_File);
 
