@@ -15,6 +15,9 @@ import org.omg.CosNaming.NamingContextHelper;
 
 
 public class StartCompetition {
+private String corbalocMonitor;
+private Competition_Monitor_Radio monitor;
+private screenTv screen;
 private org.omg.CORBA.ORB orb;
 private CompetitionConfigurator conf;
 private JLabel labelFile = new JLabel("1: File of racetrack : ");
@@ -76,7 +79,8 @@ openButton = new JButton("Sfoglia...");
 if(writexml()== true){
 parent.dispose();
 conf.Configure("obj/comp_config.xml");
-
+screen = new screenTv(corbalocMonitor, monitor);
+screen.start();
 }
 			}
 		});
@@ -174,12 +178,20 @@ try{
 orb = org.omg.CORBA.ORB.init(args,null);
 
 String configCorbaLoc="";
+corbalocMonitor = "";
 try{
 BufferedReader corbaLocFile = new BufferedReader(new FileReader("../competition_corbaLoc.txt"));
               configCorbaLoc = corbaLocFile.readLine() ;
+System.out.println(configCorbaLoc);
+	      corbalocMonitor= corbaLocFile.readLine();
+System.out.println(corbalocMonitor);
 }catch(Exception e){}
       org.omg.CORBA.Object competition_obj = orb.string_to_object(configCorbaLoc);
+
       conf = CompetitionConfiguratorHelper.narrow(competition_obj);
+
+      org.omg.CORBA.Object monitor_obj = orb.string_to_object(corbalocMonitor);
+      monitor = Competition_Monitor_RadioHelper.narrow(monitor_obj);
       JFrame frame = new JFrame("Configure Competition");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       init(frame);
@@ -221,7 +233,8 @@ return false;
 }
 
     public static void main(String[] args) {
-    StartCompetition p=new StartCompetition(args);
+String[]temp = {};
+    StartCompetition p=new StartCompetition(temp);
 
 }
 }
