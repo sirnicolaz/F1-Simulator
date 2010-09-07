@@ -3,7 +3,8 @@
 
 	string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time);
 	float_sequence Get_CompetitionInfo(in float timeInstant, out string xmlInfo);
-	string getBestLap();
-	string getBestSector( in short index );
 	boolean ready( in short competitorId );
+	
+	void Get_CompetitionConfiguration(out float circuitLength, out string xmlConf);
+	string Get_CompetitorConfiguration(in short id);
 };

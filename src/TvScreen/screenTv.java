@@ -28,7 +28,7 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread implements TvPanelInterface{
-
+private String circuitName;
 private int tentativi = 5;
 private boolean inWhile = true;
 private boolean[] endRace;// =  new boolean[]{false,false,false}; TODO
@@ -62,7 +62,8 @@ private String corbaloc;
 private ORB orb;
 private int numComp;
 private int numLap;
-private float lengthCircuit;
+private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
+private float lenghtCircuit;
 
 private float[] arrayInfo;
 private float[] arrayOldInfo;
@@ -88,9 +89,37 @@ monitor = monitorIn;
 }
 
 public void readConfiguration(){
-String xmlConf;
+String xmlConfString;
+org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
+try {
 monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+lenghtCircuit = new Float(circuitLength.value).floatValue();
+        DocumentBuilderFactory dbf =
+        DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlConf.value));
 
+        Document doc = db.parse(is);
+
+	NodeList nodes = doc.getElementsByTagName("competitionConfiguration");
+	Element upd = (Element) nodes.item(0);
+	numLap = new Integer(getNode("laps", upd)).intValue();
+	numComp = new Integer(getNode("competitors", upd)).intValue();
+	circuitName = getNode("name", upd);
+
+endRace = new boolean[numComp];
+ritRace = new boolean[numComp];
+storicodatiArray = new arrayDati[numLap];
+datiArray = new dati[numComp];
+for(int number = 0; number <numComp; number++){
+endRace[number]= false;
+ritRace[number]= false;
+}
+}
+catch(Exception eccIn){
+eccIn.printStackTrace();
+}
 }
 
 public void run(){
@@ -98,9 +127,9 @@ public void run(){
 readConfiguration();
 
 // readXml()
-classTable.addTables(model_1, model_2);
+classTable.addTables(model_1, model_2, numComp);
 // best.addBest();
-log.addTablesAll(modelAll);
+log.addTablesAll(modelAll, numComp);
 best.addBest();
 /*parent.add(panelCl_1, BorderLayout.EAST);*/
 parent.add(classTable.panel1, BorderLayout.CENTER);
@@ -545,7 +574,7 @@ private JPanel classificPanel;
 private JScrollPane panelCl_2;
 public JPanel panel1;
 
-public void addTables(DefaultTableModel model_1, DefaultTableModel model_2){
+public void addTables(DefaultTableModel model_1, DefaultTableModel model_2, int compNum){
 model_1.addColumn("Position");
 model_1.addColumn("Id Comp"); 
 model_1.addColumn("Lap");
@@ -575,7 +604,7 @@ panel1 = new JPanel(new BorderLayout());
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-panel1.setPreferredSize(new Dimension(950  , 200));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panel1.setPreferredSize(new Dimension(950  , 50*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panel1.add(panelCl_1, BorderLayout.WEST);
 panel1.add(panelCl_2, BorderLayout.EAST);
 
@@ -588,7 +617,7 @@ private JTable tableAll;
 public JPanel tablePanel;
 private JScrollPane tableSPanel;
 
-public void addTablesAll(DefaultTableModel modelAll){
+public void addTablesAll(DefaultTableModel modelAll,int numComp){
 modelAll.addColumn("Id competitor");
 modelAll.addColumn("Checkpoint");
 modelAll.addColumn("Sector");
@@ -600,7 +629,7 @@ tableAll = new JTable(modelAll);
 tablePanel = new JPanel(new BorderLayout());
 tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 tableSPanel = new JScrollPane(tableAll);
-tableSPanel.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+tableSPanel.setPreferredSize(new Dimension(0, 35*numComp));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 tablePanel.add(tableSPanel, BorderLayout.CENTER);
 
 }

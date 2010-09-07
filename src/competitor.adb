@@ -439,6 +439,13 @@ package body Competitor is
       OnboardComputer.Init_Computer(Computer_In     => carDriver.statsComputer,
                                     CompetitorId_In => id_in,
                                     Laps            => laps_in);
+
+      --Adding minimal information to stats (for presentation purspose)
+      CompetitionComputer.Add_CompetitorMinInfo(Id      => id_in,
+                                                Name    => carDriver.pilota.FirstName,
+                                                Surname => carDriver.pilota.LastName,
+                                                Team    => carDriver.pilota.Team);
+
       --Initializing onboard computer references in the Competition Monitor
       Competition_Monitor.AddOBC(carDriver.statsComputer,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds

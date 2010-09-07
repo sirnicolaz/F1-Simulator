@@ -109,9 +109,11 @@ package body OnBoardComputer is
 
                --Retrieve the inormation related to the last checkpoint of the previous sector
             Tmp_Stats.Checkpoint := 0;
+
             if(CurrentSector /= 1) then
                Get_StatsBySect(Get_ID(Computer_In ), CurrentSector - 1, CurrentLap, Tmp_Stats);
             end if;
+
             Get_StatsByCheck(Competitor_ID => Get_ID(Computer_In),
                              Checkpoint    => Tmp_Stats.Checkpoint + 1,
                              Lap           => CurrentLap,

@@ -3,6 +3,7 @@ use Common;
 
 package CompetitionComputer is
 
+   type COMPETITOR_MIN_INFO is private;
 
    type COMPETITOR_STATS is record
       Checkpoint : INTEGER;
@@ -24,6 +25,27 @@ package CompetitionComputer is
    end record;
 
    type COMPETITOR_STATS_POINT is access COMPETITOR_STATS;
+
+   procedure Init_StaticInformation(Laps_In : INTEGER;
+                                    Competitors_In : INTEGER;
+                                    Name_In : Unbounded_String.Unbounded_String;
+                                    CircuitLength_In : FLOAT);
+
+   procedure Get_StaticInformation(Laps_Out : out INTEGER;
+                                   Competitors_Out : out  INTEGER;
+                                   Name_Out : out Unbounded_String.Unbounded_String;
+                                   CircuitLength_Out : out FLOAT);
+
+   procedure Add_CompetitorMinInfo(Id : INTEGER;
+                                   Name : Unbounded_String.Unbounded_String;
+                                   Surname : Unbounded_String.Unbounded_String;
+                                   Team : Unbounded_String.Unbounded_String);
+
+   procedure Get_CompetitorMinInfo(Id : INTEGER;
+                                   Name : out Unbounded_String.Unbounded_String;
+                                   Surname : out Unbounded_String.Unbounded_String;
+                                   Team : out Unbounded_String.Unbounded_String);
+
 
    --This resource represent the information related to a
    --+ specific checkpoint in a specific lap
@@ -243,6 +265,14 @@ private
    type STATS_ROW is record
       Competitor_Id : INTEGER;
       Time : FLOAT;
+      end record;
+
+
+
+   type COMPETITOR_MIN_INFO is record
+      Name : Unbounded_String.Unbounded_String;
+      Surname : Unbounded_String.Unbounded_String;
+      Team : Unbounded_String.Unbounded_String;
    end record;
 
 end CompetitionComputer;

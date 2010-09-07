@@ -3,14 +3,147 @@ use Ada.Text_IO;
 
 package body CompetitionComputer is
 
+   protected type SYNCH_COMPETITOR_MIN_INFO is
+      entry Get_Info(Name : out Unbounded_String.Unbounded_String;
+                     Surname : out Unbounded_String.Unbounded_String;
+                     Team : out Unbounded_String.Unbounded_String);
+      entry Initialize(Name : Unbounded_String.Unbounded_String;
+                           Surname : Unbounded_String.Unbounded_String;
+                           Team : Unbounded_String.Unbounded_String);
+   private
+      Initialized : BOOLEAN := FALSE;
+      Info : COMPETITOR_MIN_INFO;
+   end SYNCH_COMPETITOR_MIN_INFO;
 
+   protected body SYNCH_COMPETITOR_MIN_INFO is
+      entry Get_Info(Name : out Unbounded_String.Unbounded_String;
+                     Surname : out Unbounded_String.Unbounded_String;
+                     Team : out Unbounded_String.Unbounded_String) when Initialized = true is
+      begin
+         Name := Info.Name;
+         SurName := Info.SurName;
+         Team := Info.Team;
+      end Get_Info;
+
+      entry Initialize(Name : Unbounded_String.Unbounded_String;
+                       Surname : Unbounded_String.Unbounded_String;
+                       Team : Unbounded_String.Unbounded_String) when Initialized = false is
+      begin
+         Info.Name := Name;
+         Info.SurName := SurName;
+         Info.Team := Team;
+         Initialized := true;
+      end Initialize;
+
+   end SYNCH_COMPETITOR_MIN_INFO;
+
+   type SYNCH_COMPETITOR_MIN_INFO_POINT is access SYNCH_COMPETITOR_MIN_INFO;
+
+   type COMPETITOR_MIN_INFO_ARRAY is array(POSITIVE range <>) of SYNCH_COMPETITOR_MIN_INFO_POINT;
+   type COMPETITOR_MIN_INFO_ARRAY_POINT is access COMPETITOR_MIN_INFO_ARRAY;
+
+   protected type SYNCH_STATIC_INFORMATION is
+      entry Get_CompetitionStaticInfo(Laps_Out : out INTEGER;
+                                      Competitors_Out : out INTEGER;
+                                      Name_Out : out Unbounded_String.Unbounded_String;
+                                      CircuitLength_Out : out FLOAT);
+
+      entry Initialize(Laps_In : INTEGER;
+                       Competitors_In : INTEGER;
+                       Name_In : Unbounded_String.Unbounded_String;
+                       CircuitLength_In : FLOAT);
+   private
+      Initialized : BOOLEAN := FALSE;
+      Laps : INTEGER;
+      Competitors : INTEGER;
+      Name : Unbounded_String.Unbounded_String;
+      CircuitLength : FLOAT;
+   end SYNCH_STATIC_INFORMATION;
+
+   protected body SYNCH_STATIC_INFORMATION is
+
+      entry Get_CompetitionStaticInfo(Laps_Out : out INTEGER;
+                                      Competitors_Out : out INTEGER;
+                                      Name_Out : out Unbounded_String.Unbounded_String;
+                                      CircuitLength_Out : out FLOAT) when Initialized = true is
+      begin
+
+         Laps_Out := Laps;
+         Competitors_Out := Competitors;
+         Name_Out := Name;
+         CircuitLength_Out := CircuitLength;
+
+      end Get_CompetitionStaticInfo;
+
+      entry Initialize(Laps_In : INTEGER;
+                       Competitors_In : INTEGER;
+                       Name_In : Unbounded_String.Unbounded_String;
+                       CircuitLength_In : FLOAT) when Initialized = false is
+      begin
+         Laps := Laps_In;
+         Competitors := Competitors_In;
+         Name := Name_In;
+         CircuitLength := CircuitLength_In;
+         Initialized := true;
+      end Initialize;
+
+   end SYNCH_STATIC_INFORMATION;
+
+   type SYNCH_STATIC_INFORMATION_POINT is access SYNCH_STATIC_INFORMATION;
 
    --Singleton
    Competitor_Statistics : STATISTIC_COLLECTION_POINT;
    Classification_Tables : SOCT_ARRAY_POINT;
+   StaticInformation : SYNCH_STATIC_INFORMATION_POINT := new SYNCH_STATIC_INFORMATION;
+   CompetitorMinInfo_Collection : COMPETITOR_MIN_INFO_ARRAY_POINT;
 
    Checkpoints : INTEGER;
 
+   procedure Init_StaticInformation(Laps_In : INTEGER;
+                                    Competitors_In : INTEGER;
+                                    Name_In : Unbounded_String.Unbounded_String;
+                                    CircuitLength_In : FLOAT) is
+   begin
+      StaticInformation.Initialize(Laps_In,
+                                   Competitors_In,
+                                   Name_In,
+                                   CircuitLength_In);
+      CompetitorMinInfo_Collection := new COMPETITOR_MIN_INFO_ARRAY(1..Competitors_In);
+   end Init_StaticInformation;
+
+   procedure Get_StaticInformation(Laps_Out : out INTEGER;
+                                   Competitors_Out : out INTEGER;
+                                   Name_Out : out Unbounded_String.Unbounded_String;
+                                   CircuitLength_Out : out FLOAT) is
+   begin
+      StaticInformation.Get_CompetitionStaticInfo(Laps_Out,
+                                                  Competitors_Out,
+                                                  Name_Out,
+                                                  CircuitLength_Out);
+   end Get_StaticInformation;
+
+
+   procedure Add_CompetitorMinInfo(Id : INTEGER;
+                                   Name : Unbounded_String.Unbounded_String;
+                                   Surname : Unbounded_String.Unbounded_String;
+                                   Team : Unbounded_String.Unbounded_String) is
+   begin
+      CompetitorMinInfo_Collection.all(Id).Initialize(Name,
+                                                      Surname,
+                                                      Team);
+   end Add_CompetitorMinInfo;
+
+   procedure Get_CompetitorMinInfo(Id : INTEGER;
+                                   Name : out Unbounded_String.Unbounded_String;
+                                   Surname : out Unbounded_String.Unbounded_String;
+                                   Team : out Unbounded_String.Unbounded_String) is
+   begin
+      if(CompetitorMinInfo_Collection /= null) then
+         CompetitorMinInfo_Collection.all(Id).Get_Info(Name,
+                                                       Surname,
+                                                       Team);
+      end if;
+   end Get_CompetitorMinInfo;
 
    protected body SYNCH_COMPETITOR_STATS_HANDLER is
 

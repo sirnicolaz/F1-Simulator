@@ -60,6 +60,22 @@ package Competition_Monitor_Radio is
    ready_Repository_Id : constant PolyORB.Std.String :=
      "IDL:Competition_Monitor_Radio/ready:1.0";
 
+   procedure Get_CompetitionConfiguration
+     (Self : Ref;
+      circuitLength : out CORBA.Float;
+      xmlConf : out CORBA.String);
+
+   Get_CompetitionConfiguration_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor_Radio/Get_CompetitionConfiguration:1.0";
+
+   function Get_CompetitorConfiguration
+     (Self : Ref;
+      id : CORBA.Short)
+     return CORBA.String;
+
+   Get_CompetitorConfiguration_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Competition_Monitor_Radio/Get_CompetitorConfiguration:1.0";
+
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)

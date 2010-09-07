@@ -33,7 +33,6 @@ package Competition_Monitor is
    function Init( CompetitorQty_In : INTEGER;
                  Laps_In : INTEGER ) return STARTSTOPHANDLER_POINT;
 
-   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String);
    type OBC is array (Positive range <>) of ONBOARDCOMPUTER.COMPUTER_POINT;
    type OBC_POINT is access OBC;
    procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
@@ -43,5 +42,12 @@ package Competition_Monitor is
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out Common.FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String);
+
+   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String);
+
+   procedure Get_CompetitionConfiguration(XmlInfo : out Unbounded_String.Unbounded_String;
+                                          CircuitLength : out FLOAT);
+
+   function Get_CompetitorConfiguration( Id : INTEGER ) return Unbounded_String.Unbounded_String;
 
 end Competition_Monitor;
