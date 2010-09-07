@@ -3,7 +3,7 @@
 echo "Init ada part...";
 ./main_competition > logConGui.txt&
 echo "Entering interface dir.."
-cd JavaGui
+cd StartCompetition
 echo "Initing configuration.."
 java StartCompetition 
 echo "Configuration Done"
