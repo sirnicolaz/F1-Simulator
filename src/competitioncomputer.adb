@@ -446,18 +446,6 @@ package body CompetitionComputer is
       Competitor_Statistics.all(Competitor_ID).Last_Lap := Data.Lap;
       Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
 
-      --Initialize all the remaining position of the array to open all the guards
-      --declare
-      --   Starting_Position : INTEGER := (Data.Lap*Checkpoints) + Data.Checkpoint + 1;
-      --   Last_Position : INTEGER := Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH;
-      --   Temp_Stats : COMPETITOR_STATS;
-      --begin
-      --   --We update all the position with the same data. No further information available.
-      --   Temp_Stats := Data;
-      --   for Index in Starting_Position..Last_Position loop
-      --      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Initialise(Temp_Stats);
-      --   end loop;
-      --end;
 
    else
       --If not retired and the array is full, the competition is regularly finished
@@ -678,6 +666,7 @@ begin
       --Find out the competitors already into the previous table after the pole position time.
       --+Those competitors will not be counted in the lapped list.
       if( CurrentLap > 0) then
+         Ada.Text_IO.Put_Line("Competitors lapped");
          for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
             Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
             if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
@@ -730,6 +719,7 @@ begin
          end loop;
 
       else
+         Ada.Text_IO.Put_Line("Competitors not lapped yet");
          --If the lap is the first one, impossible to have lapped competitors
          Competitor_IDs := null;
          Competitor_Lap := null;

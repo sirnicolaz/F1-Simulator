@@ -164,6 +164,8 @@ package body Competition_Monitor is
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
+
+         Ada.Text_IO.Put_Line("Stat got: competitor "& Common.IntegerToString(Get_ID(arrayComputer(Index))) &"lap " & Common.IntegerToString(Tmp_Stats.Lap));
          if(Tmp_Stats.Lap-1 > HighestCompletedLap ) then
             HighestCompletedLap := Tmp_Stats.Lap-1;
          end if;
