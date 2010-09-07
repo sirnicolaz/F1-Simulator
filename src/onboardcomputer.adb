@@ -105,17 +105,17 @@ package body OnBoardComputer is
             Tmp_Stats  : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
          begin
 
-            if(CurrentLap >= 0) then
                --Retrieve the inormation related to the last checkpoint of the previous sector
-               Tmp_Stats.Checkpoint := 0;
-               if(CurrentSector /= 1) then
-                  Get_StatsBySect(Get_ID(Computer_In ), CurrentSector - 1, CurrentLap, Tmp_Stats);
-               end if;
-               Get_StatsByCheck(Competitor_ID => Get_ID(Computer_In),
-                                Checkpoint    => Tmp_Stats.Checkpoint + 1,
-                                Lap           => CurrentLap,
-                                Stats_In      => Tmp_Stats);
-            else
+            Tmp_Stats.Checkpoint := 0;
+            if(CurrentSector /= 1) then
+               Get_StatsBySect(Get_ID(Computer_In ), CurrentSector - 1, CurrentLap, Tmp_Stats);
+            end if;
+            Get_StatsByCheck(Competitor_ID => Get_ID(Computer_In),
+                             Checkpoint    => Tmp_Stats.Checkpoint + 1,
+                             Lap           => CurrentLap,
+                             Stats_In      => Tmp_Stats);
+
+            if(CurrentLap = 0 and CurrentSector = 1) then
                --The previous information has to be the 0 instant
                Tmp_Stats.Time := 0.0;
             end if;
