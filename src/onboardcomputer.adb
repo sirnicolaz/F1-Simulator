@@ -116,7 +116,15 @@ package body OnBoardComputer is
             end if;
 
             if(Lap2Ask >= 0) then
-               Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
+               --Retrieve the inormation related to the last checkpoint of the previous sector
+               Tmp_Stats.Checkpoint := 0;
+               if(Sector2Ask /= 3) then
+                  Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, CurrentLap, Tmp_Stats);
+               end if;
+               Get_StatsByCheck(Competitor_ID => Get_ID(Computer_In),
+                                Checkpoint    => Tmp_Stats.Checkpoint + 1,
+                                Lap           => CurrentLap,
+                                Stats_In      => Tmp_Stats);
             else
                --The previous information has to be the 0 instant
                Tmp_Stats.Time := 0.0;
