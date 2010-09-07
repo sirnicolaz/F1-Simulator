@@ -28,18 +28,19 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread implements TvPanelInterface{
+private String circuitName;
 private int tentativi = 5;
 private boolean inWhile = true;
-private boolean[] endRace =  new boolean[]{false,false,false};
-private boolean[] ritRace=  new boolean[]{false,false,false};
+private boolean[] endRace;// =  new boolean[]{false,false,false}; TODO
+private boolean[] ritRace;//=  new boolean[]{false,false,false}; TODO
 private classificationTable classTable = new classificationTable();
 private logBox log = new logBox();
 private bestPerformance best = new bestPerformance();
 private Competition_Monitor_Radio monitor;
 private org.omg.CORBA.Object obj;
-private int[] provaArray = new int[10];
-private arrayDati[] storicodatiArray = new arrayDati[10];
-private dati[] datiArray = new dati[3];
+private int[] provaArray;// = new int[10];
+private arrayDati[] storicodatiArray;// = new arrayDati[10]; TODO
+private dati[] datiArray;// = new dati[3]; TODO
 // private dati[] datiOldArray = new dati[5];
 private JFrame parent;
 
@@ -60,6 +61,10 @@ private int current_index =0;
 private String corbaloc;
 private ORB orb;
 private int numComp;
+private int numLap;
+private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
+private float lenghtCircuit;
+
 private float[] arrayInfo;
 private float[] arrayOldInfo;
 
@@ -83,14 +88,48 @@ monitor = monitorIn;
 //effettua la connessione
 }
 
+public void readConfiguration(){
+String xmlConfString;
+org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
+try {
+monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+lenghtCircuit = new Float(circuitLength.value).floatValue();
+        DocumentBuilderFactory dbf =
+        DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlConf.value));
+
+        Document doc = db.parse(is);
+
+	NodeList nodes = doc.getElementsByTagName("competitionConfiguration");
+	Element upd = (Element) nodes.item(0);
+	numLap = new Integer(getNode("laps", upd)).intValue();
+	numComp = new Integer(getNode("competitors", upd)).intValue();
+	circuitName = getNode("name", upd);
+
+endRace = new boolean[numComp];
+ritRace = new boolean[numComp];
+storicodatiArray = new arrayDati[numLap];
+datiArray = new dati[numComp];
+for(int number = 0; number <numComp; number++){
+endRace[number]= false;
+ritRace[number]= false;
+}
+}
+catch(Exception eccIn){
+eccIn.printStackTrace();
+}
+}
 
 public void run(){
 // JOptionPane.showMessageDialog(parent, "Attention : screen tv started", "Error", JOptionPane.WARNING_MESSAGE);
+readConfiguration();
 
 // readXml()
-classTable.addTables(model_1, model_2);
+classTable.addTables(model_1, model_2, numComp);
 // best.addBest();
-log.addTablesAll(modelAll);
+log.addTablesAll(modelAll, numComp);
 best.addBest();
 /*parent.add(panelCl_1, BorderLayout.EAST);*/
 parent.add(classTable.panel1, BorderLayout.CENTER);
@@ -102,13 +141,14 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<3; index++){
+
+for(int index = 0; index<numComp; index++){
 model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
 model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
 modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
 }
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
-storicodatiArray[i] = new arrayDati(new dati[3]);
+storicodatiArray[i] = new arrayDati(new dati[numComp]);
 }
 current_lap=0;
 float q =(float)1.0;
@@ -534,7 +574,7 @@ private JPanel classificPanel;
 private JScrollPane panelCl_2;
 public JPanel panel1;
 
-public void addTables(DefaultTableModel model_1, DefaultTableModel model_2){
+public void addTables(DefaultTableModel model_1, DefaultTableModel model_2, int compNum){
 model_1.addColumn("Position");
 model_1.addColumn("Id Comp"); 
 model_1.addColumn("Lap");
@@ -564,7 +604,7 @@ panel1 = new JPanel(new BorderLayout());
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-panel1.setPreferredSize(new Dimension(950  , 200));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panel1.setPreferredSize(new Dimension(950  , 50*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panel1.add(panelCl_1, BorderLayout.WEST);
 panel1.add(panelCl_2, BorderLayout.EAST);
 
@@ -577,7 +617,7 @@ private JTable tableAll;
 public JPanel tablePanel;
 private JScrollPane tableSPanel;
 
-public void addTablesAll(DefaultTableModel modelAll){
+public void addTablesAll(DefaultTableModel modelAll,int numComp){
 modelAll.addColumn("Id competitor");
 modelAll.addColumn("Checkpoint");
 modelAll.addColumn("Sector");
@@ -589,7 +629,7 @@ tableAll = new JTable(modelAll);
 tablePanel = new JPanel(new BorderLayout());
 tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 tableSPanel = new JScrollPane(tableAll);
-tableSPanel.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+tableSPanel.setPreferredSize(new Dimension(0, 35*numComp));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 tablePanel.add(tableSPanel, BorderLayout.CENTER);
 
 }
