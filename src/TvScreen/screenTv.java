@@ -131,7 +131,7 @@ eccIn.printStackTrace();
 public void run(){
 // JOptionPane.showMessageDialog(parent, "Attention : screen tv started", "Error", JOptionPane.WARNING_MESSAGE);
 readConfiguration();
-
+JOptionPane.showMessageDialog(parent, "Competitor number = "+numComp, "Error", JOptionPane.WARNING_MESSAGE);
 // readXml()
 classTable.addTables(model_1, model_2, numComp);
 // best.addBest();
