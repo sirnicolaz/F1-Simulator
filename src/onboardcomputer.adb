@@ -140,7 +140,7 @@ package body OnBoardComputer is
             if( CurrentSector = 3 ) then
                if ( Computer_In.CurrentBestLap_Time /= -1.0 ) then
 
-                  Get_StatsByCheck(Get_ID(Computer_In), 1, CurrentLap - 1, Tmp_Stats);
+                  Get_StatsByCheck(Get_ID(Computer_In), Data.Checkpoint, CurrentLap - 1, Tmp_Stats);
 
                   if ( Data.Time - Tmp_Stats.Time < Computer_In.CurrentBestLap_Time ) then
                      Computer_In.CurrentBestLap_Time := Data.Time - Tmp_Stats.Time;
