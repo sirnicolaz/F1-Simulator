@@ -168,6 +168,12 @@ package body Competition_Monitor is
             HighestCompletedLap := Tmp_Stats.Lap-1;
          end if;
 
+         --If the competition is finished for a competitor, get the classific of the last lap
+         if(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant) = TRUE and
+              CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant) = FALSE) then
+            HighestCompletedLap := Tmp_Stats.Lap;
+         end if;
+
       end loop;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");

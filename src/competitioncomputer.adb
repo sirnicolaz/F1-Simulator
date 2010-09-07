@@ -341,6 +341,8 @@ end Add_Stat;
                               Time : FLOAT) is
       Row : STATS_ROW;
    begin
+      Ada.Text_IO.Put_Line("CM: Updating classific for lap (starting from 1)  = " & INTEGER'IMAGE(CompletedLap) &
+                           " and competitor id = " & INTEGER'IMAGE(Competitor_ID));
       --Find the right table for this lap
       Row.Competitor_Id := Competitor_ID;
       Row.Time := Time;
@@ -459,7 +461,7 @@ begin
       InClassific_Count : INTEGER := 0;
       ExitLoop : BOOLEAN := FALSE;
    begin
-      Ada.Text_IO.Put_Line("Calculating classific for lap " & Common.IntegerToString(Lap));
+      Ada.Text_IO.Put_Line("CM: getting classific for lap " & Common.IntegerToString(Lap));
       for Index in 1..Classification_Tables.all(Lap+1).Get_Size loop
          Tmp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
          Ada.Text_IO.Put_Line("Verifying " & FLOAT'IMAGE(Tmp_Row.Time) & "<=" & FLOAT'IMAGE(TimeInstant));
