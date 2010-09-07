@@ -63,23 +63,29 @@ package body Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
+      circuitLength : out CORBA.Float;
       xmlConf : out CORBA.String) is
+
+      XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      CircuitLength_Out : FLOAT;
    begin
-      xmlConf := CORBA.To_CORBA_String("");
+
+      Competition_Monitor.Get_CompetitionConfiguration(XmlInfo_Out,
+                                                       CircuitLength_Out);
+
+      xmlConf := CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
+      circuitLength := CORBA.Float(CircuitLength_Out);
+
    end Get_CompetitionConfiguration;
 
+   function Get_CompetitorConfiguration(Self : access Object;
+                                        Id : CORBA.Short) return CORBA.STRING is
 
-   --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING is
-   --begin
+      XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   begin
+      XmlInfo_Out := Competition_Monitor.Get_CompetitorConfiguration(INTEGER(Id));
 
-   --end getClassific;
-
-   --     function getCompetitorTimeLap(Self : access Object; competitorIdIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   --     function getCompetitorTimeCheck(Self : access Object; competitorIdIn : in CORBA.Short; checkpointIn : in CORBA.Short) return CORBA.STRING;
-   --     function getTyreUsury(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   --     function getMeanSpeed(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   --     function getTime(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   --     function getMeanGasConsumption(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
-   --     function getGas(Self : access Object; competitorIdIn : in CORBA.Short; sectorIn : in CORBA.Short; lapIn : in CORBA.Short) return CORBA.STRING;
+      return CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
+   end Get_CompetitorConfiguration;
 
 end Competition_Monitor_Radio.impl;

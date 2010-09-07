@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<competitionConfiguration>
+<laps>8</laps>
+<competitors>12</competitors>
+<name>Indianapolis</name>
+</competitionConfiguration>
+
+<!-- lunghezza circuito tornata come parametro out -->

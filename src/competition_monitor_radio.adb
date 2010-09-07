@@ -367,6 +367,197 @@ package body Competition_Monitor_Radio is
       return Result_Ü;
    end ready;
 
+   Get_CompetitionConfiguration_Arg_Name_circuitLength_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("circuitLength");
+
+   Get_CompetitionConfiguration_Arg_Name_xmlConf_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("xmlConf");
+
+   Get_CompetitionConfiguration_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   -------------------------------------------
+   -- Get_CompetitionConfiguration_Result_Ü --
+   -------------------------------------------
+
+   function Get_CompetitionConfiguration_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Get_CompetitionConfiguration_Result_Ü);
+   begin
+      return (Name => Get_CompetitionConfiguration_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_Void),
+      Arg_Modes => 0);
+   end Get_CompetitionConfiguration_Result_Ü;
+
+   ----------------------------------
+   -- Get_CompetitionConfiguration --
+   ----------------------------------
+
+   procedure Get_CompetitionConfiguration
+     (Self : Ref;
+      circuitLength : out CORBA.Float;
+      xmlConf : out CORBA.String)
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Arg_CC_circuitLength_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (circuitLength'Unrestricted_Access);
+      Arg_Any_circuitLength_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Float,
+            Arg_CC_circuitLength_Ü'Unchecked_Access);
+      pragma Warnings (Off, circuitLength);
+      Arg_CC_xmlConf_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (xmlConf'Unrestricted_Access);
+      Arg_Any_xmlConf_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_String,
+            Arg_CC_xmlConf_Ü'Unchecked_Access);
+      pragma Warnings (Off, xmlConf);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Get_CompetitionConfiguration_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Get_CompetitionConfiguration_Arg_Name_circuitLength_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_circuitLength_Ü),
+         PolyORB.Any.ARG_OUT);
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Get_CompetitionConfiguration_Arg_Name_xmlConf_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_xmlConf_Ü),
+         PolyORB.Any.ARG_OUT);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Get_CompetitionConfiguration",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+   end Get_CompetitionConfiguration;
+
+   Get_CompetitorConfiguration_Arg_Name_id_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("id");
+
+   Get_CompetitorConfiguration_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   ------------------------------------------
+   -- Get_CompetitorConfiguration_Result_Ü --
+   ------------------------------------------
+
+   function Get_CompetitorConfiguration_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Get_CompetitorConfiguration_Result_Ü);
+   begin
+      return (Name => Get_CompetitorConfiguration_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_String),
+      Arg_Modes => 0);
+   end Get_CompetitorConfiguration_Result_Ü;
+
+   ---------------------------------
+   -- Get_CompetitorConfiguration --
+   ---------------------------------
+
+   function Get_CompetitorConfiguration
+     (Self : Ref;
+      id : CORBA.Short)
+     return CORBA.String
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Result_Ü : CORBA.String;
+      pragma Warnings (Off, Result_Ü);
+      Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (Result_Ü'Unrestricted_Access);
+      Arg_CC_id_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (id'Unrestricted_Access);
+      Arg_Any_id_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Short,
+            Arg_CC_id_Ü'Unchecked_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Get_CompetitorConfiguration_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Get_CompetitorConfiguration_Arg_Name_id_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_id_Ü),
+         PolyORB.Any.ARG_IN);
+      --  Setting the result value
+      PolyORB.Any.Set_Value
+        (PolyORB.Any.Get_Container
+           (Result_Nv_Ü.Argument).all,
+         Arg_CC_Result_Ü_Ü'Unrestricted_Access);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Get_CompetitorConfiguration",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+      --  Return value
+      return Result_Ü;
+   end Get_CompetitorConfiguration;
+
    ----------
    -- Is_A --
    ----------

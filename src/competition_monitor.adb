@@ -256,5 +256,58 @@ package body Competition_Monitor is
 
    end Get_CompetitionInfo;
 
+   procedure Get_CompetitionConfiguration( XmlInfo : out Unbounded_String.Unbounded_String;
+                                          CircuitLength : out FLOAT) is
+      Laps_Out : INTEGER;
+      Competitors_Out : INTEGER;
+      Name_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      CircuitLength_Out : FLOAT;
 
+      XMLString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   begin
+      CompetitionComputer.Get_StaticInformation(Laps_Out,
+                                                Competitors_Out,
+                                                Name_Out,
+                                                CircuitLength_Out);
+
+      XMLString := Unbounded_String.To_Unbounded_String
+        ("<?xml version=""1.0"" >" &
+         "<competitionConfiguration>" &
+         "<laps>" & Common.IntegerToString(Laps_Out) & "</laps>" &
+         "<competitors>" & Common.IntegerToString(Competitors_Out) & "</competitors>" &
+         "<name>" & Unbounded_String.To_String(Name_Out) & "</name>" &
+         "</competitionConfiguration>");
+
+      XmlInfo := XMLString;
+      CircuitLength := CircuitLength_Out;
+   end Get_CompetitionConfiguration;
+
+   function Get_CompetitorConfiguration( Id : INTEGER ) return Unbounded_String.Unbounded_String is
+      Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Surname : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Team : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+
+      XMLString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+   begin
+      CompetitionComputer.Get_CompetitorMinInfo(Id,
+                                                Name,
+                                                Surname,
+                                                Team);
+
+      XMLString := Unbounded_String.To_Unbounded_String
+        ("<?xml version=""1.0"" >" &
+         "<competitorConfiguration id=""" & Common.IntegerToString(Id) & """ >" &
+         "<name>") &
+      Name &
+      Unbounded_String.To_Unbounded_String("</name>" &
+                                           "<surname>") &
+      Surname &
+      Unbounded_String.To_Unbounded_String("</surname>" &
+                                           "<team>") &
+      Team &
+      Unbounded_String.To_Unbounded_String("</team>" &
+                                           "</competitorConfiguration>");
+
+      return XMLString;
+   end Get_CompetitorConfiguration;
 end Competition_Monitor;

@@ -26,6 +26,11 @@ package Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
+      circuitLength : out CORBA.FLOAT;
       xmlConf : out CORBA.String);
+
+   function Get_CompetitorConfiguration(Self : access Object;
+                                        Id : CORBA.Short) return CORBA.STRING;
+
 
 end Competition_Monitor_Radio.impl;

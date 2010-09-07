@@ -179,6 +179,11 @@ package body Competition is
 
          Registrations_Open := True;
 
+         CompetitionComputer.Init_StaticInformation(Laps_In ,
+                                                    MaxCompetitors,
+                                                    Unbounded_string.To_Unbounded_String(Name_In),
+                                                    Circuit_Length);
+
          --GenericStatistics := new Stats.GENERIC_STATS;
          --GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
           -- (new FLOAT'(ClassificRefreshTime_in),
