@@ -704,16 +704,6 @@ al \emph{Box} tramite il \textbf{BoxConfigurator}.
 \end{figure}
 \end{center}
 %Diagrammi delle classi per ogni componente
-%
-
-% Elenco dei task con descrizione
-\subsection{Risorse attive}
-% Elenco risorse condivise con descrizione
-\subsection{Risorse passive}
-\begin{itemize}
-\item{Risorse protette}
-\item{Altre risorse}
-\end{itemize}
 %"Analisi della concorrenza"
 \subsection{Analisi della concorrenza}
 	%. analisi dell'interazione risorse e task (senza menzionare la distribuzione)
@@ -838,6 +828,14 @@ Se tale richiesta produce errore, il concorrente richierebbe di non poter proced
 connessione semplicemente facendo mantenere al concorrente la stessa strategia adottata al giro precedente.
 % Inizializzazione gara
 \subsection{Inizializzazione competizione}
-% Stop gara
-
+Il seguente diagramma di sequenza spiega come avviene la sequenza di init della competizione, a partire dal main della competizione \textbf{main\_competition.adb}.
+\`{E} necessario premettere che l'init vero e proprio non avviene eseguendo il file \textbf{main\_competition.adb}. E' stato infatti creato uno script (in bash)
+che effettua l'avvio di tale main e che successivamente inizializza l'interfaccia di configurazione (in java) della competizione.
+\begin{center}
+\begin{figure}[h!]
+\advance\leftskip-4.2cm
+	\includegraphics[scale=0.50]{img/SequenceDiagrams/InitCompetition.jpg}
+\caption{Sequence Diagram - Inizializzazione competizione}
+\end{figure}
+\end{center}
 \subsection{Stop competizione}

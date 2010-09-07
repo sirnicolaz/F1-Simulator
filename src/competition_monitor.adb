@@ -297,7 +297,7 @@ package body Competition_Monitor is
                                                 Team);
 
       XMLString := Unbounded_String.To_Unbounded_String
-        ("<?xml version=""1.0"" >" &
+        ("<?xml version=""1.0"" ?>" &
          "<competitorConfiguration id=""" & Common.IntegerToString(Id) & """ >" &
          "<name>") &
       Name &
