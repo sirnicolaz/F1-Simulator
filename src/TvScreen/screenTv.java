@@ -28,6 +28,9 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread implements TvPanelInterface{
+private String[] nome;
+private String[] cognome;
+private String[] scuderia;
 private String circuitName;
 private int tentativi = 5;
 private boolean inWhile = true;
@@ -127,6 +130,30 @@ catch(Exception eccIn){
 eccIn.printStackTrace();
 }
 }
+public void writeDati(String xmlComp, int numCompetitor){
+try{
+        DocumentBuilderFactory dbf =  DocumentBuilderFactory.newInstance();
+
+ DocumentBuilder db = dbf.newDocumentBuilder();
+        InputSource is = new InputSource();
+        is.setCharacterStream(new StringReader(xmlComp));
+
+        Document doc = db.parse(is);
+
+	NodeList nodes = doc.getElementsByTagName("competitorConfiguration");
+	Element upd = (Element) nodes.item(0);
+
+// 	NodeList nodes2 = upd2.getElementsByTagName("laps");
+// 	Element upd = (Element) nodes2.item(0);
+	nome[numCompetitor] = getNode("name", upd); 
+cognome[numCompetitor] = getNode("surname", upd);
+scuderia[numCompetitor] = getNode("team", upd);
+}
+catch(Exception eccIn){
+eccIn.printStackTrace();
+}
+}
+
 
 public void run(){
 // JOptionPane.showMessageDialog(parent, "Attention : screen tv started", "Error", JOptionPane.WARNING_MESSAGE);
@@ -147,7 +174,9 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-
+nome = new String[numComp];
+cognome = new String[numComp];
+scuderia = new String[numComp];
 for(int index = 0; index<numComp; index++){
 model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
 model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
@@ -155,6 +184,12 @@ modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
 }
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
 storicodatiArray[i] = new arrayDati(new dati[numComp]);
+}
+String xmlComp;
+for(int numCompetitor =0; numCompetitor<numComp; numCompetitor++){
+xmlComp = monitor.Get_CompetitorConfiguration((short)(numCompetitor+1));
+System.out.println(xmlComp);
+writeDati(xmlComp, numCompetitor);
 }
 current_lap=0;
 float q =(float)1.0;
@@ -236,10 +271,10 @@ try{
 
 int lapGap = storicodatiArray[current_lap+1].arrayD[0].lap - storicodatiArray[current_lap].arrayD[w].lap;
 if (lapGap == 1){
-modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id," + "+lapGap+" giro","doppiato"});
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giro","doppiato"});
 }
 else{
-modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,storicodatiArray[current_lap].arrayD[w].id," + "+lapGap+" giri","doppiato"});
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giri","doppiato"});
 
 }
 }catch(Exception exx){
@@ -255,7 +290,7 @@ System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
 modelClassific[current_index].removeRow(w);
 }
 }
-modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,storicodatiArray[current_lap].arrayD[e].id,storicodatiArray[current_lap].arrayD[e].lap, convert(arrayInfo[e])});
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,cognome[storicodatiArray[current_lap].arrayD[e].id-1],storicodatiArray[current_lap].arrayD[e].lap, convert(arrayInfo[e])});
 
 modelClassific[current_index].removeRow(e+1);
 
@@ -348,12 +383,12 @@ System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if(new Integer(getNode("checkpoint",element)).intValue() == 1){
 if (temp.equals("arriving")){
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", convert(istant)});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],getNode("checkpoint", element), "BOX", getNode("lap", element),  "leaving box", convert(istant)});
 // JOptionPane.showMessageDialog(parent, "Competitor ai box!","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", convert(istant)});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],getNode("checkpoint", element), "BOX", getNode("lap", element),  "in box", convert(istant)});
 // JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 }
@@ -365,27 +400,27 @@ if(attributoCompEnd.getValue().equals("TRUE")){
 // JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" FINE GARA","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint",element),getNode("sector", element), getNode("lap", element), "FINE GARA ", convert(istant)});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],getNode("checkpoint",element),getNode("sector", element), getNode("lap", element), "FINE GARA ", convert(istant)});
 if(endRace[ind-1]== false){
-JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+attributoComp.getNodeValue(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 endRace[ind-1] = true;
 }
 }
 else {
 if(attributoCompRit.getValue().equals("TRUE")){
 if(ritRace[ind-1]== false){
-JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+JOptionPane.showMessageDialog(parent, "Concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1]+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 ritRace[ind-1] = true;
 }
 
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element), "RITIRATO", convert(istant)});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],getNode("checkpoint", element), getNode("sector", element), getNode("lap", element), "RITIRATO", convert(istant)});
 // JOptionPane.showMessageDialog(parent, "Concorrente "+attributoComp.getNodeValue()+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 }
 
 else{
 modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue()-1);
-modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{attributoComp.getNodeValue(),getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), convert(istant)});
+modelAll.insertRow(new Integer(attributoComp.getNodeValue()).intValue()-1,new Object[]{cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],getNode("checkpoint", element), getNode("sector", element), getNode("lap", element),  attributoCheck.getNodeValue(), convert(istant)});
 // modelAll.removeRow(new Integer(attributoComp.getNodeValue()).intValue());
 	}
 }
@@ -582,11 +617,11 @@ public JPanel panel1;
 
 public void addTables(DefaultTableModel model_1, DefaultTableModel model_2, int compNum){
 model_1.addColumn("Position");
-model_1.addColumn("Id Comp"); 
+model_1.addColumn("Competitor"); 
 model_1.addColumn("Lap");
 model_1.addColumn("Time");
 model_2.addColumn("Position");
-model_2.addColumn("Id Comp"); 
+model_2.addColumn("Competitor"); 
 model_2.addColumn("Lap");
 model_2.addColumn("Time");
 classific_1 = new JTable(model_1);
@@ -610,7 +645,7 @@ panel1 = new JPanel(new BorderLayout());
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-panel1.setPreferredSize(new Dimension(950  , 35*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panel1.setPreferredSize(new Dimension(950  , 37*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panel1.add(panelCl_1, BorderLayout.WEST);
 panel1.add(panelCl_2, BorderLayout.EAST);
 
@@ -624,7 +659,7 @@ public JPanel tablePanel;
 private JScrollPane tableSPanel;
 
 public void addTablesAll(DefaultTableModel modelAll,int numComp){
-modelAll.addColumn("Id competitor");
+modelAll.addColumn("Competitor");
 modelAll.addColumn("Checkpoint");
 modelAll.addColumn("Sector");
 modelAll.addColumn("Lap");
@@ -635,7 +670,7 @@ tableAll = new JTable(modelAll);
 tablePanel = new JPanel(new BorderLayout());
 tablePanel.setBorder(BorderFactory.createTitledBorder(null, "Competition Log", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 tableSPanel = new JScrollPane(tableAll);
-if(numComp<=15){tableSPanel.setPreferredSize(new Dimension(0, 22*numComp));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+if(numComp<=15){tableSPanel.setPreferredSize(new Dimension(0, 25*numComp));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 }
 tableSPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 tablePanel.add(tableSPanel, BorderLayout.CENTER);
