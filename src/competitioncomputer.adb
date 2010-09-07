@@ -245,7 +245,7 @@ package body CompetitionComputer is
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
 
-      while Tmp_Sector = Sector and then Tmp_Bool loop
+      while Tmp_Sector = Sector and Tmp_Bool loop
          Index := Index + 1;
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
