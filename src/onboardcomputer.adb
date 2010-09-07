@@ -117,11 +117,14 @@ package body OnBoardComputer is
 
             if(Lap2Ask >= 0) then
                Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, Lap2Ask, Tmp_Stats);
+            else
+               --The previous information has to be the 0 instant
+               Tmp_Stats.Time := 0.0;
             end if;
 
             if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 ) then
                --It's the first time we try to find it
-               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time;
+               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time - Tmp_Stats.Time;
             elsif (Data.Time - Tmp_Stats.Time) < Computer_In.CurrentBestSector_Times(CurrentSector)
                --The following statement shouldn't be necessary because if the
                --+ stats for the given lap is not accessible it means that also
