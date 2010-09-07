@@ -109,6 +109,10 @@ package body CompetitionComputer is
                                    Name_In,
                                    CircuitLength_In);
       CompetitorMinInfo_Collection := new COMPETITOR_MIN_INFO_ARRAY(1..Competitors_In);
+      for Index in 1..Competitors_In loop
+         CompetitorMinInfo_Collection.all(Index) := new SYNCH_COMPETITOR_MIN_INFO;
+      end loop;
+
    end Init_StaticInformation;
 
    procedure Get_StaticInformation(Laps_Out : out INTEGER;
