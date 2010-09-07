@@ -16,6 +16,9 @@ use Ada.Calendar;
 with CompetitionComputer;
 use CompetitionComputer;
 
+
+with Ada.Exceptions;
+
 package body Competitor is
 
    --THis value has to be the same for oeveryone
@@ -924,12 +927,25 @@ package body Competitor is
 
          if( C_Checkpoint.Is_PreBox = true ) then -- If true, the check point is a prebox
 
-            -- Ask for the box strategy once the prebox checkpoint is reached
-            Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
+            begin
+               --Box comunication section
+               -- Ask for the box strategy once the prebox checkpoint is reached
+               Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
 
-            --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
+               --Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " xml->strategy");
             --Get the strategy object from the file
-            BrandNewStrategy := XML2Strategy(Strategy_FileName);
+               BrandNewStrategy := XML2Strategy(Strategy_FileName);
+
+            exception
+               when Error : others =>
+                  Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
+                  if( carDriver.strategia.PitStopLaps = 0) then
+                     --To avoid another pitstop if done before
+                     carDriver.strategia.PitStopLaps := 1;
+                  end if;
+                  --Reuse the same strategy as a new one
+                  BrandNewStrategy := carDriver.strategia;
+            end;
 
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" pit stop laps " & INTEGER'IMAGE(BrandNewStrategy.PitStopLaps));
 --              Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " verify pitstop");
@@ -1141,7 +1157,6 @@ package body Competitor is
 
             --Update all the remaining information in the stats
             declare
-               Starting_Position : INTEGER := Get_Position(RaceIterator => carDriver.RaceIterator);
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
                Temp_CheckpointPos : INTEGER;
                Temp_Lap : INTEGER := CurrentLap;

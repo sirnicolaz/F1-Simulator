@@ -608,6 +608,7 @@ Queste classi non comunicano direttamente con i loro clienti, ma comunicano tram
 il protocollo CORBA).
 \newpage
 \subsubsection{Box}
+\label{box_class}
 \begin{center}
 \begin{figure}[h!]
 	\includegraphics[scale=0.50]{img/ClassDiagrams/BoxClassDiagram.jpg}
@@ -730,7 +731,8 @@ Per garantire che il checkpoint sia acceduto in modo mutamente esclusivo fra tas
 Come si \`{e} visto, quando un concorrente arriva ad un checkpoint deve segnalare il suo arrivo effettivo e, una volta raggiunta la prima posizione
 nella coda del checkpoint, iniziare a valutare il path da percorrere. Per mettere in pratica il sistema progettato, \`{e} stato necessario avvalersi
 di un'ulteriore risorsa protetta chiamata \textbf{Waiting\_Block}. Ne viene istanziata una lista in ogni \textbf{Synch\_Checkpoint} (una lista
-lunga quanto il numero di concorrenti). Quando un concorrente necessita di attendere su una qualunque condizione, viene messo in attesa
+lunga quanto il numero di concorrenti). Ogni elemento della lista \`{e} associato ad un concorrente. 
+Quando un concorrente necessita di attendere su una qualunque condizione, viene messo in attesa
 sul suo rispettivo \textbf{Waiting\_Block}. Quando la condizione si verifica, il thread che ha causato il cambio
 di condizione invoca il metodo \underline{Notify} nel \textbf{Waitin\_Block}, che risveglia il thread che era in attesa.
 La condizione per cui viene utilizzata questa struttura \`{e} il raggiungimento della prima posizione nella coda del checkpoint. Il seguente diagramma
@@ -745,33 +747,97 @@ scegliere per effettuare l'attraversamento del tratto.
 \end{center}
 Prima di passare alla spiegazione del diagramma \`{e} necessario premettere in quali casi un concorrente pu\`{o} cambiare stato nella coda del \textbf{Synch\_Checkpoint}:
 \begin{itemize}
-\item \textsc{cambio posizione}: pu\`{o} avvenire quando un qualunque concorrente segna un nuovo tempo minimo di arrivo con \underline{Set\_ArrivalTime} o
-quando un concorrente viene rimosso dal checkpoint con il metodo \underline{Remove\_Competitor};
+\item \textsc{cambio posizione}: pu\`{o} avvenire quando un qualunque concorrente segna un nuovo tempo minimo (o effettivo) 
+di arrivo con \underline{Set\_ArrivalTime} o quando un concorrente viene rimosso dal checkpoint con il metodo \underline{Remove\_Competitor};
 \item \textsc{da ``in arrivo'' ad ``arrivato'' e vicevarsa}: avviene su invocazione del metodo \underline{Signal\_Arrival}, quando il concorrente
-arriva (passando da ``in arrivo'' ad arrivato) o del metodo \underline{Signal\_Leaving}, quando il concorrente ha finito ed \`{e} pronto
+arriva (passando da ``in arrivo'' ad ``arrivato'') o del metodo \underline{Signal\_Leaving}, quando il concorrente ha finito ed \`{e} pronto
 a lasciare il checkpoint (passando da ``arrivato'' a ``in arrivo'').
 \end{itemize}
+Quando il \textbf{TaskCompetitor} segnala il suo arrivo ( a partire dalla chiamata \textbf{1}), viene segnato l'arrivo effettivo all'interno del checkpoint. Successivamente
+viene controllata la posizione del concorrente in coda (chiamate dalla \textbf{6} alla \textbf{9}). Se il concorrente \`{e} primo, \`{e} necessario segnalarlo al rispettivo 
+\textbf{Waiting\_Block}, anche se il thread non si \`{e} ancora messo in ``wait'' (giusto per aprire la guardia). Successivamente il thread del \textbf{TaskCompetitor} attende
+il suo momento con \underline{Wait\_Ready}. Se era gi\`{a} primo, il metodo ritorna subito, dando la possibilit\`{a} al concorrente di ricevere la lista di path (sicuro che nessun
+altro in quel momento la star\`{a} valutando). Altrimenti il thread viene messo in attesa nel \textbf{Waiting\_Block} relativo al concorrente. Il thread viene risvegliato
+nel momento in cui un altro \textbf{TaskCompetitor} modifica il suo istante di arrivo limite (facendo in modo che il concorrente in attesa venga a trovarsi nella prima
+posizione della coda) o quando viene rimosso dal checkpoint. Eseguendo una qualunque delle azioni accennate nella premessa, il \textbf{TaskCompetitor} verifica quindi
+la presenza di un concorrente effettivamente arrivato in prima posizione nella lista ed effettua una \underline{Notify} sul relativo \textbf{Waiting\_Block} (nel diagramma
+viene espresso come un evento esterno al punto \textbf{18}). In questo modo il concorrente in attesa pu\`{o} procedere alla valutazione.
 \end{description}
+\newpage
 \subsubsection{Consumatori esterni - Stats}
+La sottocomponente \textbf{Competition\_Monitor} espone diverse viste riguardanti i dati relativi alla competizione. Tali dati vengono acceduti in modo ``simultaneo'' 
+da qualunque entit\`{a} esterna lo richieda. Viene creato quindi un thread per ogni richiesta proveniente da un nodo distribuito (i \emph{TVScreen} per esempio, di cui
+ne potrebbero esistere potenzialmente decine o pi\`{u}). La tecnica adottata
+per affrontare il problema ha alla base l'idea che tutte le statistiche vengono calcolate a partire da dati ``grezzi'' relativi ai singoli concorrenti. Essendo ogni
+dato riferito ad un istante e ad una specifica posizione nelle competizione (lap numero 2 e checkpoint 5 per esempio), \`{e} possibile calcolare qualunque statistica
+che sia riferita ad un istante o ad una posizione (es: i tempi di ogni concorrente alla fine della lap 4).\\
+Ad ogni concorrente \`{e} assegnato un array (in \emph{Stats}) in cui ogni posizione \`{e} destinata a contenere un aggiornamento. Gli aggiornamenti sono cronologicamente ordinati.
+\`{E} quindi possibile richiedere la posizione del concorrente nel circuito all'istante \emph{t} semplicemente scorrendo l'array. Ogni informazione \`{e} contenuta in una risorsa
+protetta la cui lettura viene aperta solo nel momento in cui l'aggiornamento relativo viene inserito. Quindi se viene richiesta un'informazione non ancora presente,
+il thread richiedente semplicemente rimarr\`{a} in attesa.\\
+Volendo ottenere lo stato di gara all'istante \emph{t} sar\`{a} quindi suggiciente ciclare sui concorrenti chiedendo la loro posizione in tale istante, e quando tutti i concorrenti
+avranno aggiunto l'aggiornamento richiesto sar\`{a} possibile avere uno snapshot della gara in tale istante.\\
+Per la classifica \`{e} stata aggiunta una struttura dati di supporto finalizzata a venire popolata con i dati di fine lap di ogni concorrente (\textbf{Synch\_Classification\_Table}).
 \subsubsection{Risorse a due consumatori}
-	%. dimostrazione assenza di racecondition
-	%. dimostrazione assenza di starvation
-\begin{itemize}
-\item{Interazione tra risorse condivise e task}
-\item{Assenza di racecondition}
-\item{Assenza di starvation}
-\end{itemize}
+Ci sono infine numerosi casi in cui una risorsa protetta \`{e} acceduta dai classici consumatore e un produttore. Accesso simultaneo di due risorse attive al massimo dunque.
+\`{E} il caso, ad esempio, delle informazioni relative al box, \textbf{Synch\_All\_Info\_Buffer}. Tale risorsa viene valorizzata da \textbf{Strategy\_Updater} e 
+letta dallo screen relativo al box (tramite \textbf{Box\_Monitor}). Come visto nella sezione \ref{box_class}, il consumatore accede alla risorsa per indice tramite 
+\underline{Get\_Info}. Quindi,
+se l'informazione di indice richiesto non \`{e} ancora stata inserita, la sentinella \textsc{Ready} verr\`{a} impostata a \textsc{False} e il thread \textbf{riaccodato} in \underline{Wait}
+con la guardia \textsc{Ready=True}. Quando il produttore inserisce una nuova risorsa, verr\`{a} impostato \textsc{Ready} a \textsc{True}, di modo che l'eventuale
+thread in attesa possa verificare se l'informazione voluta sia stata insrita. In caso affermativo l'informazione viene ritornata. In caso negativo il thread riesegue
+la stessa procedure descritta inizialmente. Chiaramente questa tecnica non potrebbe funzionare con pi\`{u} consumatori, poich\`{e} la guardia potrebbe venire cambiata
+pi\`{u} volte ad insaputa di un thread che stia venendo \textbf{riaccodato} da \underline{Get\_Info} a \underline{Wait} (la \textbf{requeue} infatti prevede prerilascio). La
+soluzione per\`{o} si presta a risolvere il problema per tutte le situazioni in cui non pi\`{u} di un consumatore e un produttore accedono alla stessa risorsa.
+\subsubsection{Conclusioni}
+Quanto descritto riguarda i casi pi\`{u} problematici di gestione dell'accesso concorrente a risorse. Il resto dei casi viene trattato con semplici risorse protette
+e \textbf{entry} con guardie. Non si presenta quindi il rischio di racecondition. Nemmeno starvation dovrebbe essere possibile, 
+a meno che per qualche motivo un thread relativo ad un \textbf{TaskCompetitor}
+non si interrompa inaspettatamente, bloccando il processo di aggiornamento delle statistiche e quindi la produzione di snapshot di gara.
 %"Distribuzione"
 \subsection{Distribuzione}
+Nella seguente sezione verranno spiegati dettagli fondamentali riguardanti la distribuzione nel sistema.
 	%. Elenco risorse distribuite
 	%. Interazione risorse distribuite
 	%. Misure di fault tolerance
+\subsubsection{Componenti distribuite}%Con motivazione
+Si \`{e} deciso di permettere la distribuzione delle seguenti componenti:
 \begin{itemize}
-\item{Componenti distribuite}%Con motivazione
-\item{Interazione fra le componenti distribuite}
-\item{Misure di fault tolerance}
+\item\textbf{\emph{Box}}:\\
+La componente \emph{Box} \`{e} possibile avviarla in un nodo separato rispetto alla competizione. \`{E} necessario infatti fornire il \textbf{corbaloc} della competizione
+per poter inizializzare tale componente. La scelta \`{e} stata suggerita da due motivazioni. Una, puramente pratica, riguarda un potenziale problema di sovraccarico 
+computazionale. Il \emph{Box} infatti, anche se per ora adotta una \emph{AI} con vincoli abbastanza rilassati, potrebbe richiedere una potenza di calcolo superiore
+per effettuare dei calcoli estremamente complessi. Si pensi per esempio se venisse adottato un sistema ad apprendimento automatico o un algoritmo di ricerca della
+soluzione ottima ad albero per ogni scelta che il \emph{Box} deve prendere. Avere la possibilit\`{a} di poterlo isolare in una macchina dedicata potrebbe significare
+un notevole miglioramento nelle prestazioni.\\
+La seconda motivazione invece \`{e} legata alla realt\`{a}: i box normalmente comunicano via radio con i propri piloti. Inserire lo strato di comunicazione remota
+fra \emph{Competitor} e \emph{Box} \`{e} sembrato quindi un buon inizio per dare maggiore credibilit\`{a} alla simulazione. I problemi di comunicazione fra le radio
+di box e pilota si possono tradurre in problemi di rete fra i due nodi ospitanti \emph{Box} e \emph{Competitor}.
+\item\textbf{\emph{TVScreen}}:\\
+Le TV da cui poter osservare il procedere della gara possono essere inizializzate ovunque, a patto di essere in possesso del \textbf{corbaloc} del monitor di competizione.
+Il fatto che le TV (come nella realt\`{a}) potrebbero essere numerose, \`{e} parso sensato pensarle eseguite in nodi differenti da quello della competizione. Anche in questo
+caso per evitare il sovraccarico computazionale della macchina ospitante la competizione. Come per i box, se la TV avviata \`{e} una e a solo output testuale (come quella
+presentata nel progetto) il problema non si presenterebbe comunque. Ma volendone avviare molte a volendo magari in un futuro estendere le funzionalit\`{a} del sistema
+aggiungendo un overlay grafico pi\`{u} interessante alle TV, tornerebbe molto utile in termini di efficienza poterle eseguire in nodi dedicati.
 \end{itemize}
+\subsubsection{Interazione fra le componenti distribuite}
+Le componenti comunicano la maggior parte dei dati appoggiandosi a protocolli XML. Ogni set di informazioni scambiato fra componenti ha il suo schema dedicato. In questo
+modo si pu\`{o} avere un formato di rappresentazione dei dati standard, pi\`{u} facilmente manipolabile con le librerie e le conoscenze disponibili. 
+Dati che richiedono una precisione maggiore, ovvero gli istanti temporali espressi in \textsc{Float} (che possono crescere notevolmente all'aumentare del tempo di gara),
+vengono trasmessi utilizzando il tipo FLOAT fornito dal linguaggio IDL e, per sequenze di lunghezza non conosciuta a priori, utilizzando il tipo IDL definito come segue
+\begin{lstlisting}
+typedef sequence<float> float_sequence;
+\end{lstlisting}
+Tale tipo viene poi manipolato in modo diverso in base al linguaggio utilizzato per la componente, rimanendo comunque entro un buon margine di precisione.
+\subsubsection{Misure di fault tolerance}
+Cavi di rete danneggiati o router intasati potrebbero provocare il malfunzionamento della comunicazione fra le componenti distribuite. Nel caso di malfunzionamento
+della comunicazione fra \textbf{TVScreen} e \emph{Competition}, la competizione non viene compromessa. Nella peggiore delle ipotesi il \textbf{TVScreeb} non \`{e} in grado
+di ottenere i dati richiesti e ritenter\`{a} in seguito. Nel caso uno o pi\`{u} dei nodi ospitanti i \emph{Box} cada o rimanga isolato, la competizione rischierebbe
+di essere compromessa. In prossimit\`{a} del checkpoint prima dei box infatti il concorrente effettua una richiesta remota al \emph{Box} per l'aggiornamento della strategia.
+Se tale richiesta produce errore, il concorrente richierebbe di non poter procedere la gara. Si \`{e} deciso quindi di gestire l'arrivo di dati corrotti o la scomparsa di 
+connessione semplicemente facendo mantenere al concorrente la stessa strategia adottata al giro precedente.
 % Inizializzazione gara
 \subsection{Inizializzazione competizione}
 % Stop gara
+
 \subsection{Stop competizione}
