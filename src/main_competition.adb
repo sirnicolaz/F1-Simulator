@@ -114,7 +114,9 @@ begin
          --Store the corbaloc in a file to be read by the java app
          Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "competition_corbaLoc.txt");
          Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
-                  (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(CompConfiguration_Ref)));
+                              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(CompConfiguration_Ref)));
+         Ada.Text_IO.Put_Line(CORBA.To_Standard_String
+                              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref)));
          Ada.Text_IO.Close(CorbaLOC_File);
 
          The_Competition.Set_MonitorCorbaLOC
