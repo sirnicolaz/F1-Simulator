@@ -831,11 +831,14 @@ connessione semplicemente facendo mantenere al concorrente la stessa strategia a
 Il seguente diagramma di sequenza spiega come avviene la sequenza di init della competizione, a partire dal main della competizione \textbf{main\_competition.adb}.
 \`{E} necessario premettere che l'init vero e proprio non avviene eseguendo il file \textbf{main\_competition.adb}. E' stato infatti creato uno script (in bash)
 che effettua l'avvio di tale main e che successivamente inizializza l'interfaccia di configurazione (in java) della competizione.
+%\begin{landscape}
+%\advance\topskip-4.2cm
 \begin{center}
 \begin{figure}[h!]
-\advance\leftskip-4.2cm
-	\includegraphics[scale=0.50]{img/SequenceDiagrams/InitCompetition.jpg}
+\advance\leftskip-3.2cm
+	\includegraphics[angle=90,scale=0.35]{img/SequenceDiagrams/InitCompetition.jpg}
 \caption{Sequence Diagram - Inizializzazione competizione}
 \end{figure}
 \end{center}
+%\end{landscape}
 \subsection{Stop competizione}
