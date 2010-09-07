@@ -28,18 +28,19 @@ import org.w3c.dom.*;
 import java.lang.reflect.Array;
 
 public class screenTv extends Thread implements TvPanelInterface{
+
 private int tentativi = 5;
 private boolean inWhile = true;
-private boolean[] endRace =  new boolean[]{false,false,false};
-private boolean[] ritRace=  new boolean[]{false,false,false};
+private boolean[] endRace;// =  new boolean[]{false,false,false}; TODO
+private boolean[] ritRace;//=  new boolean[]{false,false,false}; TODO
 private classificationTable classTable = new classificationTable();
 private logBox log = new logBox();
 private bestPerformance best = new bestPerformance();
 private Competition_Monitor_Radio monitor;
 private org.omg.CORBA.Object obj;
-private int[] provaArray = new int[10];
-private arrayDati[] storicodatiArray = new arrayDati[10];
-private dati[] datiArray = new dati[3];
+private int[] provaArray;// = new int[10];
+private arrayDati[] storicodatiArray;// = new arrayDati[10]; TODO
+private dati[] datiArray;// = new dati[3]; TODO
 // private dati[] datiOldArray = new dati[5];
 private JFrame parent;
 
@@ -60,6 +61,9 @@ private int current_index =0;
 private String corbaloc;
 private ORB orb;
 private int numComp;
+private int numLap;
+private float lengthCircuit;
+
 private float[] arrayInfo;
 private float[] arrayOldInfo;
 
@@ -83,9 +87,15 @@ monitor = monitorIn;
 //effettua la connessione
 }
 
+public void readConfiguration(){
+String xmlConf;
+monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+
+}
 
 public void run(){
 // JOptionPane.showMessageDialog(parent, "Attention : screen tv started", "Error", JOptionPane.WARNING_MESSAGE);
+readConfiguration();
 
 // readXml()
 classTable.addTables(model_1, model_2);
@@ -102,13 +112,14 @@ parent.setVisible(true);
 parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 try{
-for(int index = 0; index<3; index++){
+
+for(int index = 0; index<numComp; index++){
 model_1.insertRow(index,new Object[]{index, "---","---","---","---"});
 model_2.insertRow(index,new Object[]{index, "---","---","---","---"});
 modelAll.insertRow(index,new Object[]{index, "---","---","---","---","---"});
 }
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
-storicodatiArray[i] = new arrayDati(new dati[3]);
+storicodatiArray[i] = new arrayDati(new dati[numComp]);
 }
 current_lap=0;
 float q =(float)1.0;
