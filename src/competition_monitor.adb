@@ -273,7 +273,7 @@ package body Competition_Monitor is
                                                 CircuitLength_Out);
 
       XMLString := Unbounded_String.To_Unbounded_String
-        ("<?xml version=""1.0"" >" &
+        ("<?xml version=""1.0"" ?>" &
          "<competitionConfiguration>" &
          "<laps>" & Common.IntegerToString(Laps_Out) & "</laps>" &
          "<competitors>" & Common.IntegerToString(Competitors_Out) & "</competitors>" &
