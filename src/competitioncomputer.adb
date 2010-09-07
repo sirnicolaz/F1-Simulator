@@ -241,8 +241,8 @@ package body CompetitionComputer is
         Stats_In := new COMPETITOR_STATS;
       end if;
 
-      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Lap+1)*Checkpoint).Get_All(Stats_In.all);
-      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := (Lap+1)*Checkpoint;
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Lap*Checkpoints)+Checkpoint).Get_All(Stats_In.all);
+      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := (Lap*Checkpoints)+Checkpoint;
    end Get_StatsByCheck;
 
    --It Just initializes the Statistic_Collection with the right size

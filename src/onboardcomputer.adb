@@ -78,7 +78,9 @@ package body OnBoardComputer is
 
       Computer_In.SectorLength_Helper := COmputer_In.SectorLength_Helper + Data.PathLength; -- il primo valore lo aggiungo, poi faccio un loop
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": path length set");
+
       if(Data.LastCheckInSect = true) then
+
          Ada.Text_IO.Put_Line("Last check in sector");
          Unbounded_String.Set_Unbounded_String(updateStr,
                                                "<?xml version=""1.0""?>" &
