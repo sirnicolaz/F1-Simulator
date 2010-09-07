@@ -227,7 +227,7 @@ new_table = false;
 }
 
 q=(float)(q+1);
-sleep(250);
+sleep(750);
 for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 exit=false;
