@@ -242,13 +242,15 @@ package body CompetitionComputer is
       Tmp_Sector : INTEGER;
       Tmp_Bool : BOOLEAN;
    begin
+      Ada.Text_IO.Put_Line("COMPETITIONCOMP: asking from index " & Common.IntegerToString(Index) );
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
-      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector(Tmp_Bool);
 
-      while Tmp_Sector = Sector and Tmp_Bool loop
+      loop
          Index := Index + 1;
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
+         exit when Tmp_Sector = Sector and Tmp_Bool = TRUE;
       end loop;
       Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
 

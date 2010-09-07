@@ -123,6 +123,10 @@ package body OnBoardComputer is
                  (Data.Time - Tmp_Stats.Time) < Computer_In.CurrentBestSector_Times(CurrentSector)) then
                --It's the first time we try to find it
                Computer_In.CurrentBestSector_Times(CurrentSector) := Data.Time - Tmp_Stats.Time;
+
+               Ada.Text_IO.Put_Line("ONBOARD: storing time for sector " & Common.IntegerToString(CurrentSector) &
+                                    " time " & FLOAT'IMAGE(Computer_In.CurrentBestSector_Times(CurrentSector)) &
+                                   " data time " & FLOAt'IMAGE(Data.Time) & " tmp stats time " & FLOAT'IMAGE(Tmp_Stats.Time));
             end if;
 
             Ada.Text_IO.Put_Line("Best sector calculated");
