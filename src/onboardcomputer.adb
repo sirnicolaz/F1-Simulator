@@ -100,26 +100,16 @@ package body OnBoardComputer is
 
          --Update the sector statistics
          declare
-            Sector2Ask : INTEGER;
-            Lap2Ask : INTEGER;
             CurrentSector : INTEGER := Data.Sector;
             CurrentLap : INTEGER := Data.Lap;
             Tmp_Stats  : COMPETITOR_STATS_POINT := new COMPETITOR_STATS;
          begin
 
-            if(CurrentSector = 1) then
-               Sector2Ask := 3;
-               Lap2Ask := CurrentLap - 1;
-            else
-               Sector2Ask := CurrentSector - 1;
-               Lap2Ask := CurrentLap;
-            end if;
-
-            if(Lap2Ask >= 0) then
+            if(CurrentLap >= 0) then
                --Retrieve the inormation related to the last checkpoint of the previous sector
                Tmp_Stats.Checkpoint := 0;
-               if(Sector2Ask /= 3) then
-                  Get_StatsBySect(Get_ID(Computer_In ), Sector2Ask, CurrentLap, Tmp_Stats);
+               if(CurrentSector /= 1) then
+                  Get_StatsBySect(Get_ID(Computer_In ), CurrentSector - 1, CurrentLap, Tmp_Stats);
                end if;
                Get_StatsByCheck(Competitor_ID => Get_ID(Computer_In),
                                 Checkpoint    => Tmp_Stats.Checkpoint + 1,
@@ -130,19 +120,12 @@ package body OnBoardComputer is
                Tmp_Stats.Time := 0.0;
             end if;
 
-            if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 ) then
+            if( Computer_In.CurrentBestSector_Times(CurrentSector) = -1.0 or
+                 (Data.Time - Tmp_Stats.Time) < Computer_In.CurrentBestSector_Times(CurrentSector)) then
                --It's the first time we try to find it
-               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time - Tmp_Stats.Time;
-            elsif (Data.Time - Tmp_Stats.Time) < Computer_In.CurrentBestSector_Times(CurrentSector)
-               --The following statement shouldn't be necessary because if the
-               --+ stats for the given lap is not accessible it means that also
-               --+ the best sector is set yet
-               --Get_Checkpoint(Tmp_Stats) = -1 or else
-                 then
-
-               Computer_In.CurrentBestSector_Times(CurrentSector) := data.Time - Tmp_Stats.Time;
-
+               Computer_In.CurrentBestSector_Times(CurrentSector) := Data.Time - Tmp_Stats.Time;
             end if;
+
             Ada.Text_IO.Put_Line("Best sector calculated");
             --Update the lap statistics if the lap is finished
             if( CurrentSector = 3 ) then

@@ -24,8 +24,8 @@ package Competition_Monitor_Radio.impl is
       xmlInfo : out CORBA.String;
       Returns : out Competition_Monitor_Radio.float_sequence );
 
---   procedure Get_CompetitionConfiguration
---     (Self : access Object;
---      xmlConf : out CORBA.String);
+   procedure Get_CompetitionConfiguration
+     (Self : access Object;
+      xmlConf : out CORBA.String);
 
 end Competition_Monitor_Radio.impl;

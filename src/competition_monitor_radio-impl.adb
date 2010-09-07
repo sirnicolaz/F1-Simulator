@@ -61,6 +61,14 @@ package body Competition_Monitor_Radio.impl is
       xmlInfo := CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
    end Get_CompetitionInfo;
 
+   procedure Get_CompetitionConfiguration
+     (Self : access Object;
+      xmlConf : out CORBA.String) is
+   begin
+      xmlConf := CORBA.To_CORBA_String("");
+   end Get_CompetitionConfiguration;
+
+
    --function getClassific(Self : access Object; idComp_In : Corba.Short) return CORBA.STRING is
    --begin
 
