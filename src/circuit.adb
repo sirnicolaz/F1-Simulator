@@ -173,6 +173,7 @@ package body Circuit is
          return Get_Difficulty(F_Paths(PathIndex));
       end Get_Difficulty;
 
+
       function Get_PathTime(PathIndex : INTEGER) return FLOAT is
       begin
          return F_Paths.all(PathIndex).LastTime;

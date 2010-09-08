@@ -178,6 +178,7 @@ Al livello pi\`{u} alto della fase di configurazione c'\`{e} la componente \emph
 relativi alla \emph{Competition}. Tali parametri vengono prima impostati dall'utente (o letti da file) tramite le interfacce \textbf{SetupCompetitor},
 \textbf{SetupCompetition} e \textbf{SetupCircuit} e successivamente inviati alla componente \emph{Competition} per l'inizializzazione.\\
 \textbf{RegisterCompetitor} \`{e} utilizzata una volta per ogni competitor da iscrivere.
+\clearpage
 \subsubsection{Competition-Competitor}
 \begin{center}
 \begin{figure}[h!]
@@ -199,6 +200,7 @@ via ai concorrenti.
 L'interazione \emph{Competition}-\emph{Monitor} riguarda solo una piccola fase dell'inizializzazione, processo che verr\`{a} esplicato in dettaglio in seguito.
 A concorrenti registrati, la \emph{Competition} sfruttera un interfaccia offerta dal monitor per sapere quando tutti i \emph{Box} sono pronti e avviati.
 L'interfaccia \`{e} l'unica illustrata in figura.
+\clearpage
 \subsubsection{Competition-Circuit}
 \begin{center}
 \begin{figure}[h!]
@@ -223,6 +225,7 @@ per la configurazione. La \emph{Competition} inizializza cio\`{e} il circuito im
 \end{center}
 La componente \emph{Stats} ottiene i parametri di configurazione in fase di inizalizzazione dalla \emph{Competition}, tramite
 \textbf{InitilizeStatistics}.
+\clearpage
 \subsubsection{Competitor-Stats}
 \begin{center}
 \begin{figure}[h!]
@@ -261,6 +264,7 @@ La componente \emph{Monitor} si appoggia a \emph{Stats} per poter reperire le in
 \textbf{GetClassification}, come dice il nome, ritorna informazioni legate alla classifica.\\
 \textbf{GetCompetitionStatus} espone informazioni legate alla competizione nel suo insieme, come ad esempio la posizione dei concorrenti nel circuio
 in un determinato istante di tempo.
+\clearpage
 \subsubsection{Configurator-Box}
 \begin{center}
 \begin{figure}[h!]
@@ -313,7 +317,7 @@ A partire da queste informazioni produce una nuova strategia ogni giro. Per ques
 utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La strategia fornita dal \emph{Box} potrebbe anche richiedere 
 un pitstop per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
-\subsubsection{Strategia di simulazione}
+\subsection{Strategia di simulazione}
 \label{strategia_simulazione}
 In questa sezione viene spiegata la strategia che \`{e} stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
 affrontare sono gi\`{a} state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
@@ -392,21 +396,24 @@ velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro l'a
 sorpasso data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
 che verr\`{a} segnato nel checkpoint di uscita.
 % Dimostrazione dell'assenza di stallo
-\subsubsection{Assenza di stallo}
+\subsection{Assenza di stallo}
 Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
 una macchina A attende la prima posizione nella coda associata al tratto 3 (per esempio). 
 Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2. Ma B risulta prima di A nella coda 3 e A 
 risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
 lo stallo porterebbe ad una contraddizione.\\
 \begin{proof}
-	Se nella coda 2 ci sono A in testa seguita da B, avremo che tempo(2A)<tempo(2B), poich\`{e} l'ordine della coda \`{e} 
+\textcolor{white}{42}\\
+\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul checkpoint N.}\\
+	Se nella coda 2 ci sono A in testa seguita da B, avremo che $tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
 	determinato dai tempi di arrivo segnati.
-	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza tempo(2A)>tempo(3A).
+	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
 	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a} aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta t$, 
-	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi t(2B)<t(3B).
-	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi t(3B)<t(3A).
-	Avremo quindi:
-		t(3A)<t(2A)<t(2B)<t(3B)<t(3A)
+	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
+	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi $tempo(3B)<tempo(3A)$.
+	Avremo quindi:\\
+
+	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
 	che \`{e} una contraddizione, quindi la situazione non si pu\`{o} verificare.
 \end{proof}
 \newpage
