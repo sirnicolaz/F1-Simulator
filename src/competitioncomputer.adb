@@ -292,6 +292,18 @@ package body CompetitionComputer is
 
    end Is_CompetitorOut;
 
+   function Calculate_CloserTime(ReferenceTime : FLOAT;
+                                 LeftTime : FLOAT;
+                                 RightTime : FLOAT) return FLOAT is
+   begin
+      if( ReferenceTime - LeftTime < RightTime - ReferenceTime ) then
+         return LeftTime;
+      else
+         return RightTime;
+      end if;
+
+   end Calculate_CloserTime;
+
    -- It return a statistic related to a certain time. If the statistic is not
    --+ initialised yet, the requesting task will wait on the resource Information
    --+ as long as it's been initialised
@@ -335,8 +347,25 @@ package body CompetitionComputer is
             end loop;
             Ada.Text_IO.Put_Line("TV out");
 
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_All(Stats_In.all);
-            Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index + 1;
+            declare
+               LeftTime : FLOAT;
+               RightTime : FLOAT;
+               ChoosenIndex : INTEGER;
+            begin
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(LeftTime);
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_Time(RightTime);
+
+               if(Calculate_CloserTime(Time,
+                                       LeftTime,
+                                       RightTime) = LeftTime) then
+                  ChoosenIndex := Index;
+               else
+                  CHoosenIndex := Index+1;
+               end if;
+
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(CHoosenIndex).Get_All(Stats_In.all);
+               Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := CHoosenIndex;
+            end;
             Ada.Text_IO.Put_Line("TV get all done");
 
          else
@@ -359,9 +388,26 @@ package body CompetitionComputer is
                end if;
             end loop;
 
-            Ada.Text_IO.Put_Line("TV getting");
-            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_All(Stats_In.all);
-            Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
+            declare
+               LeftTime : FLOAT;
+               RightTime : FLOAT;
+               ChoosenIndex : INTEGER;
+            begin
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index-1).Get_Time(LeftTime);
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(RightTime);
+
+               if(Calculate_CloserTime(Time,
+                                       LeftTime,
+                                       RightTime) = LeftTime) then
+                  ChoosenIndex := Index-1;
+               else
+                  CHoosenIndex := Index;
+               end if;
+
+               Ada.Text_IO.Put_Line("TV getting");
+               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(ChoosenIndex).Get_All(Stats_In.all);
+               Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := ChoosenIndex;
+            end;
 
          end if;
       end if;
