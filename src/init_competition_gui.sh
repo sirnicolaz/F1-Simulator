@@ -5,7 +5,7 @@ echo "Init ada part...";
 echo "Entering interface dir.."
 cd StartCompetitionJava
 echo "Initing configuration.."
-java StartCompetition 
+java StartCompetition > logConGuiJava.txt & 
 echo "Configuration Done"
 read Q
 killall -9 main_competition

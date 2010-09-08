@@ -93,6 +93,10 @@ package CompetitionComputer is
    function Is_CompetitorOut(Competitor_ID : INTEGER;
                              Time : FLOAT) return BOOLEAN;
 
+   --To remove the competitor from the system
+   procedure CompetitorOut(Competitor_ID : INTEGER;
+                           Lap : INTEGER;
+                           Data : COMPETITOR_STATS);
 
    --Method to be used by the onboard computer to add new stats to the competitor id related array
    procedure Add_Stat(Competitor_ID : INTEGER;

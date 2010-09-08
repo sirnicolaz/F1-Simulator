@@ -46,6 +46,11 @@ package OnBoardComputer is
    procedure Add_Data(Computer_In : COMPUTER_POINT;
                       Data : in out COMPETITOR_STATS);
    -- It returns the competitor ID related to this Computer
+
+   procedure CompetitorOut(Computer_In : COMPUTER_POINT;
+                           Lap           : INTEGER;
+                           Data          : COMPETITOR_STATS);
+
    function Get_Id(Computer_In : COMPUTER_POINT) return INTEGER;
 
    procedure Get_BoxInfo(Computer_In : COMPUTER_POINT;

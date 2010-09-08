@@ -850,6 +850,7 @@ package body Competitor is
       begin
          -- per poi invocare il metodo Add_Data
          --NEW
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(Competitor_ID) & ": inizio rimozione");
          Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
          StartingPosition_P := Get_Position(Iterator_In);
 
@@ -858,13 +859,18 @@ package body Competitor is
             --Remove the competitor from the queue of the checkpoint
          loop
             Checkpoint_P.Remove_Competitor(Competitor_ID);
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(Competitor_ID) & ": rimosso da check " & INTEGER'IMAGE(Get_Position(Iterator_In)));
             Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
             exit when Get_Position(Iterator_In) = StartingPosition_P;
          end loop;
 
-         Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
-         Checkpoint_P.Remove_Competitor(Competitor_ID);
-
+         if(PitStopDone_In = true) then
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(Competitor_ID) & ": rimozione da box");
+            Get_BoxCheckpoint(Iterator_In,Checkpoint_P);
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(Competitor_ID) & ": box preso");
+            Checkpoint_P.Remove_Competitor(Competitor_ID);
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(Competitor_ID) & ": finito");
+         end if;
       end Remove_CompetitorFromRace;
 
    begin
@@ -1169,7 +1175,12 @@ package body Competitor is
                Temp_Lap : INTEGER := CurrentLap;
             begin
 
+               CompetitorOut(Computer_In => carDriver.statsComputer,
+                             Lap         => CUrrentLap,
+                             Data        => compStats);
+
                loop
+                  Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": loop di fine gara");
 
                   Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
                   Temp_CheckpointPos := Get_Position(RaceIterator => carDriver.RaceIterator);
@@ -1194,14 +1205,18 @@ package body Competitor is
                   OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                            Data        => compStats);
 
+                  Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": updating statistic n, aggiornata statistica lap " & INTEGER'IMAGE(Temp_Lap) &
+                                       " checkpoint " & INTEGER'IMAGE(compStats.Checkpoint));
                end loop;
 
             end;
 
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": rimozione forzata");
 
             Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
                                       PitStopDone_In => PitStopDone,
                                       Competitor_ID => carDriver.Id);
+            Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": rimozione avvenuta");
 
             Finished := TRUE;
          end if;
@@ -1275,7 +1290,7 @@ package body Competitor is
          end if;
 
          -- TODO: retrieve the clock just once -> not necessary useful
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+         --delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
 
          --If the checkpoint is the goal, get the race over

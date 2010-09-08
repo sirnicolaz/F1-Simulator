@@ -17,7 +17,7 @@ cd BoxGui
 
 for (( i=1; i<=$BOX_QTY; i++ ))
 do
-	java BoxAdminWindow $i &
+	java BoxAdminWindow $i > logBoxJava_$i.txt&
 	echo "Box $i configured"
 
 done
