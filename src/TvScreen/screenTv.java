@@ -182,7 +182,7 @@ xmlComp = monitor.Get_CompetitorConfiguration((short)(index+1));
 System.out.println(xmlComp);
 writeDati(xmlComp, index);
 
-infos[index] = new competitorLog(" Id "+(index+1)+"  "+nome[index]+" ");
+infos[index] = new competitorLog(" Id "+(index+1)+"  "+cognome[index]+" ");
 
 gridLog.fill = GridBagConstraints.HORIZONTAL;
 		gridLog.gridx = 0;
@@ -212,7 +212,7 @@ gridLog.fill = GridBagConstraints.HORIZONTAL;
 		logPanel.add(infos[index].getLap(),gridLog);
 model_1.insertRow(index,new Object[]{index+1, "---","---","---","---"});
 model_2.insertRow(index,new Object[]{index+1, "---","---","---","---"});
-
+logPanel.updateUI();
 }
 catch(Exception debug){
 // String temp = debug.getStackTrace();
@@ -343,7 +343,7 @@ new_table = false;
 }
 
 q=(float)(q+1);
-sleep(750);
+// sleep(750);
 for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 exit=false;
@@ -356,12 +356,12 @@ inWhile=true;
 else{inWhile=false;};
 }
 catch(org.omg.CORBA.COMM_FAILURE connEcc){
-JOptionPane.showMessageDialog(parent, "Attention : problem with connection..attend 5 seconds\n remaining attempts = "+tentativi,"Connection Error",JOptionPane.ERROR_MESSAGE);
+JOptionPane.showMessageDialog(parent, "Attention : problem with connection..attend 3 seconds\n remaining attempts = "+tentativi,"Connection Error",JOptionPane.ERROR_MESSAGE);
 if(tentativi == 0 ){
 inWhile=false;
 }
 tentativi = tentativi -1;
-this.sleep(5000);
+this.sleep(3000);
 }
 }
 }
@@ -955,13 +955,17 @@ public void setSector(String sectorIn){
 sector.setText(", sector "+sectorIn);
 }
 public void setCheckpoint(String checkIn){
-checkpoint.setText(" checkpoint "+checkIn);
+int value = new Integer(checkIn).intValue();
+if(value <10){checkpoint.setText(" checkpoint "+checkIn+" ");}
+else{checkpoint.setText(" checkpoint "+checkIn);}
 }
 public JLabel getCheckpoint(){
 return checkpoint;
 }
 public void setLap(String lapIn){
-lap.setText(" during lap "+lapIn);
+int value = new Integer(lapIn).intValue();
+if(value <10){lap.setText(" during lap "+lapIn+" ");}
+else{lap.setText(" during lap "+lapIn);}
 }
 
 public JLabel getState(){
@@ -973,7 +977,7 @@ if(stateIn.equals("arriving")){
   state.setText(stateIn +" to ");
 }
 else {
-  state.setText(stateIn);
+  state.setText(stateIn+"     ");
 }
 }
 

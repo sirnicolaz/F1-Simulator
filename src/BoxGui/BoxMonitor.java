@@ -281,7 +281,7 @@ private String ;*/
 }
 i=(short)(i+1);
 System.out.println("after run invoke");
-this.sleep(500);
+// this.sleep(500);
 // parent.repaint();
 // }
 }
