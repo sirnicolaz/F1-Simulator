@@ -60,7 +60,7 @@ private GridBagConstraints classificGrid = new GridBagConstraints();
 
 private DefaultTableModel[] modelClassific = new DefaultTableModel[]{model_1, model_2};
 private int current_index =0;
-
+private JLabel labelClock = new JLabel("00:00:00:000");
 
 private String corbaloc;
 private ORB orb;
@@ -82,7 +82,7 @@ private int current_lap =0;
 private boolean new_table = false;
 
 public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn){
-parent = new JFrame("TV Monitor");
+parent = new JFrame("Competition Monitor");
 
 corbaloc = corbalocIn;
 monitor = monitorIn;
@@ -151,8 +151,10 @@ eccIn.printStackTrace();
 public void addLogInfo(){
 logPanel = new JPanel(new BorderLayout());
 logPanel.setLayout(new GridBagLayout());
-logPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-logPanel.setPreferredSize(new Dimension(0, 35*numComp));
+logPanel.setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+logPanel.setPreferredSize(new Dimension(0,30+35*numComp));
+
+// logPanel.updateUI();
 }
 
 
@@ -220,6 +222,23 @@ JOptionPane.showMessageDialog(parent,debug.getStackTrace(), "Error",JOptionPane.
 }
 // modelAll.insertRow(index,new Object[]{(index+1)+" : "+cognome[index], "---","---","---","---","---"});
 }
+labelClock.setFont(new Font("Serif", Font.BOLD, 25));
+JLabel labelClockInfo = new JLabel("Time ");
+labelClockInfo.setFont(new Font("Serif", Font.BOLD, 25));
+
+gridLog.fill = GridBagConstraints.HORIZONTAL;
+		gridLog.gridx = 0;
+		gridLog.gridy = numComp;
+		gridLog.ipady = 5;
+// 		gridLog.gridwidth= 2;
+		logPanel.add(labelClockInfo,gridLog);
+gridLog.fill = GridBagConstraints.HORIZONTAL;
+		gridLog.gridx = 2;
+		gridLog.gridy = numComp;
+		gridLog.ipady = 5;
+		gridLog.gridwidth= 2;
+		logPanel.add(labelClock,gridLog);
+
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
 storicodatiArray[i] = new arrayDati(new dati[numComp]);
 }
@@ -242,7 +261,7 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
-
+labelClock.setText(convert(q));
 for(int r=0; r<Array.getLength(datiArray);r++){
 try{
 System.out.println("DEBUG : ITERAZIONE r = "+r);
@@ -628,22 +647,42 @@ int minuti = (int)(timeIn/60);
 int secondi = (int)(timeIn-(minuti*60+ore*3600));
 int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 String time;
+if(minuti<10){
 if(secondi <10){
 if(millesimi<10){
-time = new String(ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
 else if(millesimi<100){
-time = new String(ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
 else{
-time = new String(ore+":"+minuti+":0"+secondi+":"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+millesimi);}
 }
 else{
 if(millesimi<10){
-time = new String(ore+":"+minuti+":"+secondi+":00"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
 else if(millesimi<100){
-time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
 else{
-time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":"+millesimi);}
 }
+}
+else{
+if(secondi <10){
+if(millesimi<10){
+time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+else{
+time = new String("0"+ore+":"+minuti+":0"+secondi+":"+millesimi);}
+}
+else{
+if(millesimi<10){
+time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+else{
+time = new String("0"+ore+":"+minuti+":"+secondi+":"+millesimi);}
+}}
+
 return time;
 }
 

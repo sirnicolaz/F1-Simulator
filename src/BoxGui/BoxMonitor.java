@@ -488,27 +488,48 @@ catch (Exception e){e.printStackTrace();}
     return "-";
   }
 public String convert(float timeIn){
+
 int ore = (int)(timeIn/3600);
 int minuti = (int)(timeIn/60);
 int secondi = (int)(timeIn-(minuti*60+ore*3600));
 int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 String time;
+if(minuti<10){
 if(secondi <10){
 if(millesimi<10){
-time = new String(ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
 else if(millesimi<100){
-time = new String(ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
 else{
-time = new String(ore+":"+minuti+":0"+secondi+":"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+millesimi);}
 }
 else{
 if(millesimi<10){
-time = new String(ore+":"+minuti+":"+secondi+":00"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
 else if(millesimi<100){
-time = new String(ore+":"+minuti+":"+secondi+":0"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
 else{
-time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
+time = new String("0"+ore+":0"+minuti+":"+secondi+":"+millesimi);}
 }
+}
+else{
+if(secondi <10){
+if(millesimi<10){
+time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+else{
+time = new String("0"+ore+":"+minuti+":0"+secondi+":"+millesimi);}
+}
+else{
+if(millesimi<10){
+time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+else if(millesimi<100){
+time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+else{
+time = new String("0"+ore+":"+minuti+":"+secondi+":"+millesimi);}
+}}
+
 return time;
 }
 
