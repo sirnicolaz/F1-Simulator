@@ -4,6 +4,6 @@
 Monza</name>
 <circuitConfigFile>obj/race.xml</circuitConfigFile>
 <classificRefreshTime>43.0</classificRefreshTime>
-<competitorQty>2</competitorQty>
+<competitorQty>3</competitorQty>
 <laps>10</laps>
 </config>
