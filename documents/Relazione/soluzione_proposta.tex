@@ -165,19 +165,6 @@ Questa componente offre la possibilit\`{a} di configurare le parti parametriche 
 \end{itemize}
 Il \emph{Configurator} ha inoltre l'onere di inviare i parametri cos\`{i} configurati alle componenti opportune.
 
-%\subsubsection{Radio}
-%La componente radio \`{e} stata creata per gestire la comunicazione remota fra le componenti distribuite.\\
-%Il sistema inizialmente \`{e} stato implementato con supporto solo all'esecuzione locale. Si conoscevano le componenti che sarebbero state distribuite,
-%ma il processo di separazione \`{e} avvenuto successivamente. Quindi per agevolare tale processo si \`{e} pensato di demandare l'onere della comunicazione 
-%tra queste componenti a unit\`{a} specializzate, chiamate appunto radio. In questo modo \`{e} stato pi\`{u} soft il passaggio da locale a distribuito,
-%che ha richiesto di rivedere solo le componenti \emph{Radio}.\\\\
-%\emph{\textsc{Nota Bene}}:\\
-%La componente \emph{Radio} costituisce un layer di supporto alla comunicazione 
-%distribuita delle componenti. Considerando che a questo livello del documento non \`{e} ancora il momento di scendere nei dettagli fino a discutere 
-%della distribuzione, si pensa sia sufficiente averla nominata nella descrizione delle componenti. Verr\`{a} ripresa
-%in considerazione successivamente nel documento. Inserendola ora nei diagrammi delle componenti rischierebbe di confondere la visione di insieme
-%del sistema.
-% Interazione fra le componenti
 \subsection{Interazione fra le componenti}
 Nella seguente sezione verranno spiegate le interazione principali fra le componenti.\\\\
 \subsubsection{Configurator-Competition}
@@ -395,6 +382,15 @@ B abbia segnato un tempo inferiore a $N+1+max(\epsilon)$ su N. B valuter\`{a} le
 che B avesse segnato un tempo limite comunque pi\`{u} basso del tempo effettivo di A). A valuter\`{a} le traiettorie
 ''simultaneamente'' a B. Abbiamo quindi un sistema con task concorrenti.
 \end{itemize}
+Del rientro ai box non se ne \`{e} ancora discusso per evitare di rendere pi\`{u} confusionaria la spiegazione. Comunque la cosa non costituisce
+un grande problema: vi saranno due checkpoint speciali, quello esattamente prima della corsia dei box e quello subito all'uscita dei box.
+Quando un concorrente arriva sul checkpoint precedente ai box, richiede delle informazioni di strategia ai box. Se tali informazioni
+richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box \`{e} poi rappresentato da un checkpoint come tutti gli altri nel circuito.
+Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al checkpoint di uscita (nel circuito).\\
+I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
+velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
+sorpasso data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
+che verr\`{a} segnato nel checkpoint di uscita.
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
 Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
