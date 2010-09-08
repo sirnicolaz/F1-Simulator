@@ -352,15 +352,20 @@ package body CompetitionComputer is
                RightTime : FLOAT;
                ChoosenIndex : INTEGER;
             begin
-               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(LeftTime);
-               Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_Time(RightTime);
+               if(Index /= 0) then
+                  Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(LeftTime);
+                  Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_Time(RightTime);
 
-               if(Calculate_CloserTime(Time,
-                                       LeftTime,
-                                       RightTime) = LeftTime) then
-                  ChoosenIndex := Index;
+
+                  if(Calculate_CloserTime(Time,
+                                          LeftTime,
+                                          RightTime) = LeftTime) then
+                     ChoosenIndex := Index;
+                  else
+                     CHoosenIndex := Index+1;
+                  end if;
                else
-                  CHoosenIndex := Index+1;
+                  ChoosenIndex := Index+1;
                end if;
 
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(CHoosenIndex).Get_All(Stats_In.all);
