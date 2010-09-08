@@ -35,7 +35,7 @@ private boolean inWhile = true;
 private boolean[] endRace;// =  new boolean[]{false,false,false}; TODO
 private boolean[] ritRace;//=  new boolean[]{false,false,false}; TODO
 private classificationTable classTable = new classificationTable();
-private logBox log = new logBox();
+// private logBox log = new logBox();
 private bestPerformance best = new bestPerformance();
 private Competition_Monitor_Radio monitor;
 private org.omg.CORBA.Object obj;
@@ -47,6 +47,7 @@ private JFrame parent;
 private JPanel logPanel;
 private GridBagConstraints gridLog = new GridBagConstraints();
 private competitorLog[] infos;
+// private JPanel infoUp = new JPanel();
 
 
 private Integer lapNum= new Integer(0);
@@ -60,7 +61,6 @@ private GridBagConstraints classificGrid = new GridBagConstraints();
 
 private DefaultTableModel[] modelClassific = new DefaultTableModel[]{model_1, model_2};
 private int current_index =0;
-private JLabel labelClock = new JLabel("00:00:00:000");
 
 private String corbaloc;
 private ORB orb;
@@ -165,7 +165,8 @@ classTable.addTables(model_1, model_2, numComp);
 best.addBest();
 addLogInfo();
 parent.add(classTable.panel1, BorderLayout.CENTER);
-parent.add(best.bestPanel,BorderLayout.NORTH);
+// parent.add(best.bestPanel,BorderLayout.NORTH);
+parent.add(best.getInfoUp(), BorderLayout.NORTH);
 // parent.add(log.tablePanel, BorderLayout.SOUTH);
 parent.add(logPanel, BorderLayout.SOUTH);
 parent.pack();
@@ -222,22 +223,6 @@ JOptionPane.showMessageDialog(parent,debug.getStackTrace(), "Error",JOptionPane.
 }
 // modelAll.insertRow(index,new Object[]{(index+1)+" : "+cognome[index], "---","---","---","---","---"});
 }
-labelClock.setFont(new Font("Serif", Font.BOLD, 25));
-JLabel labelClockInfo = new JLabel("Time ");
-labelClockInfo.setFont(new Font("Serif", Font.BOLD, 25));
-
-gridLog.fill = GridBagConstraints.HORIZONTAL;
-		gridLog.gridx = 0;
-		gridLog.gridy = numComp;
-		gridLog.ipady = 5;
-// 		gridLog.gridwidth= 2;
-		logPanel.add(labelClockInfo,gridLog);
-gridLog.fill = GridBagConstraints.HORIZONTAL;
-		gridLog.gridx = 2;
-		gridLog.gridy = numComp;
-		gridLog.ipady = 5;
-		gridLog.gridwidth= 2;
-		logPanel.add(labelClock,gridLog);
 
 for(int i=0; i<Array.getLength(storicodatiArray);i++){
 storicodatiArray[i] = new arrayDati(new dati[numComp]);
@@ -261,7 +246,7 @@ org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
 lapNum = (int)q;
 readXml(updateString.value, q);
-labelClock.setText(convert(q));
+best.setClock("Time "+convert(q));
 for(int r=0; r<Array.getLength(datiArray);r++){
 try{
 System.out.println("DEBUG : ITERAZIONE r = "+r);
@@ -325,17 +310,19 @@ try{
 
 int lapGap = storicodatiArray[current_lap+1].arrayD[0].lap - storicodatiArray[current_lap].arrayD[w].lap;
 if (lapGap == 1){
-modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giro","doppiato"});
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giro"});
 }
 else{
-modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giri","doppiato"});
+modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giri"});
 
 }
 }catch(Exception exx){
 exx.printStackTrace();
 }
-}
-
+}/*
+		bestGrid.gridx = 4;
+		bestGrid.gridy = 0;*/
+classTable.invert(current_index, new Integer(current_lap+1));
 current_index=(current_index+1)%2;
 current_lap=current_lap+1;
 new_table_temp = false;
@@ -344,7 +331,7 @@ System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
 modelClassific[current_index].removeRow(w);
 }
 }
-modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,cognome[storicodatiArray[current_lap].arrayD[e].id-1],storicodatiArray[current_lap].arrayD[e].lap, convert(arrayInfo[e])});
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,cognome[storicodatiArray[current_lap].arrayD[e].id-1],/*storicodatiArray[current_lap].arrayD[e].lap,*/ convert(arrayInfo[e])});
 
 modelClassific[current_index].removeRow(e+1);
 
@@ -362,7 +349,7 @@ new_table = false;
 }
 
 q=(float)(q+1);
-// sleep(750);
+// sleep(250);
 for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 exit=false;
@@ -372,7 +359,9 @@ boolArray=Array.getLength(endRace)+1;
 if(exit==false){//se non tutti hanno finito continua altrimenti esci dal ciclo
 inWhile=true;
 }
-else{inWhile=false;};
+else{inWhile=false;
+JOptionPane.showMessageDialog(parent, "Race over", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+};
 }
 catch(org.omg.CORBA.COMM_FAILURE connEcc){
 JOptionPane.showMessageDialog(parent, "Attention : problem with connection..attend 3 seconds\n remaining attempts = "+tentativi,"Connection Error",JOptionPane.ERROR_MESSAGE);
@@ -432,7 +421,7 @@ String temp = attributoCheck.getNodeValue();
 	System.out.println("lap : "+getNode("lap", element));
 	System.out.println("sector : "+getNode("sector", element));
 if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
-JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+//JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
 if(new Integer(getNode("checkpoint",element)).intValue() == 1){
 if (temp.equals("arriving")){
@@ -470,14 +459,14 @@ infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getN
 infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
 if(endRace[ind-1]== false){
-JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+//JOptionPane.showMessageDialog(parent, "Fine gara per il concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1],"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 endRace[ind-1] = true;
 }
 }
 else {
 if(attributoCompRit.getValue().equals("TRUE")){
 if(ritRace[ind-1]== false){
-JOptionPane.showMessageDialog(parent, "Concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1]+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+//JOptionPane.showMessageDialog(parent, "Concorrente "+cognome[new Integer(attributoComp.getNodeValue()).intValue()-1]+" RITIRATO","Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
 ritRace[ind-1] = true;
 }
 
@@ -718,26 +707,54 @@ private JScrollPane panelCl_1;
 private JPanel classificPanel;
 private JScrollPane panelCl_2;
 public JPanel panel1;
+private JPanel panelClass1;
+private JPanel panelClass2;
+private GridBagConstraints gridPanel = new GridBagConstraints();
+private GridBagConstraints gridPanel2 = new GridBagConstraints();
+private JLabel lap1 = new JLabel("Lap 0");
+private JLabel lap2 = new JLabel("-");
+public void invert(int i, Integer lap){
+if(i==1){
+panel1.add(panelClass2, BorderLayout.WEST);
+panel1.add(panelClass1, BorderLayout.EAST);
+// lap2.setText();
+lap1.setText("Lap "+lap.toString());
+}
+else{
+panel1.add(panelClass1, BorderLayout.WEST);
+panel1.add(panelClass2, BorderLayout.EAST);
+// lap1.setText(lapsx.getText());
+lap2.setText("Lap "+lap.toString());
+
+}
+panel1.updateUI();
+}
 
 public void addTables(DefaultTableModel model_1, DefaultTableModel model_2, int compNum){
 model_1.addColumn("Position");
 model_1.addColumn("Competitor"); 
-model_1.addColumn("Lap");
+// model_1.addColumn("Lap");
 model_1.addColumn("Time");
 model_2.addColumn("Position");
 model_2.addColumn("Competitor"); 
-model_2.addColumn("Lap");
+// model_2.addColumn("Lap");
 model_2.addColumn("Time");
 classific_1 = new JTable(model_1);
 classific_2 = new JTable(model_2);
 
+TableColumn column = null;
+column = classific_1.getColumnModel().getColumn(0);
+column.setPreferredWidth(20);
+TableColumn column2 = null;
+column2 = classific_2.getColumnModel().getColumn(0);
+column2.setPreferredWidth(20);
 
 panelCl_1 = new JScrollPane(classific_1);
-// panelCl_1.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panelCl_1.setPreferredSize(new Dimension(300, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 
 panelCl_2 = new JScrollPane(classific_2);
 
-/*panelCl_2.setPreferredSize(new Dimension(0, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti*/
+panelCl_2.setPreferredSize(new Dimension(300, 70));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panelCl_1.setVerticalScrollBar(new JScrollBar());
 panelCl_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -746,12 +763,48 @@ panelCl_2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 
 panel1 = new JPanel(new BorderLayout());
+/*panelClass1 = new JPanel();
+panelClass2 = new JPanel();*/
+panelClass1 = new JPanel(new BorderLayout());
+panelClass1.add(lap1, BorderLayout.NORTH);
+panelClass1.add(panelCl_1, BorderLayout.CENTER);
+panelClass2 = new JPanel(new BorderLayout());
+panelClass2.add(lap2, BorderLayout.NORTH);
+panelClass2.add(panelCl_2, BorderLayout.CENTER);
+// panelClass1.setLayout(new GridBagLayout());
+// .setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+// gridPanel.fill = GridBagConstraints.HORIZONTAL;
+// 		gridPanel.gridx = 0;
+// 		gridPanel.gridy = 0;
+// 		gridPanel.ipady = 5;
+// 		panelClass1.add(lap1,gridPanel);
+// gridPanel.fill = GridBagConstraints.HORIZONTAL;
+// 		gridPanel.gridx = 0;
+// 		gridPanel.gridy = 1;
+// 		gridPanel.ipady = 5;
+// 		panelClass1.add(panelCl_1,gridPanel);
+
+// panelClass2.setLayout(new GridBagLayout());
+// .setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+// gridPanel2.fill = GridBagConstraints.HORIZONTAL;
+// 		gridPanel2.gridx = 0;
+// 		gridPanel2.gridy = 0;
+// 		gridPanel2.ipady = 5;
+// 		panelClass2.add(lap2,gridPanel2);
+// gridPanel2.fill = GridBagConstraints.HORIZONTAL;
+// 		gridPanel2.gridx = 0;
+// 		gridPanel2.gridy = 1;
+// 		gridPanel2.ipady = 5;
+// 		panelClass2.add(panelCl_2,gridPanel2);
+
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-panel1.setPreferredSize(new Dimension(950  , 37*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
-panel1.add(panelCl_1, BorderLayout.WEST);
-panel1.add(panelCl_2, BorderLayout.EAST);
+panel1.setPreferredSize(new Dimension(620  , 30+37*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panel1.add(panelClass1, BorderLayout.CENTER);
+panel1.add(panelClass2, BorderLayout.WEST);
 
 }
 }
@@ -790,7 +843,8 @@ public GridBagLayout gridLog = GridBagLayout();*/
 // }
 
 class bestPerformance{
-public JPanel bestPanel;
+private JPanel bestPanel;
+private JPanel infoUp;
 
 private GridBagConstraints bestGrid = new GridBagConstraints();
 private JTextField textBoxLap = new JTextField("-",3);
@@ -823,10 +877,43 @@ private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
 private JLabel labelSector3Id = new JLabel(" by competitor : ");
 private JLabel labelSector3Time = new JLabel(" in time : ");
 
+private JLabel labelClock = new JLabel("Time 00:00:00:000");
+
+public JPanel getInfoUp(){
+return infoUp;
+}
+public JPanel getBestPanel(){
+return bestPanel;
+}
+public JLabel getClock(){
+return labelClock;
+}
+public void setClock(String timeIn){
+labelClock.setText(timeIn);
+}
 public void addBest(){
 bestPanel = new JPanel(new BorderLayout());
+infoUp = new JPanel(new BorderLayout());
+
 bestPanel.setLayout(new GridBagLayout());
 bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+labelClock.setFont(new Font("Serif", Font.BOLD, 25));
+// JLabel labelClockInfo = new JLabel(" ");
+// labelClockInfo.setFont(new Font("Serif", Font.BOLD, 25));
+
+// gridLog.fill = GridBagConstraints.HORIZONTAL;
+// 		gridLog.gridx = 0;
+// 		gridLog.gridy = numComp;
+// 		gridLog.ipady = 5;
+// // 		gridLog.gridwidth= 2;
+// 		logPanel.add(labelClockInfo,gridLog);
+// gridLog.fill = GridBagConstraints.HORIZONTAL;
+// 		gridLog.gridx = 2;
+// 		gridLog.gridy = numComp;
+// 		gridLog.ipady = 5;
+// 		gridLog.gridwidth= 2;
+// 		logPanel.add(labelClock,gridLog);
 
 bestGrid.fill = GridBagConstraints.HORIZONTAL;
 		bestGrid.gridx = 0;
@@ -954,7 +1041,8 @@ bestGrid.fill = GridBagConstraints.HORIZONTAL;
 		bestGrid.gridy = 3;
 		bestGrid.ipady = 5;
 		bestPanel.add(textBoxSector3Time,bestGrid);
-
+infoUp.add(labelClock, BorderLayout.NORTH);
+infoUp.add(bestPanel, BorderLayout.CENTER);
 }
 
 public void setBestLap(String lap,String  time,String  id){

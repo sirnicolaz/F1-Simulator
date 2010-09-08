@@ -180,6 +180,15 @@ package body OnBoardComputer is
 
    end Add_Data;
 
+   procedure CompetitorOut(Computer_In : COMPUTER_POINT;
+                           Lap           : INTEGER;
+                           Data          : COMPETITOR_STATS) is
+   begin
+      CompetitionCOmputer.CompetitorOut(Computer_In.Competitor_Id,
+                                        Lap,
+                                        Data);
+
+   end CompetitorOut;
 
    -- It returns the competitor ID related to this Computer
    function Get_Id(Computer_In : COMPUTER_POINT) return INTEGER is
