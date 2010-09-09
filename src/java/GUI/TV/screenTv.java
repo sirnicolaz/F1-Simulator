@@ -100,7 +100,7 @@ Float circuitLength;
 org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
 try {
 System.out.println("readConfiguration : 0 monitor = "+monitor);
-circuitLength = monitor.Get_CompetitionConfiguration((short)1,xmlConf);
+circuitLength = monitor.Get_CompetitionConfiguration(xmlConf);
 // monitor.ready((short)1);
 // System.out.println("chiamo la get competitor info ... \n");
 // String tempStr = monitor.Get_CompetitorInfo((short)1,(short)1,(short)1, circuitLength);
