@@ -29,10 +29,10 @@ private JLabel labelFile = new JLabel("1: File of racetrack : ");
 private JLabel labelCompetitor = new JLabel("2: Maximum number of competitor : ");
 private JLabel labelLap = new JLabel("3: Number  : ");
 private JLabel labelName = new JLabel("4: Name of circuit : ");
-private JLabel labelRefresh = new JLabel("5 : Refresh Time : ");
+// private JLabel labelRefresh = new JLabel("5 : Refresh Time : ");
 /*private JLabel p_label5 = new JLabel("5 SConfigura la competizione");
 private JLabel p_label6 = new JLabel("6 SConfigura la competizione");*/
-private JTextField fileRacetrack = new JTextField("obj/race.xml", 15);
+private JTextField fileRacetrack = new JTextField("../../../../race_tracks/race.xml", 15);
 /*private JTextField  numCompetitor = new JTextField("6");
 private JTextField numLap = new JTextField("10");*/
 /*private JTextField p_Text4 = new JTextField("testo 4");
@@ -47,10 +47,10 @@ private JButton resetButton;
 private int intName=0;
 SpinnerNumberModel modelConc = new SpinnerNumberModel(3, 1, 20, 1); 
 SpinnerNumberModel modelLap = new SpinnerNumberModel(10, 1, 100, 1);
-SpinnerNumberModel modelRefresh = new SpinnerNumberModel(43,35,50,1);
+// SpinnerNumberModel modelRefresh = new SpinnerNumberModel(43,35,50,1);
 private JSpinner jsConc = new JSpinner(modelConc);
 private JSpinner jsLap = new JSpinner(modelLap);
-private JSpinner jsRefresh = new JSpinner(modelRefresh);
+//private JSpinner jsRefresh = new JSpinner(modelRefresh);
 private void init(JFrame p){
 parent=p;
 
@@ -65,7 +65,7 @@ openButton = new JButton("Sfoglia...");
 //azione per il bottone sfoglia. viene cosi selezionato il circuito.
 	openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			JFileChooser fc = new JFileChooser("../obj/");
+			JFileChooser fc = new JFileChooser("../../../../race_tracks/");
 		        fc.setAcceptAllFileFilterUsed(false);
 				int returnVal = fc.showOpenDialog(parent);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -83,8 +83,8 @@ openButton = new JButton("Sfoglia...");
 			    System.out.println("Competizione avviata");
 if(writexml()== true){
 parent.dispose();
-conf.Configure("obj/comp_config.xml");
-screen = new screenTv(corbalocMonitor, monitor);
+conf.Configure("comp_config.xml");
+screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition");
 screen.start();
 }
 			}
@@ -92,11 +92,11 @@ screen.start();
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileRacetrack.setText("obj/race.xml");
+			    fileRacetrack.setText("../../../../race_tracks/race.xml");
 			    jsLap.setValue(10);
-			    jsConc.setValue(5);
+			    jsConc.setValue(3);
 			    textName.setText("Monza");
-			    jsRefresh.setValue(43);
+// 			    jsRefresh.setValue(43);
 			    
 		}
 		});
@@ -155,16 +155,16 @@ screen.start();
 
 // p.getContentPane().add(contentPane);
 
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 4;
-		c.ipady = 5;
-		contentPane.add(labelRefresh, c);
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 1;
-		c.gridy = 4;
-		c.ipady = 5;
-		contentPane.add(jsRefresh, c);
+// 		c.fill = GridBagConstraints.HORIZONTAL;
+// 		c.gridx = 0;
+// 		c.gridy = 4;
+// 		c.ipady = 5;
+// 		contentPane.add(labelRefresh, c);
+// 		c.fill = GridBagConstraints.HORIZONTAL;
+// 		c.gridx = 1;
+// 		c.gridy = 4;
+// 		c.ipady = 5;
+// 		contentPane.add(jsRefresh, c);
 
 //BUTTON PANEL
 		buttonPane.setLayout(new FlowLayout());
@@ -185,7 +185,7 @@ orb = org.omg.CORBA.ORB.init(args,null);
 String configCorbaLoc="";
 corbalocMonitor = "";
 try{
-BufferedReader corbaLocFile = new BufferedReader(new FileReader("../competition_corbaLoc.txt"));
+BufferedReader corbaLocFile = new BufferedReader(new FileReader("../../../temp/competition_corbaLoc.txt"));
               configCorbaLoc = corbaLocFile.readLine() ;
 System.out.println(configCorbaLoc);
 	      corbalocMonitor= corbaLocFile.readLine();
@@ -212,9 +212,9 @@ e.printStackTrace();
 public boolean writexml(){
 try{
 PrintWriter out;
-File f = new File("../obj/comp_config.xml");
+File f = new File("../../../temp/comp_config.xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("../obj/comp_config.xml"));
+out=new PrintWriter(new File("../../../temp/comp_config.xml"));
 }
 else {
 out=new PrintWriter(f);
@@ -223,7 +223,7 @@ out.println("<?xml version=\"1.0\"?>\n<config>\n<name>");
 out.print(textName.getText());
 out.print("</name>\n<circuitConfigFile>");
 out.print(fileRacetrack.getText());
-out.print("</circuitConfigFile>\n<classificRefreshTime>"+jsRefresh.getValue()+".0</classificRefreshTime>\n<competitorQty>");
+out.print("</circuitConfigFile>\n<competitorQty>");
 out.print(jsConc.getValue());
 out.print("</competitorQty>\n<laps>");
 out.print(jsLap.getValue());	

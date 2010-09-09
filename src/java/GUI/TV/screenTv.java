@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.table.*;
-// import java.awt.Dialog.*;
+
 import javax.swing.JDialog.*;
 import java.awt.Rectangle;
 import java.util.Vector;
@@ -19,7 +19,7 @@ import broker.radio.*;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
-// import java.net.*;
+
 
 import java.lang.*;
 import javax.xml.parsers.*;
@@ -84,8 +84,8 @@ private Integer sectorValue;
 private int current_lap =0;
 private boolean new_table = false;
 
-public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn){
-parent = new JFrame("Tv Screen");
+public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType){
+parent = new JFrame(nameType);
 
 corbaloc = corbalocIn;
 monitor = monitorIn;

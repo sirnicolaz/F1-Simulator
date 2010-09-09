@@ -140,7 +140,7 @@ public BoxAdminWindow(JFrame frame, String param){
   parent=frame;
 //   init(frame);
 try{
-// LETTURA IOR DA FILE
+// LETTURA CORBALOC DA FILE
 FileReader doc=new FileReader("../boxCorbaLoc-"+stringId+".txt");
 BufferedReader bufRead = new BufferedReader(doc);
 //read configuratorCorbaloc
@@ -342,6 +342,15 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.ipady = 5;
 		carConfigurationGrid.gridwidth= 3;
 		panel.add(textCorbaloc, carConfigurationGrid);
+try{
+BufferedReader corbaLocFile = new BufferedReader(new FileReader("../../../temp/competition_corbaLoc.txt"));
+corbaLocFile.readLine() ;
+corbaLocFile.readLine();
+textCorbaloc.setText(corbaLocFile.readLine());
+}catch(Exception e){
+System.out.println("File non presente");
+}
+
 }
 public class MyChangeAction implements ChangeListener{
  private String simboloT;
@@ -650,9 +659,9 @@ return false;
 public boolean writerBoxXML(){
 try{
 PrintWriter out;
-File f = new File("../obj/boxConfig-"+stringId+".xml");
+File f = new File("../../../temp/boxConfig-"+stringId+".xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("../obj/boxConfig-"+stringId+".xml"));
+out=new PrintWriter(new File("../../../temp/boxConfig-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);

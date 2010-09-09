@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.table.*;
-// import java.awt.Dialog.*;
 import javax.swing.JDialog.*;
 import java.awt.Rectangle;
 import java.util.Vector;
@@ -63,7 +62,7 @@ startButton = new JButton("Connect to competition");
 			public void actionPerformed(ActionEvent e) {
 corbaloc=textCorbaloc.getText();
 if(connect()==true){
-screen = new screenTv(corbaloc, monitor);
+screen = new screenTv(corbaloc, monitor, "Tv Screen");
 screen.start();
 parent.dispose();
 }
