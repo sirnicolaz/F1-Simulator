@@ -16,8 +16,8 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
-import corba.init.*;
-import corba.radio.*;
+import broker.init.*;
+import broker.radio.*;
 
 public class StartCompetition {
 private String corbalocMonitor;

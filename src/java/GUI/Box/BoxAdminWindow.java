@@ -15,8 +15,8 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
-import corba.radio.*;
-import corba.init.*;
+import broker.radio.*;
+import broker.init.*;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;

@@ -1,4 +1,4 @@
-module corba{
+module broker{
 	module radio{
 
 		interface Box_Monitor_Radio {

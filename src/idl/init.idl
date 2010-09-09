@@ -1,4 +1,4 @@
-module corba{
+module broker{
 	module init{
 
 		interface BoxConfigurator{
