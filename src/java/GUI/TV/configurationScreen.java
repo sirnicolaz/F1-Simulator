@@ -33,7 +33,7 @@ private JPanel buttonPanel;
 private JLabel labelCorbaloc = new JLabel("Insert competition corbaloc : ");
 private JLabel labelRefresh = new JLanel("Insert updating refresh time : ");
 private JTextField textCorbaloc = new JTextField("",20);
-private JTextField textCorbaloc = new JTextField("1.0",5);
+private JTextField textRefresh = new JTextField("1.0",5);
 private JButton startButton;
 private JButton resetButton;
 private Competition_Monitor_Radio monitor;
@@ -152,6 +152,7 @@ configPanel.add(textCorbaloc);*/
 public void resetInfo(){
 			    System.out.println("Reset Field");
 			    textCorbaloc.setText("");
+			    textRefresh.setText("1.0");
 }
 
 public boolean connect(){
