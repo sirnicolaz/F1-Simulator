@@ -8,7 +8,8 @@ tv: corba
 	javac -d ../../obj/java/ GUI/TV/screenTv.java
 
 corba:
-	$(shell idlj ../idl/init.idl; idlj ../idl/radio.idl)
+	@idlj ../idl/init.idl
+	@idlj ../idl/radio.idl
 
 deep:
 	rm -rf ../../obj/java/GUI ../../obj/java/broker ../../obj/java/temp/*
