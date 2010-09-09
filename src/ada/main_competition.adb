@@ -89,14 +89,6 @@ begin
            (Root_POA, PortableServer.Servant(Monitor_Obj));
          -- CompetitionConfiguration corbaloc
 
-         if(Common.SaveToFile(FileName => "registrationHandler_corbaLoc.txt",
-                              Content  => CORBA.To_Standard_String
-                                (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref))
-                              ,
-                              Path     => "")) then
-            Ada.Text_IO.Put_Line("Registration handler corba loc saved");
-         end if;
-
          Ada.Text_IO.Put_Line
            ("CompetitionConfiguration: '"
             & CORBA.To_Standard_String
@@ -117,11 +109,13 @@ begin
             & "'");
 
          --Store the corbaloc in a file to be read by the java app
-         Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "competition_corbaLoc.txt");
+         Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "../temp/competition_corbaLoc.txt");
          Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
                               (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(CompConfiguration_Ref)));
          Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
                               (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref)));
+         Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
+                              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref)));
          Ada.Text_IO.Close(CorbaLOC_File);
 
          The_Competition.Set_MonitorCorbaLOC

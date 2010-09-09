@@ -105,9 +105,9 @@ package body Competitor is
    -- procedure Calculate_Status(infoLastSeg);
    -- questo metodo controlla tyre usury e gasoline level
    -- se sono sotto una soglia critica richiede l'intervento dei box
-   -- per ora metto parametri a caso (cioè bisogna definire di preciso
+   -- per ora metto parametri a caso (cioï¿½ bisogna definire di preciso
    -- quale dev'essere il limite per richiamare i box, bisogna evitare che
-   --la macchina non riesca più a girare nel caso il box non sia tempestivo
+   --la macchina non riesca piï¿½ a girare nel caso il box non sia tempestivo
    --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
    -- almeno 2 direi.
 
@@ -258,15 +258,9 @@ package body Competitor is
          --carDriver_XML : in out Node_List; carDriver_Length : in out INTEGER) is
       begin
 
-         Open(xml_file,Input);
+	 Doc := Common.Get_Document(xml_file);
 
-         Set_Feature(Reader,Validation_Feature,False);
-         Set_Feature(Reader,Namespace_Feature,False);
-
-         Parse(Reader,Input);
-
-         Doc := Get_Tree(Reader);
-         carDriver_XML := Get_Elements_By_Tag_Name(Doc,"CAR_AND_DRIVER");
+         carDriver_XML := Get_Elements_By_Tag_Name(Doc,"car_driver");
          carDriver_Length := Length(carDriver_XML);
       exception
          when ADA.IO_EXCEPTIONS.NAME_ERROR => Doc := null;
@@ -424,7 +418,7 @@ package body Competitor is
       Try_OpenFile;
       --configurazione parametri
 
-      --Teoricamente non serve più perchè la strategia viene presa su giusto
+      --Teoricamente non serve piï¿½ perchï¿½ la strategia viene presa su giusto
       --+ prima di iniziare la gare
       --carDriver.strategia := Configure_Strategy_File(doc);
 
@@ -476,13 +470,13 @@ package body Competitor is
                                     F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
                                     Paths2Cross : CROSSING_POINT; Vel_Out : out FLOAT) is
       length_path : FLOAT; --lunghezza tratto
-      --size_path : INTEGER; -- molteplicità tratto
+      --size_path : INTEGER; -- molteplicitï¿½ tratto
       angle_path : FLOAT; -- angolo
       grip_path : FLOAT; -- attrito
-      difficulty_path : FLOAT; -- difficoltà del tratto
+      difficulty_path : FLOAT; -- difficoltï¿½ del tratto
       tyre_usury : Common.PERCENTAGE; -- usura delle gomme %
       gasoline_level : FLOAT; -- livello di benzina l
-      vel_max_reale : FLOAT; --velocità massima raggiungibile km/h
+      vel_max_reale : FLOAT; --velocitï¿½ massima raggiungibile km/h
       vel_max : FLOAT := carDriver.auto.MaxSpeed; -- km/h
       lc : FLOAT; -- m
       timeCritical: FLOAT; -- s
@@ -490,14 +484,14 @@ package body Competitor is
 
    begin
       --++++++Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : in CalculateCrossingTime");
-      --velocità massima scalata per usura gomme e benzina presente.
-      --V =velocità massima
+      --velocitï¿½ massima scalata per usura gomme e benzina presente.
+      --V =velocitï¿½ massima
       --U =usura gomme (valori da 0 a 100 in percentuale)
       --B =benzina presente (valori da 0 a 100)
-      --VR=Velocità Reale (Velocita-%usura)scalato sulla benzina presente,+ benzina + lento..
+      --VR=Velocitï¿½ Reale (Velocita-%usura)scalato sulla benzina presente,+ benzina + lento..
       --VR= (V - (V*(U / 10)/100))-((0.025*B*V)/100)
-      -- B*V/1000 è la formula B/10 * V/100 quindi B=0, la velocità non diminuisce, B=100
-      -- la velocità diminuisce di un 10 %
+      -- B*V/1000 ï¿½ la formula B/10 * V/100 quindi B=0, la velocitï¿½ non diminuisce, B=100
+      -- la velocitï¿½ diminuisce di un 10 %
       --++++++++++++++++++++++++++++++++++++--
       -- bisogna prevedere una accelerazione (positiva o negativa) per calcolare il tempo di attraversamento..
 
@@ -518,11 +512,11 @@ package body Competitor is
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel_max*((Float(gasoline_level)*10.0)/100.0)) = "&Float'Image(vel_max*((Float(gasoline_level)*10.0)/100.0)));
       --acc := Get_MaxAcceleration(carDriver);
       -- aggiornamento dell'accelerazione in base allo stile di guida
-      -- 0.008 è un buon valore trovato facendo dei test
-      -- oltre allo stile di guida infulirà sull'accelerazione anche l'usura delle gomme
-      -- sommando i due modificatori si arriva a cambiare l'accelerazione al più di 0.012 (rispetto al valore
-      -- normale che è stato fissato in fase di configurazione ) che
-      -- secondo i test eseguiti è un buon valore che modifica in maniera buona i tempi di percorrenza
+      -- 0.008 ï¿½ un buon valore trovato facendo dei test
+      -- oltre allo stile di guida infulirï¿½ sull'accelerazione anche l'usura delle gomme
+      -- sommando i due modificatori si arriva a cambiare l'accelerazione al piï¿½ di 0.012 (rispetto al valore
+      -- normale che ï¿½ stato fissato in fase di configurazione ) che
+      -- secondo i test eseguiti ï¿½ un buon valore che modifica in maniera buona i tempi di percorrenza
       case carDriver.strategia.Style is
       when Common.AGGRESSIVE => acc:= Get_MaxAcceleration(carDriver)+0.008;
       when Common.CONSERVATIVE => acc := Get_MaxAcceleration(carDriver) - 0.008;
@@ -539,7 +533,7 @@ package body Competitor is
 --                            &" , (gasoline_level/10.00)*(vel_max)/100.0) : "&Float'Image((Float(gasoline_level/10.0)*(vel_max)/100.0)));
 
       --vel_max_reale := vel_max-(((tyre_usury/10.0) * (vel_max))/10.0)-((Float(gasoline_level/10.0)*(vel_max)/100.0));
-      vel_max_reale := vel_max-(((tyre_usury/10.0) * (vel_max))/10.0)-(((gasoline_level*0.025)*(vel_max))/100.0);-- con 400 litri(massimo serbatoio esistente) si ha una decadenza del 10% della velocità massima raggiungibile
+      vel_max_reale := vel_max-(((tyre_usury/10.0) * (vel_max))/10.0)-(((gasoline_level*0.025)*(vel_max))/100.0);-- con 400 litri(massimo serbatoio esistente) si ha una decadenza del 10% della velocitï¿½ massima raggiungibile
 
      -- tyre_usury := CarDriver.auto.TyreUsury; --(25 giri per una gomma circa)
 
@@ -556,15 +550,15 @@ package body Competitor is
       --V - (V*(U x 10)/100))-((B*V)/1000)
       -- formula per il tempo di attraversamento
       -- caso 1
-      -- tempo di percorrenza= tempo per raggiungere velocità massima.
+      -- tempo di percorrenza= tempo per raggiungere velocitï¿½ massima.
       -- lunghezza tratto in accelerazione = lunghezza tratto
-      -- velocità finale = velocità massima per quel tratto
+      -- velocitï¿½ finale = velocitï¿½ massima per quel tratto
 --        Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max : "&Float'Image(vel_max));
 --        Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel max reale : "&Float'Image(vel_max_reale));
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : vel in : "&Float'Image(Vel_In));
       timeCritical := ((vel_max_reale/3.6) - (Vel_In/3.6)) / acc;
       -- tempo per arrivare a Vmax partendo da Vel_iniziale
-      -- divisione per 3,6 per portare alla stessa unità di misura cosi abbiamo la velocità in
+      -- divisione per 3,6 per portare alla stessa unitï¿½ di misura cosi abbiamo la velocitï¿½ in
       -- m/s e l'accelerazione in m/s^2 per avere cosi un tempo in secondi
       if vel_max_reale <= 0.0 then lc:=0.0;
       else lc := (Vel_In/3.6)*timeCritical + 0.5*acc*(timeCritical*timeCritical);
@@ -576,7 +570,7 @@ package body Competitor is
       if lc = length_path then
          --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 1 - lc=length_path, return "&Float'Image(timeCritical));
          Vel_Out:=vel_max_reale;---attenzione TODO se cambio vel in in una traiettoria lo cambio anche per quella dopo...
-         TimeCriticalTemp := timeCritical;-- aggiornare velocità
+         TimeCriticalTemp := timeCritical;-- aggiornare velocitï¿½
       elsif lc < length_path then
          --++++++ Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 2 - lc<length_path, return "&Float'Image(timeCritical + ( length_path - lc )/vel_max_reale));
          Vel_Out:=vel_max_reale;
@@ -586,7 +580,7 @@ package body Competitor is
          else
             TimeCriticalTemp := timeCritical + ( length_path - lc )/(vel_max_reale/3.6);
             --moto accelerato + moto uniforme
-            -- tempo per arrivare alla velocità max + (spazio/velocità)= tempo moto rettilineo uniforme
+            -- tempo per arrivare alla velocitï¿½ max + (spazio/velocitï¿½)= tempo moto rettilineo uniforme
          end if;
       elsif lc> length_path  then
          --++++++ Ada.Text_IO.Put_Line("-------------------"&Integer'Image(carDriver.Id)&" : CASO 3 - lc>length_path, return "&Float'Image((-1.0) * (Vel_In/acc) + 25.0));
@@ -612,7 +606,7 @@ package body Competitor is
       --qua credo che vadano eseguite le operazioni per attraversare il tratto
 
 
-      --driver dovrà salvarsi la velocità che ha raggiunto.
+      --driver dovrï¿½ salvarsi la velocitï¿½ che ha raggiunto.
 
       StartingInstant : FLOAT := 0.0;
       WaitingTime : FLOAT := 0.0;
@@ -649,7 +643,7 @@ package body Competitor is
          WaitingTime := PathTime - CompArrivalTime;
 
 --           Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " path time - compArrivalTime: " & FLOAT'IMAGE(WaitingTime));
-         -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time: " &Float'Image(PathTime));
+         -- Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ path time: " &Float'Image(PathTime));
          StartingInstant := PathTime;
          --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" :scorro il path2cross, index = "&Integer'Image(Index));
          if WaitingTime < 0.0 then
@@ -658,11 +652,11 @@ package body Competitor is
          end if;
          --CrossingTime:=CrossingTime+StartingInstant;
          --++++++         Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : before crossing time");
-         --   Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ waiting time DOPO: " &Float'Image(WaitingTime));
+         --   Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ waiting time DOPO: " &Float'Image(WaitingTime));
 
          CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
 --           Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " crossing time temp : " & Common.FloatToString(CrossingTimeTemp));
-         --TODO : Mettere il metodo ritirato. Il controllo sarà simile a questo
+         --TODO : Mettere il metodo ritirato. Il controllo sarï¿½ simile a questo
          -- if CrossingTimeTemp = qualcosa ritornato dalla CalculateCrossingTime then
          -- metodo ritirato(competitorId)
          -- end if
@@ -678,34 +672,34 @@ package body Competitor is
          -- traiettoriaScelta := Index;
          --++++++  Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : after crossing time");
          TotalDelay := StartingInstant + CrossingTimeTemp - WaitingTime; -- NEW : ho sottratto il WaitingTime, altrimenti lo contavo 2 volte
-                                                                         -- ora ho il delay totale da scrivere sul path, se è quello minimo calcolato..quel controllo lo faccio nella prossima
-                                                                         -- istruzione. il total delay minimo è quello che corrisponde a tempo di attesa + tempo di attraversamento minore
-                                                                         -- qua devo usare CrossingTimeTemp e WaitingTime perchè altrimenti rischio di usare il CrossingTime che è il miglior tempo di attraversament
-                                                                         -- anche nelle iterazioni successive, tanto non può succedere che MinDelay venga aggiornato con TotalDelay nel caso non sia stato aggiornato anche CrossingTime
+                                                                         -- ora ho il delay totale da scrivere sul path, se ï¿½ quello minimo calcolato..quel controllo lo faccio nella prossima
+                                                                         -- istruzione. il total delay minimo ï¿½ quello che corrisponde a tempo di attesa + tempo di attraversamento minore
+                                                                         -- qua devo usare CrossingTimeTemp e WaitingTime perchï¿½ altrimenti rischio di usare il CrossingTime che ï¿½ il miglior tempo di attraversament
+                                                                         -- anche nelle iterazioni successive, tanto non puï¿½ succedere che MinDelay venga aggiornato con TotalDelay nel caso non sia stato aggiornato anche CrossingTime
 --           Ada.Text_IO.Put_Line(Integer'Image(driver.Id)&" : total delay = "&Float'Image(TotalDelay));
          if TotalDelay < MinDelay or else MinDelay < 0.0 then
-            MinDelay := TotalDelay;-- MinDelay ha così il valore da scrivere sul path
+            MinDelay := TotalDelay;-- MinDelay ha cosï¿½ il valore da scrivere sul path
 
             --  Paths2Cross.Update_Time(PathTime+MinDelay, Index);--aggiorno i tempi sulla pista
 
             --else Paths2Cross.Update_Time(PathTime+TotalDelay, Index); --aggiorno i tempi sulla pista
          end if;
          --BestPath := segm[i] dicitura un po alla c++, da correggere.
-         -- il significato è quello di cercare il path con tempo di attesa+attraversamento minore.
+         -- il significato ï¿½ quello di cercare il path con tempo di attesa+attraversamento minore.
 
       end loop;
-      --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$size array velocità = "&Integer'Image(vel_array'LENGTH));
+      --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$size array velocitï¿½ = "&Integer'Image(vel_array'LENGTH));
       --for i in 1..vel_array'LENGTH loop
-      --  Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$velocità path[ "&Integer'Image(i)&" ]= "&Float'Image(vel_array(i)));
+      --  Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : $$$$$$$$$$$$$$$$$$velocitï¿½ path[ "&Integer'Image(i)&" ]= "&Float'Image(vel_array(i)));
       --end loop;
       --++++++      Ada.Text_IO.Put_Line("-------------------"&Integer'Image(driver.Id)&" : min delay = "&Float'Image(MinDelay));
       Paths2Cross.Update_Time(MinDelay, traiettoriaScelta);
-      driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocità di entrata al tratto successivo
+      driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocitï¿½ di entrata al tratto successivo
       Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : path scelto = "&Integer'Image(traiettoriaScelta));
       --commentato, serviva solo per test
       --for Index in 1..Paths2Cross.Get_Size loop
         -- PathTime := Paths2Cross.Get_PathTime(Index);
-         --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿¿ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
+         --Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& " : @@@@^^^^^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ path time di indice "&Integer'Image(Index)&": " &Float'Image(PathTime));
         --end loop;
 --        Ada.Text_IO.Put_Line
 --          (Integer'Image(driver.Id)& ":" & FLOAT'IMAGE(driver.auto.TyreUsury)  & "-"
@@ -725,14 +719,14 @@ package body Competitor is
       else temp_usury := temp_usury + 0.01;
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": temp usury (type) done");
-      --aggiorno il modificatore in base alla velocità massima raggiunta
+      --aggiorno il modificatore in base alla velocitï¿½ massima raggiunta
       if vel_array(traiettoriaScelta) >= 300.0 then temp_usury := temp_usury + 0.02;
       elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then temp_usury := temp_usury + 0.01;
       elsif vel_array(traiettoriaScelta) >= 100.0 and vel_array(traiettoriaScelta) <200.0 then temp_usury := temp_usury + 0.007;
       else temp_usury := temp_usury + 0.005;
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": speed done");
-      -- adesso in temp_usury è presente una percentuale da sommare a quella statica calcolata.
+      -- adesso in temp_usury ï¿½ presente una percentuale da sommare a quella statica calcolata.
       -- al massimo il valore di usura arriva a 0.86, nella peggiore delle ipotesi.
       -- il valore di usura si intende ogni 1000 metri
       -- quindi x = (1000*100)/0.80 = 125 km
@@ -740,7 +734,7 @@ package body Competitor is
       -- in totale quasi due giri (in media 5.5 km al giro) di differenza
       driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": tyre usury done");
-      --il valore di 0.8 è stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
+      --il valore di 0.8 ï¿½ stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
       -- calcolo gas_modifier
       if vel_array(traiettoriaScelta) >= 300.0 then gas_modifier := 0.15;
       elsif vel_array(traiettoriaScelta) >= 200.0 and vel_array(traiettoriaScelta) <300.0 then gas_modifier := 0.10;
@@ -749,9 +743,9 @@ package body Competitor is
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": vel done");
       driver.auto.GasolineLevel := driver.auto.GasolineLevel - ((0.6 + gas_modifier) * Paths2Cross.Get_Length(traiettoriaScelta)/1000.0);
-      -- 0.6 è il valore di  litri al km consumati
-      -- questo valore può arrivare (in base alla velocità ) fino a 0.75 litri al km
-      -- il calcolo è quindi (0.6 + modificatore) * lunghezzaTratto /1000
+      -- 0.6 ï¿½ il valore di  litri al km consumati
+      -- questo valore puï¿½ arrivare (in base alla velocitï¿½ ) fino a 0.75 litri al km
+      -- il calcolo ï¿½ quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": gas done");
       crossingTime_Out := CrossingTime;
@@ -770,9 +764,9 @@ package body Competitor is
       PredictedTime : FLOAT := 0.0;
       DelayTime : FLOAT := 1.0;
       Paths2Cross : CROSSING_POINT;
-      MinSegTime : FLOAT :=1.0;-- <minima quantità di tempo per attraversare un tratto>
+      MinSegTime : FLOAT :=1.0;-- <minima quantitï¿½ di tempo per attraversare un tratto>
       lengthPath : FLOAT := 0.0;
-      --<minima quantità di tempo per attraversare la pista>
+      --<minima quantitï¿½ di tempo per attraversare la pista>
       carDriver : CAR_AND_DRIVER_ACCESS := carDriver_In;--
       MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
       CurrentCheckpoint : INTEGER := 1;
@@ -795,7 +789,7 @@ package body Competitor is
       updateStr : Str.Unbounded_String := Str.Null_Unbounded_String;
 
       -- The lap count is kept in this variable
-      --TODO: chiedere a lorenzo se non era già da qualche altra parte
+      --TODO: chiedere a lorenzo se non era giï¿½ da qualche altra parte
       CurrentLap : INTEGER := 0;
 
       PitStopDone : BOOLEAN := false;
@@ -994,8 +988,8 @@ package body Competitor is
          --   C_Checkpoint.Wait(id,Paths2Cross,PitStop);
          --end loop;
 
-         --Ogni volta che si taglia il traguardo, bisogna controllare se le gara è finita.
-         --Probabilmente bisognerà sistemare la procedura perchè le auto si fermino
+         --Ogni volta che si taglia il traguardo, bisogna controllare se le gara ï¿½ finita.
+         --Probabilmente bisognerï¿½ sistemare la procedura perchï¿½ le auto si fermino
          --anche prima di tagliare il traguardo nel caso il vincitore sia arrivato da un pezzo
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Get checkpoint " & Common.IntegerToString(Get_Position(carDriver.RaceIterator)));
@@ -1006,20 +1000,20 @@ package body Competitor is
          SectorID:=C_Checkpoint.Get_SectorID;
 
          --Inizio sezione dedicata alla scelta della traiettoria
-         --questa è la soluzione attuale. Il crossing time e il choosenpath
+         --questa ï¿½ la soluzione attuale. Il crossing time e il choosenpath
          --sono valori restituiti dalla funzione
          --Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
 
-         -- CrossingTime è il tempo effettivo di attraversamento del
+         -- CrossingTime ï¿½ il tempo effettivo di attraversamento del
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
 
 --           Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
 
-         --Ora non c'è più rischio di race condition sulla scelta delle traiettorie
-         --quindi può essere segnalato il passaggio del checkpoint per permettere agli
-         --altri thread di eseguire finchè vengono aggiornati i tempi di arrivo negli
+         --Ora non c'ï¿½ piï¿½ rischio di race condition sulla scelta delle traiettorie
+         --quindi puï¿½ essere segnalato il passaggio del checkpoint per permettere agli
+         --altri thread di eseguire finchï¿½ vengono aggiornati i tempi di arrivo negli
          --altri checkpoint
          C_Checkpoint.Signal_Leaving(id);
 
@@ -1317,11 +1311,11 @@ package body Competitor is
       --+Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
       --+come parametri bisogna che in entrata ci sia la strategia, altrimenti non
       --+abbiamo niente con cui poterla usare.
-      --+come metodo non è male solo che credo stia meglio nella strategy in modo da
+      --+come metodo non ï¿½ male solo che credo stia meglio nella strategy in modo da
       --+poter essere disponibile anche per "l'oggetto" di StrategyBox.
-      --+ultima cosa, è corretto chiamare path2cross quando noi invece abbiamo
+      --+ultima cosa, ï¿½ corretto chiamare path2cross quando noi invece abbiamo
       --+il segmento su cui poi scegliere il path giusto?
-      --quando esco dal loop devo togliere il concorrente dalla coda altrimeni si pianta tutto, ovviamente perchè il suo segnaposto
+      --quando esco dal loop devo togliere il concorrente dalla coda altrimeni si pianta tutto, ovviamente perchï¿½ il suo segnaposto
       --rimane nelle code
 
       CompetitorRadio.Close_BOxCOnnection(Radio => carDriver.Radio);
