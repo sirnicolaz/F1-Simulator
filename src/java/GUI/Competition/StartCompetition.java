@@ -84,7 +84,7 @@ openButton = new JButton("Sfoglia...");
 if(writexml()== true){
 parent.dispose();
 conf.Configure("comp_config.xml");
-screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition");
+screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition", (float)0.1);
 screen.start();
 }
 			}

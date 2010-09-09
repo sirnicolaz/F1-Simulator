@@ -51,9 +51,9 @@ private JPanel logPanel;
 private GridBagConstraints gridLog = new GridBagConstraints();
 private competitorLog[] infos;
 // private JPanel infoUp = new JPanel();
+private float updTime;
 
-
-private Integer lapNum= new Integer(0);
+// private Integer lapNum= new Integer(0);
 
 private DefaultTableModel model_1 = new DefaultTableModel(); 
 private DefaultTableModel model_2 = new DefaultTableModel(); 
@@ -84,11 +84,12 @@ private Integer sectorValue;
 private int current_lap =0;
 private boolean new_table = false;
 
-public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType){
+public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameTypeWarning, float updTimeIn){
 parent = new JFrame(nameType);
 
 corbaloc = corbalocIn;
 monitor = monitorIn;
+updTime = updTimeIn
 //effettua la connessione
 }
 
@@ -233,8 +234,9 @@ storicodatiArray[i] = new arrayDati(new dati[numComp]);
 /*for(int numCompetitor =0; numCompetitor<numComp; numCompetitor++){
 
 }*/
+float interval = updTime;
 current_lap=0;
-float q =(float)1.0;
+// float q =(float)1.0;
 int i=0;
 // if(connect()!= true){
 // System.out.println("ERRORE DI CONNESSIONE");
@@ -246,10 +248,10 @@ while(inWhile){
 try{
 boolean exit=true;
 org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
-arrayInfo = monitor.Get_CompetitionInfo(q, updateString);
-lapNum = (int)q;
-readXml(updateString.value, q);
-best.setClock("Time "+convert(q));
+arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
+// lapNum = (int)q;
+readXml(updateString.value);//, q);
+best.setClock("Time "+convert(updTime));
 for(int r=0; r<Array.getLength(datiArray);r++){
 try{
 System.out.println("DEBUG : ITERAZIONE r = "+r);
@@ -351,7 +353,8 @@ System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
 new_table = false;
 }
 
-q=(float)(q+1);
+// q=(float)(q+1);
+updTime = updTime + interval;
 // sleep(250);
 for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
@@ -379,7 +382,7 @@ this.sleep(3000);
 catch(Exception e){e.printStackTrace();}
 }
 // parsing xml
-public void readXml(String xmlRecords, float istant){
+public void readXml(String xmlRecords){//, float istant){
 System.out.println("stringa da parsare : \n"+xmlRecords);
  try {
         DocumentBuilderFactory dbf =
