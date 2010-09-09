@@ -1,7 +1,9 @@
 with CORBA;
 with PortableServer;
 
-package Competition_Monitor_Radio.impl is
+with Corba.Radio.Competition_Monitor_Radio;
+
+package Corba.Radio.Competition_Monitor_Radio.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
    type Object_Acc is access Object;
@@ -33,4 +35,4 @@ package Competition_Monitor_Radio.impl is
                                         Id : CORBA.Short) return CORBA.STRING;
 
 
-end Competition_Monitor_Radio.impl;
+end Corba.Radio.Competition_Monitor_Radio.impl;

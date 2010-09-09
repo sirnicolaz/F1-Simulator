@@ -3,6 +3,9 @@ with "/usr/local/lib/gnat/polyorb.gpr";
 
 project Default is
 
+   for Source_Dirs use ("./");
+   for Object_Dir use "../../obj/ada";
+
    type Mode_Type is
       ("Production", "Debug");
    Mode : Mode_Type := external ("BUILD", "Debug");

@@ -1,11 +1,13 @@
-with Box_Monitor_Radio.Skel;
-pragma Warnings (Off, Box_Monitor_Radio.Skel);
+with Corba.Radio.Box_Monitor_Radio.Skel;
+pragma Warnings (Off, Corba.Radio.Box_Monitor_Radio.Skel);
+
+use Corba.Radio.Box_Monitor_Radio;
 
 with Box_Monitor;
 
 with Ada.Strings.Unbounded;
 
-package body Box_Monitor_Radio.impl is
+package body Corba.Radio.Box_Monitor_Radio.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -25,10 +27,10 @@ package body Box_Monitor_Radio.impl is
 
       -- The NewInfo is initialised to 1 for construction constraints.
       --+ The get update method will "update" the variable to the right value.
-      Box_Monitor.GetUpdate(INTEGER(Num) , FLOAT(Time), Temp_String);
+      Box_Monitor.GetUpdate(INTEGER(Num) , Standard.FLOAT(Time), Temp_String);
 
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
       time := Corba.FLOAT(Time);
    end GetUpdate;
 
-end Box_Monitor_Radio.impl;
+end Corba.Radio.Box_Monitor_Radio.impl;

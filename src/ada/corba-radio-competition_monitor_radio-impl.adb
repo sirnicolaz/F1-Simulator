@@ -1,5 +1,7 @@
-with Competition_Monitor_Radio.Skel;
-pragma Warnings (Off, Competition_Monitor_Radio.Skel);
+with Corba.Radio.Competition_Monitor_Radio.Skel;
+pragma Warnings (Off, Corba.Radio.Competition_Monitor_Radio.Skel);
+
+use Corba.Radio.Competition_Monitor_Radio;
 
 --with Stats;
 with Competition_Monitor;
@@ -10,7 +12,7 @@ with Ada.Text_IO;
 
 with Ada.Strings.Unbounded;
 
-package body Competition_Monitor_Radio.impl is
+package body Corba.Radio.Competition_Monitor_Radio.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -24,7 +26,7 @@ package body Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitorInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
       ReturnStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      ReturnTime : FLOAT;
+      ReturnTime : Standard.FLOAT;
    begin
       Ada.Text_IO.Put_Line("Asking for info: lap " & INTEGER'IMAGE(INTEGER(lap)) &
                            ", sector " & INTEGER'IMAGE(INTEGER(sector)));
@@ -48,7 +50,7 @@ package body Competition_Monitor_Radio.impl is
       Tmp_String : Unbounded_String.Unbounded_String;
       Tmp_TimesArray : FLOAT_ARRAY_POINT;
    begin
-      Competition_Monitor.Get_CompetitionInfo(FLOAT(timeInstant),Tmp_TimesArray,Tmp_String);
+      Competition_Monitor.Get_CompetitionInfo(Standard.FLOAT(timeInstant),Tmp_TimesArray,Tmp_String);
 
       if(Tmp_TimesArray /= null) then
          for Index in Tmp_TimesArray.all'RANGE loop
@@ -67,7 +69,7 @@ package body Competition_Monitor_Radio.impl is
       xmlConf : out CORBA.String) is
 
       XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      CircuitLength_Out : FLOAT;
+      CircuitLength_Out : Standard.FLOAT;
    begin
 
       Competition_Monitor.Get_CompetitionConfiguration(XmlInfo_Out,
@@ -88,4 +90,4 @@ package body Competition_Monitor_Radio.impl is
       return CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
    end Get_CompetitorConfiguration;
 
-end Competition_Monitor_Radio.impl;
+end Corba.Radio.Competition_Monitor_Radio.impl;

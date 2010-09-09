@@ -145,7 +145,6 @@ package body Competition is
       end Wait;
 
       procedure Configure( MaxCompetitors : in POSITIVE;
-                          ClassificRefreshTime_in : in FLOAT;
                           Name_in : in STRING;
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING) is
@@ -158,8 +157,6 @@ package body Competition is
          Laps := Laps_In;
 
          Name := Unbounded_String.To_Unbounded_String(Name_In);
-         ClassificRefreshTime := ClassificRefreshTime_In;
-
 
          Ada.Text_IO.Put_Line("Getting racetrack file: " & Circuit_File);
          Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
@@ -184,24 +181,12 @@ package body Competition is
                                                     Unbounded_string.To_Unbounded_String(Name_In),
                                                     Circuit_Length);
 
-         --GenericStatistics := new Stats.GENERIC_STATS;
-         --GlobalStatistics := new Stats.GLOBAL_STATS_HANDLER
-          -- (new FLOAT'(ClassificRefreshTime_in),
-          --  GenericStatistics);
          Ada.Text_IO.Put_Line("initializing monitor");
          Monitor := Competition_Monitor.Init(MaxCompetitors,
                                              Laps_In);
 
          --NEW: moved to init.adb procedure
          --Starter := new Competition_Monitor.impl.MonitorStarter;
-
-         --We are aware that it's a potentially blocking action,
-         --+but the competition can't start withouth the information
-         --+retrieved from that entry. In case of block, the competition
-         --+doesn't start and that's right.
-         --pragma Warnings(off);
-         --Starter.all.Broadcast(Monitor_CobraLoc);
-         --pragma Warnings(On);
 
          Configured := True;
 

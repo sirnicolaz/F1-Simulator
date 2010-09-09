@@ -31,7 +31,6 @@ package Competition is
                                    Monitor_CorbaLoc_Out : out Unbounded_String.Unbounded_String);
 
       procedure Configure( MaxCompetitors : in POSITIVE;
-                          ClassificRefreshTime_in : in FLOAT;
                           Name_in : in STRING;
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING);

@@ -1,11 +1,13 @@
 with Ada.Text_IO;
 
-with RegistrationHandler.Skel;
-pragma Warnings (Off, RegistrationHandler.Skel);
+with Corba.Init.RegistrationHandler.Skel;
+pragma Warnings (Off, Corba.Init.RegistrationHandler.Skel);
+
+use Corba.Init.RegistrationHandler;
 
 with Common;
 
-package body RegistrationHandler.impl is
+package body Corba.Init.RegistrationHandler.impl is
 
    Comp : Competition.SYNCH_COMPETITION_POINT;
 
@@ -23,7 +25,7 @@ package body RegistrationHandler.impl is
                               Laps : out CORBA.Short) is
       Competitor_ID_INT : INTEGER;
       Laps_Out : INTEGER;
-      CIrcuitLength_Out : FLOAT;
+      CIrcuitLength_Out : Standard.FLOAT;
       MonitorCorbaLoc_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
@@ -55,4 +57,4 @@ package body RegistrationHandler.impl is
       return CORBA.To_CORBA_String("No configuration yet");
    end Wait_Ready;
 
-end RegistrationHandler.impl;
+end Corba.Init.RegistrationHandler.impl;

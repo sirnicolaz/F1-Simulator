@@ -1,10 +1,12 @@
 with CORBA;
 with PortableServer;
 
+with Corba.Init.CompetitionConfigurator;
+
 with Competition;
 use Competition;
 
-package CompetitionConfigurator.impl is
+package Corba.Init.CompetitionConfigurator.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
 
@@ -15,4 +17,4 @@ package CompetitionConfigurator.impl is
    function Configure(Self : access Object;
                       config_file : CORBA.STRING) return CORBA.STRING;
 
-end CompetitionConfigurator.impl;
+end Corba.Init.CompetitionConfigurator.impl;
