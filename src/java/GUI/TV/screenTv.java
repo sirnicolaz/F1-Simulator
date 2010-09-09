@@ -69,7 +69,7 @@ private String corbaloc;
 private ORB orb;
 private int numComp;
 private int numLap;
-private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
+// private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
 private float lenghtCircuit;
 
 private float[] arrayInfo;
@@ -96,16 +96,17 @@ updTime = updTimeIn;
 
 public void readConfiguration(){
 String xmlConfString;
+Float circuitLength;
 org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
 try {
 System.out.println("readConfiguration : 0 monitor = "+monitor);
-monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+circuitLength = monitor.Get_CompetitionConfiguration((short)1,xmlConf);
 // monitor.ready((short)1);
 // System.out.println("chiamo la get competitor info ... \n");
 // String tempStr = monitor.Get_CompetitorInfo((short)1,(short)1,(short)1, circuitLength);
 // System.out.println(tempStr);
 System.out.println("readConfiguration : 1");
-lenghtCircuit = new Float(circuitLength.value).floatValue();
+lenghtCircuit = circuitLength;//new Float(circuitLength.value).floatValue();
 System.out.println("readConfiguration : 2");
 xmlConfString = xmlConf.value;
 System.out.println("readConfiguration : 3");

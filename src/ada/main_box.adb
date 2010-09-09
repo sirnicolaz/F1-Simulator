@@ -199,7 +199,7 @@ begin
 
       -- Saving the CorbaLOCS into file
       -- First we create the file
-      Ada.Text_IO.Create(CorbaLOC_File, Ada.Text_IO.Out_File, "boxCorbaLoc-" & Ada.Command_Line.Argument (1) & ".txt");
+      Ada.Text_IO.Create(CorbaLOC_File, Ada.Text_IO.Out_File, "../temp/boxCorbaLoc-" & Ada.Command_Line.Argument (1) & ".txt");
       -- Then we write to it
       Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(Configurator_CorbaLOC));
       Ada.Text_IO.Put_Line(CorbaLOC_File, Unbounded_String.To_String(BoxRadio_CorbaLOC));
