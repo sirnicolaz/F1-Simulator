@@ -29,6 +29,9 @@ package Common is
    type INTEGER_ARRAY_POINT is access INTEGER_ARRAY;
    type UNBOUNDED_STRING_POINT is access Unbounded_String.Unbounded_String;
 
+
+   FilePath : constant STRING(1..8) := "../temp/";
+
    type STRATEGY is record
       Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Style : DRIVING_STYLE;

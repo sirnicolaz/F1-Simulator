@@ -141,7 +141,7 @@ package body Box is
             CorbaInfo);
          Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
          Ada.Text_IO.Put_Line("Info taken");
-         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
          Info.Time := Time;
          Ada.Text_IO.Put_Line("Xml->update");
          Ada.Text_IO.Put_Line("---LAP N. " & Common.IntegerToString(Info.Lap));

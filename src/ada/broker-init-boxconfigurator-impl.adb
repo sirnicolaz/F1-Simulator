@@ -149,7 +149,6 @@ package body Broker.Init.BoxConfigurator.Impl is
       CompetitorID : INTEGER;
       Laps : POSITIVE;
 
-
       Config : Node_List;
       Current_Node : NODE;
       Config_Doc : DOCUMENT;
