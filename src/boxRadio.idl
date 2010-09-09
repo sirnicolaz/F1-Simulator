@@ -1,3 +1,0 @@
-interface BoxRadio {
-	string RequestStrategy ( in short lap );
-};

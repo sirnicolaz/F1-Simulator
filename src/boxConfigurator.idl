@@ -1,3 +1,0 @@
-interface BoxConfigurator{
-	string Configure( in string config);
-};

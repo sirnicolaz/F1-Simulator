@@ -1,4 +1,0 @@
-interface Box_Monitor_Radio {
-        string GetUpdate ( in short num, out float time );
-};
-

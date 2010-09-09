@@ -1,14 +1,14 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  registrationHandler.idl
+--  box_monitor_radio.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
 --  changes will be lost when you re-run the
 --  IDL to Ada compiler.
 ---------------------------------------------------
-with RegistrationHandler.Impl;
+with Box_Monitor_Radio.Impl;
 with CORBA;
 pragma Elaborate_All (CORBA);
 with PolyORB.Any;
@@ -27,31 +27,15 @@ with PolyORB.Utils.Strings;
 with PolyORB.Utils.Strings.Lists;
 with PolyORB.Initialization;
 
-package body RegistrationHandler.Skel is
+package body Box_Monitor_Radio.Skel is
 
-   Join_Competition_Arg_Name_competitorDescriptorFile_Ü : constant CORBA.Identifier :=
+   GetUpdate_Arg_Name_num_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("competitorDescriptorFile");
+        ("num");
 
-   Join_Competition_Arg_Name_boxCorbaLoc_Ü : constant CORBA.Identifier :=
+   GetUpdate_Arg_Name_time_Ü : constant CORBA.Identifier :=
      CORBA.To_CORBA_String
-        ("boxCorbaLoc");
-
-   Join_Competition_Arg_Name_monitorCorbaLoc_Ü : constant CORBA.Identifier :=
-     CORBA.To_CORBA_String
-        ("monitorCorbaLoc");
-
-   Join_Competition_Arg_Name_competitorId_Ü : constant CORBA.Identifier :=
-     CORBA.To_CORBA_String
-        ("competitorId");
-
-   Join_Competition_Arg_Name_circuitLength_Ü : constant CORBA.Identifier :=
-     CORBA.To_CORBA_String
-        ("circuitLength");
-
-   Join_Competition_Arg_Name_laps_Ü : constant CORBA.Identifier :=
-     CORBA.To_CORBA_String
-        ("laps");
+        ("time");
 
    procedure Invoke
      (Self : PortableServer.Servant;
@@ -109,108 +93,62 @@ package body RegistrationHandler.Skel is
                     (Result_Ü));
             end;
          elsif (Operation_Ü
-            = "Join_Competition")
+            = "GetUpdate")
          then
             declare
-               Argument_competitorDescriptorFile_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_competitorDescriptorFile_Ü);
-               Arg_CC_competitorDescriptorFile_Ü : aliased PolyORB.Any.Content'Class :=
+               Argument_num_Ü : CORBA.Short;
+               pragma Warnings (Off, Argument_num_Ü);
+               Arg_CC_num_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_competitorDescriptorFile_Ü'Unrestricted_Access);
-               Arg_Any_competitorDescriptorFile_Ü : constant CORBA.Any :=
-                 CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_String,
-                     Arg_CC_competitorDescriptorFile_Ü'Unchecked_Access);
-               Argument_boxCorbaLoc_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_boxCorbaLoc_Ü);
-               Arg_CC_boxCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
-                 CORBA.Wrap
-                    (Argument_boxCorbaLoc_Ü'Unrestricted_Access);
-               Arg_Any_boxCorbaLoc_Ü : constant CORBA.Any :=
-                 CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_String,
-                     Arg_CC_boxCorbaLoc_Ü'Unchecked_Access);
-               Argument_monitorCorbaLoc_Ü : CORBA.String;
-               pragma Warnings (Off, Argument_monitorCorbaLoc_Ü);
-               Arg_CC_monitorCorbaLoc_Ü : aliased PolyORB.Any.Content'Class :=
-                 CORBA.Wrap
-                    (Argument_monitorCorbaLoc_Ü'Unrestricted_Access);
-               Arg_Any_monitorCorbaLoc_Ü : constant CORBA.Any :=
-                 CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_String,
-                     Arg_CC_monitorCorbaLoc_Ü'Unchecked_Access);
-               Argument_competitorId_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_competitorId_Ü);
-               Arg_CC_competitorId_Ü : aliased PolyORB.Any.Content'Class :=
-                 CORBA.Wrap
-                    (Argument_competitorId_Ü'Unrestricted_Access);
-               Arg_Any_competitorId_Ü : constant CORBA.Any :=
+                    (Argument_num_Ü'Unrestricted_Access);
+               Arg_Any_num_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Short,
-                     Arg_CC_competitorId_Ü'Unchecked_Access);
-               Argument_circuitLength_Ü : CORBA.Float;
-               pragma Warnings (Off, Argument_circuitLength_Ü);
-               Arg_CC_circuitLength_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_num_Ü'Unchecked_Access);
+               Argument_time_Ü : CORBA.Float;
+               pragma Warnings (Off, Argument_time_Ü);
+               Arg_CC_time_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_circuitLength_Ü'Unrestricted_Access);
-               Arg_Any_circuitLength_Ü : constant CORBA.Any :=
+                    (Argument_time_Ü'Unrestricted_Access);
+               Arg_Any_time_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
                     (CORBA.TC_Float,
-                     Arg_CC_circuitLength_Ü'Unchecked_Access);
-               Argument_laps_Ü : CORBA.Short;
-               pragma Warnings (Off, Argument_laps_Ü);
-               Arg_CC_laps_Ü : aliased PolyORB.Any.Content'Class :=
+                     Arg_CC_time_Ü'Unchecked_Access);
+               Result_Ü : CORBA.String;
+               pragma Warnings (Off, Result_Ü);
+               Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
                  CORBA.Wrap
-                    (Argument_laps_Ü'Unrestricted_Access);
-               Arg_Any_laps_Ü : constant CORBA.Any :=
+                    (Result_Ü'Unrestricted_Access);
+               Arg_Any_Result_Ü_Ü : constant CORBA.Any :=
                  CORBA.Internals.Get_Wrapper_Any
-                    (CORBA.TC_Short,
-                     Arg_CC_laps_Ü'Unchecked_Access);
+                    (CORBA.TC_String,
+                     Arg_CC_Result_Ü_Ü'Unchecked_Access);
             begin
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Join_Competition_Arg_Name_competitorDescriptorFile_Ü,
-                  Arg_Any_competitorDescriptorFile_Ü,
+                  GetUpdate_Arg_Name_num_Ü,
+                  Arg_Any_num_Ü,
                   CORBA.ARG_IN);
                CORBA.NVList.Add_Item
                  (Argument_List_Ü,
-                  Join_Competition_Arg_Name_boxCorbaLoc_Ü,
-                  Arg_Any_boxCorbaLoc_Ü,
-                  CORBA.ARG_IN);
-               CORBA.NVList.Add_Item
-                 (Argument_List_Ü,
-                  Join_Competition_Arg_Name_monitorCorbaLoc_Ü,
-                  Arg_Any_monitorCorbaLoc_Ü,
-                  CORBA.ARG_OUT);
-               CORBA.NVList.Add_Item
-                 (Argument_List_Ü,
-                  Join_Competition_Arg_Name_competitorId_Ü,
-                  Arg_Any_competitorId_Ü,
-                  CORBA.ARG_OUT);
-               CORBA.NVList.Add_Item
-                 (Argument_List_Ü,
-                  Join_Competition_Arg_Name_circuitLength_Ü,
-                  Arg_Any_circuitLength_Ü,
-                  CORBA.ARG_OUT);
-               CORBA.NVList.Add_Item
-                 (Argument_List_Ü,
-                  Join_Competition_Arg_Name_laps_Ü,
-                  Arg_Any_laps_Ü,
+                  GetUpdate_Arg_Name_time_Ü,
+                  Arg_Any_time_Ü,
                   CORBA.ARG_OUT);
                --  Processing request
                CORBA.ServerRequest.Arguments
                  (Request,
                   Argument_List_Ü);
                --  Call Implementation
-               RegistrationHandler.Impl.Join_Competition
-                 (RegistrationHandler.Impl.Object'Class
+               Box_Monitor_Radio.Impl.GetUpdate
+                 (Box_Monitor_Radio.Impl.Object'Class
                     (Self.all)'Access,
-                  Argument_competitorDescriptorFile_Ü,
-                  Argument_boxCorbaLoc_Ü,
-                  Argument_monitorCorbaLoc_Ü,
-                  Argument_competitorId_Ü,
-                  Argument_circuitLength_Ü,
-                  Argument_laps_Ü);
+                  Argument_num_Ü,
+                  Argument_time_Ü,
+                  Result_Ü);
+               --  Setting the result
+               CORBA.ServerRequest.Set_Result
+                 (Request,
+                  Arg_Any_Result_Ü_Ü);
                CORBA.NVList.Internals.Clone_Out_Args
                  (Argument_List_Ü);
             end;
@@ -283,7 +221,7 @@ package body RegistrationHandler.Skel is
    is
    begin
       return (Obj.all
-         in RegistrationHandler.Impl.Object'Class);
+         in Box_Monitor_Radio.Impl.Object'Class);
    end Servant_Is_A;
 
    -----------------------------
@@ -293,7 +231,7 @@ package body RegistrationHandler.Skel is
    procedure Deferred_Initialization is
    begin
       PortableServer.Internals.Register_Skeleton
-        (RegistrationHandler.Repository_Id,
+        (Box_Monitor_Radio.Repository_Id,
          Servant_Is_A'Access,
          Is_A'Access,
          Invoke'Access);
@@ -306,7 +244,7 @@ begin
    begin
       PolyORB.Initialization.Register_Module
         (PolyORB.Initialization.Module_Info'
-           (Name => +"RegistrationHandler.Skel",
+           (Name => +"Box_Monitor_Radio.Skel",
             Conflicts => PolyORB.Utils.Strings.Lists.Empty,
             Depends => PolyORB.Utils.Strings.Lists.Empty,
             Provides => PolyORB.Utils.Strings.Lists.Empty,
@@ -314,4 +252,4 @@ begin
             Init => Deferred_Initialization'Access,
             Shutdown => null));
    end;
-end RegistrationHandler.Skel;
+end Box_Monitor_Radio.Skel;

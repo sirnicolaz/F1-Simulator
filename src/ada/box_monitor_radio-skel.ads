@@ -1,7 +1,7 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  registrationHandler.idl
+--  box_monitor_radio.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
@@ -9,8 +9,8 @@ pragma Style_Checks ("NM32766");
 --  IDL to Ada compiler.
 ---------------------------------------------------
 
-package RegistrationHandler.Skel is
+package Box_Monitor_Radio.Skel is
 
    pragma Elaborate_Body;
 
-end RegistrationHandler.Skel;
+end Box_Monitor_Radio.Skel;

@@ -1,7 +1,7 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  registrationHandler.idl
+--  box_monitor_radio.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
@@ -13,25 +13,22 @@ with PolyORB.Std;
 with CORBA;
 pragma Elaborate_All (CORBA);
 
-package RegistrationHandler is
+package Box_Monitor_Radio is
 
    type Ref is
      new CORBA.Object.Ref with null record;
 
    Repository_Id : constant PolyORB.Std.String :=
-     "IDL:RegistrationHandler:1.0";
+     "IDL:Box_Monitor_Radio:1.0";
 
-   procedure Join_Competition
+   procedure GetUpdate
      (Self : Ref;
-      competitorDescriptorFile : CORBA.String;
-      boxCorbaLoc : CORBA.String;
-      monitorCorbaLoc : out CORBA.String;
-      competitorId : out CORBA.Short;
-      circuitLength : out CORBA.Float;
-      laps : out CORBA.Short);
+      num : CORBA.Short;
+      time : out CORBA.Float;
+      Returns : out CORBA.String);
 
-   Join_Competition_Repository_Id : constant PolyORB.Std.String :=
-     "IDL:RegistrationHandler/Join_Competition:1.0";
+   GetUpdate_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:Box_Monitor_Radio/GetUpdate:1.0";
 
    function Is_A
      (Self : Ref;
@@ -43,4 +40,4 @@ private
      (Logical_Type_Id : PolyORB.Std.String)
      return CORBA.Boolean;
 
-end RegistrationHandler;
+end Box_Monitor_Radio;

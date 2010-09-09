@@ -1,7 +1,7 @@
 pragma Style_Checks ("NM32766");
 ---------------------------------------------------
 --  This file has been generated automatically from
---  registrationHandler.idl
+--  boxConfigurator.idl
 --  by IAC (IDL to Ada Compiler) GPL 2009-20090519 (rev. 144248).
 ---------------------------------------------------
 --  Do NOT hand-modify this file, as your
@@ -15,45 +15,45 @@ with PolyORB.Utils.Strings;
 with PolyORB.Utils.Strings.Lists;
 with PolyORB.Initialization;
 
-package body RegistrationHandler.Helper is
+package body BoxConfigurator.Helper is
 
    
    package body Internals is
 
-      RegistrationHandler_Initialized : PolyORB.Std.Boolean :=
+      BoxConfigurator_Initialized : PolyORB.Std.Boolean :=
         False;
 
-      ------------------------------------
-      -- Initialize_RegistrationHandler --
-      ------------------------------------
+      --------------------------------
+      -- Initialize_BoxConfigurator --
+      --------------------------------
 
-      procedure Initialize_RegistrationHandler is
+      procedure Initialize_BoxConfigurator is
          Name_Ü : constant CORBA.String :=
            CORBA.To_CORBA_String
-              ("RegistrationHandler");
+              ("BoxConfigurator");
          Id_Ü : constant CORBA.String :=
            CORBA.To_CORBA_String
-              ("IDL:RegistrationHandler:1.0");
+              ("IDL:BoxConfigurator:1.0");
       begin
-         if not RegistrationHandler_Initialized
+         if not BoxConfigurator_Initialized
          then
-            RegistrationHandler_Initialized :=
+            BoxConfigurator_Initialized :=
               True;
-            RegistrationHandler.Helper.TC_RegistrationHandler :=
+            BoxConfigurator.Helper.TC_BoxConfigurator :=
               CORBA.TypeCode.Internals.To_CORBA_Object
                  (PolyORB.Any.TypeCode.TC_Object);
             CORBA.Internals.Add_Parameter
-              (TC_RegistrationHandler,
+              (TC_BoxConfigurator,
                CORBA.To_Any
                  (Name_Ü));
             CORBA.Internals.Add_Parameter
-              (TC_RegistrationHandler,
+              (TC_BoxConfigurator,
                CORBA.To_Any
                  (Id_Ü));
             CORBA.TypeCode.Internals.Disable_Reference_Counting
-              (RegistrationHandler.Helper.TC_RegistrationHandler);
+              (BoxConfigurator.Helper.TC_BoxConfigurator);
          end if;
-      end Initialize_RegistrationHandler;
+      end Initialize_BoxConfigurator;
 
    end Internals;
 
@@ -63,7 +63,7 @@ package body RegistrationHandler.Helper is
 
    function From_Any
      (Item : CORBA.Any)
-     return RegistrationHandler.Ref
+     return BoxConfigurator.Ref
    is
    begin
       return To_Ref
@@ -76,7 +76,7 @@ package body RegistrationHandler.Helper is
    ------------
 
    function To_Any
-     (Item : RegistrationHandler.Ref)
+     (Item : BoxConfigurator.Ref)
      return CORBA.Any
    is
       A : CORBA.Any :=
@@ -86,7 +86,7 @@ package body RegistrationHandler.Helper is
    begin
       CORBA.Internals.Set_Type
         (A,
-         TC_RegistrationHandler);
+         TC_BoxConfigurator);
       return A;
    end To_Any;
 
@@ -96,9 +96,9 @@ package body RegistrationHandler.Helper is
 
    function Unchecked_To_Ref
      (The_Ref : CORBA.Object.Ref'Class)
-     return RegistrationHandler.Ref
+     return BoxConfigurator.Ref
    is
-      Result : RegistrationHandler.Ref;
+      Result : BoxConfigurator.Ref;
    begin
       Set
         (Result,
@@ -113,7 +113,7 @@ package body RegistrationHandler.Helper is
 
    function To_Ref
      (The_Ref : CORBA.Object.Ref'Class)
-     return RegistrationHandler.Ref
+     return BoxConfigurator.Ref
    is
    begin
       if (CORBA.Object.Is_Nil
@@ -135,7 +135,7 @@ package body RegistrationHandler.Helper is
 
    procedure Deferred_Initialization is
    begin
-      RegistrationHandler.Helper.Internals.Initialize_RegistrationHandler;
+      BoxConfigurator.Helper.Internals.Initialize_BoxConfigurator;
    end Deferred_Initialization;
 
 begin
@@ -145,7 +145,7 @@ begin
    begin
       PolyORB.Initialization.Register_Module
         (PolyORB.Initialization.Module_Info'
-           (Name => +"RegistrationHandler.Helper",
+           (Name => +"BoxConfigurator.Helper",
             Conflicts => PolyORB.Utils.Strings.Lists.Empty,
             Depends => +"any",
             Provides => PolyORB.Utils.Strings.Lists.Empty,
@@ -153,4 +153,4 @@ begin
             Init => Deferred_Initialization'Access,
             Shutdown => null));
    end;
-end RegistrationHandler.Helper;
+end BoxConfigurator.Helper;
