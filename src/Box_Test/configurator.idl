@@ -1,3 +1,0 @@
-interface Configurator{
-	string Configure( in string config);
-};
