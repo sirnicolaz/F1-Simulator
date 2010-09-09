@@ -32,7 +32,7 @@ private JLabel labelName = new JLabel("4: Name of circuit : ");
 // private JLabel labelRefresh = new JLabel("5 : Refresh Time : ");
 /*private JLabel p_label5 = new JLabel("5 SConfigura la competizione");
 private JLabel p_label6 = new JLabel("6 SConfigura la competizione");*/
-private JTextField fileRacetrack = new JTextField("../../../../race_tracks/race.xml", 15);
+private JTextField fileRacetrack = new JTextField("../../race_tracks/race.xml", 15);
 /*private JTextField  numCompetitor = new JTextField("6");
 private JTextField numLap = new JTextField("10");*/
 /*private JTextField p_Text4 = new JTextField("testo 4");
@@ -65,7 +65,7 @@ openButton = new JButton("Sfoglia...");
 //azione per il bottone sfoglia. viene cosi selezionato il circuito.
 	openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			JFileChooser fc = new JFileChooser("../../../../race_tracks/");
+			JFileChooser fc = new JFileChooser("../../race_tracks/");
 		        fc.setAcceptAllFileFilterUsed(false);
 				int returnVal = fc.showOpenDialog(parent);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -82,6 +82,7 @@ openButton = new JButton("Sfoglia...");
 			public void actionPerformed(ActionEvent e) {
 			    System.out.println("Competizione avviata");
 if(writexml()== true){
+raceFileCreator();
 parent.dispose();
 conf.Configure("comp_config.xml");
 screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition", (float)0.1);
@@ -92,7 +93,7 @@ screen.start();
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileRacetrack.setText("../../../../race_tracks/race.xml");
+			    fileRacetrack.setText("../../race_tracks/race.xml");
 			    jsLap.setValue(10);
 			    jsConc.setValue(3);
 			    textName.setText("Monza");
@@ -185,18 +186,22 @@ orb = org.omg.CORBA.ORB.init(args,null);
 String configCorbaLoc="";
 corbalocMonitor = "";
 try{
-BufferedReader corbaLocFile = new BufferedReader(new FileReader("../../../temp/competition_corbaLoc.txt"));
+BufferedReader corbaLocFile = new BufferedReader(new FileReader("../temp/competition_corbaLoc.txt"));
               configCorbaLoc = corbaLocFile.readLine() ;
 System.out.println(configCorbaLoc);
 	      corbalocMonitor= corbaLocFile.readLine();
 System.out.println(corbalocMonitor);
-}catch(Exception e){}
+}catch(Exception e){
+System.out.println("Eccezione leggendo il corbalocMonitor = "+corbalocMonitor);
+}
       org.omg.CORBA.Object competition_obj = orb.string_to_object(configCorbaLoc);
-
+System.out.println("StartCompetition : 1");
       conf = CompetitionConfiguratorHelper.narrow(competition_obj);
-
+System.out.println("StartCompetition : 2");
       org.omg.CORBA.Object monitor_obj = orb.string_to_object(corbalocMonitor);
+System.out.println("StartCompetition : 3");
       monitor = Competition_Monitor_RadioHelper.narrow(monitor_obj);
+System.out.println("StartCompetition : 4");
       JFrame frame = new JFrame("Configure Competition");
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       init(frame);
@@ -206,15 +211,16 @@ System.out.println(corbalocMonitor);
 }
 catch(Exception e){
 e.printStackTrace();
+System.out.println("StartCompetition : Ecc");
 }
 }
 
 public boolean writexml(){
 try{
 PrintWriter out;
-File f = new File("../../../temp/comp_config.xml");
+File f = new File("../temp/comp_config.xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("../../../temp/comp_config.xml"));
+out=new PrintWriter(new File("../temp/comp_config.xml"));
 }
 else {
 out=new PrintWriter(f);
@@ -222,7 +228,7 @@ out=new PrintWriter(f);
 out.println("<?xml version=\"1.0\"?>\n<config>\n<name>");
 out.print(textName.getText());
 out.print("</name>\n<circuitConfigFile>");
-out.print(fileRacetrack.getText());
+out.print("race.xml");
 out.print("</circuitConfigFile>\n<competitorQty>");
 out.print(jsConc.getValue());
 out.print("</competitorQty>\n<laps>");
@@ -235,6 +241,29 @@ catch(IOException e){
 e.printStackTrace();
 return false;
 }
+}
+
+public void raceFileCreator(){
+try{
+BufferedReader raceTrackFile = new BufferedReader(new FileReader(fileRacetrack.getText()));
+//              configCorbaLoc = corbaLocFile.readLine() ;
+PrintWriter out;
+File f = new File("../temp/race.xml");
+if (f.exists() == false ) {
+out=new PrintWriter(new File("../temp/race.xml"));
+}
+else {
+out=new PrintWriter(f);
+}
+System.out.println("Start printing");
+while(raceTrackFile.ready()){
+out.println(raceTrackFile.readLine());
+}
+out.close();
+}catch(Exception e){
+e.printStackTrace();
+}
+
 }
 
     public static void main(String[] args) {

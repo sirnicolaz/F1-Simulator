@@ -71,14 +71,15 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
       XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       CircuitLength_Out : Standard.FLOAT;
    begin
-
+Ada.text_io.put_line("LORY : 0");
       Competition_Monitor.Get_CompetitionConfiguration(XmlInfo_Out,
                                                        CircuitLength_Out);
-
+Ada.text_io.put_line("LORY : 1");
       xmlConf := CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
+Ada.text_io.put_line("LORY : 2");
       circuitLength := CORBA.Float(CircuitLength_Out);
-
-   end Get_CompetitionConfiguration;
+Ada.text_io.put_line("LORY : 3");
+  end Get_CompetitionConfiguration;
 
    function Get_CompetitorConfiguration(Self : access Object;
                                         Id : CORBA.Short) return CORBA.STRING is

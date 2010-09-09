@@ -343,7 +343,7 @@ carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 		carConfigurationGrid.gridwidth= 3;
 		panel.add(textCorbaloc, carConfigurationGrid);
 try{
-BufferedReader corbaLocFile = new BufferedReader(new FileReader("../../../temp/competition_corbaLoc.txt"));
+BufferedReader corbaLocFile = new BufferedReader(new FileReader("../temp/competition_corbaLoc.txt"));
 corbaLocFile.readLine() ;
 corbaLocFile.readLine();
 textCorbaloc.setText(corbaLocFile.readLine());
@@ -659,9 +659,9 @@ return false;
 public boolean writerBoxXML(){
 try{
 PrintWriter out;
-File f = new File("../../../temp/boxConfig-"+stringId+".xml");
+File f = new File("../temp/boxConfig-"+stringId+".xml");
 if (f.exists() == false ) {
-out=new PrintWriter(new File("../../../temp/boxConfig-"+stringId+".xml"));
+out=new PrintWriter(new File("../temp/boxConfig-"+stringId+".xml"));
 }
 else {
 out=new PrintWriter(f);

@@ -85,11 +85,12 @@ private int current_lap =0;
 private boolean new_table = false;
 
 public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
+System.out.println("screenTv : 0");
 parent = new JFrame(nameType);
 
 corbaloc = corbalocIn;
 monitor = monitorIn;
-updTime = updTimeIn
+updTime = updTimeIn;
 //effettua la connessione
 }
 
@@ -97,9 +98,14 @@ public void readConfiguration(){
 String xmlConfString;
 org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
 try {
+System.out.println("readConfiguration : 0 monitor = "+monitor);
 monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+// monitor.ready((short)1);
+System.out.println("readConfiguration : 1");
 lenghtCircuit = new Float(circuitLength.value).floatValue();
+System.out.println("readConfiguration : 2");
 xmlConfString = xmlConf.value;
+System.out.println("readConfiguration : 3");
 System.out.println(xmlConf.value);
         DocumentBuilderFactory dbf =
         DocumentBuilderFactory.newInstance();
@@ -163,11 +169,15 @@ logPanel.setPreferredSize(new Dimension(0,30+35*numComp));
 
 
 public void run(){
+System.out.println("run : 1");
 readConfiguration();
+System.out.println("run : 2");
 classTable.addTables(model_1, model_2, numComp);
 // log.addTablesAll(modelAll, numComp);
 best.addBest();
+System.out.println("run : 3");
 addLogInfo();
+System.out.println("run : 4");
 parent.add(classTable.panel1, BorderLayout.CENTER);
 // parent.add(best.bestPanel,BorderLayout.NORTH);
 parent.add(best.getInfoUp(), BorderLayout.NORTH);

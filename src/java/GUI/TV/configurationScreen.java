@@ -51,7 +51,7 @@ parent = new JFrame("Tv Screen Configuration");
 parent.setLayout(new BorderLayout());
 // addConfigPanel(configPanel);
 try{
-BufferedReader corbaLocFile = new BufferedReader(new FileReader("../../../temp/competition_corbaLoc.txt"));
+BufferedReader corbaLocFile = new BufferedReader(new FileReader("../temp/competition_corbaLoc.txt"));
               textCorbaloc.setText() = corbaLocFile.readLine() ;
 }catch(Exception e){}
 configPanel = new JPanel(new BorderLayout());
