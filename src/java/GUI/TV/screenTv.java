@@ -99,8 +99,9 @@ String xmlConfString;
 org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
 try {
 System.out.println("readConfiguration : 0 monitor = "+monitor);
-monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+// monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
 // monitor.ready((short)1);
+System.out.println("chiamo la get competitor info ... \n"+monitor.Get_CompetitorInfo((short)1,(short)1,(short)1, circuitLength));
 System.out.println("readConfiguration : 1");
 lenghtCircuit = new Float(circuitLength.value).floatValue();
 System.out.println("readConfiguration : 2");
