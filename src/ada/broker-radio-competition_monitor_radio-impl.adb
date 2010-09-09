@@ -1,8 +1,6 @@
 with Broker.Radio.Competition_Monitor_Radio.Skel;
 pragma Warnings (Off, Broker.Radio.Competition_Monitor_Radio.Skel);
 
-use Broker.Radio.Competition_Monitor_Radio;
-
 --with Stats;
 with Competition_Monitor;
 
@@ -44,7 +42,7 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
      (Self : access Object;
       timeInstant : CORBA.FLOAT;
       xmlInfo : out CORBA.String;
-      Returns : out Competition_Monitor_Radio.float_sequence) is
+      Returns : out Broker.Radio.Competition_Monitor_Radio.float_sequence) is
 
       use IDL_SEQUENCE_float;
       Tmp_String : Unbounded_String.Unbounded_String;
