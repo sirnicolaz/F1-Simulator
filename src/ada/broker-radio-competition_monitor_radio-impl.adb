@@ -63,7 +63,7 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
-      xmlConf : out CORBA.String;
+      xmlConf :in out CORBA.String;
       Results : out CORBA.FLOAT) is
 
       XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
