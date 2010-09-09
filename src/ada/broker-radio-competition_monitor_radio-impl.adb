@@ -63,8 +63,9 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
-      circuitLength : out CORBA.Float;
-      xmlConf : out CORBA.String) is
+      random : in CORBA.SHORT;
+      xmlConf : out CORBA.String;
+      Results : out CORBA.FLOAT) is
 
       XmlInfo_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       CircuitLength_Out : Standard.FLOAT;
@@ -75,7 +76,7 @@ Ada.text_io.put_line("LORY : 0");
 Ada.text_io.put_line("LORY : 1");
       xmlConf := CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
 Ada.text_io.put_line("LORY : 2");
-      circuitLength := CORBA.Float(CircuitLength_Out);
+      Results := CORBA.Float(CircuitLength_Out);
 Ada.text_io.put_line("LORY : 3");
   end Get_CompetitionConfiguration;
 

@@ -23,8 +23,9 @@ package Broker.Radio.Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
-      circuitLength : out CORBA.FLOAT;
-      xmlConf : out CORBA.String);
+      random : in CORBA.SHORT;
+      xmlConf : out CORBA.String;
+      Results : out CORBA.FLOAT);
 
    procedure Get_CompetitionInfo
      (Self : access Object;
