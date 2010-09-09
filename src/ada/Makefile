@@ -7,10 +7,10 @@ XMLADALIBS=`xmlada-config --libs`
 default: competition box
 
 competition: corba
-	gnatmake main_competition.adb -D../../obj/ada -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) 
+	gnatmake -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) -margs -PF1_Simulator.gpr main_competition.adb 
 
 box: corba
-	gnatmake main_box.adb -D../../obj/ada -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) 
+	gnatmake -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) -margs -PF1_Simulator.gpr main_box.adb 
 
 corba:
 	$(shell idlac ../idl/init.idl; idlac ../idl/radio.idl)
@@ -20,3 +20,4 @@ deep: clean
 
 clean:
 	rm -rf ../../obj/ada/main_competition ../../obj/ada/main_box 
+
