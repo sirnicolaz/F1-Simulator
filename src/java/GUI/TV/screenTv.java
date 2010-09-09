@@ -84,7 +84,7 @@ private Integer sectorValue;
 private int current_lap =0;
 private boolean new_table = false;
 
-public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameTypeWarning, float updTimeIn){
+public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
 parent = new JFrame(nameType);
 
 corbaloc = corbalocIn;
