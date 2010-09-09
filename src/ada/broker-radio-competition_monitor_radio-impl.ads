@@ -2,6 +2,7 @@ with CORBA;
 with PortableServer;
 
 with Broker.Radio.Competition_Monitor_Radio;
+use Broker.Radio.Competition_Monitor_Radio;
 
 package Broker.Radio.Competition_Monitor_Radio.impl is
 
@@ -20,16 +21,16 @@ package Broker.Radio.Competition_Monitor_Radio.impl is
       time : out CORBA.FLOAT;
       Returns : out CORBA.STRING);
 
-   procedure Get_CompetitionInfo
-     (Self : access Object;
-      timeInstant : CORBA.FLOAT;
-      xmlInfo : out CORBA.String;
-      Returns : out Competition_Monitor_Radio.float_sequence );
-
    procedure Get_CompetitionConfiguration
      (Self : access Object;
       circuitLength : out CORBA.FLOAT;
       xmlConf : out CORBA.String);
+
+   procedure Get_CompetitionInfo
+     (Self : access Object;
+      timeInstant : CORBA.FLOAT;
+      xmlInfo : out CORBA.String;
+      Returns : out Broker.Radio.Competition_Monitor_Radio.float_sequence );
 
    function Get_CompetitorConfiguration(Self : access Object;
                                         Id : CORBA.Short) return CORBA.STRING;
