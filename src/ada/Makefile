@@ -1,8 +1,16 @@
+POLYORBCFLAGS=`polyorb-config --cflags`
+XMLADACFLAGS=`xmlada-config --cflags`
+
+POLYORBLIBS=`polyorb-config --libs`
+XMLADALIBS=`xmlada-config --libs`
+
+default: competition box
+
 competition: corba
-	gnatmake -j2 -x -d -P./default.gpr -XLIBRARY_TYPE=static -XBUILD=Production `polyorb-config --cflags` `xmlada-config --cflags` -largs `polyorb-config --libs` `xmlada-config --libs` main_competition.adb
+	gnatmake main_competition.adb -D../../obj/ada -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) 
 
 box: corba
-	gnatmake -j2 -x -d -P./default.gpr -XLIBRARY_TYPE=static -XBUILD=Production `polyorb-config --cflags` `xmlada-config --cflags` -largs `polyorb-config --libs` `xmlada-config --libs` main_box.adb
+	gnatmake main_box.adb -D../../obj/ada -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) 
 
 corba:
 	$(shell idlac ../idl/init.idl; idlac ../idl/radio.idl)
