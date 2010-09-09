@@ -1,4 +1,4 @@
-with "/usr/local/lib/gnat/lib/gnat/xmlada.gpr";
+with "/usr/local/lib/gnat/xmlada.gpr";
 with "/usr/local/lib/gnat/polyorb.gpr";
 
 project Default is

@@ -800,6 +800,8 @@ benzina iniziale. Queste informazioni vengono poi utilizzate per registrare il c
 della componente \emph{Competition}). Una volta registrato il concorrente si potranno ottenere il resto delle informazioni necessarie
 ad inizializzare il box, ovvero numero di giri e lunghezza circuito (per esempio). \`{E} quindi ora possibile inviare i parametri di configurazione
 al \emph{Box} tramite il \textbf{BoxConfigurator}.
+\item{\textbf{BoxMonitor}}:\\
+La componente BoxMonitor visualizza l'andamento della competizione da parte del concorrente a cui si riferisce.Questa componente viene avviata dopo che il concorrente si \`{e} registrato alla competizione. Una volta avviato si mette in ascolto sul \emph{Box\_Monitor\_Radio} che ritorna (quando disponibili) le informazioni relative all'andamento del proprio concorrente, visualizzando tempi, posizione sulla pista, usura delle gomme e livello della benzina.
 \end{description}
 \newpage
 \subsubsection{Screen}
@@ -810,10 +812,8 @@ al \emph{Box} tramite il \textbf{BoxConfigurator}.
 \end{figure}
 \begin{description}
 \item{\textbf{screenTv}}:\\
-\begin{description}
 La componente \emph{screenTv} \`{e} l'implementazione dell'interfaccia \emph{TvPanelInterface} e si occupa di offrire una visualizzazione dei dati di gara.
 Quando viene creato lo screenTv la connessione con il monitor di sistema \`{e} gi\`{a} stata effettuata ed \`{e} quindi funzionante. Tramite il riferimento al monitor lo screenTv \`{e} in grado di ottenere inizialmente le informazioni statiche della gara tramite il metodo \emph{Get\_CompetitionConfiguration} e utilizzarle per costruire la GUI. Successivamente si mette in ascolto sul monitor aspettando l'iscrizione dei concorrenti.Ad iscrizione alla competizione avvenuta vengono stampate le informazioni relative ai concorrenti. Successivamente, quando parte la gara, lo screenTv comincia ad acquisire informazioni dal monitor. La richiesta viene effettuata ogni intervallo di tempo (fissato per lo screen della competizione, configurabile per lo screen di una tv generica). Ogni volta che viene richiesto un aggiornamento possono presentarsi due situazioni. La prima \`{e} la disponibilit\`{a} delle informazioniche quindi vengono lette e la gui viene cos\`{i} aggiornata con i valori opportuni, la seconda \`{e} l'indisponibilit\`{a} di aggiornamenti, in tal caso lo screenTv rimane in attesa.
-\end{description}
 \end{description}
 \end{center}
 %Diagrammi delle classi per ogni componente
