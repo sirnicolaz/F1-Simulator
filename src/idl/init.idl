@@ -1,0 +1,17 @@
+module corba{
+	module init{
+
+		interface BoxConfigurator{
+        		string Configure( in string config);
+		};
+
+		interface CompetitionConfigurator{
+        		string Configure( in string config);
+		};
+
+		interface RegistrationHandler {
+	  		void Join_Competition (in string competitorDescriptorFile,in string boxCorbaLoc, out string monitorCorbaLoc, out short competitorId, out float circuitLength, out short laps);
+		};
+
+	};
+};

@@ -1,0 +1,24 @@
+module corba{
+	module radio{
+
+		interface Box_Monitor_Radio {
+        		string GetUpdate ( in short num, out float time );
+		};
+
+		interface Competition_Monitor_Radio {
+		        typedef sequence<float> float_sequence;
+
+			string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time);
+        		float_sequence Get_CompetitionInfo(in float timeInstant, out string xmlInfo);
+		        boolean ready( in short competitorId );
+
+	        	void Get_CompetitionConfiguration(out float circuitLength, out string xmlConf);
+	        	string Get_CompetitorConfiguration(in short id);
+		};
+
+		interface BoxRadio {
+        		string RequestStrategy ( in short lap );
+		};
+
+	};
+};
