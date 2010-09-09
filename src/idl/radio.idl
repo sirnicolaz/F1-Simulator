@@ -11,7 +11,7 @@ module broker{
 			string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time);
         		float_sequence Get_CompetitionInfo(in float timeInstant, out string xmlInfo);
 		        boolean ready( in short competitorId );
-	        	float Get_CompetitionConfiguration(in short random, out string xmlConf);
+	        	float Get_CompetitionConfiguration(out string xmlConf);
 	        	string Get_CompetitorConfiguration(in short id);
 		};
 

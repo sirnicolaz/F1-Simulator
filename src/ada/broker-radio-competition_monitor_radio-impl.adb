@@ -63,7 +63,6 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
 
    procedure Get_CompetitionConfiguration
      (Self : access Object;
-      random : in CORBA.SHORT;
       xmlConf : out CORBA.String;
       Results : out CORBA.FLOAT) is
 
