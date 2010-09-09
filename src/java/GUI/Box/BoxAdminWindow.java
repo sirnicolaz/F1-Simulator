@@ -1,3 +1,5 @@
+package GUI.Box;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -13,6 +15,8 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
+import corba.radio.*;
+import corba.init.*;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;

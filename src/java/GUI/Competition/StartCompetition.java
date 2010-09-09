@@ -1,3 +1,7 @@
+package GUI.Competition;
+
+import GUI.TV.screenTv;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -12,7 +16,8 @@ import org.omg.PortableServer.POAHelper;
 import org.omg.CosNaming.NameComponent;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming.NamingContextHelper;
-
+import corba.init.*;
+import corba.radio.*;
 
 public class StartCompetition {
 private String corbalocMonitor;
