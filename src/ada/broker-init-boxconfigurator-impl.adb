@@ -1,9 +1,9 @@
 with Ada.Text_IO;
 
-with Corba.Init.BoxConfigurator.Skel;
-pragma Warnings (Off, Corba.Init.BoxConfigurator.Skel);
+with Broker.Init.BoxConfigurator.Skel;
+pragma Warnings (Off, Broker.Init.BoxConfigurator.Skel);
 
-use Corba.Init.BoxConfigurator;
+use Broker.Init.BoxConfigurator;
 
 with CORBA;
 with Ada.Strings.Unbounded;
@@ -15,7 +15,7 @@ with DOM.Core.Nodes; use DOM.Core.Nodes;
 
 with Common;
 
-package body Corba.Init.BoxConfigurator.Impl is
+package body Broker.Init.BoxConfigurator.Impl is
 
    protected body SYNCH_COMPETITION_SETTINGS is
       entry Get_Laps ( Laps_Out : out INTEGER) when Initialized is
@@ -28,7 +28,7 @@ package body Corba.Init.BoxConfigurator.Impl is
          CMon_CorbaLOC_Out := CompetitionMonitor_CorbaLOC;
       end Get_CompetitionMonitor_CorbaLOC;
 
-      entry Get_CircuitLength ( CircuitLength_Out : out FLOAT ) when Initialized is
+      entry Get_CircuitLength ( CircuitLength_Out : out Standard.FLOAT ) when Initialized is
       begin
          CircuitLength_Out := CircuitLength;
       end Get_CircuitLength;
@@ -43,12 +43,12 @@ package body Corba.Init.BoxConfigurator.Impl is
          BoxStrategy_out := BoxStrategy;
       end Get_BoxStrategy;
 
-      entry Get_GasTankCapacity ( GasTankCapacity_Out : out FLOAT)  when Initialized is
+      entry Get_GasTankCapacity ( GasTankCapacity_Out : out Standard.FLOAT)  when Initialized is
       begin
          GasTankCapacity_out := GasTankCapacity;
       end Get_GasTankCapacity;
 
-      entry Get_InitialGasLevel ( InitialGasLevel_Out : out FLOAT)  when Initialized is
+      entry Get_InitialGasLevel ( InitialGasLevel_Out : out Standard.FLOAT)  when Initialized is
       begin
          InitialGasLevel_out := InitialGasLevel;
       end Get_InitialGasLevel;
@@ -76,7 +76,7 @@ package body Corba.Init.BoxConfigurator.Impl is
          end if;
       end Set_CompetitorID;
 
-      procedure Set_CircuitLength ( CircuitLength_In : in FLOAT) is
+      procedure Set_CircuitLength ( CircuitLength_In : in Standard.FLOAT) is
       begin
          CircuitLength := CircuitLength_In;
          ConfiguredParameters := ConfiguredParameters + 1;
@@ -103,7 +103,7 @@ package body Corba.Init.BoxConfigurator.Impl is
          end if;
       end Set_BoxStrategy;
 
-      procedure Set_GasTankCapacity ( GasTankCapacity_in : in FLOAT) is
+      procedure Set_GasTankCapacity ( GasTankCapacity_in : in Standard.FLOAT) is
       begin
          GasTankCapacity := GasTankCapacity_In;
          ConfiguredParameters := ConfiguredParameters + 1;
@@ -112,7 +112,7 @@ package body Corba.Init.BoxConfigurator.Impl is
          end if;
       end Set_GasTankCapacity;
 
-      procedure Set_InitialGasLevel ( InitialGasLevel_in : in FLOAT) is
+      procedure Set_InitialGasLevel ( InitialGasLevel_in : in Standard.FLOAT) is
       begin
          InitialGasLevel := InitialGasLevel_In;
          ConfiguredParameters := ConfiguredParameters + 1;
@@ -196,4 +196,4 @@ package body Corba.Init.BoxConfigurator.Impl is
    end Configure;
 
 
-end Corba.Init.BoxConfigurator.Impl;
+end Broker.Init.BoxConfigurator.Impl;

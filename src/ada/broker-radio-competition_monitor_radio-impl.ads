@@ -1,13 +1,15 @@
 with CORBA;
 with PortableServer;
 
-package Corba.Radio.Competition_Monitor_Radio.impl is
+with Broker.Radio.Competition_Monitor_Radio;
+
+package Broker.Radio.Competition_Monitor_Radio.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
    type Object_Acc is access Object;
 
    function Ready( Self : access Object;
-                  CompetitorID : Corba.SHORT) return BOOLEAN;
+                  CompetitorID : CORBA.SHORT) return BOOLEAN;
 
     -- metodo che ritorna le informazioni in base a giro, settore e id concorrente (metodo invocato da remoto)
    procedure Get_CompetitorInfo
@@ -33,4 +35,4 @@ package Corba.Radio.Competition_Monitor_Radio.impl is
                                         Id : CORBA.Short) return CORBA.STRING;
 
 
-end Corba.Radio.Competition_Monitor_Radio.impl;
+end Broker.Radio.Competition_Monitor_Radio.impl;

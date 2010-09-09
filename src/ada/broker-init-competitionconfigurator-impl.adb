@@ -1,8 +1,10 @@
 with Ada.Text_IO;
 
-with Corba.Init.CompetitionConfigurator.Skel;
-pragma Warnings (Off, Corba.Init.CompetitionConfigurator.Skel);
+with Broker.Init.CompetitionConfigurator.Skel;
+pragma Warnings (Off, Broker.Init.CompetitionConfigurator.Skel);
 with CORBA;
+
+use Broker.Init.CompetitionConfigurator;
 
 with Common;
 
@@ -13,7 +15,7 @@ with DOM.Core; use DOM.Core;
 with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
 
-package body Corba.Init.CompetitionConfigurator.impl is
+package body Broker.Init.CompetitionConfigurator.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -29,7 +31,6 @@ package body Corba.Init.CompetitionConfigurator.impl is
                       config_file : CORBA.STRING) return CORBA.STRING is
       Name : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Circuit_File : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      Classific_RefreshTime : FLOAT;
       Competitor_Qty : INTEGER;
       Laps : INTEGER;
 
@@ -47,11 +48,10 @@ package body Corba.Init.CompetitionConfigurator.impl is
       Circuit_File := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"circuitConfigFile"))));
       Competitor_Qty := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorQty"))));
       Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
-      Classific_RefreshTime := FLOAT'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"classificRefreshTime"))));
       Ada.Text_IO.Put_Line("Configuring...");
-      Comp.Configure(Competitor_Qty,Classific_RefreshTime,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
+      Comp.Configure(Competitor_Qty,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
       Ada.Text_IO.Put_Line("Configuration done.");
       return CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
    end Configure;
 
-end Corba.Init.CompetitionConfigurator.impl;
+end Broker.Init.CompetitionConfigurator.impl;

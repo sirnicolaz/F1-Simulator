@@ -1,13 +1,13 @@
-with Corba.Radio.Box_Monitor_Radio.Skel;
-pragma Warnings (Off, Corba.Radio.Box_Monitor_Radio.Skel);
+with Broker.Radio.Box_Monitor_Radio.Skel;
+pragma Warnings (Off, Broker.Radio.Box_Monitor_Radio.Skel);
 
-use Corba.Radio.Box_Monitor_Radio;
+use Broker.Radio.Box_Monitor_Radio;
 
 with Box_Monitor;
 
 with Ada.Strings.Unbounded;
 
-package body Corba.Radio.Box_Monitor_Radio.impl is
+package body Broker.Radio.Box_Monitor_Radio.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -33,4 +33,4 @@ package body Corba.Radio.Box_Monitor_Radio.impl is
       time := Corba.FLOAT(Time);
    end GetUpdate;
 
-end Corba.Radio.Box_Monitor_Radio.impl;
+end Broker.Radio.Box_Monitor_Radio.impl;

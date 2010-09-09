@@ -1,14 +1,14 @@
 with CORBA;
 with PortableServer;
 
-with Corba.Radio.BoxRadio;
+with Broker.Radio.BoxRadio;
 
 with Box;
 with Box_Data;
 
 with Ada.Strings.Unbounded;
 
-package Corba.Radio.BoxRadio.impl is
+package Broker.Radio.BoxRadio.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -22,4 +22,4 @@ package Corba.Radio.BoxRadio.impl is
    function RequestStrategy( Self : access Object;
                             lap : CORBA.Short ) return CORBA.String;
 
-end Corba.Radio.BoxRadio.impl;
+end Broker.Radio.BoxRadio.impl;

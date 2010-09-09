@@ -247,7 +247,7 @@ begin
       --+ StrategyHistory. If such resource is not already initialized before the beginning
       --+ of the competition, there would be a access violation.
       Ada.Text_IO.Put_Line("Init BoxRadio");
-      BoxRadio.impl.Init(History);
+      Corba.Radio.BoxRadio.impl.Init(History);
       Ada.Text_IO.Put_Line("Start Updater");
 
       declare

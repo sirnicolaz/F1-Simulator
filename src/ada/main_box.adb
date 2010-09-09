@@ -5,14 +5,14 @@ with Box;
 with Box_Data;
 with Box_Monitor;
 
-with Corba.Radio.BoxRadio.impl;
-use Corba.Radio.BoxRadio.impl;
+with Broker.Radio.BoxRadio.impl;
+use Broker.Radio.BoxRadio.impl;
 
-with Corba.Radio.Box_Monitor_Radio.impl;
-use Corba.Radio.Box_Monitor_Radio.impl;
+with Broker.Radio.Box_Monitor_Radio.impl;
+use Broker.Radio.Box_Monitor_Radio.impl;
 
-with Corba.Init.BoxConfigurator.Impl;
-use Corba.Init.BoxConfigurator.Impl;
+with Broker.Init.BoxConfigurator.Impl;
+use Broker.Init.BoxConfigurator.Impl;
 
 --with Configurator.Impl.Competitor;
 
@@ -122,11 +122,11 @@ begin
             declare
                Root_POA : PortableServer.POA.Local_Ref;
                BoxRadio_Ref : CORBA.Object.Ref;
-               BoxRadio_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Radio.BoxRadio.Impl.Object;
+               BoxRadio_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Radio.BoxRadio.Impl.Object;
                Monitor_Ref : CORBA.Object.Ref;
-               Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Radio.Box_Monitor_Radio.Impl.Object;
+               Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Radio.Box_Monitor_Radio.Impl.Object;
                Configurator_Ref : CORBA.Object.Ref;
-               Configurator_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Init.BoxConfigurator.Impl.Object;
+               Configurator_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Init.BoxConfigurator.Impl.Object;
             begin
                -- Retrieve the Root POA
                Root_POA := PortableServer.POA.Helper.To_Local_Ref
@@ -173,7 +173,7 @@ begin
       CorbaLOC_File : Ada.Text_IO.FILE_TYPE;
 
       --Settings resource (shared with the configurator)
-      Settings : access Corba.Init.BoxConfigurator.Impl.SYNCH_COMPETITION_SETTINGS;
+      Settings : access Broker.Init.BoxConfigurator.Impl.SYNCH_COMPETITION_SETTINGS;
       --Settings
       CompetitionMonitor_CorbaLOC : Common.UNBOUNDED_STRING_POINT := new Unbounded_String.Unbounded_String;
       Laps : INTEGER := -1;
@@ -207,7 +207,7 @@ begin
 
       Ada.Text_IO.Close(CorbaLOC_File);
 
-      Settings := Corba.Init.BoxConfigurator.Impl.Get_SettingsResource;
+      Settings := Broker.Init.BoxConfigurator.Impl.Get_SettingsResource;
       Ada.Text_IO.Put_Line("Getting parameters");
       Settings.Get_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC.all);
       Ada.Text_IO.Put_Line("Corbaloc got: " & Unbounded_String.To_String(CompetitionMonitor_CorbaLOC.all));
@@ -247,7 +247,7 @@ begin
       --+ StrategyHistory. If such resource is not already initialized before the beginning
       --+ of the competition, there would be a access violation.
       Ada.Text_IO.Put_Line("Init BoxRadio");
-      Corba.Radio.BoxRadio.impl.Init(History);
+      Broker.Radio.BoxRadio.impl.Init(History);
       Ada.Text_IO.Put_Line("Start Updater");
 
       declare

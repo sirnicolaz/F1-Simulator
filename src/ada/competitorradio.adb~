@@ -40,7 +40,7 @@ package body CompetitorRadio is
 
       Strategy := Unbounded_String.To_Unbounded_String(
                                                        CORBA.To_Standard_String
-                                                         (BoxRadio.RequestStrategy(Radio.Connection,CORBA.Short(Lap))));
+                                                         (Corba.Radio.BoxRadio.RequestStrategy(Radio.Connection,CORBA.Short(Lap))));
 
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
                            &" connected succesfully");

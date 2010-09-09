@@ -16,7 +16,7 @@ package body CompetitorRadio is
         (CORBA.To_CORBA_String (BoxRadio_CorbaLOC), Radio.Connection);
 
       --  Checking if it worked
-      if Corba.Radio.BoxRadio.Is_Nil (Radio.Connection) then
+      if Broker.Radio.BoxRadio.Is_Nil (Radio.Connection) then
          Success := false;
       else
          Success := true;
@@ -27,7 +27,7 @@ package body CompetitorRadio is
    procedure Close_BoxConnection ( Radio : out BOX_CONNECTION) is
    begin
       --Release the resource
-      Corba.Radio.BoxRadio.Release(Radio.Connection);
+      Broker.Radio.BoxRadio.Release(Radio.Connection);
    end Close_BoxConnection;
 
    function Get_Strategy( Radio : BOX_CONNECTION;
@@ -40,7 +40,7 @@ package body CompetitorRadio is
 
       Strategy := Unbounded_String.To_Unbounded_String(
                                                        CORBA.To_Standard_String
-                                                         (Corba.Radio.BoxRadio.RequestStrategy(Radio.Connection,CORBA.Short(Lap))));
+                                                         (Broker.Radio.BoxRadio.RequestStrategy(Radio.Connection,CORBA.Short(Lap))));
 
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
                            &" connected succesfully");

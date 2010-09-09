@@ -1,12 +1,12 @@
 with CORBA;
 with PortableServer;
 
-with Corba.Init.RegistrationHandler;
+with Broker.Init.RegistrationHandler;
 
 with Competition;
 use Competition;
 
-package Corba.Init.RegistrationHandler.impl is
+package Broker.Init.RegistrationHandler.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
 
@@ -22,4 +22,4 @@ package Corba.Init.RegistrationHandler.impl is
                               CircuitLength : out CORBA.Float;
                               Laps : out CORBA.Short);
 
-end Corba.Init.RegistrationHandler.impl;
+end Broker.Init.RegistrationHandler.impl;

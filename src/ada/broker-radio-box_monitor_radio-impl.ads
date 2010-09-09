@@ -1,9 +1,9 @@
 with CORBA;
 with PortableServer;
 
-with Corba.Radio.Box_Monitor_Radio;
+with Broker.Radio.Box_Monitor_Radio;
 
-package Corba.Radio.Box_Monitor_Radio.impl is
+package Broker.Radio.Box_Monitor_Radio.impl is
 
    type Object is new PortableServer.Servant_Base with null record;
 
@@ -14,4 +14,4 @@ package Corba.Radio.Box_Monitor_Radio.impl is
                        time : out CORBA.Float;
                        Returns : out CORBA.String);
 
-end Corba.Radio.Box_Monitor_Radio.impl;
+end Broker.Radio.Box_Monitor_Radio.impl;

@@ -1,4 +1,5 @@
-with BoxRadio;
+with Corba.Radio.BoxRadio;
+
 with Ada.Text_IO;
 
 with CORBA.ORB;
@@ -24,7 +25,7 @@ package CompetitorRadio is
 
 private
    type BOX_CONNECTION is record
-      Connection : BoxRadio.Ref;
+      Connection : Corba.Radio.BoxRadio.Ref;
       CompetitorID : INTEGER;
    end record;
 

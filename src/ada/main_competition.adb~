@@ -51,9 +51,9 @@ begin
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
       Ada.Text_IO.Put_Line("Configuring competition object...");
-      CompetitionConfigurator.Impl.Init(The_Competition);
+      Corba.Init.CompetitionConfigurator.Impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Configuring registration handler object...");
-      RegistrationHandler.impl.Init(The_Competition);
+      Corba.Init.RegistrationHandler.impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Init ROOT_POA..");
       declare
          Root_POA : PortableServer.POA.Local_Ref;
@@ -61,9 +61,9 @@ begin
          RegistrationHandler_Ref : CORBA.Object.Ref;
          Monitor_Ref : CORBA.Object.Ref;
 
-         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new CompetitionConfigurator.Impl.Object;
-         RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new RegistrationHandler.Impl.Object;
-         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Competition_Monitor_Radio.impl.Object;
+         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Init.CompetitionConfigurator.Impl.Object;
+         RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Init.RegistrationHandler.Impl.Object;
+         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Radio.Competition_Monitor_Radio.impl.Object;
 
       begin
          -- Retrieve the Root POA

@@ -1,7 +1,7 @@
-with Corba.Radio.BoxRadio.Skel;
-pragma Warnings (Off, BoxRadio.Skel);
+with Broker.Radio.BoxRadio.Skel;
+pragma Warnings (Off, Broker.Radio.BoxRadio.Skel);
 
-use Corba.Radio.BoxRadio;
+use Broker.Radio.BoxRadio;
 
 with Ada.Exceptions;
 
@@ -10,7 +10,7 @@ with Ada.Text_IO;
 with Common;
 use Common;
 
-package body Corba.Radio.BoxRadio.impl is
+package body Broker.Radio.BoxRadio.impl is
 
    StrategyHistory : Box_Data.SYNCH_STRATEGY_HISTORY_POINT;
 
@@ -51,4 +51,4 @@ package body Corba.Radio.BoxRadio.impl is
       --return CORBA.To_CORBA_STRING("Merda");
    end RequestStrategy;
 
-end Corba.Radio.BoxRadio.impl;
+end Broker.Radio.BoxRadio.impl;

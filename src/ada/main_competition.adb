@@ -2,14 +2,14 @@ with Ada.Text_IO;
 
 with Common;
 
-with Corba.Init.RegistrationHandler.impl;
-use Corba.Init.RegistrationHandler.impl;
+with Broker.Init.RegistrationHandler.impl;
+use Broker.Init.RegistrationHandler.impl;
 
-with Corba.Init.CompetitionConfigurator.impl;
-use Corba.Init.CompetitionConfigurator.impl;
+with Broker.Init.CompetitionConfigurator.impl;
+use Broker.Init.CompetitionConfigurator.impl;
 
-with Corba.Radio.Competition_Monitor_Radio.impl;
-use Corba.Radio.Competition_Monitor_Radio.impl;
+with Broker.Radio.Competition_Monitor_Radio.impl;
+use Broker.Radio.Competition_Monitor_Radio.impl;
 
 with CORBA.ORB;
 with PortableServer;
@@ -51,9 +51,9 @@ begin
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
       Ada.Text_IO.Put_Line("Configuring competition object...");
-      Corba.Init.CompetitionConfigurator.Impl.Init(The_Competition);
+      Broker.Init.CompetitionConfigurator.Impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Configuring registration handler object...");
-      Corba.Init.RegistrationHandler.impl.Init(The_Competition);
+      Broker.Init.RegistrationHandler.impl.Init(The_Competition);
       Ada.Text_IO.Put_Line("Init ROOT_POA..");
       declare
          Root_POA : PortableServer.POA.Local_Ref;
@@ -61,9 +61,9 @@ begin
          RegistrationHandler_Ref : CORBA.Object.Ref;
          Monitor_Ref : CORBA.Object.Ref;
 
-         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Init.CompetitionConfigurator.Impl.Object;
-         RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Init.RegistrationHandler.Impl.Object;
-         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Corba.Radio.Competition_Monitor_Radio.impl.Object;
+         CompConfiguration_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Init.CompetitionConfigurator.Impl.Object;
+         RegistrationHandler_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Init.RegistrationHandler.Impl.Object;
+         Monitor_Obj : constant CORBA.Impl.Object_Ptr := new Broker.Radio.Competition_Monitor_Radio.impl.Object;
 
       begin
          -- Retrieve the Root POA

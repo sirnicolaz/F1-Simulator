@@ -1,13 +1,13 @@
 with CORBA;
 with PortableServer;
 
-with Corba.Init.BoxConfigurator;
+with Broker.Init.BoxConfigurator;
 
 with Ada.Strings.Unbounded;
 with Box;
 use Box;
 
-package Corba.Init.BoxConfigurator.Impl is
+package Broker.Init.BoxConfigurator.Impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -52,4 +52,4 @@ package Corba.Init.BoxConfigurator.Impl is
 
    function Configure(Self : access Object;
                       config_file : CORBA.STRING) return CORBA.STRING;
-end Corba.Init.BoxConfigurator.Impl;
+end Broker.Init.BoxConfigurator.Impl;

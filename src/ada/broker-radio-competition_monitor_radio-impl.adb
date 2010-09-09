@@ -1,7 +1,7 @@
-with Corba.Radio.Competition_Monitor_Radio.Skel;
-pragma Warnings (Off, Corba.Radio.Competition_Monitor_Radio.Skel);
+with Broker.Radio.Competition_Monitor_Radio.Skel;
+pragma Warnings (Off, Broker.Radio.Competition_Monitor_Radio.Skel);
 
-use Corba.Radio.Competition_Monitor_Radio;
+use Broker.Radio.Competition_Monitor_Radio;
 
 --with Stats;
 with Competition_Monitor;
@@ -12,7 +12,7 @@ with Ada.Text_IO;
 
 with Ada.Strings.Unbounded;
 
-package body Corba.Radio.Competition_Monitor_Radio.impl is
+package body Broker.Radio.Competition_Monitor_Radio.impl is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -90,4 +90,4 @@ package body Corba.Radio.Competition_Monitor_Radio.impl is
       return CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
    end Get_CompetitorConfiguration;
 
-end Corba.Radio.Competition_Monitor_Radio.impl;
+end Broker.Radio.Competition_Monitor_Radio.impl;

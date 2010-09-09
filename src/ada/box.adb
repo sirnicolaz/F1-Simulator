@@ -1,6 +1,6 @@
 with CORBA.ORB;
 
-with Corba.Radio.Competition_Monitor_Radio;
+with Broker.Radio.Competition_Monitor_Radio;
 
 --with PolyORB.Utils.Report;
 --with MonitorRadio;
@@ -105,7 +105,7 @@ package body Box is
       Lap : INTEGER := 0;
       UpdateBuffer : SYNCH_COMPETITION_UPDATES_POINT := SharedBuffer;
 
-      Radio : Corba.Radio.Competition_Monitor_Radio.Ref;
+      Radio : Broker.Radio.Competition_Monitor_Radio.Ref;
       RadioCorbaLOC : STRING := Unbounded_String.To_String(MonitorRadio_CorbaLOC.all);
 
       --Generic boolean
@@ -116,14 +116,14 @@ package body Box is
       Corba.ORB.String_To_Object(CORBA.To_CORBA_String
                                  (RadioCorbaLOC) , Radio);
 
-      if Corba.Radio.Competition_Monitor_Radio.Is_Nil(Radio) then
+      if Broker.Radio.Competition_Monitor_Radio.Is_Nil(Radio) then
          Ada.Text_IO.Put_Line("Monitor radio down");
 
       end if;
 
       Ada.Text_IO.Put_Line("Monitor reference taken");
 
-      Success := Corba.Radio.Competition_Monitor_Radio.Ready(Radio,CORBA.Short(CompetitorID));
+      Success := Broker.Radio.Competition_Monitor_Radio.Ready(Radio,CORBA.Short(CompetitorID));
 
       Ada.Text_IO.Put_Line("Successful!");
       -- Test init values to avoid warnings DEL
@@ -131,7 +131,7 @@ package body Box is
       loop
 
          Ada.Text_IO.Put_Line("Getting info");
-         Corba.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
+         Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
            (
             Radio,
             CORBA.Short(Lap),
