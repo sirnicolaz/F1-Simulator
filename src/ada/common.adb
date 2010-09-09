@@ -84,9 +84,9 @@ package body COMMON is
       File : Ada.Text_IO.FILE_TYPE;
    begin
       --TODO: return false if file creation fails
-      Ada.Text_IO.Create(FilePath & File, Ada.Text_IO.Out_File, Path & FileName);
-      Ada.Text_IO.Put(FilePath & File, Content);
-      Ada.Text_IO.Close(FilePath & File);
+      Ada.Text_IO.Create(File, Ada.Text_IO.Out_File, FilePath & Path & FileName);
+      Ada.Text_IO.Put(File, Content);
+      Ada.Text_IO.Close(File);
       return true;
    end SaveToFile;
 

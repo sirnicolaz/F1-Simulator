@@ -244,8 +244,6 @@ package body Competitor is
                             laps_In : INTEGER;
                             BoxRadio_CorbaLOC : STRING) return CAR_AND_DRIVER_ACCESS is
       --parametri
-      Input : File_Input;
-      Reader : Tree_Reader;
       Doc : Document;
       carDriver_XML : Node_List;
       carDriver_Length : INTEGER;
