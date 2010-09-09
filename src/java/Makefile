@@ -11,4 +11,4 @@ corba:
 	$(shell idlj ../idl/init.idl; idlj ../idl/radio.idl)
 
 deep:
-	rm -rf ../../obj/java/GUI ../../obj/java/corba ../../obj/java/temp/*
+	rm -rf ../../obj/java/GUI ../../obj/java/broker ../../obj/java/temp/*
