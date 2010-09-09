@@ -1,51 +1,48 @@
---with "/usr/local/lib/gnat/xmlada.gpr";
---with "/usr/local/lib/gnat/polyorb.gpr";
-
-project Default is
+project F1_Simulator is
 
    for Source_Dirs use ("./");
    for Object_Dir use "../../obj/ada";
 
-   type Mode_Type is
-      ("Production", "Debug");
-   Mode : Mode_Type := external ("BUILD", "Debug");
+--   type Mode_Type is
+ --     ("Production", "Debug");
+ --  Mode : Mode_Type := external ("BUILD", "Debug");
 
-   type Xmlada_Kind_Type is
-      ("static", "relocatable");
-   Library_Type : Xmlada_Kind_Type := external ("LIBRARY_TYPE");
+--   type Xmlada_Kind_Type is
+--      ("static", "relocatable");
+--   Library_Type : Xmlada_Kind_Type := external ("LIBRARY_TYPE");
 
-   case Library_Type is
+--   case Library_Type is
 
-      when "static" =>
+--      when "static" =>
 
-         case Mode is
+ --        case Mode is
 
-            when "Production" =>
-	       for Main use ("main_box.adb", "main_competition.adb");
+   --         when "Production" =>
+--	       for Main use ("main_box.adb", "main_competition.adb");
 
-            when "Debug" =>
-               for Main use ("main_box.adb", "main_competition.adb");
-         end case;
+  --          when "Debug" =>
+    --           for Main use ("main_box.adb", "main_competition.adb");
+      --   end case;
 
-      when "relocatable" =>
+  -    when "relocatable" =>
 
-   end case;
+   --end case;
 
-   package Compiler is
+   --package Compiler is
 
-      case Mode is
+     -- case Mode is
 
-         when "Production" =>
-            for Default_Switches ("ada") use ("-gnatp", "-O2");
+       --  when "Production" =>
+--            for Default_Switches ("ada") use ("-gnatp", "-O2");
 
-         when "Debug" =>
-            for Default_Switches ("ada") use ("-g", "-gnato", "-fstack-check", "-gnatVa");
-      end case;
-   end Compiler;
+  --       when "Debug" =>
+    --        for Default_Switches ("ada") use ("-g", "-gnato", "-fstack-check", "-gnatVa");
+     -- end case;
+   --end Compiler;
 
-   package Ide is
-      for Vcs_Kind use "CVS";
-   end Ide;
+  -- package Ide is
+    --  for Vcs_Kind use "CVS";
+   --end Ide;
 
-end Default;
+end F1_Simulator;
 
