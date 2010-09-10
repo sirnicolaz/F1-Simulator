@@ -31,9 +31,9 @@ public class configurationScreen{
     private JPanel configPanel;
     private JPanel buttonPanel;
     private JLabel labelCorbaloc = new JLabel("Insert competition corbaloc : ");
-    // private JLabel labelRefresh = new JLabel("Insert updating refresh time : ");
+    private JLabel labelRefresh = new JLabel("Insert updating refresh time : ");
     private JTextField textCorbaloc = new JTextField("",20);
-    // private JTextField textRefresh = new JTextField("1.0",5);
+    private JTextField textRefresh = new JTextField("1.0",5);
     private JButton startButton;
     private JButton resetButton;
     private Competition_Monitor_Radio monitor;
@@ -63,12 +63,12 @@ public class configurationScreen{
 	configPanel.add(labelCorbaloc);
 	configPanel.add(textCorbaloc);
 
-	// refreshPanel = new JPanel(new BorderLayout());
-	// refreshPanel.setBorder(BorderFactory.createTitledBorder(null, "Corbaloc", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-	// refreshPanel.setLayout(new FlowLayout());
-	// 
-	// refreshPanel.add(labelRefresh);
-	// refreshPanel.add(textRefresh);
+	refreshPanel = new JPanel(new BorderLayout());
+	refreshPanel.setBorder(BorderFactory.createTitledBorder(null, "Refresh rate (seconds)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+	refreshPanel.setLayout(new FlowLayout());
+	
+	refreshPanel.add(labelRefresh);
+	refreshPanel.add(textRefresh);
 
 	// addButtonPanel(buttonPanel);
 	buttonPanel= new JPanel(new BorderLayout());
@@ -80,7 +80,7 @@ public class configurationScreen{
 		public void actionPerformed(ActionEvent e) {
 		    corbaloc=textCorbaloc.getText();
 		    try{
-			floatRefresh = (float)1.0;
+			floatRefresh = new Float(textRefresh.getText()).floatValue();
 			if(connect()==true){
 			    screen = new screenTv(corbaloc, monitor, "Tv Screen", floatRefresh);
 			    screen.start();
@@ -106,7 +106,7 @@ public class configurationScreen{
 	buttonPanel.add(resetButton);
 	// parent.add(panel, BorderLayout.WEST);
 	parent.add(configPanel, BorderLayout.NORTH);
-	// parent.add(refreshPanel, BorderLayout.CENTER);
+	parent.add(refreshPanel, BorderLayout.CENTER);
 	parent.add(buttonPanel, BorderLayout.SOUTH);
 	parent.pack();
 	parent.setVisible(true);

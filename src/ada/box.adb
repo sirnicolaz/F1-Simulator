@@ -299,6 +299,22 @@ package body Box is
       New_Strategy.Style := Old_Strategy.Style;
 
       if ( RemainingLaps /= 0 ) then
+      --Add the first statistic to the computer
+--        compStats.Checkpoint := CurrentCheckpoint+1;
+--        CurrentCheckpoint := CurrentCheckpoint+1;
+--        compStats.LastCheckInSect := C_Checkpoint.Is_LastOfTheSector;
+--        compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
+--        compStats.Sector := C_Checkpoint.Get_SectorID;
+--        compStats.GasLevel := carDriver.auto.GasolineLevel;
+--        compStats.TyreUsury := carDriver.auto.TyreUsury;
+--        compStats.Time := C_Checkpoint.Get_Time(id);
+--        compStats.Lap := CurrentLap;
+--        compStats.PathLength := lengthPath;
+--
+--        OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+--                                 Data        => compStats);
+
+
          Ada.Text_IO.Put_Line("Laps /= 0");
          --If the number of doable laps is enough to either finish the comeptition
          --+ or to reach the next pitstop, try to see if it's possible to change the driving

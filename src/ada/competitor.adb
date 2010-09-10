@@ -713,7 +713,7 @@ package body Competitor is
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": temp usury (angle) done");
       --aggiorno il modificatore in base alla mescola
-      if driver.auto.Type_Tyre = "Morbida" then temp_usury := temp_usury + 0.03;
+      if driver.auto.Type_Tyre = "Soft" then temp_usury := temp_usury + 0.03;
       else temp_usury := temp_usury + 0.01;
       end if;
 --        Ada.Text_IO.Put_Line(Integer'Image(driver.Id)& ": temp usury (type) done");
@@ -896,22 +896,6 @@ package body Competitor is
       carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
       carDriver.strategia.Style := BrandNewStrategy.Style;
 
-
-      --Add the first statistic to the computer
---        compStats.Checkpoint := CurrentCheckpoint+1;
---        CurrentCheckpoint := CurrentCheckpoint+1;
---        compStats.LastCheckInSect := C_Checkpoint.Is_LastOfTheSector;
---        compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
---        compStats.Sector := C_Checkpoint.Get_SectorID;
---        compStats.GasLevel := carDriver.auto.GasolineLevel;
---        compStats.TyreUsury := carDriver.auto.TyreUsury;
---        compStats.Time := C_Checkpoint.Get_Time(id);
---        compStats.Lap := CurrentLap;
---        compStats.PathLength := lengthPath;
---
---        OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
---                                 Data        => compStats);
-
       loop
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & " lapt " & Integer'Image(CurrentLap));
@@ -1007,8 +991,9 @@ package body Competitor is
          --Fine sezione  per la scelta della traiettoria
 
 --           Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Evaluating..");
+	 Ada.Text_IO.Put_Line("PREEVALUATE: Actual TIme " & FLOAT'IMAGE(ActualTime));
          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
-
+	 Ada.Text_IO.Put_Line("PREEVALUATE: Crossing TIme " & FLOAT'IMAGE(CrossingTime));
          --Ora non c'� pi� rischio di race condition sulla scelta delle traiettorie
          --quindi pu� essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finch� vengono aggiornati i tempi di arrivo negli
@@ -1021,6 +1006,7 @@ package body Competitor is
          -- TODO: add the time when the competitor has to leave the box
          if (PitStop = true) then
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
+	    Ada.Text_IO.Put_Line("Time del delay " & FLOAT'IMAGE(BrandNewStrategy.PitStopDelay));
          end if;
 
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
@@ -1059,6 +1045,7 @@ package body Competitor is
                   compStats.IsPitStop := false;
                   --TODO: explane the "Step" purpose
                   compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
+		  Ada.Text_IO.Put_Line("PADDING: going to box Step " & FLOAT'IMAGE(Step) & " predicted = " & FLOAT'IMAGE(PredictedTime) & " compstats time = " & FLOAT'IMAGE(compStats.Time));
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
@@ -1140,6 +1127,7 @@ package body Competitor is
                   compStats.TyreUsury := carDriver.auto.TyreUsury;
                   compStats.IsPitStop := TRUE;
                   compStats.Time := PredictedTime - (Step * UpdatedCheckpoints);
+		  Ada.Text_IO.Put_Line("PADDING: box done  Step " & FLOAT'IMAGE(Step) & " predicted = " & FLOAT'IMAGE(PredictedTime) & " compstats time = " & FLOAT'IMAGE(compStats.Time));
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
@@ -1281,8 +1269,8 @@ package body Competitor is
             CurrentLap := CurrentLap + 1;
          end if;
 
-         -- TODO: retrieve the clock just once -> not necessary useful
---          delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+         -- Just for simulation purpose
+         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
 
          --If the checkpoint is the goal, get the race over

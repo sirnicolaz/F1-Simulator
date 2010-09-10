@@ -361,7 +361,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
-		      sleep(250);
+// 		      sleep(500);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
@@ -432,39 +432,12 @@ public class screenTv extends Thread implements TvPanelInterface{
 		System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck_2.getNodeValue());
 		System.out.println("lap : "+getNode("lap", element));
 		System.out.println("sector : "+getNode("sector", element));
-		if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
-		    //JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-		    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-		    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
-			if (temp.equals("arriving")){
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-			}
-			else{
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-			}
-		    }
-		}
 		int ind = new Integer(attributoComp.getNodeValue()).intValue();
-		if(attributoCompEnd.getValue().equals("TRUE")){
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
-		    if(endRace[ind-1]== false){
-			endRace[ind-1] = true;
-		    }
-		}
-		else {
-		    if(attributoCompRit.getValue().equals("TRUE")){
+		if(attributoCompRit.getValue().equals("TRUE")){
 			if(ritRace[ind-1]== false){
 			    ritRace[ind-1] = true;
+			    endRace[ind-1] = true;
 			}
 
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
@@ -479,15 +452,45 @@ public class screenTv extends Thread implements TvPanelInterface{
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 		    }
+		else {
+			if(attributoCompEnd.getValue().equals("TRUE")){
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
-		    else{
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+			  if(endRace[ind-1]== false){
+			    endRace[ind-1] = true;
+			  }
+			  }
+			else{
+			      if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
+// 				    JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+				    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+				    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
+					if (temp.equals("arriving")){
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+					}
+					else{
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+					}
+				    }
+				}
+			  else{
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+			  }
+			}
 		    }
-		}
-	    }	
+	     }	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
 	    Element element = (Element)bestT.item(0);

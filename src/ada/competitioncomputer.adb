@@ -744,7 +744,12 @@ begin
                ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
                NotLapped_Count := NotLapped_Count + 1;
 	       PreviousClassific_Count := PreviousClassific_Count + 1;
-            else
+	     --It means that it was considered as out of competition in the previous check and so not counted as being in the previous lap.
+	    --+ so now we find out that before being squalified he completed the previous lap and so he's to be added to the previousClassific count
+            elsif(Temp_Row.Competitor_ID /= -1 and then Temp_Row.Time <= PolePosition_Time
+		and then ProcessedCompetitors_IdList(Temp_Row.Competitor_ID) = 1 and then Is_CompetitorOut(Temp_Row.Competitor_ID,TimeInstant) = TRUE) then
+		    PreviousClassific_Count := PreviousClassific_Count + 1;
+	    else
                ExitLoop := true;
             end if;
 
@@ -755,12 +760,13 @@ begin
          --+ finished the previous one (so, they have a classification time for that lap). This is done to
          --+ avoid the problem o "skipped competitor in classification"
          if(PreviousClassific_Count /= 0) then
+Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClassific_Count));
 	    CompetitorIDs_PreviousClassific := new INTEGER_ARRAY(1..PreviousClassific_Count);
 	    Times_PreviousClassific := new FLOAT_ARRAY(1..PreviousClassific_Count);
 	    for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
 	      Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
 	      if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
-		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id)& " time "&Float'Image(Temp_Row.time));
+		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id)& " time "&Float'Image(Temp_Row.time)&" index = "&Integer'Image(Index));
 		CompetitorIDs_PreviousClassific(Index) := Temp_Row.Competitor_Id;
 		Times_PreviousClassific(Index) := Temp_Row.Time;
 	      else

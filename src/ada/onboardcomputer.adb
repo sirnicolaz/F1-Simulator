@@ -93,7 +93,7 @@ package body OnBoardComputer is
                                                "</update>"
                                               );
          Ada.Text_IO.Put_Line("Adding news to monitor : ");
-
+	 Ada.Text_IO.Put_Line("Adding time to box " & FLOAT'IMAGE(Data.Time));
          --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
          Computer_In.BoxInformation.Set_Info(Lap          => Data.Lap+1,
                                              Sector       => Data.Sector,

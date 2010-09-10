@@ -49,15 +49,14 @@ public class BoxMonitor extends Thread{
 
     private JLabel labelGas = new JLabel(" l / km ");
     private JLabel labelTyre = new JLabel(" % / km ");
-    private JLabel labelGasExpl = new JLabel("Mean Fuel Consumption");
-    private JLabel labelTyreExpl = new JLabel("Mean Tyre Usury");
+    private JLabel labelGasExpl = new JLabel("Mean fuel consumption");
+    private JLabel labelTyreExpl = new JLabel("Mean tyre usury");
     private JLabel labelInfo_1 = new JLabel("Team - , Competitor -");
-    private JLabel labelInfo_2 = new JLabel("maxspeed - , max acceleration = -");
-    private JLabel labelInfo_3 = new JLabel("tank capacity = - , style = -");
-    private JLabel labelInfo_4 = new JLabel("tyre usury = - . fuel level = -");
-    private JLabel labelInfo_5 = new JLabel("type tyre = - , mixture = -");
-    private JLabel labelInfo_6 = new JLabel("Lap to pitstop = - , Style of guide -");
-    private JLabel labelInfo_7 = new JLabel("Total time for pitstop at lap - -");
+    private JLabel labelInfo_2 = new JLabel("Max speed - , Max acceleration = -");
+    private JLabel labelInfo_3 = new JLabel("Tank capacity = , Tyre mixture = -");
+    private JLabel labelInfo_4 = new JLabel("Tyre usury = - , Fuel level = -");
+    private JLabel labelInfo_6 = new JLabel("Laps to pitstop = - , Driving style -");
+    private JLabel labelInfo_7 = new JLabel("Pitstop delay at lap - = -");
 
 
     private String boxCorbaLoc;
@@ -320,11 +319,11 @@ public class BoxMonitor extends Thread{
 			/*outArea.setText("Strategy:");
 			  outArea.append("\n-Laps to pitstop : "+pitstopLapValue.toString());
 			  outArea.append("\n-Style of guide :"+ styleValue);*/
-			labelInfo_6.setText("Lap to pitstop = "+pitstopLapValue.toString()+", Style of guide "+styleValue);
+			labelInfo_6.setText("Laps to pitstop = "+pitstopLapValue.toString()+", Driving style "+styleValue);
 			if (pitstopLapValue == 0 && pitstopDelayValue !=-1.0){
 			    // JOptionPane.showMessageDialog(parent, "Total time for change tyre and refill fuel = "+convert(pitstopDelayValue), "Message from competition", JOptionPane.INFORMATION_MESSAGE);
 			    // outArea.append("\nPITSTOP --> tempo totale del pitstop : "+pitstopDelayValue+" secondi");
-			    labelInfo_7.setText("Total time for pitstop at lap "+lapsValue+" =  "+pitstopDelayValue);
+			    labelInfo_7.setText("Total pitstop delay at lap "+lapsValue+" = "+pitstopDelayValue);
 			    pitstopDelayValue = (float)-1.0;
 			}
 
@@ -334,10 +333,9 @@ public class BoxMonitor extends Thread{
 			// outArea.append("\nmax speed = "+maxspeedValue.toString()+", max acceleration = "+maxaccelerationValue.toString()+"\ntank capacity = "+gastankcapacityValue.toString()+"style = "+engineValue+"\ntyre usury = "+tyreUsuryCarValue.toString()+" , fuel level = "+gasLevelCarValue.toString()+"\ntype tye ="+typetyreValue+", mixture = "+mixtureValue);
 
 			labelInfo_1.setText("Team "+teamValue+", Competitor "+firstnameValue+" "+lastnameValue);
-			labelInfo_2.setText("max speed = "+maxspeedValue.toString()+", max acceleration = "+maxaccelerationValue.toString());
-			labelInfo_3.setText("tank capacity = "+gastankcapacityValue.toString()+"style = "+engineValue);
-			labelInfo_4.setText("tyre usury = "+tyreUsuryCarValue.toString()+" , fuel level = "+gasLevelCarValue.toString());
-			labelInfo_5.setText("type tye ="+typetyreValue+", mixture = "+mixtureValue);
+			labelInfo_2.setText("Max speed = "+maxspeedValue.toString()+", Max acceleration = "+maxaccelerationValue.toString());
+			labelInfo_3.setText("Tank capacity = "+gastankcapacityValue.toString()+ ", Tyre mixture = "+mixtureValue);
+			labelInfo_4.setText("Tyre usury = "+tyreUsuryCarValue.toString()+" , Fuel level = "+gasLevelCarValue.toString());
 			outPanel.updateUI();
 			/*
 			  private Double ;

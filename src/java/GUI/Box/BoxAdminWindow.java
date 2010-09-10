@@ -43,7 +43,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private JLabel labelGasLevel;
     private JLabel valueLevelFuel;
     private JLabel valueSpeed;
-    private JLabel labelTyre = new JLabel("Tyre type");
+//     private JLabel labelTyre = new JLabel("Tyre type");
     private JLabel labelBox = new JLabel("Box Strategy");
     private JLabel labelName = new JLabel("Name");
     private JLabel labelSurname = new JLabel("Surname");
@@ -57,7 +57,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private JLabel labelTank = new JLabel (" L (200..400)");
     private JLabel valueAcc = new JLabel("m/s^2");
     private JLabel labelHelp = new JLabel("CorbaLoc of Registration Handler");
-    // private JLabel labelHelp2 = new JLabel(" ex. \"corbaloc:iiop:1.2@[ip:porta]//{...}\"");
     private JLabel labelCorbaloc = new JLabel("Corbaloc of Registration Hanlder");
 
     //sezione combobox
@@ -69,11 +68,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private JComboBox comboStrategypitstop;
 
     //sezione spinner giro di fermata
-    /*private Integer valueLap;// = new Integer(12); 
-      private Integer minLap;// = new Integer(0);
-      private Integer maxLap;// = new Integer(100); 
-      private Integer step = new Integer(1);;// = new Integer(1); 
-      private SpinnerNumberModel modelLap;// = new SpinnerNumberModel(valueLap, minLap, maxLap, step); */
     //sezione spinner Quantità di benzina
     private Integer valueFuel;// = new Integer(100 - sliderGasLevel.getValue()); 
     private Integer minFuel;// = new Integer(0);
@@ -186,29 +180,8 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	    carConfigurationGrid.gridy = 0;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueFuelTank, carConfigurationGrid);
-	    //sezione usura gomme
-	    //     sliderTyreUsury = new JSlider();
-	    //     sliderTyreUsury.setValue(15);
-	    //     valuePerCentUsury = new JLabel("15%");
-	    //     sliderTyreUsury.addChangeListener(new MyChangeAction("%", sliderTyreUsury, valuePerCentUsury));
-	    //     labelUsuryTyre  = new JLabel("Tyre Usury");
-	    //     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		carConfigurationGrid.gridx = 0;
-	    // 		carConfigurationGrid.gridy = 1;
-	    // 		carConfigurationGrid.ipady = 5;
-	    // 		panel.add(labelUsuryTyre, carConfigurationGrid);
-	    //     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		carConfigurationGrid.gridx = 1;
-	    // 		carConfigurationGrid.gridy = 1;
-	    // 		carConfigurationGrid.ipady = 5;
-	    // 		panel.add(sliderTyreUsury, carConfigurationGrid);
-	    //     carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		carConfigurationGrid.gridx = 2;
-	    // 		carConfigurationGrid.gridy = 1;
-	    // 		carConfigurationGrid.ipady = 5;
-	    // 		panel.add(valuePerCentUsury, carConfigurationGrid);
-	    //sezione valore benzina
-	    sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
+	
+    sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
 	    sliderGasLevel.setValue(50);
 	    valueLevelFuel = new JLabel("50L");
 	    sliderGasLevel.addChangeListener(new MyChangeAction("L",sliderGasLevel,  valueLevelFuel));
@@ -229,27 +202,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueLevelFuel, carConfigurationGrid);
 	    //sezione tipologia di gomme montate
-	    String[] gomme = { "Sun", "Rain", "Hard Rain"};
-	    comboTyre = new JComboBox(gomme);
-	    comboTyre.setSelectedIndex(0);
-	    comboTyre.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			JComboBox cb = (JComboBox)e.getSource();
-			String s = (String)cb.getSelectedItem();
-			stringGomme = new String("<type_tyre>"+s+"</type_tyre>");
-			stringGommeBox = new String("<initialTyreType>"+s+"</initialTyreType>");
-		    }
-		});
-	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 2;
-	    carConfigurationGrid.ipady = 5;
-	    panel.add(labelTyre, carConfigurationGrid);
-	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    carConfigurationGrid.gridx = 1;
-	    carConfigurationGrid.gridy = 2;
-	    carConfigurationGrid.ipady = 5;
-	    panel.add(comboTyre, carConfigurationGrid);
+	    
 	    //sezione mescola delle gomme montate
 	    String[] tipoGomme = { "Soft", "Hard"};
 	    comboTypeTyre = new JComboBox(tipoGomme);
@@ -262,12 +215,12 @@ public class BoxAdminWindow implements AdminPanelInterface{
 		});
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 3;
+	    carConfigurationGrid.gridy = 2;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(labelMixture, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 1;
-	    carConfigurationGrid.gridy = 3;
+	    carConfigurationGrid.gridy = 2;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(comboTypeTyre, carConfigurationGrid);
 	    //impostazione tipo strategia
@@ -283,29 +236,29 @@ public class BoxAdminWindow implements AdminPanelInterface{
 		});
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 4;
+	    carConfigurationGrid.gridy = 3;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(labelstrps, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 1;
-	    carConfigurationGrid.gridy = 4;
+	    carConfigurationGrid.gridy = 3;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(comboStrategypitstop, carConfigurationGrid);
 	    modelAcc = new SpinnerNumberModel(12.000,11.01, 12.99, 0.01);
 	    jsAcc = new JSpinner(modelAcc);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 5;
+	    carConfigurationGrid.gridy = 4;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(labelAcc, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 1;
-	    carConfigurationGrid.gridy = 5;
+	    carConfigurationGrid.gridy = 4;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(jsAcc, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 2;
-	    carConfigurationGrid.gridy = 5;
+	    carConfigurationGrid.gridy = 4;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueAcc, carConfigurationGrid);
 	    //slider max velocita 250 - 400
@@ -315,30 +268,30 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	    sliderSpeed.addChangeListener(new MyChangeAction("km/h",sliderSpeed,  valueSpeed));
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 6;
+	    carConfigurationGrid.gridy = 5;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(labelVel, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 1;
-	    carConfigurationGrid.gridy = 6;
+	    carConfigurationGrid.gridy = 5;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(sliderSpeed, carConfigurationGrid);
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 2;
-	    carConfigurationGrid.gridy = 6;
+	    carConfigurationGrid.gridy = 5;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueSpeed, carConfigurationGrid);
 
 
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 7;
+	    carConfigurationGrid.gridy = 6;
 	    carConfigurationGrid.ipady = 5;
 	    carConfigurationGrid.gridwidth= 2;
 	    panel.add(labelCorbaloc, carConfigurationGrid);
 	    // carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
-	    carConfigurationGrid.gridy = 8;
+	    carConfigurationGrid.gridy = 7;
 	    carConfigurationGrid.ipady = 5;
 	    carConfigurationGrid.gridwidth= 3;
 	    panel.add(textCorbaloc, carConfigurationGrid);
@@ -607,7 +560,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	System.out.println("Reset Field");
 	// 			      sliderTyreUsury.setValue(15);//usura gomme
 	sliderGasLevel.setValue(50);//benzina caricata
-	comboTyre.setSelectedIndex(0);//gomme montate
 	comboBox.setSelectedIndex(0);//tipo di guida
 	comboTypeTyre.setSelectedIndex(0);//mescola gomme montate
 	sliderFuelTank.setValue(200);//capacità serbatoio
