@@ -208,17 +208,17 @@ begin
       Ada.Text_IO.Close(CorbaLOC_File);
 
       Settings := Broker.Init.BoxConfigurator.Impl.Get_SettingsResource;
-      Ada.Text_IO.Put_Line("Getting parameters");
+
       Settings.Get_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC.all);
-      Ada.Text_IO.Put_Line("Corbaloc got: " & Unbounded_String.To_String(CompetitionMonitor_CorbaLOC.all));
+
       Settings.Get_Laps(Laps);
-      Ada.Text_IO.Put_Line("Laps got: " & INTEGER'IMAGE(Laps));
+
       Settings.Get_CompetitorID(CompetitorID);
-      Ada.Text_IO.Put_Line("Competitor ID got: " & INTEGER'IMAGE(CompetitorID));
+
       Settings.Get_CircuitLength(CircuitLength);
-      Ada.Text_IO.Put_Line("Circuit length got: " & FLOAT'IMAGE(CircuitLength));
+
       Settings.Get_BoxStrategy(BoxStrategy);
-      Ada.Text_IO.Put_Line("Box Strategy got");
+
       Settings.Get_GasTankCapacity(GasTankCapacity);
       Settings.Get_InitialGasLevel(InitialGasLevel.all);
       Settings.Get_InitialTyreType(InitialTyreType);
@@ -230,7 +230,7 @@ begin
 
       -- Resourced shared between tasks
       History := new Box_Data.SYNCH_STRATEGY_HISTORY;
-      Ada.Text_IO.Put_Line("init History");
+
       History.Init(Laps);
 
       AllInfo_Buffer.Init(Laps*3);
@@ -246,9 +246,9 @@ begin
       --+ Request_NewStrategy is invoked, the Box Radio tries to access the resource
       --+ StrategyHistory. If such resource is not already initialized before the beginning
       --+ of the competition, there would be a access violation.
-      Ada.Text_IO.Put_Line("Init BoxRadio");
+
       Broker.Radio.BoxRadio.impl.Init(History);
-      Ada.Text_IO.Put_Line("Start Updater");
+
 
       declare
 

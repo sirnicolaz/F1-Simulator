@@ -111,32 +111,9 @@ package body Circuit is
    function Get_Time(Checkpoint_In : POINT_Checkpoint;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
---      Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time e chiamo get_competitorArrivaltime");
+
       return Get_CompetitorArrivalTime(Checkpoint_In.Queue.all, CompetitorID_In);
    end Get_Time;
-
-
-   --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
-   --                  NextCheckpoint_In : POINT_Checkpoint) is
-   --begin
-   -- Checkpoint_In.NextCheckpoint := NextCheckpoint_In;
-   --end Set_Next;
-
-   --function Get_Path(Checkpoint_In : POINT_Checkpoint;
-   --                  Path_Num : INTEGER ) return PATH is
-   --begin
-   --   return Checkpoint_In.PathsCollection(Path_Num);
-   --end Get_Path;
-
-   --function Get_Next_Checkpoint(Checkpoint_In : POINT_Checkpoint) return POINT_Checkpoint is
-   --begin
-   --   return Checkpoint_In.NextCheckpoint;
-   --end Get_Next_Checkpoint;
-
-   --function Get_Length(Checkpoint_In : POINT_Checkpoint) return FLOAT is
-   --begin
-   --   return Checkpoint_In.PathsCollection(1).Length;
-   --end Get_Length;
 
    protected body CROSSING is
 
@@ -189,10 +166,10 @@ package body Circuit is
       procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
 
-         Ada.Text_IO.Put_Line("Setting arrived");
+
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
-            Ada.Text_IO.Put_Line("Length : " & Common.IntegerToString(WaitBlock_Chain'LENGTH));
+
             WaitBlock_Chain.all(CompetitorID_In).Notify;
          end if;
 
@@ -208,7 +185,7 @@ package body Circuit is
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
       begin
-         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : signal leaving");
+
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
          --NEW
          --if Get_IsArrived(F_Checkpoint.Queue.all,1) then
@@ -252,7 +229,7 @@ package body Circuit is
 
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT is
       begin
-         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time(competitorid_in) e chiamo get_time(F_checkpoint, competitorid)");
+
          return Get_Time(F_Checkpoint, CompetitorID_In);
       end Get_Time;
 
@@ -370,11 +347,11 @@ package body Circuit is
       --If there is a conf file, use it to auto-init;
 
 
-      Ada.Text_IO.Put_Line("Start building");
+      Ada.Text_IO.Put_Line("Start building circuit");
 
       if Document_In /= null then
 
-         Ada.Text_IO.Put_Line("Building racetrack");
+
 
          --Find out the number of checkpoint and allocate the Racetrack
          CheckPoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
@@ -443,11 +420,11 @@ package body Circuit is
                   end if;
 
                   if(CheckpointCounter = 1) then
-                     Ada.Text_IO.Put_Line("First check in sector");
+
                      IsFirstOfTheSector := true;
                      IsLastOfTheSector := false;
                   elsif (CheckpointCounter = CheckpointQty) then
-                     Ada.Text_IO.Put_Line("Last check in sector");
+
                      IsFirstOfTheSector := false;
                      IsLastOfTheSector := true;
                   else
@@ -579,11 +556,11 @@ package body Circuit is
    begin
 
 
-      Ada.Text_IO.Put_Line("Getting racetrack document");
+
 
       Doc := Common.Get_Document(Racetrack_File);
 
-      Ada.Text_IO.Put_Line("Starting racetrack init");
+
 
       Init_Racetrack(Racetrack_Out, Doc);
 
@@ -622,7 +599,7 @@ package body Circuit is
       Times : Common.FLOAT_ARRAY(1..Competitors'LENGTH);
       Time : FLOAT := 0.0;
    begin
-      --Ada.Text_IO.Put_Line("^^^^^^^^^________________^^^^^^^^^^^ Competitors'LENGTH: "&Integer'Image(Competitors'LENGTH));
+
       for ind in 1..Competitors'LENGTH loop
          Times(ind) := Time;
          Time := Time + 1.0; -- TODO: The time gap between 2 following competitors isn't definitive.

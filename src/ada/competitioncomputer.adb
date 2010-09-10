@@ -226,7 +226,7 @@ package body CompetitionComputer is
       entry Initialise(Stats_In : in COMPETITOR_STATS) when Initialised = FALSE is
 
       begin
-         Ada.Text_IO.Put_Line("Adding " & INTEGER'IMAGE(Stats_In.Checkpoint));
+
          Statistic := Stats_In;
          Initialised := TRUE;
       end Initialise;
@@ -244,7 +244,7 @@ package body CompetitionComputer is
       Tmp_Sector : INTEGER;
       Tmp_Bool : BOOLEAN;
    begin
-      Ada.Text_IO.Put_Line("COMPETITIONCOMP: asking from index " & Common.IntegerToString(Index) );
+
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Sector(Tmp_Sector);
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector(Tmp_Bool);
 
@@ -317,7 +317,7 @@ package body CompetitionComputer is
       Tmp_Time : FLOAT;
       ExitLoop : BOOLEAN := FALSE;
    begin
-   Ada.Text_IO.Put_Line("TV asking by time");
+
 
       if( Stats_In = null ) then
          Stats_In := new COMPETITOR_STATS;
@@ -334,20 +334,20 @@ package body CompetitionComputer is
       else
 
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-         Ada.Text_IO.Put_Line("TV time got");
+
          if (Tmp_Time >= Time ) then
 
-            Ada.Text_IO.Put_Line("TV backward");
+
             Index := Index - 1;
             if(Index /= 0) then
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             end if;
             while Index > 1 and then Tmp_Time > Time loop
                Index := Index - 1;
-               Ada.Text_IO.Put_Line("TV cycle for index " & INTEGER'IMAGE(Index));
+
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             end loop;
-            Ada.Text_IO.Put_Line("TV out");
+
 
             declare
                LeftTime : FLOAT;
@@ -373,17 +373,17 @@ package body CompetitionComputer is
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(CHoosenIndex).Get_All(Stats_In.all);
                Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := CHoosenIndex;
             end;
-            Ada.Text_IO.Put_Line("TV get all done");
+
 
          else
-            Ada.Text_IO.Put_Line("TV forward");
+
             Index := Index + 1;
             if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
                Index := Index - 1;
             end if;
             Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             while Tmp_Time < Time and ExitLoop = false loop
-               Ada.Text_IO.Put_Line("TV cycle");
+
                Index := Index + 1;
                --Handle the case when an information cronologically after the end of the competition
                --+ is asked
@@ -411,14 +411,14 @@ package body CompetitionComputer is
                   CHoosenIndex := Index;
                end if;
 
-               Ada.Text_IO.Put_Line("TV getting");
+
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(ChoosenIndex).Get_All(Stats_In.all);
                Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := ChoosenIndex;
             end;
 
          end if;
       end if;
-      Ada.Text_IO.Put_Line("TV got");
+
 
    end Get_StatsByTime;
 
@@ -494,7 +494,7 @@ package body CompetitionComputer is
       if(Data.LastCheckInSect = true and Data.Sector = 3 and
            Data.GasLevel > 0.0 and Data.TyreUsury < 100.0) then
 
-         Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating classific for lap " & Common.IntegerToString(Data.Lap+1) & " with time " & FLOAT'IMAGE(Data.Time));
+
          Update_Classific(Competitor_ID,
                           Data.Lap+1,--Count starts from 1 in the table, lap are counted from 0 instead
                           Data.Time);
@@ -502,17 +502,17 @@ package body CompetitionComputer is
       end if;
 
       --Update the statistics
-      Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic");
+
    Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
-Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic 2");
+
    --The competitor is out
       if(Data.GasLevel > 0.0 and Data.TyreUsury < 100.0) then
          --If not retired and the array is full, the competition is regularly finished
-         Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic 5");
+
          if(((Data.Lap*Checkpoints) + Data.Checkpoint) =
            Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH ) then
             Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
-            Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statistic 6");
+
          end if;
       end if;
 
@@ -523,8 +523,6 @@ Ada.Text_IO.Put_Line(Common.IntegerToString(Competitor_ID) & ": updating statist
                               Time : FLOAT) is
       Row : STATS_ROW;
    begin
-      Ada.Text_IO.Put_Line("CM: Updating classific for lap (starting from 1)  = " & INTEGER'IMAGE(CompletedLap) &
-                           " and competitor id = " & INTEGER'IMAGE(Competitor_ID));
       --Find the right table for this lap
       Row.Competitor_Id := Competitor_ID;
       Row.Time := Time;
@@ -554,7 +552,7 @@ begin
                             Stats_In      => Temp_Stats);
 
             --compare the "bestlap" values and find out the best one
-         Ada.Text_IO.Put_Line("CC: comp n. " & INTEGER'IMAGE(Index) & ", best lap time " & FLOAT'IMAGE(Temp_Stats.BestLaptime) & ",old one " & FLOAT'IMAGE(Temp_BestLapTime));
+
             if( (Temp_Stats.BestLaptime /= -1.0 and Temp_Stats.BestLapTime < Temp_BestLapTime) or else
                  Temp_BestLapTime = -1.0 ) then
                Temp_BestLapTime := Temp_Stats.BestLaptime;
@@ -646,13 +644,13 @@ begin
       InClassific_Count : INTEGER := 0;
       ExitLoop : BOOLEAN := FALSE;
    begin
-      Ada.Text_IO.Put_Line("CM: getting classific for lap " & Common.IntegerToString(Lap));
+
       for Index in 1..Classification_Tables.all(Lap+1).Get_Size loop
          Tmp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
-         Ada.Text_IO.Put_Line("Verifying " & FLOAT'IMAGE(Tmp_Row.Time) & "<=" & FLOAT'IMAGE(TimeInstant));
+
          --Competitor in classific
          if(Tmp_Row.Competitor_Id /= -1 and Tmp_Row.Time <= TimeInstant) then
-            Ada.Text_IO.Put_Line("One in classific");
+
             InClassific_Count := InClassific_Count + 1;
          else
             -- it means that the following rows have either a greater time instant
@@ -664,7 +662,7 @@ begin
          exit when ExitLoop = true;
       end loop;
 
-      Ada.Text_IO.Put_Line("Comps in classific " & Common.IntegerToString(InClassific_Count));
+
 
       CompetitorID_InClassific := new INTEGER_ARRAY(1..InClassific_Count);
       Times_InClassific := new FLOAT_ARRAY(1..InClassific_Count);
@@ -684,7 +682,7 @@ begin
          exit when ExitLoop = TRUE;
       end loop;
 
-      Ada.Text_IO.Put_Line("Getting lapped");
+
       Get_LappedCompetitors(TimeInstant,
                             Lap,
                             CompetitorIDs_PreviousClassific,
@@ -734,13 +732,13 @@ begin
       --Find out the competitors already into the previous table after the pole position time.
       --+Those competitors will not be counted in the lapped list.
       if( CurrentLap > 0) then
-         Ada.Text_IO.Put_Line("Competitors lapped classification getsize" &Integer'Image(Classification_Tables.all(CurrentLap).Get_Size));
+
          for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
-            Ada.Text_IO.Put_Line("CM: prendendo la riga");
+
             Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
             if (Temp_Row.Competitor_ID /= -1 and then Temp_Row.Time <= PolePosition_Time
 		and then ProcessedCompetitors_IdList(Temp_Row.Competitor_ID) /= 1) then
-               Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id));
+
                ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
                NotLapped_Count := NotLapped_Count + 1;
 	       PreviousClassific_Count := PreviousClassific_Count + 1;
@@ -760,13 +758,13 @@ begin
          --+ finished the previous one (so, they have a classification time for that lap). This is done to
          --+ avoid the problem o "skipped competitor in classification"
          if(PreviousClassific_Count /= 0) then
-Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClassific_Count));
+
 	    CompetitorIDs_PreviousClassific := new INTEGER_ARRAY(1..PreviousClassific_Count);
 	    Times_PreviousClassific := new FLOAT_ARRAY(1..PreviousClassific_Count);
 	    for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
 	      Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
 	      if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
-		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id)& " time "&Float'Image(Temp_Row.time)&" index = "&Integer'Image(Index));
+
 		CompetitorIDs_PreviousClassific(Index) := Temp_Row.Competitor_Id;
 		Times_PreviousClassific(Index) := Temp_Row.Time;
 	      else
@@ -778,7 +776,7 @@ Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClas
 	  Times_PreviousClassific := null;
 	 end if;
 	 
-         Ada.Text_IO.Put_Line("CM: allocazione array");
+
          if(CompetitorQty-NotLapped_Count = 0) then
             Competitor_IDs := null;
             Competitor_Lap := null;
@@ -795,31 +793,31 @@ Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClas
             ExitLoop := false;
             --Loop backward in the classification table list and find id and lap of lapped competitors
             for Index in reverse 1..CurrentLap-1 loop
-               Ada.Text_IO.Put_Line("CM: ricerca");
+
                for i in 1..Classification_Tables.all(Index).Get_Size loop
-                  Ada.Text_IO.Put_Line("CM: prendo riga");
+
                   Temp_Row := Classification_Tables.all(Index).Get_Row(i);
                   if (Temp_Row.Time /= -1.0 and then
                         Temp_Row.Time <= PolePosition_Time and then
                           ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) = 0 ) then
-                     Ada.Text_IO.Put_Line("CM: dentro if. Lap_Count = " & INTEGER'IMAGE(Lapped_Count) & ", Comp id = " & INTEGER'IMAGE(Temp_Row.Competitor_Id));
+
                      Lapped_Count := Lapped_Count + 1;
                      ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
-		     Ada.Text_IO.Put_Line("CM: step 2");
+
                      Competitor_IDs.all(Lapped_Count) := Temp_Row.Competitor_Id;
-		     Ada.Text_IO.Put_Line("CM: step 3");                     
+
 		     Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
-		     Ada.Text_IO.Put_Line("CM: uscendo dall'if'");
+
 		  end if;
 
                end loop;
 
             end loop;
-            Ada.Text_IO.Put_Line("CM: prima passata fatta");
+
             --If a competitor is still riding in the first lap, he will not appear in the tables.
             --+ So let's fill up the remaining positions of the lapped array
             for Index in 1..ProcessedCompetitors_IdList'LENGTH loop
-               Ada.Text_IO.Put_Line("CM: facendo seconda passata");
+
                if(ProcessedCompetitors_IdList(Index) = 0) then
                   Lapped_Count := Lapped_Count + 1;
                   ProcessedCompetitors_IdList(Index) := 1;
@@ -829,19 +827,13 @@ Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClas
             end loop;
          end if;
       else
-         Ada.Text_IO.Put_Line("Competitors not lapped yet");
+
          --If the lap is the first one, impossible to have lapped competitors
          Competitor_IDs := null;
          Competitor_Lap := null;
       end if;
 
    end Get_LappedCompetitors;
-
-   function print return BOOLEAN is
-   begin
-      Ada.Text_IO.put_Line("in costruttore S_GLOB");
-      return true;
-   end print;
 
    function Get_StatsRow(Competitor_Id_In : INTEGER;
                          Time_In : FLOAT) return STATS_ROW is
@@ -892,7 +884,7 @@ Ada.Text_IO.Put_Line("CM: PrevoiusClassific_Count = "&Integer'Image(PreviousClas
          Tmp_Stats : CLASSIFICATION_TABLE_POINT;
          New_Size : INTEGER := Statistics'LENGTH - 1;
       begin
-Ada.Text_IO.Put_Line("New_Size "&Integer'Image(New_Size));
+
          Tmp_Stats := new CLASSIFICATION_TABLE(1..New_Size);
          --Copy elements from old array to new one
          for Index in 1..New_Size loop --Tmp_Stats'RANGE loop
@@ -912,12 +904,12 @@ Ada.Text_IO.Put_Line("New_Size "&Integer'Image(New_Size));
       procedure Add_Row(Row_In : STATS_ROW) is
       begin
 
-      Ada.Text_IO.Put_Line("Adding roq from comp: " & INTEGER'IMAGE(Row_In.COmpetitor_Id) & " with tim " & FLOAT'IMAGE(Row_In.Time));
+
          if (Statistics(1).Competitor_Id = -1) then
-            Ada.Text_IO.Put_Line("In if");
+
             Add_Row(Row_In,1);
          else
-            Ada.Text_IO.Put_Line("In else");
+
             for index in Statistics'RANGE loop
                if(Row_In < Statistics(index) ) then
                   if(Find_RowIndex(Row_In.Competitor_Id) /= -1) then
@@ -926,11 +918,11 @@ Ada.Text_IO.Put_Line("New_Size "&Integer'Image(New_Size));
                   Shift_Down(index);
                   Add_Row(Row_In,index);
 
-                  Ada.Text_IO.Put_Line("Row added");
+
                   exit;
                elsif(Statistics(index).Competitor_Id = -1) then
                   Add_Row(Row_In,index);
-                  Ada.Text_IO.Put_Line("Row added");
+
                   exit;
                end if;
             end loop;

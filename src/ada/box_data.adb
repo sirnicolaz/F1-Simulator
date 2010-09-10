@@ -122,18 +122,11 @@ package body Box_Data is
 
       procedure AddStrategy( Strategy_in : in STRATEGY ) is
       begin
-         Ada.Text_IO.Put_Line("Adding strategy with");
-         Ada.Text_IO.Put_Line("gas: " & FLOAT'IMAGE(Strategy_In.GasLevel));
-         Ada.Text_IO.Put_Line("tyre: " & Unbounded_String.To_String(Strategy_In.Type_Tyre));
-         Ada.Text_IO.Put_Line("pit stop laps:" & INTEGER'IMAGE(Strategy_In.PitStopLaps));
-
-
-         Ada.Text_IO.Put_Line("History size " & INTEGER'IMAGE(history_size));
 
          history.all(history_size) := Strategy_in;
          history_size := history_size + 1;
          Updated := true;
-         Ada.Text_IO.Put_Line("Strategy "& Common.IntegerToString(history_size-1) & " added");
+
          exception when Constraint_Error =>
             Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
             Ada.Text_IO.Put("the history array has had an access violation.");
@@ -142,14 +135,14 @@ package body Box_Data is
       entry Get_Strategy( NewStrategy : out STRATEGY ;
                  Lap : in INTEGER) when Updated is
       begin
-         Ada.Text_IO.Put_Line("Retrieving new strategy for lap " & Common.IntegerToString(Lap));
-         Ada.Text_IO.Put_Line("History size " & Common.IntegerToString(history_size));
+
+
          --TODO: verify whether to put <= or <
          if Lap < history_size then
-            Ada.Text_IO.Put_Line("Strategy got");
+
             NewStrategy := history.all(Lap);
          else
-            Ada.Text_IO.Put_Line("Strategy missing");
+
             Updated := false;
             requeue Get_Strategy;
          end if;
@@ -179,12 +172,12 @@ package body Box_Data is
 
       entry Get_Info( Num : POSITIVE; Info : out ALL_INFO ) when Ready = true is
       begin
-         Ada.Text_IO.Put_Line("DEBUG Getting info");
+
          if( Num <= Info_Qty ) then
-            Ada.Text_IO.Put_Line("DEBUG Info ready");
+
             Info := Info_List.all(Num);
          else
-            Ada.Text_IO.Put_Line("DEBUG Info not ready");
+
             Updated := false;
             requeue Wait;
          end if;
@@ -192,13 +185,13 @@ package body Box_Data is
 
       entry Wait( Num : POSITIVE; Info : out ALL_INFO ) when Updated = true is
       begin
-         Ada.Text_IO.Put_Line("DEBUG Stop waiting");
+
          requeue Get_Info;
       end Wait;
 
       procedure Add_Info(Update_In : EXT_COMPETITION_UPDATE ) is
       begin
-         Ada.Text_IO.Put_Line("DEBUG Adding extended info to buffer");
+
          Info_Qty := Info_Qty + 1;
          Info_List.all(Info_Qty).PerSectorUpdate := new EXT_COMPETITION_UPDATE;
          Info_List.all(Info_Qty).PerSectorUpdate.all := Update_In;
@@ -209,7 +202,7 @@ package body Box_Data is
                          Strategy_In : STRATEGY) is
       begin
          Add_Info(Update_In);
-         Ada.Text_IO.Put_Line("DEBUG Adding strategy to buffer");
+
          Info_List.all(Info_Qty).StrategyUpdate := new STRATEGY;
          Info_List.all(Info_Qty).StrategyUpdate.all := Strategy_In;
       end Add_Info;
@@ -221,7 +214,7 @@ package body Box_Data is
    function Get_StrategyXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String is
       Tmp_String : Unbounded_String.Unbounded_String;
    begin
-      Ada.Text_IO.Put_Line("DEBUG Getting xml strategy");
+
       if(Data.StrategyUpdate /= null) then
          Tmp_String := Unbounded_String.To_Unbounded_String(BoxStrategyToXML(Data.StrategyUpdate.all));
       else
@@ -234,7 +227,7 @@ package body Box_Data is
    function Get_UpdateXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String is
       Tmp_String : Unbounded_String.Unbounded_String;
    begin
-      Ada.Text_IO.Put_Line("DEBUG Getting xml update");
+
       Tmp_String := Unbounded_String.To_Unbounded_String
         ("<status>" &
          "<gasLevel>" & Common.FloatToString(Data.PerSectorUpdate.GasLevel) & "</gasLevel>" &
@@ -251,7 +244,7 @@ package body Box_Data is
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT is
    begin
-      Ada.Text_IO.Put_Line("DEBUG Getting time");
+
       return Data.PerSectorUpdate.Time;
    end Get_Time;
 
@@ -263,7 +256,7 @@ package body Box_Data is
       XML_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
-      Ada.Text_IO.Put_Line("Producing xml strategy...");
+
 
       case Strategy_in.Style is
          when AGGRESSIVE =>
@@ -276,44 +269,44 @@ package body Box_Data is
             Ada.Text_IO.Put_Line("Error, no style set");
       end case;
 
-      Ada.Text_IO.Put_Line("Creating xml string");
+
       XML_String := Unbounded_String.To_Unbounded_String
         ("<strategy>");
 
-      Ada.Text_IO.Put_Line("Setting tyre");
+
       XML_STring := XML_String &
       Unbounded_String.To_Unbounded_String("<tyreType>") &
       Strategy_in.Type_Tyre &
       Unbounded_String.To_Unbounded_String("</tyreType>");
-      Ada.Text_IO.Put_Line("First part of the strategy " & Unbounded_String.To_String(XML_String));
 
-      Ada.Text_IO.Put_Line("Setting style");
+
+
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<style>") &
       Style &
       Unbounded_String.To_Unbounded_String("</style>");
 
-      Ada.Text_IO.Put_Line("Setting gas level");
+
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<gasLevel>") &
       FloatToString(Strategy_in.GasLevel) &
       Unbounded_String.To_Unbounded_String("</gasLevel>");
 
-      Ada.Text_IO.Put_Line("Setting put stop laps" & Common.IntegerToString(Strategy_in.PitStopLaps));
+
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<pitStopLaps>") &
       IntegerToString(Strategy_in.PitStopLaps) &
       Unbounded_String.To_Unbounded_String("</pitStopLaps>");
 
-      Ada.Text_IO.Put_Line("Setting pit stop delay");
-      Ada.Text_IO.Put_Line("pit stop delay " & FLOAT'IMAGE(Strategy_in.PitStopDelay));
+
+
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<pitStopDelay>") &
       FloatToString(Strategy_in.PitStopDelay) &
       Unbounded_String.To_Unbounded_String("</pitStopDelay>" &
                                            "</strategy>");
 
-      Ada.Text_IO.Put_Line("Strategy done");
+
 
       return Unbounded_String.To_String(XML_String);
    end BoxStrategyToXML;
