@@ -126,7 +126,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 	}
 	catch(Exception eccIn){
-	    eccIn.printStackTrace();
+// 	    eccIn.printStackTrace();
 	}
     }
     public void writeDati(String xmlComp, int numCompetitor){
@@ -147,7 +147,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    scuderia[numCompetitor] = getNode("team", upd);
 	}
 	catch(Exception eccIn){
-	    eccIn.printStackTrace();
+// 	    eccIn.printStackTrace();
 	}
     }
     public void addLogInfo(){
@@ -275,7 +275,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 			    }catch (NullPointerException npEcc){
 
-				npEcc.printStackTrace();
+// 				npEcc.printStackTrace();
 			    }
 			    try{
 				index=0;
@@ -291,7 +291,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 
 			    }catch (NullPointerException npEcc){
-				npEcc.printStackTrace();
+// 				npEcc.printStackTrace();
 			    }
 			    System.out.println(" LORY : PRIMA DI INVERT");
 			    classTable.invert(current_index, new Integer(current_lap+1));//inverto le classifiche
@@ -330,7 +330,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 				    }
-				    catch(Exception ecd ){ecd.printStackTrace();
+				    catch(Exception ecd ){//ecd.printStackTrace();
 					varCiclo = datiArray.length +1;
 				    }
 				}
@@ -340,11 +340,11 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 		    }
 		    catch(NullPointerException eccCl){
-			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
+// 			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
 		    }
 		    catch(Exception eccGen){
-			eccGen.printStackTrace();
-			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
+// 			eccGen.printStackTrace();
+// 			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
 
 		    }
 		    updTime = updTime + interval;
@@ -372,7 +372,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		}
 	    }
 	}
-	catch(Exception e){e.printStackTrace();}
+	catch(Exception e){//e.printStackTrace();
+}
     }
     // parsing xml
     public void readXml(String xmlRecords){//, float istant){
@@ -566,7 +567,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			    j=j+1;
 			}
 			catch(Exception arrayBound){
-			    arrayBound.printStackTrace();
+// 			    arrayBound.printStackTrace();
 			    j= arrayInfo.length +1;
 			}
 		    }
@@ -579,13 +580,13 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		}
 	    }
 	    catch (Exception e){
-		System.out.println("classification non presente");
+// 		System.out.println("classification non presente");
 	    }
 	
 	}
 	catch (Exception e) {
-	    e.printStackTrace();
-	    System.out.println("eccezione in readXml");
+// 	    e.printStackTrace();
+// 	    System.out.println("eccezione in readXml");
 	}
     }
     public static String getNode(String tag, Element element){

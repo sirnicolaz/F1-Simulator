@@ -59,7 +59,7 @@ openButton = new JButton("Sfoglia...");
 					try {
 						fileRacetrack.setText(fc.getSelectedFile().getCanonicalPath());
 					} catch(Exception ecc) {
-					    ecc.printStackTrace();
+// 					    ecc.printStackTrace();
 					}
 				}
 			}
@@ -180,8 +180,8 @@ System.out.println("CompetitionConfigurationWindow : 4");
       frame.setVisible(true);
 }
 catch(Exception e){
-e.printStackTrace();
-System.out.println("CompetitionConfigurationWindow : Ecc");
+// e.printStackTrace();
+// System.out.println("CompetitionConfigurationWindow : Ecc");
 }
 }
 
@@ -208,7 +208,7 @@ out.close();
 return true;
 }
 catch(IOException e){
-e.printStackTrace();
+// e.printStackTrace();
 return false;
 }
 }
@@ -231,7 +231,7 @@ out.println(raceTrackFile.readLine());
 }
 out.close();
 }catch(Exception e){
-e.printStackTrace();
+// e.printStackTrace();
 }
 
 }

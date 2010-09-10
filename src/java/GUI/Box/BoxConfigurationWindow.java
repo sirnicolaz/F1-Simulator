@@ -147,8 +147,12 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    bufRead.close();
 
 	}
-	catch (IOException e ){System.out.println("costruttore : errore di apertura/chiusura del file");}
-	catch (Exception e){System.out.println("costruttore : problemi con la lettura del file");}
+	catch (IOException e ){
+// System.out.println("costruttore : errore di apertura/chiusura del file");
+}
+	catch (Exception e){
+// System.out.println("costruttore : problemi con la lettura del file");
+}
     }
 
     class carConfigurationPanel{
@@ -297,7 +301,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		corbaLocFile.readLine();
 		textCorbaloc.setText(corbaLocFile.readLine());
 	    }catch(Exception e){
-		System.out.println("File non presente");
+// 		System.out.println("File non presente");
 	    }
 
 	}
@@ -546,7 +550,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    return true;
 	}
 	catch(IOException e){
-	    e.printStackTrace();
+// 	   e.printStackTrace();
 	    return false;
 	}
     }
@@ -576,7 +580,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
 	}
 	catch(IOException e){
-	    e.printStackTrace();
+// 	    e.printStackTrace();
 	    return false;
 	}
     }
@@ -623,7 +627,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		JOptionPane.showMessageDialog(parent, "Attention : connection refused by RegistrationHandler", "Error", JOptionPane.ERROR_MESSAGE);
 	    }
 	} catch (Exception e) {
-	    JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+// 	    JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
 	    e.printStackTrace();
 	}
     }

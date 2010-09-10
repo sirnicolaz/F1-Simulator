@@ -323,14 +323,14 @@ public class BoxScreen extends Thread{
 
 	}
 	catch(NullPointerException e){
-	    e.printStackTrace();
-	    JOptionPane.showMessageDialog(parent, "Attention : NullPointerException", "Error", JOptionPane.ERROR_MESSAGE);
+// 	    e.printStackTrace();
+// 	    JOptionPane.showMessageDialog(parent, "Attention : NullPointerException", "Error", JOptionPane.ERROR_MESSAGE);
 	}
 	// catch()
 	catch (Exception e){
-	    System.out.println("Eccezione");
-	    JOptionPane.showMessageDialog(parent, "Attention : Exception", "Error", JOptionPane.ERROR_MESSAGE);
-	    e.printStackTrace();
+// 	    System.out.println("Eccezione");
+// 	    JOptionPane.showMessageDialog(parent, "Attention : Exception", "Error", JOptionPane.ERROR_MESSAGE);
+// 	    e.printStackTrace();
 	}
     }
 
@@ -424,11 +424,11 @@ public class BoxScreen extends Thread{
 		pitstopDelayValue = new Float(getCharacterDataFromElement(line)).floatValue();
 	    }
 	    catch(Exception e){
-		System.out.println("strategia non presente");}
+// 		System.out.println("strategia non presente");}
 	}
 	catch (Exception e) {
-	    e.printStackTrace();
-	    System.out.println("eccezione in readXml");
+// 	    e.printStackTrace();
+ 	    System.out.println("eccezione in readXml");
 	}
     }
 
@@ -507,7 +507,9 @@ public class BoxScreen extends Thread{
 	    line = (Element) type.item(0);
 	    typetyreValue = new String(getCharacterDataFromElement(line));
 	}
-	catch (Exception e){e.printStackTrace();}
+	catch (Exception e){
+// e.printStackTrace();
+}
 
     }
     public static String getCharacterDataFromElement(Element e) {
