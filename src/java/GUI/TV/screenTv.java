@@ -269,10 +269,10 @@ arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
 readXml(updateString.value);//, q);
 best.setClock("Time "+convert(updTime));
 // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
+int index= 0;
 try{
 if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
 System.out.println("LORY DEBUG : NUOVA CLASSIFICA");
-int index= 0;
 int diff; 
 int posiz = modelClassific[current_index].getRowCount();
 try{
@@ -281,7 +281,7 @@ if(datiArray[index].getLap() < datiArray[0].getLap()){//ho trovato un concorrent
 //scorro le righe della tabella per vedere se è già inserito.
 for(int indTable = 0; indTable < posiz; indTable++){
 String operand1 = new String(datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]);// stringa da ricercare nella tabella
-String operand2 = new String(modelClassific[current_index]getValueAt(i, 1));//scorro i le stringhe composte come "id : cognome"
+String operand2 = (String)modelClassific[current_index].getValueAt(i, 1);//new String(modelClassific[current_index].getValueAt(i, 1));//scorro i le stringhe composte come "id : cognome"
 if(operand1.equals(operand2)){//ho già il dato
 indTable = posiz +1;// esco dal for, ho già la riga
 index= index+1;//cerco la riga per il concorrente successivo, se esiste.
@@ -298,7 +298,12 @@ index = index+1;
 
 }
 }
-
+}
+}catch (NullPointerException npEcc){
+npEcc.printStackTrace();
+}
+try{
+index=0;
 while(index < datiArrayDoppiati.length){//finchè non ho finito di scrivere i dati
 System.out.println("LORY : PRE DIFF=");
 diff = current_lap + 1 - datiArrayDoppiati[index].getLap();
@@ -309,6 +314,7 @@ else{modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[dati
 }
 index=index+1;
 }
+
 }catch (NullPointerException npEcc){
 npEcc.printStackTrace();
 }
@@ -329,6 +335,7 @@ modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[inde
 index=index+1;
 }
 }
+//}
 else{//non sono in presenza di un nuovo giro
 int varCiclo=0;
 System.out.println("modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
@@ -345,7 +352,7 @@ try{
 System.out.println(" dopo cancellazione --- modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
 System.out.println("DEBUG 3 : SCRIVO NUOVA CLASSIFICA "+varCiclo);
 System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
-modelClassific[current_index].insertRow(varCiclo, new Object[]{varCiclo,datiArray[index].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+modelClassific[current_index].insertRow(varCiclo, new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 }
 catch(Exception ecd ){ecd.printStackTrace();
@@ -728,7 +735,7 @@ int j=0;
 	
 	System.out.println("------lap : "+getNode("lap", line));
 datiArray = new dati [arrayInfo.length];
-datiArrayDoppiati = [comp42.getLength() - arrayInfo.length];
+datiArrayDoppiati = new dati[comp42.getLength() - arrayInfo.length];
 if(j<arrayInfo.length){
 try{
 datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]);
