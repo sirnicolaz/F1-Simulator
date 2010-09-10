@@ -108,6 +108,7 @@ Il checkpoint pu\`{o} avere uno dei seguenti attributi:
 \end{itemize}
 \item Numero di concorrenti richiesti
 \item Numero di giri previsti
+\item Nome del tracciato
 \end{enumerate}
 Una volta settati i parameteri e schiacciato il pulsante \emph{Start Competition} verr\`{a} avviato una tv che presenta le informazioni sulle iscrizioni nella parte bassa della finestra. Ogni volta che un concorrente si iscrive compare nella gui e una volta raggiunto il numero di concorrenti stabiliti la gara si avvia e la gui comincia ad offrire i dati disponibili, come spiegato nel paragrafo \ref{interfacciaTv}
 \begin{center}
@@ -119,7 +120,7 @@ Una volta settati i parameteri e schiacciato il pulsante \emph{Start Competition
 \subsection{Interfaccia TV}
 \label{interfacciaTv}
 L'interfaccia della tv consiste in un pannello iniziale con al suo interno un cronometro che scandisce il tempo di aggiornamento delle informazioni seguito da un pannello con le informazioni sul miglior giro e sui migliori tempi nei settori.
-L'intervallo per il tempo che scorre \`{e} impostabile se si tratta di una tv configurata tramite il \emph{configuratorScreen}, prestabilito (e molto basso) se si tratta della tv avviata dalla competizione.
+L'intervallo per il tempo che scorre \`{e} impostabile se si tratta di una tv configurata tramite il \emph{TvConfigurationWindow}, prestabilito (e molto basso) se si tratta della tv avviata dalla competizione. Il formato della stringa di refresh dev'essere \emph{secondi . millisecondi}.
 Il pannello centrale offre la visualizzazione di due tabelle. La tabella a destra si riferisce all'ultima classifica disponibile mentre a sinistra viene visualizzata la classifica del giro precedente (escluso al primo giro di gara dove viene presentata una tabella vuota).
 Nella parte bassa della finestra viene presentato un log della competizione rappresentando a ogni istante di tempo posizione nella pista, numero di checkpoint, numero di settore e giro per ogni concorrente.
 \begin{center}
