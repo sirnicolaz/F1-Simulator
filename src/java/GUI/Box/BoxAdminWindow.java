@@ -5,7 +5,6 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-// import java.awt.Dialog.*;
 import javax.swing.JDialog.*;
 
 import java.util.Properties;
@@ -43,7 +42,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private JLabel labelGasLevel;
     private JLabel valueLevelFuel;
     private JLabel valueSpeed;
-//     private JLabel labelTyre = new JLabel("Tyre type");
     private JLabel labelBox = new JLabel("Box Strategy");
     private JLabel labelName = new JLabel("Name");
     private JLabel labelSurname = new JLabel("Surname");
@@ -69,15 +67,14 @@ public class BoxAdminWindow implements AdminPanelInterface{
 
     //sezione spinner giro di fermata
     //sezione spinner Quantità di benzina
-    private Integer valueFuel;// = new Integer(100 - sliderGasLevel.getValue()); 
-    private Integer minFuel;// = new Integer(0);
-    private Integer maxFuel;// = new Integer(100 - sliderGasLevel.getValue()); 
-    private SpinnerNumberModel modelFuel;// = new SpinnerNumberModel(valueFuel, minFuel, maxFuel, step); private Integer valueLap;// = new Integer(12); 
+    private Integer valueFuel; 
+    private Integer minFuel;
+    private Integer maxFuel; 
+    private SpinnerNumberModel modelFuel;
     //sezione spinner grandezza serbatoio
     // private Integer valueSerbatorio = new Integer(12); 
     private Integer minTank = new Integer(200);
     private Integer maxTank= new Integer(400); 
-    // private Integer step;// = new Integer(1); 
     private SpinnerNumberModel modelTank;
     private SpinnerNumberModel modelAcc;
     //sezione panel
@@ -86,8 +83,8 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private JPanel buttonPanel;
     private JPanel dataPanel;
     //sezione JSpinner
-    private JSpinner jsLap;// = new JSpinner(modelLap);
-    private JSpinner jsFuel;// = new JSpinner(modelFuel);
+    private JSpinner jsLap;
+    private JSpinner jsFuel;
     private JSpinner jsVelocita;
     private JSpinner jsAcc;
     //sezione GridBagConstraints
@@ -132,7 +129,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
     public BoxAdminWindow(JFrame frame, String param){
 	stringId = param;
 	parent=frame;
-	//   init(frame);
 	try{
 	    // LETTURA CORBALOC DA FILE
 	    FileReader doc=new FileReader("../temp/boxCorbaLoc-"+stringId+".txt");
@@ -320,18 +316,13 @@ public class BoxAdminWindow implements AdminPanelInterface{
 		valoreT.setText(str+simboloT);
 		Integer a = new Integer((Integer)sliderFuelTank.getValue()-value);
 		if (simboloT == "L") {
-		    // 	  if (a < (Integer)jsFuel.getValue()){
-		    // 	      jsFuel.setValue((Integer)sliderFuelTank.getValue() - value);
-		    // 	  }
-		    // modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());	      
 		    stringSerbatoio = new String("<gastankcapacity>"+Integer.toString((Integer)sliderFuelTank.getValue())+".0</gastankcapacity>");
 		    gasolineString = new String("<gasolinelevel>"+value.toString()+".0</gasolinelevel>");
 		    gasolineStringBox = new String("<initialGasLevel>"+value.toString()+".0</initialGasLevel>");
 		    gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+".0</gasTankCapacity>");
 
 		}
-		if(simboloT =="L(200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());/*
-												     modelFuel.setMaximum((Integer)sliderFuelTank.getValue() - (Integer)sliderGasLevel.getValue());*/
+		if(simboloT =="L(200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());
  	
 		}
 	    }
@@ -391,31 +382,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 			System.out.println(s);
 		    }
 		});
-	    //adding component to PitStop configuration
-	    /*boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	      boxConfigurationGrid.gridx = 0;
-	      boxConfigurationGrid.gridy = 1;
-	      boxConfigurationGrid.ipady = 5;
-	      boxPanel.add(labelHelp, boxConfigurationGrid);*/
-	    // boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		boxConfigurationGrid.gridx = 1;
-	    // 		boxConfigurationGrid.gridy = 1;
-	    // 		boxConfigurationGrid.ipady = 5;
-	    // 		boxPanel.add(labelHelp2, boxConfigurationGrid);
-
-	    // boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		boxConfigurationGrid.gridx = 0;
-	    // 		boxConfigurationGrid.gridy = 2;
-	    // 		boxConfigurationGrid.ipady = 5;
-	    // 		boxPanel.add(labelCorbaloc, boxConfigurationGrid);
-	    // boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	    // 		boxConfigurationGrid.gridx = 0;
-	    // 		boxConfigurationGrid.gridy = 3;
-	    // 		boxConfigurationGrid.ipady = 5;
-	    // 		boxPanel.add(textCorbaloc, boxConfigurationGrid);
-
-
-
+	    
 	    boxConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    boxConfigurationGrid.gridx = 0;
 	    boxConfigurationGrid.gridy = 0;
@@ -472,9 +439,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 			scuderia = new String("<team>"+textTeam.getText()+"</team>");			    
 			nome = new String("<firstname>"+textName.getText()+"</firstname>");
 			cognome = new String("<lastname>"+textSurname.getText()+"</lastname>");
-			// 			    valueUsuryDouble = new Double ((double)sliderTyreUsury.getValue() / (double)100);
 			valueFuelInt = new Integer((int)sliderGasLevel.getValue());
-			// 			    tyreUsuryString = new String("<tyreusury>"+valueUsuryDouble.toString()+"</tyreusury>");
 			gasolineString = new String("<gasolinelevel>"+valueFuelInt.toString()+".0</gasolinelevel>");
 			stringMaxAcc = new String("<maxacceleration>"+jsAcc.getValue().toString()+"</maxacceleration>");
 			stringMaxSpeed = new String("<maxspeed>"+Integer.toString((Integer)sliderSpeed.getValue())+".0</maxspeed>");
@@ -483,7 +448,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
 			if (ret=true) {System.out.println("Scrittura riuscita");}
 			else {System.out.println("Scrittura non riuscita");}
 			String corbaLocValue = textCorbaloc.getText();
-			// String temp = new String("inserire corbaloc");
 			System.out.println(corbaLocValue);
 			System.out.println("textCorbaloc.getText() = "+textCorbaloc.getText()+"...");
 			if (corbaLocValue.equals("")){
@@ -502,32 +466,15 @@ public class BoxAdminWindow implements AdminPanelInterface{
 			resetInfo();			}
 		});
 	    //adding button to buttonPane
-	    /*buttonPanel.add(labelCorbaloc);
-	      buttonPanel.add(textCorbaloc);*/
 	    buttonPanel.add(startButton);
 	    buttonPanel.add(resetButton);
-	    /*
-	      buttonConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	      buttonConfigurationGrid.gridx = 0;
-	      buttonConfigurationGrid.gridy = 0;
-	      buttonConfigurationGrid.ipady = 5;
-	      buttonPanel.add(labelCorbaloc, buttonConfigurationGrid);
-	      buttonConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
-	      buttonConfigurationGrid.gridx = 0;
-	      buttonConfigurationGrid.gridy = 1;
-	      buttonConfigurationGrid.ipady = 5;
-	      buttonPanel.add(textCorbaloc, buttonConfigurationGrid);*/
-
+	    
 	}
     }
 
     public void init(JFrame frame){
 	// GridBagConstraints 
 	carConfigurationGrid = new GridBagConstraints();
-	// dataPanel = new JPanel(new BorderLayout());
-	// dataPanel.setLayout(new GridBagLayout());
-	// dataPanel.setBorder(BorderFactory.createTitledBorder(null, "Competitor Data", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-	// driverConfigurationGrid = new GridBagConstraints();
 
 	boxPanel= new JPanel(new BorderLayout());
 	boxPanel.setLayout(new GridBagLayout());
@@ -543,10 +490,8 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	buttonPanel.setLayout(new FlowLayout());
 
 	carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
-	// driverConfigurationPanel driver = new driverConfigurationPanel(dataPanel, driverConfigurationGrid);
 	boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
 	buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
-	// frame.add(dataPanel,BorderLayout.NORTH);
 	frame.add(carPanel, BorderLayout.WEST);
 	frame.add(boxPanel, BorderLayout.NORTH);
 	frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -554,11 +499,9 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	frame.setVisible(true);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    // public boolean verifySetting(){return true;}
-    // public void confirmSetting(){}
+   
     public void resetInfo(){
 	System.out.println("Reset Field");
-	// 			      sliderTyreUsury.setValue(15);//usura gomme
 	sliderGasLevel.setValue(50);//benzina caricata
 	comboBox.setSelectedIndex(0);//tipo di guida
 	comboTypeTyre.setSelectedIndex(0);//mescola gomme montate
@@ -639,8 +582,8 @@ public class BoxAdminWindow implements AdminPanelInterface{
     }
 
     public void switchPanel(){
-	BoxMonitor p = new BoxMonitor(stringId, competitorXML);
-	System.out.println("id del boxmonitor : "+stringId);
+	BoxScreen p = new BoxScreen(stringId, competitorXML);
+	System.out.println("id del BoxScreen : "+stringId);
 	parent.dispose();
 	p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb, laps.value);
 	p.start();
@@ -652,7 +595,6 @@ public class BoxAdminWindow implements AdminPanelInterface{
 	    System.out.println("Try to connect to Registration Handler");
 	    String[] temp = {"ORB"};
 	    orb = ORB.init(temp, null);
-	    // ORB orb =org.omg.CORBA.ORB.Initialize("ORB");
 	    System.out.println("ORB initialized");
 	    //Resolve MessageServer
 	    org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
@@ -669,12 +611,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 		writerBoxXML();
 		System.out.println("After writerBoxXML");
 		//connessione configurator
-
-		// Configurator conf = Connection.connectC(configuratorCorbaLoc);
 		System.out.println("Try to connect to configurator with corbaloc : "+configuratorCorbaLoc);
-		// 	  ORB orb = ORB.init(temp, null);
-		// System.out.println("ORB initializes");
-		//Resolve MessageServer
 		org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
 		System.out.println("chiamo ConfiguratorHelper.narrow");
 		//qua va effettuato lo switch panel.

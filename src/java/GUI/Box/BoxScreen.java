@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.table.*;
-// import java.awt.Dialog.*;
 import javax.swing.JDialog.*;
 import java.awt.Rectangle;
 
@@ -25,7 +24,7 @@ import javax.xml.parsers.*;
 import org.xml.sax.InputSource;
 import org.w3c.dom.*;
 
-public class BoxMonitor extends Thread{
+public class BoxScreen extends Thread{
     private Integer i= new Integer(0);
     private Integer laps;
     private String id;
@@ -93,7 +92,7 @@ public class BoxMonitor extends Thread{
     private String mixtureValue;
     private String typetyreValue;
 
-    public BoxMonitor(String id_In, String xmlCompetitor){
+    public BoxScreen(String id_In, String xmlCompetitor){
 	id=id_In;
 	parent = new JFrame("BoxMonitor n° "+id_In);
 	readXmlCompetitor(xmlCompetitor);
@@ -135,23 +134,16 @@ public class BoxMonitor extends Thread{
 	outPanelGrid.gridx = 0;
 	outPanelGrid.gridy = 4;
 	outPanelGrid.ipady = 5;
-	outPanel.add(labelInfo_5, outPanelGrid);
-	outPanelGrid.fill = GridBagConstraints.HORIZONTAL;
-	outPanelGrid.gridx = 0;
-	outPanelGrid.gridy = 5;
-	outPanelGrid.ipady = 5;
 	outPanel.add(labelInfo_6, outPanelGrid);
 	outPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 	outPanelGrid.gridx = 0;
-	outPanelGrid.gridy = 6;
+	outPanelGrid.gridy = 5;
 	outPanelGrid.ipady = 5;
 	outPanel.add(labelInfo_7, outPanelGrid);
 
     }
     public void createConsumptionMeans(){
 
-	// textBoxGas.setEditable(false);
-	// textBoxTyre.setEditable(false);
 	meanPanelGrid = new GridBagConstraints();
 	meanPanel = new JPanel(new BorderLayout());
 	meanPanel.setLayout(new GridBagLayout());
@@ -194,8 +186,6 @@ public class BoxMonitor extends Thread{
     }
 
     public void createTableOutput(){
-	// model.addColumn("Id Row");
-	// model.addColumn("Id Comp"); 
 	model.addColumn("Lap");
 	model.addColumn("Sector");
 	model.addColumn("Fuel Level (l)");
@@ -208,35 +198,12 @@ public class BoxMonitor extends Thread{
 	column.setPreferredWidth(20);
 	column = outTable.getColumnModel().getColumn(1);
 	column.setPreferredWidth(20);
-	// TableColumn col = outTable.getColumnModel().getColumn(0); 
-	// int width = 35; 
-	// col.setPreferredWidth(10); 
-	// TableColumn col2 = outTable.getColumnModel().getColumn(1); 
-	// col2.setPreferredWidth(10); 
-	// 
-	// TableColumn col3 = outTable.getColumnModel().getColumn(2); 
-	// col3.setPreferredWidth(15); 
-	// 
-	// TableColumn col4 = outTable.getColumnModel().getColumn(3); 
-	// col4.setPreferredWidth(15); 
-	// 
-	// TableColumn col5 = outTable.getColumnModel().getColumn(4); 
-	// col5.setPreferredWidth(25); 
-	// outTable = new JTable(0,5);
-	// outTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
+
 	tablePanel = new JScrollPane(outTable);
-	// tablePanel.setPreferredSize(new Dimension( , 110));
 	tablePanel.setPreferredSize(new Dimension(500, 250));
 
-	// tablePanel.getViewport().add(outTable);
 	tablePanel.setVerticalScrollBar(new JScrollBar());
 	tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	// outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-	// tablePanel.validate();
-
-	// Disable auto resizing 
-	// outTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Set the first visible column to 100 pixels wide 
-
 
     }
 
