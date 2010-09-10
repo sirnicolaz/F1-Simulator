@@ -334,7 +334,7 @@ package body Circuit is
       Current_Mult : INTEGER;
       Current_Angle : FLOAT;
       Current_Grip : FLOAT;
-      Current_Difficutly : FLOAT;
+      --Current_Difficutly : FLOAT;
       Checkpoint_Temp : POINT_Checkpoint;
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
 
@@ -410,7 +410,7 @@ package body Circuit is
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
                   Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
                   Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
-                  Current_Difficutly := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"difficulty"))));
+                  --Current_Difficutly := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"difficulty"))));
 
                   if IsPreBox = false then
                      Checkpoint_Temp := new Checkpoint;
@@ -438,7 +438,7 @@ package body Circuit is
                              Current_Length,
                              Current_Angle,
                              Current_Grip,
-                             Current_Difficutly,
+                             1.0,
                              Current_Mult,
                              MaxCompetitors_Qty,
                              IsPreBox,
