@@ -228,7 +228,7 @@ package body Competition_Monitor is
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
 	 begin
-	  if(Tmp_CompLocation.all = "arriving") then
+	  if(Tmp_CompLocation.all = "arriving" and Tmp_Stats.Checkpoint = 1) then
 	    HighestCompletedLapThisCompetitor := Tmp_Stats.Lap-2;
 	  else
 	    HighestCompletedLapThisCompetitor := Tmp_Stats.Lap-1;
