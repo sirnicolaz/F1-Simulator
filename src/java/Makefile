@@ -5,7 +5,7 @@ competition: corba tv
 	javac -d ../../obj/java/ GUI/Competition/StartCompetition.java 
 
 tv: corba
-	javac -d ../../obj/java/ GUI/TV/screenTv.java
+	javac -d ../../obj/java/ GUI/TV/configurationScreen.java
 
 corba:
 	@idlj ../idl/init.idl

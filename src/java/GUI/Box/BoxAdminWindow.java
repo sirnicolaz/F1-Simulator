@@ -141,7 +141,7 @@ public BoxAdminWindow(JFrame frame, String param){
 //   init(frame);
 try{
 // LETTURA CORBALOC DA FILE
-FileReader doc=new FileReader("../boxCorbaLoc-"+stringId+".txt");
+FileReader doc=new FileReader("../temp/boxCorbaLoc-"+stringId+".txt");
 BufferedReader bufRead = new BufferedReader(doc);
 //read configuratorCorbaloc
   configuratorCorbaLoc= bufRead.readLine();

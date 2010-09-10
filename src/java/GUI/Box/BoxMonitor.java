@@ -203,7 +203,7 @@ org.omg.CORBA.Object obj = orb.string_to_object(configuratorCorbaLoc);
 outArea.setText("Pre narrow");
 BoxConfigurator conf = BoxConfiguratorHelper.narrow(obj);
 outArea.append("\nConf initialized, invoke configure");
-conf.Configure("obj/boxConfig-"+id+".xml");
+conf.Configure("boxConfig-"+id+".xml");
 outArea.append("\nAfter configure");
 outArea.append("\n pre string_to_object");
 org.omg.CORBA.Object obj_radio = orb.string_to_object(monitorBoxCorbaLoc);

@@ -43,8 +43,9 @@ private bestPerformance best = new bestPerformance();
 private Competition_Monitor_Radio monitor;
 private org.omg.CORBA.Object obj;
 private int[] provaArray;// = new int[10];
-private arrayDati[] storicodatiArray;// = new arrayDati[10]; TODO
+// private arrayDati[] storicodatiArray;// = new arrayDati[10]; TODO
 private dati[] datiArray;// = new dati[3]; TODO
+private dati[] datiArrayDoppiati;
 // private dati[] datiOldArray = new dati[5];
 private JFrame parent;
 private JPanel logPanel;
@@ -69,7 +70,7 @@ private String corbaloc;
 private ORB orb;
 private int numComp;
 private int numLap;
-private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
+// private org.omg.CORBA.FloatHolder circuitLength = new org.omg.CORBA.FloatHolder();
 private float lenghtCircuit;
 
 private float[] arrayInfo;
@@ -96,13 +97,17 @@ updTime = updTimeIn;
 
 public void readConfiguration(){
 String xmlConfString;
-org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder();
+Float circuitLength;
+org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder("");
 try {
 System.out.println("readConfiguration : 0 monitor = "+monitor);
-monitor.Get_CompetitionConfiguration(circuitLength,xmlConf);
+circuitLength = monitor.Get_CompetitionConfiguration(xmlConf);
 // monitor.ready((short)1);
+// System.out.println("chiamo la get competitor info ... \n");
+// String tempStr = monitor.Get_CompetitorInfo((short)1,(short)1,(short)1, circuitLength);
+// System.out.println(tempStr);
 System.out.println("readConfiguration : 1");
-lenghtCircuit = new Float(circuitLength.value).floatValue();
+lenghtCircuit = circuitLength;//new Float(circuitLength.value).floatValue();
 System.out.println("readConfiguration : 2");
 xmlConfString = xmlConf.value;
 System.out.println("readConfiguration : 3");
@@ -125,8 +130,9 @@ System.out.println(xmlConf.value);
 
 endRace = new boolean[numComp];
 ritRace = new boolean[numComp];
-storicodatiArray = new arrayDati[numLap];
+// storicodatiArray = new arrayDati[numLap];
 datiArray = new dati[numComp];
+datiArrayDoppiati = new dati[numComp];
 infos = new competitorLog[numComp];
 for(int number = 0; number <numComp; number++){
 endRace[number]= false;
@@ -238,9 +244,9 @@ JOptionPane.showMessageDialog(parent,debug.getStackTrace(), "Error",JOptionPane.
 // modelAll.insertRow(index,new Object[]{(index+1)+" : "+cognome[index], "---","---","---","---","---"});
 }
 
-for(int i=0; i<Array.getLength(storicodatiArray);i++){
-storicodatiArray[i] = new arrayDati(new dati[numComp]);
-}
+// for(int i=0; i<Array.getLength(storicodatiArray);i++){
+// storicodatiArray[i] = new arrayDati(new dati[numComp]);
+// }
 /*for(int numCompetitor =0; numCompetitor<numComp; numCompetitor++){
 
 }*/
@@ -262,6 +268,80 @@ arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
 // lapNum = (int)q;
 readXml(updateString.value);//, q);
 best.setClock("Time "+convert(updTime));
+// ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
+try{
+if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
+System.out.println("LORY DEBUG : NUOVA CLASSIFICA");
+int index= 0;
+int diff; 
+int posiz = modelClassific[current_index].getRowCount();
+try{
+while(index < datiArrayDoppiati.length){//finchè non ho finito di scrivere i dati
+System.out.println("LORY : PRE DIFF=");
+diff = current_lap + 1 - datiArrayDoppiati[index].getLap();
+System.out.println("LORY : diff ="+diff);
+if(diff==1){modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + 1 giro"});
+}
+else{modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
+}
+index=index+1;
+}
+}catch (NullPointerException npEcc){
+npEcc.printStackTrace();
+}
+System.out.println(" LORY : PRIMA DI INVERT");
+classTable.invert(current_index, new Integer(current_lap+1));//inverto le classifiche
+current_lap = current_lap +1;
+current_index=(current_index+1)%2;
+System.out.println("modelClassific[current_index].getRowCount() dopo invert "+modelClassific[current_index].getRowCount());
+int rowNumber = modelClassific[current_index].getRowCount();
+for(int w=0; w<rowNumber; w++){//rimuovo la vecchia classifica scritta su questa tabella.
+System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
+modelClassific[current_index].removeRow(0);
+}
+index=0;
+while(datiArray[index]!=null){//posso scrivere la classifica
+System.out.println("LORY DEBUG : INDEX = "+index );
+modelClassific[current_index].insertRow(index,new Object[]{index, cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+index=index+1;
+}
+}
+else{//non sono in presenza di un nuovo giro
+int varCiclo=0;
+System.out.println("modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
+int rowCount = modelClassific[current_index].getRowCount();
+for(varCiclo =0; varCiclo<rowCount;varCiclo++){//rimuovo la vecchia classifica scritta su questa tabella.
+System.out.println("DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA "+varCiclo);
+modelClassific[current_index].removeRow(0);
+}
+
+/*modelClassific[current_index].insertRow(0,new Object[]{0, cognome[datiArray[0].getId()],convert(datiArray[0].getTime())});*/
+varCiclo=0;
+while(varCiclo<datiArray.length){//posso scrivere la classifica
+try{
+System.out.println(" dopo cancellazione --- modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
+System.out.println("DEBUG 3 : SCRIVO NUOVA CLASSIFICA "+varCiclo);
+System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
+modelClassific[current_index].insertRow(varCiclo, new Object[]{varCiclo,cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
+}
+catch(Exception ecd ){ecd.printStackTrace();
+varCiclo = datiArray.length +1;
+}
+varCiclo = varCiclo+1;
+}
+
+}
+}
+catch(NullPointerException eccCl){
+System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
+}
+catch(Exception eccGen){
+eccGen.printStackTrace();
+System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
+
+}
+/*
 for(int r=0; r<Array.getLength(datiArray);r++){
 try{
 System.out.println("DEBUG : ITERAZIONE r = "+r);
@@ -277,9 +357,19 @@ System.out.println("lap "+datiArray[r].lap);
 System.out.println(" id "+datiArray[r].id);
 System.out.println("position "+datiArray[r].position);
 
-
-storicodatiArray[current_lap].arrayD[r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+if(new_table == false){
+System.out.println("new_table == false ");
+storicodatiArray[current_lap].arrayD[+r]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
 System.out.println("dopo scrittura ");
+}
+else{
+System.out.println("new_table == true");
+System.out.println("modelClassific[current_index].getRowCount()= "+modelClassific[current_index].getRowCount());
+System.out.println("modelClassific[current_index].getRowCount()+r = "+(modelClassific[current_index].getRowCount()+r));
+
+storicodatiArray[current_lap].arrayD[modelClassific[current_index].getRowCount()]=new dati(datiArray[r].lap, datiArray[r].id, datiArray[r].position);
+System.out.println("dopo scrittura ");
+}
 }
 if(datiArray[r].lap > current_lap){//qualcuno ha iniziato un nuovo giro
 if(new_table==false){new_table=true;}
@@ -294,7 +384,7 @@ System.out.println("dopo scrittura ");
 //salvo un boolean per sapere che devo scrivere i doppiati
 
 }
-if(datiArray[r].lap < current_lap && new_table == true){
+if(datiArray[r].lap == current_lap+1 && new_table == true){
 if (storicodatiArray[current_lap].arrayD == null){storicodatiArray[current_lap].arrayD = new dati[3];}
 System.out.println("datiArray["+r+"].lap < current_lap ==" +current_lap+" && new_table == true");
 //inserisco i doppiati
@@ -312,31 +402,41 @@ System.out.println("ecc in salvataggio");
 e.printStackTrace();
 r=Array.getLength(datiArray) +1;
 }
-}
-
+}*/
+/*
 System.out.println("Classifica : ");
 boolean new_table_temp = new_table;
 for(int e=0; e<Array.getLength(storicodatiArray); e++){
 // for(int w=0; w<=current_lap; w++){
 try{
 if(new_table_temp==true){
+System.out.println("storicodatiArray[current_lap].arrayD length = "+Array.getLength(storicodatiArray[current_lap].arrayD));
 for(int w=modelClassific[current_index].getRowCount(); w<Array.getLength(storicodatiArray[current_lap].arrayD);w++){//scrivo tutta la classifica prima
 try{
-
+System.out.println(" w = "+w);
+System.out.println("storicodatiArray[current_lap+1].arrayD[0].lap = "+storicodatiArray[current_lap+1].arrayD[0].lap);
+System.out.println("storicodatiArray[current_lap].arrayD[w].lap = "+storicodatiArray[current_lap].arrayD[w].lap);
 int lapGap = storicodatiArray[current_lap+1].arrayD[0].lap - storicodatiArray[current_lap].arrayD[w].lap;
 if (lapGap == 1){
+System.out.println(" lapGap == 1 , w= "+w);
+System.out.println("cognome = "+cognome[storicodatiArray[current_lap].arrayD[w].id]);
+System.out.println("position = "+storicodatiArray[current_lap].arrayD[w].position);
 modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giro"});
 }
 else{
+System.out.println(" lapGap != 1, w= "+w);
+System.out.println("cognome = "+cognome[storicodatiArray[current_lap].arrayD[w].id]);
+System.out.println("position = "+storicodatiArray[current_lap].arrayD[w].position);
 modelClassific[current_index].addRow(new Object[]{storicodatiArray[current_lap].arrayD[w].position,cognome[storicodatiArray[current_lap].arrayD[w].id]," + "+lapGap+" giri"});
 
 }
 }catch(Exception exx){
+System.out.println("Debug : Eccezione");
 exx.printStackTrace();
 }
-}/*
-		bestGrid.gridx = 4;
-		bestGrid.gridy = 0;*/
+}
+// 		bestGrid.gridx = 4;
+// 		bestGrid.gridy = 0;
 classTable.invert(current_index, new Integer(current_lap+1));
 current_index=(current_index+1)%2;
 current_lap=current_lap+1;
@@ -346,26 +446,26 @@ System.out.println("DEBUG : RIMOZIONE VECCHIA CLASSIFICA "+w);
 modelClassific[current_index].removeRow(w);
 }
 }
-modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,cognome[storicodatiArray[current_lap].arrayD[e].id-1],/*storicodatiArray[current_lap].arrayD[e].lap,*/ convert(arrayInfo[e])});
-
-modelClassific[current_index].removeRow(e+1);
-
-System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
-}
-catch(Exception ecc){System.out.println("ecc");
-ecc.printStackTrace();
-e= Array.getLength(storicodatiArray)+1;
-}
-}
-
-if(new_table == true){
-System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
-new_table = false;
-}
+modelClassific[current_index].insertRow(e,new Object[]{storicodatiArray[current_lap].arrayD[e].position,cognome[storicodatiArray[current_lap].arrayD[e].id-1],/*storicodatiArray[current_lap].arrayD[e].lap, convert(arrayInfo[e])});
+*/
+// modelClassific[current_index].removeRow(e+1);
+// 
+// System.out.println("lap = "+current_lap+" , id = "+storicodatiArray[current_lap].arrayD[e].id);
+// }
+// catch(Exception ecc){System.out.println("ecc");
+// ecc.printStackTrace();
+// e= Array.getLength(storicodatiArray)+1;
+// }
+// }
+// 
+// if(new_table == true){
+// System.out.println("CURRENT LAP  +1 = (OLD)"+current_lap);
+// new_table = false;
+// }
 
 // q=(float)(q+1);
 updTime = updTime + interval;
-// sleep(250);
+//  sleep(50);
 for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 exit=false;
@@ -580,6 +680,8 @@ Float f=new Float(getNode("time", line));
 best.setBestSector(3, getNode("competitorId", line), getNode("lap", line), convert(f.floatValue()));
 }
 	try{
+
+System.out.println("--printing classific : ");
 	NodeList cl = doc.getElementsByTagName("classification");
         Element elementTemp = (Element)cl.item(0);
 	
@@ -588,6 +690,8 @@ best.setBestSector(3, getNode("competitorId", line), getNode("lap", line), conve
 for(int y=0; y<Array.getLength(datiArray); y++){
 datiArray[y] = null;
 }
+int w=0;
+int j=0;
 	for (int i=0; i < comp42.getLength(); i++) {
 
         element = (Element) comp42.item(i);
@@ -600,8 +704,24 @@ datiArray[y] = null;
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), i);
 
+if(j<arrayInfo.length){
+try{
+datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]);
+System.out.println("posizione "+i+" del concorrente "+datiArray[i].getId()+" in tempo : "+convert(datiArray[i].getTime()));
+j=j+1;
+}
+catch(Exception arrayBound){
+arrayBound.printStackTrace();
+j= arrayInfo.length +1;
+}
+}
+else{
+datiArrayDoppiati[w] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), (float)-2.0);
+System.out.println("DOPPIATI concorrente "+datiArrayDoppiati[w].getId()+" in tempo : "+convert(datiArrayDoppiati[w].getTime()));
+
+w=w+1;
+}
 }
 	}
 	catch (Exception e){
@@ -699,21 +819,31 @@ return time;
 }
 
 class dati{
-public int lap=-1;
-public int id=-1;
-public int position=-1;
-public dati(int lapIn, int idIn, int positionIn){
+private int lap=-1;
+private int id=-1;
+private float time =(float)-1.0;
+public int getLap(){
+return lap;
+}
+public float getTime(){
+return time;
+}
+public int getId(){
+return id;
+}
+public dati(int lapIn, int idIn, float timeIn){
 lap = lapIn;
 id = idIn;
-position = positionIn;
+time = timeIn;
 }
 }
-class arrayDati{
-public arrayDati(dati[] a){
-arrayD=a;
-}
-public dati[] arrayD;
-}
+
+// class arrayDati{
+// public arrayDati(dati[] a){
+// arrayD=a;
+// }
+// public dati[] arrayD;
+// }
 //oggetto tabella con classifiche
 class classificationTable{
 private int tabellaCorrente =1;
