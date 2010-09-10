@@ -85,7 +85,7 @@ if(writexml()== true){
 raceFileCreator();
 parent.dispose();
 conf.Configure("comp_config.xml");
-screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition", (float)0.01);
+screen = new screenTv(corbalocMonitor, monitor, "Monitor of Competition", (float)1.0);
 screen.start();
 }
 			}
