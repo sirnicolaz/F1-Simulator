@@ -638,6 +638,8 @@ begin
                               TimeInstant : FLOAT;
                               CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
                               Times_InClassific : out FLOAT_ARRAY_POINT;
+                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
                               LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
                               LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
       Tmp_Row : STATS_ROW;
@@ -684,15 +686,19 @@ begin
 
       Ada.Text_IO.Put_Line("Getting lapped");
       Get_LappedCompetitors(TimeInstant,
-                            CurrentLap     => Lap,
-                            Competitor_IDs => LappedCompetitors_ID,
-                            Competitor_Lap => LappedCompetitors_CurrentLap);
+                            Lap,
+                            CompetitorIDs_PreviousClassific,
+                            Times_PreviousClassific,
+                            LappedCompetitors_ID,
+                            LappedCompetitors_CurrentLap);
 
    end Get_LapClassific;
 
 
    procedure Get_LappedCompetitors(TimeInstant : FLOAT;
                                    CurrentLap : INTEGER;
+                                   CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                                   Times_PreviousClassific : out FLOAT_ARRAY_POINT;
                                    Competitor_IDs : out INTEGER_ARRAY_POINT;
                                    Competitor_Lap : out INTEGER_ARRAY_POINT) is
       Temp_Row : STATS_ROW;
@@ -700,6 +706,7 @@ begin
       CompetitorQty : INTEGER := CompetitorMinInfo_Collection.all'LENGTH;
       ProcessedCompetitors_IdList : INTEGER_ARRAY(1..CompetitorQty);--alias for CompetitorQty
       NotLapped_Count : INTEGER := 0;
+      PreviousClassific_Count : INTEGER := 0;
       Lapped_Competitors : INTEGER := 0;
       Lapped_Count : INTEGER := 0;
       ExitLoop : BOOLEAN := false;
@@ -735,12 +742,35 @@ begin
                Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id));
                ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
                NotLapped_Count := NotLapped_Count + 1;
+	       PreviousClassific_Count := PreviousClassific_Count + 1;
             else
                ExitLoop := true;
             end if;
 
             exit when ExitLoop = true;
          end loop;
+         
+         --Filling up the array with competitors that have not started the new lap yet but that have already
+         --+ finished the previous one (so, they have a classification time for that lap). This is done to
+         --+ avoid the problem o "skipped competitor in classification"
+         if(PreviousClassific_Count /= 0) then
+	    CompetitorIDs_PreviousClassific := new INTEGER_ARRAY(1..PreviousClassific_Count);
+	    Times_PreviousClassific := new FLOAT_ARRAY(1..PreviousClassific_Count);
+	    for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
+	      Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
+	      if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
+		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id));
+		CompetitorIDs_PreviousClassific(Index) := Temp_Row.Competitor_Id;
+		Times_PreviousClassific(Index) := Temp_Row.Time;
+	      else
+		exit;
+	      end if;
+	    end loop;
+	 else
+	  CompetitorIDs_PreviousClassific := null;
+	  Times_PreviousClassific := null;
+	 end if;
+	 
          Ada.Text_IO.Put_Line("CM: allocazione array");
          if(CompetitorQty-NotLapped_Count = 0) then
             Competitor_IDs := null;

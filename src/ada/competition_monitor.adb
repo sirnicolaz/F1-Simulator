@@ -111,6 +111,60 @@ package body Competition_Monitor is
 
    end Get_CompetitorInfo;
 
+   --Given 2 float arrays with times e ids of competitors in classific, the function creates
+   --+ 1 array with the firs array + the elements of the second one whose id is not itn the first one.
+   procedure Merge(IdArray1 : INTEGER_ARRAY_POINT;
+		   TimeArray1 : FLOAT_ARRAY_POINT; 
+		   IdArray2 : INTEGER_ARRAY_POINT;
+		   TimeArray2 : FLOAT_ARRAY_POINT;
+		   IdArrayOut : out INTEGER_ARRAY_POINT;
+		   TimeArrayOut : out FLOAT_ARRAY_POINT) is
+    MergedArraySize : INTEGER := 0;
+    Copy : BOOLEAN := false;
+   begin
+   
+   if(IdArray1 /= null) then
+      for Index in 1..IdArray1.all'LENGTH loop
+	MergedArraySize := MergedArraySize + 1;
+      end loop;
+   end if;
+   
+   if(IdArray2 /= null) then
+      for Index in 1..IdArray2.all'LENGTH loop
+	Copy := TRUE;
+	for Indez in 1..IdArray1.all'LENGTH loop
+	  if(IdArray1.all(Indez) = IdArray2.all(Index)) then
+	    Copy := FALSE;
+	    exit;
+	  end if;
+	end loop;
+	if(Copy = TRUE) then
+	  MergedArraySize := MergedArraySize + 1;
+	else
+	  IdArray2.all(Index) := -1;
+	end if;
+      end loop;
+   end if;
+   
+   IdArrayOut := new INTEGER_ARRAY(1..MergedArraySize);
+   TimeArrayOut := new FLOAT_ARRAY(1..MergedArraySize);
+   
+   if(IdArray1 /= null) then
+    for Index in 1..IdArray1.all'LENGTH loop
+      IdArrayOut.all(Index) := IdArray1.all(Index);
+      TimeArrayOut.all(Index) := TimeArray1.all(Index);
+    end loop;
+   end if;
+   
+   for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
+    if(IdArray2.all(Index) /= -1) then
+      IdArrayOut.all(Index) := IdArray2.all(Index);
+      TimeArrayOut.all(Index) := TimeArray2.all(Index);
+    end if;
+   end loop;
+   
+   end Merge;
+   
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String) is
@@ -126,7 +180,11 @@ package body Competition_Monitor is
       Tmp_BestSectorLaps : INTEGER_ARRAY(1..3);
 
       HighestCompletedLap : INTEGER := -1;
+      CompetitorIDs_WithTimes : INTEGER_ARRAY_POINT;
       CompetitorID_InClassific : INTEGER_ARRAY_POINT;
+      Times_InClassific : FLOAT_ARRAY_POINT;
+      CompetitorIDs_PreviousClassific : INTEGER_ARRAY_POINT;
+      Times_PreviousClassific : FLOAT_ARRAY_POINT;
       LappedCompetitors_ID : INTEGER_ARRAY_POINT;
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
@@ -166,9 +224,19 @@ package body Competition_Monitor is
             "</competitor>");
 
          Ada.Text_IO.Put_Line("Stat got: competitor "& Common.IntegerToString(Get_ID(arrayComputer(Index))) &"lap " & Common.IntegerToString(Tmp_Stats.Lap));
-         if(Tmp_Stats.Lap-1 > HighestCompletedLap ) then
-            HighestCompletedLap := Tmp_Stats.Lap-1;
-         end if;
+         
+         declare
+	  HighestCompletedLapThisCompetitor : INTEGER;
+	 begin
+	  if(Tmp_CompLocation.all = "arriving") then
+	    HighestCompletedLapThisCompetitor := Tmp_Stats.Lap-2;
+	  else
+	    HighestCompletedLapThisCompetitor := Tmp_Stats.Lap-1;
+	  end if;
+	    if(HighestCompletedLapThisCompetitor > HighestCompletedLap) then
+	      HighestCompletedLap := HighestCompletedLapThisCompetitor;
+	    end if;
+	 end;
 
          --If the competition is finished for a competitor, get the classific of the last lap
          if(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant) = TRUE and
@@ -220,9 +288,15 @@ package body Competition_Monitor is
          CompetitionComputer.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
-                                ClassificationTimes,
+                                Times_InClassific,
+                                CompetitorIDs_PreviousClassific,
+                                Times_PreviousClassific,
                                 LappedCompetitors_ID,
                                 LappedCompetitors_CurrentLap);
+
+	 Merge(CompetitorID_InClassific,Times_InClassific,
+	       CompetitorIDs_PreviousClassific,Times_PreviousClassific,
+	       CompetitorIDs_WithTimes,ClassificationTimes);
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<classification>");
@@ -231,10 +305,23 @@ package body Competition_Monitor is
 
             Ada.Text_IO.Put_Line("Creating classific");
             Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-              ("<competitor id=""" & Common.IntegerToString(CompetitorID_InClassific(Index)) & """>" &
+              ("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
                "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
                "</competitor>");
+             
          end loop;
+         
+         if(HighestCompletedLap /= 0) then
+	  for Index in CompetitorID_InClassific.all'LENGTH..CompetitorIDs_WithTimes.all'LENGTH loop
+
+	      Ada.Text_IO.Put_Line("Creating previous classific");
+	      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+		("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
+		"<lap>" & Common.IntegerToString(HighestCompletedLap-1) & "</lap>" &
+		"</competitor>");
+	      
+	  end loop;
+	 end if;
 
          if(LappedCompetitors_ID /= null) then
             for Index in 1..LappedCompetitors_ID.all'LENGTH loop

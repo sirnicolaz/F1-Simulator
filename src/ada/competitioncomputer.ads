@@ -142,6 +142,8 @@ package CompetitionComputer is
                               TimeInstant : FLOAT;
                               CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
                               Times_InClassific : out FLOAT_ARRAY_POINT;
+                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
                               LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
                               LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
@@ -150,6 +152,8 @@ package CompetitionComputer is
    --+ riding in a previous lap during the given instant will be kept in consideration).
    procedure Get_LappedCompetitors(TimeInstant : FLOAT;
                                   CurrentLap : INTEGER;
+                                  CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+				  Times_PreviousClassific : out FLOAT_ARRAY_POINT;
                                   Competitor_IDs : out INTEGER_ARRAY_POINT;
                                   Competitor_Lap : out INTEGER_ARRAY_POINT);
 
