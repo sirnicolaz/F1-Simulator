@@ -80,7 +80,7 @@ startButton = new JButton("Connect to competition");
 			public void actionPerformed(ActionEvent e) {
 corbaloc=textCorbaloc.getText();
 try{
-floatRefresh = (float)0.1;
+floatRefresh = (float)1.0;
 if(connect()==true){
 screen = new screenTv(corbaloc, monitor, "Tv Screen", floatRefresh);
 screen.start();

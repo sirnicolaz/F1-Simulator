@@ -262,26 +262,27 @@ int i=0;
 // }
 while(inWhile){
 try{
-boolean exit=true;
-org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
-arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
+  boolean exit=true;
+  org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
+  arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
 // lapNum = (int)q;
-readXml(updateString.value);//, q);
-best.setClock("Time "+convert(updTime));
+  readXml(updateString.value);//, q);
+  best.setClock("Time "+convert(updTime));
 // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
-int index= 0;
+  int index= 0;
 try{
-if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
-System.out.println("LORY DEBUG : NUOVA CLASSIFICA");
-int diff; 
-int posiz = modelClassific[current_index].getRowCount();
-try{
-while(index < datiArray.length){//inserisco prima quelli che hanno un tempo nella lap prima, controllando che non ci siano già
-if(datiArray[index].getLap() < datiArray[0].getLap()){//ho trovato un concorrente con lap < di quella del primo concorrente, devo controllare se c'è già
+  System.out.println("DATIARRAY[0].GETLAP() =" +datiArray[0].getLap());
+  if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
+  System.out.println("LORY DEBUG : NUOVA CLASSIFICA");
+  int diff; 
+  int posiz = modelClassific[current_index].getRowCount();
+  try{
+  while(index < datiArray.length){//inserisco prima quelli che hanno un tempo nella lap prima, controllando che non ci siano già
+  if(datiArray[index].getLap() < datiArray[0].getLap()){//ho trovato un concorrente con lap < di quella del primo concorrente, devo controllare se c'è già
 //scorro le righe della tabella per vedere se è già inserito.
-for(int indTable = 0; indTable < posiz; indTable++){
-String operand1 = new String(datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]);// stringa da ricercare nella tabella
-String operand2 = (String)modelClassific[current_index].getValueAt(i, 1);//new String(modelClassific[current_index].getValueAt(i, 1));//scorro i le stringhe composte come "id : cognome"
+  for(int indTable = 0; indTable < posiz; indTable++){
+  String operand1 = new String(datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]);// stringa da ricercare nella tabella
+  String operand2 = (String)modelClassific[current_index].getValueAt(i, 1);//new String(modelClassific[current_index].getValueAt(i, 1));//scorro i le stringhe composte come "id : cognome"
 if(operand1.equals(operand2)){//ho già il dato
 indTable = posiz +1;// esco dal for, ho già la riga
 index= index+1;//cerco la riga per il concorrente successivo, se esiste.
@@ -337,6 +338,7 @@ index=index+1;
 }
 //}
 else{//non sono in presenza di un nuovo giro
+  System.out.println(" ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = "+current_lap);
 int varCiclo=0;
 System.out.println("modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
 int rowCount = modelClassific[current_index].getRowCount();
@@ -717,9 +719,9 @@ System.out.println("--printing classific : ");
 	
 	NodeList comp42 =elementTemp.getElementsByTagName("competitor");
         Element compEl = (Element) comp42.item(0);
-for(int y=0; y<Array.getLength(datiArray); y++){
+/*for(int y=0; y<Array.getLength(datiArray); y++){
 datiArray[y] = null;
-}
+}*/
 int w=0;
 int j=0;
 	for (int i=0; i < comp42.getLength(); i++) {
