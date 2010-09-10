@@ -73,7 +73,28 @@ Una volta inseriti i dati e premuto il pulsante di avvio della competizione comp
 \subsection{Interfaccia competizione}
 La prima interfaccia relativa alla competizione serve per impostare la competizione stessa. I parametri da settare sono:
 \begin{enumerate}
-\item File xml con il tracciato
+\item File xml con il tracciato\\
+il formato per il file xml del tracciato \`{e} il seguente:
+\begin{lstlisting}
+<racetrack>
+  <sector>
+      <checkpoint>
+	<length>19.00</length>
+	  <mult>7</mult>
+	  <angle>140.00</angle>
+	  <grip>7.0</grip>
+      </checkpoint>
+      <!-- altri checkpoint-->
+  </sector>
+  <!--altri 3 sector strutturati allo stesso modo-->
+</racetrack>
+\end{lstlisting}
+Il checkpoint pu\`{o} avere uno dei seguenti attributi:
+\begin{itemize}
+\item \textbf{goal=``true''}: obbligatorio in massimo 1 checkpoint. Indica il checkpoint di partenza.
+\item \textbf{prebox=``true''}: obbligatorio in massimo 1 checkpoint nel settore 3.
+\item \textbf{exitbox=``true''}: obbligatorio in massimo 1 checkpoint nel settore 1.
+\end{itemize}
 \item Numero di concorrenti richiesti
 \item Numero di giri previsti
 \end{enumerate}
