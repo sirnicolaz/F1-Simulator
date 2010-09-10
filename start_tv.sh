@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "Init monitor...";
-cd TvScreen
-java configurationScreen  > logXrisoluzione.txt &
+cd obj/java
+java GUI.TV.configurationScreen  > ../temp/logTv.txt &
 echo "Configuration Done"
 read Q
 killall -9 configurationScreen
