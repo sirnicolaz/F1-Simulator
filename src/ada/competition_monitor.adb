@@ -31,7 +31,7 @@ package body Competition_Monitor is
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
          ExpectedBoxes := ExpectedBoxes - 1;
-         Ada.Text_IO.Put_Line(Common.IntegerToString(ExpectedBoxes) & " boxes left");
+
       end Ready;
       --TODO: maybe not necessary
       procedure Stop( CompetitorID : in INTEGER) is
@@ -59,12 +59,6 @@ package body Competition_Monitor is
       --+ onboard computer is added (everything should already be
       --+ fine automatically once the box invokes this method, but
       --+ just for bug tracing we inserted this control)
-      if(arrayComputer(INTEGER(CompetitorID)) = null) then
-         Ada.Text_IO.Put_Line("Onboard computer null");
-      else
-         Ada.Text_IO.Put_Line("Onboard computer ok");
-      end if;
-
       if( arrayComputer(INTEGER(CompetitorID)) /= null and  IsConfigured = true) then
          CompetitionHandler.Ready(INTEGER(CompetitorID));
          return true;
@@ -202,12 +196,12 @@ package body Competition_Monitor is
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
       CompetitionHandler.WaitReady;
-      Ada.Text_IO.Put_Line("A TV is really asking");
+
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
-         Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
+
          CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
@@ -236,7 +230,7 @@ package body Competition_Monitor is
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
-         Ada.Text_IO.Put_Line("Stat got: competitor "& Common.IntegerToString(Get_ID(arrayComputer(Index))) &"lap " & Common.IntegerToString(Tmp_Stats.Lap));
+
          
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
@@ -316,7 +310,7 @@ package body Competition_Monitor is
 
          for Index in 1..CompetitorID_InClassific.all'LENGTH loop
 
-            Ada.Text_IO.Put_Line("Creating classific");
+
             Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
               ("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
                "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
@@ -327,7 +321,7 @@ package body Competition_Monitor is
          if(HighestCompletedLap /= 0) then
 	  for Index in CompetitorID_InClassific.all'LENGTH+1..CompetitorIDs_WithTimes.all'LENGTH loop
 
-	      Ada.Text_IO.Put_Line("Creating previous classific");
+
 	      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 		("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
 		"<lap>" & Common.IntegerToString(HighestCompletedLap-1) & "</lap>" &

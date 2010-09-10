@@ -28,7 +28,7 @@ use Competition;
 
 procedure Main_Competition is
 begin
-   Ada.Text_IO.Put_Line("Very beginning");
+
 
    --Declare the Competition remote object
    declare
@@ -50,11 +50,11 @@ begin
 
    begin
       CORBA.ORB.Init(CORBA.ORB.To_CORBA_STRING("ORB"), Argv);
-      Ada.Text_IO.Put_Line("Configuring competition object...");
+
       Broker.Init.CompetitionConfigurator.Impl.Init(The_Competition);
-      Ada.Text_IO.Put_Line("Configuring registration handler object...");
+
       Broker.Init.RegistrationHandler.impl.Init(The_Competition);
-      Ada.Text_IO.Put_Line("Init ROOT_POA..");
+
       declare
          Root_POA : PortableServer.POA.Local_Ref;
          CompConfiguration_Ref : CORBA.Object.Ref;
@@ -117,6 +117,18 @@ begin
          Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
                               (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref)));
          Ada.Text_IO.Close(CorbaLOC_File);
+         
+         --Store the corbaloc in a file to be read by the java app
+         Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "../../competition_monitor_corbaLoc.txt");
+         Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
+                              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref)));
+         Ada.Text_IO.Close(CorbaLOC_File);
+         
+         Ada.Text_IO.Create(CorbaLOC_FIle, Ada.Text_IO.Out_File, "../../competition_registrationhandler_corbaLoc.txt");
+         Ada.Text_IO.Put_Line(CorbaLOC_File,CORBA.To_Standard_String
+                              (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(RegistrationHandler_Ref)));
+         Ada.Text_IO.Close(CorbaLOC_File);
+
 
          The_Competition.Set_MonitorCorbaLOC
            (Unbounded_String.To_Unbounded_String
@@ -124,9 +136,10 @@ begin
                  (PolyORB.CORBA_P.CORBALOC.Object_To_Corbaloc(Monitor_Ref))));
          --  Launch the server
 
-         Ada.Text_IO.Put_Line("Initing starter");
          Starter_Task := new Starter(The_Competition);
 
+	 Ada.Text_IO.Put_Line("Initialising CORBA.ORB");
+         
          CORBA.ORB.Run;
 
       end;

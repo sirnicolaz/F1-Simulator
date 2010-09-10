@@ -153,13 +153,13 @@ package body Broker.Init.BoxConfigurator.Impl is
       Current_Node : NODE;
       Config_Doc : DOCUMENT;
    begin
-      Ada.Text_IO.Put_Line("Getting document: " & CORBA.To_Standard_String(config_file));
+
       Config_Doc := Common.Get_Document(doc_file => CORBA.To_Standard_String(config_file));
-      Ada.Text_IO.Put_Line("Document got");
+
       Config := Get_Elements_By_Tag_Name(Config_Doc,"config");
       Current_Node := Item(Config,0);
 
-      Ada.Text_IO.Put_Line("Initing variables");
+
       CompetitionMonitor_CorbaLOC := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"monitorCorbaLoc"))));
       InitialTyreType := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"initialTyreType"))));
       Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
@@ -179,7 +179,7 @@ package body Broker.Init.BoxConfigurator.Impl is
          BoxStrategy := Box.NORMAL;
       end if;
 
-      Ada.Text_IO.Put_Line("Setting stuff for competitor " & Common.IntegerToString(CompetitorID));
+
 
       Settings.Set_Laps(Laps);
       Settings.Set_CompetitionMonitor_CorbaLOC(CompetitionMonitor_CorbaLOC);
