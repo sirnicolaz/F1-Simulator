@@ -20,7 +20,7 @@ import broker.init.*;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
-public class BoxAdminWindow implements AdminPanelInterface{
+public class BoxConfigurationWindow implements AdminPanelInterface{
     //informazioni per la Join Competition
     private String boxRadioCorbaLoc;
     private String monitorBoxCorbaLoc;
@@ -126,7 +126,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
     private int intStrategy;
     private Double valueUsuryDouble;
     private Integer valueFuelInt;
-    public BoxAdminWindow(JFrame frame, String param){
+    public BoxConfigurationWindow(JFrame frame, String param){
 	stringId = param;
 	parent=frame;
 	try{
@@ -630,7 +630,7 @@ public class BoxAdminWindow implements AdminPanelInterface{
 
     public static void main(String[] args){
 	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
-	BoxAdminWindow boxWindow = new BoxAdminWindow(j, args[0]);
+	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
 	boxWindow.init(j);
 
     }

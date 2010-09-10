@@ -28,7 +28,7 @@ import org.w3c.dom.*;
 
 import java.lang.reflect.Array;
 
-public class screenTv extends Thread implements TvPanelInterface{
+public class ScreenTv extends Thread implements TvPanelInterface{
     private String[] nome;
     private String[] cognome;
     private String[] scuderia;
@@ -80,8 +80,8 @@ public class screenTv extends Thread implements TvPanelInterface{
     private int current_lap =0;
     private boolean new_table = false;
 
-    public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
-	System.out.println("screenTv : 0");
+    public ScreenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
+	System.out.println("ScreenTv : 0");
 	parent = new JFrame(nameType);
 
 	corbaloc = corbalocIn;
@@ -169,15 +169,12 @@ public class screenTv extends Thread implements TvPanelInterface{
 	readConfiguration();
 	System.out.println("run : 2");
 	classTable.addTables(model_1, model_2, numComp);
-	// log.addTablesAll(modelAll, numComp);
 	best.addBest();
 	System.out.println("run : 3");
 	addLogInfo();
 	System.out.println("run : 4");
 	parent.add(classTable.panel1, BorderLayout.CENTER);
-	// parent.add(best.bestPanel,BorderLayout.NORTH);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
-	// parent.add(log.tablePanel, BorderLayout.SOUTH);
 	parent.add(logPanel, BorderLayout.SOUTH);
 	parent.pack();
 	parent.setVisible(true);
@@ -239,8 +236,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 		    boolean exit=true;
 		    org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 		    arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
-		    // lapNum = (int)q;
-		    readXml(updateString.value);//, q);
+		    readXml(updateString.value);
 		    best.setClock("Time "+convert(updTime));
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;

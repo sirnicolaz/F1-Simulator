@@ -26,7 +26,7 @@ import org.w3c.dom.*;
 
 import java.lang.reflect.Array;
 
-public class configurationScreen{
+public class TvConfigurationWindow{
     private JFrame parent;
     private JPanel configPanel;
     private JPanel buttonPanel;
@@ -40,10 +40,10 @@ public class configurationScreen{
     private org.omg.CORBA.Object obj;
     private ORB orb;
     private String corbaloc;
-    private screenTv screen;
+    private ScreenTv screen;
     private float floatRefresh;
     private JPanel refreshPanel;
-    // public configurationScreen(JFrame p){
+    // public TvConfigurationWindow(JFrame p){
     // parent = p;
     // }
 
@@ -82,7 +82,7 @@ public class configurationScreen{
 		    try{
 			floatRefresh = new Float(textRefresh.getText()).floatValue();
 			if(connect()==true){
-			    screen = new screenTv(corbaloc, monitor, "Tv Screen", floatRefresh);
+			    screen = new ScreenTv(corbaloc, monitor, "Tv Screen", floatRefresh);
 			    screen.start();
 			    parent.dispose();
 			}
@@ -113,48 +113,10 @@ public class configurationScreen{
 	parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    // public void addConfigPanel(JPanel configPanel){
-    /*configPanel = new JPanel(new BorderLayout());
-      configPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-      configPanel.setLayout(new FlowLayout());
-      configPanel.add(labelCorbaloc);
-      configPanel.add(textCorbaloc);*/
-    // }
-
-    // public void addButtonPanel(JPanel buttonPanel){
-    // buttonPanel= new JPanel(new BorderLayout());
-    // buttonPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-    // buttonPanel.setLayout(new FlowLayout());
-    // 
-    // startButton = new JButton("Connect to competition");
-    // 		startButton.addActionListener(new ActionListener() {
-    // 			public void actionPerformed(ActionEvent e) {
-    // corbaloc=textCorbaloc.getText();
-    // if(connect()==true){
-    // screen = new screenTv(corbaloc, orb, obj, monitor);
-    // screen.start();
-    // parent.dispose();
-    // }
-    // else{
-    // JOptionPane.showMessageDialog(parent, "Attention : yout MUST insert corbaloc to continue", "Warning", JOptionPane.WARNING_MESSAGE);
-    // }
-    // 			    }
-    // 		});
-    // 
-    // resetButton = new JButton("Reset Field");
-    // 		resetButton.addActionListener(new ActionListener() {
-    // 			public void actionPerformed(ActionEvent e) {
-    // 			      resetInfo();			}
-    // 		});
-    // 
-    // buttonPanel.add(startButton);
-    // buttonPanel.add(resetButton);
-    // }
-
     public void resetInfo(){
 	System.out.println("Reset Field");
 	textCorbaloc.setText("");
-	// 			    textRefresh.setText("1.0");
+	textRefresh.setText("1.0");
     }
 
     public boolean connect(){
@@ -178,7 +140,7 @@ public class configurationScreen{
 
     public static void main(String[] args){
 	// JFrame frame = new JFrame("Tv Screen Configuration");
-	configurationScreen cs = new configurationScreen();
+	TvConfigurationWindow cs = new TvConfigurationWindow();
 	cs.init();
     }
 }
