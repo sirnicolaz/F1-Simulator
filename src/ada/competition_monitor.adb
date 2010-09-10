@@ -312,7 +312,7 @@ package body Competition_Monitor is
          end loop;
          
          if(HighestCompletedLap /= 0) then
-	  for Index in CompetitorID_InClassific.all'LENGTH..CompetitorIDs_WithTimes.all'LENGTH loop
+	  for Index in CompetitorID_InClassific.all'LENGTH+1..CompetitorIDs_WithTimes.all'LENGTH loop
 
 	      Ada.Text_IO.Put_Line("Creating previous classific");
 	      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
