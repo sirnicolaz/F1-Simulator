@@ -1,7 +1,51 @@
 \section{Manuale utente}
+\subsection{Prerequisiti}
+Il programma pu\`{o} essere eseguito solo su macchine Unix-like. Inoltre, per la compilazione,
+\`{e} necessario disporre delle seguenti componenti:
+\begin{itemize}
+\item gnatmake 4.4.3
+\item gcc 4.4.3
+\item librerie \textbf{XmlAda 3.2w} installate con comando \underline{xmlada-config} eseguibile anche senza privilegi di root.\\
+In caso contrario, scaricare il pacchetto XMLAda da\\
+\url{http://libre.adacore.com/libre/download2/}\\
+e, dopo la decompressione, seguire le istruzioni incluse per la compilazione ed installazione.
+\item librerie \textbf{PolyORB GPL 2009-20090519 (rev. 144248)} installate con comando \underline{polyorb-config} eseguibile anche 
+senza privilegi di root\\
+In caso contrario, scaricare il pacchetto PolyORB da\\
+\url{http://libre.adacore.com/libre/download2/}\\
+e, dopo la decompressione, seguire le istruzioni incluse per la compilazione ed installazione.
+\end{itemize}
+La versione indicata delle librerie \`{e} quella usata per i test. Non si esclude tuttavia che il programma possa funzionare anche con versioni
+appena precedenti o successive.
 \subsection{Installazione}
+Dalla directory radice, eseguire i seguenti comandi:
+\begin{itemize}
+\item \emph{make competition}\\
+per compilare la componente destinata a ospitare la competizione
+\item \emph{make box}\\
+per compilare la componente destinata a eseguire il box
+\item \emph{make tv}
+per compilare la componente che verr\`{a} usata per la TV
+\end{itemize}
+Le tre componenti hanno make diversi perch\`{e} possono essere compilate ed eseguite su macchine separate, comunicando remotamente.
 \subsection{Avvio}
+Come per la compilazione, dalla directory radice esecuire il comando desiderato fra i seguenti:
+\begin{itemize}
+\item \emph{./start\_competition.sh}\\
+avvier\`{a} la competizione. Apparir\`{a} il pannello di configurazione (del quale verranno forniti dettagli in seguito)
+\item \emph{./start\_box.sh n}\\
+avvier\`{a} un numero n box. Per eseguire un test in locare \`{e} possibile avviare tanti box quanti quelli stabiliti durante la configurazione
+della competizione. In tal caso, l'interfaccia di configurazione dei box presenter\`{a} nello spazio riservato al corbaloc per la connessione
+alla competizione, il corbaloc della competizione caricato dal contesto locale.
+\item \emph{./start\_tv.sh}\\
+inizializza una tv. Anche in questo caso, se il corbaloc della competizione \`{e} presente in locale, verr\`{a} impostato di default nel textbox
+dedicato. \`{E} comunque possibile reimpostarlo.
+\end{itemize}
+L'interfaccia TV \`{e} possibile copiarla senza necessit\`{a} di ricompilazione in tutte le macchine ove la si voglia eseguire. E' sufficiente,
+una volta compilata, copiare il file \emph{start\_tv.sh} e la directory \emph{obj/java/GUI} (mantenendo la gerarchia intatta) in un qualunque
+nodo distribuito ed eseguire lo starter.
 \subsection{Terminazione}
+Per terminare il programma (box, competizione o tv che sia) premere il tasto ``x'' in alto a destra sulla finestra.
 \subsection{Interfaccia box}
 Nella prima schermata che appare vanno inseriti i dati relativi al concorrente che si intende registrare.
 \begin{enumerate}

@@ -1,8 +1,8 @@
 	%%%Architettura alto livello%%%
 \section{Architettura ad alto livello}
 Nella seguente sezione verr\`{a} illustrata l'architettura ad alto livello del sistema sviluppato, 
-escludendo i dettagli implementativi e legati al linguaggio. Viene fornito un diagramma delle componenti per mostrare
-molto ad alto livello l'architettura del sistema.\\
+escludendo i dettagli implementativi e legati al linguaggio. Viene fornito un diagramma delle componenti per fornire un'idea
+generale.\\
 \begin{center}
 \begin{figure}[h!]
 	\includegraphics[scale=0.50]{img/ComponentDiagram.jpg}
@@ -177,7 +177,7 @@ Nella seguente sezione verranno spiegate le interazione principali fra le compon
 Al livello pi\`{u} alto della fase di configurazione c'\`{e} la componente \emph{Configurator}, la quale viene utilizzata per impostare i parametri
 relativi alla \emph{Competition}. Tali parametri vengono prima impostati dall'utente (o letti da file) tramite le interfacce \textbf{SetupCompetitor},
 \textbf{SetupCompetition} e \textbf{SetupCircuit} e successivamente inviati alla componente \emph{Competition} per l'inizializzazione.\\
-\textbf{RegisterCompetitor} \`{e} utilizzata una volta per ogni competitor da iscrivere.
+\textbf{RegisterCompetitor} \`{e} utilizzata una volta per ogni concorrente da iscrivere.
 \clearpage
 \subsubsection{Competition-Competitor}
 \begin{center}
