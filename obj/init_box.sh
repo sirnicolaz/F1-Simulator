@@ -5,7 +5,7 @@ echo "Initializing boxe admin panel..."
 
 cd java;
 
-java GUI.Box.BoxAdminWindow $2 
+java GUI.Box.BoxConfigurationWindow $2 
 
 echo "Done"
 
