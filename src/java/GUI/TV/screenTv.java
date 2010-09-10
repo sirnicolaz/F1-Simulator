@@ -126,7 +126,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 	}
 	catch(Exception eccIn){
-		System.out.println("ECCEZIONE LORY 9");
 	    eccIn.printStackTrace();
 	}
     }
@@ -148,7 +147,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    scuderia[numCompetitor] = getNode("team", upd);
 	}
 	catch(Exception eccIn){
-				System.out.println("ECCEZIONE LORY 10");
 	    eccIn.printStackTrace();
 	}
     }
@@ -276,7 +274,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    index=index+1;
 				}
 			    }catch (NullPointerException npEcc){
-				System.out.println("ECCEZIONE LORY 11");
+
 				npEcc.printStackTrace();
 			    }
 			    try{
@@ -293,7 +291,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 
 			    }catch (NullPointerException npEcc){
-				System.out.println("ECCEZIONE LORY 1");
 				npEcc.printStackTrace();
 			    }
 			    System.out.println(" LORY : PRIMA DI INVERT");
@@ -334,7 +331,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 				    }
 				    catch(Exception ecd ){ecd.printStackTrace();
-				System.out.println("ECCEZIONE LORY 2");
 					varCiclo = datiArray.length +1;
 				    }
 				}
@@ -344,12 +340,10 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 		    }
 		    catch(NullPointerException eccCl){
-				System.out.println("ECCEZIONE LORY 3");
 			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
 		    }
 		    catch(Exception eccGen){
 			eccGen.printStackTrace();
-				System.out.println("ECCEZIONE LORY 4");
 			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
 
 		    }
@@ -378,8 +372,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		}
 	    }
 	}
-	catch(Exception e){e.printStackTrace();				
-System.out.println("ECCEZIONE LORY 5");}
+	catch(Exception e){e.printStackTrace();}
     }
     // parsing xml
     public void readXml(String xmlRecords){//, float istant){
@@ -573,7 +566,6 @@ System.out.println("ECCEZIONE LORY 5");}
 			    j=j+1;
 			}
 			catch(Exception arrayBound){
-			    System.out.println("ECCEZIONE LORY 6");
 			    arrayBound.printStackTrace();
 			    j= arrayInfo.length +1;
 			}
@@ -587,13 +579,11 @@ System.out.println("ECCEZIONE LORY 5");}
 		}
 	    }
 	    catch (Exception e){
-				System.out.println("ECCEZIONE LORY 7");
 		System.out.println("classification non presente");
 	    }
 	
 	}
 	catch (Exception e) {
-	  System.out.println("ECCEZIONE LORY 8");
 	    e.printStackTrace();
 	    System.out.println("eccezione in readXml");
 	}
