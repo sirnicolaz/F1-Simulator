@@ -11,8 +11,7 @@ echo "Init ada part...";
 echo "Entering interface dir.."
 cd ../../$JAVAOBJDIR
 echo "Initing configuration.."
-java GUI.Competition.CompetitionConfigurationWindow > ../temp/competition-gui.log
-echo "Configuration Done"
+java GUI.Competition.CompetitionConfigurationWindow 
 
 killall -9 main_competition
 
