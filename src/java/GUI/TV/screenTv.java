@@ -276,11 +276,34 @@ int index= 0;
 int diff; 
 int posiz = modelClassific[current_index].getRowCount();
 try{
+while(index < datiArray.length){//inserisco prima quelli che hanno un tempo nella lap prima, controllando che non ci siano già
+if(datiArray[index].getLap() < datiArray[0].getLap()){//ho trovato un concorrente con lap < di quella del primo concorrente, devo controllare se c'è già
+//scorro le righe della tabella per vedere se è già inserito.
+for(int indTable = 0; indTable < posiz; indTable++){
+String operand1 = new String(datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]);// stringa da ricercare nella tabella
+String operand2 = new String(modelClassific[current_index]getValueAt(i, 1));//scorro i le stringhe composte come "id : cognome"
+if(operand1.equals(operand2)){//ho già il dato
+indTable = posiz +1;// esco dal for, ho già la riga
+index= index+1;//cerco la riga per il concorrente successivo, se esiste.
+}
+else{
+//la riga non c'è ancora, continuo a scorrere oppure sono a fine della classifica e non l'ho trovata
+if(indTable == posiz -1){//sono alla fine della classifica, devo inserire la riga e poi aumentare di uno posiz ovviamente
+modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+posiz = posiz+1;
+index = index+1;
+}
+
+}
+
+}
+}
+
 while(index < datiArrayDoppiati.length){//finchè non ho finito di scrivere i dati
 System.out.println("LORY : PRE DIFF=");
 diff = current_lap + 1 - datiArrayDoppiati[index].getLap();
 System.out.println("LORY : diff ="+diff);
-if(diff==1){modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + 1 giro"});
+if(diff==1){modelClassific[current_index].addRow(new Object[]{posiz+index, datiArrayDoppiati[index].getId()+" : "+cognome[datiArrayDoppiati[index].getId()-1]," + 1 giro"});
 }
 else{modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
 }
@@ -302,7 +325,7 @@ modelClassific[current_index].removeRow(0);
 index=0;
 while(datiArray[index]!=null){//posso scrivere la classifica
 System.out.println("LORY DEBUG : INDEX = "+index );
-modelClassific[current_index].insertRow(index,new Object[]{index, cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
 index=index+1;
 }
 }
@@ -322,7 +345,7 @@ try{
 System.out.println(" dopo cancellazione --- modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
 System.out.println("DEBUG 3 : SCRIVO NUOVA CLASSIFICA "+varCiclo);
 System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
-modelClassific[current_index].insertRow(varCiclo, new Object[]{varCiclo,cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+modelClassific[current_index].insertRow(varCiclo, new Object[]{varCiclo,datiArray[index].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 }
 catch(Exception ecd ){ecd.printStackTrace();
@@ -704,7 +727,8 @@ int j=0;
 	System.out.println("------attributo id : "+attributoComp.getNodeValue());
 	
 	System.out.println("------lap : "+getNode("lap", line));
-
+datiArray = new dati [arrayInfo.length];
+datiArrayDoppiati = [comp42.getLength() - arrayInfo.length];
 if(j<arrayInfo.length){
 try{
 datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]);
@@ -948,7 +972,7 @@ panelClass2.add(panelCl_2, BorderLayout.CENTER);
 // panel1.setLayout(new FlowLayout());
 panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 // JOptionPane.showMessageDialog(null, "panelCl_1.getWidth() = "+panelCl_1.getWidth()+", panelCl_2.getWidth() = "+panelCl_2.getWidth(),"Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-panel1.setPreferredSize(new Dimension(620  , 30+37*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+panel1.setPreferredSize(new Dimension(620  , 35+40*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 panel1.add(panelClass1, BorderLayout.CENTER);
 panel1.add(panelClass2, BorderLayout.WEST);
 
