@@ -165,6 +165,19 @@ package body Competition_Monitor is
    
    end Merge;
    
+   function Is_Present(ID : INTEGER;
+		       IdArray : INTEGER_ARRAY_POINT) return BOOLEAN is
+   begin
+      if(IdArray /= null) then
+	for Index in IdArray.all'RANGE loop
+	    if(IdArray.all(Index) = ID) then
+		return TRUE;
+	    end if;
+	end loop;
+      end if;
+      return FALSE;
+   end Is_Present;
+
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String) is
@@ -325,10 +338,12 @@ package body Competition_Monitor is
 
          if(LappedCompetitors_ID /= null) then
             for Index in 1..LappedCompetitors_ID.all'LENGTH loop
-               Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-                 ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
-                  "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
-                  "</competitor>");
+		if(Is_Present(LappedCompetitors_ID(Index),CompetitorIDs_WithTimes) = FALSE) then
+		  Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+		    ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
+		     "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
+		     "</competitor>");
+		end if;
             end loop;
          end if;
 

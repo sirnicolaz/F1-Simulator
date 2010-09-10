@@ -298,7 +298,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 				    System.out.println("LORY : diff ="+diff);
 				    if(diff==1){modelClassific[current_index].addRow(new Object[]{posiz+index, datiArrayDoppiati[index].getId()+" : "+cognome[datiArrayDoppiati[index].getId()-1]," + 1 giro"});
 				    }
-				    else{modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
+				    else{modelClassific[current_index].addRow(new Object[]{posiz+index, datiArrayDoppiati[index].getId()+" : "+cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
 				    }
 				    index=index+1;
 				}

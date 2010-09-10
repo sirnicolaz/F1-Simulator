@@ -473,7 +473,7 @@ package body CompetitionComputer is
       Competitor_Statistics.all(Competitor_ID).Last_Lap := Data.Lap;
       Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
 
-      for Index in Lap..Classification_Tables.all'LENGTH loop
+      for Index in Lap+1..Classification_Tables.all'LENGTH loop
          Classification_Tables.all(Index).Remove_Competitor;
       end loop;
    end CompetitorOut;
@@ -738,7 +738,8 @@ begin
          for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
             Ada.Text_IO.Put_Line("CM: prendendo la riga");
             Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
-            if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
+            if (Temp_Row.Competitor_ID /= -1 and then Temp_Row.Time <= PolePosition_Time
+		and then ProcessedCompetitors_IdList(Temp_Row.Competitor_ID) /= 1) then
                Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id));
                ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
                NotLapped_Count := NotLapped_Count + 1;
@@ -759,7 +760,7 @@ begin
 	    for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
 	      Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
 	      if (Temp_Row.Competitor_ID /= -1 and Temp_Row.Time <= PolePosition_Time) then
-		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id));
+		Ada.Text_IO.Put_Line("CM: in if "&Integer'Image(Temp_Row.Competitor_Id)& " time "&Float'Image(Temp_Row.time));
 		CompetitorIDs_PreviousClassific(Index) := Temp_Row.Competitor_Id;
 		Times_PreviousClassific(Index) := Temp_Row.Time;
 	      else
@@ -776,6 +777,7 @@ begin
             Competitor_IDs := null;
             Competitor_Lap := null;
          else
+	    Ada.Text_Io.Put_Line("CM: NotLapped_Count = "&INTEGER'IMAGE(NotLapped_Count)&" competitor qty = "&Integer'Image(CompetitorQty));
             Competitor_IDs := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
             Competitor_Lap := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
             --Initialise these 2 arrays
@@ -794,12 +796,15 @@ begin
                   if (Temp_Row.Time /= -1.0 and then
                         Temp_Row.Time <= PolePosition_Time and then
                           ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) = 0 ) then
-                     Ada.Text_IO.Put_Line("CM: dentro if");
+                     Ada.Text_IO.Put_Line("CM: dentro if. Lap_Count = " & INTEGER'IMAGE(Lapped_Count) & ", Comp id = " & INTEGER'IMAGE(Temp_Row.Competitor_Id));
                      Lapped_Count := Lapped_Count + 1;
                      ProcessedCompetitors_IdList(Temp_Row.Competitor_Id) := 1;
+		     Ada.Text_IO.Put_Line("CM: step 2");
                      Competitor_IDs.all(Lapped_Count) := Temp_Row.Competitor_Id;
-                     Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
-                  end if;
+		     Ada.Text_IO.Put_Line("CM: step 3");                     
+		     Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
+		     Ada.Text_IO.Put_Line("CM: uscendo dall'if'");
+		  end if;
 
                end loop;
 
@@ -901,7 +906,7 @@ Ada.Text_IO.Put_Line("New_Size "&Integer'Image(New_Size));
       procedure Add_Row(Row_In : STATS_ROW) is
       begin
 
-      Ada.Text_IO.Put_Line("Adding roq");
+      Ada.Text_IO.Put_Line("Adding roq from comp: " & INTEGER'IMAGE(Row_In.COmpetitor_Id) & " with tim " & FLOAT'IMAGE(Row_In.Time));
          if (Statistics(1).Competitor_Id = -1) then
             Ada.Text_IO.Put_Line("In if");
             Add_Row(Row_In,1);

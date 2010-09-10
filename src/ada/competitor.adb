@@ -1282,7 +1282,7 @@ package body Competitor is
          end if;
 
          -- TODO: retrieve the clock just once -> not necessary useful
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+--          delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
 
          --If the checkpoint is the goal, get the race over
