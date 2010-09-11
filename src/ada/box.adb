@@ -100,6 +100,7 @@ package body Box is
       Info_XMLStr : Unbounded_String.Unbounded_String;
       Info : COMPETITION_UPDATE_POINT;
       Time : FLOAT;
+      Metres : FLOAT;
       CorbaInfo : CORBA.String;
       Sector : INTEGER := 1;
       Lap : INTEGER := 0;
@@ -138,12 +139,13 @@ package body Box is
             CORBA.Short(Sector),
             CORBA.Short(CompetitorID),
             CORBA.Float(Time),
+            CORBA.Float(Metres),
             CorbaInfo);
          Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
          
          Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
          Info.Time := Time;
-         
+         Info.PathLength := Metres;
          
          UpdateBuffer.Add_Data(Info);
          
@@ -651,7 +653,7 @@ package body Box is
   --    Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
-      PathLength : FLOAT;
+  --    PathLength : FLOAT;
 
       --Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
       Success : BOOLEAN := false;
@@ -678,7 +680,7 @@ package body Box is
 
 --      Time := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
 
-      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
+--      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
 
 
       Update.GasLevel := GasLevel;
@@ -688,7 +690,7 @@ package body Box is
 --      Update.Time := Time;
       Update.Lap := Lap;
       Update.Sector := Sector;
-      Update.PathLength := PathLength;
+--      Update.PathLength := PathLength;
 
 
       return Update;

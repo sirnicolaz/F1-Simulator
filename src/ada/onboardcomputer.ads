@@ -21,9 +21,9 @@ package OnBoardComputer is
    protected type SYNCH_INFO_FOR_BOX is
 
       procedure Init( Laps : INTEGER);
-      entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String );
-      entry Wait_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String );
-      procedure Set_Info( Lap : INTEGER; Sector : INTEGER; Time : FLOAT; UpdateString : Unbounded_String.Unbounded_String);
+      entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String; Metres : out FLOAT );
+      entry Wait_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String; Metres : out FLOAT  );
+      procedure Set_Info( Lap : INTEGER; Sector : INTEGER; Time : FLOAT; Metres : FLOAT; UpdateString : Unbounded_String.Unbounded_String);
 
    private
       Updated : BOOLEAN := false;
@@ -57,7 +57,8 @@ package OnBoardComputer is
                          Lap : INTEGER;
                          Sector : INTEGER;
                          UpdateString_In : out Unbounded_String.Unbounded_String;
-                         Time_In : out FLOAT);
+                         Time_In : out FLOAT;
+                         Metres : out FLOAT);
 
 
 
@@ -85,6 +86,7 @@ private
    type UPDATE_RECORD is record
       UpdateString : Unbounded_String.Unbounded_String;
       Time : FLOAT;
+      Metres : FLOAT;
    end record;
 
 end OnBoardComputer;

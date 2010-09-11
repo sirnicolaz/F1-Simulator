@@ -19,6 +19,7 @@ package Broker.Radio.Competition_Monitor_Radio.impl is
       sector : CORBA.Short ;
       id : CORBA.Short;
       time : out CORBA.FLOAT;
+      metres : out CORBA.FLOAT;
       Returns : out CORBA.STRING);
 
    procedure Get_CompetitionConfiguration

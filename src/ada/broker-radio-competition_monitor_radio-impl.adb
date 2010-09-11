@@ -22,17 +22,26 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 
-   procedure Get_CompetitorInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
+   procedure Get_CompetitorInfo(Self : access Object; 
+				lap : CORBA.Short; 
+				sector : CORBA.Short ; 
+				id : CORBA.Short; 
+				time : out CORBA.FLOAT; 
+				metres : out CORBA.FLOAT;
+				Returns : out CORBA.STRING) is
       ReturnStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       ReturnTime : Standard.FLOAT;
+      ReturnMetres : Standard.FLOAT;
    begin
       Competition_Monitor.Get_CompetitorInfo(lap       => INTEGER(lap),
                                   sector    => INTEGER(sector),
                                   id        => INTEGER(id),
                                   time      => ReturnTime,
+                                  metres    => ReturnMetres,
                                   updString => ReturnStr);
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(ReturnStr));
       time := CORBA.Float(ReturnTime);
+      metres := CORBA.Float(ReturnMetres);
    end Get_CompetitorInfo;
 
    procedure Get_CompetitionInfo

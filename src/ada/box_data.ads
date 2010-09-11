@@ -107,6 +107,7 @@ package Box_Data is
    function Get_UpdateXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String;
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT;
+   function Get_Metres ( Data : ALL_INFO ) return FLOAT;
 
    function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING;
 

@@ -574,7 +574,10 @@ package body Competitor is
    -----------------------------------
    -----------------------------------
    procedure Evaluate(driver : CAR_AND_DRIVER_ACCESS ;
-                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT; lengthPath : out FLOAT ; crossingTime_Out : out FLOAT) is
+                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT; 
+                     lengthPath : out FLOAT ; 
+                     crossingTime_Out : out FLOAT; 
+                     vel_out : out FLOAT) is
 
       --qua dentro va effettuata la valutazione della traiettoria migliore e calcolato il tempo di attraversamento
       -- da restituire poi a chi invoca questo metodo.
@@ -620,7 +623,7 @@ package body Competitor is
             StartingInstant := CompArrivalTime;
          end if;
          
-         CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
+	 CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
 
 	 vel_array(Index):=velTemp;
          CrossingTimeTemp := CrossingTimeTemp + WaitingTime;--StartingInstant;
@@ -691,6 +694,9 @@ package body Competitor is
       -- questo valore pu� arrivare (in base alla velocit� ) fino a 0.75 litri al km
       -- il calcolo � quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
+      
+      --aggiorno velocità raggiunta
+      vel_out := vel_array(traiettoriaScelta);
 
       crossingTime_Out := CrossingTime;
    end evaluate;
@@ -719,7 +725,7 @@ package body Competitor is
       Index : INTEGER := 0;
       id : INTEGER := carDriver.Id;
       StartingPosition :INTEGER;
-      --Path2Cross : carDriver.RaceIterator;
+      Speed : FLOAT;
       CrossingTime : FLOAT;
       endWait : Boolean :=False;
       j: INTEGER:=0;
@@ -728,9 +734,7 @@ package body Competitor is
       --statistiche COMPETITOR_STATS
       compStats : COMPETITOR_STATS;
       SectorID : INTEGER;
---carDriver.statsComputer.Init_Computer(carDriver.Id, global);
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
-      updateStr : Str.Unbounded_String := Str.Null_Unbounded_String;
 
       -- The lap count is kept in this variable
       --TODO: chiedere a lorenzo se non era gi� da qualche altra parte
@@ -838,9 +842,10 @@ package body Competitor is
       loop
 
 
-
+	 Ada.Text_IO.Put_Line("1");
          --Istante di tempo segnato nel checkpoint attuale per il competitor
          ActualTime := C_Checkpoint.Get_Time(id);
+         Ada.Text_IO.Put_Line("2");
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&
                               ": SUMMURY lap : " & INTEGER'IMAGE(CurrentLap) &
@@ -852,7 +857,7 @@ package body Competitor is
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
         
          if( C_Checkpoint.Is_PreBox = true ) then -- If true, the check point is a prebox
-
+	  Ada.Text_IO.Put_Line("3");
             begin
                --Box comunication section
                -- Ask for the box strategy once the prebox checkpoint is reached
@@ -883,25 +888,27 @@ package body Competitor is
          end if;
 
 
-
+	Ada.Text_IO.Put_Line("4");
 
          C_Checkpoint.Signal_Arrival(id);
 
          --When the competitor will be at the top of the list, he will be notified to
          --+ go ahead
+         Ada.Text_IO.Put_Line("5");
          C_Checkpoint.Wait_Ready(carDriver.Id);
 
          --Now the competitor is for sure first and he can pick up the paths collection
          --+ evaluate the best way to take
+         Ada.Text_IO.Put_Line("6");
          C_Checkpoint.Get_Paths(Paths2Cross,
                                 Go2Box      => PitStop);
         
-	
+	Ada.Text_IO.Put_Line("7");
          StartingPosition := Get_Position(carDriver.RaceIterator);
-
+Ada.Text_IO.Put_Line("8");
          --NEW: Moved. It was just before the crossing time calculation.
          SectorID:=C_Checkpoint.Get_SectorID;
-
+Ada.Text_IO.Put_Line("9");
          --Inizio sezione dedicata alla scelta della traiettoria
          --questa � la soluzione attuale. Il crossing time e il choosenpath
          --sono valori restituiti dalla funzione
@@ -911,10 +918,21 @@ package body Competitor is
          --tratto, compreso il tempo di attesa nella traiettoria.
          --Fine sezione  per la scelta della traiettoria
 
-
-
-         Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime); -- NEW aggiunto parametro lunghezza del path scelto
-
+	 --If the competitor is in the box lane, set up the maximum speed
+	 if(PitStop = true or PitStopDone = true) then
+	 Ada.Text_IO.Put_Line("10");
+         declare
+           OriginalSpeed : FLOAT := Get_MaxSpeed(carDriver);
+          begin
+	    carDriver.auto.MaxSpeed := 80.0;
+	    Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+	    --original driver speed restored.
+	    carDriver.auto.MaxSpeed := OriginalSpeed;
+	  end;
+	 else
+          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+	 end if;
+Ada.Text_IO.Put_Line("11");
          --Ora non c'� pi� rischio di race condition sulla scelta delle traiettorie
          --quindi pu� essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finch� vengono aggiornati i tempi di arrivo negli
@@ -929,7 +947,7 @@ package body Competitor is
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
 
          end if;
-
+Ada.Text_IO.Put_Line("12");
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
@@ -958,6 +976,7 @@ package body Competitor is
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
                   compStats.GasLevel := carDriver.auto.GasolineLevel;
                   compStats.TyreUsury := carDriver.auto.TyreUsury;
+                  compStats.MaxSpeed := Speed;
                   compStats.IsPitStop := false;
                   --TODO: explane the "Step" purpose
                   compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
@@ -980,7 +999,7 @@ package body Competitor is
 
          end if;
 
-
+Ada.Text_IO.Put_Line("13");
 
          --Update the statistic to send to the OnboardComputer
          compStats.Checkpoint := CurrentCheckpoint;
@@ -993,6 +1012,7 @@ package body Competitor is
          compStats.Lap := CurrentLap;
          compStats.PathLength := lengthPath;
          compStats.IsPitStop := FALSE;
+         compStats.MaxSpeed := Speed;
 
          -- The prebox might be way before the last checkpoint in the sector.
          --+ It's necessary though to set the field to TRUE to allow the update
@@ -1007,7 +1027,7 @@ package body Competitor is
 
          OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                   Data        => compStats);
-
+Ada.Text_IO.Put_Line("14");
          --If the checkpoint is the box, it's necessary to update all
          --+ the statistics from the box to the exit-box
          if(PitStopDone = true) then
@@ -1041,8 +1061,8 @@ package body Competitor is
                   compStats.TyreUsury := carDriver.auto.TyreUsury;
                   compStats.IsPitStop := TRUE;
                   compStats.Time := PredictedTime - (Step * UpdatedCheckpoints);
-
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
+                  compStats.MaxSpeed := Speed;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
@@ -1058,7 +1078,7 @@ package body Competitor is
             end;
 
          end if;
-
+Ada.Text_IO.Put_Line("15");
 
          if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
 
@@ -1110,7 +1130,7 @@ package body Competitor is
             Finished := TRUE;
          end if;
          exit when Finished = TRUE;
-
+Ada.Text_IO.Put_Line("16");
          -- UPdate the time signed in the checkpoint queues. The first
          --+ one with the predicted time (the time the car will arrive)
          --+ and the other ones with that time increased with the minimum
@@ -1136,11 +1156,11 @@ package body Competitor is
                StartingPosition := Get_Position(carDriver.RaceIterator)-1;
             end if;
          end loop;
-
+Ada.Text_IO.Put_Line("17");
          if(PitStopDone) then
             Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
          end if;
-
+Ada.Text_IO.Put_Line("18");
          -- If it was a pitstop, get the checkpoint following the one of the boxes
          if( PitStop = true) then
 
@@ -1169,7 +1189,7 @@ package body Competitor is
 
             Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
          end if;
-
+Ada.Text_IO.Put_Line("19");
 
          if(C_CheckPoint.Is_Goal) then
 
@@ -1177,11 +1197,11 @@ package body Competitor is
             CurrentCheckpoint := 0;
             CurrentLap := CurrentLap + 1;
          end if;
-
+Ada.Text_IO.Put_Line("20");
          -- Just for simulation purpose
          delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
-
+Ada.Text_IO.Put_Line("21");
          --If the checkpoint is the goal, get the race over
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
@@ -1196,7 +1216,7 @@ package body Competitor is
 
 
          end if;
-
+Ada.Text_IO.Put_Line("22");
          exit when Finished = true;
 
          CurrentCheckpoint := CurrentCheckpoint + 1;

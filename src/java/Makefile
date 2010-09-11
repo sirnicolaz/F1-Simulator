@@ -1,7 +1,7 @@
-box: corba
+box:
 	javac -d ../../obj/java/ GUI/Box/BoxConfigurationWindow.java
 
-competition: corba tv
+competition: tv
 	javac -d ../../obj/java/ GUI/Competition/CompetitionConfigurationWindow.java 
 
 tv: corba

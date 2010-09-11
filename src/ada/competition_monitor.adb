@@ -42,7 +42,7 @@ package body Competition_Monitor is
       --Through this method the competition knows when to start the competitors
       entry WaitReady when ExpectedBoxes = 0 is
       begin
-         Ada.Text_IO.Put_Line("READY!!!!!");
+         --Ada.Text_IO.Put_Line("READY!!!!!");
          null;
       end WaitReady;
 
@@ -90,7 +90,7 @@ package body Competition_Monitor is
       arrayComputer(indexIn):= compIn;
    end AddOBC;
 
-   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
+   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; metres : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       ComputerIndex : INTEGER := 1;
    begin
       while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
@@ -101,7 +101,8 @@ package body Competition_Monitor is
                                   lap,
                                   sector,
                                   updString,
-                                  time);
+                                  time,
+                                  metres);
 
    end Get_CompetitorInfo;
 

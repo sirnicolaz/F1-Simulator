@@ -18,7 +18,7 @@ package body OnBoardComputer is
          end loop;
       end Init;
 
-      entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String ) when true is
+      entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String; Metres : out FLOAT ) when true is
       begin
          if( Info.all(Lap)(Sector).UpdateString = Unbounded_String.Null_Unbounded_String ) then
             Updated := false;
@@ -26,18 +26,20 @@ package body OnBoardComputer is
          else
             Returns := Info.all(Lap)(Sector).UpdateString;
             Time := Info.all(Lap)(Sector).Time;
+            Metres := Info.all(Lap)(Sector).Metres;
          end if;
       end Get_Info;
 
-      entry Wait_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String ) when Updated = true is
+      entry Wait_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String; Metres : out FLOAT ) when Updated = true is
       begin
          requeue Get_Info;
       end Wait_Info;
 
-      procedure Set_Info( Lap : INTEGER; Sector : INTEGER; Time : FLOAT; UpdateString : Unbounded_String.Unbounded_String) is
+      procedure Set_Info( Lap : INTEGER; Sector : INTEGER; Time : FLOAT; Metres : FLOAT; UpdateString : Unbounded_String.Unbounded_String) is
       begin
          Info.all(Lap)(Sector).UpdateString := UpdateString;
          Info.all(Lap)(Sector).Time := Time;
+         Info.all(Lap)(Sector).Metres := Metres;
          Updated := TRUE;
       end Set_Info;
 
@@ -89,7 +91,8 @@ package body OnBoardComputer is
                                                "<tyreUsury>" & Common.FloatToString(Data.TyreUsury) &"</tyreUsury>" &
                                                "<lap>" & Common.IntegerToString(Data.Lap)&"</lap>" &
                                                "<sector>" & Common.IntegerToString(Data.Sector)&"</sector>" &
-                                               "<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
+                                               --"<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
+                                               --"<metres>" & Common.FloatToString(50.0) & "</metres>" &
                                                "</update>"
                                               );
 
@@ -98,6 +101,7 @@ package body OnBoardComputer is
          Computer_In.BoxInformation.Set_Info(Lap          => Data.Lap+1,
                                              Sector       => Data.Sector,
                                              Time => Data.Time,
+                                             Metres => Computer_In.SectorLength_Helper,
                                              UpdateString => updateStr);
 
          --Update the sector statistics
@@ -167,6 +171,7 @@ package body OnBoardComputer is
 
       Add_Stat(Computer_In.Competitor_Id,Data);
 
+
    end Add_Data;
 
    procedure CompetitorOut(Computer_In : COMPUTER_POINT;
@@ -192,9 +197,10 @@ package body OnBoardComputer is
                          Lap : INTEGER;
                          Sector : INTEGER;
                          UpdateString_In : out Unbounded_String.Unbounded_String;
-                         Time_In : out FLOAT) is
+                         Time_In : out FLOAT;
+                         Metres : out FLOAT) is
    begin
-      Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In);
+      Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In, Metres);
    end Get_BoxInfo;
 
 end OnBoardComputer;

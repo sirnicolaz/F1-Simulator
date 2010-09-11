@@ -43,7 +43,7 @@ package Competition_Monitor is
                                  ClassificationTimes : out Common.FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String);
 
-   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String);
+   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; metres : out FLOAT; updString : out Unbounded_String.Unbounded_String);
 
    procedure Get_CompetitionConfiguration(XmlInfo : out Unbounded_String.Unbounded_String;
                                           CircuitLength : out FLOAT);

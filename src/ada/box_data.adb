@@ -234,13 +234,19 @@ package body Box_Data is
          "<tyreUsury>" & Common.FloatToString(Data.PerSectorUpdate.TyreUsury) & "</tyreUsury>" &
          "<lap>" & Common.IntegerToString(Data.PerSectorUpdate.Lap) & "</lap> " &
          "<sector>" & Common.IntegerToString(Data.PerSectorUpdate.Sector) & "</sector>" &
-         "<metres>" & Common.FloatToString(Data.PerSectorUpdate.PathLength) & "</metres>" &
+         --"<metres>" & Common.FloatToString(Data.PerSectorUpdate.PathLength) & "</metres>" &
          "<meanTyreUsury>" & Common.FloatToString(Data.PerSectorUpdate.MeanTyreUsury) & "</meanTyreUsury>" &
          "<meanGasConsumption>" & Common.FloatToString(Data.PerSectorUpdate.MeanGasConsumption) & "</meanGasConsumption>" &
          "</status>" );
 
       return Tmp_String;
    end Get_UpdateXML;
+
+   function Get_Metres ( Data : ALL_INFO ) return FLOAT is
+   begin
+
+      return Data.PerSectorUpdate.PathLength;
+   end Get_Metres;
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT is
    begin

@@ -33,15 +33,15 @@ offrire le seguenti funzionalit\`{a}:
 \end{itemize}
 \subsubsection{Competitor}
 \label{competitor}
-Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
+Il \emph{Competitor} \`{e} l'entit\`{a} pensata a svolgere la gara. \`{E} caratterizzato dalle seguenti sotto-componenti:
 \begin{itemize}
-\item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto, ovvero:
+\item \textbf{Auto}, ovvero tutte le caratteristiche fisiche legate all'auto:
 	\begin{itemize}
 		\item motore;
 		\item capacit\`{a} del serbatoio;
 		\item massima accelerazione;
 		\item massima velocit\`{a};
-		\item gomme montate (mescola, modello, tipo);
+		\item gomme montate;
 		\item livello usura gomme;
 		\item livello della benzina nel serbatoio;
 	\end{itemize}
@@ -55,15 +55,16 @@ Il \emph{Competitor} \`{e} l'entit\`{a} pensata ad svolgere la gara. \`{E} carat
 		\item stile di guida, variabile tra conservativo, normale, aggressivo, a seconda dello stato della macchina e delle
 			previsioni fatte dai box
 		\item numero di lap prima del pit stop
-		\item addizionalmente, quando viene fatto un pit stop, la strategia determina anche quali siano le nuove gomme da montare,
-		 	la quantit\`{a} di benzina da avere nel serbatoio e il tempo impiegato per il pit stop.
+		\item addizionalmente, quando viene fatto un pit stop, la strategia determina anche quale
+		 	la quantit\`{a} di benzina da avere nel serbatoio e il tempo impiegato per il pit stop (le gomme si assume vengano
+		 	cambiate ad ogni pitstop).
 	\end{itemize}
 \end{itemize}
 Tutte queste informazioni insieme creano quello che viene definito il concorrente di gara. 
 Tali informazioni verranno poi usate nel corso della gara per:
 	\begin{itemize}
-		\item scegliere al momento giusto la miglior traiettoria da seguire, in base alla presenza o meno di altri concorrenti
-			nelle vicinanze e alla difficolt\`{a} del tratto;
+		\item scegliere al momento giusto la miglior traiettoria da seguire, in base alle sue caratteristiche (lunghezza, angolo ..)
+		 e in base alla presenza o meno di altri concorrenti;
 		\item fornire costantemente aggiornamenti sul suo stato (tramite una parte del modulo \emph{Stats}, informando il computer di bordo
 			riguardo a:
 			\begin{itemize}

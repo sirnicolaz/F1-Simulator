@@ -233,9 +233,10 @@ public class BoxScreen extends Thread{
 	    short i=1;
 	    short qee=1;
 	    org.omg.CORBA.FloatHolder j=new org.omg.CORBA.FloatHolder(0);
+	    org.omg.CORBA.FloatHolder pathLength=new org.omg.CORBA.FloatHolder(0);
 	    String temp;
 	    while(i<=(laps*3)){
-		temp = comp_radio.GetUpdate(i,j);
+		temp = comp_radio.GetUpdate(i,j,pathLength);
 		readXml(temp);
 
 		double gas=(double)(gasLevelValue);
@@ -246,6 +247,7 @@ public class BoxScreen extends Thread{
 		double gasPrint=(double)gasInt/(double)decimal;
 		double tyrePrint=(double)tyreInt/(double)decimal;
 		String time = convert(j.value);
+		String metres = convert(pathLength.value);
 		/*
 		  int ore = (int)(j.value/3600);
 		  int minuti = (int)(j.value/60);
@@ -383,10 +385,10 @@ public class BoxScreen extends Thread{
 	    sectorValue = new Integer(getCharacterDataFromElement(line));
 	    System.out.println("sector : "+sectorValue);
 
-	    NodeList metres = element.getElementsByTagName("metres");
-	    line = (Element) metres.item(0);
-	    metresValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("metres : "+metresValue);
+	    //NodeList metres = element.getElementsByTagName("metres");
+	    //line = (Element) metres.item(0);
+	    //metresValue = new Double(getCharacterDataFromElement(line));
+	    //System.out.println("metres : "+metresValue);
 
 	    NodeList meanTyreUsury = element.getElementsByTagName("meanTyreUsury");
 	    line = (Element) meanTyreUsury.item(0);
@@ -425,6 +427,7 @@ public class BoxScreen extends Thread{
 	    }
 	    catch(Exception e){
 // 		System.out.println("strategia non presente");}
+	}
 	}
 	catch (Exception e) {
 // 	    e.printStackTrace();

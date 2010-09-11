@@ -9,6 +9,7 @@ package body Box_Monitor is
 
    procedure GetUpdate(Num : in INTEGER;
                        Time : out FLOAT;
+                       PathLength : out FLOAT;
                        Returns : out Unbounded_String.Unbounded_String)
    is
 
@@ -27,6 +28,7 @@ package body Box_Monitor is
       Unbounded_String.To_Unbounded_String("</update>");
       Returns := Temp_String;
       Time := Box_Data.Get_Time(NewInfo);
+      PathLength := Box_Data.Get_Metres(NewInfo);
 
    end GetUpdate;
 
