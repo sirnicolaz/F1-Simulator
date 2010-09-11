@@ -2,8 +2,38 @@
 <racetrack>
 	<sector>
 	        <checkpoint goal="true">
-	                <length>455.00</length>
+	                <length>55.00</length>
+	                <mult>7</mult>
+			<angle>0.00</angle>
+			<grip>7.0</grip>
+	        </checkpoint>
+	        <checkpoint>
+	                <length>50.00</length>
+	                <mult>7</mult>
+			<angle>0.00</angle>
+			<grip>7.0</grip>
+	        </checkpoint>
+	        <checkpoint>
+	                <length>45.00</length>
+	                <mult>6</mult>
+			<angle>0.00</angle>
+			<grip>7.0</grip>
+	        </checkpoint>
+	        <checkpoint>
+	                <length>145.00</length>
 	                <mult>12</mult>
+			<angle>0.00</angle>
+			<grip>7.0</grip>
+	        </checkpoint>
+	        <checkpoint>
+	                <length>100.00</length>
+	                <mult>12</mult>
+			<angle>0.00</angle>
+			<grip>7.0</grip>
+	        </checkpoint>
+	        <checkpoint>
+	                <length>60.00</length>
+	                <mult>7</mult>
 			<angle>0.00</angle>
 			<grip>7.0</grip>
 	        </checkpoint>
