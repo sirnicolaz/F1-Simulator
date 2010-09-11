@@ -76,14 +76,21 @@ package body Circuit is
 
          AlphaRad : FLOAT := (3.14 * Angle_In) / 180.0;
          Shortest_Side : FLOAT := Length_In;
-         r : FLOAT := Shortest_Side / AlphaRad;
-         Tmp_Length : FLOAT := (r * 1.0) * AlphaRad ;
+         r : FLOAT;
+         Tmp_Length : FLOAT;
 
       begin
+         if( AlphaRad = 0.0) then 
+	      r := Shortest_Side;
+	      AlphaRad := 1.0;
+	 else
+	      r := Shortest_Side / AlphaRad;
+	 end if;
+         Tmp_Length := (r * 1.0) * AlphaRad ;
          Paths_Collection_In := new PATHS(1..Paths_Qty);
          for index in 1..Paths_Qty loop
             Tmp_Length := (((FLOAT(index)-1.0) * 1.6) + r ) * AlphaRad;
-            Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,GRIP_RANGE(9.00),DIFFICULTY_RANGE(9.8));
+            Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,Grip_In,Difficulty_In);
          end loop;
 
       end Init_Paths;
@@ -454,7 +461,7 @@ package body Circuit is
             end loop;
 
          end loop;
-
+	  Ada.Text_IO.Put_Line("Race length " & FLOAT'IMAGE(RaceTrack_Length));
       else
          --else auto configure a default circular N_Checkpoints-M_paths track (with N = Checkpoints_Qty and M = MaxCompetitors_Qty -1;
          Angle := 360.00 / FLOAT(Checkpoints_Qty);
@@ -513,7 +520,8 @@ package body Circuit is
          BoxLane_Length := BoxLane_Length + CheckpointSynch_Current.Get_Length;
          Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
       end loop;
-
+      
+      Ada.Text_IO.Put_Line("Length of box " & FLOAT'IMAGE(BoxLane_Length));
       --The box lane paths has to be initilised in a different way than the usual
       --+paths.
       Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,FLOAT'CEILING(BoxLane_Length/2.0));
@@ -527,7 +535,7 @@ package body Circuit is
                  3, --Sector ID
                  TRUE, --IsGoal
                  FLOAT'CEILING(BoxLane_Length/2.0), -- Length
-                 180.0, --Angle
+                 0.0, --Angle
                  5.0, --Grip TODO: give a not standard value to this one and following
                  1.0, --Difficulty
                  MaxCompetitors_Qty, -- Multiplicity
@@ -541,8 +549,8 @@ package body Circuit is
       --+ But the paths after the box should be like the ones after the prebox.
       --+verify TODO
       CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
-      Ada.Text_IO.Put_Line("Length of box " &Common.FloatToString(RaceTrack_In(7).Get_Length));
       RaceTrack_In(0) := CheckpointSynch_Current;
+      
 
       -- "-1" because the box has not to be included in the number of checkpoints
       Checkpoints_Qty := RaceTrack_In'LENGTH-1;
