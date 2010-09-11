@@ -15,7 +15,7 @@ package body Competition is
                    Wait_All : BOOLEAN) is
    begin
 
-      Ada.Text_IO.Put_Line("Waiting for ready...");
+      Ada.Text_IO.Put_Line("Waiting for competitor to be ready...");
 
       if( Wait_All ) then
             Competition_In.Wait;
@@ -52,7 +52,7 @@ package body Competition is
          --+ so no further joining is possible
          if ( Stop_Joining = true ) then
 
-            Ada.Text_IO.Put_Line("Stop joining");
+            Ada.Text_IO.Put_Line("Registration closed");
             Given_Id := -1;
          else
 
@@ -61,18 +61,15 @@ package body Competition is
             Next_ID := Next_ID + 1;
 
             -- Creating the file where the CompetitorDescriptor will be saved
-            Ada.Text_IO.Put_Line("Saving file...");
+
             File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
 
             --Handler the saving failure
             Result := Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
                               Content  => CompetitorDescriptor,
                               Path     => "");
-            --TODO: remove after testing
-            --Ada.Text_IO.Create(CompetitorDescriptor_File, Ada.Text_IO.Out_File, Unbounded_String.To_String(File_Name));
-            --Ada.Text_IO.Put(CompetitorDescriptor_File, CompetitorDescriptor);
-            --Ada.Text_IO.Close(CompetitorDescriptor_File);
-            --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
+          
+	    --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
             Ada.Text_IO.Put_Line("Init competitor...");
             Driver := Init_Competitor(Unbounded_String.To_String(File_Name),
                                       Circuit.Get_Iterator(Track),
@@ -80,9 +77,9 @@ package body Competition is
                                       Laps,
                                       Box_CorbaLOC);
             --Initialise the task competitor
-            Ada.Text_IO.Put_Line("Init task...");
+
             Competitors.all(ID) := new TASKCOMPETITOR(Driver);
-            Ada.Text_IO.Put_Line("End");
+
             Given_ID := ID;
 
             Comp_List(ID) := ID;
@@ -91,7 +88,7 @@ package body Competition is
             CircuitLength_Out := Circuit_Length;
             Monitor_CorbaLoc_Out := Monitor_CorbaLoc;
 
-            Ada.Text_IO.Put_Line("Competitor ID : " & INTEGER'IMAGE(Given_ID));
+
             Ada.Text_IO.Put_Line("Name : " & Unbounded_String.To_String(Competitor.Get_FirstName(Competitor_In => Driver)));
 
             --TODO fix
@@ -106,7 +103,7 @@ package body Competition is
       procedure Start is
       begin
 
-         Ada.Text_IO.Put_Line("Wating box ready");
+         Ada.Text_IO.Put_Line("Wating box to be ready");
 
          Stop_Joining := true;
 
@@ -153,18 +150,18 @@ package body Competition is
          Track_Length : FLOAT := 0.0;
          --Starter : access Competition_Monitor.impl.MonitorStarter;
       begin
-         Ada.Text_IO.Put_Line("Configuring competition (inside)");
+
          Laps := Laps_In;
 
          Name := Unbounded_String.To_Unbounded_String(Name_In);
 
-         Ada.Text_IO.Put_Line("Getting racetrack file: " & Circuit_File);
+
          Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
          Checkpoint_Qty := Circuit.Checkpoints_Qty;
 
-         Ada.Text_IO.Put_Line("Initilizing competitor array");
+
          Competitor.Set_Laps(Laps_In);
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
 
@@ -172,7 +169,7 @@ package body Competition is
                           Laps           => Laps_In,
                           Checkpoints_In => Checkpoint_Qty);
 
-         Ada.Text_IO.Put_Line("Checkpoints " & INTEGER'IMAGE(Checkpoint_Qty));
+
 
          Registrations_Open := True;
 
@@ -181,7 +178,7 @@ package body Competition is
                                                     Unbounded_string.To_Unbounded_String(Name_In),
                                                     Circuit_Length);
 
-         Ada.Text_IO.Put_Line("initializing monitor");
+
          Monitor := Competition_Monitor.Init(MaxCompetitors,
                                              Laps_In);
 

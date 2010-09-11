@@ -72,16 +72,16 @@ package body OnBoardComputer is
       updateStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       --
    begin
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": inizio add_data");
+
       -- If the information are related to last checkpoint of the sector
       --+ it's necessary to add those information to the competition monitor
 
       Computer_In.SectorLength_Helper := COmputer_In.SectorLength_Helper + Data.PathLength; -- il primo valore lo aggiungo, poi faccio un loop
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": path length set");
+
 
       if(Data.LastCheckInSect = true) then
 
-         Ada.Text_IO.Put_Line("Last check in sector");
+
          Unbounded_String.Set_Unbounded_String(updateStr,
                                                "<?xml version=""1.0""?>" &
                                                "<update>" &
@@ -92,8 +92,8 @@ package body OnBoardComputer is
                                                "<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
                                                "</update>"
                                               );
-         Ada.Text_IO.Put_Line("Adding news to monitor : ");
-	 Ada.Text_IO.Put_Line("Adding time to box " & FLOAT'IMAGE(Data.Time));
+
+
          --aggiorno i dati nel competition_monitor in modo da averli nel caso qualcuno (i box) li richieda
          Computer_In.BoxInformation.Set_Info(Lap          => Data.Lap+1,
                                              Sector       => Data.Sector,
@@ -124,12 +124,9 @@ package body OnBoardComputer is
                --It's the first time we try to find it
                Computer_In.CurrentBestSector_Times(CurrentSector) := Data.Time - Tmp_Stats.Time;
 
-               Ada.Text_IO.Put_Line("ONBOARD: storing time for sector " & Common.IntegerToString(CurrentSector) &
-                                    " time " & FLOAT'IMAGE(Computer_In.CurrentBestSector_Times(CurrentSector)) &
-                                   " data time " & FLOAt'IMAGE(Data.Time) & " tmp stats time " & FLOAT'IMAGE(Tmp_Stats.Time));
             end if;
 
-            Ada.Text_IO.Put_Line("Best sector calculated");
+
             --Update the lap statistics if the lap is finished
             if( CurrentSector = 3 ) then
                if ( Computer_In.CurrentBestLap_Time /= -1.0 ) then
@@ -151,32 +148,24 @@ package body OnBoardComputer is
 
       end if;
 
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": out of the huge if");
+
       --Update max speed TODO CRITICAL
       if (Computer_In.CurrentMaxSpeed < Data.MaxSpeed ) then
          Computer_In.CurrentMaxSpeed := Data.MaxSpeed;
       end if;
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": speed set");
+
       Data.BestLapNum := Computer_In.CurrentBestLap_Num;
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": best lap num set");
+
       Data.BestLaptime := Computer_In.CurrentBestLap_Time;
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": best lap time set");
+
       for Index in 1..3 loop
          Data.BestSectorTimes(Index) := Computer_In.CurrentBestSector_Times(Index);
       end loop;
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": sectors time set");
+
 
       Data.MaxSpeed := Computer_In.CurrentMaxSpeed;
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": data speed set");
-      Ada.Text_IO.Put_Line(INTEGER'IMAGE(Get_ID(Computer_In)) & ": Registering data of lap : " &
-                           INTEGER'IMAGE(Data.Lap+1) &
-                           " and sector " & INTEGER'IMAGE(Data.Checkpoint));
-
-      --TODO if the lap is finished, update the classific
 
       Add_Stat(Computer_In.Competitor_Id,Data);
-
-      Ada.Text_IO.Put_Line("fine add_data");
 
    end Add_Data;
 
@@ -205,7 +194,6 @@ package body OnBoardComputer is
                          UpdateString_In : out Unbounded_String.Unbounded_String;
                          Time_In : out FLOAT) is
    begin
-      Ada.Text_IO.Put_Line("In onboard computer");
       Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In);
    end Get_BoxInfo;
 

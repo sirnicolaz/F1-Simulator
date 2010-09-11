@@ -6,7 +6,7 @@ XMLADALIBS=`xmlada-config --libs`
 
 default: competition box
 
-competition: corba
+competition: 
 	gnatmake -j2 -x -d $(POLYORBCFLAGS) $(XMLADACFLAGS) -largs $(POLYORBLIBS) $(XMLADALIBS) -margs -PF1_Simulator.gpr main_competition.adb 
 
 box: corba
