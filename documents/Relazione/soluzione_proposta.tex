@@ -184,7 +184,7 @@ tramite le interfacce \textbf{SetupCompetitor},
 \caption{Protocol / Interface diagram - Competition/Competitor}
 \end{figure}
 \end{center}
-L'interazione fra la \emph{Competition} e il \emph{Competitor} avviene, come per le altre interazioni \emph{Competition}-componente in fase di configurazione
+L'interazione fra la \emph{Competition} e il \emph{Competitor} avviene, come per le altre interazioni \emph{Competition}-componente, in fase di configurazione
 e avvio. La \emph{Competition} si occupa di ricevere i parametri relativi a ogni \emph{Competitor} dal \emph{Configurator} (come verr\`{a} spiegato fra poco) per 
 poi inizializzare il competitor. Quando tutti i concorrenti sono pronti e anche i \emph{Box}, l'interfaccia \textbf{Start} verr\`{a} utilizzata per dare il
 via ai concorrenti.
@@ -291,7 +291,7 @@ Vi sono poi altre due interfacce offerte dal \emph{Box} al \emph{Monitor}. Per q
 acquisisce senso se si pensa che la componente \emph{Monitor}, ad alto livello, \`{e} stata pensata per pubblicare informazioni. Tali
 informazioni possono riguardare il singolo concorrente e quindi essere utili al \emph{Box}. Altre possono invece riguardare il \emph{Box} e 
 i suoi calcoli per essere esposte ad un utente (per esempio). Le due interfacce offerte dal \emph{Box} infatti servono per ottenere
-aggiornamenti sulle operazioni interne del \emph{Box} qualora essere dovessero essere esposte ad un qualunque client. Come vedremo pi\`{u}
+aggiornamenti sulle operazioni interne del \emph{Box} qualora esse dovessero essere esposte ad un qualunque client. Come vedremo pi\`{u}
 in dettaglio in seguito, questa componente \`{e} in realt\`{a} costituita da due sotto-componenti, una dedicata a \emph{Competition} e l'altra a
 \emph{Box}.
 \subsubsection{Screen-Monitor}
@@ -302,7 +302,7 @@ in dettaglio in seguito, questa componente \`{e} in realt\`{a} costituita da due
 \end{figure}
 \end{center}
 La componente \emph{Screen} comunica con il \emph{Monitor} per ottenere informazioni utili da esporre graficamente all'utente. Tali
-informazioni possono riguardare la competizione in senso globale, oppure essere legate ai singoli concorrenti e box.
+informazioni possono riguardare la competizione in senso globale, oppure essere legate ai singoli concorrenti.
 \subsubsection{Competitor-Box}
 \begin{center}
 \begin{figure}[h!]
@@ -324,7 +324,7 @@ i problemi visti. Tali entit\`{a} sono:
 \begin{itemize}
   \item \textbf{coda al checkpoint}: ogni checkpoint introduce tratti di circuito con caratteristiche diverse rispetto a quello precedente.
 	      \`{E} quindi possibile che da un tratto a molteplicit\`{a} 5 si passi ad uno a molteplicit\`{a} 3. L'accesso a tale tratto va quindi
-	      regolata per evitare situazioni anomale. La coda \`{e} ordinata in base ai tempi segnati (ulteriori dettagli in seguito).
+	      regolato per evitare situazioni anomale. La coda \`{e} ordinata in base ai tempi segnati (ulteriori dettagli in seguito).
   \item \textbf{istante di arrivo}: \`{e} l'istante in cui il concorrente \`{e} previsto arrivare. Indica l'istante reale di arrivo e dipende
 	      dal tempo di attraversamento (oltre che dal tempo accumulato fino a quel momento).
   \item \textbf{istante limite di arrivo previsto}: \`{e} l'istante in cui il concorrente arriverebbe sotto ipotesi ottimistiche al massimo. 
@@ -349,8 +349,8 @@ fino al raggiungimento di quello successivo.\\
 successivo all'istante di tempo pi\`{u} vicino.
 \item aggiunge il tempo di attraversamento calcolato (in base alle caratteristiche dell'auto e alla strategia) al tempo di liberazione del tratto o, 
 se il tempo di liberazione segnato \`{e} minore dell'istante di arrivo del concorrente, segna come istante di liberazione \emph{istante di arrivo}+\emph{tempo
-di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata liberata all'arrivo del concorrente).
-\item segna il tempo di arrivo effettivo sulla coda del checkpoint successivo, che verr\`{a} \textbf{riordinata} in base al nuovo tempo.
+di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata liberata all'arrivo del concorrente). Altrimenti segnerà \emph{tempo segnato+tempo di attraversamento}.
+\item segna il tempo di arrivo effettivo (dipendente chiaramente dal tempo segnato sulla traiettoria) sulla coda del checkpoint successivo, che verr\`{a} \textbf{riordinata} in base al nuovo tempo.
 \item segna il tempo di arrivo limite su tutte le altre code, da quella successiva al checkpoint che si sta per raggiungere a quella del checkpoint
 appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene \textbf{riordinata}.
 \item delay per fini di simulazione;
@@ -372,7 +372,7 @@ che nel checkpoint N il concorrente A abbia tempo di arrivo effettivo 4.0 e il c
 coda del checkpoint N+1 il concorrente B con 6.0 in prima posizione (ad esempio) e A con 8.0 a seguire. Il che significherebbe che in qualche modo B, nonostante
 abbia avuto accesso al tratto dopo A, sia riuscito lo stesso a sorpassarlo arrivando primo al checkpoint dopo. La cosa non pu\`{o} succedere. Per i punti spiegati
 prima, quando A arriva primo effettivo sulla coda del checkpoint N, potr\`{a} eseguire la valutazione delle traiettorie in modo esclusivo. Verr\`{a} quindi segnato
-un istante di liberazione sull'unica traiettoria disponibile maggiore o uguale a 4.0. Supponiamo 8.0. Verr\`{a} quindi segnato 8.0 Nella coda del checkpoint N+1. A
+un istante di liberazione sull'unica traiettoria disponibile maggiore o uguale a 4.0. Supponiamo 8.0. Verr\`{a} quindi segnato 8.0 nella coda del checkpoint N+1. A
 seguire verranno segnati $8.0+\epsilon$ su tutti gli altri tratti, fino al tratto N di nuovo dove la coda verr\`{a} riordinata e B risulter\`{a} primo effettivo.
 Ora, supponiamo (caso pessimo) che A non possa eseguire per un bel po' di tempo. B diventa primo su N, valuta la traiettoria e segna l'istante di liberazione.
 Tale istante non potr\`{a} essere minore di 8.0, poich\`{e} \`{e} stato il tempo segnato da A. Quindi, qualunque tempo di arrivo effettivo segnato al checkpoint
@@ -391,7 +391,7 @@ richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box \`{
 Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al checkpoint di uscita (nel circuito).\\
 I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
 velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
-sorpasso data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
+sorpasso \`{e} data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
 che verr\`{a} segnato nel checkpoint di uscita.
 % Dimostrazione dell'assenza di stallo
 \subsection{Assenza di stallo}
@@ -417,7 +417,7 @@ lo stallo porterebbe ad una contraddizione.\\
 \newpage
 %%% Architettura in dettaglio %%
 \section{Architettura in dettaglio}
-Si spiegher\`{a} ora con maggior dettaglio l'architettura di sistema, esplicando come le principali classi implementate svolgono le funzionalit\`{a}
+Si spiegher\`{a} ora con maggior dettaglio l'architettura di sistema, esplicando come le principali classi implementate svolgano le funzionalit\`{a}
 esposte dalle interfacce illustrate nel capitolo precedente.
 \subsection{Diagrammi delle classi}
 \subsubsection{Competition}
@@ -458,7 +458,7 @@ stesso \textbf{Synch\_Competition}, descritto poche righe pi\`{u} sopra.
 \item \textbf{RegistrationHandler} \`{e} l'oggetto che rimane in attesa di concorrenti. Pi\`{u} precisamente, \`{e} un server dedicato ad accogliere
 le richieste di registrazione dei concorrenti. Con il supporto di Polyorb \`{e} possibile invocare questo oggetto da remoto. Ad ogni richiesta,
 vengono salvati i parametri di configurazione in un file xml il cui nome e locazione verranno passati a \textbf{Synch\_Competition} per
-i effettuare il resto delle procedure di inizializzazione del concorrente. Di ritorno ci saranno l'ID del concorrente, il numero di lap,
+ effettuare il resto delle procedure di inizializzazione del concorrente. Di ritorno ci saranno l'ID del concorrente, il numero di lap,
 la lunghezza del circuito e il corbaloc 
 del \textbf{Competition\_Monitor} che il \emph{Box} dovr\`{a} utilizzare per rimanere sincronizzato sugli sviluppi del rispettivo concorrente.
 \end{itemize}
@@ -474,15 +474,16 @@ la traiettoria ottima in base alle condizioni del tratto e dei competitor presen
 sono contenute in \textbf{Driver}. \textbf{Car} mantiene alcune caratteristiche statiche sulla macchina e altre dinamiche, come il livello
 di benzina e l'usura delle gomme. \textbf{Strategy} mantiene le seguenti informazioni:
 \begin{itemize}
-\item Tipo gomme
+%\item Tipo gomme
 \item Stile di guida
 \item Numero di giri al pitstop (se 0, bisogna rientrare al pitstop)
 \item Durata del pitstop (nel caso il pitstop sia avvenuto)
 \item Livello di Gas (dopo il pitstop in caso sia avvenuto)
 \end{itemize}
-\textsc{Stile di guida} e \textsc{Numero di giri al pitstop} vengono aggiornate ad ogni giro, \textsc{Tipo gomme}, \textsc{Durata del pitstop}
-e \textsc{Livello di gas} vengono tenute in considerazione solo in caso di pitstop. Tipo di gomme e livello di gas vengono usate per aggiornare
-le impostazioni di \textbf{Car}. La durata del pitstop per aggiornare correttamente il tempo di arrivo segnato nel checkpoint di uscita
+\textsc{Stile di guida} e \textsc{Numero di giri al pitstop} vengono aggiornate ad ogni giro, \textsc{Durata del pitstop}
+e \textsc{Livello di gas} vengono tenute in considerazione solo in caso di pitstop. Il livello di gas viene usato per aggiornare
+le impostazioni di \textbf{Car} (le gomme vengono automaticamente messe a nuovo). 
+La durata del pitstop viene usata per aggiornare correttamente il tempo di arrivo segnato nel checkpoint di uscita
 dai box.\\
 Quando un concorrente si trova sul checkpoint prima della corsia dei box, effettua una chiamata al \emph{Box} tramite la \textbf{CompetitorRadio}
 per richiedere una strategia aggiornata. Se la strategia tornata contiene un numero di giri al pitstop pari a 0, il \textbf{TaskCompetitor}
@@ -613,7 +614,7 @@ un tipo record denominato \textbf{Competitor\_Stats}, contenente i seguenti dati
 Ora vediamo pi\`{u} dettagliatamente le due sotto-componenti accennate precedentemente:
 \begin{itemize}
 \item \textbf{OnboardComputer}:\\
-\`{e} un computer dedicato ad ogni singolo concorrente, denominato \textbf{OnboardComputer}. Ogni concorrente ne mantiene un'istanza che utilizza
+\`{e} un computer dedicato ad ogni singolo concorrente. Ogni concorrente ne mantiene un'istanza che utilizza
 per aggiornare le statistiche di checkpoint in checkpoint. Pi\`{u} precisamente, ogni concorrente possiede un'istanza di \textbf{Computer}, un record
 che colleziona le statistiche del singolo concorrente e le informazioni statiche sulla configurazione della competizione.\\
 Ogni \textbf{Computer} mantiene inoltre un riferimento ad una risorsa che nel diagramma \`{e} \textbf{Synch\_Info\_For\_Box}. Tale risorsa
@@ -627,7 +628,7 @@ passaggi:
 anche ai dati passati) e se migliore di quello precedentemente salvato (in \textbf{Computer}), viene aggiornato quello vecchio.
 \item se la fine del tratto coincide con la fine del settore vengono anche aggiornate le informazioni in \textbf{Synch\_Info\_For\_Box}. 
 Si ricorda infatti che il \emph{Box} riceve le informazioni aggiornate alla fine di ogni settore.
-\item se la fine del tratto corrisponde con la fine del giro, vengono aggiornato il miglior tempo di giro come fatto per i settori.
+\item se la fine del tratto corrisponde con la fine del giro, viene aggiornato il miglior tempo di giro come fatto per i settori.
 \item una volta effettuati tutti i controlli, le informazioni vengono impacchettate e inviate a \textbf{CompetitionComputer} per ulteriori
 controlli e per essere salvate.
 \end{itemize}
@@ -722,7 +723,7 @@ Il \emph{Box} \`{e} una componente che si occupa di assistere la gara del concor
 caratteristiche:
 \begin{description}
 \item{\textbf{Update\_Retriever}}:\\
-Come il nome suggerisce, questa unit`{a} \`{e} finalizzata a recuperare gli aggiornamenti di gara relativi al concorrente associato al box.
+Come il nome suggerisce, questa unit\`{a} \`{e} finalizzata a recuperare gli aggiornamenti di gara relativi al concorrente associato al box.
 A tale scopo, il task si connette al \textbf{Competition\_Monitor} per ottenere un pacchetto di informazioni aggiornato alla fine di ogni 
 settore. Tali informazioni vengono convertite in un formato compatibile con il sistema (vengono ricevute in XML e convertite in un oggetto
 \textbf{Competition\_Update}). Fatto ci\`{o}, gli aggiornamenti vengono inseriti nel buffer \textbf{Synch\_Competition\_Updates}. Il task
@@ -752,7 +753,7 @@ viene messo in attesa.
 Supporta la comunicazione fra \emph{Box} e \textbf{Box\_Monitor}.Questa risorse \`{e} destinata a contenere tutte le informazioni legate ai box.
 Oltre alle informazioni grezze di settore sul concorrente, la risorsa colleziona anche le medie calcolate
 dai box e le strategie ogni qualvolta ne siano disponibili di nuove. Le informazioni sono ordinate cronologicamente e associate
-ad un indice. L'indice va da 1 a $3 * Lap Totali$, poich\`{e} i settori sono tre. Se un informazione relativa ad un settore e ad una lap non
+ad un indice. L'indice va da 1 a $3 * Lap Totali$, poich\`{e} i settori sono tre. Se un'informazione relativa ad un settore e ad una lap non
 \`{e} disponibile, il richiedente viene messo in attesa fino a che l'aggiornamento non risulti disponibile.
 \end{description}
 Si pu\`{o} constatare che a concorrere per le informazioni collezionate nel \emph{Box} non vi sono solo unit\`{a} interne alla componente, ma anche
@@ -764,7 +765,7 @@ Il secondo (\emph{Screen}) richiede tutte le informazioni dall'indice 1 all'indi
 la parte del \emph{Monitor} destinata ai box. Le informazioni tornate possono riguardare solo un aggiornamento di settore o anche di strategia,
 in base a quanto disponibile per quell'indice.\\
 \\
-Infine il \textbf{Main\_Box} \`{e} destinato ad inizializzare e configurare le risorse protette condivise e i task e istanziare gli oggetti CORBA necessari 
+Infine il \textbf{Main\_Box} \`{e} destinato ad inizializzare e configurare le risorse protette condivise e i task e istanziare gli oggetti ORB necessari 
 alla comunicazione fra componenti.
 \newpage
 \subsubsection{Configurator}
@@ -781,7 +782,7 @@ un'interfaccia di configurazione (scritta in Java) per \emph{Competition} e \emp
 ovvero classi che permettono l'intercomunicazione fra linguaggi diversi, di modo quindi che i dati inseriti nelle interfacce utente
 possano essere trasferiti alle componenti sottostanti per la configurazione e inizializzazione. In dettaglio:
 \begin{description}
-\item{\textbf{CompetitionAdminWindow}}:\\
+\item{\textbf{CompetitionConfigurationWindow}}:\\
 Utilizzata per impostare i parametri di gara, ovvero:
 \begin{itemize}
 \item numero lap
@@ -790,7 +791,7 @@ Utilizzata per impostare i parametri di gara, ovvero:
 \end{itemize}
 Una volta impostati i parametri essi verranno sottomessi via \textbf{CompetitionConfigurator} alla \emph{Competition} per la
 configurazione e l'inizializzazione.
-\item{\textbf{BoxAdminWindow}}:\\
+\item{\textbf{BoxConfigurationWindow}}:\\
 Utilizzata per impostare le caratteristiche statiche del concorrente associato al box 
 (fare riferimento al capitolo \ref{competitor} per informazioni su tali parametri), dettagli riguardanti il box stesso, ovvero la strategia 
 (fare riferimento al capitolo \ref{box} per ulteriori dettagli) e la configurazione iniziale dell'auto, ovvero tipo di gomme e quantit\`{a} di
@@ -798,8 +799,6 @@ benzina iniziale. Queste informazioni vengono poi utilizzate per registrare il c
 della componente \emph{Competition}). Una volta registrato il concorrente si potranno ottenere il resto delle informazioni necessarie
 ad inizializzare il box, ovvero numero di giri e lunghezza circuito (per esempio). \`{E} quindi ora possibile inviare i parametri di configurazione
 al \emph{Box} tramite il \textbf{BoxConfigurator}.
-\item{\textbf{BoxScreen}}:\\
-La classe \textbf{BoxScreen} visualizza l'andamento della competizione da parte del concorrente a cui si riferisce.Questa finestra viene avviata dopo che il concorrente si \`{e} registrato alla competizione. Una volta avviato si mette in ascolto sul \emph{Box\_Monitor\_Radio} che ritorna (quando disponibili) le informazioni relative all'andamento del proprio concorrente, visualizzando tempi, posizione sulla pista, usura delle gomme e livello della benzina.
 \end{description}
 \newpage
 \subsubsection{Screen}
@@ -809,6 +808,8 @@ La classe \textbf{BoxScreen} visualizza l'andamento della competizione da parte 
 \caption{Class diagram - Screen}
 \end{figure}
 \begin{description}
+\item{\textbf{BoxScreen}}:\\
+La classe \textbf{BoxScreen} visualizza l'andamento della competizione da parte del concorrente a cui si riferisce.Questa finestra viene avviata dopo che il concorrente si \`{e} registrato alla competizione. Una volta avviato si mette in ascolto sul \emph{Box\_Monitor\_Radio} che ritorna (quando disponibili) le informazioni relative all'andamento del proprio concorrente, visualizzando tempi, posizione sulla pista, usura delle gomme e livello della benzina.
 \item{\textbf{ScreenTv}}:\\
 La classe \textbf{ScreenTv} \`{e} l'implementazione dell'interfaccia \textbf{TvPanelInterface} e si occupa di offrire una visualizzazione dei dati di gara.
 Quando viene creato lo ScreenTv la connessione con il monitor di sistema \`{e} gi\`{a} stata effettuata ed \`{e} quindi funzionante. Tramite il riferimento al monitor lo ScreenTv \`{e} in grado di ottenere inizialmente le informazioni statiche della gara tramite il metodo \underline{Get\_CompetitionConfiguration} e utilizzarle per costruire la GUI. Successivamente si mette in ascolto sul monitor aspettando l'iscrizione dei concorrenti.Ad iscrizione avvenuta vengono stampate le informazioni relative ai concorrenti. Successivamente, quando parte la gara, lo screenTv comincia ad acquisire informazioni dal monitor. La richiesta viene effettuata ogni intervallo di tempo (fissato per lo screen della competizione, configurabile per lo screen di una tv generica). Ogni volta che viene richiesto un aggiornamento possono presentarsi due situazioni. La prima \`{e} la disponibilit\`{a} delle informazioni che quindi vengono lette e la gui viene cos\`{i} aggiornata con i valori opportuni, la seconda \`{e} la non disponibilit\`{a} di aggiornamenti, in tal caso lo screenTv rimane in attesa.
@@ -890,7 +891,7 @@ con la guardia \textsc{Ready=True}. Quando il produttore inserisce una nuova ris
 thread in attesa possa verificare se l'informazione voluta sia stata inserita. In caso affermativo l'informazione viene ritornata. In caso negativo il thread riesegue
 la stessa procedure descritta inizialmente. Chiaramente questa tecnica non potrebbe funzionare con pi\`{u} consumatori, poich\`{e} la guardia potrebbe venire cambiata
 pi\`{u} volte ad insaputa di un thread che stia venendo \textbf{riaccodato} da \underline{Get\_Info} a \underline{Wait} (la \textbf{requeue} infatti prevede prerilascio). La
-soluzione per\`{o} si presta a risolvere il problema per tutte le situazioni in cui non pi\`{u} di un consumatore e un produttore accedono alla stessa risorsa.
+soluzione per\`{o} si presta a risolvere il problema per tutte le situazioni in cui non pi\`{u} di un consumatore e un produttore accedano alla stessa risorsa.
 \subsubsection{Conclusioni}
 Quanto descritto riguarda i casi pi\`{u} problematici di gestione dell'accesso concorrente a risorse. Il resto dei casi viene trattato con semplici risorse protette
 e \textbf{entry} con guardie. Non si presenta quindi il rischio di racecondition. Nemmeno starvation dovrebbe essere possibile, 
@@ -933,7 +934,7 @@ typedef sequence<float> float_sequence;
 Tale tipo viene poi manipolato in modo diverso in base al linguaggio utilizzato per la componente, rimanendo comunque entro un buon margine di precisione.
 \subsubsection{Misure di fault tolerance}
 Cavi di rete danneggiati o router intasati potrebbero provocare il malfunzionamento della comunicazione fra le componenti distribuite. Nel caso di malfunzionamento
-della comunicazione fra \textbf{TVScreen} e \emph{Competition}, la competizione non viene compromessa. Nella peggiore delle ipotesi il \textbf{TVScreeb} non \`{e} in grado
+della comunicazione fra \textbf{TVScreen} e \emph{Competition}, la competizione non viene compromessa. Nella peggiore delle ipotesi il \textbf{TVScreen} non \`{e} in grado
 di ottenere i dati richiesti e ritenter\`{a} in seguito. Nel caso uno o pi\`{u} dei nodi ospitanti i \emph{Box} cada o rimanga isolato, la competizione rischierebbe
 di essere compromessa. In prossimit\`{a} del checkpoint prima dei box infatti il concorrente effettua una richiesta remota al \emph{Box} per l'aggiornamento della strategia.
 Se tale richiesta produce errore, il concorrente rischierebbe di non poter procedere la gara. Si \`{e} deciso quindi di gestire l'arrivo di dati corrotti o la scomparsa di 

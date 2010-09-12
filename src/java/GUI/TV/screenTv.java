@@ -348,7 +348,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
- 		     //sleep(990);
+ 		     //sleep(999);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
@@ -611,7 +611,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
 	//int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
-	int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
+	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
 	    if(secondi <10){
@@ -620,7 +620,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		//else if(millesimi<100){
 		//    time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
 		//else{
-		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+decimi);//}
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+decimi);//}
 	    }
 	    else{
 		//if(millesimi<10){
@@ -628,7 +628,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		//else if(millesimi<100){
 		//    time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
 		//else{
-		    time = new String("0"+ore+":0"+minuti+":"+secondi+":"+decimi);//}
+		    time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+decimi);//}
 	    }
 	}
 	else{
@@ -638,7 +638,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		//else if(millesimi<100){
 		//    time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
 		//else{
-		    time = new String("0"+ore+":"+minuti+":0"+secondi+":"+decimi);//}
+		    time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+decimi);//}
 	    }
 	    else{
 		//if(millesimi<10){
@@ -646,7 +646,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		//else if(millesimi<100){
 		//    time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
 		//else{
-		    time = new String("0"+ore+":"+minuti+":"+secondi+":"+decimi);//}
+		    time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+decimi);//}
 	    }}
 
 	return time;

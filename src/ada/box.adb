@@ -1,5 +1,9 @@
 with CORBA.ORB;
 
+with Ada.Calendar;
+use Ada.Calendar;
+with Ada.Exceptions;
+
 with Broker.Radio.Competition_Monitor_Radio;
 
 --with PolyORB.Utils.Report;
@@ -131,20 +135,35 @@ package body Box is
       Info := new COMPETITION_UPDATE;
       loop
 
-       Ada.Text_IO.Put_Line("UP: Asking for " & INTEGER'IMAGE(Lap) & ", sector " & INTEGER'IMAGE(Sector));
-         Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
-           (
-            Radio,
-            CORBA.Short(Lap),
-            CORBA.Short(Sector),
-            CORBA.Short(CompetitorID),
-            CORBA.Float(Time),
-            CORBA.Float(Metres),
-            CorbaInfo);
-       Ada.Text_IO.Put_Line("Box: got");  
-         Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
-       Ada.Text_IO.Put_Line("Box: xml 2 string");  
-         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+
+         declare
+               INFO_GOT : BOOLEAN := false;
+         begin
+               
+		loop
+		      Ada.Text_IO.Put_Line("UP: Asking for " & INTEGER'IMAGE(Lap) & ", sector " & INTEGER'IMAGE(Sector));
+		      Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
+		      (
+		      Radio,
+		      CORBA.Short(Lap),
+		      CORBA.Short(Sector),
+		      CORBA.Short(CompetitorID),
+		      CORBA.Float(Time),
+		      CORBA.Float(Metres),
+		      CorbaInfo); 
+
+		      Ada.Text_IO.Put_Line("Box: got");  
+		      Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
+		      Ada.Text_IO.Put_Line("Box: xml 2 string");  
+		      Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+		      INFO_GOT := true;
+		      exit when INFO_GOT = true;
+		end loop;
+		exception
+		      when Error : others =>
+			  Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
+			  delay until(Ada.Calendar.Clock + Standard.Duration(3));
+         end;
        
          Info.Time := Time;
          Ada.Text_IO.Put_Line("UP: got time " & FLOAT'IMAGE(Time));
