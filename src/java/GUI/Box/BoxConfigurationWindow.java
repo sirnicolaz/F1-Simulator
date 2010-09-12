@@ -619,6 +619,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
 		System.out.println("chiamo ConfiguratorHelper.narrow");
 		//qua va effettuato lo switch panel.
+	        //comp.release();
 		switchPanel();
 
 	    }

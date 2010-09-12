@@ -93,6 +93,7 @@ package body Competition is
 
             --TODO fix
             if ( Next_ID = Competitors'LENGTH + 1 ) then
+            Ada.Text_IO.Put_Line("Stop");
                Stop_Joining := true;
             end if;
 
@@ -164,6 +165,7 @@ package body Competition is
 
          Competitor.Set_Laps(Laps_In);
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(MaxCompetitors) & " competitors");
 
          CompetitionComputer.Init_Stats(Competitor_Qty => MaxCompetitors,
                           Laps           => Laps_In,

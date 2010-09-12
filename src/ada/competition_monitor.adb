@@ -30,8 +30,9 @@ package body Competition_Monitor is
       --TODO: use that CompetitorID to recognize the caller
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
+      
          ExpectedBoxes := ExpectedBoxes - 1;
-
+	Ada.Text_IO.Put_Line(INTEGER'IMAGE(ExpectedBoxes) & " expected boxes");
       end Ready;
       --TODO: maybe not necessary
       procedure Stop( CompetitorID : in INTEGER) is

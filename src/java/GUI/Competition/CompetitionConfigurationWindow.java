@@ -25,13 +25,13 @@ private Competition_Monitor_Radio monitor;
 private ScreenTv screen;
 private org.omg.CORBA.ORB orb;
 private CompetitionConfigurator conf;
-private JLabel labelFile = new JLabel("1: File of racetrack : ");
-private JLabel labelCompetitor = new JLabel("2: Maximum number of competitor : ");
-private JLabel labelLap = new JLabel("3: Number  : ");
-private JLabel labelName = new JLabel("4: Name of circuit : ");
-private JTextField fileRacetrack = new JTextField("../../race_tracks/race.xml", 15);
+private JLabel labelFile = new JLabel("1: Racetrack file : ");
+private JLabel labelCompetitor = new JLabel("2: Competitors : ");
+private JLabel labelLap = new JLabel("3: Laps  : ");
+private JLabel labelName = new JLabel("4: Circuit name : ");
+private JTextField fileRacetrack = new JTextField("../../race_tracks/indianapolis.xml", 20);
 private JFrame parent;
-private JTextField textName = new JTextField("Monza", 10);
+private JTextField textName = new JTextField("Indianapolis", 10);
 private JButton openButton;
 private JButton startButton;
 // private JButton undoButton;
@@ -80,10 +80,10 @@ screen.start();
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileRacetrack.setText("../../race_tracks/race.xml");
+			    fileRacetrack.setText("../../race_tracks/indianapolis.xml");
 			    jsLap.setValue(10);
 			    jsConc.setValue(3);
-			    textName.setText("Monza");
+			    textName.setText("Indianapolis");
 // 			    jsRefresh.setValue(43);
 			    
 		}
