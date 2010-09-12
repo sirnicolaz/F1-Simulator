@@ -523,7 +523,7 @@ package body Competitor is
       end if;
       -- fine aggiornamento accelerazione in base allo stile di guida e all'usura delle gomme
 
-      vel_max_reale := vel_max-(((tyre_usury/10.0) * (vel_max))/10.0)-(((gasoline_level*0.025)*(vel_max))/100.0);-- con 400 litri(massimo serbatoio esistente) si ha una decadenza del 10% della velocit� massima raggiungibile
+      vel_max_reale := vel_max-(((tyre_usury/100.0) * (vel_max))/10.0)-(((gasoline_level*0.025)*(vel_max))/100.0);-- con 400 litri(massimo serbatoio esistente) si ha una decadenza del 10% della velocit� massima raggiungibile
 
       if gasoline_level <= 0.0 then
          Ada.Text_IO.Put_Line("-------------------"&Integer'Image(CarDriver.Id)&" : ATTENZIONE - BENZINA FINITA !!!");
@@ -548,9 +548,6 @@ package body Competitor is
          TimeCriticalTemp := timeCritical;-- aggiornare velocit�
       elsif lc < length_path then
 
-	 if(vel_max_reale <0.0 ) then
-	    vel_max_reale := 0.0;
-	 end if;
          Vel_Out:=vel_max_reale;
           
          --if vel_max_reale = 0.0 then timeCriticalTemp := -1000.0;

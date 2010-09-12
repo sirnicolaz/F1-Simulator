@@ -1,10 +1,10 @@
 \subsection{Scelta dei linguaggi}
-Per il progetto sono stati utilizzati principalmente due linguaggi (+1 in piccola parte):
+Per il progetto sono stati utilizzati principalmente due linguaggi (+2 in piccola parte):
 \begin{itemize}
 \item \textbf{ADA}: il linguaggio \`{e} stato utilizzato per sviluppare i layer sottostanti allo strato di presentazione. Si \`{e} valutato infatti,
 dopo le tematiche affrontate durante il corso, che sarebbe stato pi\`{u} agevole sviluppare un sistema multi-threaded e caratterizzato
 da forti vincoli di affidabilit\`{a} e determinismo utilizzando tale linguaggio. Il forte sistema di tipi e le primitive a supporto della gestione
-dei thread e delle risorse condivise si sono infatti rivelati decisivi avere un maggior controllo sul sistema in fase di sviluppo gi\`{a} 
+dei thread e delle risorse condivise si sono infatti rivelati decisivi perr avere un maggior controllo sul sistema in fase di sviluppo gi\`{a} 
 a compile-time. Pi\`{u} precisamente, il linguaggio stesso ci avrebbe (e ci ha) vincolato a scrivere del codice logicamente corretto senza
 troppe iterazioni di debug.
 \item \textbf{Java}: per lo sviluppo delle interfacce grafiche \`{e} stato invece utilizzato Java. La scelta \`{e} stata dettata da vari motivi.
@@ -15,7 +15,8 @@ Seconda motivazione, la portabilit\`{a}. La parte logica del sistema \`{e} stata
 nodi massimo pari alla quantit\`{a} di concorrenti. La TV per la visualizzazione della gara potrebbe invece essere potenzialmente avviata
 su 1000 macchine diverse. \`{E} parsa quindi una scelta abbastanza furba offrire la possibilit\`{a} di utilizzare tale interfaccia in qualunque
 computer appoggiandosi alla JVM invece che doverla ricompilare e magari riadattare per ogni macchina.
-\item \textbf{Bash}: questo linguaggio di scripting \`{e} stato usato per la configurazione e l'avvio del sistema.
+\item \textbf{Bash}: questo linguaggio di scripting \`{e} stato usato per la configurazione, l'avvio e lo stop del sistema.
+\item \textbf{IDL}: il linguaggio è stato usato per generare il codice finalizzato all'interoperabilità fra linuguaggi.
 \end{itemize}
 \subsection{Distribuzione e interoperabilit\`{a} fra linguaggi}
 Per quanto riguarda la parte distribuita si \`{e} scelto di utilizzare \emph{Polyorb} con profilo \emph{CORBA}. La scelta  \`{e} caduta su questa tecnologia dopo aver valutato i pregi e i difetti delle altre tecnologie come ad esempio \emph{Distributed System Annex} e \emph{MOM}. La prima tecnologia \`{e} stata scartata in quanto si voleva realizzare un prodotto con comunicazione fra linguaggi diversi (in questo caso Ada e Java) e per la parte Java si \`{e} trovato solo un articolo scientifico che parlasse di binding di Distributed Annex per Java. La seconda tecnologia menzionata \`{e} stata scartata in quanto non sufficientemente conosciuta (a differenza delle altre viste a lezione) e presente solamente nella versione J2EE di Java e non, come per CORBA, nella versione standard di Java e anche nella OpenJDK (presente in molti sistemi Unix). La scelta \`{e} quindi caduta su CORBA, supportato nella API di Java e supportato anche, tramite Polyorb, in Ada.

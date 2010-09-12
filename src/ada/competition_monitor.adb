@@ -162,9 +162,9 @@ Ada.Text_IO.Put_Line("UP: got");
    if(IdArray1 /= null) then
    Ada.Text_IO.Put_Line("ST: not null loop from LENGTH to merge array size");
 	for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
-	  if(IdArray2.all(Index) /= -1) then
-	    IdArrayOut.all(Index) := IdArray2.all(Index);
-	    TimeArrayOut.all(Index) := TimeArray2.all(Index);
+	  if(IdArray2.all(Index-IdArray1.all'LENGTH) /= -1) then
+	    IdArrayOut.all(Index) := IdArray2.all(Index-IdArray1.all'LENGTH);
+	    TimeArrayOut.all(Index) := TimeArray2.all(Index-IdArray1.all'LENGTH);
 	  end if;
 	end loop;
    else

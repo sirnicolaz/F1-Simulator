@@ -938,7 +938,9 @@ della comunicazione fra \textbf{TVScreen} e \emph{Competition}, la competizione 
 di ottenere i dati richiesti e ritenter\`{a} in seguito. Nel caso uno o pi\`{u} dei nodi ospitanti i \emph{Box} cada o rimanga isolato, la competizione rischierebbe
 di essere compromessa. In prossimit\`{a} del checkpoint prima dei box infatti il concorrente effettua una richiesta remota al \emph{Box} per l'aggiornamento della strategia.
 Se tale richiesta produce errore, il concorrente rischierebbe di non poter procedere la gara. Si \`{e} deciso quindi di gestire l'arrivo di dati corrotti o la scomparsa di 
-connessione semplicemente facendo mantenere al concorrente la stessa strategia adottata al giro precedente.
+connessione semplicemente facendo mantenere al concorrente la stessa strategia adottata al giro precedente.\\
+Se la connessione venisse invece a mancare temporaneamente al \emph{Box}, esso rimarrebbe in attesa che la connessione ritorni per procedere all'aggiornamento
+delle strategie.
 % Inizializzazione gara
 \subsection{Inizializzazione competizione}
 Il seguente diagramma di sequenza spiega come avviene la sequenza di init della competizione, a partire dal main della competizione \textbf{main\_competition.adb}.
@@ -955,11 +957,11 @@ l'interfaccia di configurazione (in java) della competizione.
 \clearpage
 Una volta avviato il main della competizione, per prima cosa vengono inizializzati tutti i server, vale a dire \textbf{CompetitionConfigurator},
 \textbf{RegistrationHandler} \textbf{Competition\_Monitor\_Radio}. Viene avviato un task \textbf{Starter} che rimane in attesa
-della configurazione e registrazione concorrenti avvenuti per dare lo \underline{Start} alla gara. Viene inoltre allocato una risorsa protetta di tipo \textbf{Synch\_Competition} pensata
+della configurazione e registrazione concorrenti avvenuti per dare lo \underline{Start} alla gara. Viene inoltre allocata una risorsa protetta di tipo \textbf{Synch\_Competition} pensata
 per agevolare la fase di init. Ne viene condivisa un'istanza fra \textbf{CompetitionConfigurator}, \textbf{RegistrationHandler} e \textbf{Starter}.
 Tale risorsa permette di regolare i vari step dell'inizializzazione. Finch\`{e} la competizione non viene configurata (dal passo \textbf{10} al passo \textbf{16}),
 non sar\`{a} concesso di registrare concorrenti. Una volta configurata la competizione, viene aperta la guardia \textsc{Registration\_Open} e il metodo
-\underline{Register\_NewCompetitor} potr\`{a} essere invocato (in \textbf{Synch\_Competition}. L'iscrizione dei concorrenti avviene a partire dai \emph{Box}.
+\underline{Register\_NewCompetitor} potr\`{a} essere invocato (in \textbf{Synch\_Competition}). L'iscrizione dei concorrenti avviene a partire dai \emph{Box}.
 Nel diagramma l'azione iniziale del \emph{Box} e la \textbf{20}. In realt\`{a}, nel nodo del box, viene prima avviato uno script che esegue il main del box
 seguito dal main dell'interfaccia (java) di configurazione del concorrente e del box. A configurazione avvenuta, i parametri vengono inviati al server della
 competizione invocando il metodo del server \textbf{Registration\_Handler} \underline{Join\_Competition}, come scritto nel diagramma. A iscrizione avvenuta, 
@@ -981,6 +983,6 @@ concorrente non pu\`{o} procedere (poca benzina o molta usura gomme), oppure qua
 \item{\textbf{Stop delle interfacce utente}}:\\
 \`{e} sufficiente chiudere le interfacce con il tasto \textbf{x} in alto a destra;
 \item{\textbf{Stop dei server}}:\\
-una volta finita la gara e chiuse le interfacce utente, \`{e} sufficiente digitare ``q+INVIO'' nelle console dove si sono avviati i main per lanciare un
-segnale di terminazione ai programmi (e conseguentemente alle risorse server).
+una volta finita la gara e chiuse le interfacce utente, lo script di avvio procede l'esecuzione invocando un \textbf{killall -9} sui main avviati, interrompendo
+cos\`{i} anche i task server.
 \end{description}
