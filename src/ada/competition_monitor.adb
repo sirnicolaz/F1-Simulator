@@ -197,16 +197,16 @@ package body Competition_Monitor is
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
       CompetitionHandler.WaitReady;
-
+Ada.Text_IO.Put_Line("Init get info");
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
-
+Ada.Text_IO.Put_Line("ST: Gettin");
          CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
-
+Ada.Text_IO.Put_Line("ST: Gettin 2");
          -- In this case the competitor is arriving to the checkpoint
          if( Tmp_Stats.Time < TimeInstant ) then
             Tmp_CompLocation := new STRING(1..6);
@@ -221,17 +221,25 @@ package body Competition_Monitor is
             Tmp_CompLocation := new STRING(1..8);
             Tmp_CompLocation.all := "arriving";
          end if;
-
+Ada.Text_IO.Put_Line("ST: Gettin 3");
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-           ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """" &
-            " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """" &
-            " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>" &
-            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" &
+           ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+           Ada.Text_IO.Put_Line("ST: Gettin 44");
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(  
+            " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+            Ada.Text_IO.Put_Line("ST: Gettin 43");
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
+            " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>");
+            Ada.Text_IO.Put_Line("ST: Gettin 42");
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
+            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" );
+Ada.Text_IO.Put_Line("ST: Gettin 41");
+Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(   
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
-
+Ada.Text_IO.Put_Line("ST: Gettin 4");
          
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
@@ -255,7 +263,7 @@ package body Competition_Monitor is
       end loop;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
-
+Ada.Text_IO.Put_Line("ST: Best lap");
       --Retrieving best performances
       CompetitionComputer.Get_BestLap(TimeInstant,
                         LapTime       => Tmp_BestLapTime,
@@ -274,7 +282,7 @@ package body Competition_Monitor is
          "<competitorId>" & Common.IntegerToString(Tmp_BestLapCompetitor) & "</competitorId>" &
          "<sectors>"
         );
-
+Ada.Text_IO.Put_Line("ST: Best sectors");
       for i in 1..3 loop
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<sector num=""" & Common.IntegerToString(i) & """>" &
@@ -290,9 +298,9 @@ package body Competition_Monitor is
         ("</sectors>" &
          "</bestTimes>"
         );
-
+Ada.Text_IO.Put_Line("ST: classific");
       if(HighestCompletedLap /= -1) then
-
+Ada.Text_IO.Put_Line("ST: insiede");
          CompetitionComputer.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
@@ -301,11 +309,11 @@ package body Competition_Monitor is
                                 Times_PreviousClassific,
                                 LappedCompetitors_ID,
                                 LappedCompetitors_CurrentLap);
-
+Ada.Text_IO.Put_Line("ST: Merge");
 	 Merge(CompetitorID_InClassific,Times_InClassific,
 	       CompetitorIDs_PreviousClassific,Times_PreviousClassific,
 	       CompetitorIDs_WithTimes,ClassificationTimes);
-
+Ada.Text_IO.Put_Line("ST: Stringing");
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<classification>");
 
@@ -345,14 +353,14 @@ package body Competition_Monitor is
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("</classification>");
-
+Ada.Text_IO.Put_Line("ST: End classific");
       end if;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</competitionStatus>");
 
       XMLInfo := Tmp_StatsString;
-
+Ada.Text_IO.Put_Line("ST: End get info");
    end Get_CompetitionInfo;
 
    procedure Get_CompetitionConfiguration( XmlInfo : out Unbounded_String.Unbounded_String;

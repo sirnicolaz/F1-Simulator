@@ -992,7 +992,7 @@ Ada.Text_IO.Put_Line("12");
                end loop;
                CurrentCheckpoint := Circuit.Checkpoints_Qty;
                --Restore the iterator initial position
-               while Get_Position(carDriver.RaceIterator) /= Iterator_InitialPosition loop
+               while Get_Position(carDriver.RaceIterator) /= Circuit.Checkpoints_Qty loop
                   Get_NextCheckpoint(carDriver.RaceIterator, Temp_Checkpoint );
                end loop;
             end;
@@ -1027,7 +1027,7 @@ Ada.Text_IO.Put_Line("13");
 
          OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                   Data        => compStats);
-Ada.Text_IO.Put_Line("14");
+Ada.Text_IO.Put_Line("Data added for time " & FLOAT'IMAGE(compStats.Time));
          --If the checkpoint is the box, it's necessary to update all
          --+ the statistics from the box to the exit-box
          if(PitStopDone = true) then
@@ -1088,7 +1088,7 @@ Ada.Text_IO.Put_Line("15");
                Temp_CheckpointPos : INTEGER;
                Temp_Lap : INTEGER := CurrentLap;
             begin
-
+      Ada.Text_IO.Put_Line("Sendin away competitor at " & FLOAT'IMAGE(compStats.Time) & " last lap " & INTEGER'IMAGE(LastLap));
                CompetitorOut(Computer_In => carDriver.statsComputer,
                              Lap         => CUrrentLap,
                              Data        => compStats);
@@ -1116,9 +1116,13 @@ Ada.Text_IO.Put_Line("15");
                   compStats.Lap := Temp_Lap;
                   compStats.PathLength := 0.0;
 
+		  
+               Ada.Text_IO.Put_Line("ST: updating checkpoint  " & INTEGER'IMAGE(Temp_CheckpointPos) &
+                                    " at lap " & INTEGER'IMAGE(Temp_Lap));
+
                   OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                            Data        => compStats);
-
+Ada.Text_IO.Put_Line("ST: finished, going new");
                end loop;
 
             end;
