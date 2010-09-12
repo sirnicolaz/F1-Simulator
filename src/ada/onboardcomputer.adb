@@ -20,10 +20,13 @@ package body OnBoardComputer is
 
       entry Get_Info( Lap : INTEGER; Sector : INTEGER; Time : out FLOAT; Returns : out Unbounded_String.Unbounded_String; Metres : out FLOAT ) when true is
       begin
+      Ada.Text_IO.Put_Line("UP: getting box info for lap " & INTEGER'IMAGE(Lap) & " and sector " & INTEGER'IMAGE(Sector));
          if( Info.all(Lap)(Sector).UpdateString = Unbounded_String.Null_Unbounded_String ) then
+         Ada.Text_IO.Put_Line("UP: not yet, waiting");
             Updated := false;
             requeue Wait_Info;
          else
+         Ada.Text_IO.Put_Line("UP: now");
             Returns := Info.all(Lap)(Sector).UpdateString;
             Time := Info.all(Lap)(Sector).Time;
             Metres := Info.all(Lap)(Sector).Metres;
@@ -82,7 +85,7 @@ package body OnBoardComputer is
 
 Ada.Text_IO.Put_Line("ON : 1");
       if(Data.LastCheckInSect = true) then
-Ada.Text_IO.Put_Line("ON : 2");
+Ada.Text_IO.Put_Line("ON : 2 putting stuff of lap " & INTEGER'IMAGE(Data.Lap) & " and sector " & INTEGER'IMAGE(Data.Sector) & " gas level " & FLOAT'IMAGE(Data.GasLevel));
 
          Unbounded_String.Set_Unbounded_String(updateStr,
                                                "<?xml version=""1.0""?>" &
@@ -208,6 +211,7 @@ Ada.Text_IO.Put_Line("ON : 8");
                          Time_In : out FLOAT;
                          Metres : out FLOAT) is
    begin
+   
       Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In, Metres);
    end Get_BoxInfo;
 

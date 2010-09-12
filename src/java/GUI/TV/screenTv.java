@@ -335,7 +335,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    }
 				}
 				varCiclo = varCiclo+1;
-			    }
+		 	   }
 
 			}
 		    }
@@ -348,7 +348,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
- 		      sleep(990);
+ 		     //sleep(990);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
@@ -608,7 +608,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     public String convert(float timeIn){
 
 	int ore = (int)(timeIn/3600);
-	int minuti = (int)(timeIn/60);
+	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
 	//int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 	int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);

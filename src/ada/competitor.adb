@@ -548,7 +548,11 @@ package body Competitor is
          TimeCriticalTemp := timeCritical;-- aggiornare velocit�
       elsif lc < length_path then
 
+	 if(vel_max_reale <0.0 ) then
+	    vel_max_reale := 0.0;
+	 end if;
          Vel_Out:=vel_max_reale;
+          
          --if vel_max_reale = 0.0 then timeCriticalTemp := -1000.0;
          --else
          if vel_max_reale = 0.0 then timeCriticalTemp := 0.0; -- per evitare di dividere per zero dopo
@@ -606,7 +610,7 @@ package body Competitor is
       traiettoriaScelta : INTEGER;
       vel_array : VEL(1..Paths2Cross.Get_Size);
       waitingTimeMinore : FLOAT := 0.0;
-      temp_usury : Common.PERCENTAGE := 0.0;
+      temp_usury : FLOAT := 0.0;
       gas_modifier : FLOAT := 0.0;
    begin
 
@@ -648,6 +652,7 @@ package body Competitor is
 	end if;
      
       end loop;
+      
       Paths2Cross.Update_Time(MinDelay, traiettoriaScelta);
       driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocit� di entrata al tratto successivo
 
@@ -679,7 +684,11 @@ package body Competitor is
       -- quindi x = (1000*100)/0.80 = 125 km
       -- x = (1000*100)/0.86 = 116,279 km
       -- in totale quasi due giri (in media 5.5 km al giro) di differenza
-      driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
+      if(FLOAT(driver.auto.TyreUsury) + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0) > 100.0) then
+          driver.auto.TyreUsury := 100.0;
+      else
+          driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
+      end if;
 
       --il valore di 0.8 � stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
       -- calcolo gas_modifier
@@ -697,6 +706,10 @@ package body Competitor is
       
       --aggiorno velocità raggiunta
       vel_out := vel_array(traiettoriaScelta);
+      
+      --if(driver.auto.GasolineLevel > 0.0 and driver.auto.TyreUsury < 100.0)  then
+      --end if;
+      
 
       crossingTime_Out := CrossingTime;
    end evaluate;
@@ -857,10 +870,11 @@ package body Competitor is
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
         
          if( C_Checkpoint.Is_PreBox = true ) then -- If true, the check point is a prebox
-	  Ada.Text_IO.Put_Line("3");
+	  Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": pre box");
             begin
                --Box comunication section
                -- Ask for the box strategy once the prebox checkpoint is reached
+               
                Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
 
 	       --Get the strategy object from the file
@@ -888,27 +902,27 @@ package body Competitor is
          end if;
 
 
-	Ada.Text_IO.Put_Line("4");
+	Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": strategy got");
 
          C_Checkpoint.Signal_Arrival(id);
 
          --When the competitor will be at the top of the list, he will be notified to
          --+ go ahead
-         Ada.Text_IO.Put_Line("5");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": signal arrival done");
          C_Checkpoint.Wait_Ready(carDriver.Id);
 
          --Now the competitor is for sure first and he can pick up the paths collection
          --+ evaluate the best way to take
-         Ada.Text_IO.Put_Line("6");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": waited");
          C_Checkpoint.Get_Paths(Paths2Cross,
                                 Go2Box      => PitStop);
         
-	Ada.Text_IO.Put_Line("7");
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": path got");
          StartingPosition := Get_Position(carDriver.RaceIterator);
-Ada.Text_IO.Put_Line("8");
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": position raceiterator got");
          --NEW: Moved. It was just before the crossing time calculation.
          SectorID:=C_Checkpoint.Get_SectorID;
-Ada.Text_IO.Put_Line("9");
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": sector id got");
          --Inizio sezione dedicata alla scelta della traiettoria
          --questa � la soluzione attuale. Il crossing time e il choosenpath
          --sono valori restituiti dalla funzione
@@ -920,7 +934,7 @@ Ada.Text_IO.Put_Line("9");
 
 	 --If the competitor is in the box lane, set up the maximum speed
 	 if(PitStop = true or PitStopDone = true) then
-	 Ada.Text_IO.Put_Line("10");
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": decreasing original speed");
          declare
            OriginalSpeed : FLOAT := Get_MaxSpeed(carDriver);
           begin
@@ -932,7 +946,10 @@ Ada.Text_IO.Put_Line("9");
 	 else
           Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
 	 end if;
-Ada.Text_IO.Put_Line("11");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": evaluate done:" &
+                              " length path " & FLOAT'IMAGE(lengthPath) & 
+                              " crossing time " & FLOAT'IMAGE(CrossingTime) & 
+                              " speed " & FLOAT'IMAGE(Speed));
          --Ora non c'� pi� rischio di race condition sulla scelta delle traiettorie
          --quindi pu� essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finch� vengono aggiornati i tempi di arrivo negli
@@ -944,10 +961,11 @@ Ada.Text_IO.Put_Line("11");
          --+ the goal.
          -- TODO: add the time when the competitor has to leave the box
          if (PitStop = true) then
+	    Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": pitstop delay " & FLOAT'IMAGE(BrandNewStrategy.PitStopDelay));
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
-
+	    
          end if;
-Ada.Text_IO.Put_Line("12");
+	 
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
@@ -978,7 +996,6 @@ Ada.Text_IO.Put_Line("12");
                   compStats.TyreUsury := carDriver.auto.TyreUsury;
                   compStats.MaxSpeed := Speed;
                   compStats.IsPitStop := false;
-                  --TODO: explane the "Step" purpose
                   compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
 
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
@@ -999,7 +1016,7 @@ Ada.Text_IO.Put_Line("12");
 
          end if;
 
-Ada.Text_IO.Put_Line("13");
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": done with padding going to box");
 
          --Update the statistic to send to the OnboardComputer
          compStats.Checkpoint := CurrentCheckpoint;
@@ -1025,9 +1042,15 @@ Ada.Text_IO.Put_Line("13");
             compStats.IsPitStop := TRUE;
          end if;
 
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": updaitng pc: " &
+                              " check " & INTEGER'IMAGE(CurrentCheckpoint) & 
+                              " gas level " & FLOAT'IMAGE(compStats.GasLevel) & 
+                              " tyre usury " & FLOAT'IMAGE(compStats.TyreUsury) & 
+                              " path length " & FLOAT'IMAGE(lengthPath) &
+                              " speed " & FLOAT'IMAGE(Speed));
          OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
                                   Data        => compStats);
-Ada.Text_IO.Put_Line("Data added for time " & FLOAT'IMAGE(compStats.Time));
+	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": done with updating");
          --If the checkpoint is the box, it's necessary to update all
          --+ the statistics from the box to the exit-box
          if(PitStopDone = true) then
@@ -1078,7 +1101,7 @@ Ada.Text_IO.Put_Line("Data added for time " & FLOAT'IMAGE(compStats.Time));
             end;
 
          end if;
-Ada.Text_IO.Put_Line("15");
+         Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": done with padding leaving to box");
 
          if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
 
@@ -1088,7 +1111,7 @@ Ada.Text_IO.Put_Line("15");
                Temp_CheckpointPos : INTEGER;
                Temp_Lap : INTEGER := CurrentLap;
             begin
-      Ada.Text_IO.Put_Line("Sendin away competitor at " & FLOAT'IMAGE(compStats.Time) & " last lap " & INTEGER'IMAGE(LastLap));
+               Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": Sendin away competitor at " & FLOAT'IMAGE(compStats.Time) & " last lap " & INTEGER'IMAGE(LastLap));
                CompetitorOut(Computer_In => carDriver.statsComputer,
                              Lap         => CUrrentLap,
                              Data        => compStats);
@@ -1117,7 +1140,7 @@ Ada.Text_IO.Put_Line("15");
                   compStats.PathLength := 0.0;
 
 		  
-               Ada.Text_IO.Put_Line("ST: updating checkpoint  " & INTEGER'IMAGE(Temp_CheckpointPos) &
+                  Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": ST: updating checkpoint  " & INTEGER'IMAGE(Temp_CheckpointPos) &
                                     " at lap " & INTEGER'IMAGE(Temp_Lap));
 
                   OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
@@ -1134,7 +1157,7 @@ Ada.Text_IO.Put_Line("ST: finished, going new");
             Finished := TRUE;
          end if;
          exit when Finished = TRUE;
-Ada.Text_IO.Put_Line("16");
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": loop");
          -- UPdate the time signed in the checkpoint queues. The first
          --+ one with the predicted time (the time the car will arrive)
          --+ and the other ones with that time increased with the minimum
@@ -1160,11 +1183,11 @@ Ada.Text_IO.Put_Line("16");
                StartingPosition := Get_Position(carDriver.RaceIterator)-1;
             end if;
          end loop;
-Ada.Text_IO.Put_Line("17");
+	Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": after loop");
          if(PitStopDone) then
             Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
          end if;
-Ada.Text_IO.Put_Line("18");
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": getting box");
          -- If it was a pitstop, get the checkpoint following the one of the boxes
          if( PitStop = true) then
 
@@ -1177,9 +1200,11 @@ Ada.Text_IO.Put_Line("18");
 
             --Those updates will be effective in the next loop, so
             --+ they'll be used while doing the after-box path.
-            carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
+            if(BrandNewStrategy.GasLevel /= -1.0) then
+                carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
+                carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
+            end if;
             carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
-            carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
             carDriver.auto.Type_Tyre := BrandNewStrategy.Type_Tyre;
             --We assume che every pitstop the tyre are replaced
             carDriver.auto.TyreUsury := 0.0;
@@ -1193,7 +1218,7 @@ Ada.Text_IO.Put_Line("18");
 
             Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
          end if;
-Ada.Text_IO.Put_Line("19");
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": after box");
 
          if(C_CheckPoint.Is_Goal) then
 
@@ -1201,11 +1226,10 @@ Ada.Text_IO.Put_Line("19");
             CurrentCheckpoint := 0;
             CurrentLap := CurrentLap + 1;
          end if;
-Ada.Text_IO.Put_Line("20");
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": going to finish");
          -- Just for simulation purpose
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+         --delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
-Ada.Text_IO.Put_Line("21");
          --If the checkpoint is the goal, get the race over
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
@@ -1220,7 +1244,7 @@ Ada.Text_IO.Put_Line("21");
 
 
          end if;
-Ada.Text_IO.Put_Line("22");
+         Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": end");
          exit when Finished = true;
 
          CurrentCheckpoint := CurrentCheckpoint + 1;

@@ -96,14 +96,14 @@ package body Competition_Monitor is
       while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
          ComputerIndex := ComputerIndex + 1;
       end loop;
-
+Ada.Text_IO.Put_Line("UP: get box info for sector " & INTEGER'IMAGE(sector) & " and lap " & INTEGER'IMAGE(lap));
       OnboardCOmputer.Get_BoxInfo(arrayComputer(ComputerIndex),
                                   lap,
                                   sector,
                                   updString,
                                   time,
                                   metres);
-
+Ada.Text_IO.Put_Line("UP: got");
    end Get_CompetitorInfo;
 
    --Given 2 float arrays with times e ids of competitors in classific, the function creates
@@ -119,15 +119,19 @@ package body Competition_Monitor is
    begin
    
    if(IdArray1 /= null) then
+   Ada.Text_IO.Put_Line("ST: Looping through array 1, size " & INTEGER'IMAGE(IdArray1.all'LENGTH));
       for Index in 1..IdArray1.all'LENGTH loop
 	MergedArraySize := MergedArraySize + 1;
       end loop;
    end if;
    
    if(IdArray2 /= null) then
+   Ada.Text_IO.Put_Line("ST: Looping through array 2, size " & INTEGER'IMAGE(IdArray2.all'LENGTH));
       for Index in 1..IdArray2.all'LENGTH loop
+      Ada.Text_IO.Put_Line("ST: X loop");
 	Copy := TRUE;
 	for Indez in 1..IdArray1.all'LENGTH loop
+	Ada.Text_IO.Put_Line("ST: Z loop");
 	  if(IdArray1.all(Indez) = IdArray2.all(Index)) then
 	    Copy := FALSE;
 	    exit;
@@ -140,23 +144,37 @@ package body Competition_Monitor is
 	end if;
       end loop;
    end if;
-   
+   Ada.Text_IO.Put_Line("ST: merged array size " & INTEGER'IMAGE(MergedArraySize));
    IdArrayOut := new INTEGER_ARRAY(1..MergedArraySize);
    TimeArrayOut := new FLOAT_ARRAY(1..MergedArraySize);
    
    if(IdArray1 /= null) then
+   Ada.Text_IO.Put_Line("ST: loop through 1 again ");
     for Index in 1..IdArray1.all'LENGTH loop
+    Ada.Text_IO.Put_Line("ST: loop");
       IdArrayOut.all(Index) := IdArray1.all(Index);
       TimeArrayOut.all(Index) := TimeArray1.all(Index);
     end loop;
    end if;
    
-   for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
-    if(IdArray2.all(Index) /= -1) then
-      IdArrayOut.all(Index) := IdArray2.all(Index);
-      TimeArrayOut.all(Index) := TimeArray2.all(Index);
-    end if;
-   end loop;
+   
+   if(IdArray1 /= null) then
+   Ada.Text_IO.Put_Line("ST: not null loop from LENGTH to merge array size");
+	for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
+	  if(IdArray2.all(Index) /= -1) then
+	    IdArrayOut.all(Index) := IdArray2.all(Index);
+	    TimeArrayOut.all(Index) := TimeArray2.all(Index);
+	  end if;
+	end loop;
+   else
+   Ada.Text_IO.Put_Line("ST: null loop from 1 to merge array size");
+	for Index in 1..MergedArraySize loop
+	  if(IdArray2.all(Index) /= -1) then
+	    IdArrayOut.all(Index) := IdArray2.all(Index);
+	    TimeArrayOut.all(Index) := TimeArray2.all(Index);
+	  end if;
+	end loop;
+   end if;
    
    end Merge;
    

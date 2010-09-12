@@ -270,7 +270,7 @@ public class BoxScreen extends Thread{
 		  else{
 		  time = new String(ore+":"+minuti+":"+secondi+":"+millesimi);}
 		  }*/
-		if( gas <= 0.0 || tyre >100.0 ){
+		if( gas <= 0.0 || tyre >=100.0 ){
 		    model.insertRow(0,new Object[]{lapsValue,sectorValue,"RITIRED","RITIRED",time});
 		    ListSelectionModel selectionModel = outTable.getSelectionModel();
 		    // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -526,7 +526,7 @@ public class BoxScreen extends Thread{
     public String convert(float timeIn){
 
 	int ore = (int)(timeIn/3600);
-	int minuti = (int)(timeIn/60);
+	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 	String time;
