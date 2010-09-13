@@ -43,8 +43,8 @@ public class BoxScreen extends Thread{
     private GridBagConstraints meanPanelGrid;
     private GridBagConstraints outPanelGrid;
 
-    private JTextField textBoxGas = new JTextField("",10);
-    private JTextField textBoxTyre = new JTextField("",10);
+    private JTextField textBoxGas = new JTextField("",6);
+    private JTextField textBoxTyre = new JTextField("",6);
     private JLabel labelGas = new JLabel(" l / km ");
     private JLabel labelTyre = new JLabel(" % / km ");
     private JLabel labelGasExpl = new JLabel("Mean fuel consumption");
@@ -77,7 +77,7 @@ public class BoxScreen extends Thread{
     private Double gasLevelStrategyValue;
     private Integer pitstopLapValue;
     private float pitstopDelayValue;
-
+    private Double maxSpeedReachedValue;
 
     private String teamValue;
     private String firstnameValue;
@@ -90,6 +90,7 @@ public class BoxScreen extends Thread{
     private Double gasLevelCarValue;
     private String mixtureValue;
     private String typetyreValue;
+    private String boxStrategyString;
 
     public BoxScreen(String id_In, String xmlCompetitor, String boxStrategyStringIn){
 	id=id_In;
@@ -125,7 +126,7 @@ public class BoxScreen extends Thread{
 	outPanelGrid.gridy = 2;
 	outPanelGrid.ipady = 5;
 	outPanel.add(labelInfo_3, outPanelGrid);
-	outPanelGrid.fill = GridBagConstraints.HORIZONTAL;"+pitstopLapValue.toString()+"
+	outPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 	outPanelGrid.gridx = 0;
 	outPanelGrid.gridy = 3;
 	outPanelGrid.ipady = 5;
@@ -205,7 +206,7 @@ public class BoxScreen extends Thread{
 	column.setPreferredWidth(20);
 
 	tablePanel = new JScrollPane(outTable);
-	tablePanel.setPreferredSize(new Dimension(500, 250));
+	tablePanel.setPreferredSize(new Dimension(600, 250));
 
 	tablePanel.setVerticalScrollBar(new JScrollBar());
 	tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -225,7 +226,7 @@ public class BoxScreen extends Thread{
 	parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	try{
 	    labelInfo_1.setText("Team "+teamValue+", Competitor "+firstnameValue+" "+lastnameValue);
-	    labelInfo_2.setText("Max speed = "+maxspeedValue.toString()+", Max acceleration = "+maxaccelerationValue.toString());
+	    labelInfo_2.setText("Max speed reachable = "+maxspeedValue.toString()+", Max acceleration = "+maxaccelerationValue.toString());
 	    labelInfo_3.setText("Tank capacity = "+gastankcapacityValue.toString()+ ", Tyre mixture = "+mixtureValue);
 	    labelInfo_4.setText("Tyre usury = "+tyreUsuryCarValue.toString()+" , Fuel level = "+gasLevelCarValue.toString());
 	    labelInfo_6.setText("Laps to pitstop = - , Driving style "+styleValue);
@@ -255,13 +256,13 @@ public class BoxScreen extends Thread{
 		double tyre=(double)(tyreUsuryValue);
 		double speed=(double)(maxSpeedReachedValue);
 		double meanGas=(double)(meanGasConsumptionValue);
-		double meanTyre=(double)(meanTyreUsuryValue);
+		double meanTyreU=(double)(meanTyreUsuryValue);
 		int decimal=1000; //3 cifre decimali
 		int  gasInt= (int)(decimal*gas);
 		int tyreInt = (int)(decimal*tyre);
 		int speedInt = (int)(decimal*speed);
 		int meanGasInt = (int)(decimal*meanGas);
-		int meanTyre = (int)(decimal*meanTyre);
+		int meanTyreInt = (int)(decimal*meanTyreU);
 		double gasPrint=(double)gasInt/(double)decimal;
 		double tyrePrint=(double)tyreInt/(double)decimal;
 		double speedPrint=(double)speedInt/(double)decimal;
@@ -281,8 +282,8 @@ public class BoxScreen extends Thread{
 		    // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		    selectionModel.setSelectionInterval(0,0);
 		    System.out.println(temp);
-		    textBoxGas.setText(meanGasPrint);//aggiorno consumo medio
-		    textBoxTyre.setText(meanTyrePrint);//aggiorno velocità media
+		    textBoxGas.setText(new Double(meanGasPrint).toString());//aggiorno consumo medio
+		    textBoxTyre.setText(new Double(meanTyrePrint).toString());//aggiorno velocità media
 		    if (pitstopLapValue !=null){
 			labelInfo_6.setText("Laps to pitstop = "+pitstopLapValue.toString()+", Driving style "+styleValue);
 			if (pitstopLapValue == 0 && pitstopDelayValue !=-1.0){
@@ -290,7 +291,7 @@ public class BoxScreen extends Thread{
 			    pitstopDelayValue = (float)-1.0;
 			}
 			labelInfo_1.setText("Team "+teamValue+", Competitor "+firstnameValue+" "+lastnameValue);
-			labelInfo_2.setText("Max speed = "+maxspeedValue.toString()+", Max acceleration = "+maxaccelerationValue.toString());
+			labelInfo_2.setText("Max speed reachable = "+maxspeedValue.toString()+", Max acceleration = "+maxaccelerationValue.toString());
 			labelInfo_3.setText("Tank capacity = "+gastankcapacityValue.toString()+ ", Tyre mixture = "+mixtureValue);
 			labelInfo_4.setText("Tyre usury = "+tyreUsuryCarValue.toString()+" , Fuel level = "+gasLevelCarValue.toString());
 			outPanel.updateUI();
@@ -377,7 +378,7 @@ public class BoxScreen extends Thread{
 	    meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));
 	    System.out.println("meanGasConsumption :"+meanGasConsumptionValue);
 	    
-	    NodeList maxSpeedReached = element.getElementByTagName("maxSpeed");
+	    NodeList maxSpeedReached = element.getElementsByTagName("maxSpeed");
 	    line = (Element) maxSpeedReached.item(0);
 	    maxSpeedReachedValue = new Double(getCharacterDataFromElement(line));
 	    System.out.println("maxSpeed :"+maxSpeedReachedValue);
