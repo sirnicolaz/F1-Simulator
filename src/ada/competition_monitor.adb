@@ -122,6 +122,7 @@ package body Competition_Monitor is
    if(IdArray1 /= null) then
 
       for Index in 1..IdArray1.all'LENGTH loop
+      Ada.Text_IO.Put_Line("Array 1, id = " & INTEGER'IMAGE(IdArray1(Index)) & ", time" & FLOAT'IMAGE(TimeArray1(Index)));
 	MergedArraySize := MergedArraySize + 1;
       end loop;
    end if;
@@ -129,12 +130,13 @@ package body Competition_Monitor is
    if(IdArray2 /= null) then
 
       for Index in 1..IdArray2.all'LENGTH loop
-
+      Ada.Text_IO.Put_Line("Array 2, id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
 	Copy := TRUE;
 	for Indez in 1..IdArray1.all'LENGTH loop
 
 	  if(IdArray1.all(Indez) = IdArray2.all(Index)) then
 	    Copy := FALSE;
+	    Ada.Text_IO.Put_Line("Copy false");
 	    exit;
 	  end if;
 	end loop;
@@ -152,7 +154,7 @@ package body Competition_Monitor is
    if(IdArray1 /= null) then
 
     for Index in 1..IdArray1.all'LENGTH loop
-
+    Ada.Text_IO.Put_Line("Array 1 again , id = " & INTEGER'IMAGE(IdArray1(Index)) & ", time" & FLOAT'IMAGE(TimeArray1(Index)));
       IdArrayOut.all(Index) := IdArray1.all(Index);
       TimeArrayOut.all(Index) := TimeArray1.all(Index);
     end loop;
@@ -160,16 +162,22 @@ package body Competition_Monitor is
    
    
    if(IdArray1 /= null and IdArray2 /= null) then
-
-	for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
-	  if(IdArray2.all(Index-IdArray1.all'LENGTH) /= -1) then
-	    IdArrayOut.all(Index) := IdArray2.all(Index-IdArray1.all'LENGTH);
-	    TimeArrayOut.all(Index) := TimeArray2.all(Index-IdArray1.all'LENGTH);
+   declare 
+	MergedArray_IndexCount : INTEGER := 0;
+   begin
+	for Index in 1..IdArray2.all'LENGTH loop --IdArray1.all'LENGTH+1..MergedArraySize loop
+	Ada.Text_IO.Put_Line("Array 2 again nothing null , id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
+	  if(IdArray2.all(Index) /= -1) then
+	    IdArrayOut.all(IdArray1.all'LENGTH+1+MergedArray_IndexCount) := IdArray2.all(Index);
+	    TimeArrayOut.all(IdArray1.all'LENGTH+1+MergedArray_IndexCount) := TimeArray2.all(Index);
+	    MergedArray_IndexCount := MergedArray_IndexCount + 1;
 	  end if;
 	end loop;
+   end;
    elsif(IdArray1 = null and IdArray2 /= null) then
 
 	for Index in 1..MergedArraySize loop
+	Ada.Text_IO.Put_Line("Array 2 again nothing 1 null, id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
 	  if(IdArray2.all(Index) /= -1) then
 	    IdArrayOut.all(Index) := IdArray2.all(Index);
 	    TimeArrayOut.all(Index) := TimeArray2.all(Index);
