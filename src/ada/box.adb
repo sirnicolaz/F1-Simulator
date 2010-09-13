@@ -141,7 +141,7 @@ package body Box is
          begin
                
 		loop
-		      Ada.Text_IO.Put_Line("UP: Asking for " & INTEGER'IMAGE(Lap) & ", sector " & INTEGER'IMAGE(Sector));
+
 		      Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
 		      (
 		      Radio,
@@ -152,9 +152,9 @@ package body Box is
 		      CORBA.Float(Metres),
 		      CorbaInfo); 
 
-		      Ada.Text_IO.Put_Line("Box: got");  
+
 		      Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
-		      Ada.Text_IO.Put_Line("Box: xml 2 string");  
+
 		      Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
 		      INFO_GOT := true;
 		      exit when INFO_GOT = true;
@@ -166,8 +166,8 @@ package body Box is
          end;
        
          Info.Time := Time;
-         Ada.Text_IO.Put_Line("UP: got time " & FLOAT'IMAGE(Time));
-         Ada.Text_IO.Put_Line("UP: got gas " & FLOAT'IMAGE(Info.GasLevel));
+
+
          Info.PathLength := Metres;
          
          UpdateBuffer.Add_Data(Info);
@@ -292,14 +292,11 @@ package body Box is
 
    begin
 
-      --TODO: implement AI
-      Ada.Text_IO.Put_Line("CALC: done. Current gas " & FLOAT'IMAGE(New_Info.GasLevel));
       RemainingDoableLaps := CalculateDoableLaps(CurrentGasLevel     => New_Info.GasLevel,
                                                  CurrentTyreUsury    => New_Info.TyreUsury,
                                                  MeanGasConsumption  => PreviousLapMeanGasConsumption,
                                                  MeanTyreConsumption => PreviousLapMeanTyreUsury);
 
-      Ada.Text_IO.Put_Line("CALC: done. Remaining doable " & INTEGER'IMAGE(RemainingDoableLaps));
       -- Calculate the remaining number of laps til either the pitstop or the
       --+ end of the competition.
       
@@ -396,23 +393,23 @@ package body Box is
          end if;
       end if;
 
+
+      --This is to avoid the end of the competititon to the pitstop, it makes no sense considering that pitstop = goal
+      if((Laps-1) - New_Info.Lap = 0) then 
+	    New_Strategy.PitStopLaps := 1; 
+      end if;
+
       -- If the number of laps to the PitStop is 0, it means that the competitor is going to
       --+ have a pitstop, so it's necessary to calculate the amount of gas to refill and
       --+ the type o tyres tu put on the car
       if ( New_Strategy.PitStopLaps = 0 ) then
-         
-
-         Ada.Text_IO.Put_Line("CALC: done. Laps 2 end " & INTEGER'IMAGE(Laps2End));
+      
          --Calculate the amount of gas needed to reach the end of the race
          NewGas :=
            ( ( FLOAT( Laps2End ) * CircuitLength ) *
               PreviousLapMeanGasConsumption ) *
              ( 1.0 - StrategyFactor );
-	 Ada.Text_IO.Put_Line("CALC: done. New gas " & FLOAT'IMAGE(NewGas));
-	 Ada.Text_IO.Put_Line("CALC: doable with this new gas = "& INTEGER'IMAGE(CalculateDoableLaps(CurrentGasLevel     => NewGas,
-                                                 CurrentTyreUsury    => New_Info.TyreUsury,
-                                                 MeanGasConsumption  => PreviousLapMeanGasConsumption,
-                                                 MeanTyreConsumption => PreviousLapMeanTyreUsury)));
+             
          --If it's more than the gas thank capacity, calculate the amount
          --+ to run until the half of the competition
          if(NewGas > GasTankCapacity) then
@@ -512,7 +509,7 @@ package body Box is
 
 
          Box_Data.COMPETITION_UPDATE(ExtendedInformation) := New_Info.all;
-         Ada.Text_IO.Put_Line("STR: gas level " & FLOAT'IMAGE(New_Info.GasLevel));
+
 
          if( New_Info.GasLevel < 0.0 ) then
             New_Info.GasLevel := 0.0;
@@ -525,37 +522,37 @@ package body Box is
          --+ to compute the statystic for the lap following the pitstop one.
          --+ (for the sector before the box and the following one, the 2 sectors
          --+ affected.
-         Ada.Text_IO.Put_Line("STR: skip?");
+
          if( Skip /= 0 ) then
-         Ada.Text_IO.Put_Line("STR: yes");
+
             Skip := Skip - 1;
             PartialGasConsumptionMean := PartialGasConsumptionMean +
               LatestLapMeanGasConsumption;
             PreviousSectorGasLevel := New_Info.GasLevel;
-         Ada.Text_IO.Put_Line("STR: mean gas " & FLOAT'IMAGE(LatestLapMeanGasConsumption));
+
             ExtendedInformation.MeanGasConsumption := LatestLapMeanGasConsumption;
 
             PartialTyreUsuryMean := PartialTyreUsuryMean +
               LatestLapMeanTyreUsury;
             PreviousSectorTyreUsury := New_Info.TyreUsury;
-	 Ada.Text_IO.Put_Line("STR: mean tyre " & FLOAT'IMAGE(LatestLapMeanTyreUsury));
+
             ExtendedInformation.MeanTyreUsury := LatestLapMeanTyreUsury;
-         Ada.Text_IO.Put_Line("STR: done");
+
             --TODO: don't use so stupid values for the means
          else
 
-           Ada.Text_IO.Put_Line("STR: no");
+
             PartialGasConsumptionMean :=
               PartialGasConsumptionMean +
                 ((PreviousSectorGasLevel - New_Info.GasLevel)/
                  (New_Info.PathLength/1000.0) -- We want the ratio in Km
 
               );
-Ada.Text_IO.Put_Line("STR: partial gas " & FLOAT'IMAGE(PartialGasConsumptionMean));
+
             ExtendedInformation.MeanGasConsumption :=
               (PreviousSectorGasLevel - New_Info.GasLevel)/
               (New_Info.PathLength/1000.0);
-Ada.Text_IO.Put_Line("STR: mean gas " & FLOAT'IMAGE(ExtendedInformation.MeanGasConsumption));
+
            
             PreviousSectorGasLevel := New_Info.GasLevel;
             
@@ -566,42 +563,42 @@ Ada.Text_IO.Put_Line("STR: mean gas " & FLOAT'IMAGE(ExtendedInformation.MeanGasC
                 ((New_Info.PathLength/1000.0) -- We want the ratio in Km
 
                 );
-Ada.Text_IO.Put_Line("STR: partial tyre " & FLOAT'IMAGE(PartialTyreUsuryMean));
+
             ExtendedInformation.MeanTyreUsury :=
               (New_Info.TyreUsury - PreviousSectorTyreUsury)/
                 (New_Info.PathLength/1000.0);
-Ada.Text_IO.Put_Line("STR: mean tyre " & FLOAT'IMAGE(ExtendedInformation.MeanTyreUsury));
+
             PreviousSectorTyreUsury := New_Info.TyreUsury;
          end if;
 
          Index := Index + 1;
 
-         Ada.Text_IO.Put_Line("STR: exit? gas level " & FLOAT'IMAGE(New_Info.GasLevel) & ", tyre " & FLOAT'IMAGE(New_Info.TyreUsury) & ", lap " & INTEGER'IMAGE(New_Info.Lap));
+
 
          exit when (New_Info.GasLevel <= 0.0 or New_Info.TyreUsury >= 100.0) or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
-	Ada.Text_IO.Put_Line("STR: no.");
+
 
          if(Sector = Sector_Qty) then
-Ada.Text_IO.Put_Line("STR: coputing");
+
             Evolving_Strategy := Compute_Strategy(New_Info.all,
                                          Evolving_Strategy,
                                          LatestLapMeanGasConsumption,
                                          LatestLapMeanTyreUsury
                                                  );
             
-Ada.Text_IO.Put_Line("STR: done. New gas level " & FLOAT'IMAGE(Evolving_Strategy.GasLevel));
+
             --  "/3" because it's the sum of the mean of 3 sectors
              LatestLapMeanGasConsumption := PartialGasConsumptionMean/3.0;
             LatestLapMeanTyreUsury := PartialTyreUsuryMean/3.0;
 
-Ada.Text_IO.Put_Line("STR: adding strategy");
+
             StrategyHistory.AddStrategy(Evolving_Strategy);
             Sector := 0;
             PartialGasConsumptionMean := 0.0;
             PartialTyreUsuryMean := 0.0;
-Ada.Text_IO.Put_Line("STR: adding info");
+
             AllInfo.Add_Info(Update_In   => ExtendedInformation,
                              Strategy_In => Evolving_Strategy);
 
@@ -610,16 +607,16 @@ Ada.Text_IO.Put_Line("STR: adding info");
             end if;
 
          else
-Ada.Text_IO.Put_Line("STR: Add info");
+
             AllInfo.Add_Info(Update_In   => ExtendedInformation);
-Ada.Text_IO.Put_Line("STR: Added");
+
          end if;
-Ada.Text_IO.Put_Line("STR: Loop over");
+
 
          Sector := Sector + 1;
 
       end loop;
-Ada.Text_IO.Put_Line("STR: adding last info with gas " & FLOAT'IMAGE(ExtendedInformation.GasLevel) & " and tyre " & FLOAT'IMAGE(ExtendedInformation.TyreUsury));
+
       AllInfo.Add_Info(Update_In   => ExtendedInformation);
 
 
@@ -670,6 +667,7 @@ Ada.Text_IO.Put_Line("STR: adding last info with gas " & FLOAT'IMAGE(ExtendedInf
       Current_Node : NODE;
 
       GasLevel : FLOAT;
+      MaxSpeed : FLOAT;
       TyreUsury : PERCENTAGE;
   --    Time : FLOAT;
       Lap : INTEGER;
@@ -692,6 +690,8 @@ Ada.Text_IO.Put_Line("STR: adding last info with gas " & FLOAT'IMAGE(ExtendedInf
       Current_Node := Item(Update_NodeList,0);
 
       GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
+      
+      MaxSpeed := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"maxSpeed"))));
 
       TyreUsury := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreUsury"))));
 
@@ -703,6 +703,7 @@ Ada.Text_IO.Put_Line("STR: adding last info with gas " & FLOAT'IMAGE(ExtendedInf
 
 --      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
 
+      Update.MaxSpeed := MaxSpeed;
 
       Update.GasLevel := GasLevel;
 

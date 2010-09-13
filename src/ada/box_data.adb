@@ -237,6 +237,7 @@ package body Box_Data is
          --"<metres>" & Common.FloatToString(Data.PerSectorUpdate.PathLength) & "</metres>" &
          "<meanTyreUsury>" & Common.FloatToString(Data.PerSectorUpdate.MeanTyreUsury) & "</meanTyreUsury>" &
          "<meanGasConsumption>" & Common.FloatToString(Data.PerSectorUpdate.MeanGasConsumption) & "</meanGasConsumption>" &
+         "<maxSpeed>" & Common.FloatToString(Data.PerSectorUpdate.MaxSpeed) & "</maxSpeed>" &
          "</status>" );
 
       return Tmp_String;
