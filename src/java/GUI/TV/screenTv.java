@@ -348,7 +348,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
- 		     //sleep(999);
+ 		    sleep((long)((interval-0.001)*1000));
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
