@@ -1225,7 +1225,7 @@ Ada.Text_IO.Put_Line("ST: finished, going new");
          end if;
          Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": going to finish");
          -- Just for simulation purpose
-         --delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
          --Delay(1.0);
          --If the checkpoint is the goal, get the race over
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then
