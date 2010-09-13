@@ -97,14 +97,14 @@ package body Competition_Monitor is
       while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
          ComputerIndex := ComputerIndex + 1;
       end loop;
-Ada.Text_IO.Put_Line("UP: get box info for sector " & INTEGER'IMAGE(sector) & " and lap " & INTEGER'IMAGE(lap));
+
       OnboardCOmputer.Get_BoxInfo(arrayComputer(ComputerIndex),
                                   lap,
                                   sector,
                                   updString,
                                   time,
                                   metres);
-Ada.Text_IO.Put_Line("UP: got");
+
    end Get_CompetitorInfo;
 
    --Given 2 float arrays with times e ids of competitors in classific, the function creates
@@ -120,19 +120,19 @@ Ada.Text_IO.Put_Line("UP: got");
    begin
    
    if(IdArray1 /= null) then
-   Ada.Text_IO.Put_Line("ST: Looping through array 1, size " & INTEGER'IMAGE(IdArray1.all'LENGTH));
+
       for Index in 1..IdArray1.all'LENGTH loop
 	MergedArraySize := MergedArraySize + 1;
       end loop;
    end if;
    
    if(IdArray2 /= null) then
-   Ada.Text_IO.Put_Line("ST: Looping through array 2, size " & INTEGER'IMAGE(IdArray2.all'LENGTH));
+
       for Index in 1..IdArray2.all'LENGTH loop
-      Ada.Text_IO.Put_Line("ST: X loop");
+
 	Copy := TRUE;
 	for Indez in 1..IdArray1.all'LENGTH loop
-	Ada.Text_IO.Put_Line("ST: Z loop");
+
 	  if(IdArray1.all(Indez) = IdArray2.all(Index)) then
 	    Copy := FALSE;
 	    exit;
@@ -145,14 +145,14 @@ Ada.Text_IO.Put_Line("UP: got");
 	end if;
       end loop;
    end if;
-   Ada.Text_IO.Put_Line("ST: merged array size " & INTEGER'IMAGE(MergedArraySize));
+
    IdArrayOut := new INTEGER_ARRAY(1..MergedArraySize);
    TimeArrayOut := new FLOAT_ARRAY(1..MergedArraySize);
    
    if(IdArray1 /= null) then
-   Ada.Text_IO.Put_Line("ST: loop through 1 again ");
+
     for Index in 1..IdArray1.all'LENGTH loop
-    Ada.Text_IO.Put_Line("ST: loop");
+
       IdArrayOut.all(Index) := IdArray1.all(Index);
       TimeArrayOut.all(Index) := TimeArray1.all(Index);
     end loop;
@@ -160,7 +160,7 @@ Ada.Text_IO.Put_Line("UP: got");
    
    
    if(IdArray1 /= null) then
-   Ada.Text_IO.Put_Line("ST: not null loop from LENGTH to merge array size");
+
 	for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
 	  if(IdArray2.all(Index-IdArray1.all'LENGTH) /= -1) then
 	    IdArrayOut.all(Index) := IdArray2.all(Index-IdArray1.all'LENGTH);
@@ -168,7 +168,7 @@ Ada.Text_IO.Put_Line("UP: got");
 	  end if;
 	end loop;
    else
-   Ada.Text_IO.Put_Line("ST: null loop from 1 to merge array size");
+
 	for Index in 1..MergedArraySize loop
 	  if(IdArray2.all(Index) /= -1) then
 	    IdArrayOut.all(Index) := IdArray2.all(Index);
@@ -216,16 +216,16 @@ Ada.Text_IO.Put_Line("UP: got");
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
       CompetitionHandler.WaitReady;
-Ada.Text_IO.Put_Line("Init get info");
+
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
-Ada.Text_IO.Put_Line("ST: Gettin");
+
          CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
-Ada.Text_IO.Put_Line("ST: Gettin 2");
+
          -- In this case the competitor is arriving to the checkpoint
          if( Tmp_Stats.Time < TimeInstant ) then
             Tmp_CompLocation := new STRING(1..6);
@@ -240,25 +240,25 @@ Ada.Text_IO.Put_Line("ST: Gettin 2");
             Tmp_CompLocation := new STRING(1..8);
             Tmp_CompLocation.all := "arriving";
          end if;
-Ada.Text_IO.Put_Line("ST: Gettin 3");
+
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
-           Ada.Text_IO.Put_Line("ST: Gettin 44");
+
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(  
             " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
-            Ada.Text_IO.Put_Line("ST: Gettin 43");
+
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>");
-            Ada.Text_IO.Put_Line("ST: Gettin 42");
+
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" );
-Ada.Text_IO.Put_Line("ST: Gettin 41");
+
 Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(   
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
-Ada.Text_IO.Put_Line("ST: Gettin 4");
+
          
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
@@ -282,7 +282,7 @@ Ada.Text_IO.Put_Line("ST: Gettin 4");
       end loop;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
-Ada.Text_IO.Put_Line("ST: Best lap");
+
       --Retrieving best performances
       CompetitionComputer.Get_BestLap(TimeInstant,
                         LapTime       => Tmp_BestLapTime,
@@ -301,7 +301,7 @@ Ada.Text_IO.Put_Line("ST: Best lap");
          "<competitorId>" & Common.IntegerToString(Tmp_BestLapCompetitor) & "</competitorId>" &
          "<sectors>"
         );
-Ada.Text_IO.Put_Line("ST: Best sectors");
+
       for i in 1..3 loop
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<sector num=""" & Common.IntegerToString(i) & """>" &
@@ -317,9 +317,9 @@ Ada.Text_IO.Put_Line("ST: Best sectors");
         ("</sectors>" &
          "</bestTimes>"
         );
-Ada.Text_IO.Put_Line("ST: classific");
+
       if(HighestCompletedLap /= -1) then
-Ada.Text_IO.Put_Line("ST: insiede");
+
          CompetitionComputer.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
@@ -328,11 +328,11 @@ Ada.Text_IO.Put_Line("ST: insiede");
                                 Times_PreviousClassific,
                                 LappedCompetitors_ID,
                                 LappedCompetitors_CurrentLap);
-Ada.Text_IO.Put_Line("ST: Merge");
+
 	 Merge(CompetitorID_InClassific,Times_InClassific,
 	       CompetitorIDs_PreviousClassific,Times_PreviousClassific,
 	       CompetitorIDs_WithTimes,ClassificationTimes);
-Ada.Text_IO.Put_Line("ST: Stringing");
+
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<classification>");
 
@@ -372,14 +372,14 @@ Ada.Text_IO.Put_Line("ST: Stringing");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("</classification>");
-Ada.Text_IO.Put_Line("ST: End classific");
+
       end if;
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</competitionStatus>");
 
       XMLInfo := Tmp_StatsString;
-Ada.Text_IO.Put_Line("ST: End get info");
+
    end Get_CompetitionInfo;
 
    procedure Get_CompetitionConfiguration( XmlInfo : out Unbounded_String.Unbounded_String;

@@ -29,7 +29,7 @@ package body Broker.Init.RegistrationHandler.impl is
       MonitorCorbaLoc_Out : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
 
    begin
-      Ada.Text_IO.Put_Line("Broker registering....");
+
       Comp.Register_NewCompetitor(CORBA.To_Standard_String(CompetitorDescriptor),
                                   CORBA.To_Standard_String(BoxCorbaLOC),
                                   Competitor_ID_INT,
