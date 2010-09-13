@@ -586,7 +586,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     }
 
     public void switchPanel(){
-	BoxScreen p = new BoxScreen(stringId, competitorXML);
+	BoxScreen p = new BoxScreen(stringId, competitorXML, (String)comboBox.getSelectedItem());
 	System.out.println("id del BoxScreen : "+stringId);
 	parent.dispose();
 	p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb, laps.value);
