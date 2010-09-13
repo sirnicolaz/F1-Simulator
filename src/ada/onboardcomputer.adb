@@ -94,6 +94,7 @@ Ada.Text_IO.Put_Line("ON : 2 putting stuff of lap " & INTEGER'IMAGE(Data.Lap) & 
                                                "<tyreUsury>" & Common.FloatToString(Data.TyreUsury) &"</tyreUsury>" &
                                                "<lap>" & Common.IntegerToString(Data.Lap)&"</lap>" &
                                                "<sector>" & Common.IntegerToString(Data.Sector)&"</sector>" &
+                                               "<maxSpeed>" & Common.FloatToString(Data.MaxSpeed)&"</maxSpeed>" &
                                                --"<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
                                                --"<metres>" & Common.FloatToString(50.0) & "</metres>" &
                                                "</update>"

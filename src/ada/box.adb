@@ -217,10 +217,9 @@ package body Box is
       --+ The value it's calculated considering all the information up to now.
       RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
           (((100.00 - CurrentTyreUsury) +
-          ((100.00 - CurrentTyreUsury)*(StrategyFactor/10.0)))/
+          ((100.00 - CurrentTyreUsury)*(StrategyFactor/5.0)))/
             MeanTyreConsumption)/  -- StrategyFactor/10.0 because is more logic for the tyre usury
             CircuitLength));
-      --
 
       if( RemainingDoableLaps_Gas < RemainingDoableLaps_Tyre) then
          RemainingDoableLaps := RemainingDoableLaps_Gas;
@@ -410,6 +409,10 @@ package body Box is
               PreviousLapMeanGasConsumption ) *
              ( 1.0 - StrategyFactor );
 	 Ada.Text_IO.Put_Line("CALC: done. New gas " & FLOAT'IMAGE(NewGas));
+	 Ada.Text_IO.Put_Line("CALC: doable with this new gas = "& INTEGER'IMAGE(CalculateDoableLaps(CurrentGasLevel     => NewGas,
+                                                 CurrentTyreUsury    => New_Info.TyreUsury,
+                                                 MeanGasConsumption  => PreviousLapMeanGasConsumption,
+                                                 MeanTyreConsumption => PreviousLapMeanTyreUsury)));
          --If it's more than the gas thank capacity, calculate the amount
          --+ to run until the half of the competition
          if(NewGas > GasTankCapacity) then
