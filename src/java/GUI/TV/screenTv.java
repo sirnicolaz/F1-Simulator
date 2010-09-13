@@ -160,8 +160,9 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
     public void run(){
 	readConfiguration();
+	String circuit = new String("Circuit "+circuitName+" - Lenght = "+lenghtCircuit+" metres");
 	classTable.addTables(model_1, model_2, numComp);
-	best.addBest();
+	best.addBest(circuit);
 	addLogInfo();
 	parent.add(classTable.panel1, BorderLayout.CENTER);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
@@ -348,7 +349,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
- 		    sleep((long)((interval-0.001)*1000));
+ 		    //sleep((long)((interval-0.001)*1000));
+		    sleep(100);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
@@ -610,43 +612,43 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	int ore = (int)(timeIn/3600);
 	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
-	//int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
 	    if(secondi <10){
-		//if(millesimi<10){
-		//    time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
-		//else if(millesimi<100){
-		//    time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
-		//else{
-		    time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+decimi);//}
+		if(millesimi<10){
+		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
-		//if(millesimi<10){
-		//    time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
-		//else if(millesimi<100){
-		//    time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
-		//else{
-		    time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+decimi);//}
+		if(millesimi<10){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("0"+ore+":0"+minuti+":"+secondi+":"+millesimi);}
 	    }
 	}
 	else{
 	    if(secondi <10){
-		//if(millesimi<10){
-		//    time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
-		//else if(millesimi<100){
-		//    time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
-		//else{
-		    time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+decimi);//}
+		if(millesimi<10){
+		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("0"+ore+":"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
-		//if(millesimi<10){
-		//    time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
-		//else if(millesimi<100){
-		//    time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
-		//else{
-		    time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+decimi);//}
+		if(millesimi<10){
+		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("0"+ore+":"+minuti+":"+secondi+":"+millesimi);}
 	    }}
 
 	return time;
@@ -785,6 +787,7 @@ class bestPerformance{
     private JLabel labelSector3Time = new JLabel(" in time : ");
 
     private JLabel labelClock = new JLabel("Time 00:00:00:000");
+    private JLabel labelCircuit;
 
     public JPanel getInfoUp(){
 	return infoUp;
@@ -798,7 +801,7 @@ class bestPerformance{
     public void setClock(String timeIn){
 	labelClock.setText(timeIn);
     }
-    public void addBest(){
+    public void addBest(String stringForLabel){
 	bestPanel = new JPanel(new BorderLayout());
 	infoUp = new JPanel(new BorderLayout());
 
@@ -806,7 +809,8 @@ class bestPerformance{
 	bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 	labelClock.setFont(new Font("Serif", Font.BOLD, 25));
-
+	labelCircuit= new JLabel(stringForLabel);
+	labelCircuit.setFont(new Font("Serif", Font.BOLD, 15));
 	bestGrid.fill = GridBagConstraints.HORIZONTAL;
 	bestGrid.gridx = 0;
 	bestGrid.gridy = 0;
@@ -934,7 +938,8 @@ class bestPerformance{
 	bestGrid.ipady = 5;
 	bestPanel.add(textBoxSector3Time,bestGrid);
 	infoUp.add(labelClock, BorderLayout.NORTH);
-	infoUp.add(bestPanel, BorderLayout.CENTER);
+	infoUp.add(labelCircuit, BorderLayout.CENTER);
+	infoUp.add(bestPanel, BorderLayout.SOUTH);
     }
 
     public void setBestLap(String lap,String  time,String  id){
