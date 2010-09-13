@@ -159,7 +159,7 @@ package body Competition_Monitor is
    end if;
    
    
-   if(IdArray1 /= null) then
+   if(IdArray1 /= null and IdArray2 /= null) then
 
 	for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
 	  if(IdArray2.all(Index-IdArray1.all'LENGTH) /= -1) then
@@ -167,7 +167,7 @@ package body Competition_Monitor is
 	    TimeArrayOut.all(Index) := TimeArray2.all(Index-IdArray1.all'LENGTH);
 	  end if;
 	end loop;
-   else
+   elsif(IdArray1 = null and IdArray2 /= null) then
 
 	for Index in 1..MergedArraySize loop
 	  if(IdArray2.all(Index) /= -1) then
