@@ -34,12 +34,17 @@ Come per la compilazione, dalla directory radice eseguire il comando desiderato 
 \item \emph{./start\_competition.sh}\\
 avvier\`{a} la competizione. Apparir\`{a} il pannello di configurazione (del quale verranno forniti dettagli in seguito)
 \item \emph{./start\_box.sh n}\\
-avvier\`{a} un numero n box. Per eseguire un test in locare \`{e} possibile avviare tanti box quanti quelli stabiliti durante la configurazione
+avvier\`{a} un numero n box. Per eseguire un test in locale \`{e} possibile avviare tanti box quanti quelli stabiliti durante la configurazione
 della competizione. In tal caso, l'interfaccia di configurazione dei box presenter\`{a} nello spazio riservato al corbaloc per la connessione
-alla competizione, il corbaloc della competizione caricato dal contesto locale.
+alla competizione, il corbaloc della competizione caricato dal contesto locale. Se invece si volessero avviare i box in altri nodi, il corbaloc
+per la registrazione pu\`{o} essere trovato in \\
+\emph{competition\_registrationhandler\_corbaLoc.txt}\\
+a competi<ione configurata. 
 \item \emph{./start\_tv.sh}\\
 inizializza una tv. Anche in questo caso, se il corbaloc della competizione \`{e} presente in locale, verr\`{a} impostato di default nel textbox
-dedicato. \`{E} comunque possibile reimpostarlo.
+dedicato. \`{E} comunque possibile reimpostarlo utilizzando il corbaloc salvato nel file\\
+\emph{competition\_monitor\_corbaLoc.txt}\\
+a competizione configurata.
 \end{itemize}
 L'interfaccia TV \`{e} possibile copiarla senza necessit\`{a} di ricompilazione in tutte le macchine ove la si voglia eseguire. E' sufficiente,
 una volta compilata, copiare il file \emph{start\_tv.sh} e la directory \emph{obj/java/GUI} (mantenendo la gerarchia intatta) in un qualunque

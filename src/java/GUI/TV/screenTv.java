@@ -809,14 +809,14 @@ class bestPerformance{
     private JTextField textBoxLapTime = new JTextField("-",10);
     private JLabel labelLap = new JLabel("Best lap n° : ");
     private JLabel labelLapId = new JLabel(" by competitor : ");
-    private JLabel labelLapTime = new JLabel(" in time : ");
+    private JLabel labelLapTime = new JLabel(" , time : ");
 
     private JTextField textBoxSector1Lap = new JTextField("-",3);
     private JTextField textBoxSector1Id = new JTextField("-",2);
     private JTextField textBoxSector1Time = new JTextField("-",10);
     private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
     private JLabel labelSector1Id = new JLabel(" by competitor : ");
-    private JLabel labelSector1Time = new JLabel(" in time : ");
+    private JLabel labelSector1Time = new JLabel(" , time : ");
 
 
     private JTextField textBoxSector2Lap = new JTextField("-",3);
@@ -824,7 +824,7 @@ class bestPerformance{
     private JTextField textBoxSector2Time = new JTextField("-",10);
     private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
     private JLabel labelSector2Id = new JLabel(" by competitor : ");
-    private JLabel labelSector2Time = new JLabel(" in time : ");
+    private JLabel labelSector2Time = new JLabel(" , time : ");
 
 
     private JTextField textBoxSector3Lap = new JTextField("-",3);
@@ -832,7 +832,7 @@ class bestPerformance{
     private JTextField textBoxSector3Time = new JTextField("-",10);
     private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
     private JLabel labelSector3Id = new JLabel(" by competitor : ");
-    private JLabel labelSector3Time = new JLabel(" in time : ");
+    private JLabel labelSector3Time = new JLabel(" , time : ");
 
     private JLabel labelClock = new JLabel("Time 00:00:00");
     private JLabel labelCircuit;
