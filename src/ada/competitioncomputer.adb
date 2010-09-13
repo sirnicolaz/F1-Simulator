@@ -269,7 +269,7 @@ package body CompetitionComputer is
       Temp_Time : FLOAT;
    begin
       if(Competitor_Statistics.all(Competitor_ID).Competition_Finished = TRUE) then
-      Ada.Text_IO.Put_Line("ST: array size " & INTEGER'IMAGE(Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) & " LAST " & INTEGER'IMAGE(Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LAST));
+
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all
            (Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LAST).Get_Time(Temp_Time);
          if(Temp_Time <= Time) then
@@ -323,20 +323,20 @@ package body CompetitionComputer is
       if( Stats_In = null ) then
          Stats_In := new COMPETITOR_STATS;
       end if;
-      Ada.Text_IO.Put_Line("Asking about time " & FLOAT'IMAGE(Time));
-Ada.Text_IO.Put_Line("Going to get last info");
+
+
       --Verify whether the competitor is out the competition
       if(Is_CompetitorOut(Competitor_ID,Time) = TRUE) then
-Ada.Text_IO.Put_Line("Getting last info");
+
       --The competitor is out, so get the last information available
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all
         ((Competitor_Statistics.all(Competitor_ID).Last_Lap * Checkpoints) +
            Competitor_Statistics.all(Competitor_ID).Last_Checkpoint).Get_All(Stats_In.all);
 
       else
-Ada.Text_IO.Put_Line("Going 8 " & FLOAT'IMAGE(Tmp_Time) & " " & INTEGER'IMAGE(Index));
+
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
-Ada.Text_IO.Put_Line("Going 7");
+
          if (Tmp_Time >= Time ) then
 
 
@@ -350,7 +350,7 @@ Ada.Text_IO.Put_Line("Going 7");
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
             end loop;
 
-Ada.Text_IO.Put_Line("Going 6");
+
             declare
                LeftTime : FLOAT;
                RightTime : FLOAT;
@@ -360,7 +360,7 @@ Ada.Text_IO.Put_Line("Going 6");
                   Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(LeftTime);
                   Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index+1).Get_Time(RightTime);
 
-Ada.Text_IO.Put_Line("Going 5");
+
                   if(Calculate_CloserTime(Time,
                                           LeftTime,
                                           RightTime) = LeftTime) then
@@ -376,9 +376,9 @@ Ada.Text_IO.Put_Line("Going 5");
                Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := CHoosenIndex;
             end;
 
-Ada.Text_IO.Put_Line("Going 4");
+
          else
-Ada.Text_IO.Put_Line("Going 3");
+
             Index := Index + 1;
             if(Index > Competitor_Statistics.all(Competitor_ID).Competitor_Info.all'LENGTH) then
                Index := Index - 1;
@@ -396,7 +396,7 @@ Ada.Text_IO.Put_Line("Going 3");
                   Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_Time(Tmp_Time);
                end if;
             end loop;
-Ada.Text_IO.Put_Line("Going 2");
+
             declare
                LeftTime : FLOAT;
                RightTime : FLOAT;
@@ -421,7 +421,7 @@ Ada.Text_IO.Put_Line("Going 2");
          end if;
       end if;
 
-Ada.Text_IO.Put_Line("Going 1");
+
    end Get_StatsByTime;
 
    -- It sets the CompStats parameter with the statistics related to the given check-point and lap
@@ -505,7 +505,7 @@ Ada.Text_IO.Put_Line("Going 1");
       end if;
 
       --Update the statistics
-Ada.Text_IO.Put_Line("ST: adding data for competitor " & INTEGER'IMAGE(Competitor_ID) & " at index " & INTEGER'IMAGE((Data.Lap*Checkpoints) + Data.Checkpoint));
+
    Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
 
    --The competitor is out
@@ -784,7 +784,7 @@ begin
             Competitor_IDs := null;
             Competitor_Lap := null;
          else
-	    Ada.Text_Io.Put_Line("CM: NotLapped_Count = "&INTEGER'IMAGE(NotLapped_Count)&" competitor qty = "&Integer'Image(CompetitorQty));
+
             Competitor_IDs := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
             Competitor_Lap := new INTEGER_ARRAY(1..CompetitorQty-NotLapped_Count);
             --Initialise these 2 arrays
