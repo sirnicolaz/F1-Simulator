@@ -160,7 +160,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
     public void run(){
 	readConfiguration();
-	String circuit = new String("Circuit "+circuitName+" - Lenght = "+lenghtCircuit+" metres");
+	String circuit = new String("Circuit "+circuitName+" - Length = "+lenghtCircuit+" metres");
 	classTable.addTables(model_1, model_2, numComp);
 	best.addBest(circuit);
 	addLogInfo();
@@ -228,7 +228,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 		    arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
 		    readXml(updateString.value);
-		    best.setClock("Time "+convert(updTime));
+		    best.setClock("Time "+convertNoMill(updTime));
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
 		    try{
@@ -654,6 +654,54 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	return time;
     }
 
+ public String convertNoMill(float timeIn){
+
+	int ore = (int)(timeIn/3600);
+	int minuti = (int)(timeIn/60)-(60*ore);
+	int secondi = (int)(timeIn-(minuti*60+ore*3600));
+// 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
+	String time;
+	if(minuti<10){
+	    if(secondi <10){
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+millesimi);}
+	    }
+	    else{/*
+		if(millesimi<10){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
+		else{*/
+		    time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+millesimi);}
+	    }
+	}
+	else{
+	    if(secondi <10){
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+millesimi);}
+	    }
+	    else{
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+millesimi);}
+	    }}
+
+	return time;
+    }
+
+
 }
 
 class dati{
@@ -786,7 +834,7 @@ class bestPerformance{
     private JLabel labelSector3Id = new JLabel(" by competitor : ");
     private JLabel labelSector3Time = new JLabel(" in time : ");
 
-    private JLabel labelClock = new JLabel("Time 00:00:00:000");
+    private JLabel labelClock = new JLabel("Time 00:00:00");
     private JLabel labelCircuit;
 
     public JPanel getInfoUp(){
