@@ -22,79 +22,56 @@ with Ada.Exceptions;
 package body Competitor is
 
    --THis value has to be the same for oeveryone
-   LastLap : INTEGER;
-   procedure Set_Laps( LapsQty : in INTEGER) is
+   LastLap : Integer;
+   procedure Set_Laps( LapsQty : in Integer) is
    begin
       LastLap := LapsQty;
    end Set_Laps;
 
+   --Get Methods implementation
+   function Get_First_Name(Competitor_In : Competitor_Details_Point) return Str.Unbounded_String is
+   begin
+      return Competitor_In.Racing_Driver.First_Name;
+   end Get_First_Name;
+
+   procedure Get_Status(Competitor_In : Competitor_Details_Point; Tyre_Usury_Out : out Float; Gas_Level_Out : out Float) is
+
+   begin
+      Tyre_Usury_Out:=Competitor_In.Racing_Car.Tyre_Usury;
+      Gas_Level_Out:=Competitor_In.Racing_Car.Gasoline_Level;
+   end Get_Status;
+
+
    -- Set function - CAR
    procedure Configure_Car(Car_In : in out CAR;
-                           MaxSpeed_In : FLOAT;
-                           MaxAcceleration_In : FLOAT;
-                           GasTankCapacity_In : FLOAT;
+                           Max_Speed_In : Float;
+                           Max_Acceleration_In : Float;
+                           Gas_Tank_Capacity_In : Float;
                            Engine_In : Str.Unbounded_String;
-                           TyreUsury_In : Common.PERCENTAGE;
-                           GasolineLevel_In : FLOAT;
+                           Tyre_Usury_In : Common.PERCENTAGE;
+                           Gasoline_Level_In : Float;
                            Mixture_In : Str.Unbounded_String;
                            Model_In : Str.Unbounded_String;
-                           Type_Tyre_In : Str.Unbounded_String) is
+                           Tyre_Type_In : Str.Unbounded_String) is
    begin
-      Car_In.MaxSpeed := MaxSpeed_In;
-      Car_In.MaxAcceleration := MaxAcceleration_In;
-      Car_In.GasTankCapacity := GasTankCapacity_In;
+      Car_In.Max_Speed := Max_Speed_In;
+      Car_In.Max_Acceleration := Max_Acceleration_In;
+      Car_In.Gas_Tank_Capacity := Gas_Tank_Capacity_In;
       Car_In.Engine := Engine_In;
-      Car_In.TyreUsury:=TyreUsury_In;
-      Car_In.GasolineLevel:=GasolineLevel_In;
+      Car_In.Tyre_Usury:=Tyre_Usury_In;
+      Car_In.Gasoline_Level:=Gasoline_Level_In;
       Car_In.Mixture:=Mixture_In;
       Car_In.Model:=Model_In;
-      CAr_In.Type_Tyre:=Type_Tyre_In;
+      Car_In.Tyre_Type:=Tyre_Type_In;
+      Car_In.Last_Speed_Reached:= 0.0;
    end Configure_Car;
 
-   procedure Set_Vel_In(Competitor_In : in out CAR_AND_DRIVER_ACCESS; PVel_In : in FLOAT) is
-   begin
-      Competitor_In.pilota.Vel_In:=PVel_In;
-   end Set_Vel_In;
-
-   function Get_Vel_In(Competitor_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return Competitor_In.pilota.Vel_In;
-   end Get_Vel_In;
-   -- Get function - CAR MAX_SPEED
-   function Get_MaxSpeed(Car_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return Car_In.auto.MaxSpeed;
-   end Get_MaxSpeed;
-
-   -- Get function - CAR MAX_ACCELERATION
-   function Get_MaxAcceleration(Car_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return Car_In.auto.MaxAcceleration;
-   end Get_MaxAcceleration;
-
-   -- Get function - CAR GASTANKCAPACITY
-   function Get_GasTankCapacity(Car_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return Car_In.auto.GasTankCapacity;
-   end Get_GasTankCapacity;
-
-   -- Get function - CAR ENGINE
-   function Get_Engine(Car_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Car_In.auto.Engine;
-   end Get_Engine;
-
---     function Get_Strategy(Car_In :  CAR_AND_DRIVER_ACCESS) return Common.DRIVING_STYLE is
---     begin
---        return Car_In.strategia.Style;
---     end Get_Strategy;
-
-   -- Functino for Calculate Status
-   function Calculate_Status(infoLastSeg : in CAR_AND_DRIVER_ACCESS) return BOOLEAN is
+   -- Function for Calculating Status
+   function Calculate_Status(infoLastSeg : in Competitor_Details_Point) return BOOLEAN is
       --questa funzione ritorna un boolean che indica se il concorrente
       --deve tornare o meno ai box
    begin
-      if infoLastSeg.auto.TyreUsury <= 10.0 or infoLastSeg.auto.GasolineLevel <= 10.0 then
+      if infoLastSeg.Racing_Car.Tyre_Usury <= 10.0 or infoLastSeg.Racing_Car.Gasoline_Level <= 10.0 then
          -- i parametri si possono cambiare ovviamente
          -- basta darci dei valori consistenti
          return TRUE;
@@ -112,148 +89,34 @@ package body Competitor is
    -- almeno 2 direi.
 
 
-   procedure Set_Id(Car_In : in out CAR_AND_DRIVER_ACCESS; Id_In : INTEGER) is
-   begin
-      Car_In.Id := Id_In;
-   end Set_Id;
-   -- Set function - STATUS USURY
-   procedure Set_Usury(Car_In : in out CAR_AND_DRIVER_ACCESS;
-                       Usury_In : Common.PERCENTAGE) is
-   begin
-      Car_In.auto.TyreUsury := Usury_In;
-   end;
 
-   -- Set function - STATUS GASLEVEL
-   procedure Set_GasLevel(Car_In : in out CAR_AND_DRIVER_ACCESS;
-                          GasLevel_In : FLOAT) is
-   begin
-      Car_In.auto.GasolineLevel := GasLevel_In;
-   end;
 
-   -- Get function - STATUS USURY
-   function Get_Usury(Car_In : CAR_AND_DRIVER_ACCESS) return Common.PERCENTAGE is
-   begin
-      return Car_In.auto.TyreUsury;
-   end Get_Usury;
-
-   -- Get function - STATUS GASLEVEL
-   function Get_GasLevel(Car_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return Car_In.auto.GasolineLevel;
-   end Get_GasLevel;
-
-   -- Get function - COMPETITOR_INFO TEAM
-   function Get_Team(Competitor_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Competitor_In.pilota.Team;
-   end Get_Team;
-
-   -- Get function - COMPETITOR_INFO FIRSTNAME
-   function Get_FirstName(Competitor_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Competitor_In.pilota.FirstName;
-   end Get_FirstName;
-
-   -- Get function - COMPETITOR_INFO LASTNAME
-   function Get_LastName(Competitor_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Competitor_In.pilota.LastName;
-   end Get_LastName;
-
-   -- Set function - COMPETITOR_INFO TEAM
-   procedure Set_Team(Competitor_In: in out CAR_AND_DRIVER_ACCESS;
-                      Team_In : in Str.Unbounded_String) is
-   begin
-      Competitor_In.pilota.Team := Team_In;
-   end Set_Team;
-
-   -- Set function - COMPETITOR_INFO FIRSTNAME
-   procedure Set_FirstName(Competitor_In: in out CAR_AND_DRIVER_ACCESS;
-                           FirstName_In : in Str.Unbounded_String) is
-   begin
-      Competitor_In.pilota.FirstName := FirstName_In;
-   end Set_FirstName;
-
-   -- Set function - COMPETITOR_INFO LASTNAME
-   procedure Set_LastName(Competitor_In: in out CAR_AND_DRIVER_ACCESS;
-                          LastName_In : in Str.Unbounded_String) is
-   begin
-      Competitor_In.pilota.LastName := LastName_In;
-   end Set_LastName;
-
-   -- Get function - TYRE MIXTURE
-   function Get_Mixture(Car_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Car_In.auto.Mixture;
-   end Get_Mixture;
-
-   -- Get function - TYRE TYPETYRE
-   function Get_TypeTyre(Car_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Car_In.auto.Type_Tyre;
-   end Get_TypeTyre;
-
-   -- Get function - TYRE MODEL
-   function Get_Model(Car_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return Car_In.auto.Model;
-   end Get_Model;
-
-   -- Set function - TYRE MIXTURE
-   procedure Set_Mixture(Car_In : in out CAR_AND_DRIVER_ACCESS;
-                         Mixture_In : in Str.Unbounded_String) is
-   begin
-      Car_In.auto.Mixture := Mixture_In;
-   end Set_Mixture;
-
-   -- Set function - TYRE TYPETYRE
-   procedure Set_TypeTyre(Car_In : in out CAR_AND_DRIVER_ACCESS;
-                          TypeTyre_In: in Str.Unbounded_String) is
-   begin
-      Car_In.auto.Type_Tyre := TypeTyre_In;
-   end Set_TypeTyre;
-
-   procedure Set_Model(Car_In : in out CAR_AND_DRIVER_ACCESS;
-                       Model_In : in Str.Unbounded_String) is
-   begin
-      Car_In.auto.Model := Model_In;
-   end Set_Model;
-
-   procedure Configure_Driver(Car_In: in out DRIVER;
+   procedure Configure_Driver(Driver_In: in out Driver;
                               Team_In :  Str.Unbounded_String;
-                              FirstName_In :  Str.Unbounded_String;
-                              LastName_In :  Str.Unbounded_String;
-                              Vel_In : FLOAT) is
+                              First_Name_In :  Str.Unbounded_String;
+                              Last_Name_In :  Str.Unbounded_String) is
    begin
-      Car_In.Team:=Team_In;
-      Car_In.FirstName:=FirstName_In;
-      Car_In.LastName:=LastName_In;
-      Car_In.Vel_In:=Vel_In;
+      Driver_In.Team:=Team_In;
+      Driver_In.First_Name:=First_Name_In;
+      Driver_In.Last_Name:=Last_Name_In;
    end Configure_Driver;
 
-   procedure Get_Status(Car_In : CAR_AND_DRIVER_ACCESS; Usury_Out : out FLOAT; Level_Out : out FLOAT) is
-
-   begin
-      Usury_Out:=Get_Usury(Car_In);
-      Level_Out:=Get_GasLevel(Car_In);
-   end Get_Status;
-
-   function Init_Competitor(xml_file : STRING;
-                            RaceIterator : RACETRACK_ITERATOR;
-                            id_In : INTEGER;
-                            laps_In : INTEGER;
-                            BoxRadio_CorbaLOC : STRING) return CAR_AND_DRIVER_ACCESS is
+   function Init_Competitor(Xml_file : String;
+                            Current_Circuit_Race_Iterator  : Racetrack_Iterator;
+                            Id_In : Integer;
+                            Laps_In : Integer;
+                            BoxRadio_CorbaLOC : String) return Competitor_Details_Point is
       --parametri
       Doc : Document;
       carDriver_XML : Node_List;
-      carDriver_Length : INTEGER;
+      carDriver_Length : Integer;
 
-      --   carDriver_Out : CAR_AND_DRIVER_ACCESS;
-      carDriver : CAR_AND_DRIVER_ACCESS := new CAR_AND_DRIVER;
+      --   carDriver_Out : Competitor_Details_Point;
+      carDriver : Competitor_Details_Point := new Competitor_Details;
 
 
-      procedure Try_OpenFile is--(xml_file : STRING; Input : in out File_Input; Reader : in out Tree_Reader; Doc : in out Document;
-         --carDriver_XML : in out Node_List; carDriver_Length : in out INTEGER) is
+      procedure Try_OpenFile is--(xml_file : String; Input : in out File_Input; Reader : in out Tree_Reader; Doc : in out Document;
+         --carDriver_XML : in out Node_List; carDriver_Length : in out Integer) is
       begin
 
 	 Doc := Common.Get_Document(xml_file);
@@ -266,26 +129,26 @@ package body Competitor is
 
 
       function Configure_Car_File(xml_file_In : DOCUMENT) return CAR is
-         MaxSpeed_In : FLOAT;
-         MaxAcceleration_In : FLOAT;
-         GasTankCapacity_In : FLOAT;--FLOAT;
-         --Engine_In : STRING(1..50);
-         TyreUsury_In : FLOAT;
-         GasolineLevel_In : FLOAT;--FLOAT;
-         Mixture_In : Str.Unbounded_String;--access STRING;
-         Model_In : Str.Unbounded_String;-- STRING(1..20);
-         Type_Tyre_In : Str.Unbounded_String;-- STRING(1..20);
+         Max_Speed_In : Float;
+         Max_Acceleration_In : Float;
+         Gas_Tank_Capacity_In : Float;--Float;
+         --Engine_In : String(1..50);
+         Tyre_Usury_In : Float;
+         Gasoline_Level_In : Float;--Float;
+         Mixture_In : Str.Unbounded_String;--access String;
+         Model_In : Str.Unbounded_String;-- String(1..20);
+         Tyre_Type_In : Str.Unbounded_String;-- String(1..20);
          car_XML : Node_List;
          Current_Node : Node;
-         -- Current_Team : STRING(1..7) :="Ferrari";
-         -- Current_FirstName : STRING(1..8):="Fernando";
-         -- Current_LastName : STRING(1..6) :="Alonso";
+         -- Current_Team : String(1..7) :="Ferrari";
+         -- Current_First_Name : String(1..8):="Fernando";
+         -- Current_Last_Name : String(1..6) :="Alonso";
          Car_In : CAR;
          --Car_Current : CAR;
-         Engine_In : Str.Unbounded_String;--STRING(1..6):="xxxxxx";
+         Engine_In : Str.Unbounded_String;--String(1..6):="xxxxxx";
 
          function Get_Feature_Node(Node_In : NODE;
-                                   FeatureName_In : STRING) return NODE is
+                                   FeatureName_In : String) return NODE is
             Child_Nodes_In : NODE_LIST;
             Current_Node : NODE;
          begin
@@ -303,7 +166,7 @@ package body Competitor is
 
       begin
 
-         --If there is a conf file, use it to auto-init;
+         --If there is a conf file, use it to Racing_Car-init;
 
          -- if Document_In /= null then
 
@@ -312,22 +175,22 @@ package body Competitor is
          Current_Node := Item(car_XML, 0);
 
          car_XML := Child_Nodes(Current_Node);
-         MaxSpeed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
-         MaxAcceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
-         GasTankCapacity_In := FLOAT'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
+         Max_Speed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Max_Speed"))));
+         Max_Acceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Max_Acceleration"))));
+         Gas_Tank_Capacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Gas_Tank_Capacity"))));
          Engine_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
-         TyreUsury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
-         GasolineLevel_In := FLOAT'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
+         Tyre_Usury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Tyre_Usury"))));
+         Gasoline_Level_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Gasoline_Level"))));
 
          Mixture_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
 
          --Ada.Strings.Unbounded.Text_IO.Put_Line(Mixture_In);
          Model_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
-         Type_Tyre_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
+         Tyre_Type_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Tyre_Type"))));
          --Car_Temp := new CAR;
          --Mixture_In := "morbidaxxxxxxxxxxxxx";
 --           Model_In := "michelinxxxxxxxxxxxx";
---         Type_Tyre_In := "rainxxxxxxxxxxxxxxxx";
+--         Tyre_Type_In := "rainxxxxxxxxxxxxxxxx";
          --Racetrack_In(Index) := CheckpointSynch_Current;
 
 
@@ -336,29 +199,29 @@ package body Competitor is
 
 
          Configure_Car(Car_In,
-                       MaxSpeed_In,
-                       MaxAcceleration_In,
-                       GasTankCapacity_In,
+                       Max_Speed_In,
+                       Max_Acceleration_In,
+                       Gas_Tank_Capacity_In,
                        Engine_In,
-                       TyreUsury_In,
-                       GasolineLevel_In,
+                       Tyre_Usury_In,
+                       Gasoline_Level_In,
                        Mixture_In ,
                        Model_In ,
-                       Type_Tyre_In );
+                       Tyre_Type_In);
          return Car_In;
       end Configure_Car_File;
 
       function Configure_Driver_File(xml_file_In : DOCUMENT) return DRIVER is
-         Team_In : Str.Unbounded_String;--STRING(1..7):="xxxxxxx";
-         FirstName_In : Str.Unbounded_String;-- STRING(1..8):="xxxxxxxx";
-         LastName_In : Str.Unbounded_String;-- STRING(1..6):="xxxxxx";
-         Vel_In : FLOAT :=0.0;
+         Team_In : Str.Unbounded_String;--String(1..7):="xxxxxxx";
+         First_Name_In : Str.Unbounded_String;-- String(1..8):="xxxxxxxx";
+         Last_Name_In : Str.Unbounded_String;-- String(1..6):="xxxxxx";
+         Last_Speed_Reached : Float :=0.0;
          driver_XML : Node_List;
          Current_Node : Node;
          Car_In : DRIVER;
          --global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
          function Get_Feature_Node(Node_In : NODE;
-                                   FeatureName_In : STRING) return NODE is
+                                   FeatureName_In : String) return NODE is
             Child_Nodes_In : NODE_LIST;
             Current_Node : NODE;
          begin
@@ -376,7 +239,7 @@ package body Competitor is
 
       begin
 
-         --If there is a conf file, use it to auto-init;
+         --If there is a conf file, use it to Racing_Car-init;
 
          --if Document_In /= null then
 
@@ -384,22 +247,21 @@ package body Competitor is
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
          Team_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
-         FirstName_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
-         LastName_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
+         First_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"First_Name"))));
+         Last_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Last_Name"))));
          --Car_Temp := new CAR;
          --Team_In := "Ferrari";
-         --FirstName_In := "Fernando";
-         --LastName_In := "Alonso";
+         --First_Name_In := "Fernando";
+         --Last_Name_In := "Alonso";
          --Racetrack_In(Index) := CheckpointSynch_Current;
          --end loop;
          --end if;
 
-         --lettura parametri, vel_in esclusa
+         --lettura parametri, Last_Speed_Reached esclusa
          Configure_Driver(Car_In,
                           Team_In,
-                          FirstName_In,
-                          LastName_In,
-                          Vel_In);
+                          First_Name_In,
+                          Last_Name_In);
          return Car_In;
       end Configure_Driver_File;
 
@@ -416,30 +278,30 @@ package body Competitor is
       Try_OpenFile;
       --configurazione parametri
 
-      --Teoricamente non serve pi� perch� la strategia viene presa su giusto
+      --Teoricamente non serve pi� perch� la Current_Strategy viene presa su giusto
       --+ prima di iniziare la gare
-      --carDriver.strategia := Configure_Strategy_File(doc);
+      --carDriver.Current_Strategy := Configure_Strategy_File(doc);
 
 
-      carDriver.auto := Configure_Car_File(doc);
+      carDriver.Racing_Car := Configure_Car_File(doc);
 
-      carDriver.pilota := Configure_Driver_File(doc);
-      carDriver.RaceIterator:=RaceIterator;
+      carDriver.Racing_Driver := Configure_Driver_File(doc);
+      carDriver.Current_Circuit_Race_Iterator :=Current_Circuit_Race_Iterator ;
       carDriver.Id:=id_In;
 
       --Init onboard computer
-      OnboardComputer.Init_Computer(Computer_In     => carDriver.statsComputer,
+      OnboardComputer.Init_Computer(Computer_In     => carDriver.On_Board_Computer ,
                                     CompetitorId_In => id_in,
                                     Laps            => laps_in);
 
       --Adding minimal information to stats (for presentation purspose)
       CompetitionComputer.Add_CompetitorMinInfo(Id      => id_in,
-                                                Name    => carDriver.pilota.FirstName,
-                                                Surname => carDriver.pilota.LastName,
-                                                Team    => carDriver.pilota.Team);
+                                                Name    => carDriver.Racing_Driver.First_Name,
+                                                Surname => carDriver.Racing_Driver.Last_Name,
+                                                Team    => carDriver.Racing_Driver.Team);
 
       --Initializing onboard computer references in the Competition Monitor
-      Competition_Monitor.AddOBC(carDriver.statsComputer,carDriver.Id);
+      Competition_Monitor.AddOBC(carDriver.On_Board_Computer ,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
       --+ (probably other problems are occured in such a case)
       loop CompetitorRadio.Init_BoxConnection(BoxRadio_CorbaLOC => BoxRadio_CorbaLOC,
@@ -462,21 +324,21 @@ package body Competitor is
    ------ CALCOLO CROSSING TIME  -----
    -----------------------------------
    -----------------------------------
-   procedure CalculateCrossingTime (TimeCriticalTemp : out FLOAT; CarDriver : CAR_AND_DRIVER_ACCESS; PathsCollection_Index : INTEGER;
-                                    F_Segment : CHECKPOINT_SYNCH_POINT ; Vel_In : FLOAT;
-                                    Paths2Cross : CROSSING_POINT; Vel_Out : out FLOAT) is
-      length_path : FLOAT; --lunghezza tratto
-      --size_path : INTEGER; -- molteplicit� tratto
-      angle_path : FLOAT; -- angolo
-      grip_path : FLOAT; -- attrito
-      difficulty_path : FLOAT; -- difficolt� del tratto
+   procedure CalculateCrossingTime (TimeCriticalTemp : out Float; CarDriver : Competitor_Details_Point; PathsCollection_Index : Integer;
+                                    F_Segment : CHECKPOINT_SYNCH_POINT ; Last_Speed_Reached : Float;
+                                    Paths2Cross : CROSSING_POINT; Vel_Out : out Float) is
+      length_path : Float; --lunghezza tratto
+      --size_path : Integer; -- molteplicit� tratto
+      angle_path : Float; -- angolo
+      grip_path : Float; -- attrito
+      difficulty_path : Float; -- difficolt� del tratto
       tyre_usury : Common.PERCENTAGE; -- usura delle gomme %
-      gasoline_level : FLOAT; -- livello di benzina l
-      vel_max_reale : FLOAT; --velocit� massima raggiungibile km/h
-      vel_max : FLOAT := carDriver.auto.MaxSpeed; -- km/h
-      lc : FLOAT; -- m
-      timeCritical: FLOAT; -- s
-      acc: FLOAT; -- metri al secondo quadrato
+      gasoline_level : Float; -- livello di benzina l
+      vel_max_reale : Float; --velocit� massima raggiungibile km/h
+      vel_max : Float := carDriver.Racing_Car.Max_Speed; -- km/h
+      lc : Float; -- m
+      timeCritical: Float; -- s
+      acc: Float; -- metri al secondo quadrato
 
    begin
       --velocit� massima scalata per usura gomme e benzina presente.
@@ -499,23 +361,23 @@ package body Competitor is
 
       difficulty_path:= Paths2Cross.Get_Difficulty(PathsCollection_Index);
 
-      tyre_usury := Get_Usury(CarDriver);
+      tyre_usury := CarDriver.Racing_Car.Tyre_Usury;
 
-      gasoline_level:=Get_GasLevel(CarDriver);
+      gasoline_level:=CarDriver.Racing_Car.Gasoline_Level;
 
-      vel_max := Get_MaxSpeed(CarDriver); --
+      vel_max := CarDriver.Racing_Car.Max_Speed;
 
-      --acc := Get_MaxAcceleration(carDriver);
+      --acc := Get_Max_Acceleration(carDriver);
       -- aggiornamento dell'accelerazione in base allo stile di guida
       -- 0.008 � un buon valore trovato facendo dei test
       -- oltre allo stile di guida infulir� sull'accelerazione anche l'usura delle gomme
       -- sommando i due modificatori si arriva a cambiare l'accelerazione al pi� di 0.012 (rispetto al valore
       -- normale che � stato fissato in fase di configurazione ) che
       -- secondo i test eseguiti � un buon valore che modifica in maniera buona i tempi di percorrenza
-      case carDriver.strategia.Style is
-      when Common.AGGRESSIVE => acc:= Get_MaxAcceleration(carDriver)+0.008;
-      when Common.CONSERVATIVE => acc := Get_MaxAcceleration(carDriver) - 0.008;
-      when Common.NORMAL => acc := Get_MaxAcceleration(carDriver);
+      case carDriver.Current_Strategy.Style is
+      when Common.AGGRESSIVE => acc:= CarDriver.Racing_Car.Max_Acceleration + 0.008;
+      when Common.CONSERVATIVE => acc := CarDriver.Racing_Car.Max_Acceleration - 0.008;
+      when Common.NORMAL => acc := CarDriver.Racing_Car.Max_Acceleration;
       end case;
 
       if tyre_usury <= 50.0 then acc:= acc + (0.001*tyre_usury); --al max aumento di 0.005 l'accelerazione
@@ -534,14 +396,14 @@ package body Competitor is
       -- tempo di percorrenza= tempo per raggiungere velocit� massima.
       -- lunghezza tratto in accelerazione = lunghezza tratto
       -- velocit� finale = velocit� massima per quel tratto
-      timeCritical := ((vel_max_reale/3.6) - (Vel_In/3.6)) / acc;
-      -- tempo per arrivare a Vmax partendo da Vel_iniziale
+      timeCritical := ((vel_max_reale/3.6) - (Last_Speed_Reached/3.6)) / acc;
+      -- tempo per arrivare a Vmax partendo da Last_Speed_Reachediziale
       -- divisione per 3,6 per portare alla stessa unit� di misura cosi abbiamo la velocit� in
       -- m/s e l'accelerazione in m/s^2 per avere cosi un tempo in secondi
       if vel_max_reale <= 0.0 then lc:=0.0;
-      else lc := (Vel_In/3.6)*timeCritical + 0.5*acc*(timeCritical*timeCritical);
+      else lc := (Last_Speed_Reached/3.6)*timeCritical + 0.5*acc*(timeCritical*timeCritical);
       end if;
-      
+
       if lc = length_path then
 
          Vel_Out:=vel_max_reale;---attenzione TODO se cambio vel in in una traiettoria lo cambio anche per quella dopo...
@@ -549,7 +411,7 @@ package body Competitor is
       elsif lc < length_path then
 
          Vel_Out:=vel_max_reale;
-          
+
          --if vel_max_reale = 0.0 then timeCriticalTemp := -1000.0;
          --else
          if vel_max_reale = 0.0 then timeCriticalTemp := 0.0; -- per evitare di dividere per zero dopo
@@ -561,9 +423,9 @@ package body Competitor is
       elsif lc> length_path  then
 
 --         timeCritical := (-1.0) * (Vel_In/acc) + Ada.Numerics.Elementary_Functions.Sqrt(((Vel_In ** 2 ) + (2.0 * length_path))/(acc ** 2));--TODO Correggere
-           timeCritical := (((-1.0) * (Vel_In/3.6)) + Ada.Numerics.Elementary_Functions.Sqrt(((Vel_In/3.6) ** 2 ) + (2.0 * length_path *acc)))/acc;--TODO : controllare correttezza
+           timeCritical := (((-1.0) * (Last_Speed_Reached/3.6)) + Ada.Numerics.Elementary_Functions.Sqrt(((Last_Speed_Reached/3.6) ** 2 ) + (2.0 * length_path *acc)))/acc;--TODO : controllare correttezza
 
-         Vel_Out:=((CarDriver.pilota.Vel_In/3.6) + (acc * timeCritical))*3.6;
+         Vel_Out:=((CarDriver.Racing_Car.Last_Speed_Reached/3.6) + (acc * timeCritical))*3.6;
          TimeCriticalTemp := timeCritical;
       end if;
 
@@ -574,11 +436,11 @@ package body Competitor is
    ------------ EVALUATE  ------------
    -----------------------------------
    -----------------------------------
-   procedure Evaluate(driver : CAR_AND_DRIVER_ACCESS ;
-                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT; 
-                     lengthPath : out FLOAT ; 
-                     crossingTime_Out : out FLOAT; 
-                     vel_out : out FLOAT) is
+   procedure Evaluate(driver : Competitor_Details_Point ;
+                     F_Segment : CHECKPOINT_SYNCH_POINT; Paths2Cross : CROSSING_POINT;
+                     lengthPath : out Float ;
+                     crossingTime_Out : out Float;
+                     vel_out : out Float) is
 
       --qua dentro va effettuata la valutazione della traiettoria migliore e calcolato il tempo di attraversamento
       -- da restituire poi a chi invoca questo metodo.
@@ -587,28 +449,28 @@ package body Competitor is
 
       --driver dovr� salvarsi la velocit� che ha raggiunto.
 
-      StartingInstant : FLOAT := 0.0;
-      WaitingTime : FLOAT := 0.0;
-      PathTime : FLOAT;
-      CompArrivalTime : FLOAT := F_Segment.Get_Time(driver.Id);
+      StartingInstant : Float := 0.0;
+      WaitingTime : Float := 0.0;
+      PathTime : Float;
+      CompArrivalTime : Float := F_Segment.Get_Time(driver.Id);
       --ho bisogno di avere metodi per il ritorno dei campi dati del checkpoint_sync_point
       --inoltre non vedo il metodo Get_ArrivalTime
-      CrossingTime : FLOAT:= 0.0;
-      CrossingTimeTemp : FLOAT;
-      TotalDelay : FLOAT := 0.0;
-      MinDelay : FLOAT := -1.0;
-      pathTimeMinore : FLOAT;
+      CrossingTime : Float:= 0.0;
+      CrossingTimeTemp : Float;
+      TotalDelay : Float := 0.0;
+      MinDelay : Float := -1.0;
+      pathTimeMinore : Float;
       --BestPath : PATH;
-      Competitor_Status_Tyre : FLOAT;
-      Competitor_Status_Level: FLOAT;
+      Competitor_Status_Tyre : Float;
+      Competitor_Status_Level: Float;
       --manca il metodo per tornare un pathcollection;
       -- Competitor_Strategy : STRATEGY_CAR := Competitor.Get_Strategy();
-      velTemp : FLOAT :=0.0;
-      traiettoriaScelta : INTEGER;
+      velTemp : Float :=0.0;
+      traiettoriaScelta : Integer;
       vel_array : VEL(1..Paths2Cross.Get_Size);
-      waitingTimeMinore : FLOAT := 0.0;
-      temp_usury : FLOAT := 0.0;
-      gas_modifier : FLOAT := 0.0;
+      waitingTimeMinore : Float := 0.0;
+      temp_usury : Float := 0.0;
+      gas_modifier : Float := 0.0;
    begin
 
       -- loop on paths
@@ -623,8 +485,8 @@ package body Competitor is
             WaitingTime := 0.0;
             StartingInstant := CompArrivalTime;
          end if;
-         
-	 CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Get_Vel_In(driver), Paths2Cross, velTemp);
+
+	 CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Driver.Racing_Car.Last_Speed_Reached, Paths2Cross, velTemp);
 
 	 vel_array(Index):=velTemp;
          CrossingTimeTemp := CrossingTimeTemp + WaitingTime;--StartingInstant;
@@ -635,25 +497,25 @@ package body Competitor is
             pathTimeMinore := PathTime;
             waitingTimeMinore := WaitingTime;
          end if;
-         
+
          -- NEW : ho sottratto il WaitingTime, altrimenti lo contavo 2 volte
          --+ ora ho il delay totale da scrivere sul path, se � quello minimo calcolato..quel controllo lo faccio nella prossima
          --+ istruzione. il total delay minimo � quello che corrisponde a tempo di attesa + tempo di attraversamento minore
          --+ qua devo usare CrossingTimeTemp e WaitingTime perch� altrimenti rischio di usare il CrossingTime che � il miglior tempo di attraversament
          --+ anche nelle iterazioni successive, tanto non pu� succedere che MinDelay venga aggiornato con TotalDelay nel caso non sia stato aggiornato anche CrossingTime
-         TotalDelay := StartingInstant + CrossingTimeTemp - WaitingTime; 
+         TotalDelay := StartingInstant + CrossingTimeTemp - WaitingTime;
 
          if TotalDelay < MinDelay or else MinDelay < 0.0 then
             MinDelay := TotalDelay;-- MinDelay ha cos� il valore da scrivere sul path
 
 	end if;
-     
-      end loop;
-      
-      Paths2Cross.Update_Time(MinDelay, traiettoriaScelta);
-      driver.pilota.Vel_In := vel_array(traiettoriaScelta); --aggiorno la velocit� di entrata al tratto successivo
 
-     
+      end loop;
+
+      Paths2Cross.Update_Time(MinDelay, traiettoriaScelta);
+      driver.Racing_Car.Last_Speed_Reached := vel_array(traiettoriaScelta); --aggiorno la velocit� di entrata al tratto successivo
+
+
       --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'onboardcomputer
       lengthPath := Paths2Cross.Get_Length(traiettoriaScelta);
 
@@ -664,7 +526,7 @@ package body Competitor is
       end if;
 
       --aggiorno il modificatore in base alla mescola
-      if driver.auto.Type_Tyre = "Soft" then temp_usury := temp_usury + 0.03;
+      if driver.Racing_Car.Tyre_Type = "Soft" then temp_usury := temp_usury + 0.03;
       else temp_usury := temp_usury + 0.01;
       end if;
 
@@ -681,10 +543,10 @@ package body Competitor is
       -- quindi x = (1000*100)/0.80 = 125 km
       -- x = (1000*100)/0.86 = 116,279 km
       -- in totale quasi due giri (in media 5.5 km al giro) di differenza
-      if(FLOAT(driver.auto.TyreUsury) + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0) > 100.0) then
-          driver.auto.TyreUsury := 100.0;
+      if(Float(driver.Racing_Car.Tyre_Usury) + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0) > 100.0) then
+          driver.Racing_Car.Tyre_Usury := 100.0;
       else
-          driver.auto.TyreUsury := driver.auto.TyreUsury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
+          driver.Racing_Car.Tyre_Usury := driver.Racing_Car.Tyre_Usury + (Paths2Cross.Get_Length(traiettoriaScelta)*(0.8+temp_usury)/1000.0);
       end if;
 
       --il valore di 0.8 � stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
@@ -695,18 +557,18 @@ package body Competitor is
       else gas_modifier := 0.0;
       end if;
 
-      driver.auto.GasolineLevel := driver.auto.GasolineLevel - ((0.6 + gas_modifier) * Paths2Cross.Get_Length(traiettoriaScelta)/1000.0);
+      driver.Racing_Car.Gasoline_Level := driver.Racing_Car.Gasoline_Level - ((0.6 + gas_modifier) * Paths2Cross.Get_Length(traiettoriaScelta)/1000.0);
       -- 0.6 � il valore di  litri al km consumati
       -- questo valore pu� arrivare (in base alla velocit� ) fino a 0.75 litri al km
       -- il calcolo � quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
-      
+
       --aggiorno velocità raggiunta
       vel_out := vel_array(traiettoriaScelta);
-      
-      --if(driver.auto.GasolineLevel > 0.0 and driver.auto.TyreUsury < 100.0)  then
+
+      --if(driver.Racing_Car.Gasoline_Level > 0.0 and driver.Racing_Car.Tyre_Usury < 100.0)  then
       --end if;
-      
+
 
       crossingTime_Out := CrossingTime;
    end evaluate;
@@ -721,34 +583,34 @@ package body Competitor is
 
    task body TASKCOMPETITOR is
       C_Checkpoint : CHECKPOINT_SYNCH_POINT;
-      PredictedTime : FLOAT := 0.0;
-      DelayTime : FLOAT := 1.0;
+      PredictedTime : Float := 0.0;
+      DelayTime : Float := 1.0;
       Paths2Cross : CROSSING_POINT;
-      MinSegTime : FLOAT :=1.0;-- <minima quantit� di tempo per attraversare un tratto>
-      lengthPath : FLOAT := 0.0;
+      MinSegTime : Float :=1.0;-- <minima quantit� di tempo per attraversare un tratto>
+      lengthPath : Float := 0.0;
       --<minima quantit� di tempo per attraversare la pista>
-      carDriver : CAR_AND_DRIVER_ACCESS := carDriver_In;--
-      MinRaceTime : FLOAT := MinSegTime * FLOAT(Get_RaceLength(carDriver.RaceIterator));
-      CurrentCheckpoint : INTEGER := 1;
-      ActualTime : FLOAT;
+      carDriver : Competitor_Details_Point := carDriver_In;--
+      MinRaceTime : Float := MinSegTime * Float(Get_RaceLength(carDriver.Current_Circuit_Race_Iterator ));
+      CurrentCheckpoint : Integer := 1;
+      ActualTime : Float;
       Finished : BOOLEAN := FALSE;
-      Index : INTEGER := 0;
-      id : INTEGER := carDriver.Id;
-      StartingPosition :INTEGER;
-      Speed : FLOAT;
-      CrossingTime : FLOAT;
+      Index : Integer := 0;
+      id : Integer := carDriver.Id;
+      StartingPosition :Integer;
+      Speed : Float;
+      CrossingTime : Float;
       endWait : Boolean :=False;
-      j: INTEGER:=0;
-      tempoTotale : FLOAT := 0.0;
+      j: Integer:=0;
+      tempoTotale : Float := 0.0;
       valore:BOOLEAN :=False;
       --statistiche COMPETITOR_STATS
       compStats : COMPETITOR_STATS;
-      SectorID : INTEGER;
+      SectorID : Integer;
       PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
 
       -- The lap count is kept in this variable
       --TODO: chiedere a lorenzo se non era gi� da qualche altra parte
-      CurrentLap : INTEGER := 0;
+      CurrentLap : Integer := 0;
 
       PitStopDone : BOOLEAN := false;
 
@@ -775,10 +637,10 @@ package body Competitor is
          Config := Get_Elements_By_Tag_Name(Strategy_Doc,"strategy");
          Current_Node := Item(Config,0);
 
-         Tmp_Strategy.Type_Tyre := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreType"))));
-         Tmp_Strategy.GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
-         Tmp_Strategy.PitStopLaps := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopLaps"))));
-         Tmp_Strategy.PitStopDelay := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopDelay"))));
+         Tmp_Strategy.Tyre_Type := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreType"))));
+         Tmp_Strategy.Gas_Level := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"Gas_Level"))));
+         Tmp_Strategy.PitStopLaps := Integer'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopLaps"))));
+         Tmp_Strategy.PitStopDelay := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopDelay"))));
 
          StyleStr := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"style"))));
 
@@ -796,8 +658,8 @@ package body Competitor is
 
       procedure Remove_CompetitorFromRace(Iterator_In : out Circuit.RACETRACK_ITERATOR;
                                           PitStopDone_In : in BOOLEAN;
-                                          Competitor_ID : INTEGER) is
-         StartingPosition_P : INTEGER;
+                                          Competitor_ID : Integer) is
+         StartingPosition_P : Integer;
          Checkpoint_P : CHECKPOINT_SYNCH_POINT;
       begin
          Circuit.Get_NextCheckpoint(Iterator_In,Checkpoint_P);
@@ -832,7 +694,7 @@ package body Competitor is
 
 
 
-      Get_CurrentCheckPoint(carDriver.RaceIterator,C_Checkpoint); -- NEW
+      Get_CurrentCheckPoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint); -- NEW
 
 
                                                                   --end loop;
@@ -844,10 +706,10 @@ package body Competitor is
       --Updating the driver strategy with the first strategy given
       --+ by the box. TODO: verify wheter to set the gas level with
       --+ the one given by the box.
-      carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
-      carDriver.strategia.PitStopLaps := BrandNewStrategy.PitStopLaps;
-      carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
-      carDriver.strategia.Style := BrandNewStrategy.Style;
+      carDriver.Current_Strategy.Tyre_Type := BrandNewStrategy.Tyre_Type;
+      carDriver.Current_Strategy.PitStopLaps := BrandNewStrategy.PitStopLaps;
+      carDriver.Current_Strategy.Gas_Level := BrandNewStrategy.Gas_Level;
+      carDriver.Current_Strategy.Style := BrandNewStrategy.Style;
 
       loop
 
@@ -858,20 +720,20 @@ package body Competitor is
 
 
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)& Integer'Image(id)&
-                              ": SUMMURY lap : " & INTEGER'IMAGE(CurrentLap) &
+                              ": SUMMURY lap : " & Integer'IMAGE(CurrentLap) &
                               ", actual time : " & Float'Image(ActualTime) &
-                              ", gas " & Float'IMAGE(carDriver.auto.GasolineLevel) &
-                              ", tyre " & FLoat'IMAGE(carDriver.auto.TyreUsury) &
+                              ", gas " & Float'IMAGE(carDriver.Racing_Car.Gasoline_Level) &
+                              ", tyre " & Float'IMAGE(carDriver.Racing_Car.Tyre_Usury) &
                               ", pit stop done " & BOOLEAN'IMAGE(PitStopDone));
          --Viene segnalato l'arrivo effettivo al checkpoint. In caso risulti primo,
          --viene subito assegnata la collezione  di path per la scelta della traiettoria
-        
+
          if( C_Checkpoint.Is_PreBox = true ) then -- If true, the check point is a prebox
 
             begin
                --Box comunication section
                -- Ask for the box strategy once the prebox checkpoint is reached
-               
+
                Strategy_FileName := Str.To_Unbounded_String(CompetitorRadio.Get_Strategy(carDriver.Radio,CurrentLap+1));
 
 	       --Get the strategy object from the file
@@ -880,22 +742,22 @@ package body Competitor is
             exception
                when Error : others =>
                   Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
-                  if( carDriver.strategia.PitStopLaps = 0) then
+                  if( carDriver.Current_Strategy.PitStopLaps = 0) then
                      --To avoid another pitstop if done before
-                     carDriver.strategia.PitStopLaps := 1;
+                     carDriver.Current_Strategy.PitStopLaps := 1;
                   end if;
                   --Reuse the same strategy as a new one
-                  BrandNewStrategy := carDriver.strategia;
+                  BrandNewStrategy := carDriver.Current_Strategy;
             end;
 
 
-	    --Bisogna verificare se la strategia dice di tornare ai box, in tal caso:
+	    --Bisogna verificare se la Current_Strategy dice di tornare ai box, in tal caso:
             if(BrandNewStrategy.PitStopLaps = 0) then
                PitStop := true;
             end if;
 
-	    carDriver.strategia.Style := BrandNewStrategy.Style;
-            carDriver.strategia.PitStopLaps := BrandNewStrategy.PitStopLaps;
+	    carDriver.Current_Strategy.Style := BrandNewStrategy.Style;
+            carDriver.Current_Strategy.PitStopLaps := BrandNewStrategy.PitStopLaps;
          end if;
 
 
@@ -913,9 +775,9 @@ package body Competitor is
 
          C_Checkpoint.Get_Paths(Paths2Cross,
                                 Go2Box      => PitStop);
-        
 
-         StartingPosition := Get_Position(carDriver.RaceIterator);
+
+         StartingPosition := Get_Position(carDriver.Current_Circuit_Race_Iterator );
 
          --NEW: Moved. It was just before the crossing time calculation.
          SectorID:=C_Checkpoint.Get_SectorID;
@@ -933,20 +795,20 @@ package body Competitor is
 	 if(PitStop = true or PitStopDone = true) then
 
          declare
-           OriginalSpeed : FLOAT := Get_MaxSpeed(carDriver);
+           OriginalSpeed : Float := CarDriver.Racing_Car.Max_Speed;
           begin
-	    carDriver.auto.MaxSpeed := 80.0;
+	    carDriver.Racing_Car.Max_Speed := 80.0;
 	    Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
 	    --original driver speed restored.
-	    carDriver.auto.MaxSpeed := OriginalSpeed;
+	    carDriver.Racing_Car.Max_Speed := OriginalSpeed;
 	  end;
 	 else
           Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
 	 end if;
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": evaluate done:" &
-                              " length path " & FLOAT'IMAGE(lengthPath) & 
-                              " crossing time " & FLOAT'IMAGE(CrossingTime) & 
-                              " speed " & FLOAT'IMAGE(Speed));
+                              " length path " & Float'IMAGE(lengthPath) &
+                              " crossing time " & Float'IMAGE(CrossingTime) &
+                              " speed " & Float'IMAGE(Speed));
          --Ora non c'� pi� rischio di race condition sulla scelta delle traiettorie
          --quindi pu� essere segnalato il passaggio del checkpoint per permettere agli
          --altri thread di eseguire finch� vengono aggiornati i tempi di arrivo negli
@@ -960,9 +822,9 @@ package body Competitor is
          if (PitStop = true) then
 
             CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
-	    
+
          end if;
-	 
+
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
@@ -976,22 +838,22 @@ package body Competitor is
 
             declare
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
-               Iterator_InitialPosition : INTEGER := Get_Position(carDriver.RaceIterator);
-               Step : FLOAT := 0.0001;
-               UpdatedCheckpoints : FLOAT := 1.0;
+               Iterator_InitialPosition : Integer := Get_Position(carDriver.Current_Circuit_Race_Iterator );
+               Step : Float := 0.0001;
+               UpdatedCheckpoints : Float := 1.0;
             begin
-               Get_CurrentCheckpoint( carDriver.RaceIterator,Temp_Checkpoint);--NEW
+               Get_CurrentCheckpoint( carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);--NEW
                --Update all the statistics up to the goal checkpoint
-               while Get_Position(carDriver.RaceIterator) /= Circuit.Checkpoints_Qty  loop
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints_Qty  loop
                   --Update the statistic to send to the OnboardComputer
                   compStats.Checkpoint := CurrentCheckpoint;
                   CurrentCheckpoint := CurrentCheckpoint + 1;
                   compStats.LastCheckInSect := FALSE;
                   compStats.FirstCheckInSect := FALSE;
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
-                  compStats.GasLevel := carDriver.auto.GasolineLevel;
-                  compStats.TyreUsury := carDriver.auto.TyreUsury;
-                  compStats.MaxSpeed := Speed;
+                  compStats.Gas_Level := carDriver.Racing_Car.Gasoline_Level;
+                  compStats.Tyre_Usury := carDriver.Racing_Car.Tyre_Usury;
+                  compStats.Max_Speed := Speed;
                   compStats.IsPitStop := false;
                   compStats.Time := PredictedTime + Step*UpdatedCheckpoints;
 
@@ -999,15 +861,15 @@ package body Competitor is
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
-                  Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
+                  Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
                end loop;
                CurrentCheckpoint := Circuit.Checkpoints_Qty;
                --Restore the iterator initial position
-               while Get_Position(carDriver.RaceIterator) /= Circuit.Checkpoints_Qty loop
-                  Get_NextCheckpoint(carDriver.RaceIterator, Temp_Checkpoint );
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints_Qty loop
+                  Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator , Temp_Checkpoint );
                end loop;
             end;
 
@@ -1020,13 +882,13 @@ package body Competitor is
          compStats.LastCheckInSect := C_Checkpoint.Is_LastOfTheSector;
          compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
          compStats.Sector := SectorID;
-         compStats.GasLevel := carDriver.auto.GasolineLevel;
-         compStats.TyreUsury := carDriver.auto.TyreUsury;
+         compStats.Gas_Level := carDriver.Racing_Car.Gasoline_Level;
+         compStats.Tyre_Usury := carDriver.Racing_Car.Tyre_Usury;
          compStats.Time := PredictedTime;
          compStats.Lap := CurrentLap;
          compStats.PathLength := lengthPath;
          compStats.IsPitStop := FALSE;
-         compStats.MaxSpeed := Speed;
+         compStats.Max_Speed := Speed;
 
          -- The prebox might be way before the last checkpoint in the sector.
          --+ It's necessary though to set the field to TRUE to allow the update
@@ -1040,12 +902,12 @@ package body Competitor is
          end if;
 
 	 Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": updaitng pc: " &
-                              " check " & INTEGER'IMAGE(CurrentCheckpoint) & 
-                              " gas level " & FLOAT'IMAGE(compStats.GasLevel) & 
-                              " tyre usury " & FLOAT'IMAGE(compStats.TyreUsury) & 
-                              " path length " & FLOAT'IMAGE(lengthPath) &
-                              " speed " & FLOAT'IMAGE(Speed));
-         OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                              " check " & Integer'IMAGE(CurrentCheckpoint) &
+                              " gas level " & Float'IMAGE(compStats.Gas_Level) &
+                              " tyre usury " & Float'IMAGE(compStats.Tyre_Usury) &
+                              " path length " & Float'IMAGE(lengthPath) &
+                              " speed " & Float'IMAGE(Speed));
+         OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                   Data        => compStats);
 
          --If the checkpoint is the box, it's necessary to update all
@@ -1054,70 +916,70 @@ package body Competitor is
 
             declare
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
-               Iterator_InitialPosition : INTEGER := 1;
-               ExitBox_Position : INTEGER;
-               Step : FLOAT := 0.0001;
-               UpdatedCheckpoints : FLOAT := 1.0;
+               Iterator_InitialPosition : Integer := 1;
+               ExitBox_Position : Integer;
+               Step : Float := 0.0001;
+               UpdatedCheckpoints : Float := 1.0;
             begin
                --Find the exit box positino
-               Get_ExitBoxCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
-               ExitBox_Position := Get_Position(carDriver.RaceIterator);
+               Get_ExitBoxCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
+               ExitBox_Position := Get_Position(carDriver.Current_Circuit_Race_Iterator );
 
                --Put che iterator in position number one
-               while Get_Position(carDriver.RaceIterator) /= 2 loop
-                  Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= 2 loop
+                  Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
                end loop;
                CurrentCheckpoint := 2;
 
                --Update all the statistics up to the goal checkpoint
-               while Get_Position(carDriver.RaceIterator) /= ExitBox_Position loop
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= ExitBox_Position loop
                   --Update the statistic to send to the OnboardComputer
                   compStats.Checkpoint := CurrentCheckpoint;
                   CurrentCheckpoint := CurrentCheckpoint + 1;
                   compStats.LastCheckInSect := FALSE;
                   compStats.FirstCheckInSect := FALSE;
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
-                  compStats.GasLevel := carDriver.auto.GasolineLevel;
-                  compStats.TyreUsury := carDriver.auto.TyreUsury;
+                  compStats.Gas_Level := carDriver.Racing_Car.Gasoline_Level;
+                  compStats.Tyre_Usury := carDriver.Racing_Car.Tyre_Usury;
                   compStats.IsPitStop := TRUE;
                   compStats.Time := PredictedTime - (Step * UpdatedCheckpoints);
                   UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
-                  compStats.MaxSpeed := Speed;
+                  compStats.Max_Speed := Speed;
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
-                  Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
+                  Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
                end loop;
                CurrentCheckpoint := ExitBox_Position-1;
                --Restore the iterator initial position
-               Get_BoxCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
+               Get_BoxCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
 
             end;
 
          end if;
 
 
-         if(carDriver.auto.GasolineLevel <= 0.0 or else carDriver.auto.TyreUsury >= 100.0) then
+         if(carDriver.Racing_Car.Gasoline_Level <= 0.0 or else carDriver.Racing_Car.Tyre_Usury >= 100.0) then
 
             --Update all the remaining information in the stats
             declare
                Temp_Checkpoint : CHECKPOINT_SYNCH_POINT;
-               Temp_CheckpointPos : INTEGER;
-               Temp_Lap : INTEGER := CurrentLap;
+               Temp_CheckpointPos : Integer;
+               Temp_Lap : Integer := CurrentLap;
             begin
-               Ada.Text_IO.Put_Line(INTEGER'IMAGE(carDriver.Id) & ": Sendin away competitor at " & FLOAT'IMAGE(compStats.Time) & " last lap " & INTEGER'IMAGE(LastLap));
-               CompetitorOut(Computer_In => carDriver.statsComputer,
+               Ada.Text_IO.Put_Line(Integer'IMAGE(carDriver.Id) & ": Sendin away competitor at " & Float'IMAGE(compStats.Time) & " last lap " & Integer'IMAGE(LastLap));
+               CompetitorOut(Computer_In => carDriver.On_Board_Computer ,
                              Lap         => CUrrentLap,
                              Data        => compStats);
 
                loop
 
 
-                  Get_NextCheckpoint(carDriver.RaceIterator,Temp_Checkpoint);
-                  Temp_CheckpointPos := Get_Position(RaceIterator => carDriver.RaceIterator);
+                  Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
+                  Temp_CheckpointPos := Get_Position(CarDriver.Current_Circuit_Race_Iterator );
 
                   if(Temp_Checkpoint.Is_Goal) then
                      Temp_Lap := Temp_Lap + 1;
@@ -1129,24 +991,24 @@ package body Competitor is
                   compStats.LastCheckInSect := Temp_Checkpoint.Is_LastOfTheSector;
                   compStats.FirstCheckInSect := Temp_Checkpoint.Is_FirstOfTheSector;
                   compStats.Sector := Temp_Checkpoint.Get_SectorID;
-                  compStats.GasLevel := carDriver.auto.GasolineLevel;
-                  compStats.TyreUsury := carDriver.auto.TyreUsury;
+                  compStats.Gas_Level := carDriver.Racing_Car.Gasoline_Level;
+                  compStats.Tyre_Usury := carDriver.Racing_Car.Tyre_Usury;
                   compStats.IsPitStop := FALSE;
                   compStats.Time := PredictedTime;
                   compStats.Lap := Temp_Lap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.statsComputer,
+                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
                end loop;
 
             end;
 
-            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
+            Remove_CompetitorFromRace(Iterator_In    => carDriver.Current_Circuit_Race_Iterator ,
                                       PitStopDone_In => PitStopDone,
                                       Competitor_ID => carDriver.Id);
-            
+
             Finished := TRUE;
          end if;
          exit when Finished = TRUE;
@@ -1156,12 +1018,12 @@ package body Competitor is
          --+ and the other ones with that time increased with the minimum
          --+ time to cross a segment of the track.
          loop
-            Circuit.Get_NextCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            Circuit.Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint);
             C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
             PredictedTime := PredictedTime + 0.001;--MinRaceTime - MinSegTime * Float(Index);
             Index := Index + 1;
 
-            exit when Get_Position(carDriver.RaceIterator) = StartingPosition;
+            exit when Get_Position(carDriver.Current_Circuit_Race_Iterator ) = StartingPosition;
             --HACK:
             --+ premise: the Get_NextCheckpoint never picks up the Box checkpoint
             --+(in the reality it's not a track checkpoint). The starting position
@@ -1173,12 +1035,12 @@ package body Competitor is
             --+ retrieved in this loop). So taking the position of the first checkpoint
             --+ retrieved in the loop and subtracting one, we have the pre-exitbox checkpoint.
             if StartingPosition = 0 then
-               StartingPosition := Get_Position(carDriver.RaceIterator)-1;
+               StartingPosition := Get_Position(carDriver.Current_Circuit_Race_Iterator )-1;
             end if;
          end loop;
 
          if(PitStopDone) then
-            Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            Get_BoxCheckpoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint);
          end if;
 
          -- If it was a pitstop, get the checkpoint following the one of the boxes
@@ -1186,21 +1048,21 @@ package body Competitor is
 
             PitStop := false;
             PitStopDone := true;
-            Get_BoxCheckpoint(carDriver.RaceIterator,C_Checkpoint);
+            Get_BoxCheckpoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint);
             --HACK: in this way we add the competitor to the box queue (that is empty
             --+ by default)
             C_Checkpoint.Set_ArrivalTime(carDriver.Id, predictedTime);
 
             --Those updates will be effective in the next loop, so
             --+ they'll be used while doing the after-box path.
-            if(BrandNewStrategy.GasLevel /= -1.0) then
-                carDriver.strategia.GasLevel := BrandNewStrategy.GasLevel;
-                carDriver.auto.GasolineLevel := BrandNewStrategy.GasLevel;
+            if(BrandNewStrategy.Gas_Level /= -1.0) then
+                carDriver.Current_Strategy.Gas_Level := BrandNewStrategy.Gas_Level;
+                carDriver.Racing_Car.Gasoline_Level := BrandNewStrategy.Gas_Level;
             end if;
-            carDriver.strategia.Type_Tyre := BrandNewStrategy.Type_Tyre;
-            carDriver.auto.Type_Tyre := BrandNewStrategy.Type_Tyre;
+            carDriver.Current_Strategy.Tyre_Type := BrandNewStrategy.Tyre_Type;
+            carDriver.Racing_Car.Tyre_Type := BrandNewStrategy.Tyre_Type;
             --We assume che every pitstop the tyre are replaced
-            carDriver.auto.TyreUsury := 0.0;
+            carDriver.Racing_Car.Tyre_Usury := 0.0;
 
          else
 
@@ -1209,7 +1071,7 @@ package body Competitor is
                C_Checkpoint.Remove_Competitor(carDriver.Id);
             end if;
 
-            Get_NextCheckPoint(carDriver.RaceIterator,C_Checkpoint); --NEW
+            Get_NextCheckPoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint); --NEW
          end if;
 
 
@@ -1228,7 +1090,7 @@ package body Competitor is
             Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id)&" Last lap reached");
             Finished := true;
 
-            Remove_CompetitorFromRace(Iterator_In    => carDriver.RaceIterator,
+            Remove_CompetitorFromRace(Iterator_In    => carDriver.Current_Circuit_Race_Iterator ,
                                       PitStopDone_In => PitStopDone,
                                       Competitor_ID => carDriver.Id);
 
@@ -1245,7 +1107,7 @@ package body Competitor is
       end loop;
 
       --+Path2Cross.ChooseBestPath(ID,CrossingTime,ChoosenPath,ActualTime);
-      --+come parametri bisogna che in entrata ci sia la strategia, altrimenti non
+      --+come parametri bisogna che in entrata ci sia la Current_Strategy, altrimenti non
       --+abbiamo niente con cui poterla usare.
       --+come metodo non � male solo che credo stia meglio nella strategy in modo da
       --+poter essere disponibile anche per "l'oggetto" di StrategyBox.
@@ -1256,34 +1118,6 @@ package body Competitor is
 
       CompetitorRadio.Close_BOxCOnnection(Radio => carDriver.Radio);
    end TASKCOMPETITOR;
-
-
-   function Get_StrategyGasLevel(str_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return str_In.strategia.GasLevel;
-   end Get_StrategyGasLevel;
-
-   function Get_StrategyPitStopLaps(str_In : CAR_AND_DRIVER_ACCESS) return INTEGER is
-   begin
-      return str_In.strategia.PitStopLaps;
-   end Get_StrategypitstopLaps;
-
-   function Get_StrategyTyreType (str_In : CAR_AND_DRIVER_ACCESS) return Str.Unbounded_String is
-   begin
-      return str_In.strategia.Type_Tyre;
-   end Get_StrategyTyreType;
-
-   function Get_StrategyStyle (str_In : CAR_AND_DRIVER_ACCESS) return Common.DRIVING_STYLE is
-   begin
-      return str_In.strategia.Style;
-   end Get_StrategyStyle;
-
-   function Get_StrategyPitstopDelay (str_In : CAR_AND_DRIVER_ACCESS) return FLOAT is
-   begin
-      return str_In.strategia.PitStopDelay;
-   end Get_StrategyPitstopDelay;
-
-   ---------------------------------------------------------------------------------------------
 
 end Competitor;
 

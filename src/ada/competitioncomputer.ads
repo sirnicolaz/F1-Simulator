@@ -15,12 +15,12 @@ package CompetitionComputer is
       Sector : INTEGER;
       Lap : INTEGER;
       Time : FLOAT;
-      GasLevel : FLOAT;
-      TyreUsury : PERCENTAGE;
+      Gas_Level : FLOAT;
+      Tyre_Usury : PERCENTAGE;
       BestLapNum : INTEGER;
       BestLaptime : FLOAT;
       BestSectorTimes : FLOAT_ARRAY(1..3);
-      MaxSpeed : FLOAT;
+      Max_Speed : FLOAT;
       PathLength : FLOAT;
    end record;
 

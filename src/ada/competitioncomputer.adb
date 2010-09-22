@@ -190,7 +190,7 @@ package body CompetitionComputer is
 
       entry Get_MaxSpeed (Result : out FLOAT) when Initialised = TRUE is
       begin
-         Result := Statistic.MaxSpeed;
+         Result := Statistic.Max_Speed;
       end Get_MaxSpeed;
 
       entry Get_IsLastCheckInSector (Result : out BOOLEAN) when Initialised = TRUE is
@@ -210,12 +210,12 @@ package body CompetitionComputer is
 
       entry Get_GasLevel (Result : out FLOAT) when Initialised = TRUE is
       begin
-         Result := Statistic.GasLevel;
+         Result := Statistic.Gas_Level;
       end Get_GasLevel;
 
       entry Get_TyreUsury (Result : out PERCENTAGE) when Initialised = TRUE is
       begin
-         Result := Statistic.TyreUsury;
+         Result := Statistic.Tyre_Usury;
       end Get_TyreUsury;
 
       entry Get_All( Result : out COMPETITOR_STATS) when Initialised = TRUE is
@@ -495,7 +495,7 @@ package body CompetitionComputer is
 
       --If the checkpoint is the last one of the circuit, update the classification table as well
       if(Data.LastCheckInSect = true and Data.Sector = 3 and
-           Data.GasLevel > 0.0 and Data.TyreUsury < 100.0) then
+           Data.Gas_Level > 0.0 and Data.Tyre_Usury < 100.0) then
 
 
          Update_Classific(Competitor_ID,
@@ -509,7 +509,7 @@ package body CompetitionComputer is
    Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
 
    --The competitor is out
-      if(Data.GasLevel > 0.0 and Data.TyreUsury < 100.0) then
+      if(Data.Gas_Level > 0.0 and Data.Tyre_Usury < 100.0) then
          --If not retired and the array is full, the competition is regularly finished
 
          if(((Data.Lap*Checkpoints) + Data.Checkpoint) =
@@ -756,7 +756,7 @@ begin
 
             exit when ExitLoop = true;
          end loop;
-         
+
          --Filling up the array with competitors that have not started the new lap yet but that have already
          --+ finished the previous one (so, they have a classification time for that lap). This is done to
          --+ avoid the problem o "skipped competitor in classification"
@@ -778,7 +778,7 @@ begin
 	  CompetitorIDs_PreviousClassific := null;
 	  Times_PreviousClassific := null;
 	 end if;
-	 
+
 
          if(CompetitorQty-NotLapped_Count = 0) then
             Competitor_IDs := null;

@@ -33,9 +33,9 @@ package Common is
    FilePath : constant STRING(1..8) := "../temp/";
 
    type STRATEGY is record
-      Type_Tyre : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
+      Tyre_Type : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       Style : DRIVING_STYLE;
-      GasLevel : FLOAT;
+      Gas_Level : FLOAT;
       PitStopLaps : INTEGER;
       PitStopDelay : FLOAT;
    end record;

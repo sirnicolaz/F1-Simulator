@@ -90,11 +90,11 @@ package body OnBoardComputer is
          Unbounded_String.Set_Unbounded_String(updateStr,
                                                "<?xml version=""1.0""?>" &
                                                "<update>" &
-                                               "<gasLevel>"& Common.FloatToString(Data.GasLevel) &"</gasLevel>" &
-                                               "<tyreUsury>" & Common.FloatToString(Data.TyreUsury) &"</tyreUsury>" &
+                                               "<gasLevel>"& Common.FloatToString(Data.Gas_Level) &"</gasLevel>" &
+                                               "<tyreUsury>" & Common.FloatToString(Data.Tyre_Usury) &"</tyreUsury>" &
                                                "<lap>" & Common.IntegerToString(Data.Lap)&"</lap>" &
                                                "<sector>" & Common.IntegerToString(Data.Sector)&"</sector>" &
-                                               "<maxSpeed>" & Common.FloatToString(Data.MaxSpeed)&"</maxSpeed>" &
+                                               "<maxSpeed>" & Common.FloatToString(Data.Max_Speed)&"</maxSpeed>" &
                                                --"<metres>" & Common.FloatToString(Computer_In.SectorLength_Helper)&"</metres>" &
                                                --"<metres>" & Common.FloatToString(50.0) & "</metres>" &
                                                "</update>"
@@ -165,8 +165,8 @@ package body OnBoardComputer is
 
 
       --Update max speed TODO CRITICAL
-      if (Computer_In.CurrentMaxSpeed < Data.MaxSpeed ) then
-         Computer_In.CurrentMaxSpeed := Data.MaxSpeed;
+      if (Computer_In.CurrentMaxSpeed < Data.Max_Speed ) then
+         Computer_In.CurrentMaxSpeed := Data.Max_Speed;
       end if;
 
       Data.BestLapNum := Computer_In.CurrentBestLap_Num;
@@ -179,7 +179,7 @@ package body OnBoardComputer is
       end loop;
 
 
-      Data.MaxSpeed := Computer_In.CurrentMaxSpeed;
+      Data.Max_Speed := Computer_In.CurrentMaxSpeed;
 
       Add_Stat(Computer_In.Competitor_Id,Data);
 
@@ -212,7 +212,7 @@ package body OnBoardComputer is
                          Time_In : out FLOAT;
                          Metres : out FLOAT) is
    begin
-   
+
       Computer_In.BoxInformation.Get_Info(Lap+1, Sector, Time_In, UpdateString_In, Metres);
    end Get_BoxInfo;
 

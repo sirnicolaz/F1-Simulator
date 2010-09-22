@@ -37,7 +37,7 @@ package body Competition is
                                    CircuitLength_Out : out FLOAT;
                                    Monitor_CorbaLoc_Out : out Unbounded_String.Unbounded_String) when Registrations_Open is
          ID : INTEGER;
-         Driver : CAR_AND_DRIVER_ACCESS;
+         Driver : Competitor_Details_Point;
 
          --Generic state boolean
          Result : BOOLEAN := false;
@@ -68,7 +68,7 @@ package body Competition is
             Result := Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
                               Content  => CompetitorDescriptor,
                               Path     => "");
-          
+
 	    --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
             Ada.Text_IO.Put_Line("Init competitor...");
             Driver := Init_Competitor(Unbounded_String.To_String(File_Name),
@@ -89,7 +89,7 @@ package body Competition is
             Monitor_CorbaLoc_Out := Monitor_CorbaLoc;
 
 
-            Ada.Text_IO.Put_Line("Name : " & Unbounded_String.To_String(Competitor.Get_FirstName(Competitor_In => Driver)));
+            Ada.Text_IO.Put_Line("Name : " & Unbounded_String.To_String(Competitor.Get_First_Name(Competitor_In => Driver)));
 
             --TODO fix
             if ( Next_ID = Competitors'LENGTH + 1 ) then
