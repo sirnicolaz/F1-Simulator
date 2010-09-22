@@ -4,7 +4,7 @@ use Circuit;
 with Competitor;
 use Competitor;
 
-with OnboardComputer;
+with Competitor_Computer;
 
 with Ada.Strings;
 with Ada.Strings.Unbounded;

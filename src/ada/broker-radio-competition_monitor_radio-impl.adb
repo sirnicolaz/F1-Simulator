@@ -18,15 +18,15 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
    function Ready( Self : access Object;
                   CompetitorID : Corba.SHORT) return BOOLEAN is
    begin
-      Ada.Text_IO.Put_Line("Ready box " & COmmon.IntegerToString(INTEGER(CompetitorID)));
+      Ada.Text_IO.Put_Line("Ready box " & COmmon.Integer_To_String(INTEGER(CompetitorID)));
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 
-   procedure Get_CompetitorInfo(Self : access Object; 
-				lap : CORBA.Short; 
-				sector : CORBA.Short ; 
-				id : CORBA.Short; 
-				time : out CORBA.FLOAT; 
+   procedure Get_CompetitorInfo(Self : access Object;
+				lap : CORBA.Short;
+				sector : CORBA.Short ;
+				id : CORBA.Short;
+				time : out CORBA.FLOAT;
 				metres : out CORBA.FLOAT;
 				Returns : out CORBA.STRING) is
       ReturnStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
@@ -62,7 +62,7 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
             Append(Returns,CORBA.FLOAT(Tmp_TimesArray.all(Index)));
          end loop;
       end if;
-      
+
       xmlInfo := CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
    end Get_CompetitionInfo;
 

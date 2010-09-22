@@ -34,7 +34,7 @@ package body Broker.Radio.BoxRadio.impl is
       Temp_String : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin
 
-      Ada.Text_IO.Put_Line("Requesting strategy for lap: " & Common.IntegerToString(INTEGER(lap)));
+      Ada.Text_IO.Put_Line("Requesting strategy for lap: " & Common.Integer_To_String(INTEGER(lap)));
 
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
 
@@ -43,7 +43,7 @@ package body Broker.Radio.BoxRadio.impl is
 
       Temp_String := Temp_String & Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
-         Box_Data.BoxStrategyToXML(NewStrategy));
+         Box_Data.Box_Strategy_To_XML(NewStrategy));
       return CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
 
    exception

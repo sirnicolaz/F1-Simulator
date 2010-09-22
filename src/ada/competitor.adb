@@ -13,8 +13,8 @@ with Common;
 with Ada.Calendar;
 use Ada.Calendar;
 
-with CompetitionComputer;
-use CompetitionComputer;
+with Competition_Computer;
+use Competition_Computer;
 
 
 with Ada.Exceptions;
@@ -295,13 +295,13 @@ package body Competitor is
 
       --Init onboard computer
       Ada.Text_IO.Put_Line("Init Computer");
-      OnboardComputer.Init_Computer(Computer_In     => carDriver.On_Board_Computer ,
+      Competitor_Computer.Init_Computer(Computer_In     => carDriver.On_Board_Computer ,
                                     CompetitorId_In => id_in,
                                     Laps            => laps_in);
 
       --Adding minimal information to stats (for presentation purspose)
       Ada.Text_IO.Put_Line("Adding min info");
-      CompetitionComputer.Add_CompetitorMinInfo(Id      => id_in,
+      Competition_Computer.Add_CompetitorMinInfo(Id      => id_in,
                                                 Name    => carDriver.Racing_Driver.First_Name,
                                                 Surname => carDriver.Racing_Driver.Last_Name,
                                                 Team    => carDriver.Racing_Driver.Team);
@@ -318,7 +318,7 @@ package body Competitor is
                                               Success           => RadioConnection_Success);
          exit when RadioConnection_Success = true;
          Ada.Text_IO.Put_Line("Connection to box failed for competitor n. " &
-                              Common.IntegerToString(id_In));
+                              Common.Integer_To_String(id_In));
          Ada.Text_IO.Put_Line("Retry in 5 seconds...");
          Delay(Standard.Duration(5));
       end loop;
@@ -524,7 +524,7 @@ package body Competitor is
       driver.Racing_Car.Last_Speed_Reached := vel_array(traiettoriaScelta); --aggiorno la velocit� di entrata al tratto successivo
 
 
-      --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'onboardcomputer
+      --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'Competitor_Computer
       lengthPath := Paths2Cross.Get_Length(traiettoriaScelta);
 
       --aggiorno il modificatore in base all'angolo
@@ -647,8 +647,8 @@ package body Competitor is
 
          Tmp_Strategy.Tyre_Type := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreType"))));
          Tmp_Strategy.Gas_Level := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
-         Tmp_Strategy.PitStopLaps := Integer'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopLaps"))));
-         Tmp_Strategy.PitStopDelay := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopDelay"))));
+         Tmp_Strategy.Laps_To_Pitstop := Integer'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"Laps_To_Pitstop"))));
+         Tmp_Strategy.Pit_Stop_Delay := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"Pit_Stop_Delay"))));
 
          StyleStr := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"style"))));
 
@@ -715,7 +715,7 @@ package body Competitor is
       --+ by the box. TODO: verify wheter to set the gas level with
       --+ the one given by the box.
       carDriver.Current_Strategy.Tyre_Type := BrandNewStrategy.Tyre_Type;
-      carDriver.Current_Strategy.PitStopLaps := BrandNewStrategy.PitStopLaps;
+      carDriver.Current_Strategy.Laps_To_Pitstop := BrandNewStrategy.Laps_To_Pitstop;
       carDriver.Current_Strategy.Gas_Level := BrandNewStrategy.Gas_Level;
       carDriver.Current_Strategy.Style := BrandNewStrategy.Style;
 
@@ -750,9 +750,9 @@ package body Competitor is
             exception
                when Error : others =>
                   Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
-                  if( carDriver.Current_Strategy.PitStopLaps = 0) then
+                  if( carDriver.Current_Strategy.Laps_To_Pitstop = 0) then
                      --To avoid another pitstop if done before
-                     carDriver.Current_Strategy.PitStopLaps := 1;
+                     carDriver.Current_Strategy.Laps_To_Pitstop := 1;
                   end if;
                   --Reuse the same strategy as a new one
                   BrandNewStrategy := carDriver.Current_Strategy;
@@ -760,12 +760,12 @@ package body Competitor is
 
 
 	    --Bisogna verificare se la Current_Strategy dice di tornare ai box, in tal caso:
-            if(BrandNewStrategy.PitStopLaps = 0) then
+            if(BrandNewStrategy.Laps_To_Pitstop = 0) then
                PitStop := true;
             end if;
 
 	    carDriver.Current_Strategy.Style := BrandNewStrategy.Style;
-            carDriver.Current_Strategy.PitStopLaps := BrandNewStrategy.PitStopLaps;
+            carDriver.Current_Strategy.Laps_To_Pitstop := BrandNewStrategy.Laps_To_Pitstop;
          end if;
 
 
@@ -829,7 +829,7 @@ package body Competitor is
          -- TODO: add the time when the competitor has to leave the box
          if (PitStop = true) then
 
-            CrossingTime := CrossingTime + BrandNewStrategy.PitStopDelay;
+            CrossingTime := CrossingTime + BrandNewStrategy.Pit_Stop_Delay;
 
          end if;
 
@@ -853,7 +853,7 @@ package body Competitor is
                Get_CurrentCheckpoint( carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);--NEW
                --Update all the statistics up to the goal checkpoint
                while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints_Qty  loop
-                  --Update the statistic to send to the OnboardComputer
+                  --Update the statistic to send to the Competitor_Computer
                   compStats.Checkpoint := CurrentCheckpoint;
                   CurrentCheckpoint := CurrentCheckpoint + 1;
                   compStats.LastCheckInSect := FALSE;
@@ -869,7 +869,7 @@ package body Competitor is
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
+                  Competitor_Computer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
                   Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
@@ -885,7 +885,7 @@ package body Competitor is
 
 
 
-         --Update the statistic to send to the OnboardComputer
+         --Update the statistic to send to the Competitor_Computer
          compStats.Checkpoint := CurrentCheckpoint;
          compStats.LastCheckInSect := C_Checkpoint.Is_LastOfTheSector;
          compStats.FirstCheckInSect := C_Checkpoint.Is_FirstOfTheSector;
@@ -915,7 +915,7 @@ package body Competitor is
                               " tyre usury " & Float'IMAGE(compStats.Tyre_Usury) &
                               " path length " & Float'IMAGE(lengthPath) &
                               " speed " & Float'IMAGE(Speed));
-         OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
+         Competitor_Computer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                   Data        => compStats);
 
          --If the checkpoint is the box, it's necessary to update all
@@ -941,7 +941,7 @@ package body Competitor is
 
                --Update all the statistics up to the goal checkpoint
                while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= ExitBox_Position loop
-                  --Update the statistic to send to the OnboardComputer
+                  --Update the statistic to send to the Competitor_Computer
                   compStats.Checkpoint := CurrentCheckpoint;
                   CurrentCheckpoint := CurrentCheckpoint + 1;
                   compStats.LastCheckInSect := FALSE;
@@ -956,7 +956,7 @@ package body Competitor is
                   compStats.Lap := CurrentLap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
+                  Competitor_Computer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
                   Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
@@ -1006,7 +1006,7 @@ package body Competitor is
                   compStats.Lap := Temp_Lap;
                   compStats.PathLength := 0.0;
 
-                  OnBoardComputer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
+                  Competitor_Computer.Add_Data(Computer_In => carDriver.On_Board_Computer ,
                                            Data        => compStats);
 
                end loop;

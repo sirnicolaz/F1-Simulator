@@ -45,7 +45,7 @@ package body CompetitorRadio is
       Ada.Text_IO.Put_Line(INTEGER'IMAGE(Radio.CompetitorID)
                            &" connected succesfully");
 
-      File_Name := Unbounded_String.To_Unbounded_String("Strategy-" & Common.IntegerToString(Radio.CompetitorID));
+      File_Name := Unbounded_String.To_Unbounded_String("Strategy-" & Common.Integer_To_String(Radio.CompetitorID));
       --TODO: in the future implement a way to keep the history of strategies
       if Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
                         Content  => Unbounded_String.To_String(Strategy),

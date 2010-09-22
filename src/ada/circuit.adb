@@ -80,7 +80,7 @@ package body Circuit is
          Tmp_Length : FLOAT;
 
       begin
-         if( AlphaRad = 0.0) then 
+         if( AlphaRad = 0.0) then
 	      r := Shortest_Side;
 	      AlphaRad := 1.0;
 	 else
@@ -376,7 +376,7 @@ package body Circuit is
 
             NodeQty := Length(CheckPoint_List);
             CheckpointQty := NodeQty - (NodeQty/2+1);
-            Ada.Text_IO.Put_Line(Common.IntegerToString(CheckpointQty) & " checkpoints");
+            Ada.Text_IO.Put_Line(Common.Integer_To_String(CheckpointQty) & " checkpoints");
 
             --Retrieve the information contained in each checkpoint (if we are
             --+ dealing with a checkpoint node)
@@ -520,7 +520,7 @@ package body Circuit is
          BoxLane_Length := BoxLane_Length + CheckpointSynch_Current.Get_Length;
          Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
       end loop;
-      
+
       Ada.Text_IO.Put_Line("Length of box " & FLOAT'IMAGE(BoxLane_Length));
       --The box lane paths has to be initilised in a different way than the usual
       --+paths.
@@ -550,7 +550,7 @@ package body Circuit is
       --+verify TODO
       CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
       RaceTrack_In(0) := CheckpointSynch_Current;
-      
+
 
       -- "-1" because the box has not to be included in the number of checkpoints
       Checkpoints_Qty := RaceTrack_In'LENGTH-1;

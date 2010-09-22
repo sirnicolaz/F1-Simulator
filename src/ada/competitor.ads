@@ -10,8 +10,8 @@ with DOM.Core.Nodes; use DOM.Core.Nodes;
 with DOM.Core.Attrs; use DOM.Core.Attrs;
 with Ada.IO_Exceptions;
 
-with OnBoardComputer;
-use OnBoardComputer;
+with Competitor_Computer;
+use Competitor_Computer;
 
 with Ada.Text_IO;
 use Ada.Text_IO;

@@ -123,7 +123,7 @@ package body Box is
 		      Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
                Ada.Text_IO.Put_Line("Updater parsing info");
 
-               Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(Competitor_Id) & "-update.xml");
+               Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.Integer_To_String(Competitor_Id) & "-update.xml");
 
                Ada.Text_IO.Put_Line("Update savinmg");
 		      INFO_GOT := true;
@@ -192,7 +192,7 @@ package body Box is
       --+ values
 
       Ada.Text_IO.Put_Line("Calculate first doable laps");
-      Evolving_Strategy.PitStopLaps := Artificial_Intelligence.Calculate_Doable_Laps(Initial_Gas_Level.all,
+      Evolving_Strategy.Laps_To_Pitstop := Artificial_Intelligence.Calculate_Doable_Laps(Initial_Gas_Level.all,
                                                                                      0.0,
                                                                                      Latest_Lap_Mean_Gas_Consumption,
                                                                                      Latest_Lap_Mean_Tyre_Usury);
@@ -200,7 +200,7 @@ package body Box is
       Evolving_Strategy.Tyre_Type := Unbounded_String.To_Unbounded_String(Initial_Tyre_Type.all);
       Evolving_Strategy.Style := NORMAL;
       Evolving_Strategy.Gas_Level := Initial_Gas_Level.all;
-      Evolving_Strategy.PitStopDelay := 0.0;
+      Evolving_Strategy.Pit_Stop_Delay := 0.0;
 
       Ada.Text_IO.Put_Line("Adding strategy");
       Strategy_History.AddStrategy(Evolving_Strategy);
@@ -304,7 +304,7 @@ package body Box is
             All_Info.Add_Info(Update_In   => Extended_Information,
                              Strategy_In => Evolving_Strategy);
 
-            if(Evolving_Strategy.PitStopLaps = 0) then
+            if(Evolving_Strategy.Laps_To_Pitstop = 0) then
                Skip := 2;
             end if;
 
@@ -341,18 +341,18 @@ package body Box is
       --end if;
 
       XML_String := Unbounded_String.To_Unbounded_String("<update>" &
-                                                         "<gasLevel>" & Common.FloatToString(update.Gas_Level) & "</gasLevel> <!-- % -->" &
-                                                         "<tyreUsury>" & Common.FloatToString(update.Tyre_Usury) & "</tyreUsury> <!-- % -->" &
-                                                         --"<meanSpeed>" & Common.FloatToString(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
-                                                         --"<Mean_Gas_Consumption>" & Common.FloatToString(update.Mean_Gas_Consumption) & "</Mean_Gas_Consumption> <!-- l/h --> " &
-                                                         "<lap>" & Common.IntegerToString(update.Lap) & "</lap> " &
-                                                         "<sector>" & Common.IntegerToString(update.Sector) & "</sector>" &
+                                                         "<gasLevel>" & Common.Float_To_String(update.Gas_Level) & "</gasLevel> <!-- % -->" &
+                                                         "<tyreUsury>" & Common.Float_To_String(update.Tyre_Usury) & "</tyreUsury> <!-- % -->" &
+                                                         --"<meanSpeed>" & Common.Float_To_String(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
+                                                         --"<Mean_Gas_Consumption>" & Common.Float_To_String(update.Mean_Gas_Consumption) & "</Mean_Gas_Consumption> <!-- l/h --> " &
+                                                         "<lap>" & Common.Integer_To_String(update.Lap) & "</lap> " &
+                                                         "<sector>" & Common.Integer_To_String(update.Sector) & "</sector>" &
                                                          "</update>" );-- &
-                                                         --"<classific competitors="" " & Common.IntegerToString(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");
+                                                         --"<classific competitors="" " & Common.Integer_To_String(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");
       -- The classific is expressed as an Integer sequence where the first place
       --+ in the competition is related to the first position in the array.
       --for Index in 1..Competitor_Qty loop
-        -- XML_String := XML_String & "<compId>" & Common.IntegerToString(update.Classific(Index)) & "</compId> ";
+        -- XML_String := XML_String & "<compId>" & Common.Integer_To_String(update.Classific(Index)) & "</compId> ";
       --end loop;
 
       --XML_String := XML_String & "</classific></update> ";

@@ -39,7 +39,7 @@ package body Broker.Init.RegistrationHandler.impl is
       Ada.Text_IO.Put_Line("Setting laps");
       Laps := CORBA.Short(Laps_out);
       CircuitLength := CORBA.Float(CircuitLength_out);
-      Ada.Text_IO.Put_Line("ID int " & Common.IntegerToString(Competitor_ID_INT));
+      Ada.Text_IO.Put_Line("ID int " & Common.Integer_To_String(Competitor_ID_INT));
       Competitor_ID := Corba.SHORT(Competitor_ID_INT);
 
       MonitorCorbaLOC := CORBA.To_CORBA_String(Unbounded_String.To_String(MonitorCorbaLoc_Out));

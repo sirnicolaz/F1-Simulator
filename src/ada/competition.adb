@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 
 with Common;
-with CompetitionComputer;
+with Competition_Computer;
 
 --pragma Warnings (Off); -- TODO: delete
 package body Competition is
@@ -62,7 +62,7 @@ package body Competition is
 
             -- Creating the file where the CompetitorDescriptor will be saved
 
-            File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.IntegerToString(ID) & ".xml");
+            File_Name := Unbounded_String.To_Unbounded_String("Competitor-"& Common.Integer_To_String(ID) & ".xml");
 
             --Handler the saving failure
             Result := Common.SaveToFile(FileName => Unbounded_String.To_String(File_Name),
@@ -167,7 +167,7 @@ package body Competition is
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
          Ada.Text_IO.Put_Line(INTEGER'IMAGE(MaxCompetitors) & " competitors");
 
-         CompetitionComputer.Init_Stats(Competitor_Qty => MaxCompetitors,
+         Competition_Computer.Init_Stats(Competitor_Qty => MaxCompetitors,
                           Laps           => Laps_In,
                           Checkpoints_In => Checkpoint_Qty);
 
@@ -175,7 +175,7 @@ package body Competition is
 
          Registrations_Open := True;
 
-         CompetitionComputer.Init_StaticInformation(Laps_In ,
+         Competition_Computer.Init_StaticInformation(Laps_In ,
                                                     MaxCompetitors,
                                                     Unbounded_string.To_Unbounded_String(Name_In),
                                                     Circuit_Length);

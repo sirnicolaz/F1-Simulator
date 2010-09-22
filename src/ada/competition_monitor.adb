@@ -6,8 +6,8 @@ with Ada.Strings.Unbounded;
 with Common;
 use Common;
 
-with CompetitionComputer;
-use CompetitionComputer;
+with Competition_Computer;
+use Competition_Computer;
 
 package body Competition_Monitor is
 
@@ -17,7 +17,7 @@ package body Competition_Monitor is
    Laps : INTEGER;
    IsConfigured : BOOLEAN := false;
 
-   --per avere gli onboardcomputer di ogni concorrente
+   --per avere gli Competitor_Computer di ogni concorrente
    arrayComputer : access OBC;
 
    protected body StartStopHandler is
@@ -81,7 +81,7 @@ package body Competition_Monitor is
       return CompetitionHandler;
    end Init;
 
-   procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER) is
+   procedure AddOBC(compIn : Competitor_Computer.COMPUTER_POINT; indexIn : INTEGER) is
    begin
       arrayComputer(indexIn):= compIn;
    end AddOBC;
@@ -89,11 +89,11 @@ package body Competition_Monitor is
    procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; metres : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       ComputerIndex : INTEGER := 1;
    begin
-      while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
+      while Competitor_Computer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
          ComputerIndex := ComputerIndex + 1;
       end loop;
 
-      OnboardCOmputer.Get_BoxInfo(arrayComputer(ComputerIndex),
+      Competitor_Computer.Get_BoxInfo(arrayComputer(ComputerIndex),
                                   lap,
                                   sector,
                                   updString,
@@ -225,7 +225,7 @@ package body Competition_Monitor is
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
 
-         CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
+         Competition_Computer.Get_StatsByTime(Competitor_ID => Competitor_Computer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
 
@@ -245,20 +245,20 @@ package body Competition_Monitor is
          end if;
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-           ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+           ("<competitor end=""" & BOOLEAN'IMAGE(Competition_Computer.Has_CompetitorFinished(Competitor_Computer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
-            " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+            " retired=""" & BOOLEAN'IMAGE(Competition_Computer.Is_CompetitorOut(Competitor_Computer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
-            " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>");
+            " id=""" & Common.Integer_To_String(Competitor_Computer.Get_Id(arrayComputer(Index))) & """>");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
-            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" );
+            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.Integer_To_String(Tmp_Stats.Checkpoint) & "</checkpoint>" );
 
 Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
-            "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
-            "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
+            "<lap>" & Common.Integer_To_String(Tmp_Stats.Lap) & "</lap>" &
+            "<sector>" & Common.Integer_To_String(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
 
@@ -277,8 +277,8 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 	 end;
 
          --If the competition is finished for a competitor, get the classific of the last lap
-         if(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant) = TRUE and
-              CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant) = FALSE) then
+         if(Competition_Computer.Has_CompetitorFinished(Competitor_Computer.Get_ID(arrayComputer(Index)),TimeInstant) = TRUE and
+              Competition_Computer.Is_CompetitorOut(Competitor_Computer.Get_ID(arrayComputer(Index)),TimeInstant) = FALSE) then
             HighestCompletedLap := Tmp_Stats.Lap;
          end if;
 
@@ -287,30 +287,30 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
 
       --Retrieving best performances
-      CompetitionComputer.Get_BestLap(TimeInstant,
+      Competition_Computer.Get_BestLap(TimeInstant,
                         LapTime       => Tmp_BestLapTime,
                         LapNum        => Tmp_BestLapNum,
                         Competitor_ID => Tmp_BestLapCompetitor);
 
-      CompetitionComputer.Get_BestSectorTimes(TimeInstant,
+      Competition_Computer.Get_BestSectorTimes(TimeInstant,
                                 Times          => Tmp_BestSectorTimes,
                                 Competitor_IDs => Tmp_BestSectorCompetitors,
                                 Laps => Tmp_BestSectorLaps);
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("<bestTimes>" &
-         "<lap num=""" & Common.IntegerToString(Tmp_BestLapNum) & """></lap>" &
+         "<lap num=""" & Common.Integer_To_String(Tmp_BestLapNum) & """></lap>" &
          "<time>" & FLOAT'IMAGE(Tmp_BestLapTime) & "</time>" & --TODO perform a better conversion to string
-         "<competitorId>" & Common.IntegerToString(Tmp_BestLapCompetitor) & "</competitorId>" &
+         "<competitorId>" & Common.Integer_To_String(Tmp_BestLapCompetitor) & "</competitorId>" &
          "<sectors>"
         );
 
       for i in 1..3 loop
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-           ("<sector num=""" & Common.IntegerToString(i) & """>" &
+           ("<sector num=""" & Common.Integer_To_String(i) & """>" &
             "<time>" & FLOAT'IMAGE(Tmp_BestSectorTimes(i)) & "</time>" &
-            "<competitorId>" & Common.IntegerToString(Tmp_BestSectorCompetitors(i)) & "</competitorId>" &
-            "<lap>" & Common.IntegerToString(Tmp_BestSectorLaps(i)) & "</lap>" &
+            "<competitorId>" & Common.Integer_To_String(Tmp_BestSectorCompetitors(i)) & "</competitorId>" &
+            "<lap>" & Common.Integer_To_String(Tmp_BestSectorLaps(i)) & "</lap>" &
             "</sector>"
            );
       end loop;
@@ -323,7 +323,7 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
       if(HighestCompletedLap /= -1) then
 
-         CompetitionComputer.Get_LapClassific(HighestCompletedLap,
+         Competition_Computer.Get_LapClassific(HighestCompletedLap,
                                 TimeInstant,
                                 CompetitorID_InClassific,
                                 Times_InClassific,
@@ -343,8 +343,8 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
 
             Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-              ("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
-               "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
+              ("<competitor id=""" & Common.Integer_To_String(CompetitorIDs_WithTimes(Index)) & """>" &
+               "<lap>" & Common.Integer_To_String(HighestCompletedLap) & "</lap>" &
                "</competitor>");
 
          end loop;
@@ -354,8 +354,8 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
 
 	      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-		("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
-		"<lap>" & Common.IntegerToString(HighestCompletedLap-1) & "</lap>" &
+		("<competitor id=""" & Common.Integer_To_String(CompetitorIDs_WithTimes(Index)) & """>" &
+		"<lap>" & Common.Integer_To_String(HighestCompletedLap-1) & "</lap>" &
 		"</competitor>");
 
 	  end loop;
@@ -365,8 +365,8 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
             for Index in 1..LappedCompetitors_ID.all'LENGTH loop
 		if(Is_Present(LappedCompetitors_ID(Index),CompetitorIDs_WithTimes) = FALSE) then
 		  Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-		    ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
-		     "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
+		    ("<competitor id=""" & Common.Integer_To_String(LappedCompetitors_ID(Index)) & """>" &
+		     "<lap>" & Common.Integer_To_String(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
 		     "</competitor>");
 		end if;
             end loop;
@@ -394,7 +394,7 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
       XMLString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin
-      CompetitionComputer.Get_StaticInformation(Laps_Out,
+      Competition_Computer.Get_StaticInformation(Laps_Out,
                                                 Competitors_Out,
                                                 Name_Out,
                                                 CircuitLength_Out);
@@ -402,8 +402,8 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
       XMLString := Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0"" ?>" &
          "<competitionConfiguration>" &
-         "<laps>" & Common.IntegerToString(Laps_Out) & "</laps>" &
-         "<competitors>" & Common.IntegerToString(Competitors_Out) & "</competitors>" &
+         "<laps>" & Common.Integer_To_String(Laps_Out) & "</laps>" &
+         "<competitors>" & Common.Integer_To_String(Competitors_Out) & "</competitors>" &
          "<name>" & Unbounded_String.To_String(Name_Out) & "</name>" &
          "</competitionConfiguration>");
 
@@ -418,14 +418,14 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
       XMLString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
    begin
-      CompetitionComputer.Get_CompetitorMinInfo(Id,
+      Competition_Computer.Get_CompetitorMinInfo(Id,
                                                 Name,
                                                 Surname,
                                                 Team);
 
       XMLString := Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0"" ?>" &
-         "<competitorConfiguration id=""" & Common.IntegerToString(Id) & """ >" &
+         "<competitorConfiguration id=""" & Common.Integer_To_String(Id) & """ >" &
          "<name>") &
       Name &
       Unbounded_String.To_Unbounded_String("</name>" &

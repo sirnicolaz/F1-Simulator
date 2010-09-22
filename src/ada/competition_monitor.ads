@@ -32,9 +32,9 @@ package Competition_Monitor is
    function Init( CompetitorQty_In : INTEGER;
                  Laps_In : INTEGER ) return STARTSTOPHANDLER_POINT;
 
-   type OBC is array (Positive range <>) of ONBOARDCOMPUTER.COMPUTER_POINT;
+   type OBC is array (Positive range <>) of Competitor_Computer.COMPUTER_POINT;
    type OBC_POINT is access OBC;
-   procedure AddOBC(compIn : ONBOARDCOMPUTER.COMPUTER_POINT; indexIn : INTEGER);
+   procedure AddOBC(compIn : Competitor_Computer.COMPUTER_POINT; indexIn : INTEGER);
 
   --This method return the information related to the competitors (current checkpoint,
    --+ lap and sector, speed ecc ) at a given time
