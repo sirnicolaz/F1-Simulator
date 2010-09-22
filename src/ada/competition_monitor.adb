@@ -20,17 +20,12 @@ package body Competition_Monitor is
    --per avere gli onboardcomputer di ogni concorrente
    arrayComputer : access OBC;
 
-   function getBool return Boolean is
-   begin
-      return IsConfigured;
-   end getBool;
-
    protected body StartStopHandler is
 
       --TODO: use that CompetitorID to recognize the caller
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
-      
+
          ExpectedBoxes := ExpectedBoxes - 1;
 	Ada.Text_IO.Put_Line(INTEGER'IMAGE(ExpectedBoxes) & " expected boxes");
       end Ready;
@@ -110,7 +105,7 @@ package body Competition_Monitor is
    --Given 2 float arrays with times e ids of competitors in classific, the function creates
    --+ 1 array with the firs array + the elements of the second one whose id is not itn the first one.
    procedure Merge(IdArray1 : INTEGER_ARRAY_POINT;
-		   TimeArray1 : FLOAT_ARRAY_POINT; 
+		   TimeArray1 : FLOAT_ARRAY_POINT;
 		   IdArray2 : INTEGER_ARRAY_POINT;
 		   TimeArray2 : FLOAT_ARRAY_POINT;
 		   IdArrayOut : out INTEGER_ARRAY_POINT;
@@ -118,7 +113,7 @@ package body Competition_Monitor is
     MergedArraySize : INTEGER := 0;
     Copy : BOOLEAN := false;
    begin
-   
+
    if(IdArray1 /= null) then
 
       for Index in 1..IdArray1.all'LENGTH loop
@@ -126,7 +121,7 @@ package body Competition_Monitor is
 	MergedArraySize := MergedArraySize + 1;
       end loop;
    end if;
-   
+
    if(IdArray2 /= null) then
 
       for Index in 1..IdArray2.all'LENGTH loop
@@ -150,7 +145,7 @@ package body Competition_Monitor is
 
    IdArrayOut := new INTEGER_ARRAY(1..MergedArraySize);
    TimeArrayOut := new FLOAT_ARRAY(1..MergedArraySize);
-   
+
    if(IdArray1 /= null) then
 
     for Index in 1..IdArray1.all'LENGTH loop
@@ -159,10 +154,10 @@ package body Competition_Monitor is
       TimeArrayOut.all(Index) := TimeArray1.all(Index);
     end loop;
    end if;
-   
-   
+
+
    if(IdArray1 /= null and IdArray2 /= null) then
-   declare 
+   declare
 	MergedArray_IndexCount : INTEGER := 0;
    begin
 	for Index in 1..IdArray2.all'LENGTH loop --IdArray1.all'LENGTH+1..MergedArraySize loop
@@ -184,9 +179,9 @@ package body Competition_Monitor is
 	  end if;
 	end loop;
    end if;
-   
+
    end Merge;
-   
+
    function Is_Present(ID : INTEGER;
 		       IdArray : INTEGER_ARRAY_POINT) return BOOLEAN is
    begin
@@ -252,7 +247,7 @@ package body Competition_Monitor is
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
 
-         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(  
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
@@ -261,13 +256,13 @@ package body Competition_Monitor is
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" );
 
-Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(   
+Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
 
-         
+
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
 	 begin
@@ -351,9 +346,9 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
               ("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
                "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
                "</competitor>");
-             
+
          end loop;
-         
+
          if(HighestCompletedLap /= 0) then
 	  for Index in CompetitorID_InClassific.all'LENGTH+1..CompetitorIDs_WithTimes.all'LENGTH loop
 
@@ -362,7 +357,7 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 		("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
 		"<lap>" & Common.IntegerToString(HighestCompletedLap-1) & "</lap>" &
 		"</competitor>");
-	      
+
 	  end loop;
 	 end if;
 

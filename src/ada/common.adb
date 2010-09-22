@@ -104,7 +104,7 @@ package body COMMON is
 
    end WAITING_BLOCK;
 
-   function FloatToString( num : FLOAT ) return STRING is
+   function Float_To_String( num : FLOAT ) return STRING is
       Temp_StringLength : INTEGER;
       Temp_String : access STRING;
       Temp_UnboundedString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
@@ -116,9 +116,9 @@ package body COMMON is
 
       Temp_UnboundedString := Unbounded_String.To_Unbounded_String(Ada.Strings.Fixed.Trim(Temp_String.all,Ada.Strings.Left));
       return Unbounded_String.To_String(Temp_UnboundedString);
-   end FloatToString;
+   end Float_To_String;
 
-   function IntegerToString( num : INTEGER ) return STRING is
+   function Integer_To_String( num : INTEGER ) return STRING is
       Temp_StringLength : INTEGER;
       Temp_String : access STRING;
       Temp_UnboundedString : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
@@ -132,6 +132,6 @@ package body COMMON is
 
       return Unbounded_String.To_String(Temp_UnboundedString);
 
-   end IntegerToString;
+   end Integer_To_String;
 
 end COMMON;

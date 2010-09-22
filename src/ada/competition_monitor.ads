@@ -1,5 +1,5 @@
-with OnBoardComputer;
-use OnBoardComputer;
+with Competitor_Computer;
+use Competitor_Computer;
 with Common;
 
 --with Stats;
@@ -9,7 +9,6 @@ with Ada.Strings.Unbounded;
 
 package Competition_Monitor is
 
-   function getBool return Boolean;
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
 
