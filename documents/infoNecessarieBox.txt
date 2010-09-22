@@ -1,0 +1,4 @@
+Numero Lap -> dopo registrazione
+Lunghezza circuito -> dopo registrazione
+ID competitor -> dopo registrazione
+CorbaLoc Monitor Competizion -> dopo registrazione

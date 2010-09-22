@@ -1,0 +1,2 @@
+L'entità è necessaria affinchè il il competitor possa ricevere in tempo le informazioni inerenti alla strategia.
+Inoltre può essere utilizzata dal competitor stesso per inoltrare una richiesta di emergenza al box.

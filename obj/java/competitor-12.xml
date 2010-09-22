@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+ <car_driver>
+<driver>
+<team>Ferrari</team>
+<firstname>Pippo</firstname>
+<lastname>Gesu</lastname>
+</driver>
+<car>
+<maxspeed>268.0</maxspeed>
+<maxacceleration>12.12</maxacceleration>
+<gastankcapacity>256.0</gastankcapacity>
+<engine>NORMAL</engine>
+<tyreusury>0.0</tyreusury>
+<gasolinelevel>145.0</gasolinelevel>
+<mixture>Soft</mixture>
+<model>michelin</model>
+<type_tyre>Sun</type_tyre>
+</car>
+</car_driver>

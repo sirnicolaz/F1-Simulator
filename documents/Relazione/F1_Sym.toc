@@ -1,0 +1,65 @@
+\select@language {italian}
+\contentsline {section}{\numberline {1}Progetto}{5}{section.1}
+\contentsline {section}{\numberline {2}Problematiche}{5}{section.2}
+\contentsline {subsection}{\numberline {2.1}Introduzione}{5}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Problematiche di concorrenza}{5}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Percorrenza concorrente della pista}{5}{subsubsection.2.2.1}
+\contentsline {subsection}{\numberline {2.3}Problematiche di distribuzione}{7}{subsection.2.3}
+\contentsline {section}{\numberline {3}Architettura ad alto livello}{7}{section.3}
+\contentsline {subsection}{\numberline {3.1}Componenti di sistema}{8}{subsection.3.1}
+\contentsline {subsubsection}{\numberline {3.1.1}Competition}{8}{subsubsection.3.1.1}
+\contentsline {subsubsection}{\numberline {3.1.2}Competitor}{8}{subsubsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.3}Circuit}{10}{subsubsection.3.1.3}
+\contentsline {subsubsection}{\numberline {3.1.4}Stats}{11}{subsubsection.3.1.4}
+\contentsline {subsubsection}{\numberline {3.1.5}Box}{11}{subsubsection.3.1.5}
+\contentsline {subsubsection}{\numberline {3.1.6}Monitor}{12}{subsubsection.3.1.6}
+\contentsline {subsubsection}{\numberline {3.1.7}Screen}{12}{subsubsection.3.1.7}
+\contentsline {subsubsection}{\numberline {3.1.8}Configurator}{12}{subsubsection.3.1.8}
+\contentsline {subsection}{\numberline {3.2}Interazione fra le componenti}{13}{subsection.3.2}
+\contentsline {subsubsection}{\numberline {3.2.1}Configurator-Competition}{13}{subsubsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2}Competition-Competitor}{14}{subsubsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.3}Competition-Monitor}{14}{subsubsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.4}Competition-Circuit}{15}{subsubsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.5}Competition-Stats}{15}{subsubsection.3.2.5}
+\contentsline {subsubsection}{\numberline {3.2.6}Competitor-Stats}{16}{subsubsection.3.2.6}
+\contentsline {subsubsection}{\numberline {3.2.7}Competitor-Circuit}{16}{subsubsection.3.2.7}
+\contentsline {subsubsection}{\numberline {3.2.8}Monitor-Stats}{17}{subsubsection.3.2.8}
+\contentsline {subsubsection}{\numberline {3.2.9}Configurator-Box}{18}{subsubsection.3.2.9}
+\contentsline {subsubsection}{\numberline {3.2.10}Box-Monitor}{18}{subsubsection.3.2.10}
+\contentsline {subsubsection}{\numberline {3.2.11}Screen-Monitor}{19}{subsubsection.3.2.11}
+\contentsline {subsubsection}{\numberline {3.2.12}Competitor-Box}{19}{subsubsection.3.2.12}
+\contentsline {subsection}{\numberline {3.3}Strategia di simulazione}{20}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Assenza di stallo}{23}{subsection.3.4}
+\contentsline {section}{\numberline {4}Architettura in dettaglio}{25}{section.4}
+\contentsline {subsection}{\numberline {4.1}Diagrammi delle classi}{25}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Competition}{25}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}Competitor}{27}{subsubsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.3}Circuit}{29}{subsubsection.4.1.3}
+\contentsline {subsubsection}{\numberline {4.1.4}Stats}{33}{subsubsection.4.1.4}
+\contentsline {subsubsection}{\numberline {4.1.5}Monitor}{38}{subsubsection.4.1.5}
+\contentsline {subsubsection}{\numberline {4.1.6}Box}{40}{subsubsection.4.1.6}
+\contentsline {subsubsection}{\numberline {4.1.7}Configurator}{43}{subsubsection.4.1.7}
+\contentsline {subsubsection}{\numberline {4.1.8}Screen}{45}{subsubsection.4.1.8}
+\contentsline {subsection}{\numberline {4.2}Analisi della concorrenza}{46}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Interazione Competitor - Circuit}{46}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Consumatori esterni - Stats}{49}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}Risorse a due consumatori}{49}{subsubsection.4.2.3}
+\contentsline {subsubsection}{\numberline {4.2.4}Conclusioni}{50}{subsubsection.4.2.4}
+\contentsline {subsection}{\numberline {4.3}Distribuzione}{50}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Componenti distribuite}{50}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}Interazione fra le componenti distribuite}{51}{subsubsection.4.3.2}
+\contentsline {subsubsection}{\numberline {4.3.3}Misure di fault tolerance}{51}{subsubsection.4.3.3}
+\contentsline {subsection}{\numberline {4.4}Inizializzazione competizione}{52}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Stop competizione}{54}{subsection.4.5}
+\contentsline {section}{\numberline {5}Analisi del supporto tecnologico}{55}{section.5}
+\contentsline {subsection}{\numberline {5.1}Scelta dei linguaggi}{55}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Distribuzione e interoperabilit\`{a} fra linguaggi}{56}{subsection.5.2}
+\contentsline {section}{\numberline {A}Glossario}{56}{appendix.A}
+\contentsline {section}{\numberline {B}Manuale utente}{57}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}Prerequisiti}{57}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}Installazione}{58}{subsection.B.2}
+\contentsline {subsection}{\numberline {B.3}Avvio}{58}{subsection.B.3}
+\contentsline {subsection}{\numberline {B.4}Terminazione}{59}{subsection.B.4}
+\contentsline {subsection}{\numberline {B.5}Interfaccia box}{59}{subsection.B.5}
+\contentsline {subsection}{\numberline {B.6}Interfaccia competizione}{60}{subsection.B.6}
+\contentsline {subsection}{\numberline {B.7}Interfaccia TV}{61}{subsection.B.7}

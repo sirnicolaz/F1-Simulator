@@ -1,0 +1,14 @@
+corbaloc:iiop:1.2@127.0.0.1:51466//000000011Te81e966811d1eced
+corbaloc:iiop:1.2@127.0.0.1:51466//000000013Te81e966811d1eced
+StartCompetition : 1
+StartCompetition : 2
+StartCompetition : 3
+StartCompetition : 4
+Competizione avviata
+Start printing
+screenTv : 0
+run : 1
+readConfiguration : 0 monitor = IOR:000000000000000100000000000000010000000000000038000102000000000a3132372e302e302e3100c90a0000001b2f30303030303030313354653831653936363831316431656365640000000000
+run : 2
+run : 3
+run : 4
