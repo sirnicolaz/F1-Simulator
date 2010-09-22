@@ -12,6 +12,7 @@ package Broker.Radio.Box_Monitor_Radio.impl is
    procedure GetUpdate(Self : access Object;
                        num : in CORBA.Short;
                        time : out CORBA.Float;
+                       metres : out CORBA.Float;
                        Returns : out CORBA.String);
 
 end Broker.Radio.Box_Monitor_Radio.impl;

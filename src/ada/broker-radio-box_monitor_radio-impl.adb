@@ -15,6 +15,7 @@ package body Broker.Radio.Box_Monitor_Radio.impl is
    procedure GetUpdate(Self : access Object;
                        num : in CORBA.Short;
                        time : out CORBA.Float;
+                       metres : out CORBA.Float;
                        Returns : out CORBA.String)
    is
       pragma Warnings (Off);
@@ -27,10 +28,11 @@ package body Broker.Radio.Box_Monitor_Radio.impl is
 
       -- The NewInfo is initialised to 1 for construction constraints.
       --+ The get update method will "update" the variable to the right value.
-      Box_Monitor.GetUpdate(INTEGER(Num) , Standard.FLOAT(Time), Temp_String);
+      Box_Monitor.GetUpdate(INTEGER(Num) , Standard.FLOAT(Time), Standard.FLOAT(Metres), Temp_String);
 
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(Temp_String));
       time := Corba.FLOAT(Time);
+      metres := Corba.FLOAT(Metres);
    end GetUpdate;
 
 end Broker.Radio.Box_Monitor_Radio.impl;

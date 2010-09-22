@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<config>
-	<name>Indianapolis</name>
-	<pitStop>12</pitStop>
-	<maxSpeed>243.0</maxSpeed> <!-- float - seconds. This is the time interval between each snapshot of the classific -->
-</config>

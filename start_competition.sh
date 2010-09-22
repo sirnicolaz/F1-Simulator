@@ -6,13 +6,12 @@ JAVAOBJDIR="./obj/java"
 cd $ADAOBJDIR;
 
 echo "Init ada part...";
-./main_competition > ../temp/logConGui.txt &
+./main_competition > ../temp/competition.log &
 
 echo "Entering interface dir.."
 cd ../../$JAVAOBJDIR
 echo "Initing configuration.."
-java GUI.Competition.StartCompetition > ../temp/logConGuiJava.txt & 
-echo "Configuration Done"
-read Q
+java GUI.Competition.CompetitionConfigurationWindow 
+
 killall -9 main_competition
 

@@ -28,7 +28,7 @@ import org.w3c.dom.*;
 
 import java.lang.reflect.Array;
 
-public class screenTv extends Thread implements TvPanelInterface{
+public class ScreenTv extends Thread implements TvPanelInterface{
     private String[] nome;
     private String[] cognome;
     private String[] scuderia;
@@ -80,8 +80,8 @@ public class screenTv extends Thread implements TvPanelInterface{
     private int current_lap =0;
     private boolean new_table = false;
 
-    public screenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
-	System.out.println("screenTv : 0");
+    public ScreenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
+	System.out.println("ScreenTv : 0");
 	parent = new JFrame(nameType);
 
 	corbaloc = corbalocIn;
@@ -95,13 +95,9 @@ public class screenTv extends Thread implements TvPanelInterface{
 	Float circuitLength;
 	org.omg.CORBA.StringHolder xmlConf = new org.omg.CORBA.StringHolder("");
 	try {
-	    System.out.println("readConfiguration : 0 monitor = "+monitor);
 	    circuitLength = monitor.Get_CompetitionConfiguration(xmlConf);
-	    System.out.println("readConfiguration : 1");
 	    lenghtCircuit = circuitLength;
-	    System.out.println("readConfiguration : 2");
 	    xmlConfString = xmlConf.value;
-	    System.out.println("readConfiguration : 3");
 	    System.out.println(xmlConf.value);
 	    DocumentBuilderFactory dbf =
 		DocumentBuilderFactory.newInstance();
@@ -130,7 +126,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 	    }
 	}
 	catch(Exception eccIn){
-	    eccIn.printStackTrace();
+// 	    eccIn.printStackTrace();
 	}
     }
     public void writeDati(String xmlComp, int numCompetitor){
@@ -151,7 +147,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 	    scuderia[numCompetitor] = getNode("team", upd);
 	}
 	catch(Exception eccIn){
-	    eccIn.printStackTrace();
+// 	    eccIn.printStackTrace();
 	}
     }
     public void addLogInfo(){
@@ -159,25 +155,17 @@ public class screenTv extends Thread implements TvPanelInterface{
 	logPanel.setLayout(new GridBagLayout());
 	logPanel.setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 	logPanel.setPreferredSize(new Dimension(0,30+35*numComp));
-
-	// logPanel.updateUI();
-    }
+}
 
 
     public void run(){
-	System.out.println("run : 1");
 	readConfiguration();
-	System.out.println("run : 2");
+	String circuit = new String("Circuit "+circuitName+" - Length = "+lenghtCircuit+" metres");
 	classTable.addTables(model_1, model_2, numComp);
-	// log.addTablesAll(modelAll, numComp);
-	best.addBest();
-	System.out.println("run : 3");
+	best.addBest(circuit);
 	addLogInfo();
-	System.out.println("run : 4");
 	parent.add(classTable.panel1, BorderLayout.CENTER);
-	// parent.add(best.bestPanel,BorderLayout.NORTH);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
-	// parent.add(log.tablePanel, BorderLayout.SOUTH);
 	parent.add(logPanel, BorderLayout.SOUTH);
 	parent.pack();
 	parent.setVisible(true);
@@ -239,9 +227,8 @@ public class screenTv extends Thread implements TvPanelInterface{
 		    boolean exit=true;
 		    org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 		    arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
-		    // lapNum = (int)q;
-		    readXml(updateString.value);//, q);
-		    best.setClock("Time "+convert(updTime));
+		    readXml(updateString.value);
+		    best.setClock("Time "+convertNoMill(updTime));
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
 		    try{
@@ -288,7 +275,8 @@ public class screenTv extends Thread implements TvPanelInterface{
 				    index=index+1;
 				}
 			    }catch (NullPointerException npEcc){
-				npEcc.printStackTrace();
+
+// 				npEcc.printStackTrace();
 			    }
 			    try{
 				index=0;
@@ -298,13 +286,13 @@ public class screenTv extends Thread implements TvPanelInterface{
 				    System.out.println("LORY : diff ="+diff);
 				    if(diff==1){modelClassific[current_index].addRow(new Object[]{posiz+index, datiArrayDoppiati[index].getId()+" : "+cognome[datiArrayDoppiati[index].getId()-1]," + 1 giro"});
 				    }
-				    else{modelClassific[current_index].addRow(new Object[]{posiz+index, cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
+				    else{modelClassific[current_index].addRow(new Object[]{posiz+index, datiArrayDoppiati[index].getId()+" : "+cognome[datiArrayDoppiati[index].getId()-1]," + "+diff+" giri"});
 				    }
 				    index=index+1;
 				}
 
 			    }catch (NullPointerException npEcc){
-				npEcc.printStackTrace();
+// 				npEcc.printStackTrace();
 			    }
 			    System.out.println(" LORY : PRIMA DI INVERT");
 			    classTable.invert(current_index, new Integer(current_lap+1));//inverto le classifiche
@@ -343,25 +331,26 @@ public class screenTv extends Thread implements TvPanelInterface{
 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 				    }
-				    catch(Exception ecd ){ecd.printStackTrace();
+				    catch(Exception ecd ){//ecd.printStackTrace();
 					varCiclo = datiArray.length +1;
 				    }
 				}
 				varCiclo = varCiclo+1;
-			    }
+		 	   }
 
 			}
 		    }
 		    catch(NullPointerException eccCl){
-			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
+// 			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
 		    }
 		    catch(Exception eccGen){
-			eccGen.printStackTrace();
-			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
+// 			eccGen.printStackTrace();
+// 			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
 
 		    }
 		    updTime = updTime + interval;
-		      sleep(250);
+ 		    sleep((long)((interval-0.001)*1000));
+		    //sleep(100);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
 			    exit=false;
@@ -385,7 +374,8 @@ public class screenTv extends Thread implements TvPanelInterface{
 		}
 	    }
 	}
-	catch(Exception e){e.printStackTrace();}
+	catch(Exception e){//e.printStackTrace();
+}
     }
     // parsing xml
     public void readXml(String xmlRecords){//, float istant){
@@ -432,39 +422,12 @@ public class screenTv extends Thread implements TvPanelInterface{
 		System.out.println("attributo checkpoint "+getCharacterDataFromElement(line)+" : "+attributoCheck_2.getNodeValue());
 		System.out.println("lap : "+getNode("lap", element));
 		System.out.println("sector : "+getNode("sector", element));
-		if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
-		    //JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-		    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-		    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
-			if (temp.equals("arriving")){
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-			}
-			else{
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-			}
-		    }
-		}
 		int ind = new Integer(attributoComp.getNodeValue()).intValue();
-		if(attributoCompEnd.getValue().equals("TRUE")){
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
-		    if(endRace[ind-1]== false){
-			endRace[ind-1] = true;
-		    }
-		}
-		else {
-		    if(attributoCompRit.getValue().equals("TRUE")){
+		if(attributoCompRit.getValue().equals("TRUE")){
 			if(ritRace[ind-1]== false){
 			    ritRace[ind-1] = true;
+			    endRace[ind-1] = true;
 			}
 
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
@@ -479,15 +442,45 @@ public class screenTv extends Thread implements TvPanelInterface{
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 		    }
+		else {
+			if(attributoCompEnd.getValue().equals("TRUE")){
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
-		    else{
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+			  if(endRace[ind-1]== false){
+			    endRace[ind-1] = true;
+			  }
+			  }
+			else{
+			      if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
+// 				    JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+				    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+				    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
+					if (temp.equals("arriving")){
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+					}
+					else{
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+					}
+				    }
+				}
+			  else{
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+			  }
+			}
 		    }
-		}
-	    }	
+	     }	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
 	    Element element = (Element)bestT.item(0);
@@ -576,7 +569,7 @@ public class screenTv extends Thread implements TvPanelInterface{
 			    j=j+1;
 			}
 			catch(Exception arrayBound){
-			    arrayBound.printStackTrace();
+// 			    arrayBound.printStackTrace();
 			    j= arrayInfo.length +1;
 			}
 		    }
@@ -589,13 +582,13 @@ public class screenTv extends Thread implements TvPanelInterface{
 		}
 	    }
 	    catch (Exception e){
-		System.out.println("classification non presente");
+// 		System.out.println("classification non presente");
 	    }
 	
 	}
 	catch (Exception e) {
-	    e.printStackTrace();
-	    System.out.println("eccezione in readXml");
+// 	    e.printStackTrace();
+// 	    System.out.println("eccezione in readXml");
 	}
     }
     public static String getNode(String tag, Element element){
@@ -617,24 +610,25 @@ public class screenTv extends Thread implements TvPanelInterface{
     public String convert(float timeIn){
 
 	int ore = (int)(timeIn/3600);
-	int minuti = (int)(timeIn/60);
+	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
 	    if(secondi <10){
 		if(millesimi<10){
-		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
 		if(millesimi<10){
-		    time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		    time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":0"+minuti+":"+secondi+":"+millesimi);}
 	    }
@@ -642,23 +636,71 @@ public class screenTv extends Thread implements TvPanelInterface{
 	else{
 	    if(secondi <10){
 		if(millesimi<10){
-		    time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		    time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
 		if(millesimi<10){
-		    time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		    time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":"+minuti+":"+secondi+":"+millesimi);}
 	    }}
 
 	return time;
     }
+
+ public String convertNoMill(float timeIn){
+
+	int ore = (int)(timeIn/3600);
+	int minuti = (int)(timeIn/60)-(60*ore);
+	int secondi = (int)(timeIn-(minuti*60+ore*3600));
+// 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
+	String time;
+	if(minuti<10){
+	    if(secondi <10){
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+millesimi);}
+	    }
+	    else{/*
+		if(millesimi<10){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
+		else{*/
+		    time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+millesimi);}
+	    }
+	}
+	else{
+	    if(secondi <10){
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+millesimi);}
+	    }
+	    else{
+// 		if(millesimi<10){
+// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+// 		else if(millesimi<100){
+// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+// 		else{
+		    time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+millesimi);}
+	    }}
+
+	return time;
+    }
+
 
 }
 
@@ -767,14 +809,14 @@ class bestPerformance{
     private JTextField textBoxLapTime = new JTextField("-",10);
     private JLabel labelLap = new JLabel("Best lap n° : ");
     private JLabel labelLapId = new JLabel(" by competitor : ");
-    private JLabel labelLapTime = new JLabel(" in time : ");
+    private JLabel labelLapTime = new JLabel(" , time : ");
 
     private JTextField textBoxSector1Lap = new JTextField("-",3);
     private JTextField textBoxSector1Id = new JTextField("-",2);
     private JTextField textBoxSector1Time = new JTextField("-",10);
     private JLabel labelSector1 = new JLabel("Best Sector 1 at lap n° : ");
     private JLabel labelSector1Id = new JLabel(" by competitor : ");
-    private JLabel labelSector1Time = new JLabel(" in time : ");
+    private JLabel labelSector1Time = new JLabel(" , time : ");
 
 
     private JTextField textBoxSector2Lap = new JTextField("-",3);
@@ -782,7 +824,7 @@ class bestPerformance{
     private JTextField textBoxSector2Time = new JTextField("-",10);
     private JLabel labelSector2 = new JLabel("Best Sector 2 at lap n° : ");
     private JLabel labelSector2Id = new JLabel(" by competitor : ");
-    private JLabel labelSector2Time = new JLabel(" in time : ");
+    private JLabel labelSector2Time = new JLabel(" , time : ");
 
 
     private JTextField textBoxSector3Lap = new JTextField("-",3);
@@ -790,9 +832,10 @@ class bestPerformance{
     private JTextField textBoxSector3Time = new JTextField("-",10);
     private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
     private JLabel labelSector3Id = new JLabel(" by competitor : ");
-    private JLabel labelSector3Time = new JLabel(" in time : ");
+    private JLabel labelSector3Time = new JLabel(" , time : ");
 
-    private JLabel labelClock = new JLabel("Time 00:00:00:000");
+    private JLabel labelClock = new JLabel("Time 00:00:00");
+    private JLabel labelCircuit;
 
     public JPanel getInfoUp(){
 	return infoUp;
@@ -806,7 +849,7 @@ class bestPerformance{
     public void setClock(String timeIn){
 	labelClock.setText(timeIn);
     }
-    public void addBest(){
+    public void addBest(String stringForLabel){
 	bestPanel = new JPanel(new BorderLayout());
 	infoUp = new JPanel(new BorderLayout());
 
@@ -814,7 +857,8 @@ class bestPerformance{
 	bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
 	labelClock.setFont(new Font("Serif", Font.BOLD, 25));
-
+	labelCircuit= new JLabel(stringForLabel);
+	labelCircuit.setFont(new Font("Serif", Font.BOLD, 15));
 	bestGrid.fill = GridBagConstraints.HORIZONTAL;
 	bestGrid.gridx = 0;
 	bestGrid.gridy = 0;
@@ -942,7 +986,8 @@ class bestPerformance{
 	bestGrid.ipady = 5;
 	bestPanel.add(textBoxSector3Time,bestGrid);
 	infoUp.add(labelClock, BorderLayout.NORTH);
-	infoUp.add(bestPanel, BorderLayout.CENTER);
+	infoUp.add(labelCircuit, BorderLayout.CENTER);
+	infoUp.add(bestPanel, BorderLayout.SOUTH);
     }
 
     public void setBestLap(String lap,String  time,String  id){

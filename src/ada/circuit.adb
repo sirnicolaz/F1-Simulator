@@ -76,14 +76,21 @@ package body Circuit is
 
          AlphaRad : FLOAT := (3.14 * Angle_In) / 180.0;
          Shortest_Side : FLOAT := Length_In;
-         r : FLOAT := Shortest_Side / AlphaRad;
-         Tmp_Length : FLOAT := (r * 1.0) * AlphaRad ;
+         r : FLOAT;
+         Tmp_Length : FLOAT;
 
       begin
+         if( AlphaRad = 0.0) then 
+	      r := Shortest_Side;
+	      AlphaRad := 1.0;
+	 else
+	      r := Shortest_Side / AlphaRad;
+	 end if;
+         Tmp_Length := (r * 1.0) * AlphaRad ;
          Paths_Collection_In := new PATHS(1..Paths_Qty);
          for index in 1..Paths_Qty loop
             Tmp_Length := (((FLOAT(index)-1.0) * 1.6) + r ) * AlphaRad;
-            Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,GRIP_RANGE(9.00),DIFFICULTY_RANGE(9.8));
+            Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,Grip_In,Difficulty_In);
          end loop;
 
       end Init_Paths;
@@ -111,32 +118,9 @@ package body Circuit is
    function Get_Time(Checkpoint_In : POINT_Checkpoint;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
---      Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time e chiamo get_competitorArrivaltime");
+
       return Get_CompetitorArrivalTime(Checkpoint_In.Queue.all, CompetitorID_In);
    end Get_Time;
-
-
-   --procedure Set_Next(Checkpoint_In : in out POINT_Checkpoint;
-   --                  NextCheckpoint_In : POINT_Checkpoint) is
-   --begin
-   -- Checkpoint_In.NextCheckpoint := NextCheckpoint_In;
-   --end Set_Next;
-
-   --function Get_Path(Checkpoint_In : POINT_Checkpoint;
-   --                  Path_Num : INTEGER ) return PATH is
-   --begin
-   --   return Checkpoint_In.PathsCollection(Path_Num);
-   --end Get_Path;
-
-   --function Get_Next_Checkpoint(Checkpoint_In : POINT_Checkpoint) return POINT_Checkpoint is
-   --begin
-   --   return Checkpoint_In.NextCheckpoint;
-   --end Get_Next_Checkpoint;
-
-   --function Get_Length(Checkpoint_In : POINT_Checkpoint) return FLOAT is
-   --begin
-   --   return Checkpoint_In.PathsCollection(1).Length;
-   --end Get_Length;
 
    protected body CROSSING is
 
@@ -189,10 +173,10 @@ package body Circuit is
       procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
 
-         Ada.Text_IO.Put_Line("Setting arrived");
+
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
-            Ada.Text_IO.Put_Line("Length : " & Common.IntegerToString(WaitBlock_Chain'LENGTH));
+
             WaitBlock_Chain.all(CompetitorID_In).Notify;
          end if;
 
@@ -208,7 +192,7 @@ package body Circuit is
 
       procedure Signal_Leaving(CompetitorID_In : INTEGER) is
       begin
-         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : signal leaving");
+
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
          --NEW
          --if Get_IsArrived(F_Checkpoint.Queue.all,1) then
@@ -252,7 +236,7 @@ package body Circuit is
 
       function Get_Time(CompetitorID_In : INTEGER) return FLOAT is
       begin
-         --++++++Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : sono get_time(competitorid_in) e chiamo get_time(F_checkpoint, competitorid)");
+
          return Get_Time(F_Checkpoint, CompetitorID_In);
       end Get_Time;
 
@@ -357,7 +341,7 @@ package body Circuit is
       Current_Mult : INTEGER;
       Current_Angle : FLOAT;
       Current_Grip : FLOAT;
-      Current_Difficutly : FLOAT;
+      --Current_Difficutly : FLOAT;
       Checkpoint_Temp : POINT_Checkpoint;
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
 
@@ -370,11 +354,11 @@ package body Circuit is
       --If there is a conf file, use it to auto-init;
 
 
-      Ada.Text_IO.Put_Line("Start building");
+      Ada.Text_IO.Put_Line("Start building circuit");
 
       if Document_In /= null then
 
-         Ada.Text_IO.Put_Line("Building racetrack");
+
 
          --Find out the number of checkpoint and allocate the Racetrack
          CheckPoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
@@ -433,7 +417,7 @@ package body Circuit is
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
                   Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
                   Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
-                  Current_Difficutly := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"difficulty"))));
+                  --Current_Difficutly := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"difficulty"))));
 
                   if IsPreBox = false then
                      Checkpoint_Temp := new Checkpoint;
@@ -443,11 +427,11 @@ package body Circuit is
                   end if;
 
                   if(CheckpointCounter = 1) then
-                     Ada.Text_IO.Put_Line("First check in sector");
+
                      IsFirstOfTheSector := true;
                      IsLastOfTheSector := false;
                   elsif (CheckpointCounter = CheckpointQty) then
-                     Ada.Text_IO.Put_Line("Last check in sector");
+
                      IsFirstOfTheSector := false;
                      IsLastOfTheSector := true;
                   else
@@ -461,7 +445,7 @@ package body Circuit is
                              Current_Length,
                              Current_Angle,
                              Current_Grip,
-                             Current_Difficutly,
+                             1.0,
                              Current_Mult,
                              MaxCompetitors_Qty,
                              IsPreBox,
@@ -477,7 +461,7 @@ package body Circuit is
             end loop;
 
          end loop;
-
+	  Ada.Text_IO.Put_Line("Race length " & FLOAT'IMAGE(RaceTrack_Length));
       else
          --else auto configure a default circular N_Checkpoints-M_paths track (with N = Checkpoints_Qty and M = MaxCompetitors_Qty -1;
          Angle := 360.00 / FLOAT(Checkpoints_Qty);
@@ -536,7 +520,8 @@ package body Circuit is
          BoxLane_Length := BoxLane_Length + CheckpointSynch_Current.Get_Length;
          Get_NextCheckpoint(Track_Iterator,CheckpointSynch_Current);
       end loop;
-
+      
+      Ada.Text_IO.Put_Line("Length of box " & FLOAT'IMAGE(BoxLane_Length));
       --The box lane paths has to be initilised in a different way than the usual
       --+paths.
       Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,FLOAT'CEILING(BoxLane_Length/2.0));
@@ -550,7 +535,7 @@ package body Circuit is
                  3, --Sector ID
                  TRUE, --IsGoal
                  FLOAT'CEILING(BoxLane_Length/2.0), -- Length
-                 180.0, --Angle
+                 0.0, --Angle
                  5.0, --Grip TODO: give a not standard value to this one and following
                  1.0, --Difficulty
                  MaxCompetitors_Qty, -- Multiplicity
@@ -564,8 +549,8 @@ package body Circuit is
       --+ But the paths after the box should be like the ones after the prebox.
       --+verify TODO
       CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
-      Ada.Text_IO.Put_Line("Length of box " &Common.FloatToString(RaceTrack_In(7).Get_Length));
       RaceTrack_In(0) := CheckpointSynch_Current;
+      
 
       -- "-1" because the box has not to be included in the number of checkpoints
       Checkpoints_Qty := RaceTrack_In'LENGTH-1;
@@ -579,11 +564,11 @@ package body Circuit is
    begin
 
 
-      Ada.Text_IO.Put_Line("Getting racetrack document");
+
 
       Doc := Common.Get_Document(Racetrack_File);
 
-      Ada.Text_IO.Put_Line("Starting racetrack init");
+
 
       Init_Racetrack(Racetrack_Out, Doc);
 
@@ -622,7 +607,7 @@ package body Circuit is
       Times : Common.FLOAT_ARRAY(1..Competitors'LENGTH);
       Time : FLOAT := 0.0;
    begin
-      --Ada.Text_IO.Put_Line("^^^^^^^^^________________^^^^^^^^^^^ Competitors'LENGTH: "&Integer'Image(Competitors'LENGTH));
+
       for ind in 1..Competitors'LENGTH loop
          Times(ind) := Time;
          Time := Time + 1.0; -- TODO: The time gap between 2 following competitors isn't definitive.

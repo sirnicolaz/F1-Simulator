@@ -1,0 +1,33 @@
+Very beginning
+Configuring competition object...
+Configuring registration handler object...
+Init ROOT_POA..
+Retrieving ROOT_POA...
+Activating ROOT_POA...
+CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:51466//000000011Te81e966811d1eced'
+RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:51466//000000012Te81e966811d1eced'
+Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:51466//000000013Te81e966811d1eced'
+Initing starter
+Waiting for ready...
+Getting document
+Configuring...
+Configuring competition (inside)
+Getting racetrack file: race.xml
+Getting racetrack document
+Starting racetrack init
+Start building
+Building racetrack
+5 checkpoints
+First check in sector
+Last check in sector
+5 checkpoints
+First check in sector
+Last check in sector
+4 checkpoints
+First check in sector
+Last check in sector
+Length of box 43.00000000
+Initilizing competitor array
+Checkpoints  14
+initializing monitor
+Configuration done.

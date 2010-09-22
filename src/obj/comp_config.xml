@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-<name>
-Monza</name>
-<circuitConfigFile>obj/race.xml</circuitConfigFile>
-<classificRefreshTime>43.0</classificRefreshTime>
-<competitorQty>5</competitorQty>
-<laps>50</laps>
-</config>

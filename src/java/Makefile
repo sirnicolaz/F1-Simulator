@@ -1,11 +1,11 @@
-box: corba
-	javac -d ../../obj/java/ GUI/Box/BoxAdminWindow.java
+box:
+	javac -d ../../obj/java/ GUI/Box/BoxConfigurationWindow.java
 
-competition: corba tv
-	javac -d ../../obj/java/ GUI/Competition/StartCompetition.java 
+competition: tv
+	javac -d ../../obj/java/ GUI/Competition/CompetitionConfigurationWindow.java 
 
 tv: corba
-	javac -d ../../obj/java/ GUI/TV/configurationScreen.java
+	javac -d ../../obj/java/ GUI/TV/TvConfigurationWindow.java
 
 corba:
 	@idlj ../idl/init.idl

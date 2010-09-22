@@ -16,6 +16,7 @@ package Box_Data is
       Lap : INTEGER;
       Sector : INTEGER;
       PathLength : FLOAT;
+      MaxSpeed : FLOAT;
       --For now it's not necessary. In the future there might be an improvement
       --+ in the strategy computation considering the classific too.
       --Classific : access COMPETITOR_LIST := new COMPETITOR_LIST(1..competitor_qty);
@@ -107,6 +108,7 @@ package Box_Data is
    function Get_UpdateXML( Data : ALL_INFO ) return Unbounded_String.Unbounded_String;
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT;
+   function Get_Metres ( Data : ALL_INFO ) return FLOAT;
 
    function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING;
 

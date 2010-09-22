@@ -38,7 +38,7 @@ package body Broker.Init.CompetitionConfigurator.impl is
       Current_Node : NODE;
       Config_Doc : DOCUMENT;
    begin
-      Ada.Text_IO.Put_Line("Getting document");
+
       Config_Doc := Common.Get_Document(doc_file => CORBA.To_Standard_String(config_file));
 
       Config := Get_Elements_By_Tag_Name(Config_Doc,"config");
@@ -48,9 +48,9 @@ package body Broker.Init.CompetitionConfigurator.impl is
       Circuit_File := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"circuitConfigFile"))));
       Competitor_Qty := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"competitorQty"))));
       Laps := POSITIVE'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"laps"))));
-      Ada.Text_IO.Put_Line("Configuring...");
+
       Comp.Configure(Competitor_Qty,Unbounded_String.To_String(Name),Laps,Unbounded_String.To_String(Circuit_File));
-      Ada.Text_IO.Put_Line("Configuration done.");
+
       return CORBA.To_CORBA_String(Comp.Get_MonitorCorbaLOC);
    end Configure;
 

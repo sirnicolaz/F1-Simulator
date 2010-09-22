@@ -22,20 +22,26 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
       return Competition_Monitor.Ready(INTEGER(CompetitorID));
    end Ready;
 
-   procedure Get_CompetitorInfo(Self : access Object; lap : CORBA.Short; sector : CORBA.Short ; id : CORBA.Short; time : out CORBA.FLOAT; Returns : out CORBA.STRING) is
+   procedure Get_CompetitorInfo(Self : access Object; 
+				lap : CORBA.Short; 
+				sector : CORBA.Short ; 
+				id : CORBA.Short; 
+				time : out CORBA.FLOAT; 
+				metres : out CORBA.FLOAT;
+				Returns : out CORBA.STRING) is
       ReturnStr : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       ReturnTime : Standard.FLOAT;
+      ReturnMetres : Standard.FLOAT;
    begin
-      Ada.Text_IO.Put_Line("Asking for info: lap " & INTEGER'IMAGE(INTEGER(lap)) &
-                           ", sector " & INTEGER'IMAGE(INTEGER(sector)));
       Competition_Monitor.Get_CompetitorInfo(lap       => INTEGER(lap),
                                   sector    => INTEGER(sector),
                                   id        => INTEGER(id),
                                   time      => ReturnTime,
+                                  metres    => ReturnMetres,
                                   updString => ReturnStr);
-      Ada.Text_IO.Put_Line("Converting for info");
       Returns := CORBA.To_CORBA_String(Unbounded_String.To_String(ReturnStr));
       time := CORBA.Float(ReturnTime);
+      metres := CORBA.Float(ReturnMetres);
    end Get_CompetitorInfo;
 
    procedure Get_CompetitionInfo
@@ -52,12 +58,11 @@ package body Broker.Radio.Competition_Monitor_Radio.impl is
 
       if(Tmp_TimesArray /= null) then
          for Index in Tmp_TimesArray.all'RANGE loop
-            Ada.Text_IO.Put_Line("DEBUG Taking time");
+
             Append(Returns,CORBA.FLOAT(Tmp_TimesArray.all(Index)));
          end loop;
       end if;
-      Ada.Text_IO.Put_Line("DEBUG xmlInfo " &
-                           Unbounded_String.To_String(Tmp_String));
+      
       xmlInfo := CORBA.To_CORBA_String(Unbounded_String.To_String(Tmp_String));
    end Get_CompetitionInfo;
 

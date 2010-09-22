@@ -1,0 +1,798 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  10 SEP 2010 05:01
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**F1_Sym.tex
+(./F1_Sym.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(/usr/share/texmf-texlive/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texmf-texlive/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
+Package: inputenc 2008/03/30 v1.1d Input encoding file
+\inpenc@prehook=\toks14
+\inpenc@posthook=\toks15
+
+(/usr/share/texmf-texlive/tex/latex/base/latin1.def
+File: latin1.def 2008/03/30 v1.1d Input encoding file
+))
+(/usr/share/texmf-texlive/tex/generic/babel/babel.sty
+Package: babel 2008/07/06 v3.8l The Babel package
+
+(/usr/share/texmf-texlive/tex/generic/babel/italian.ldf
+Language: italian 2008/03/14 v1.2t Italian support from the babel system
+
+(/usr/share/texmf-texlive/tex/generic/babel/babel.def
+File: babel.def 2008/07/06 v3.8l Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+
+Package babel Warning: No hyphenation patterns were loaded for
+(babel)                the language `Italian'
+(babel)                I will use the patterns loaded for \language=0 instead.
+
+\l@italian = a dialect from \language0
+Package babel Info: Making " an active character on input line 94.
+)) (/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks16
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2009/08/25 v0.04m Graphics/color for pdfTeX
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+(/usr/share/texmf-texlive/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip43
+\f@ncyO@elh=\skip44
+\f@ncyO@erh=\skip45
+\f@ncyO@olh=\skip46
+\f@ncyO@orh=\skip47
+\f@ncyO@elf=\skip48
+\f@ncyO@erf=\skip49
+\f@ncyO@olf=\skip50
+\f@ncyO@orf=\skip51
+)
+(/usr/share/texmf-texlive/tex/latex/totpages/totpages.sty
+Package: totpages 2005/09/19 v2.00 Totpages Package (muewi)
+
+(/usr/share/texmf-texlive/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/share/texmf-texlive/tex/latex/tools/enumerate.sty
+Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
+\@enLab=\toks17
+)
+(/usr/share/texmf-texlive/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count89
+\float@exts=\toks18
+\float@box=\box26
+\@float@everytoks=\toks19
+\@floatcapt=\box27
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+(/usr/share/texmf-texlive/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2009/10/09 v6.79a Hypertext links for LaTeX
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2009/04/10 v2.0 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in pdf mode detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2008/11/04 v1.4 Switches for detecting VTeX and its modes (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texmf-texlive/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2009/01/23 v0.5 Provides ifxetex conditional
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/hycolor.sty
+Package: hycolor 2009/10/02 v1.5 Code for color options of hyperref/bookmark (H
+O)
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/xcolor-patch.sty
+Package: xcolor-patch 2009/10/02 xcolor patch
+))
+\@linkdim=\dimen106
+\Hy@linkcounter=\count90
+\Hy@pagecounter=\count91
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2007/12/12 v1.2 Prefix for e-TeX command names (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2007/09/09 v1.2 Providing info/warning/message (HO)
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)
+(/etc/texmf/tex/latex/config/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+(/usr/share/texmf-texlive/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2009/08/13 v3.4 Keyval support for LaTeX options (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2009/07/30 v1.5 Key value parser with default handler suppor
+t (HO)
+))
+Package hyperref Info: Hyper figures OFF on input line 2975.
+Package hyperref Info: Link nesting OFF on input line 2980.
+Package hyperref Info: Hyper index ON on input line 2983.
+Package hyperref Info: Plain pages OFF on input line 2990.
+Package hyperref Info: Backreferencing OFF on input line 2995.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 3191.
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip10
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 3428.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bitset.sty
+Package: bitset 2007/09/28 v1.0 Data type bit set (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/intcalc.sty
+Package: intcalc 2007/09/27 v1.1 Expandable integer calculations (HO)
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/bigintcalc.sty
+Package: bigintcalc 2007/11/11 v1.1 Expandable big integer calculations (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2009/09/23 v0.6 LuaTeX support for pdfTeX utility functions
+ (HO)
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2009/04/17 v1.2 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/share/texmf-texlive/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2009/08/05 v1.0 Some LaTeX kernel commands for general use (HO
+)
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+)))
+\Fld@menulength=\count92
+\Field@Width=\dimen107
+\Fld@charsize=\dimen108
+\Field@toks=\toks20
+Package hyperref Info: Hyper figures OFF on input line 4377.
+Package hyperref Info: Link nesting OFF on input line 4382.
+Package hyperref Info: Hyper index ON on input line 4385.
+Package hyperref Info: backreferencing OFF on input line 4392.
+Package hyperref Info: Link coloring OFF on input line 4397.
+Package hyperref Info: Link coloring with OCG OFF on input line 4402.
+Package hyperref Info: PDF/A mode OFF on input line 4407.
+
+(/usr/share/texmf-texlive/tex/generic/oberdiek/atbegshi.sty
+Package: atbegshi 2008/07/31 v1.9 At begin shipout hook (HO)
+)
+\Hy@abspage=\count93
+\c@Item=\count94
+\c@Hfootnote=\count95
+)
+*hyperref using driver hpdftex*
+(/usr/share/texmf-texlive/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2009/10/09 v6.79a Hyperref driver for pdfTeX
+\Fld@listcount=\count96
+)
+(/usr/share/texmf-texlive/tex/latex/listings/listings.sty
+\lst@mode=\count97
+\lst@gtempboxa=\box28
+\lst@token=\toks21
+\lst@length=\count98
+\lst@currlwidth=\dimen109
+\lst@column=\count99
+\lst@pos=\count100
+\lst@lostspace=\dimen110
+\lst@width=\dimen111
+\lst@newlines=\count101
+\lst@lineno=\count102
+\lst@maxwidth=\dimen112
+
+(/usr/share/texmf-texlive/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count103
+\lst@skipnumbers=\count104
+\lst@framebox=\box29
+)
+(/usr/share/texmf-texlive/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+(/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen113
+\extrarowheight=\dimen114
+\NC@list=\toks22
+\extratabsurround=\skip52
+\backup@length=\skip53
+)
+\TX@col@width=\dimen115
+\TX@old@table=\dimen116
+\TX@old@col=\dimen117
+\TX@target=\dimen118
+\TX@delta=\dimen119
+\TX@cols=\count105
+\TX@ftn=\toks23
+)
+(/usr/share/texmf-texlive/tex/latex/amscls/amsthm.sty
+Package: amsthm 2004/08/06 v2.20
+\thm@style=\toks24
+\thm@bodyfont=\toks25
+\thm@headfont=\toks26
+\thm@notefont=\toks27
+\thm@headpunct=\toks28
+\thm@preskip=\skip54
+\thm@postskip=\skip55
+\thm@headsep=\skip56
+\dth@everypar=\toks29
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 19.
+Package hyperref Info: Option `breaklinks' set `true' on input line 19.
+\@indexfile=\write3
+\openout3 = `F1_Sym.idx'.
+
+
+Writing index file F1_Sym.idx
+\titolo=\toks30
+\sottotitolo=\toks31
+\filename=\toks32
+\data=\toks33
+\versione=\toks34
+\distribuzione=\toks35
+(./F1_Sym.aux)
+\openout1 = `F1_Sym.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 65.
+LaTeX Font Info:    Try loading font information for LGR+cmr on input line 65.
+ (/usr/share/texmf-texlive/tex/generic/babel/lgrcmr.fd
+File: lgrcmr.fd 2008/06/17 v2.3 Greek Computer Modern
+)
+LaTeX Font Info:    ... okay on input line 65.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
+LaTeX Font Info:    ... okay on input line 65.
+
+(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count106
+\scratchdimen=\dimen120
+\scratchbox=\box30
+\nofMPsegments=\count107
+\nofMParguments=\count108
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count109
+\MPscratchDim=\dimen121
+\MPnumerator=\count110
+\everyMPtoPDFconversion=\toks37
+) ABD: EveryShipout initializing macros
+Package hyperref Info: Link coloring ON on input line 65.
+
+(/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
+Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
+
+(/usr/share/texmf-texlive/tex/latex/oberdiek/refcount.sty
+Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
+)
+\c@section@level=\count111
+)
+LaTeX Info: Redefining \ref on input line 65.
+LaTeX Info: Redefining \pageref on input line 65.
+ (./F1_Sym.out)
+(./F1_Sym.out)
+\@outlinefile=\write4
+\openout4 = `F1_Sym.out'.
+
+\AtBeginShipoutBox=\box31
+\c@lstlisting=\count112
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 88.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 88.
+ [1.1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+(./F1_Sym.toc [2.2])
+\tf@toc=\write5
+\openout5 = `F1_Sym.toc'.
+
+ [3.3] (./F1_Sym.lof)
+\tf@lof=\write6
+\openout6 = `F1_Sym.lof'.
+
+ [4.4] (./descrizione_progetto.tex
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 6.
+
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 6.
+)
+(./problematiche_concorrenza.tex
+Underfull \hbox (badness 10000) in paragraph at lines 10--12
+
+ []
+
+[5.5]) (./problematiche_distribuzione.tex) (./soluzione_proposta.tex [6.6]
+Underfull \hbox (badness 10000) in paragraph at lines 3--6
+
+ []
+
+<img/ComponentDiagram.jpg, id=417, 676.5275pt x 537.00626pt>
+File: img/ComponentDiagram.jpg Graphic file (type jpg)
+
+<use img/ComponentDiagram.jpg> [7.7 <./img/ComponentDiagram.jpg>] [8.8]
+Overfull \hbox (12.86174pt too wide) in paragraph at lines 79--80
+[]\OT1/cmr/m/n/10 banalmente, con-tin-uare a cor-rere fi-no al-la fine delle la
+p presta-bilite, dopodich^^Re
+ []
+
+[9.9]
+Overfull \hbox (2.25629pt too wide) in paragraph at lines 94--96
+[]\OT1/cmr/bx/n/10 posizione nel-la pista\OT1/cmr/m/n/10 : un \OT1/cmr/m/it/10 
+Check-point \OT1/cmr/m/n/10 pu^^Ru es-sere il tra-guar-do, l'inizio
+ []
+
+[10.10] [11.11]
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+
+ []
+
+[12.12]
+<img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg, id
+=453, 555.07375pt x 312.16624pt>
+File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jp
+g Graphic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg
+> [13.13 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
+ion.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=4
+60, 526.96875pt x 192.72pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg 
+Graphic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg>
+<img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg, id=461,
+ 451.6875pt x 171.64125pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg Gra
+phic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>
+[14.14
+
+ <./img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg> <
+./img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg, id=467,
+ 528.97626pt x 157.58875pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg Gra
+phic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg>
+<img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg, id=468, 4
+79.7925pt x 157.58875pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg Graph
+ic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>
+[15.15
+
+ <./img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg> <./i
+mg/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg, id=474, 43
+7.635pt x 143.53625pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg Graphi
+c file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg>
+<img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg, id=475, 
+479.7925pt x 220.825pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg Grap
+hic file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>
+[16.16
+
+ <./img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg> <./img/
+InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg, id=481, 472.7
+6625pt x 270.00874pt>
+File: img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg Graphic f
+ile (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg> [17.17 <.
+/img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg, id=487, 54
+3.02875pt x 241.90375pt>
+File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg Graphi
+c file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg>
+<img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg, id=488, 550.055
+pt x 316.18124pt>
+File: img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg Graphic fil
+e (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg> [18.18
+
+ <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg> <./img/
+InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg>]
+<img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg, id=494, 493.
+845pt x 284.06125pt>
+File: img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg Graphic 
+file (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>
+<img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg, id=495, 451.6
+875pt x 150.5625pt>
+File: img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg Graphic f
+ile (type jpg)
+
+<use img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[19.19 <./img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>]
+[20.20 <./img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>]
+[21.21] [22.22]
+Underfull \hbox (badness 10000) in paragraph at lines 400--406
+
+ []
+
+[23.23]
+Underfull \hbox (badness 10000) in paragraph at lines 406--415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 416--418
+
+ []
+
+[24.24]
+<img/ClassDiagrams/CompetitionClassDiagram.jpg, id=538, 730.73pt x 710.655pt>
+File: img/ClassDiagrams/CompetitionClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/CompetitionClassDiagram.jpg>
+Overfull \hbox (20.3641pt too wide) in paragraph at lines 428--429
+[][] 
+ []
+
+[25.25 <./img/ClassDiagrams/CompetitionClassDiagram.jpg>] [26.26]
+<img/ClassDiagrams/CompetitorClassDiagram.jpg, id=550, 523.9575pt x 545.03625pt
+>
+File: img/ClassDiagrams/CompetitorClassDiagram.jpg Graphic file (type jpg)
+ <use img/ClassDiagrams/CompetitorClassDiagram.jpg> [27.27 <./img/ClassDiagrams
+/CompetitorClassDiagram.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 485--494
+
+ []
+
+[28.28]
+<img/ClassDiagrams/CircuitClassDiagram.jpg, id=562, 688.5725pt x 393.47pt>
+File: img/ClassDiagrams/CircuitClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/CircuitClassDiagram.jpg>
+Overfull \hbox (4.12357pt too wide) in paragraph at lines 522--524
+\OT1/cmr/m/n/10 in un ar-ray chiam-a-to \OT1/cmr/bx/n/10 Race-track\OT1/cmr/m/n
+/10 . Questo sar^^Ra l'ar-ray it-er-a-to dal \OT1/cmr/bx/n/10 Race[]Iterator\OT
+1/cmr/m/n/10 . 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 522--524
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 525--541
+
+ []
+
+[29.29 <./img/ClassDiagrams/CircuitClassDiagram.jpg>] [30.30]
+Overfull \hbox (8.77666pt too wide) in paragraph at lines 557--565
+[]\OT1/cmr/bx/n/10 procedure Get[]Paths(Paths2Cross : out CROSS-ING[]POINT; Go2
+Box
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 566--570
+
+ []
+
+
+Overfull \hbox (18.52185pt too wide) in paragraph at lines 566--570
+\OT1/cmr/m/n/10 Infine sono of-fer-ti un in-sieme di meto-di da uti-liz-zare in
+-sieme al \OT1/cmr/bx/n/10 Race-Track[]Iterator
+ []
+
+[31.31] [32.32]
+<img/ClassDiagrams/StatsClassDiagram.jpg, id=585, 761.84625pt x 669.50125pt>
+File: img/ClassDiagrams/StatsClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/StatsClassDiagram.jpg>
+Overfull \hbox (35.9222pt too wide) in paragraph at lines 591--592
+[][] 
+ []
+
+[33.33 <./img/ClassDiagrams/StatsClassDiagram.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 617--627
+
+ []
+
+[34.34] [35.35]
+Underfull \hbox (badness 10000) in paragraph at lines 654--660
+
+ []
+
+[36.36]
+Overfull \hbox (4.40721pt too wide) in paragraph at lines 677--681
+\OT1/cmr/bx/n/10 CompetitorID[]InClassific : out IN-TE-GER[]ARRAY[]POINT; 
+ []
+
+
+Overfull \hbox (40.23068pt too wide) in paragraph at lines 677--681
+\OT1/cmr/bx/n/10 LappedCompetitor[]CurrentLap : out IN-TE-GER[]ARRAY[]POINT); 
+ []
+
+[37.37]
+<img/ClassDiagrams/MonitorClassDiagram.jpg, id=613, 690.58pt x 556.0775pt>
+File: img/ClassDiagrams/MonitorClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/MonitorClassDiagram.jpg>
+Underfull \hbox (badness 10000) in paragraph at lines 693--699
+
+ []
+
+[38.38 <./img/ClassDiagrams/MonitorClassDiagram.jpg>]
+Overfull \hbox (11.1701pt too wide) in paragraph at lines 705--709
+\OT1/cmr/m/n/10 reperire le in-for-mazioni date, pre-cisa-mente uti-liz-zan-do 
+il meto-do $[]$
+ []
+
+
+Overfull \hbox (20.09361pt too wide) in paragraph at lines 710--713
+\OT1/cmr/m/n/10 tramite un in-ter-me-di-ario: \OT1/cmr/bx/n/10 Box[]Monitor[]Ra
+dio \OT1/cmr/m/n/10 e \OT1/cmr/bx/n/10 Com-pe-ti-tion[]Monitor[]Radio\OT1/cmr/m
+/n/10 ,
+ []
+
+[39.39]
+<img/ClassDiagrams/BoxClassDiagram.jpg, id=624, 857.2025pt x 760.8425pt>
+File: img/ClassDiagrams/BoxClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/BoxClassDiagram.jpg>
+Overfull \hbox (46.61154pt too wide) in paragraph at lines 719--720
+ [][] 
+ []
+
+[40.40 <./img/ClassDiagrams/BoxClassDiagram.jpg>]
+Overfull \hbox (18.43376pt too wide) in paragraph at lines 733--740
+\OT1/cmr/m/n/10 Rac-coglie gli ag-gior-na-men-ti di gara dal buffer \OT1/cmr/bx
+/n/10 Synch[]Competition[]Updates
+ []
+
+[41.41]
+Underfull \hbox (badness 10000) in paragraph at lines 760--771
+
+ []
+
+[42.42]
+<img/ClassDiagrams/ConfiguratorClassDiagram.jpg, id=640, 726.715pt x 542.025pt>
+File: img/ClassDiagrams/ConfiguratorClassDiagram.jpg Graphic file (type jpg)
+<use img/ClassDiagrams/ConfiguratorClassDiagram.jpg>
+Overfull \hbox (18.3566pt too wide) in paragraph at lines 775--776
+[][] 
+ []
+
+[43.43 <./img/ClassDiagrams/ConfiguratorClassDiagram.jpg>]
+Overfull \hbox (0.94463pt too wide) in paragraph at lines 803--805
+\OT1/cmr/m/n/10 La classe \OT1/cmr/bx/n/10 Box-Mon-i-tor \OT1/cmr/m/n/10 vi-su-
+al-iz-za l'an-da-men-to del-la com-pe-tizione da parte
+ []
+
+[44.44]
+<img/ClassDiagrams/ScreenClassDiagram.jpg, id=654, 555.07375pt x 646.415pt>
+File: img/ClassDiagrams/ScreenClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/ScreenClassDiagram.jpg> [45.45 <./img/ClassDiagrams/Scre
+enClassDiagram.jpg>]
+Overfull \hbox (26.63303pt too wide) in paragraph at lines 829--833
+\OT1/cmr/m/n/10 fra task, ^^Re sta-to suf-fi-ciente in-serir-lo in una risor-sa
+ pro-tet-ta: \OT1/cmr/bx/n/10 Synch[]Checkpoint\OT1/cmr/m/n/10 .
+ []
+
+<img/SequenceDiagrams/ArriveAndCross.jpg, id=661, 945.5325pt x 1180.41pt>
+File: img/SequenceDiagrams/ArriveAndCross.jpg Graphic file (type jpg)
+
+<use img/SequenceDiagrams/ArriveAndCross.jpg>
+Overfull \hbox (48.23828pt too wide) in paragraph at lines 847--848
+ [][] 
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[46.46] [47.47 <./img/SequenceDiagrams/ArriveAndCross.jpg>]
+Overfull \hbox (25.82745pt too wide) in paragraph at lines 852--853
+\OT1/cmr/m/n/10 quali casi un con-cor-rente pu^^Ro cam-biare sta-to nel-la co-d
+a del \OT1/cmr/bx/n/10 Synch[]Checkpoint\OT1/cmr/m/n/10 : 
+ []
+
+
+Overfull \hbox (12.98955pt too wide) in paragraph at lines 854--856
+\OT1/cmr/m/n/10 seg-na un nuo-vo tem-po min-i-mo (o ef-fet-ti-vo) di ar-ri-vo c
+on $[]$
+ []
+
+[48.48
+
+]
+Overfull \hbox (35.74075pt too wide) in paragraph at lines 872--885
+\OT1/cmr/m/n/10 venire popo-la-ta con i dati di fine lap di og-ni con-cor-rente
+ (\OT1/cmr/bx/n/10 Synch[]Classification[]Table\OT1/cmr/m/n/10 ). 
+ []
+
+[49.49] [50.50]
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 933.
+
+ (/usr/share/texmf-texlive/tex/latex/base/omlcmr.fd
+File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 933.
+ [51.51]
+<img/SequenceDiagrams/InitCompetition.jpg, id=697, 1674.255pt x 1506.62875pt>
+File: img/SequenceDiagrams/InitCompetition.jpg Graphic file (type jpg)
+
+<use img/SequenceDiagrams/InitCompetition.jpg>
+Overfull \hbox (91.27925pt too wide) in paragraph at lines 952--953
+ [][] 
+ []
+
+
+LaTeX Warning: Float too large for page by 14.94247pt on input line 954.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[52.52] [53.53 <./img/SequenceDiagrams/InitCompetition.jpg>] [54.54
+
+])
+(./analisi_supporto_tecnologico.tex [55.55]) (./glossario.tex
+Underfull \hbox (badness 10000) in paragraph at lines 3--5
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 5--8
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--21
+
+ []
+
+[56.56]
+Underfull \hbox (badness 10000) in paragraph at lines 21--25
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--29
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 29--35
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--45
+
+ []
+
+) (./manuale_utente.tex [57.57] [58.58] [59.59] [60.60]) [61.61] (./F1_Sym.aux)
+ ) 
+Here is how much of TeX's memory you used:
+ 7063 strings out of 495061
+ 104039 string characters out of 1182621
+ 177104 words of memory out of 3000000
+ 9881 multiletter control sequences out of 15000+50000
+ 7545 words of font info for 27 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 38i,12n,43p,1163b,1216s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
+re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
+xlive/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texmf-texlive/fonts/type1/pub
+lic/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfon
+ts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7
+.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
+hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-t
+exlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/
+type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/public/
+amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
+/cmsy7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on F1_Sym.pdf (61 pages, 2540839 bytes).
+PDF statistics:
+ 880 PDF objects out of 1000 (max. 8388607)
+ 203 named destinations out of 1000 (max. 500000)
+ 628 words of extra memory for PDF output out of 10000 (max. 10000000)
+

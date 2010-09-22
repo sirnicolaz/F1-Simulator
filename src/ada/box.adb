@@ -1,5 +1,9 @@
 with CORBA.ORB;
 
+with Ada.Calendar;
+use Ada.Calendar;
+with Ada.Exceptions;
+
 with Broker.Radio.Competition_Monitor_Radio;
 
 --with PolyORB.Utils.Report;
@@ -100,6 +104,7 @@ package body Box is
       Info_XMLStr : Unbounded_String.Unbounded_String;
       Info : COMPETITION_UPDATE_POINT;
       Time : FLOAT;
+      Metres : FLOAT;
       CorbaInfo : CORBA.String;
       Sector : INTEGER := 1;
       Lap : INTEGER := 0;
@@ -111,7 +116,7 @@ package body Box is
       --Generic boolean
       Success : BOOLEAN := false;
    begin
-      Ada.Text_IO.Put_Line("Monitor begin: " & Unbounded_String.To_String(MonitorRadio_CorbaLOC.all) & ", id: " & Common.IntegerToString(CompetitorID));
+      
       --CORBA.ORB.Initialize("ORB");
       Corba.ORB.String_To_Object(CORBA.To_CORBA_String
                                  (RadioCorbaLOC) , Radio);
@@ -121,33 +126,53 @@ package body Box is
 
       end if;
 
-      Ada.Text_IO.Put_Line("Monitor reference taken");
+      
 
       Success := Broker.Radio.Competition_Monitor_Radio.Ready(Radio,CORBA.Short(CompetitorID));
 
-      Ada.Text_IO.Put_Line("Successful!");
+      
       -- Test init values to avoid warnings DEL
       Info := new COMPETITION_UPDATE;
       loop
 
-         Ada.Text_IO.Put_Line("Getting info");
-         Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
-           (
-            Radio,
-            CORBA.Short(Lap),
-            CORBA.Short(Sector),
-            CORBA.Short(CompetitorID),
-            CORBA.Float(Time),
-            CorbaInfo);
-         Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
-         Ada.Text_IO.Put_Line("Info taken");
-         Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+
+         declare
+               INFO_GOT : BOOLEAN := false;
+         begin
+               
+		loop
+
+		      Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
+		      (
+		      Radio,
+		      CORBA.Short(Lap),
+		      CORBA.Short(Sector),
+		      CORBA.Short(CompetitorID),
+		      CORBA.Float(Time),
+		      CORBA.Float(Metres),
+		      CorbaInfo); 
+
+
+		      Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
+
+		      Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.IntegerToString(CompetitorID) & "-update.xml");
+		      INFO_GOT := true;
+		      exit when INFO_GOT = true;
+		end loop;
+		exception
+		      when Error : others =>
+			  Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
+			  delay until(Ada.Calendar.Clock + Standard.Duration(3));
+         end;
+       
          Info.Time := Time;
-         Ada.Text_IO.Put_Line("Xml->update");
-         Ada.Text_IO.Put_Line("---LAP N. " & Common.IntegerToString(Info.Lap));
+
+
+         Info.PathLength := Metres;
+         
          UpdateBuffer.Add_Data(Info);
-         Ada.Text_IO.Put_Line("Buffer updated");
-         Ada.Text_IO.Put_Line("Which sector?");
+         
+         
          if(Sector = Sector_Qty) then
             Sector := 0;
             Lap := Lap + 1;
@@ -158,7 +183,7 @@ package body Box is
          Sector := Sector + 1;
       end loop;
 
-      Ada.Text_IO.Put_Line("Competition over");
+      
 
 
    end UPDATE_RETRIEVER;
@@ -187,16 +212,14 @@ package body Box is
         (( CurrentGasLevel + (CurrentGasLevel * StrategyFactor) )/
           MeanGasConsumption)/
             CircuitLength));
-      --Ada.Text_IO.Put_Line("Remainin laps with gas " & INTEGER'IMAGE(RemainingDoableLaps_Gas));
-
+      
       -- The MeanTyreUsury expresses how mouch the tyre was usured for each km.
       --+ The value it's calculated considering all the information up to now.
       RemainingDoableLaps_Tyre := INTEGER(FLOAT'Floor(
           (((100.00 - CurrentTyreUsury) +
-          ((100.00 - CurrentTyreUsury)*(StrategyFactor/10.0)))/
+          ((100.00 - CurrentTyreUsury)*(StrategyFactor/5.0)))/
             MeanTyreConsumption)/  -- StrategyFactor/10.0 because is more logic for the tyre usury
             CircuitLength));
-      --Ada.Text_IO.Put_Line("Remainin laps with tyre " & INTEGER'IMAGE(RemainingDoableLaps_Tyre));
 
       if( RemainingDoableLaps_Gas < RemainingDoableLaps_Tyre) then
          RemainingDoableLaps := RemainingDoableLaps_Gas;
@@ -243,19 +266,19 @@ package body Box is
          TyreNeeded : FLOAT;
 
       begin
-         Ada.Text_IO.Put_Line("Calculate total gas mod");
+         
          TotalStyleModifierGas := DrivingStyle1StepModifierGas * FLOAT(Common.Style_Distance(OldStyle,NewStyle));
-         Ada.Text_IO.Put_Line("Calculate total gas mod");
+         
          TotalStyleModifierTyre := DrivingStyle1StepModifierTyre * FLOAT(Common.Style_Distance(OldStyle,NewStyle));
-         Ada.Text_IO.Put_Line("Calculate total gas needed");
+         
          GasNeeded := (PreviousLapMeanGasConsumption + TotalStyleModifierGas) *
            (CircuitLength * FLOAT(Laps2Simulate) * (1.0 - StrategyFactor));
 
          TyreNeeded :=
            (PreviousLapMeanTyreUsury + TotalStyleModifierTyre)
            * (CircuitLength * FLOAT(Laps2Simulate) * (1.0 - StrategyFactor/10.0));
-         Ada.Text_IO.Put_Line("Tyre needed " & FLOAT'IMAGE(TyreNeeded));
-         Ada.Text_IO.Put_Line("Calculate minor");
+         
+         
          if ( GasNeeded > GasLevel_In ) then
             return false;
          elsif (TyreNeeded > (100.0 - TyreUsury_In) ) then
@@ -269,7 +292,6 @@ package body Box is
 
    begin
 
-      --TODO: implement AI
       RemainingDoableLaps := CalculateDoableLaps(CurrentGasLevel     => New_Info.GasLevel,
                                                  CurrentTyreUsury    => New_Info.TyreUsury,
                                                  MeanGasConsumption  => PreviousLapMeanGasConsumption,
@@ -277,14 +299,14 @@ package body Box is
 
       -- Calculate the remaining number of laps til either the pitstop or the
       --+ end of the competition.
-      Ada.Text_IO.Put_Line("Doable Laps: " & INTEGER'IMAGE(RemainingDoableLaps));
+      
       Laps2PitStop := Old_Strategy.PitStopLaps - 1;
 
       if(Laps2PitStop = -1) then
          Laps2PitStop := RemainingDoableLaps;
       end if;
 
-      Ada.Text_IO.Put_Line("Laps 2 Pitstop: " & INTEGER'IMAGE(Laps2PitStop));
+      
       New_Strategy.PitStopLaps := Laps2PitStop;
 
       --NEW (Laps - 1)
@@ -299,7 +321,8 @@ package body Box is
       New_Strategy.Style := Old_Strategy.Style;
 
       if ( RemainingLaps /= 0 ) then
-         Ada.Text_IO.Put_Line("Laps /= 0");
+      --Add the first statistic to the computer
+
          --If the number of doable laps is enough to either finish the comeptition
          --+ or to reach the next pitstop, try to see if it's possible to change the driving
          --+ style to a more aggressive one
@@ -330,16 +353,16 @@ package body Box is
             -- If the laps the competitor can do are less then the remaining laps (either
             --+ to the pitstop or to the end of the competition), calculate whether with a more
             --+ conservative driving style it's possible to reach the target or not
-            Ada.Text_IO.Put_Line("LAps = less the foreseen");
+            
             --Laps2Simulate := RemainingLaps;
             -- TODO: write this code better
             if( Old_Strategy.Style /= Common.CONSERVATIVE ) then
-               Ada.Text_IO.Put_Line("No conservative");
+               
                Style2Simulate := Common.CONSERVATIVE;
                Doable := SimulateDrivingStyleChange(Old_Strategy.Style,Style2Simulate, RemainingLaps, New_Info.GasLevel, New_Info.TyreUsury);
                if( Doable = true ) then
                   ChangeStyle := true;
-                  Ada.Text_IO.Put_Line("Can be more conservative");
+                  
                   -- Try, if possible, to drive faster
                   if( Old_Strategy.Style /= Common.NORMAL ) then
                      Style2Simulate := Common.NORMAL;
@@ -349,7 +372,7 @@ package body Box is
                      end if;
                   end if;
                else
-                  Ada.Text_IO.Put_Line("Warning");
+                  
                   Warning := true;
                end if;
             end if;
@@ -357,32 +380,36 @@ package body Box is
          end if;
 
          if ( ChangeStyle = true ) then
-            Ada.Text_IO.Put_Line("Style change");
+            
             New_Strategy.Style := Style2Simulate;
          else
             if ( Warning = true and RemainingDoableLaps /= 0) then
 
                New_Strategy.PitStopLaps := RemainingDoableLaps - 1;
-               Ada.Text_IO.Put_Line("Emergency, pit stop in " & INTEGER'IMAGE(New_Strategy.PitStopLaps));
+               
 
             end if;
             New_Strategy.Style := Old_Strategy.Style;
          end if;
       end if;
 
+
+      --This is to avoid the end of the competititon to the pitstop, it makes no sense considering that pitstop = goal
+      if((Laps-1) - New_Info.Lap = 0) then 
+	    New_Strategy.PitStopLaps := 1; 
+      end if;
+
       -- If the number of laps to the PitStop is 0, it means that the competitor is going to
       --+ have a pitstop, so it's necessary to calculate the amount of gas to refill and
       --+ the type o tyres tu put on the car
       if ( New_Strategy.PitStopLaps = 0 ) then
-         Ada.Text_IO.Put_Line("Lap  = 0 now");
-
-
+      
          --Calculate the amount of gas needed to reach the end of the race
          NewGas :=
            ( ( FLOAT( Laps2End ) * CircuitLength ) *
               PreviousLapMeanGasConsumption ) *
              ( 1.0 - StrategyFactor );
-
+             
          --If it's more than the gas thank capacity, calculate the amount
          --+ to run until the half of the competition
          if(NewGas > GasTankCapacity) then
@@ -398,6 +425,9 @@ package body Box is
          --+ of the next invokation of the function considering the new amount of gas
          if(New_Info.GasLevel < NewGas ) then
             New_Strategy.GasLevel := NewGas;
+         else
+         --This means that the amount of gas remains the same
+            New_Strategy.GasLevel := -1.0;
          end if;
 
          -- Calculate the time needed to refill the gas tank
@@ -412,12 +442,12 @@ package body Box is
          New_Strategy.Style := Common.NORMAL;--TODO find it
 
       else
-         Ada.Text_IO.Put_Line("Lap /= 0 now");
+         
          --HACK: Gas level used to compute the mean gas consumption by the
          --+ the box and not used by the competitor
-         Ada.Text_IO.Put_Line("Updating gas");
+         
          New_Strategy.GasLevel := New_Info.GasLevel;
-         Ada.Text_IO.Put_Line("Updating pit delay");
+         
          New_Strategy.PitStopDelay := 0.0;
 
       end if;
@@ -456,7 +486,7 @@ package body Box is
       ExtendedInformation : EXT_COMPETITION_UPDATE;
    begin
 
-      Ada.Text_IO.Put_Line("Init Strategy updater");
+      
       New_Info := new COMPETITION_UPDATE;
       --The first strategy is stored before the beginning of the competition
       --+ and it's calculated against some configured parameter and some hypothetical
@@ -474,13 +504,12 @@ package body Box is
       -- Time = -1.0 means that race is over (think about when the competitor
       --+ is out of the race).
       loop
-         Ada.Text_IO.Put_Line("Waitin");
+         
          UpdateBuffer.Get_Update(New_Info.all, Index);
-         Ada.Text_IO.Put_Line("INFO GOT " &
-                              " previous gas " & Common.FloatToString(PreviousSectorGasLevel) &
-                              " new gas " & Common.FloatToString(New_Info.GasLevel));
+
 
          Box_Data.COMPETITION_UPDATE(ExtendedInformation) := New_Info.all;
+
 
          if( New_Info.GasLevel < 0.0 ) then
             New_Info.GasLevel := 0.0;
@@ -493,7 +522,9 @@ package body Box is
          --+ to compute the statystic for the lap following the pitstop one.
          --+ (for the sector before the box and the following one, the 2 sectors
          --+ affected.
+
          if( Skip /= 0 ) then
+
             Skip := Skip - 1;
             PartialGasConsumptionMean := PartialGasConsumptionMean +
               LatestLapMeanGasConsumption;
@@ -505,12 +536,12 @@ package body Box is
               LatestLapMeanTyreUsury;
             PreviousSectorTyreUsury := New_Info.TyreUsury;
 
-            ExtendedInformation.TyreUsury := LatestLapMeanTyreUsury;
+            ExtendedInformation.MeanTyreUsury := LatestLapMeanTyreUsury;
 
             --TODO: don't use so stupid values for the means
          else
 
-            Ada.Text_IO.Put_Line("Calculating partial mean");
+
             PartialGasConsumptionMean :=
               PartialGasConsumptionMean +
                 ((PreviousSectorGasLevel - New_Info.GasLevel)/
@@ -522,11 +553,9 @@ package body Box is
               (PreviousSectorGasLevel - New_Info.GasLevel)/
               (New_Info.PathLength/1000.0);
 
-            Ada.Text_IO.Put_Line("Previous sector gas " &
-                                 FLOAT'IMAGE(PreviousSectorGasLevel));
-
+           
             PreviousSectorGasLevel := New_Info.GasLevel;
-            Ada.Text_IO.Put_Line("Partial gas consumption mean " & Common.FloatToString(PartialGasConsumptionMean));
+            
 
             PartialTyreUsuryMean :=
               PartialTyreUsuryMean +
@@ -544,38 +573,27 @@ package body Box is
 
          Index := Index + 1;
 
-         Ada.Text_IO.Put_Line("Go ahead. Sector: " & INTEGER'IMAGE(Sector) & " out of " & INTEGER'IMAGE(Sector_Qty));
+
 
          exit when (New_Info.GasLevel <= 0.0 or New_Info.TyreUsury >= 100.0) or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
 
+
          if(Sector = Sector_Qty) then
-
-            --Ada.Text_IO.Put_Line("Latest lap mean gas cons " & Common.FloatToString(LatestLapMeanGasConsumption));
-            --Ada.Text_IO.Put_Line("Latest lap mean tyre cons " & Common.FloatToString(LatestLapMeanTyreUsury));
-
-            Ada.Text_IO.Put_Line("Latest lap mean gas cons " &
-                                 Common.FloatToString(LatestLapMeanGasConsumption));
-
-            Ada.Text_IO.Put_Line("Latest lap mean tyre cons " &
-                                 Common.FloatToString(LatestLapMeanTyreUsury));
-
 
             Evolving_Strategy := Compute_Strategy(New_Info.all,
                                          Evolving_Strategy,
                                          LatestLapMeanGasConsumption,
                                          LatestLapMeanTyreUsury
                                                  );
+            
 
             --  "/3" because it's the sum of the mean of 3 sectors
-            Ada.Text_IO.Put_Line("Calculating latest stuff");
-            Ada.Text_IO.Put_Line("Partial gas cons " & FLOAT'IMAGE(PartialGasConsumptionMean));
-            Ada.Text_IO.Put_Line("Parital tyre cons " & FLOAT'IMAGE(PartialTyreUsuryMean));
-            LatestLapMeanGasConsumption := PartialGasConsumptionMean/3.0;
+             LatestLapMeanGasConsumption := PartialGasConsumptionMean/3.0;
             LatestLapMeanTyreUsury := PartialTyreUsuryMean/3.0;
 
-            Ada.Text_IO.Put_Line("Adding strategy");
+
             StrategyHistory.AddStrategy(Evolving_Strategy);
             Sector := 0;
             PartialGasConsumptionMean := 0.0;
@@ -585,8 +603,6 @@ package body Box is
                              Strategy_In => Evolving_Strategy);
 
             if(Evolving_Strategy.PitStopLaps = 0) then
-               Ada.Text_IO.Put_Line("Gas set on strat (next prev sect): " &
-                                    FLOAT'IMAGE(Evolving_Strategy.GasLevel));
                Skip := 2;
             end if;
 
@@ -603,7 +619,7 @@ package body Box is
 
       AllInfo.Add_Info(Update_In   => ExtendedInformation);
 
-      Ada.Text_IO.Put_Line("Competition over");
+
 
    end STRATEGY_UPDATER;
 
@@ -651,48 +667,52 @@ package body Box is
       Current_Node : NODE;
 
       GasLevel : FLOAT;
+      MaxSpeed : FLOAT;
       TyreUsury : PERCENTAGE;
   --    Time : FLOAT;
       Lap : INTEGER;
       Sector : INTEGER;
-      PathLength : FLOAT;
+  --    PathLength : FLOAT;
 
       --Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
       Success : BOOLEAN := false;
    begin
       --TODO: handle the exception
-      Ada.Text_IO.Put_Line("SAving file");
+
       Success := Common.SaveToFile(FileName => Temporary_StringName,
                         Content  => UpdateStr_In,
                         Path     => "");
-      Ada.Text_IO.Put_Line("File saved");
+
       Doc := Common.Get_Document(Temporary_StringName);
-      Ada.Text_IO.Put_Line("Document got");
+
       Update_NodeList := Get_Elements_By_Tag_Name(Doc,"update");
-      Ada.Text_IO.Put_Line("Nodelist got");
+
       Current_Node := Item(Update_NodeList,0);
-      Ada.Text_IO.Put_Line("Start saving values");
+
       GasLevel := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
-      Ada.Text_IO.Put_Line("Gas done");
+      
+      MaxSpeed := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"maxSpeed"))));
+
       TyreUsury := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreUsury"))));
-      Ada.Text_IO.Put_Line("Tyre done");
+
       Lap := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"lap"))));
-      Ada.Text_IO.Put_Line("Lap done");
+
       Sector := INTEGER'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"sector"))));
-      Ada.Text_IO.Put_Line("Sector done");
+
 --      Time := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
---      Ada.Text_IO.Put_Line("Time done");
-      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
-      Ada.Text_IO.Put_Line("Path lengt done");
+
+--      PathLength := FLOAT'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
+
+      Update.MaxSpeed := MaxSpeed;
 
       Update.GasLevel := GasLevel;
-      Ada.Text_IO.Put_Line("Updating tyre usury");
+
       Update.TyreUsury := TyreUsury;
-      Ada.Text_IO.Put_Line("Tyre usury done");
+
 --      Update.Time := Time;
       Update.Lap := Lap;
       Update.Sector := Sector;
-      Update.PathLength := PathLength;
+--      Update.PathLength := PathLength;
 
 
       return Update;

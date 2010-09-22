@@ -1,0 +1,5 @@
+1.7 km al litro -> intanto fisso (il range non è ampio) in secondo momento
+si deciderà in base al motore selezionato
+
+-> Aggressivo = 1.5
+-> Tranquillo = 1.9

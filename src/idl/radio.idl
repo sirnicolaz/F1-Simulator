@@ -2,13 +2,13 @@ module broker{
 	module radio{
 
 		interface Box_Monitor_Radio {
-        		string GetUpdate ( in short num, out float time );
+        		string GetUpdate ( in short num, out float time, out float metres );
 		};
 
 		interface Competition_Monitor_Radio {
 		        typedef sequence<float> float_sequence;
 
-			string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time);
+			string Get_CompetitorInfo(in short lap, in short sector, in short id, out float time, out float metres);
         		float_sequence Get_CompetitionInfo(in float timeInstant, out string xmlInfo);
 		        boolean ready( in short competitorId );
 	        	float Get_CompetitionConfiguration(inout string xmlConf);

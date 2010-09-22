@@ -1,0 +1,21 @@
+\subsection{Scelta dei linguaggi}
+Per il progetto sono stati utilizzati principalmente due linguaggi (+1 in piccola parte):
+\begin{itemize}
+\item \textbf{ADA}: il linguaggio è stato utilizzato per sviluppare i layer sottostanti allo strato di presentazione. Si è valutato infatti,
+dopo le tematiche affrontate durante il corso, che sarebbe stato più agevole sviluppare un sistema multi-threaded e caratterizzato
+da forti vincoli di affidabilità e determinismo utilizzando tale linguaggio. Il forte sistema di tipi e le primitive a supporto della gestione
+dei thread e delle risorse condivise si sono infatti rivelati decisivi avere un maggior controllo sul sistema in fase di sviluppo già 
+a compile-time. Più precisamente, il linguaggio stesso ci avrebbe (e ci ha) vincolato a scrivere del codice logicamente corretto senza
+troppe iterazioni di debug.
+\item \textbf{Java}: per lo sviluppo delle interfacce grafiche è stato invece utilizzato Java. La scelta è stata dettata da vari motivi.
+Primo fra tutti la competenza. \`{E} sembrato più intuitivo poter gestire un argomento come l'interfaccia utente usando tale linguaggio.
+Non risultando infatti critiche a livello di logica e occupando il 15\% dell'intero progetto, si è pensato che per le interfacce sarebbe
+stato più che sufficiente. Anche per la competenza già acquisita di librerie come \emph{awt} e \emph{swing}.\\
+Seconda motivazione, la portabilità. La parte logica del sistema è stata concepita per girare su una macchina con il supporto di un numero di
+nodi massimo pari alla quantità di concorrenti. La TV per la visualizzazione della gara potrebbe invece essere potenzialmente avviata
+su 1000 macchine diverse. \`{E} parsa quindi una scelta abbastanza furba offrire la possibilità di utilizzare tale interfaccia in qualunque
+computer appoggiandosi alla JVM invece che doverla ricompilare e magari riadattare per ogni macchina.
+\item \textbf{Bash}: questo linguaggio di scripting è stato usato per la configurazione e l'avvio del sistema.
+\end{itemize}
+\subsection{Distribuzione e interoperabilità fra linguaggi}
+

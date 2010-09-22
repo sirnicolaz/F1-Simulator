@@ -12,6 +12,7 @@ package Box_Monitor is
 
    procedure GetUpdate(Num : in INTEGER;
                        Time : out FLOAT;
+                       PathLength : out FLOAT;
                        Returns : out Unbounded_String.Unbounded_String);
 
 end Box_Monitor;

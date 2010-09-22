@@ -48,7 +48,7 @@ package body Queue is
       Position : INTEGER;
    begin
       Position := Get_Position(Queue_In,CompetitorID_In);
-      Ada.Text_IO.Put_Line("Get_CompetitorArrivalTime " & INTEGER'IMAGE(CompetitorID_In));
+
       if( Position = 0 ) then
          return -1.0;
       end if;
@@ -81,9 +81,9 @@ package body Queue is
    function Get_ArrivalTime(Queue_In : QUEUE;
                             Position : INTEGER) return FLOAT is
    begin
-      Ada.Text_IO.Put_Line("Position " & INTEGER'IMAGE(Position) & ", Queue length " & INTEGER'IMAGE(Queue_In'LENGTH));
+
       if(Position <= Queue_In'LENGTH and Position > 0) then
-         Ada.Text_IO.Put_Line("ArrivalTime " & FLOAT'IMAGE( Queue_In(Position).ArrivalTime));
+
          return Queue_In(Position).ArrivalTime;
       else
          return -1.0;
@@ -145,39 +145,37 @@ package body Queue is
       Position_New : INTEGER := 1;
       Exit_Loop : BOOLEAN := false;
    begin
-      --Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima di get_Position, in add_Competitor2Queue");
+
       --Get the old position of the competitor in the queue
       Position_Old := Get_Position(Queue_In,CompetitorID_In);
-        --    Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : dopo di get_Position, in add_Competitor2Queue");
+
       if(Position_Old = 0) then
          --If there is a free position in the queue (for instance during
          --+the initialisation of the queue), that position has to be used
          --+ to insert the competitor
-      --         Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima di FindFreePos_Loop");
+
          FindFreePos_Loop:
          for Index in Queue_In'Range loop
-                  Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in loop, index = "&Integer'Image(Index) &", comp id: " & INTEGER'IMAGE(Queue_In(Index).CompetitorID));
+
             Position_Old := Position_Old + 1;
             exit FindFreePos_Loop when Queue_In(Index).CompetitorID = -1;
             --NEW CRITICAL: added -1 instead of 0 to deal with boxes
             --            exit FindFreePos_Loop when Queue_In(Index).CompetitorID = 0;
          end loop FindFreePos_Loop;
-    --           Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima di  add_Competitor2Queue con 4 param");
+
          Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_Old);
-  --             Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : dopo add_comp con 4 parametri");
+
       end if;
---Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : prima del  for Index in Queue_In'Range");
---Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" :  Queue_In'Range := "&Integer'Image(Queue_In'LENGTH));
+
+
       for Index in Queue_In'Range loop
-       --  Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in for, index = "&Integer'Image(Index));
-       --  Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" :  in for Queue_In'Range := "&Integer'Image(Queue_In'LENGTH));
 
          -- If the arrivalTime stored in the current Index of the queue
          --+ is greater than the new time that has to be stored, it means
          --+ that the new time has to be stored in the place of the one
          --+ in the current position (Index) of the queue.
          if Queue_In(Index).ArrivalTime >= ArrivalTime_In then
-     --       Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : nell'if");
+
             --The 2 different index assignments are due to the different
             --+shifting procedures used if the new position of the competitor
             --+in the queue is greater or less than the old one.
@@ -187,8 +185,8 @@ package body Queue is
                Position_New := Index -1;
             end if;
             Exit_Loop := true;
-    --        Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in for---IF, index = "&Integer'Image(Index));
-    --     Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" :  in for---IF Queue_In'Range := "&Integer'Image(Queue_In'LENGTH));
+
+
 
          --If either the end of the queue or the virtual
          --+ end of the queue is reched (it means that the next position
@@ -196,23 +194,16 @@ package body Queue is
          --+ anymore) the new position has to be the current one (Index).
          elsif Queue_In'LENGTH = Index or else Queue_In(Index+1).CompetitorID = -1
          then
-  --          Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in for---ELSIF, index = "&Integer'Image(Index));
---         Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" :  in for---ELSIF Queue_In'Range := "&Integer'Image(Queue_In'LENGTH));
-
-   --         Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : nell'else");
             Position_New := Index;
             Exit_Loop := true;
          end if;
-   --      Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" in loop, ne if ne else?");
-   --      Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : in for---DOPO ELSIF, index = "&Integer'Image(Index));
-  --       Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" :  in for---DOPO ELSIF Queue_In'Range := "&Integer'Image(Queue_In'LENGTH));
 
          -- When this condition is satisfied, it means that a new position
          --+ for the competitor was found before reaching the end of the
          --+ queue.
          exit when Exit_Loop;
       end loop;
---Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" : dopo il for" );
+
       if Position_Old > Position_New then
          for ShiftIndex in reverse Position_New+1..Position_Old loop
                      Queue_In(ShiftIndex) := Queue_In(ShiftIndex-1);
@@ -222,9 +213,9 @@ package body Queue is
                   Queue_In(ShiftIndex) := Queue_In(ShiftIndex+1);
          end loop;
       end if;
-      --Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" prima di add_competitor a 4 parametri prima di fine proc");
+
       Add_Competitor2Queue(Queue_In,CompetitorID_In,ArrivalTime_In,Position_New);
-      --Ada.Text_IO.Put_Line(Integer'Image(CompetitorID_In)&" dopo add_competitor a 4 parametri prima di fine proc");
+
    end;
 
 

@@ -1,0 +1,22 @@
+Onboard computer:
+	Non più risorsa protetta, ma i signoli nodi con le statistiche diventano risorse protette. In questo modo
+	non bisognerà più fare giri strani per stare in wait su una statistica riferita ad un istante di gara.
+	Quando la statistica è pronta il nodo viene settato con Initialised = true e il metodo Get si apre.
+	L'onboard computer mette a disposizione i metodi (non protetti) per attingere a queste risorse.
+	
+	Per gestire l'insieme di statistiche è sufficiente un array, che verrà allocato ad inizio gara in base al numero di checkpoint e di lap.
+	(poichè le info vengono salvate ogni checkpoint)
+	
+	INTERAZIONI
+	GlobalStats
+		Servono per ottenere informazioni calcolate con i dati di tutti i concorrenti.
+		- Best lap
+		- Best sector x
+		- Max vel
+		- Classific
+		- Stato gara
+		Le informazioni vanno richieste per un dato istante x
+
+	Competition_Monitor
+		Questa classe ha un accesso diretto alle risorse onboard computer per poter esaudire le richieste
+		dei box sui singoli competitor

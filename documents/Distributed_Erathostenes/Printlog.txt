@@ -1,0 +1,100 @@
+Partition  2 stored  2 at position  1
+>>>>>>  2 (prime located by partition  2)
+Partition  3 stored  3 at position  1
+>>>>>>  3 (prime located by partition  3)
+Partition  2 stored  2 at position  1
+ 4             (divided by 2 on partition  2)
+Partition  4 stored  5 at position  1
+>>>>>>  5 (prime located by partition  4)
+Partition  2 stored  2 at position  1
+ 6             (divided by 2 on partition  2)
+Partition  1 stored  7 at position  1
+>>>>>>  7 (prime located by partition  1)
+Partition  2 stored  2 at position  1
+ 8             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 9             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 10             (divided by 2 on partition  2)
+Partition  2 stored  11 at position  2
+>>>>>>  11 (prime located by partition  2)
+Partition  2 stored  2 at position  1
+ 12             (divided by 2 on partition  2)
+Partition  3 stored  13 at position  2
+>>>>>>  13 (prime located by partition  3)
+Partition  2 stored  2 at position  1
+ 14             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 15             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 16             (divided by 2 on partition  2)
+Partition  4 stored  17 at position  2
+>>>>>>  17 (prime located by partition  4)
+Partition  2 stored  2 at position  1
+ 18             (divided by 2 on partition  2)
+Partition  1 stored  19 at position  2
+>>>>>>  19 (prime located by partition  1)
+Partition  2 stored  2 at position  1
+ 20             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 21             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 22             (divided by 2 on partition  2)
+Partition  2 stored  23 at position  3
+>>>>>>  23 (prime located by partition  2)
+Partition  2 stored  2 at position  1
+ 24             (divided by 2 on partition  2)
+Partition  4 stored  5 at position  1
+ 25             (divided by 5 on partition  4)
+Partition  2 stored  2 at position  1
+ 26             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 27             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 28             (divided by 2 on partition  2)
+Partition  3 stored  29 at position  3
+>>>>>>  29 (prime located by partition  3)
+Partition  2 stored  2 at position  1
+ 30             (divided by 2 on partition  2)
+Partition  4 stored  31 at position  3
+>>>>>>  31 (prime located by partition  4)
+Partition  2 stored  2 at position  1
+ 32             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 33             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 34             (divided by 2 on partition  2)
+Partition  4 stored  5 at position  1
+ 35             (divided by 5 on partition  4)
+Partition  2 stored  2 at position  1
+ 36             (divided by 2 on partition  2)
+Partition  1 stored  37 at position  3
+>>>>>>  37 (prime located by partition  1)
+Partition  2 stored  2 at position  1
+ 38             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 39             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 40             (divided by 2 on partition  2)
+Partition  2 stored  41 at position  4
+>>>>>>  41 (prime located by partition  2)
+Partition  2 stored  2 at position  1
+ 42             (divided by 2 on partition  2)
+Partition  3 stored  43 at position  4
+>>>>>>  43 (prime located by partition  3)
+Partition  2 stored  2 at position  1
+ 44             (divided by 2 on partition  2)
+Partition  3 stored  3 at position  1
+ 45             (divided by 3 on partition  3)
+Partition  2 stored  2 at position  1
+ 46             (divided by 2 on partition  2)
+Partition  4 stored  47 at position  4
+>>>>>>  47 (prime located by partition  4)
+Partition  2 stored  2 at position  1
+ 48             (divided by 2 on partition  2)
+Partition  1 stored  7 at position  1
+ 49             (divided by 7 on partition  1)
+Partition  2 stored  2 at position  1
+ 50             (divided by 2 on partition  2)
+Finished calculating. Main ends.
+

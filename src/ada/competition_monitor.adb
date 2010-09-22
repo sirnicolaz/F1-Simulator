@@ -30,8 +30,9 @@ package body Competition_Monitor is
       --TODO: use that CompetitorID to recognize the caller
       procedure Ready ( CompetitorID : in INTEGER) is
       begin
+      
          ExpectedBoxes := ExpectedBoxes - 1;
-         Ada.Text_IO.Put_Line(Common.IntegerToString(ExpectedBoxes) & " boxes left");
+	Ada.Text_IO.Put_Line(INTEGER'IMAGE(ExpectedBoxes) & " expected boxes");
       end Ready;
       --TODO: maybe not necessary
       procedure Stop( CompetitorID : in INTEGER) is
@@ -42,7 +43,7 @@ package body Competition_Monitor is
       --Through this method the competition knows when to start the competitors
       entry WaitReady when ExpectedBoxes = 0 is
       begin
-         Ada.Text_IO.Put_Line("READY!!!!!");
+         --Ada.Text_IO.Put_Line("READY!!!!!");
          null;
       end WaitReady;
 
@@ -59,12 +60,6 @@ package body Competition_Monitor is
       --+ onboard computer is added (everything should already be
       --+ fine automatically once the box invokes this method, but
       --+ just for bug tracing we inserted this control)
-      if(arrayComputer(INTEGER(CompetitorID)) = null) then
-         Ada.Text_IO.Put_Line("Onboard computer null");
-      else
-         Ada.Text_IO.Put_Line("Onboard computer ok");
-      end if;
-
       if( arrayComputer(INTEGER(CompetitorID)) /= null and  IsConfigured = true) then
          CompetitionHandler.Ready(INTEGER(CompetitorID));
          return true;
@@ -96,7 +91,7 @@ package body Competition_Monitor is
       arrayComputer(indexIn):= compIn;
    end AddOBC;
 
-   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
+   procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; metres : out FLOAT; updString : out Unbounded_String.Unbounded_String) is
       ComputerIndex : INTEGER := 1;
    begin
       while OnBoardComputer.Get_Id(arrayComputer(ComputerIndex)) /= id loop
@@ -107,7 +102,8 @@ package body Competition_Monitor is
                                   lap,
                                   sector,
                                   updString,
-                                  time);
+                                  time,
+                                  metres);
 
    end Get_CompetitorInfo;
 
@@ -124,17 +120,23 @@ package body Competition_Monitor is
    begin
    
    if(IdArray1 /= null) then
+
       for Index in 1..IdArray1.all'LENGTH loop
+      Ada.Text_IO.Put_Line("Array 1, id = " & INTEGER'IMAGE(IdArray1(Index)) & ", time" & FLOAT'IMAGE(TimeArray1(Index)));
 	MergedArraySize := MergedArraySize + 1;
       end loop;
    end if;
    
    if(IdArray2 /= null) then
+
       for Index in 1..IdArray2.all'LENGTH loop
+      Ada.Text_IO.Put_Line("Array 2, id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
 	Copy := TRUE;
 	for Indez in 1..IdArray1.all'LENGTH loop
+
 	  if(IdArray1.all(Indez) = IdArray2.all(Index)) then
 	    Copy := FALSE;
+	    Ada.Text_IO.Put_Line("Copy false");
 	    exit;
 	  end if;
 	end loop;
@@ -145,26 +147,59 @@ package body Competition_Monitor is
 	end if;
       end loop;
    end if;
-   
+
    IdArrayOut := new INTEGER_ARRAY(1..MergedArraySize);
    TimeArrayOut := new FLOAT_ARRAY(1..MergedArraySize);
    
    if(IdArray1 /= null) then
+
     for Index in 1..IdArray1.all'LENGTH loop
+    Ada.Text_IO.Put_Line("Array 1 again , id = " & INTEGER'IMAGE(IdArray1(Index)) & ", time" & FLOAT'IMAGE(TimeArray1(Index)));
       IdArrayOut.all(Index) := IdArray1.all(Index);
       TimeArrayOut.all(Index) := TimeArray1.all(Index);
     end loop;
    end if;
    
-   for Index in IdArray1.all'LENGTH+1..MergedArraySize loop
-    if(IdArray2.all(Index) /= -1) then
-      IdArrayOut.all(Index) := IdArray2.all(Index);
-      TimeArrayOut.all(Index) := TimeArray2.all(Index);
-    end if;
-   end loop;
+   
+   if(IdArray1 /= null and IdArray2 /= null) then
+   declare 
+	MergedArray_IndexCount : INTEGER := 0;
+   begin
+	for Index in 1..IdArray2.all'LENGTH loop --IdArray1.all'LENGTH+1..MergedArraySize loop
+	Ada.Text_IO.Put_Line("Array 2 again nothing null , id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
+	  if(IdArray2.all(Index) /= -1) then
+	    IdArrayOut.all(IdArray1.all'LENGTH+1+MergedArray_IndexCount) := IdArray2.all(Index);
+	    TimeArrayOut.all(IdArray1.all'LENGTH+1+MergedArray_IndexCount) := TimeArray2.all(Index);
+	    MergedArray_IndexCount := MergedArray_IndexCount + 1;
+	  end if;
+	end loop;
+   end;
+   elsif(IdArray1 = null and IdArray2 /= null) then
+
+	for Index in 1..MergedArraySize loop
+	Ada.Text_IO.Put_Line("Array 2 again nothing 1 null, id = " & INTEGER'IMAGE(IdArray2(Index)) & ", time" & FLOAT'IMAGE(TimeArray2(Index)));
+	  if(IdArray2.all(Index) /= -1) then
+	    IdArrayOut.all(Index) := IdArray2.all(Index);
+	    TimeArrayOut.all(Index) := TimeArray2.all(Index);
+	  end if;
+	end loop;
+   end if;
    
    end Merge;
    
+   function Is_Present(ID : INTEGER;
+		       IdArray : INTEGER_ARRAY_POINT) return BOOLEAN is
+   begin
+      if(IdArray /= null) then
+	for Index in IdArray.all'RANGE loop
+	    if(IdArray.all(Index) = ID) then
+		return TRUE;
+	    end if;
+	end loop;
+      end if;
+      return FALSE;
+   end Is_Present;
+
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
                                  ClassificationTimes : out FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String) is
@@ -189,12 +224,12 @@ package body Competition_Monitor is
       LappedCompetitors_CurrentLap : INTEGER_ARRAY_POINT;
    begin
       CompetitionHandler.WaitReady;
-      Ada.Text_IO.Put_Line("A TV is really asking");
+
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & FLOAT'IMAGE(TimeInstant) & """><competitors>");
       for Index in arrayComputer'RANGE loop
-         Ada.Text_IO.Put_Line("Asking stat for pc " & INTEGER'IMAGE(Index));
+
          CompetitionComputer.Get_StatsByTime(Competitor_ID => OnboardComputer.Get_ID(arrayComputer(Index)),
                                Time        => TimeInstant,
                                Stats_In    => Tmp_Stats);
@@ -215,15 +250,23 @@ package body Competition_Monitor is
          end if;
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-           ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """" &
-            " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """" &
-            " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>" &
-            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" &
+           ("<competitor end=""" & BOOLEAN'IMAGE(CompetitionComputer.Has_CompetitorFinished(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(  
+            " retired=""" & BOOLEAN'IMAGE(CompetitionComputer.Is_CompetitorOut(OnboardComputer.Get_ID(arrayComputer(Index)),TimeInstant)) & """");
+
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
+            " id=""" & Common.IntegerToString(OnboardComputer.Get_Id(arrayComputer(Index))) & """>");
+
+         Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
+            "<checkpoint pitstop=""" & BOOLEAN'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.IntegerToString(Tmp_Stats.Checkpoint) & "</checkpoint>" );
+
+Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(   
             "<lap>" & Common.IntegerToString(Tmp_Stats.Lap) & "</lap>" &
             "<sector>" & Common.IntegerToString(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
-         Ada.Text_IO.Put_Line("Stat got: competitor "& Common.IntegerToString(Get_ID(arrayComputer(Index))) &"lap " & Common.IntegerToString(Tmp_Stats.Lap));
+
          
          declare
 	  HighestCompletedLapThisCompetitor : INTEGER;
@@ -303,7 +346,7 @@ package body Competition_Monitor is
 
          for Index in 1..CompetitorID_InClassific.all'LENGTH loop
 
-            Ada.Text_IO.Put_Line("Creating classific");
+
             Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
               ("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
                "<lap>" & Common.IntegerToString(HighestCompletedLap) & "</lap>" &
@@ -314,7 +357,7 @@ package body Competition_Monitor is
          if(HighestCompletedLap /= 0) then
 	  for Index in CompetitorID_InClassific.all'LENGTH+1..CompetitorIDs_WithTimes.all'LENGTH loop
 
-	      Ada.Text_IO.Put_Line("Creating previous classific");
+
 	      Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 		("<competitor id=""" & Common.IntegerToString(CompetitorIDs_WithTimes(Index)) & """>" &
 		"<lap>" & Common.IntegerToString(HighestCompletedLap-1) & "</lap>" &
@@ -325,10 +368,12 @@ package body Competition_Monitor is
 
          if(LappedCompetitors_ID /= null) then
             for Index in 1..LappedCompetitors_ID.all'LENGTH loop
-               Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
-                 ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
-                  "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
-                  "</competitor>");
+		if(Is_Present(LappedCompetitors_ID(Index),CompetitorIDs_WithTimes) = FALSE) then
+		  Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
+		    ("<competitor id=""" & Common.IntegerToString(LappedCompetitors_ID(Index)) & """>" &
+		     "<lap>" & Common.IntegerToString(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
+		     "</competitor>");
+		end if;
             end loop;
          end if;
 
