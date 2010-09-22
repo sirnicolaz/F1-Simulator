@@ -1,7 +1,10 @@
 with Common;
 use Common;
 
-package CompetitionComputer is
+with Classification_Handler;
+use Classification_Handler;
+
+package Competition_Computer is
 
    type COMPETITOR_MIN_INFO is private;
 
@@ -134,10 +137,6 @@ package CompetitionComputer is
                                  Competitor_IDs : out INTEGER_ARRAY;
                                  Laps : out INTEGER_ARRAY);
 
-   procedure Get_LapTime(Competitor_ID : INTEGER;
-                         Lap : INTEGER;
-                         Time : out FLOAT);
-
    procedure Get_LapClassific(Lap : INTEGER;
                               TimeInstant : FLOAT;
                               CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
@@ -157,91 +156,6 @@ package CompetitionComputer is
                                   Competitor_IDs : out INTEGER_ARRAY_POINT;
                                   Competitor_Lap : out INTEGER_ARRAY_POINT);
 
-   -- stats_row : single row of the synch_ordered_classification_table
-   type STATS_ROW is private;
-   --     -- These functions are only for test purpose
-   function Get_StatsRow(Competitor_Id_In : INTEGER;
-                         Time_In : FLOAT) return STATS_ROW;
-
-   function Get_CompetitorId(Row : STATS_ROW) return INTEGER;
-   function Get_Time(Row : STATS_ROW) return FLOAT;
-   -- end test functions ----------------------------
-
-   function "<" (Left, Right : STATS_ROW) return BOOLEAN;
-
-   -- classification_table : table in synch_ordered_classification_table
-   type CLASSIFICATION_TABLE is array(POSITIVE range <>) of STATS_ROW;
-   type CLASSIFICATION_TABLE_POINT is access CLASSIFICATION_TABLE;
-
---   function getClassification(global_In : in GLOBAL_STATS_HANDLER_POINT ) return CLASSIFICATION_TABLE;--return the last classific available
-
-   -- return the last classificationtable complete
-   -- updated the calssificationtable with the info of the competitor
-
-   --procedure updateClassification(global_In : in GLOBAL_STATS_HANDLER_POINT; competitorID_In : INTEGER;
-  --                                competitorInfo_In : COMPETITOR_STATS);
-   --create new classificationtable to update info of the competitor
-   --function createNew return CLASSIFICATION_TABLE;
-   --verify and eventually update the stats about best performance in the race
- --  function updateStats(competitorInfo_In : COMPETITOR_STATS) return boolean;
-
-   --TODO: non ha senso che sia una risorsa protetta dal momento che viene usata solo in questo
-   --package da una risorsa a sua volta protetta. Quindi cambiare.
-   -- Resource used to maintain statistics ordered and mutually-exclusive accessible
-   -- synch_ordered_classification_table : ordered table with all methods to insert, delete, .. in the classification_table
-   protected type SYNCH_ORDERED_CLASSIFICATION_TABLE is
-      procedure Init_Table(NumRows : INTEGER);
-      procedure Remove_Competitor;
-      procedure Add_Row(Row_In : STATS_ROW;
-                        Index_In : INTEGER);
-      procedure Add_Row(Row_In : STATS_ROW);
-      procedure Remove_Row(Index_In : INTEGER;
-                           Row_Out : in out STATS_ROW);
-      procedure Delete_Row(Index_In : INTEGER);
-      procedure Shift_Down(Index_In : INTEGER);
-      function Get_Row(Index_In : INTEGER) return STATS_ROW;
-      function Find_RowIndex(CompetitorId_In : INTEGER) return INTEGER;
-      procedure Is_Full(Full_Out : out BOOLEAN);
-      function Get_Size return INTEGER;
-   private
-      Id : INTEGER;
-      Statistics : CLASSIFICATION_TABLE_POINT;
-      Full : BOOLEAN := false;
-   end SYNCH_ORDERED_CLASSIFICATION_TABLE;
-
-   -- SOCT is for Synch Ordered Classification Table
-   type SOCT_POINT is access SYNCH_ORDERED_CLASSIFICATION_TABLE;
-   type SOCT_ARRAY is array(POSITIVE range <>) of SOCT_POINT;
-   type SOCT_ARRAY_POINT is access SOCT_ARRAY;
-
-   -- soct_node : single node which represent one synch_ordered_classification_table
-   type SOCT_NODE is private;
-   type SOCT_NODE_POINT is access SOCT_NODE;
-
-     -- FUNCTION OF SOCT_NODE -- TEST ---------------------------------------
-   function Get_PreviousNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT;
-
-   function Get_NextNode( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_NODE_POINT;
-
-   function Get_NodeContent( SynchOrdStatTabNode : SOCT_NODE_POINT ) return SOCT_POINT;
-
-   function IsLast(SynchOrdStatTabNode : SOCT_NODE_POINT) return BOOLEAN;
-
-   function IsFirst(SynchOrdStatTabNode : SOCT_NODE_POINT) return BOOLEAN;
-
-   function Get_Index(SynchOrdStatTabNode : SOCT_NODE_POINT) return INTEGER;
-
-   procedure Init_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT); -- inizializza un nodo
-
-
-   procedure Set_Node(SynchOrdStatTabNode : in out SOCT_NODE_POINT; Value : SOCT_POINT );
-
-   procedure Set_PreviousNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT ; Value : in out SOCT_NODE_POINT);
-
-   procedure Set_NextNode(SynchOrdStatTabNodePoint : in out SOCT_NODE_POINT; Value : in out SOCT_NODE_POINT );
-   -----------------------------------------------------------
-
-
 private
 
    --OPTIMEZER because of the LastAccessedPosition that allows to optimize the number of positions
@@ -259,28 +173,11 @@ private
       Last_Lap : INTEGER := -1;
    end record;
 
-
-   type SOCT_NODE is record -- this is the table of classification
-      Index : INTEGER;
-      IsLast : BOOLEAN;
-      IsFirst : BOOLEAN;
-      Previous : SOCT_NODE_POINT;
-      This : SOCT_POINT;
-      Next : SOCT_NODE_POINT;
-   end record;
-
-
-   type STATS_ROW is record
-      Competitor_Id : INTEGER;
-      Time : FLOAT;
-      end record;
-
-
-
    type COMPETITOR_MIN_INFO is record
       Name : Unbounded_String.Unbounded_String;
       Surname : Unbounded_String.Unbounded_String;
       Team : Unbounded_String.Unbounded_String;
    end record;
 
-end CompetitionComputer;
+end Competition_Computer;
+

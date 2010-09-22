@@ -3,11 +3,11 @@ use Common;
 
 with Ada.Strings.Unbounded;
 
-with CompetitionComputer;
-use CompetitionComputer;
+with Competition_Computer;
+use Competition_Computer;
 
 --This package represents the statistics of each competitor.
-package OnBoardComputer is
+package Competitor_Computer is
 
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
@@ -60,9 +60,6 @@ package OnBoardComputer is
                          Time_In : out FLOAT;
                          Metres : out FLOAT);
 
-
-
-
 private
 
    type COMPUTER is record
@@ -89,4 +86,4 @@ private
       Metres : FLOAT;
    end record;
 
-end OnBoardComputer;
+end Competitor_Computer;
