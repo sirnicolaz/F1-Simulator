@@ -55,9 +55,9 @@ package body Box_Data is
    end Search_Node;
 
 
-   protected body SYNCH_COMPETITION_UPDATES is
+   protected body Synch_Competition_Updates is
 
-      procedure Add_Data(CompetitionUpdate_In : COMPETITION_UPDATE_POINT) is
+      procedure Add_Data(CompetitionUpdate_In : Competition_Update_Point) is
          New_Update : INFO_NODE_POINT := new INFO_NODE;
 
       begin
@@ -111,16 +111,16 @@ package body Box_Data is
          return Updated;
       end;
 
-   end SYNCH_COMPETITION_UPDATES;
+   end Synch_Competition_Updates;
 
-   protected body SYNCH_STRATEGY_HISTORY is
+   protected body Synch_Strategy_History is
 
       procedure Init( Lap_Qty : in INTEGER ) is
       begin
-         history := new STRATEGY_HISTORY(0..Lap_Qty);
+         history := new Strategy_History(0..Lap_Qty);
       end Init;
 
-      procedure AddStrategy( Strategy_in : in STRATEGY ) is
+      procedure AddStrategy( Strategy_in : in Strategy ) is
       begin
 
          history.all(history_size) := Strategy_in;
@@ -128,12 +128,12 @@ package body Box_Data is
          Updated := true;
 
          exception when Constraint_Error =>
-            Ada.Text_IO.Put("Either the resource SYNCH_STRATEGY_HISTORY not initialised or ");
+            Ada.Text_IO.Put("Either the resource Synch_Strategy_History not initialised or ");
             Ada.Text_IO.Put("the history array has had an access violation.");
       end AddStrategy;
 
-      entry Get_Strategy( NewStrategy : out STRATEGY ;
-                 Lap : in INTEGER) when Updated is
+      entry Get_Strategy(NewStrategy : out Strategy;
+                         Lap : in INTEGER) when Updated is
       begin
 
 
@@ -161,9 +161,9 @@ package body Box_Data is
          return TotalPitStops;
       end Get_PitStopDone;
 
-   end SYNCH_STRATEGY_HISTORY;
+   end Synch_Strategy_History;
 
-   protected body SYNCH_ALL_INFO_BUFFER is
+   protected body Synch_ALL_INFO_BUFFER is
       procedure Init( Size : POSITIVE) is
       begin
          Info_List := new ALL_INFO_ARRAY(1..Size);
@@ -189,25 +189,25 @@ package body Box_Data is
          requeue Get_Info;
       end Wait;
 
-      procedure Add_Info(Update_In : EXT_COMPETITION_UPDATE ) is
+      procedure Add_Info(Update_In : Extended_Competition_Update ) is
       begin
 
          Info_Qty := Info_Qty + 1;
-         Info_List.all(Info_Qty).PerSectorUpdate := new EXT_COMPETITION_UPDATE;
-         Info_List.all(Info_Qty).PerSectorUpdate.all := Update_In;
+         Info_List.all(Info_Qty).Per_Sector_Update := new Extended_Competition_Update;
+         Info_List.all(Info_Qty).Per_Sector_Update.all := Update_In;
          Updated := true;
       end Add_Info;
 
-      procedure Add_Info(Update_In : EXT_COMPETITION_UPDATE;
-                         Strategy_In : STRATEGY) is
+      procedure Add_Info(Update_In : Extended_Competition_Update;
+                         Strategy_In : Strategy) is
       begin
          Add_Info(Update_In);
 
-         Info_List.all(Info_Qty).StrategyUpdate := new STRATEGY;
-         Info_List.all(Info_Qty).StrategyUpdate.all := Strategy_In;
+         Info_List.all(Info_Qty).Strategy_Update := new Strategy;
+         Info_List.all(Info_Qty).Strategy_Update.all := Strategy_In;
       end Add_Info;
 
-   end SYNCH_ALL_INFO_BUFFER;
+   end Synch_ALL_INFO_BUFFER;
 
 
 
@@ -215,8 +215,8 @@ package body Box_Data is
       Tmp_String : Unbounded_String.Unbounded_String;
    begin
 
-      if(Data.StrategyUpdate /= null) then
-         Tmp_String := Unbounded_String.To_Unbounded_String(BoxStrategyToXML(Data.StrategyUpdate.all));
+      if(Data.Strategy_Update /= null) then
+         Tmp_String := Unbounded_String.To_Unbounded_String(BoxStrategyToXML(Data.Strategy_Update.all));
       else
          Tmp_String := Unbounded_String.To_Unbounded_String("");
       end if;
@@ -230,14 +230,14 @@ package body Box_Data is
 
       Tmp_String := Unbounded_String.To_Unbounded_String
         ("<status>" &
-         "<gasLevel>" & Common.FloatToString(Data.PerSectorUpdate.GasLevel) & "</gasLevel>" &
-         "<tyreUsury>" & Common.FloatToString(Data.PerSectorUpdate.TyreUsury) & "</tyreUsury>" &
-         "<lap>" & Common.IntegerToString(Data.PerSectorUpdate.Lap) & "</lap> " &
-         "<sector>" & Common.IntegerToString(Data.PerSectorUpdate.Sector) & "</sector>" &
-         --"<metres>" & Common.FloatToString(Data.PerSectorUpdate.PathLength) & "</metres>" &
-         "<meanTyreUsury>" & Common.FloatToString(Data.PerSectorUpdate.MeanTyreUsury) & "</meanTyreUsury>" &
-         "<meanGasConsumption>" & Common.FloatToString(Data.PerSectorUpdate.MeanGasConsumption) & "</meanGasConsumption>" &
-         "<maxSpeed>" & Common.FloatToString(Data.PerSectorUpdate.MaxSpeed) & "</maxSpeed>" &
+         "<gasLevel>" & Common.FloatToString(Data.Per_Sector_Update.Gas_Level) & "</gasLevel>" &
+         "<tyreUsury>" & Common.FloatToString(Data.Per_Sector_Update.Tyre_Usury) & "</tyreUsury>" &
+         "<lap>" & Common.IntegerToString(Data.Per_Sector_Update.Lap) & "</lap> " &
+         "<sector>" & Common.IntegerToString(Data.Per_Sector_Update.Sector) & "</sector>" &
+         --"<metres>" & Common.FloatToString(Data.Per_Sector_Update.PathLength) & "</metres>" &
+         "<meanTyreUsury>" & Common.FloatToString(Data.Per_Sector_Update.Mean_Tyre_Usury) & "</meanTyreUsury>" &
+         "<meanGasConsumption>" & Common.FloatToString(Data.Per_Sector_Update.Mean_Gas_Consumption) & "</meanGasConsumption>" &
+         "<maxSpeed>" & Common.FloatToString(Data.Per_Sector_Update.Max_Speed) & "</maxSpeed>" &
          "</status>" );
 
       return Tmp_String;
@@ -246,16 +246,16 @@ package body Box_Data is
    function Get_Metres ( Data : ALL_INFO ) return FLOAT is
    begin
 
-      return Data.PerSectorUpdate.PathLength;
+      return Data.Per_Sector_Update.Path_Length;
    end Get_Metres;
 
    function Get_Time ( Data : ALL_INFO ) return FLOAT is
    begin
 
-      return Data.PerSectorUpdate.Time;
+      return Data.Per_Sector_Update.Time;
    end Get_Time;
 
-   function BoxStrategyToXML(Strategy_in : STRATEGY) return STRING is
+   function BoxStrategyToXML(Strategy_in : Strategy) return STRING is
 
 
       Style : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
@@ -283,7 +283,7 @@ package body Box_Data is
 
       XML_STring := XML_String &
       Unbounded_String.To_Unbounded_String("<tyreType>") &
-      Strategy_in.Type_Tyre &
+      Strategy_in.Tyre_Type &
       Unbounded_String.To_Unbounded_String("</tyreType>");
 
 
@@ -296,7 +296,7 @@ package body Box_Data is
 
       XML_String := XML_String &
       Unbounded_String.To_Unbounded_String("<gasLevel>") &
-      FloatToString(Strategy_in.GasLevel) &
+      FloatToString(Strategy_in.Gas_Level) &
       Unbounded_String.To_Unbounded_String("</gasLevel>");
 
 

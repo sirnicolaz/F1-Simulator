@@ -16,7 +16,7 @@ package Common is
    use type Unbounded_String.Unbounded_String;
 
    subtype PERCENTAGE is FLOAT range 0.0..100.0;
-   type DRIVING_STYLE is (AGGRESSIVE,NORMAL,CONSERVATIVE);
+   type Driving_Style is (AGGRESSIVE,NORMAL,CONSERVATIVE);
    subtype ANGLE_GRADE is FLOAT range 0.0..360.00;
    subtype DIFFICULTY_RANGE is FLOAT range 0.0..10.0;
    subtype GRIP_RANGE is FLOAT range 0.0..10.0;

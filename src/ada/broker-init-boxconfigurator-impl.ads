@@ -2,6 +2,7 @@ with CORBA;
 with PortableServer;
 
 with Broker.Init.BoxConfigurator;
+with Artificial_Intelligence;
 
 with Ada.Strings.Unbounded;
 with Box;
@@ -21,7 +22,7 @@ package Broker.Init.BoxConfigurator.Impl is
       entry Get_CompetitorID ( CompetitorID_Out : out INTEGER);
       entry Get_CircuitLength ( CircuitLength_Out : out Standard.FLOAT);
       entry Get_CompetitionMonitor_CorbaLOC ( CMon_CorbaLOC_Out : out Unbounded_String.Unbounded_String );
-      entry Get_BoxStrategy ( BoxStrategy_out : out Box.BOX_STRATEGY );
+      entry Get_BoxStrategy ( BoxStrategy_out : out Artificial_Intelligence.BOX_STRATEGY );
       entry Get_GasTankCapacity ( GasTankCapacity_Out : out Standard.FLOAT);
       entry Get_InitialGasLevel ( InitialGasLevel_Out : out Standard.FLOAT);
       entry Get_InitialTyreType ( InitialTyreType_Out : out Unbounded_String.Unbounded_String);
@@ -29,7 +30,7 @@ package Broker.Init.BoxConfigurator.Impl is
       procedure Set_CompetitorID ( CompetitorID_In : in INTEGER);
       procedure Set_CircuitLength ( CircuitLength_In : in Standard.FLOAT);
       procedure Set_CompetitionMonitor_CorbaLOC ( CMon_CorbaLoc_In : in Unbounded_String.Unbounded_String);
-      procedure Set_BoxStrategy( BoxStrategy_In : in Box.BOX_STRATEGY);
+      procedure Set_BoxStrategy( BoxStrategy_In : in Artificial_Intelligence.BOX_STRATEGY);
       procedure Set_GasTankCapacity ( GasTankCapacity_in : in Standard.FLOAT);
       procedure Set_InitialGasLevel ( InitialGasLevel_in : in Standard.FLOAT);
       procedure Set_InitialTyreType ( InitialTyreType_in : in Unbounded_String.Unbounded_String);
@@ -38,7 +39,7 @@ package Broker.Init.BoxConfigurator.Impl is
       CompetitionMonitor_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       CompetitorID : INTEGER := -1;
       CircuitLength : Standard.FLOAT := -1.0;
-      BoxStrategy : Box.BOX_STRATEGY := Box.NULL_STRATEGY;
+      BoxStrategy : Artificial_Intelligence.BOX_STRATEGY := Artificial_Intelligence.NULL_STRATEGY;
       GasTankCapacity : Standard.FLOAT := -1.0;
       InitialGasLevel : Standard.FLOAT := -1.0;
       InitialTyreType : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;

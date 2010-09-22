@@ -175,18 +175,18 @@ package body Competitor is
          Current_Node := Item(car_XML, 0);
 
          car_XML := Child_Nodes(Current_Node);
-         Max_Speed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Max_Speed"))));
-         Max_Acceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Max_Acceleration"))));
-         Gas_Tank_Capacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Gas_Tank_Capacity"))));
+         Max_Speed_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxspeed"))));
+         Max_Acceleration_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"maxacceleration"))));
+         Gas_Tank_Capacity_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gastankcapacity"))));
          Engine_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"engine"))));
-         Tyre_Usury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Tyre_Usury"))));
-         Gasoline_Level_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Gasoline_Level"))));
+         Tyre_Usury_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"tyreusury"))));
+         Gasoline_Level_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
 
          Mixture_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
 
          --Ada.Strings.Unbounded.Text_IO.Put_Line(Mixture_In);
          Model_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
-         Tyre_Type_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Tyre_Type"))));
+         Tyre_Type_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
          --Car_Temp := new CAR;
          --Mixture_In := "morbidaxxxxxxxxxxxxx";
 --           Model_In := "michelinxxxxxxxxxxxx";
@@ -247,8 +247,8 @@ package body Competitor is
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
          Team_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
-         First_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"First_Name"))));
-         Last_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"Last_Name"))));
+         First_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
+         Last_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
          --Car_Temp := new CAR;
          --Team_In := "Ferrari";
          --First_Name_In := "Fernando";
@@ -274,6 +274,7 @@ package body Competitor is
       RadioConnection_Success : BOOLEAN := false;
    begin
 
+      Ada.Text_IO.Put_Line("Begin");
       --apertura del file
       Try_OpenFile;
       --configurazione parametri
@@ -282,28 +283,35 @@ package body Competitor is
       --+ prima di iniziare la gare
       --carDriver.Current_Strategy := Configure_Strategy_File(doc);
 
-
+      Ada.Text_IO.Put_Line("Configure car");
       carDriver.Racing_Car := Configure_Car_File(doc);
 
+      Ada.Text_IO.Put_Line("Configure Racing driver");
       carDriver.Racing_Driver := Configure_Driver_File(doc);
+      Ada.Text_IO.Put_Line("Configure Race iterator");
       carDriver.Current_Circuit_Race_Iterator :=Current_Circuit_Race_Iterator ;
+      Ada.Text_IO.Put_Line("Configure id");
       carDriver.Id:=id_In;
 
       --Init onboard computer
+      Ada.Text_IO.Put_Line("Init Computer");
       OnboardComputer.Init_Computer(Computer_In     => carDriver.On_Board_Computer ,
                                     CompetitorId_In => id_in,
                                     Laps            => laps_in);
 
       --Adding minimal information to stats (for presentation purspose)
+      Ada.Text_IO.Put_Line("Adding min info");
       CompetitionComputer.Add_CompetitorMinInfo(Id      => id_in,
                                                 Name    => carDriver.Racing_Driver.First_Name,
                                                 Surname => carDriver.Racing_Driver.Last_Name,
                                                 Team    => carDriver.Racing_Driver.Team);
 
       --Initializing onboard computer references in the Competition Monitor
+      Ada.Text_IO.Put_Line("Add obc");
       Competition_Monitor.AddOBC(carDriver.On_Board_Computer ,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
       --+ (probably other problems are occured in such a case)
+      Ada.Text_IO.Put_Line("Connecting to box");
       loop CompetitorRadio.Init_BoxConnection(BoxRadio_CorbaLOC => BoxRadio_CorbaLOC,
                                             Radio             => carDriver.Radio,
                                             ID                => carDriver.Id,
@@ -638,7 +646,7 @@ package body Competitor is
          Current_Node := Item(Config,0);
 
          Tmp_Strategy.Tyre_Type := Str.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"tyreType"))));
-         Tmp_Strategy.Gas_Level := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"Gas_Level"))));
+         Tmp_Strategy.Gas_Level := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"gasLevel"))));
          Tmp_Strategy.PitStopLaps := Integer'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopLaps"))));
          Tmp_Strategy.PitStopDelay := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"pitStopDelay"))));
 

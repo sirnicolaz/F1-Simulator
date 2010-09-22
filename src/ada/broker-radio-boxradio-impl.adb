@@ -38,6 +38,9 @@ package body Broker.Radio.BoxRadio.impl is
 
       StrategyHistory.Get_Strategy(NewStrategy,INTEGER(lap));
 
+
+      Ada.Text_IO.Put_Line("Strategy got");
+
       Temp_String := Temp_String & Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          Box_Data.BoxStrategyToXML(NewStrategy));

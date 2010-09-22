@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <config>
 <name>
-Monza</name>
+Indianapolis</name>
 <circuitConfigFile>race.xml</circuitConfigFile>
-<competitorQty>3</competitorQty>
+<competitorQty>1</competitorQty>
 <laps>10</laps>
 </config>

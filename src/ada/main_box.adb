@@ -4,6 +4,7 @@ with Ada.Command_Line;
 with Box;
 with Box_Data;
 with Box_Monitor;
+with Artificial_Intelligence;
 
 with Broker.Radio.BoxRadio.impl;
 use Broker.Radio.BoxRadio.impl;
@@ -179,7 +180,7 @@ begin
       Laps : INTEGER := -1;
       CircuitLength : FLOAT := -1.0;
       CompetitorID : INTEGER := -1;
-      BoxStrategy : Box.BOX_STRATEGY := Box.NULL_STRATEGY;
+      BoxStrategy : Artificial_Intelligence.BOX_STRATEGY := Artificial_Intelligence.NULL_STRATEGY;
       InitialGasLevel : Common.FLOAT_POINT := new FLOAT;
       InitialTyreType : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       InitialTyreType_StdStr : Common.STRING_POINT;

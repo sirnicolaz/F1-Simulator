@@ -38,7 +38,7 @@ package body Broker.Init.BoxConfigurator.Impl is
          CompetitorID_out := CompetitorID;
       end Get_CompetitorID;
 
-      entry Get_BoxStrategy ( BoxStrategy_out : out Box.BOX_STRATEGY ) when Initialized is
+      entry Get_BoxStrategy ( BoxStrategy_out : out Artificial_Intelligence.Box_Strategy ) when Initialized is
       begin
          BoxStrategy_out := BoxStrategy;
       end Get_BoxStrategy;
@@ -94,7 +94,7 @@ package body Broker.Init.BoxConfigurator.Impl is
          end if;
       end Set_CompetitionMonitor_CorbaLOC;
 
-      procedure Set_BoxStrategy( BoxStrategy_In : in Box.BOX_STRATEGY ) is
+      procedure Set_BoxStrategy( BoxStrategy_In : in Artificial_Intelligence.Box_Strategy ) is
       begin
          BoxStrategy := BoxStrategy_In;
          ConfiguredParameters := ConfiguredParameters + 1;
@@ -141,7 +141,7 @@ package body Broker.Init.BoxConfigurator.Impl is
                       config_file : CORBA.STRING) return CORBA.STRING is
       CompetitionMonitor_CorbaLOC : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       BoxStrategy_Str : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
-      BoxStrategy : Box.BOX_STRATEGY;
+      BoxStrategy : Artificial_Intelligence.Box_Strategy;
       InitialTyreType : Unbounded_String.Unbounded_String := Unbounded_String.Null_Unbounded_String;
       CircuitLength : Standard.FLOAT;
       InitialGasLevel : Standard.FLOAT;
@@ -170,13 +170,13 @@ package body Broker.Init.BoxConfigurator.Impl is
       BoxStrategy_Str := Unbounded_String.To_Unbounded_String(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"boxStrategy"))));
 
       if(BoxStrategy_Str = "CAUTIOUS" ) then
-         BoxStrategy := Box.CAUTIOUS;
+         BoxStrategy := Artificial_Intelligence.Cautious;
       elsif ( BoxStrategy_Str = "RISKY" ) then
-         BoxStrategy := Box.RISKY;
+         BoxStrategy := Artificial_Intelligence.RISKY;
       elsif (BoxStrategy_Str = "FOOL") then
-         BoxStrategy := Box.FOOL;
+         BoxStrategy := Artificial_Intelligence.FOOL;
       else
-         BoxStrategy := Box.NORMAL;
+         BoxStrategy := Artificial_Intelligence.NORMAL;
       end if;
 
 
