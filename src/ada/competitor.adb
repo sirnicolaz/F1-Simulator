@@ -1127,5 +1127,31 @@ package body Competitor is
       CompetitorRadio.Close_BOxCOnnection(Radio => carDriver.Radio);
    end TASKCOMPETITOR;
 
+   function Get_Tyre_Usury(Competitor_In : Competitor_Details_Point) return Common.Percentage is
+   begin
+      return Competitor_In.Racing_Car.Tyre_Usury;
+   end Get_Tyre_Usury;
+
+   function Get_Gasoline_Level(Competitor_In : Competitor_Details_Point) return Float is
+   begin
+      return Competitor_In.Racing_Car.Gasoline_Level;
+   end Get_Gasoline_Level;
+
+   function Get_Max_Acceleration(Competitor_In : Competitor_Details_Point) return Float is
+   begin
+      return Competitor_In.Racing_Car.Max_Acceleration;
+   end Get_Max_Acceleration;
+
+   function Get_Last_Speed_Reached(Competitor_In : Competitor_Details_Point) return Float is
+   begin
+      return Competitor_In.Racing_Car.Last_Speed_Reached;
+   end Get_Last_Speed_Reached;
+
+   function Get_Strategy_Style(Competitor_In : Competitor_Details_Point) return Common.Driving_Style is
+   begin
+      return Competitor_In.Current_Strategy.Style;
+   end Get_Strategy_Style;
+
+
 end Competitor;
 
