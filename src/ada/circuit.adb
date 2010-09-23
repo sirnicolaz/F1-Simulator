@@ -10,52 +10,19 @@ package body Circuit is
       MaxCompetitors_Qty := Qty_In;
    end Set_MaxCompetitorsQty;
 
-   --PATH methods implementation
-   procedure Set_Values(Path_In : in out PATH;
-                        Length_In : FLOAT;
-                        Angle_In : ANGLE_GRADE;
-                        Grip_In : GRIP_RANGE;
-                        Difficulty_In : DIFFICULTY_RANGE) is
-   begin
-      Path_In.Length := Length_In;
-      Path_In.Angle := Angle_In;
-      Path_In.Difficulty := Difficulty_In;
-      Path_In.Grip := Grip_In;
-   end Set_Values;
-
-   function Get_Length(Path_In : PATH) return FLOAT is
-   begin
-      return Path_In.Length;
-   end Get_Length;
-
-   function Get_Angle(Path_In : PATH) return FLOAT is
-   begin
-      return Path_In.Angle;
-   end Get_Angle;
-
-   function Get_Grip(Path_In : PATH) return FLOAT is
-   begin
-      return Path_In.Grip;
-   end Get_Grip;
-
-   function Get_Difficulty(Path_In : PATH) return FLOAT is
-   begin
-      return Path_In.Difficulty;
-   end Get_Difficulty;
-
-   --Method for initialising the paths of the box
-   procedure Init_BoxLanePaths(Paths_Collection_In : in out POINT_PATHS;
+   --Method for initialising the Paths of the box
+   procedure Init_BoxLanePaths(Paths_Collection_In : in out Paths_Point;
                                Competitor_Qty : INTEGER;
                                Length : FLOAT) is
    begin
-      Paths_Collection_In := new PATHS(1..Competitor_Qty);
+      Paths_Collection_In := new Paths(1..Competitor_Qty);
       for index in 1..Competitor_Qty loop
          Set_Values(Paths_Collection_In.all(index),Length ,ANGLE_GRADE(180.0),GRIP_RANGE(5.0),DIFFICULTY_RANGE(1.0));
       end loop;
    end Init_BoxLanePaths;
 
    --Checkpoint methods implementation
-   procedure Set_Values(Checkpoint_In : in out POINT_Checkpoint;
+   procedure Set_Values(Checkpoint_In : in out Checkpoint_Point;
                         SectorID_In : INTEGER;
                         IsGoal_In : BOOLEAN;
                         Length_In : FLOAT; -- y
@@ -69,9 +36,9 @@ package body Circuit is
                         IsFirstOfTheSector : BOOLEAN;
                         IsLastOfTheSector : BOOLEAN) is
 
-      PathsCollection : POINT_PATHS;
+      PathsCollection : Paths_Point;
 
-      procedure Init_Paths(Paths_Collection_In : in out POINT_PATHS;
+      procedure Init_Paths(Paths_Collection_In : in out Paths_Point;
                            Paths_Qty : INTEGER) is
 
          AlphaRad : FLOAT := (3.14 * Angle_In) / 180.0;
@@ -87,7 +54,7 @@ package body Circuit is
 	      r := Shortest_Side / AlphaRad;
 	 end if;
          Tmp_Length := (r * 1.0) * AlphaRad ;
-         Paths_Collection_In := new PATHS(1..Paths_Qty);
+         Paths_Collection_In := new Paths(1..Paths_Qty);
          for index in 1..Paths_Qty loop
             Tmp_Length := (((FLOAT(index)-1.0) * 1.6) + r ) * AlphaRad;
             Set_Values(Paths_Collection_In.all(index),Tmp_Length ,Angle_In,Grip_In,Difficulty_In);
@@ -115,7 +82,7 @@ package body Circuit is
       Checkpoint_In.IsGoal := TRUE;
    end Set_Goal;
 
-   function Get_Time(Checkpoint_In : POINT_Checkpoint;
+   function Get_Time(Checkpoint_In : Checkpoint_Point;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
 
@@ -128,7 +95,7 @@ package body Circuit is
       procedure Update_Time(Time_In : FLOAT;
                             PathIndex : INTEGER) is
       begin
-         F_Paths(PathIndex).LastTime := Time_In;
+         Set_Release_Instant(F_Paths(PathIndex), Time_In);
       end Update_Time;
 
 
@@ -152,15 +119,9 @@ package body Circuit is
          return Get_Grip(F_Paths(PathIndex));
       end Get_Grip;
 
-      function Get_Difficulty(PathIndex : INTEGER) return FLOAT is
-      begin
-         return Get_Difficulty(F_Paths(PathIndex));
-      end Get_Difficulty;
-
-
       function Get_PathTime(PathIndex : INTEGER) return FLOAT is
       begin
-         return F_Paths.all(PathIndex).LastTime;
+         return Get_Release_Instant(F_Paths.all(PathIndex));
       end Get_PathTime;
    end CROSSING;
 
@@ -342,13 +303,13 @@ package body Circuit is
       Current_Angle : FLOAT;
       Current_Grip : FLOAT;
       --Current_Difficutly : FLOAT;
-      Checkpoint_Temp : POINT_Checkpoint;
+      Checkpoint_Temp : Checkpoint_Point;
       CheckpointSynch_Current : CHECKPOINT_SYNCH_POINT;
 
       Track_Iterator : RACETRACK_ITERATOR;
       BoxLane_Length : FLOAT;
-      PreBox_Checkpoint : POINT_Checkpoint;
-      PreBox_Paths : POINT_PATHS;
+      PreBox_Checkpoint : Checkpoint_Point;
+      PreBox_Paths : Paths_Point;
    begin
 
       --If there is a conf file, use it to auto-init;
@@ -463,7 +424,7 @@ package body Circuit is
          end loop;
 	  Ada.Text_IO.Put_Line("Race length " & FLOAT'IMAGE(RaceTrack_Length));
       else
-         --else auto configure a default circular N_Checkpoints-M_paths track (with N = Checkpoints_Qty and M = MaxCompetitors_Qty -1;
+         --else auto configure a default circular N_Checkpoints-M_Paths track (with N = Checkpoints_Qty and M = MaxCompetitors_Qty -1;
          Angle := 360.00 / FLOAT(Checkpoints_Qty);
          CheckpointQty := Checkpoints_Qty;
          Racetrack_In := new RACETRACK(1..CheckpointQty);
@@ -522,8 +483,8 @@ package body Circuit is
       end loop;
 
       Ada.Text_IO.Put_Line("Length of box " & FLOAT'IMAGE(BoxLane_Length));
-      --The box lane paths has to be initilised in a different way than the usual
-      --+paths.
+      --The box lane Paths has to be initilised in a different way than the usual
+      --+Paths.
       Init_BoxLanePaths(PreBox_Paths,MaxCompetitors_Qty,FLOAT'CEILING(BoxLane_Length/2.0));
       PreBox(PreBox_Checkpoint.all).Box := new CROSSING(PreBox_Paths);
 
@@ -546,7 +507,7 @@ package body Circuit is
                  FALSE); -- Is last one of the sector
 
       --In this way we use the path generator included into the Set values.
-      --+ But the paths after the box should be like the ones after the prebox.
+      --+ But the Paths after the box should be like the ones after the prebox.
       --+verify TODO
       CheckpointSynch_Current := new CHECKPOINT_SYNCH(Checkpoint_Temp);
       RaceTrack_In(0) := CheckpointSynch_Current;

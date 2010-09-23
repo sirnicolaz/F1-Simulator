@@ -339,7 +339,6 @@ package body Competitor is
       --size_path : Integer; -- molteplicit� tratto
       angle_path : Float; -- angolo
       grip_path : Float; -- attrito
-      difficulty_path : Float; -- difficolt� del tratto
       tyre_usury : Common.PERCENTAGE; -- usura delle gomme %
       gasoline_level : Float; -- livello di benzina l
       vel_max_reale : Float; --velocit� massima raggiungibile km/h
@@ -366,8 +365,6 @@ package body Competitor is
       angle_path:= Paths2Cross.Get_Angle(PathsCollection_Index);
 
       grip_path:= Paths2Cross.Get_Grip(PathsCollection_Index);
-
-      difficulty_path:= Paths2Cross.Get_Difficulty(PathsCollection_Index);
 
       tyre_usury := CarDriver.Racing_Car.Tyre_Usury;
 
