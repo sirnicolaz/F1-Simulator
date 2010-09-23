@@ -1,25 +1,35 @@
+with Common;
+use Common;
+
 package Classification_Handler is
 
-  -- stats_row : single row of the synch_ordered_classification_table
+   procedure Initialize(Laps : Integer;
+                        Competitors_In : Integer);
+
+   --Whenever a competitor reaches the end of a lap, he will invoke this method
+   --+ to add (the onboard computer will) himself to the classification table of
+   --+ that lap
+   procedure Update_Classific(Competitor_ID : INTEGER;
+                              CompletedLap : INTEGER;
+                              Time : FLOAT);
+
+   procedure Get_LapClassific(Lap : INTEGER;
+                              TimeInstant : FLOAT;
+                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                              Times_InClassific : out FLOAT_ARRAY_POINT;
+                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
+
+   procedure Decrease_Classification_Size_From_Lap( Lap : Integer );
+
+   -- stats_row : single row of the synch_ordered_classification_table
    type STATS_ROW is private;
-   --     -- These functions are only for test purpose
-   function Get_StatsRow(Competitor_Id_In : INTEGER;
-                         Time_In : FLOAT) return STATS_ROW;
-
-   function Get_Competitor_Id ( Row : Stats_Row ) return Integer;
-   function Get_Time ( Row : Stats_Row ) return Float;
-
-   procedure Set_Competitor_Id ( Row : out Stats_Row;
-                                 Competitor_Id : Integer );
-   procedure Set_Time ( Row : out Stats_Row;
-                        Time : Float );
-
    type CLASSIFICATION_TABLE is array(POSITIVE range <>) of STATS_ROW;
    type CLASSIFICATION_TABLE_POINT is access CLASSIFICATION_TABLE;
 
-   --TODO: non ha senso che sia una risorsa protetta dal momento che viene usata solo in questo
-   --package da una risorsa a sua volta protetta. Quindi cambiare.
-   -- Resource used to maintain statistics ordered and mutually-exclusive accessible
+   -- Resource used to maintain classific ordered and mutually-exclusive accessible
    -- synch_ordered_classification_table : ordered table with all methods to insert, delete, .. in the classification_table
    protected type SYNCH_ORDERED_CLASSIFICATION_TABLE is
       procedure Init_Table(NumRows : INTEGER);
@@ -46,10 +56,12 @@ package Classification_Handler is
    type SOCT_ARRAY is array(POSITIVE range <>) of SOCT_POINT;
    type SOCT_ARRAY_POINT is access SOCT_ARRAY;
 
-   -- soct_node : single node which represent one synch_ordered_classification_table
+   -- soct_node : single node that represents one synch_ordered_classification_table
    type SOCT_NODE is private;
    type SOCT_NODE_POINT is access SOCT_NODE;
 
+
+   Classification_Tables : SOCT_ARRAY_POINT;
 -----------------------------------------------------------
 
 private

@@ -15,7 +15,7 @@ package body Circuit is
    procedure Init_Racetrack(Racetrack_In : in out Racetrack_Point;
                             Document_In : DOCUMENT) is
       NodeQty : Integer;
-      Checkpoints : Integer;
+      --Checkpoints : Integer;
 
       -- Between each XML tag there is a hidden "text" tag.
       --+ So, while looping through the Checkpoint nodes, it's necessary
@@ -53,7 +53,7 @@ package body Circuit is
       if Document_In /= null then
 
          --Find out the number of Checkpoint and allocate the Racetrack
-         Checkpoint_List := Get_Elements_By_Tag_Name(Document_In,"Checkpoint");
+         Checkpoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
          Checkpoints := Length(Checkpoint_List);
          Racetrack_In := new Racetrack(0..Checkpoints);
 
@@ -74,7 +74,7 @@ package body Circuit is
             --+ dealing with a Checkpoint node)
             CheckpointCounter := 0;
             for Indez in 1..NodeQty loop
-               if(DOM.Core.Nodes.Node_Name(Item(Checkpoint_List,Indez-1)) = "Checkpoint") then
+               if(DOM.Core.Nodes.Node_Name(Item(Checkpoint_List,Indez-1)) = "checkpoint") then
                   CheckpointCounter := CheckpointCounter + 1;
 
                   Current_Node := Item(Checkpoint_List, Indez-1);
@@ -103,7 +103,7 @@ package body Circuit is
                   end if;
 
                   Feature_List := Child_Nodes(Current_Node);
-                  Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"Length"))));
+                  Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
                   Racetrack_Length := Racetrack_Length + Current_Length;
 
                   Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));

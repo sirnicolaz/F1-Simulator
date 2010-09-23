@@ -1,15 +1,15 @@
 Retrieving ROOT_POA...
 Activating ROOT_POA...
-CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:43166//000000011Td2c66d4811d617b1'
-RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:43166//000000012Td2c66d4811d617b1'
-Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:43166//000000013Td2c66d4811d617b1'
+CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:43330//000000011T653d72b011d628ca'
+RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:43330//000000012T653d72b011d628ca'
+Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:43330//000000013T653d72b011d628ca'
 Waiting for competitor to be ready...
 Initialising CORBA.ORB
 Start building circuit
-11 checkpoints
-11 checkpoints
-9 checkpoints
-Race length  4.19200E+03
+11 Checkpoints
+11 Checkpoints
+9 Checkpoints
+Race Length  4.19200E+03
 Length of box  9.87000E+02
  3 competitors
 LORY : 0
@@ -76,21 +76,21 @@ Starting competitors
  2 Connecting for strategy
  3 Connecting for strategy
 Competition started!!!!!!!!!
- 1 connected succesfully
  2 connected succesfully
- 3 connected succesfully
- 1 saved
  2 saved
+ 2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+ 3 connected succesfully
+ 3 saved
+ 1 connected succesfully
+ 3 3: SUMMURY lap :  0, actual time :  2.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+ 1 saved
  1 1: SUMMURY lap :  0, actual time :  0.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  1: evaluate done: length path  5.50000E+01 crossing time  3.02765E+00 speed  1.30794E+02
  1: updaitng pc:  check  1 gas level  4.99642E+01 tyre usury  4.52100E-02 path length  5.50000E+01 speed  1.30794E+02
- 2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  2: evaluate done: length path  5.66000E+01 crossing time  3.07137E+00 speed  1.32683E+02
  2: updaitng pc:  check  1 gas level  4.99632E+01 tyre usury  4.65252E-02 path length  5.66000E+01 speed  1.32683E+02
- 3 saved
- 3 3: SUMMURY lap :  0, actual time :  2.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  3: evaluate done: length path  5.82000E+01 crossing time  3.11448E+00 speed  1.34546E+02
  3: updaitng pc:  check  1 gas level  4.99622E+01 tyre usury  4.78404E-02 path length  5.82000E+01 speed  1.34546E+02
@@ -1021,16 +1021,16 @@ Array 1 again , id =  3, time 5.67758E+01
 Notifying
  2: evaluate done: length path  2.72100E+02 crossing time  3.32272E+00 speed  2.94807E+02
  2: updaitng pc:  check  28 gas level  4.46252E+01 tyre usury  6.33100E+00 path length  2.72100E+02 speed  2.94807E+02
- 3 3: SUMMURY lap :  1, actual time :  9.57115E+01, gas  4.48175E+01, tyre  6.10445E+00, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  2.73700E+02 crossing time  3.34225E+00 speed  2.94807E+02
- 3: updaitng pc:  check  28 gas level  4.46259E+01 tyre usury  6.33025E+00 path length  2.73700E+02 speed  2.94807E+02
 Array 1, id =  1, time 5.44362E+01
 Array 1, id =  2, time 5.59335E+01
 Array 1, id =  3, time 5.67758E+01
 Array 1 again , id =  1, time 5.44362E+01
 Array 1 again , id =  2, time 5.59335E+01
 Array 1 again , id =  3, time 5.67758E+01
+ 3 3: SUMMURY lap :  1, actual time :  9.57115E+01, gas  4.48175E+01, tyre  6.10445E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.73700E+02 crossing time  3.34225E+00 speed  2.94807E+02
+ 3: updaitng pc:  check  28 gas level  4.46259E+01 tyre usury  6.33025E+00 path length  2.73700E+02 speed  2.94807E+02
  1 1: SUMMURY lap :  1, actual time :  9.63503E+01, gas  4.46656E+01, tyre  6.28332E+00, pit stop done FALSE
 Notifying
  1: evaluate done: length path  2.24000E+02 crossing time  2.73574E+00 speed  2.94765E+02
@@ -1104,16 +1104,16 @@ Array 1, id =  3, time 5.67758E+01
 Array 1 again , id =  1, time 5.44362E+01
 Array 1 again , id =  2, time 5.59335E+01
 Array 1 again , id =  3, time 5.67758E+01
- 2 2: SUMMURY lap :  1, actual time :  1.02869E+02, gas  4.43500E+01, tyre  6.65537E+00, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  3.65600E+02 crossing time  4.46645E+00 speed  2.94677E+02
- 2: updaitng pc:  check  31 gas level  4.40941E+01 tyre usury  6.95699E+00 path length  3.65600E+02 speed  2.94677E+02
 Array 1, id =  1, time 5.44362E+01
 Array 1, id =  2, time 5.59335E+01
 Array 1, id =  3, time 5.67758E+01
 Array 1 again , id =  1, time 5.44362E+01
 Array 1 again , id =  2, time 5.59335E+01
 Array 1 again , id =  3, time 5.67758E+01
+ 2 2: SUMMURY lap :  1, actual time :  1.02869E+02, gas  4.43500E+01, tyre  6.65537E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  3.65600E+02 crossing time  4.46645E+00 speed  2.94677E+02
+ 2: updaitng pc:  check  31 gas level  4.40941E+01 tyre usury  6.95699E+00 path length  3.65600E+02 speed  2.94677E+02
  3 3: SUMMURY lap :  1, actual time :  1.03857E+02, gas  4.43506E+01, tyre  6.65471E+00, pit stop done FALSE
 Notifying
  3: evaluate done: length path  3.67200E+02 crossing time  4.48599E+00 speed  2.94677E+02
@@ -1413,10 +1413,6 @@ Array 1 again , id =  3, time 1.08343E+02
 Array 2 again nothing null , id = -1, time 5.44362E+01
 Array 2 again nothing null , id = -1, time 5.59335E+01
 Array 2 again nothing null , id = -1, time 5.67758E+01
- 2 2: SUMMURY lap :  2, actual time :  1.19188E+02, gas  4.34153E+01, tyre  7.75629E+00, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  2.02366E+02 crossing time  2.47444E+00 speed  2.94417E+02
- 2: updaitng pc:  check  11 gas level  4.32736E+01 tyre usury  7.92253E+00 path length  2.02366E+02 speed  2.94417E+02
 Array 1, id =  1, time 1.05585E+02
 Array 1, id =  2, time 1.07335E+02
 Array 1, id =  3, time 1.08343E+02
@@ -1432,6 +1428,10 @@ Array 1 again , id =  3, time 1.08343E+02
 Array 2 again nothing null , id = -1, time 5.44362E+01
 Array 2 again nothing null , id = -1, time 5.59335E+01
 Array 2 again nothing null , id = -1, time 5.67758E+01
+ 2 2: SUMMURY lap :  2, actual time :  1.19188E+02, gas  4.34153E+01, tyre  7.75629E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.02366E+02 crossing time  2.47444E+00 speed  2.94417E+02
+ 2: updaitng pc:  check  11 gas level  4.32736E+01 tyre usury  7.92253E+00 path length  2.02366E+02 speed  2.94417E+02
  1 1: SUMMURY lap :  2, actual time :  1.19839E+02, gas  4.33201E+01, tyre  7.86764E+00, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.48100E+02 crossing time  1.81106E+00 speed  2.94391E+02
@@ -1880,11 +1880,11 @@ Notifying
 Notifying
  3: evaluate done: length path  1.36600E+02 crossing time  1.67208E+00 speed  2.94100E+02
  3: updaitng pc:  check  22 gas level  4.21795E+01 tyre usury  9.20901E+00 path length  1.36600E+02 speed  2.94100E+02
+ 2 2: SUMMURY lap :  2, actual time :  1.40498E+02, gas  4.21960E+01, tyre  9.18965E+00, pit stop done FALSE
  1 1: SUMMURY lap :  2, actual time :  1.40447E+02, gas  4.21411E+01, tyre  9.25422E+00, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.37000E+02 crossing time  1.67719E+00 speed  2.94063E+02
  1: updaitng pc:  check  26 gas level  4.20452E+01 tyre usury  9.36725E+00 path length  1.37000E+02 speed  2.94063E+02
- 2 2: SUMMURY lap :  2, actual time :  1.40498E+02, gas  4.21960E+01, tyre  9.18965E+00, pit stop done FALSE
 Notifying
  2: evaluate done: length path  2.70000E+01 crossing time  3.30524E-01 speed  2.94078E+02
  2: updaitng pc:  check  23 gas level  4.21771E+01 tyre usury  9.21193E+00 path length  2.70000E+01 speed  2.94078E+02
@@ -2105,10 +2105,6 @@ Array 2 again nothing null , id = -1, time 5.67758E+01
 Notifying
  1: evaluate done: length path  1.68000E+02 crossing time  2.05781E+00 speed  2.93905E+02
  1: updaitng pc:  check  30 gas level  4.14568E+01 tyre usury  1.00604E+01 path length  1.68000E+02 speed  2.93905E+02
- 3 3: SUMMURY lap :  2, actual time :  1.50806E+02, gas  4.16637E+01, tyre  9.81652E+00, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  2.24000E+02 crossing time  2.74351E+00 speed  2.93930E+02
- 3: updaitng pc:  check  29 gas level  4.15069E+01 tyre usury  1.00013E+01 path length  2.24000E+02 speed  2.93930E+02
 Array 1, id =  1, time 1.05585E+02
 Array 1, id =  2, time 1.07335E+02
 Array 1, id =  3, time 1.08343E+02
@@ -2124,6 +2120,10 @@ Array 1 again , id =  3, time 1.08343E+02
 Array 2 again nothing null , id = -1, time 5.44362E+01
 Array 2 again nothing null , id = -1, time 5.59335E+01
 Array 2 again nothing null , id = -1, time 5.67758E+01
+ 3 3: SUMMURY lap :  2, actual time :  1.50806E+02, gas  4.16637E+01, tyre  9.81652E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.24000E+02 crossing time  2.74351E+00 speed  2.93930E+02
+ 3: updaitng pc:  check  29 gas level  4.15069E+01 tyre usury  1.00013E+01 path length  2.24000E+02 speed  2.93930E+02
 Array 1, id =  1, time 1.05585E+02
 Array 1, id =  2, time 1.07335E+02
 Array 1, id =  3, time 1.08343E+02
@@ -2225,10 +2225,6 @@ Array 1 again , id =  3, time 1.08343E+02
 Array 2 again nothing null , id = -1, time 5.44362E+01
 Array 2 again nothing null , id = -1, time 5.59335E+01
 Array 2 again nothing null , id = -1, time 5.67758E+01
- 1 1: SUMMURY lap :  3, actual time :  1.56875E+02, gas  4.12020E+01, tyre  1.03607E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  5.50000E+01 crossing time  6.73924E-01 speed  2.93802E+02
- 1: updaitng pc:  check  1 gas level  4.11635E+01 tyre usury  1.04061E+01 path length  5.50000E+01 speed  2.93802E+02
 Array 1, id =  1, time 1.05585E+02
 Array 1, id =  2, time 1.07335E+02
 Array 1, id =  3, time 1.08343E+02
@@ -2244,6 +2240,10 @@ Array 1 again , id =  3, time 1.08343E+02
 Array 2 again nothing null , id = -1, time 5.44362E+01
 Array 2 again nothing null , id = -1, time 5.59335E+01
 Array 2 again nothing null , id = -1, time 5.67758E+01
+ 1 1: SUMMURY lap :  3, actual time :  1.56875E+02, gas  4.12020E+01, tyre  1.03607E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.50000E+01 crossing time  6.73924E-01 speed  2.93802E+02
+ 1: updaitng pc:  check  1 gas level  4.11635E+01 tyre usury  1.04061E+01 path length  5.50000E+01 speed  2.93802E+02
  1 1: SUMMURY lap :  3, actual time :  1.57549E+02, gas  4.11635E+01, tyre  1.04061E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  5.00000E+01 crossing time  6.12681E-01 speed  2.93791E+02
@@ -2662,14 +2662,6 @@ Array 2 again nothing null , id = -1, time 1.08343E+02
 Notifying
  2: evaluate done: length path  1.17000E+02 crossing time  1.43497E+00 speed  2.93525E+02
  2: updaitng pc:  check  14 gas level  4.01239E+01 tyre usury  1.16290E+01 path length  1.17000E+02 speed  2.93525E+02
- 1 1: SUMMURY lap :  3, actual time :  1.76191E+02, gas  4.00991E+01, tyre  1.16578E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.47000E+02 crossing time  1.80310E+00 speed  2.93495E+02
- 1: updaitng pc:  check  16 gas level  3.99962E+01 tyre usury  1.17786E+01 path length  1.47000E+02 speed  2.93495E+02
- 3 3: SUMMURY lap :  3, actual time :  1.76271E+02, gas  4.02092E+01, tyre  1.15288E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  3.02000E+01 crossing time  3.70394E-01 speed  2.93526E+02
- 3: updaitng pc:  check  13 gas level  4.01881E+01 tyre usury  1.15537E+01 path length  3.02000E+01 speed  2.93526E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -2685,6 +2677,14 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
+ 1 1: SUMMURY lap :  3, actual time :  1.76191E+02, gas  4.00991E+01, tyre  1.16578E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.47000E+02 crossing time  1.80310E+00 speed  2.93495E+02
+ 1: updaitng pc:  check  16 gas level  3.99962E+01 tyre usury  1.17786E+01 path length  1.47000E+02 speed  2.93495E+02
+ 3 3: SUMMURY lap :  3, actual time :  1.76271E+02, gas  4.02092E+01, tyre  1.15288E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.02000E+01 crossing time  3.70394E-01 speed  2.93526E+02
+ 3: updaitng pc:  check  13 gas level  4.01881E+01 tyre usury  1.15537E+01 path length  3.02000E+01 speed  2.93526E+02
  3 3: SUMMURY lap :  3, actual time :  1.76641E+02, gas  4.01881E+01, tyre  1.15537E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.19707E+02 crossing time  1.46820E+00 speed  2.93520E+02
@@ -2773,10 +2773,6 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
- 3 3: SUMMURY lap :  3, actual time :  1.81385E+02, gas  3.99174E+01, tyre  1.18714E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  4.96400E+02 crossing time  6.08987E+00 speed  2.93445E+02
- 3: updaitng pc:  check  17 gas level  3.95699E+01 tyre usury  1.22809E+01 path length  4.96400E+02 speed  2.93445E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -2792,6 +2788,10 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
+ 3 3: SUMMURY lap :  3, actual time :  1.81385E+02, gas  3.99174E+01, tyre  1.18714E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.96400E+02 crossing time  6.08987E+00 speed  2.93445E+02
+ 3: updaitng pc:  check  17 gas level  3.95699E+01 tyre usury  1.22809E+01 path length  4.96400E+02 speed  2.93445E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -2883,10 +2883,6 @@ Array 2 again nothing null , id = -1, time 1.08343E+02
 Notifying
  1: evaluate done: length path  5.55000E+01 crossing time  6.81158E-01 speed  2.93324E+02
  1: updaitng pc:  check  20 gas level  3.94439E+01 tyre usury  1.24285E+01 path length  5.55000E+01 speed  2.93324E+02
- 3 3: SUMMURY lap :  3, actual time :  1.87475E+02, gas  3.95699E+01, tyre  1.22809E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  1.33512E+02 crossing time  1.63848E+00 speed  2.93348E+02
- 3: updaitng pc:  check  18 gas level  3.94765E+01 tyre usury  1.23906E+01 path length  1.33512E+02 speed  2.93348E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -2902,6 +2898,10 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
+ 3 3: SUMMURY lap :  3, actual time :  1.87475E+02, gas  3.95699E+01, tyre  1.22809E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.33512E+02 crossing time  1.63848E+00 speed  2.93348E+02
+ 3: updaitng pc:  check  18 gas level  3.94765E+01 tyre usury  1.23906E+01 path length  1.33512E+02 speed  2.93348E+02
  2 2: SUMMURY lap :  3, actual time :  1.87649E+02, gas  3.95030E+01, tyre  1.23594E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.09200E+02 crossing time  1.34020E+00 speed  2.93329E+02
@@ -3049,10 +3049,6 @@ Notifying
 Notifying
  3: evaluate done: length path  2.70000E+01 crossing time  3.31455E-01 speed  2.93252E+02
  3: updaitng pc:  check  23 gas level  3.92064E+01 tyre usury  1.27082E+01 path length  2.70000E+01 speed  2.93252E+02
- 1 1: SUMMURY lap :  3, actual time :  1.93516E+02, gas  3.91107E+01, tyre  1.28209E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.78000E+02 crossing time  2.18539E+00 speed  2.93220E+02
- 1: updaitng pc:  check  27 gas level  3.89861E+01 tyre usury  1.29675E+01 path length  1.78000E+02 speed  2.93220E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -3068,6 +3064,10 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
+ 1 1: SUMMURY lap :  3, actual time :  1.93516E+02, gas  3.91107E+01, tyre  1.28209E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.78000E+02 crossing time  2.18539E+00 speed  2.93220E+02
+ 1: updaitng pc:  check  27 gas level  3.89861E+01 tyre usury  1.29675E+01 path length  1.78000E+02 speed  2.93220E+02
  2 2: SUMMURY lap :  3, actual time :  1.93832E+02, gas  3.91504E+01, tyre  1.27742E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.37000E+02 crossing time  1.68195E+00 speed  2.93231E+02
@@ -3432,10 +3432,6 @@ Notifying
 Notifying
  2: evaluate done: length path  4.50000E+01 crossing time  5.52999E-01 speed  2.92948E+02
  2: updaitng pc:  check  3 gas level  3.81019E+01 tyre usury  1.40097E+01 path length  4.50000E+01 speed  2.92948E+02
- 3 3: SUMMURY lap :  4, actual time :  2.11850E+02, gas  3.81803E+01, tyre  1.39172E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  5.50000E+01 crossing time  6.75857E-01 speed  2.92961E+02
- 3: updaitng pc:  check  1 gas level  3.81418E+01 tyre usury  1.39626E+01 path length  5.50000E+01 speed  2.92961E+02
 Array 1, id =  1, time 1.56875E+02
 Array 1, id =  2, time 1.58798E+02
 Array 1, id =  3, time 1.60106E+02
@@ -3451,6 +3447,10 @@ Array 1 again , id =  3, time 1.60106E+02
 Array 2 again nothing null , id = -1, time 1.05585E+02
 Array 2 again nothing null , id = -1, time 1.07335E+02
 Array 2 again nothing null , id = -1, time 1.08343E+02
+ 3 3: SUMMURY lap :  4, actual time :  2.11850E+02, gas  3.81803E+01, tyre  1.39172E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.50000E+01 crossing time  6.75857E-01 speed  2.92961E+02
+ 3: updaitng pc:  check  1 gas level  3.81418E+01 tyre usury  1.39626E+01 path length  5.50000E+01 speed  2.92961E+02
  1 1: SUMMURY lap :  4, actual time :  2.11934E+02, gas  3.80611E+01, tyre  1.40577E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.00000E+02 crossing time  1.22897E+00 speed  2.92928E+02
@@ -3525,10 +3525,6 @@ Notifying
 Notifying
  1: evaluate done: length path  1.01000E+02 crossing time  1.24150E+00 speed  2.92872E+02
  1: updaitng pc:  check  8 gas level  3.77888E+01 tyre usury  1.43783E+01 path length  1.01000E+02 speed  2.92872E+02
- 2 2: SUMMURY lap :  4, actual time :  2.15977E+02, gas  3.78884E+01, tyre  1.42613E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.28000E+02 crossing time  1.57334E+00 speed  2.92880E+02
- 2: updaitng pc:  check  7 gas level  3.77988E+01 tyre usury  1.43669E+01 path length  1.28000E+02 speed  2.92880E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -3544,6 +3540,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 2 2: SUMMURY lap :  4, actual time :  2.15977E+02, gas  3.78884E+01, tyre  1.42613E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.28000E+02 crossing time  1.57334E+00 speed  2.92880E+02
+ 2: updaitng pc:  check  7 gas level  3.77988E+01 tyre usury  1.43669E+01 path length  1.28000E+02 speed  2.92880E+02
  3 3: SUMMURY lap :  4, actual time :  2.16725E+02, gas  3.79027E+01, tyre  1.42444E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  6.00000E+01 crossing time  7.37493E-01 speed  2.92884E+02
@@ -4022,10 +4022,6 @@ Notifying
 Notifying
  3: evaluate done: length path  1.33512E+02 crossing time  1.64307E+00 speed  2.92528E+02
  3: updaitng pc:  check  18 gas level  3.65283E+01 tyre usury  1.58605E+01 path length  1.33512E+02 speed  2.92528E+02
- 2 2: SUMMURY lap :  4, actual time :  2.39317E+02, gas  3.65600E+01, tyre  1.58232E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.09200E+02 crossing time  1.34395E+00 speed  2.92511E+02
- 2: updaitng pc:  check  19 gas level  3.64835E+01 tyre usury  1.59130E+01 path length  1.09200E+02 speed  2.92511E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4041,6 +4037,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 2 2: SUMMURY lap :  4, actual time :  2.39317E+02, gas  3.65600E+01, tyre  1.58232E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.09200E+02 crossing time  1.34395E+00 speed  2.92511E+02
+ 2: updaitng pc:  check  19 gas level  3.64835E+01 tyre usury  1.59130E+01 path length  1.09200E+02 speed  2.92511E+02
  1 1: SUMMURY lap :  4, actual time :  2.39900E+02, gas  3.64693E+01, tyre  1.59294E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.35000E+02 crossing time  1.66162E+00 speed  2.92486E+02
@@ -4068,10 +4068,6 @@ Notifying
 Notifying
  3: evaluate done: length path  1.09200E+02 crossing time  1.34399E+00 speed  2.92502E+02
  3: updaitng pc:  check  19 gas level  3.64518E+01 tyre usury  1.59502E+01 path length  1.09200E+02 speed  2.92502E+02
- 2 2: SUMMURY lap :  4, actual time :  2.41344E+02, gas  3.64447E+01, tyre  1.59587E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  5.75000E+01 crossing time  7.07743E-01 speed  2.92479E+02
- 2: updaitng pc:  check  21 gas level  3.64044E+01 tyre usury  1.60059E+01 path length  5.75000E+01 speed  2.92479E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4087,6 +4083,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 2 2: SUMMURY lap :  4, actual time :  2.41344E+02, gas  3.64447E+01, tyre  1.59587E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.75000E+01 crossing time  7.07743E-01 speed  2.92479E+02
+ 2: updaitng pc:  check  21 gas level  3.64044E+01 tyre usury  1.60059E+01 path length  5.75000E+01 speed  2.92479E+02
  1 1: SUMMURY lap :  4, actual time :  2.41561E+02, gas  3.63748E+01, tyre  1.60408E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  2.70000E+01 crossing time  3.32354E-01 speed  2.92460E+02
@@ -4126,10 +4126,6 @@ Notifying
 Notifying
  3: evaluate done: length path  5.75000E+01 crossing time  7.07764E-01 speed  2.92470E+02
  3: updaitng pc:  check  21 gas level  3.63727E+01 tyre usury  1.60432E+01 path length  5.75000E+01 speed  2.92470E+02
- 1 1: SUMMURY lap :  4, actual time :  2.43365E+02, gas  3.62722E+01, tyre  1.61616E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.37000E+02 crossing time  1.68655E+00 speed  2.92431E+02
- 1: updaitng pc:  check  26 gas level  3.61763E+01 tyre usury  1.62746E+01 path length  1.37000E+02 speed  2.92431E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4145,6 +4141,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 1 1: SUMMURY lap :  4, actual time :  2.43365E+02, gas  3.62722E+01, tyre  1.61616E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.37000E+02 crossing time  1.68655E+00 speed  2.92431E+02
+ 1: updaitng pc:  check  26 gas level  3.61763E+01 tyre usury  1.62746E+01 path length  1.37000E+02 speed  2.92431E+02
  3 3: SUMMURY lap :  4, actual time :  2.43608E+02, gas  3.63727E+01, tyre  1.60432E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.36600E+02 crossing time  1.68147E+00 speed  2.92459E+02
@@ -4437,10 +4437,6 @@ Array 2 again nothing null , id = -1, time 1.60106E+02
 Notifying
  3: evaluate done: length path  1.68530E+02 crossing time  2.07602E+00 speed  2.92246E+02
  3: updaitng pc:  check  30 gas level  3.54888E+01 tyre usury  1.70846E+01 path length  1.68530E+02 speed  2.92246E+02
- 2 2: SUMMURY lap :  4, actual time :  2.57606E+02, gas  3.55202E+01, tyre  1.70477E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  3.65600E+02 crossing time  4.50398E+00 speed  2.92222E+02
- 2: updaitng pc:  check  31 gas level  3.52643E+01 tyre usury  1.73493E+01 path length  3.65600E+02 speed  2.92222E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4456,6 +4452,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 2 2: SUMMURY lap :  4, actual time :  2.57606E+02, gas  3.55202E+01, tyre  1.70477E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  3.65600E+02 crossing time  4.50398E+00 speed  2.92222E+02
+ 2: updaitng pc:  check  31 gas level  3.52643E+01 tyre usury  1.73493E+01 path length  3.65600E+02 speed  2.92222E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4567,10 +4567,6 @@ Notifying
 Notifying
  1: evaluate done: length path  1.00000E+02 crossing time  1.23240E+00 speed  2.92112E+02
  1: updaitng pc:  check  5 gas level  3.50567E+01 tyre usury  1.75939E+01 path length  1.00000E+02 speed  2.92112E+02
- 3 3: SUMMURY lap :  5, actual time :  2.63681E+02, gas  3.52318E+01, tyre  1.73875E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  5.50000E+01 crossing time  6.77754E-01 speed  2.92141E+02
- 3: updaitng pc:  check  1 gas level  3.51933E+01 tyre usury  1.74329E+01 path length  5.50000E+01 speed  2.92141E+02
 Array 1, id =  1, time 2.08309E+02
 Array 1, id =  2, time 2.10385E+02
 Array 1, id =  3, time 2.11850E+02
@@ -4586,6 +4582,10 @@ Array 1 again , id =  3, time 2.11850E+02
 Array 2 again nothing null , id = -1, time 1.56875E+02
 Array 2 again nothing null , id = -1, time 1.58798E+02
 Array 2 again nothing null , id = -1, time 1.60106E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.63681E+02, gas  3.52318E+01, tyre  1.73875E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.50000E+01 crossing time  6.77754E-01 speed  2.92141E+02
+ 3: updaitng pc:  check  1 gas level  3.51933E+01 tyre usury  1.74329E+01 path length  5.50000E+01 speed  2.92141E+02
  2 2: SUMMURY lap :  5, actual time :  2.63958E+02, gas  3.51593E+01, tyre  1.74730E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.45000E+02 crossing time  1.78693E+00 speed  2.92121E+02
@@ -4617,18 +4617,14 @@ Notifying
 Notifying
  3: evaluate done: length path  4.50000E+01 crossing time  5.54565E-01 speed  2.92121E+02
  3: updaitng pc:  check  3 gas level  3.51268E+01 tyre usury  1.75113E+01 path length  4.50000E+01 speed  2.92121E+02
- 3 3: SUMMURY lap :  5, actual time :  2.65529E+02, gas  3.51268E+01, tyre  1.75113E+01, pit stop done FALSE
  1 1: SUMMURY lap :  5, actual time :  2.65492E+02, gas  3.50147E+01, tyre  1.76434E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.28000E+02 crossing time  1.57765E+00 speed  2.92081E+02
  1: updaitng pc:  check  7 gas level  3.49251E+01 tyre usury  1.77490E+01 path length  1.28000E+02 speed  2.92081E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.65529E+02, gas  3.51268E+01, tyre  1.75113E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.46600E+02 crossing time  1.80670E+00 speed  2.92112E+02
  3: updaitng pc:  check  4 gas level  3.50241E+01 tyre usury  1.76322E+01 path length  1.46600E+02 speed  2.92112E+02
- 2 2: SUMMURY lap :  5, actual time :  2.65745E+02, gas  3.50578E+01, tyre  1.75927E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.00000E+02 crossing time  1.23248E+00 speed  2.92093E+02
- 2: updaitng pc:  check  5 gas level  3.49878E+01 tyre usury  1.76752E+01 path length  1.00000E+02 speed  2.92093E+02
 Array 1, id =  1, time 2.59885E+02
 Array 2, id =  1, time 2.08309E+02
 Copy false
@@ -4638,6 +4634,10 @@ Array 1 again , id =  1, time 2.59885E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id =  2, time 2.10385E+02
 Array 2 again nothing null , id =  3, time 2.11850E+02
+ 2 2: SUMMURY lap :  5, actual time :  2.65745E+02, gas  3.50578E+01, tyre  1.75927E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.00000E+02 crossing time  1.23248E+00 speed  2.92093E+02
+ 2: updaitng pc:  check  5 gas level  3.49878E+01 tyre usury  1.76752E+01 path length  1.00000E+02 speed  2.92093E+02
 Array 1, id =  1, time 2.59885E+02
 Array 2, id =  1, time 2.08309E+02
 Copy false
@@ -4748,10 +4748,6 @@ Array 2 again nothing null , id = -1, time 2.11850E+02
 Notifying
  3: evaluate done: length path  1.01000E+02 crossing time  1.24509E+00 speed  2.92027E+02
  3: updaitng pc:  check  8 gas level  3.47518E+01 tyre usury  1.79528E+01 path length  1.01000E+02 speed  2.92027E+02
- 2 2: SUMMURY lap :  5, actual time :  2.71822E+02, gas  3.47127E+01, tyre  1.79987E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.79000E+02 crossing time  2.20687E+00 speed  2.91997E+02
- 2: updaitng pc:  check  10 gas level  3.45874E+01 tyre usury  1.81464E+01 path length  1.79000E+02 speed  2.91997E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -4767,6 +4763,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 2 2: SUMMURY lap :  5, actual time :  2.71822E+02, gas  3.47127E+01, tyre  1.79987E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.79000E+02 crossing time  2.20687E+00 speed  2.91997E+02
+ 2: updaitng pc:  check  10 gas level  3.45874E+01 tyre usury  1.81464E+01 path length  1.79000E+02 speed  2.91997E+02
  1 1: SUMMURY lap :  5, actual time :  2.71804E+02, gas  3.46563E+01, tyre  1.80651E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.99100E+02 crossing time  2.45482E+00 speed  2.91981E+02
@@ -4878,10 +4878,6 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
- 1 1: SUMMURY lap :  5, actual time :  2.77900E+02, gas  3.43102E+01, tyre  1.84713E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.14200E+02 crossing time  1.40850E+00 speed  2.91885E+02
- 1: updaitng pc:  check  15 gas level  3.42303E+01 tyre usury  1.85652E+01 path length  1.14200E+02 speed  2.91885E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -4897,6 +4893,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 1 1: SUMMURY lap :  5, actual time :  2.77900E+02, gas  3.43102E+01, tyre  1.84713E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.14200E+02 crossing time  1.40850E+00 speed  2.91885E+02
+ 1: updaitng pc:  check  15 gas level  3.42303E+01 tyre usury  1.85652E+01 path length  1.14200E+02 speed  2.91885E+02
  3 3: SUMMURY lap :  5, actual time :  2.78089E+02, gas  3.44136E+01, tyre  1.83504E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.49356E+02 crossing time  1.84192E+00 speed  2.91914E+02
@@ -4928,10 +4928,6 @@ Array 2 again nothing null , id = -1, time 2.11850E+02
 Notifying
  1: evaluate done: length path  1.47000E+02 crossing time  1.81318E+00 speed  2.91863E+02
  1: updaitng pc:  check  16 gas level  3.41273E+01 tyre usury  1.86859E+01 path length  1.47000E+02 speed  2.91863E+02
- 3 3: SUMMURY lap :  5, actual time :  2.79931E+02, gas  3.43090E+01, tyre  1.84731E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  3.02000E+01 crossing time  3.72476E-01 speed  2.91885E+02
- 3: updaitng pc:  check  13 gas level  3.42879E+01 tyre usury  1.84980E+01 path length  3.02000E+01 speed  2.91885E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -4947,6 +4943,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.79931E+02, gas  3.43090E+01, tyre  1.84731E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.02000E+01 crossing time  3.72476E-01 speed  2.91885E+02
+ 3: updaitng pc:  check  13 gas level  3.42879E+01 tyre usury  1.84980E+01 path length  3.02000E+01 speed  2.91885E+02
  2 2: SUMMURY lap :  5, actual time :  2.80166E+02, gas  3.42390E+01, tyre  1.85553E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.14200E+02 crossing time  1.40859E+00 speed  2.91865E+02
@@ -5035,10 +5035,6 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
- 3 3: SUMMURY lap :  5, actual time :  2.85007E+02, gas  3.40210E+01, tyre  1.88112E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  4.96400E+02 crossing time  6.12409E+00 speed  2.91805E+02
- 3: updaitng pc:  check  17 gas level  3.36735E+01 tyre usury  1.92208E+01 path length  4.96400E+02 speed  2.91805E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5054,6 +5050,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.85007E+02, gas  3.40210E+01, tyre  1.88112E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.96400E+02 crossing time  6.12409E+00 speed  2.91805E+02
+ 3: updaitng pc:  check  17 gas level  3.36735E+01 tyre usury  1.92208E+01 path length  4.96400E+02 speed  2.91805E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5149,14 +5149,6 @@ Notifying
 Notifying
  1: evaluate done: length path  5.75000E+01 crossing time  7.09679E-01 speed  2.91681E+02
  1: updaitng pc:  check  21 gas level  3.35349E+01 tyre usury  1.93831E+01 path length  5.75000E+01 speed  2.91681E+02
- 2 2: SUMMURY lap :  5, actual time :  2.91109E+02, gas  3.36181E+01, tyre  1.92857E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.09200E+02 crossing time  1.34772E+00 speed  2.91693E+02
- 2: updaitng pc:  check  19 gas level  3.35416E+01 tyre usury  1.93754E+01 path length  1.09200E+02 speed  2.91693E+02
- 3 3: SUMMURY lap :  5, actual time :  2.91131E+02, gas  3.36735E+01, tyre  1.92208E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  1.31000E+02 crossing time  1.61668E+00 speed  2.91708E+02
- 3: updaitng pc:  check  18 gas level  3.35818E+01 tyre usury  1.93284E+01 path length  1.31000E+02 speed  2.91708E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5172,6 +5164,14 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 2 2: SUMMURY lap :  5, actual time :  2.91109E+02, gas  3.36181E+01, tyre  1.92857E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.09200E+02 crossing time  1.34772E+00 speed  2.91693E+02
+ 2: updaitng pc:  check  19 gas level  3.35416E+01 tyre usury  1.93754E+01 path length  1.09200E+02 speed  2.91693E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.91131E+02, gas  3.36735E+01, tyre  1.92208E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.31000E+02 crossing time  1.61668E+00 speed  2.91708E+02
+ 3: updaitng pc:  check  18 gas level  3.35818E+01 tyre usury  1.93284E+01 path length  1.31000E+02 speed  2.91708E+02
  1 1: SUMMURY lap :  5, actual time :  2.91565E+02, gas  3.35349E+01, tyre  1.93831E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.35000E+02 crossing time  1.66627E+00 speed  2.91670E+02
@@ -5199,10 +5199,6 @@ Notifying
 Notifying
  3: evaluate done: length path  1.09200E+02 crossing time  1.34777E+00 speed  2.91683E+02
  3: updaitng pc:  check  19 gas level  3.35054E+01 tyre usury  1.94181E+01 path length  1.09200E+02 speed  2.91683E+02
- 2 2: SUMMURY lap :  5, actual time :  2.93142E+02, gas  3.35028E+01, tyre  1.94211E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  5.75000E+01 crossing time  7.09728E-01 speed  2.91661E+02
- 2: updaitng pc:  check  21 gas level  3.34625E+01 tyre usury  1.94683E+01 path length  5.75000E+01 speed  2.91661E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5218,6 +5214,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 2 2: SUMMURY lap :  5, actual time :  2.93142E+02, gas  3.35028E+01, tyre  1.94211E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.75000E+01 crossing time  7.09728E-01 speed  2.91661E+02
+ 2: updaitng pc:  check  21 gas level  3.34625E+01 tyre usury  1.94683E+01 path length  5.75000E+01 speed  2.91661E+02
  1 1: SUMMURY lap :  5, actual time :  2.93231E+02, gas  3.34404E+01, tyre  1.94944E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  2.70000E+01 crossing time  3.33283E-01 speed  2.91644E+02
@@ -5230,10 +5230,6 @@ Notifying
 Notifying
  2: evaluate done: length path  1.35000E+02 crossing time  1.66638E+00 speed  2.91650E+02
  2: updaitng pc:  check  22 gas level  3.33680E+01 tyre usury  1.95797E+01 path length  1.35000E+02 speed  2.91650E+02
- 3 3: SUMMURY lap :  5, actual time :  2.94095E+02, gas  3.35054E+01, tyre  1.94181E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  5.55000E+01 crossing time  6.85040E-01 speed  2.91662E+02
- 3: updaitng pc:  check  20 gas level  3.34665E+01 tyre usury  1.94638E+01 path length  5.55000E+01 speed  2.91662E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5249,6 +5245,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.94095E+02, gas  3.35054E+01, tyre  1.94181E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.55000E+01 crossing time  6.85040E-01 speed  2.91662E+02
+ 3: updaitng pc:  check  20 gas level  3.34665E+01 tyre usury  1.94638E+01 path length  5.55000E+01 speed  2.91662E+02
  1 1: SUMMURY lap :  5, actual time :  2.94243E+02, gas  3.33830E+01, tyre  1.95620E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  6.45000E+01 crossing time  7.96221E-01 speed  2.91628E+02
@@ -5311,10 +5311,6 @@ Notifying
 Notifying
  1: evaluate done: length path  1.78000E+02 crossing time  2.19762E+00 speed  2.91588E+02
  1: updaitng pc:  check  27 gas level  3.31173E+01 tyre usury  1.98748E+01 path length  1.78000E+02 speed  2.91588E+02
- 3 3: SUMMURY lap :  5, actual time :  2.97176E+02, gas  3.33306E+01, tyre  1.96237E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  2.70000E+01 crossing time  3.33318E-01 speed  2.91613E+02
- 3: updaitng pc:  check  23 gas level  3.33117E+01 tyre usury  1.96460E+01 path length  2.70000E+01 speed  2.91613E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5330,6 +5326,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.97176E+02, gas  3.33306E+01, tyre  1.96237E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.70000E+01 crossing time  3.33318E-01 speed  2.91613E+02
+ 3: updaitng pc:  check  23 gas level  3.33117E+01 tyre usury  1.96460E+01 path length  2.70000E+01 speed  2.91613E+02
  2 2: SUMMURY lap :  5, actual time :  2.97326E+02, gas  3.32655E+01, tyre  1.97005E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.37000E+02 crossing time  1.69139E+00 speed  2.91595E+02
@@ -5338,10 +5338,6 @@ Notifying
 Notifying
  3: evaluate done: length path  5.50000E+01 crossing time  6.78994E-01 speed  2.91608E+02
  3: updaitng pc:  check  24 gas level  3.32732E+01 tyre usury  1.96913E+01 path length  5.50000E+01 speed  2.91608E+02
- 3 3: SUMMURY lap :  5, actual time :  2.98188E+02, gas  3.32732E+01, tyre  1.96913E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  6.45000E+01 crossing time  7.96304E-01 speed  2.91597E+02
- 3: updaitng pc:  check  25 gas level  3.32281E+01 tyre usury  1.97445E+01 path length  6.45000E+01 speed  2.91597E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5357,6 +5353,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  2.98188E+02, gas  3.32732E+01, tyre  1.96913E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  6.45000E+01 crossing time  7.96304E-01 speed  2.91597E+02
+ 3: updaitng pc:  check  25 gas level  3.32281E+01 tyre usury  1.97445E+01 path length  6.45000E+01 speed  2.91597E+02
  1 1: SUMMURY lap :  5, actual time :  2.98928E+02, gas  3.31173E+01, tyre  1.98748E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  2.70500E+02 crossing time  3.34004E+00 speed  2.91554E+02
@@ -5403,10 +5403,6 @@ Array 2 again nothing null , id = -1, time 2.11850E+02
 Notifying
  3: evaluate done: length path  1.79954E+02 crossing time  2.22198E+00 speed  2.91558E+02
  3: updaitng pc:  check  27 gas level  3.30051E+01 tyre usury  2.00071E+01 path length  1.79954E+02 speed  2.91558E+02
- 2 2: SUMMURY lap :  5, actual time :  3.01216E+02, gas  3.30450E+01, tyre  1.99601E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  2.72100E+02 crossing time  3.36002E+00 speed  2.91534E+02
- 2: updaitng pc:  check  28 gas level  3.28545E+01 tyre usury  2.01846E+01 path length  2.72100E+02 speed  2.91534E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5422,6 +5418,10 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 2 2: SUMMURY lap :  5, actual time :  3.01216E+02, gas  3.30450E+01, tyre  1.99601E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.72100E+02 crossing time  3.36002E+00 speed  2.91534E+02
+ 2: updaitng pc:  check  28 gas level  3.28545E+01 tyre usury  2.01846E+01 path length  2.72100E+02 speed  2.91534E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5501,10 +5501,6 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
- 3 3: SUMMURY lap :  5, actual time :  3.06258E+02, gas  3.28157E+01, tyre  2.02302E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  2.24000E+02 crossing time  2.76667E+00 speed  2.91470E+02
- 3: updaitng pc:  check  29 gas level  3.26589E+01 tyre usury  2.04150E+01 path length  2.24000E+02 speed  2.91470E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -5520,10 +5516,29 @@ Array 1 again , id =  3, time 2.63681E+02
 Array 2 again nothing null , id = -1, time 2.08309E+02
 Array 2 again nothing null , id = -1, time 2.10385E+02
 Array 2 again nothing null , id = -1, time 2.11850E+02
+ 3 3: SUMMURY lap :  5, actual time :  3.06258E+02, gas  3.28157E+01, tyre  2.02302E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.24000E+02 crossing time  2.76667E+00 speed  2.91470E+02
+ 3: updaitng pc:  check  29 gas level  3.26589E+01 tyre usury  2.04150E+01 path length  2.24000E+02 speed  2.91470E+02
  1 1: SUMMURY lap :  5, actual time :  3.07110E+02, gas  3.26536E+01, tyre  2.04214E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  3.64000E+02 crossing time  4.49653E+00 speed  2.91425E+02
  1: updaitng pc:  check  31 gas level  3.23988E+01 tyre usury  2.07217E+01 path length  3.64000E+02 speed  2.91425E+02
+Array 1, id =  1, time 2.59885E+02
+Array 1, id =  2, time 2.62110E+02
+Array 1, id =  3, time 2.63681E+02
+Array 2, id =  1, time 2.08309E+02
+Copy false
+Array 2, id =  2, time 2.10385E+02
+Copy false
+Array 2, id =  3, time 2.11850E+02
+Copy false
+Array 1 again , id =  1, time 2.59885E+02
+Array 1 again , id =  2, time 2.62110E+02
+Array 1 again , id =  3, time 2.63681E+02
+Array 2 again nothing null , id = -1, time 2.08309E+02
+Array 2 again nothing null , id = -1, time 2.10385E+02
+Array 2 again nothing null , id = -1, time 2.11850E+02
  2 2: SUMMURY lap :  5, actual time :  3.07350E+02, gas  3.26973E+01, tyre  2.03699E+01, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
@@ -5531,21 +5546,6 @@ Notifying
 Notifying
  2: evaluate done: length path  1.68000E+02 crossing time  2.07524E+00 speed  2.91437E+02
  2: updaitng pc:  check  30 gas level  3.25797E+01 tyre usury  2.05085E+01 path length  1.68000E+02 speed  2.91437E+02
-Array 1, id =  1, time 2.59885E+02
-Array 1, id =  2, time 2.62110E+02
-Array 1, id =  3, time 2.63681E+02
-Array 2, id =  1, time 2.08309E+02
-Copy false
-Array 2, id =  2, time 2.10385E+02
-Copy false
-Array 2, id =  3, time 2.11850E+02
-Copy false
-Array 1 again , id =  1, time 2.59885E+02
-Array 1 again , id =  2, time 2.62110E+02
-Array 1 again , id =  3, time 2.63681E+02
-Array 2 again nothing null , id = -1, time 2.08309E+02
-Array 2 again nothing null , id = -1, time 2.10385E+02
-Array 2 again nothing null , id = -1, time 2.11850E+02
 Array 1, id =  1, time 2.59885E+02
 Array 1, id =  2, time 2.62110E+02
 Array 1, id =  3, time 2.63681E+02
@@ -6329,10 +6329,6 @@ Array 2 again nothing null , id = -1, time 2.63681E+02
 Notifying
  2: evaluate done: length path  5.55000E+01 crossing time  6.86942E-01 speed  2.90854E+02
  2: updaitng pc:  check  20 gas level  3.05623E+01 tyre usury  2.28819E+01 path length  5.55000E+01 speed  2.90854E+02
- 3 3: SUMMURY lap :  6, actual time :  3.44792E+02, gas  3.06340E+01, tyre  2.27979E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  1.09200E+02 crossing time  1.35156E+00 speed  2.90863E+02
- 3: updaitng pc:  check  19 gas level  3.05575E+01 tyre usury  2.28876E+01 path length  1.09200E+02 speed  2.90863E+02
 Array 1, id =  1, time 3.11606E+02
 Array 1, id =  2, time 3.13942E+02
 Array 1, id =  3, time 3.15643E+02
@@ -6348,6 +6344,10 @@ Array 1 again , id =  3, time 3.15643E+02
 Array 2 again nothing null , id = -1, time 2.59885E+02
 Array 2 again nothing null , id = -1, time 2.62110E+02
 Array 2 again nothing null , id = -1, time 2.63681E+02
+ 3 3: SUMMURY lap :  6, actual time :  3.44792E+02, gas  3.06340E+01, tyre  2.27979E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.09200E+02 crossing time  1.35156E+00 speed  2.90863E+02
+ 3: updaitng pc:  check  19 gas level  3.05575E+01 tyre usury  2.28876E+01 path length  1.09200E+02 speed  2.90863E+02
  2 2: SUMMURY lap :  6, actual time :  3.45061E+02, gas  3.05623E+01, tyre  2.28819E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  5.75000E+01 crossing time  7.11724E-01 speed  2.90843E+02
@@ -6387,10 +6387,6 @@ Notifying
 Notifying
  3: evaluate done: length path  5.55000E+01 crossing time  6.86971E-01 speed  2.90842E+02
  3: updaitng pc:  check  20 gas level  3.05187E+01 tyre usury  2.29333E+01 path length  5.55000E+01 speed  2.90842E+02
- 3 3: SUMMURY lap :  6, actual time :  3.46831E+02, gas  3.05187E+01, tyre  2.29333E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  5.75000E+01 crossing time  7.11753E-01 speed  2.90831E+02
- 3: updaitng pc:  check  21 gas level  3.04784E+01 tyre usury  2.29805E+01 path length  5.75000E+01 speed  2.90831E+02
 Array 1, id =  1, time 3.11606E+02
 Array 1, id =  2, time 3.13942E+02
 Array 1, id =  3, time 3.15643E+02
@@ -6406,6 +6402,10 @@ Array 1 again , id =  3, time 3.15643E+02
 Array 2 again nothing null , id = -1, time 2.59885E+02
 Array 2 again nothing null , id = -1, time 2.62110E+02
 Array 2 again nothing null , id = -1, time 2.63681E+02
+ 3 3: SUMMURY lap :  6, actual time :  3.46831E+02, gas  3.05187E+01, tyre  2.29333E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.75000E+01 crossing time  7.11753E-01 speed  2.90831E+02
+ 3: updaitng pc:  check  21 gas level  3.04784E+01 tyre usury  2.29805E+01 path length  5.75000E+01 speed  2.90831E+02
  1 1: SUMMURY lap :  6, actual time :  3.46859E+02, gas  3.04034E+01, tyre  2.30689E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.37000E+02 crossing time  1.69602E+00 speed  2.90799E+02
@@ -6575,10 +6575,6 @@ Array 2 again nothing null , id = -1, time 2.63681E+02
 Notifying
  1: evaluate done: length path  2.24000E+02 crossing time  2.77414E+00 speed  2.90685E+02
  1: updaitng pc:  check  29 gas level  2.98368E+01 tyre usury  2.37365E+01 path length  2.24000E+02 speed  2.90685E+02
- 3 3: SUMMURY lap :  6, actual time :  3.54952E+02, gas  3.00595E+01, tyre  2.34739E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  2.70500E+02 crossing time  3.34981E+00 speed  2.90703E+02
- 3: updaitng pc:  check  28 gas level  2.98702E+01 tyre usury  2.36971E+01 path length  2.70500E+02 speed  2.90703E+02
 Array 1, id =  1, time 3.11606E+02
 Array 1, id =  2, time 3.13942E+02
 Array 1, id =  3, time 3.15643E+02
@@ -6594,6 +6590,10 @@ Array 1 again , id =  3, time 3.15643E+02
 Array 2 again nothing null , id = -1, time 2.59885E+02
 Array 2 again nothing null , id = -1, time 2.62110E+02
 Array 2 again nothing null , id = -1, time 2.63681E+02
+ 3 3: SUMMURY lap :  6, actual time :  3.54952E+02, gas  3.00595E+01, tyre  2.34739E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.70500E+02 crossing time  3.34981E+00 speed  2.90703E+02
+ 3: updaitng pc:  check  28 gas level  2.98702E+01 tyre usury  2.36971E+01 path length  2.70500E+02 speed  2.90703E+02
 Array 1, id =  1, time 3.11606E+02
 Array 1, id =  2, time 3.13942E+02
 Array 1, id =  3, time 3.15643E+02
@@ -6654,10 +6654,6 @@ Array 2 again nothing null , id = -1, time 2.63681E+02
 Notifying
  3: evaluate done: length path  2.24000E+02 crossing time  2.77446E+00 speed  2.90651E+02
  3: updaitng pc:  check  29 gas level  2.97134E+01 tyre usury  2.38819E+01 path length  2.24000E+02 speed  2.90651E+02
- 1 1: SUMMURY lap :  6, actual time :  3.58963E+02, gas  2.97192E+01, tyre  2.38751E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  3.64000E+02 crossing time  4.50916E+00 speed  2.90609E+02
- 1: updaitng pc:  check  31 gas level  2.94644E+01 tyre usury  2.41754E+01 path length  3.64000E+02 speed  2.90609E+02
 Array 1, id =  1, time 3.11606E+02
 Array 1, id =  2, time 3.13942E+02
 Array 1, id =  3, time 3.15643E+02
@@ -6673,6 +6669,10 @@ Array 1 again , id =  3, time 3.15643E+02
 Array 2 again nothing null , id = -1, time 2.59885E+02
 Array 2 again nothing null , id = -1, time 2.62110E+02
 Array 2 again nothing null , id = -1, time 2.63681E+02
+ 1 1: SUMMURY lap :  6, actual time :  3.58963E+02, gas  2.97192E+01, tyre  2.38751E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  3.64000E+02 crossing time  4.50916E+00 speed  2.90609E+02
+ 1: updaitng pc:  check  31 gas level  2.94644E+01 tyre usury  2.41754E+01 path length  3.64000E+02 speed  2.90609E+02
  2 2: SUMMURY lap :  6, actual time :  3.59309E+02, gas  2.97568E+01, tyre  2.38308E+01, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
@@ -6969,10 +6969,6 @@ Array 2 again nothing null , id =  3, time 3.15643E+02
 Notifying
  3: evaluate done: length path  6.00000E+01 crossing time  7.43737E-01 speed  2.90425E+02
  3: updaitng pc:  check  6 gas level  2.90198E+01 tyre usury  2.46992E+01 path length  6.00000E+01 speed  2.90425E+02
- 2 2: SUMMURY lap :  7, actual time :  3.73145E+02, gas  2.89752E+01, tyre  2.47520E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.01000E+02 crossing time  1.25206E+00 speed  2.90401E+02
- 2: updaitng pc:  check  8 gas level  2.89045E+01 tyre usury  2.48349E+01 path length  1.01000E+02 speed  2.90401E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 2, id =  1, time 3.11606E+02
@@ -6985,6 +6981,10 @@ Array 1 again , id =  2, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.11606E+02
 Array 2 again nothing null , id = -1, time 3.13942E+02
 Array 2 again nothing null , id =  3, time 3.15643E+02
+ 2 2: SUMMURY lap :  7, actual time :  3.73145E+02, gas  2.89752E+01, tyre  2.47520E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.01000E+02 crossing time  1.25206E+00 speed  2.90401E+02
+ 2: updaitng pc:  check  8 gas level  2.89045E+01 tyre usury  2.48349E+01 path length  1.01000E+02 speed  2.90401E+02
  1 1: SUMMURY lap :  7, actual time :  3.73238E+02, gas  2.89128E+01, tyre  2.48248E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.79000E+02 crossing time  2.21913E+00 speed  2.90384E+02
@@ -7039,10 +7039,6 @@ Notifying
 Notifying
  2: evaluate done: length path  1.79000E+02 crossing time  2.21930E+00 speed  2.90362E+02
  2: updaitng pc:  check  10 gas level  2.87064E+01 tyre usury  2.50680E+01 path length  1.79000E+02 speed  2.90362E+02
- 3 3: SUMMURY lap :  7, actual time :  3.76194E+02, gas  2.88595E+01, tyre  2.48878E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  1.04000E+02 crossing time  1.28939E+00 speed  2.90369E+02
- 3: updaitng pc:  check  9 gas level  2.87867E+01 tyre usury  2.49732E+01 path length  1.04000E+02 speed  2.90369E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 1, id =  3, time 3.67713E+02
@@ -7058,6 +7054,10 @@ Array 1 again , id =  3, time 3.67713E+02
 Array 2 again nothing null , id = -1, time 3.11606E+02
 Array 2 again nothing null , id = -1, time 3.13942E+02
 Array 2 again nothing null , id = -1, time 3.15643E+02
+ 3 3: SUMMURY lap :  7, actual time :  3.76194E+02, gas  2.88595E+01, tyre  2.48878E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.04000E+02 crossing time  1.28939E+00 speed  2.90369E+02
+ 3: updaitng pc:  check  9 gas level  2.87867E+01 tyre usury  2.49732E+01 path length  1.04000E+02 speed  2.90369E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 1, id =  3, time 3.67713E+02
@@ -7390,10 +7390,6 @@ Array 2 again nothing null , id = -1, time 3.15643E+02
 Notifying
  1: evaluate done: length path  1.09200E+02 crossing time  1.35521E+00 speed  2.90081E+02
  1: updaitng pc:  check  19 gas level  2.77452E+01 tyre usury  2.61975E+01 path length  1.09200E+02 speed  2.90081E+02
- 2 2: SUMMURY lap :  7, actual time :  3.93436E+02, gas  2.78311E+01, tyre  2.60971E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.31000E+02 crossing time  1.62574E+00 speed  2.90084E+02
- 2: updaitng pc:  check  18 gas level  2.77394E+01 tyre usury  2.62047E+01 path length  1.31000E+02 speed  2.90084E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 1, id =  3, time 3.67713E+02
@@ -7409,6 +7405,10 @@ Array 1 again , id =  3, time 3.67713E+02
 Array 2 again nothing null , id = -1, time 3.11606E+02
 Array 2 again nothing null , id = -1, time 3.13942E+02
 Array 2 again nothing null , id = -1, time 3.15643E+02
+ 2 2: SUMMURY lap :  7, actual time :  3.93436E+02, gas  2.78311E+01, tyre  2.60971E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.31000E+02 crossing time  1.62574E+00 speed  2.90084E+02
+ 2: updaitng pc:  check  18 gas level  2.77394E+01 tyre usury  2.62047E+01 path length  1.31000E+02 speed  2.90084E+02
  1 1: SUMMURY lap :  7, actual time :  3.93927E+02, gas  2.77452E+01, tyre  2.61975E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  5.55000E+01 crossing time  6.88823E-01 speed  2.90060E+02
@@ -7544,10 +7544,6 @@ Notifying
 Notifying
  3: evaluate done: length path  5.75000E+01 crossing time  7.13762E-01 speed  2.90013E+02
  3: updaitng pc:  check  21 gas level  2.75347E+01 tyre usury  2.64451E+01 path length  5.75000E+01 speed  2.90013E+02
- 2 2: SUMMURY lap :  7, actual time :  3.99495E+02, gas  2.74893E+01, tyre  2.64987E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  2.70000E+01 crossing time  3.35186E-01 speed  2.89989E+02
- 2: updaitng pc:  check  23 gas level  2.74704E+01 tyre usury  2.65210E+01 path length  2.70000E+01 speed  2.89989E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 1, id =  3, time 3.67713E+02
@@ -7563,6 +7559,10 @@ Array 1 again , id =  3, time 3.67713E+02
 Array 2 again nothing null , id = -1, time 3.11606E+02
 Array 2 again nothing null , id = -1, time 3.13942E+02
 Array 2 again nothing null , id = -1, time 3.15643E+02
+ 2 2: SUMMURY lap :  7, actual time :  3.99495E+02, gas  2.74893E+01, tyre  2.64987E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.70000E+01 crossing time  3.35186E-01 speed  2.89989E+02
+ 2: updaitng pc:  check  23 gas level  2.74704E+01 tyre usury  2.65210E+01 path length  2.70000E+01 speed  2.89989E+02
  3 3: SUMMURY lap :  7, actual time :  3.99677E+02, gas  2.75347E+01, tyre  2.64451E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.35000E+02 crossing time  1.67585E+00 speed  2.90001E+02
@@ -7571,10 +7571,6 @@ Notifying
 Notifying
  2: evaluate done: length path  5.50000E+01 crossing time  6.82798E-01 speed  2.89983E+02
  2: updaitng pc:  check  24 gas level  2.74319E+01 tyre usury  2.65663E+01 path length  5.50000E+01 speed  2.89983E+02
- 2 2: SUMMURY lap :  7, actual time :  4.00513E+02, gas  2.74319E+01, tyre  2.65663E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  6.45000E+01 crossing time  8.00765E-01 speed  2.89973E+02
- 2: updaitng pc:  check  25 gas level  2.73868E+01 tyre usury  2.66195E+01 path length  6.45000E+01 speed  2.89973E+02
 Array 1, id =  1, time 3.63472E+02
 Array 1, id =  2, time 3.65919E+02
 Array 1, id =  3, time 3.67713E+02
@@ -7590,6 +7586,10 @@ Array 1 again , id =  3, time 3.67713E+02
 Array 2 again nothing null , id = -1, time 3.11606E+02
 Array 2 again nothing null , id = -1, time 3.13942E+02
 Array 2 again nothing null , id = -1, time 3.15643E+02
+ 2 2: SUMMURY lap :  7, actual time :  4.00513E+02, gas  2.74319E+01, tyre  2.65663E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  6.45000E+01 crossing time  8.00765E-01 speed  2.89973E+02
+ 2: updaitng pc:  check  25 gas level  2.73868E+01 tyre usury  2.66195E+01 path length  6.45000E+01 speed  2.89973E+02
  1 1: SUMMURY lap :  7, actual time :  4.00524E+02, gas  2.73731E+01, tyre  2.66356E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  1.78000E+02 crossing time  2.20999E+00 speed  2.89956E+02
@@ -8483,10 +8483,6 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
- 1 1: SUMMURY lap :  8, actual time :  4.43035E+02, gas  2.49789E+01, tyre  2.94538E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.31000E+02 crossing time  1.63020E+00 speed  2.89290E+02
- 1: updaitng pc:  check  18 gas level  2.48872E+01 tyre usury  2.95614E+01 path length  1.31000E+02 speed  2.89290E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -8502,6 +8498,10 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
+ 1 1: SUMMURY lap :  8, actual time :  4.43035E+02, gas  2.49789E+01, tyre  2.94538E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.31000E+02 crossing time  1.63020E+00 speed  2.89290E+02
+ 1: updaitng pc:  check  18 gas level  2.48872E+01 tyre usury  2.95614E+01 path length  1.31000E+02 speed  2.89290E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -8609,10 +8609,6 @@ Array 2 again nothing null , id = -1, time 3.67713E+02
 Notifying
  2: evaluate done: length path  5.55000E+01 crossing time  6.90824E-01 speed  2.89220E+02
  2: updaitng pc:  check  20 gas level  2.46859E+01 tyre usury  2.97983E+01 path length  5.55000E+01 speed  2.89220E+02
- 1 1: SUMMURY lap :  8, actual time :  4.49111E+02, gas  2.46372E+01, tyre  2.98555E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  2.70000E+01 crossing time  3.36105E-01 speed  2.89196E+02
- 1: updaitng pc:  check  23 gas level  2.46183E+01 tyre usury  2.98777E+01 path length  2.70000E+01 speed  2.89196E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -8628,6 +8624,10 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
+ 1 1: SUMMURY lap :  8, actual time :  4.49111E+02, gas  2.46372E+01, tyre  2.98555E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  2.70000E+01 crossing time  3.36105E-01 speed  2.89196E+02
+ 1: updaitng pc:  check  23 gas level  2.46183E+01 tyre usury  2.98777E+01 path length  2.70000E+01 speed  2.89196E+02
  3 3: SUMMURY lap :  8, actual time :  4.49184E+02, gas  2.47466E+01, tyre  2.97271E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.09200E+02 crossing time  1.35921E+00 speed  2.89226E+02
@@ -8775,10 +8775,6 @@ Notifying
 Notifying
  1: evaluate done: length path  2.70500E+02 crossing time  3.36832E+00 speed  2.89106E+02
  1: updaitng pc:  check  28 gas level  2.41248E+01 tyre usury  3.04590E+01 path length  2.70500E+02 speed  2.89106E+02
- 2 2: SUMMURY lap :  8, actual time :  4.55203E+02, gas  2.43527E+01, tyre  3.01907E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.78000E+02 crossing time  2.21641E+00 speed  2.89116E+02
- 2: updaitng pc:  check  27 gas level  2.42281E+01 tyre usury  3.03373E+01 path length  1.78000E+02 speed  2.89116E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -8794,6 +8790,10 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
+ 2 2: SUMMURY lap :  8, actual time :  4.55203E+02, gas  2.43527E+01, tyre  3.01907E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.78000E+02 crossing time  2.21641E+00 speed  2.89116E+02
+ 2: updaitng pc:  check  27 gas level  2.42281E+01 tyre usury  3.03373E+01 path length  1.78000E+02 speed  2.89116E+02
  3 3: SUMMURY lap :  8, actual time :  4.55455E+02, gas  2.43940E+01, tyre  3.01419E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.37000E+02 crossing time  1.70582E+00 speed  2.89128E+02
@@ -8836,10 +8836,6 @@ Array 2 again nothing null , id = -1, time 3.67713E+02
 Notifying
  2: evaluate done: length path  2.72100E+02 crossing time  3.38852E+00 speed  2.89082E+02
  2: updaitng pc:  check  28 gas level  2.40376E+01 tyre usury  3.05618E+01 path length  2.72100E+02 speed  2.89082E+02
- 1 1: SUMMURY lap :  8, actual time :  4.58225E+02, gas  2.41248E+01, tyre  3.04590E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  2.24000E+02 crossing time  2.78980E+00 speed  2.89053E+02
- 1: updaitng pc:  check  29 gas level  2.39680E+01 tyre usury  3.06438E+01 path length  2.24000E+02 speed  2.89053E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -8855,6 +8851,10 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
+ 1 1: SUMMURY lap :  8, actual time :  4.58225E+02, gas  2.41248E+01, tyre  3.04590E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  2.24000E+02 crossing time  2.78980E+00 speed  2.89053E+02
+ 1: updaitng pc:  check  29 gas level  2.39680E+01 tyre usury  3.06438E+01 path length  2.24000E+02 speed  2.89053E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -9039,10 +9039,6 @@ Notifying
 Notifying
  1: evaluate done: length path  5.50000E+01 crossing time  6.85345E-01 speed  2.88906E+02
  1: updaitng pc:  check  1 gas level  2.35571E+01 tyre usury  3.11281E+01 path length  5.50000E+01 speed  2.88906E+02
- 1 1: SUMMURY lap :  9, actual time :  4.68328E+02, gas  2.35571E+01, tyre  3.11281E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  5.00000E+01 crossing time  6.23064E-01 speed  2.88895E+02
- 1: updaitng pc:  check  2 gas level  2.35221E+01 tyre usury  3.11693E+01 path length  5.00000E+01 speed  2.88895E+02
 Array 1, id =  1, time 4.15484E+02
 Array 1, id =  2, time 4.18023E+02
 Array 1, id =  3, time 4.19904E+02
@@ -9058,6 +9054,10 @@ Array 1 again , id =  3, time 4.19904E+02
 Array 2 again nothing null , id = -1, time 3.63472E+02
 Array 2 again nothing null , id = -1, time 3.65919E+02
 Array 2 again nothing null , id = -1, time 3.67713E+02
+ 1 1: SUMMURY lap :  9, actual time :  4.68328E+02, gas  2.35571E+01, tyre  3.11281E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.00000E+01 crossing time  6.23064E-01 speed  2.88895E+02
+ 1: updaitng pc:  check  2 gas level  2.35221E+01 tyre usury  3.11693E+01 path length  5.00000E+01 speed  2.88895E+02
  1 1: SUMMURY lap :  9, actual time :  4.68951E+02, gas  2.35221E+01, tyre  3.11693E+01, pit stop done FALSE
 Notifying
  1: evaluate done: length path  4.50000E+01 crossing time  5.60777E-01 speed  2.88885E+02
@@ -9252,10 +9252,6 @@ Array 2 again nothing null , id =  3, time 4.19904E+02
 Notifying
  3: evaluate done: length path  6.00000E+01 crossing time  7.47951E-01 speed  2.88789E+02
  3: updaitng pc:  check  6 gas level  2.31347E+01 tyre usury  3.16258E+01 path length  6.00000E+01 speed  2.88789E+02
- 1 1: SUMMURY lap :  9, actual time :  4.77464E+02, gas  2.30440E+01, tyre  3.17321E+01, pit stop done FALSE
-Notifying
- 1: evaluate done: length path  1.79000E+02 crossing time  2.23167E+00 speed  2.88752E+02
- 1: updaitng pc:  check  10 gas level  2.29187E+01 tyre usury  3.18798E+01 path length  1.79000E+02 speed  2.88752E+02
 Array 1, id =  1, time 4.67642E+02
 Array 2, id =  1, time 4.15484E+02
 Copy false
@@ -9265,6 +9261,10 @@ Array 1 again , id =  1, time 4.67642E+02
 Array 2 again nothing null , id = -1, time 4.15484E+02
 Array 2 again nothing null , id =  2, time 4.18023E+02
 Array 2 again nothing null , id =  3, time 4.19904E+02
+ 1 1: SUMMURY lap :  9, actual time :  4.77464E+02, gas  2.30440E+01, tyre  3.17321E+01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.79000E+02 crossing time  2.23167E+00 speed  2.88752E+02
+ 1: updaitng pc:  check  10 gas level  2.29187E+01 tyre usury  3.18798E+01 path length  1.79000E+02 speed  2.88752E+02
  2 2: SUMMURY lap :  9, actual time :  4.77520E+02, gas  2.30987E+01, tyre  3.16683E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  1.01000E+02 crossing time  1.25915E+00 speed  2.88767E+02
@@ -9489,10 +9489,6 @@ Array 2 again nothing null , id = -1, time 4.19904E+02
 Notifying
  2: evaluate done: length path  1.14200E+02 crossing time  1.42455E+00 speed  2.88597E+02
  2: updaitng pc:  check  15 gas level  2.24039E+01 tyre usury  3.24844E+01 path length  1.14200E+02 speed  2.88597E+02
- 3 3: SUMMURY lap :  9, actual time :  4.88634E+02, gas  2.25302E+01, tyre  3.23363E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  3.02000E+01 crossing time  3.76703E-01 speed  2.88609E+02
- 3: updaitng pc:  check  13 gas level  2.25091E+01 tyre usury  3.23612E+01 path length  3.02000E+01 speed  2.88609E+02
 Array 1, id =  1, time 4.67642E+02
 Array 1, id =  2, time 4.70254E+02
 Array 1, id =  3, time 4.72195E+02
@@ -9508,6 +9504,10 @@ Array 1 again , id =  3, time 4.72195E+02
 Array 2 again nothing null , id = -1, time 4.15484E+02
 Array 2 again nothing null , id = -1, time 4.18023E+02
 Array 2 again nothing null , id = -1, time 4.19904E+02
+ 3 3: SUMMURY lap :  9, actual time :  4.88634E+02, gas  2.25302E+01, tyre  3.23363E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.02000E+01 crossing time  3.76703E-01 speed  2.88609E+02
+ 3: updaitng pc:  check  13 gas level  2.25091E+01 tyre usury  3.23612E+01 path length  3.02000E+01 speed  2.88609E+02
  3 3: SUMMURY lap :  9, actual time :  4.89011E+02, gas  2.25091E+01, tyre  3.23612E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  1.17000E+02 crossing time  1.45944E+00 speed  2.88603E+02
@@ -9868,10 +9868,6 @@ Notifying
 Notifying
  2: evaluate done: length path  6.45000E+01 crossing time  8.05303E-01 speed  2.88339E+02
  2: updaitng pc:  check  25 gas level  2.15104E+01 tyre usury  3.35358E+01 path length  6.45000E+01 speed  2.88339E+02
- 2 2: SUMMURY lap :  9, actual time :  5.05828E+02, gas  2.15104E+01, tyre  3.35358E+01, pit stop done FALSE
-Notifying
- 2: evaluate done: length path  1.37000E+02 crossing time  1.71056E+00 speed  2.88326E+02
- 2: updaitng pc:  check  26 gas level  2.14145E+01 tyre usury  3.36488E+01 path length  1.37000E+02 speed  2.88326E+02
 Array 1, id =  1, time 4.67642E+02
 Array 1, id =  2, time 4.70254E+02
 Array 1, id =  3, time 4.72195E+02
@@ -9887,6 +9883,10 @@ Array 1 again , id =  3, time 4.72195E+02
 Array 2 again nothing null , id = -1, time 4.15484E+02
 Array 2 again nothing null , id = -1, time 4.18023E+02
 Array 2 again nothing null , id = -1, time 4.19904E+02
+ 2 2: SUMMURY lap :  9, actual time :  5.05828E+02, gas  2.15104E+01, tyre  3.35358E+01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.37000E+02 crossing time  1.71056E+00 speed  2.88326E+02
+ 2: updaitng pc:  check  26 gas level  2.14145E+01 tyre usury  3.36488E+01 path length  1.37000E+02 speed  2.88326E+02
  3 3: SUMMURY lap :  9, actual time :  5.06017E+02, gas  2.15551E+01, tyre  3.34831E+01, pit stop done FALSE
 Notifying
  3: evaluate done: length path  2.70000E+01 crossing time  3.37104E-01 speed  2.88338E+02
@@ -9922,10 +9922,6 @@ Notifying
 Notifying
  2: evaluate done: length path  1.78000E+02 crossing time  2.22269E+00 speed  2.88299E+02
  2: updaitng pc:  check  27 gas level  2.12899E+01 tyre usury  3.37954E+01 path length  1.78000E+02 speed  2.88299E+02
- 3 3: SUMMURY lap :  9, actual time :  5.07846E+02, gas  2.14526E+01, tyre  3.36038E+01, pit stop done FALSE
-Notifying
- 3: evaluate done: length path  1.37000E+02 crossing time  1.71066E+00 speed  2.88310E+02
- 3: updaitng pc:  check  26 gas level  2.13567E+01 tyre usury  3.37169E+01 path length  1.37000E+02 speed  2.88310E+02
 Array 1, id =  1, time 4.67642E+02
 Array 1, id =  2, time 4.70254E+02
 Array 1, id =  3, time 4.72195E+02
@@ -9941,6 +9937,10 @@ Array 1 again , id =  3, time 4.72195E+02
 Array 2 again nothing null , id = -1, time 4.15484E+02
 Array 2 again nothing null , id = -1, time 4.18023E+02
 Array 2 again nothing null , id = -1, time 4.19904E+02
+ 3 3: SUMMURY lap :  9, actual time :  5.07846E+02, gas  2.14526E+01, tyre  3.36038E+01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.37000E+02 crossing time  1.71066E+00 speed  2.88310E+02
+ 3: updaitng pc:  check  26 gas level  2.13567E+01 tyre usury  3.37169E+01 path length  1.37000E+02 speed  2.88310E+02
 Array 1, id =  1, time 4.67642E+02
 Array 1, id =  2, time 4.70254E+02
 Array 1, id =  3, time 4.72195E+02
@@ -10081,6 +10081,21 @@ Notifying
 Notifying
  1: evaluate done: length path  3.64000E+02 crossing time  4.54747E+00 speed  2.88160E+02
  1: updaitng pc:  check  31 gas level  2.06612E+01 tyre usury  3.45364E+01 path length  3.64000E+02 speed  2.88160E+02
+Array 1, id =  1, time 4.67642E+02
+Array 1, id =  2, time 4.70254E+02
+Array 1, id =  3, time 4.72195E+02
+Array 2, id =  1, time 4.15484E+02
+Copy false
+Array 2, id =  2, time 4.18023E+02
+Copy false
+Array 2, id =  3, time 4.19904E+02
+Copy false
+Array 1 again , id =  1, time 4.67642E+02
+Array 1 again , id =  2, time 4.70254E+02
+Array 1 again , id =  3, time 4.72195E+02
+Array 2 again nothing null , id = -1, time 4.15484E+02
+Array 2 again nothing null , id = -1, time 4.18023E+02
+Array 2 again nothing null , id = -1, time 4.19904E+02
  2 2: SUMMURY lap :  9, actual time :  5.15966E+02, gas  2.09422E+01, tyre  3.42052E+01, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
@@ -10125,21 +10140,6 @@ Array 2 again nothing null , id = -1, time 4.19904E+02
 Notifying
  3: evaluate done: length path  1.68530E+02 crossing time  2.10552E+00 speed  2.88152E+02
  3: updaitng pc:  check  30 gas level  2.07666E+01 tyre usury  3.44121E+01 path length  1.68530E+02 speed  2.88152E+02
-Array 1, id =  1, time 4.67642E+02
-Array 1, id =  2, time 4.70254E+02
-Array 1, id =  3, time 4.72195E+02
-Array 2, id =  1, time 4.15484E+02
-Copy false
-Array 2, id =  2, time 4.18023E+02
-Copy false
-Array 2, id =  3, time 4.19904E+02
-Copy false
-Array 1 again , id =  1, time 4.67642E+02
-Array 1 again , id =  2, time 4.70254E+02
-Array 1 again , id =  3, time 4.72195E+02
-Array 2 again nothing null , id = -1, time 4.15484E+02
-Array 2 again nothing null , id = -1, time 4.18023E+02
-Array 2 again nothing null , id = -1, time 4.19904E+02
  2 2: SUMMURY lap :  9, actual time :  5.18064E+02, gas  2.08246E+01, tyre  3.43438E+01, pit stop done FALSE
 Notifying
  2: evaluate done: length path  3.65600E+02 crossing time  4.56786E+00 speed  2.88135E+02

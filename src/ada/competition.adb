@@ -116,7 +116,7 @@ package body Competition is
 
          Ada.Text_IO.Put_Line("Box ready!");
 
-         Set_Competitors(Track,Comp_List.all);
+         Circuit.Set_Competitors(Track,Comp_List.all);
 
 
          --We are aware of what we are doing here and
@@ -145,7 +145,7 @@ package body Competition is
                           Laps_in : in INTEGER;
                           Circuit_File : in STRING) is
 
-         Track_Iterator : RACETRACK_ITERATOR;
+         Track_Iterator : Circuit.RACETRACK_ITERATOR;
          Track_Length : FLOAT := 0.0;
          --Starter : access Competition_Monitor.impl.MonitorStarter;
       begin
@@ -156,6 +156,7 @@ package body Competition is
 
 
          Circuit.Set_Max_Competitors(MaxCompetitors);
+         --Circuit.Set_Checkpoints(Checkpoints);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
          Checkpoints := Circuit.Checkpoints;
@@ -165,18 +166,15 @@ package body Competition is
          Competitors := new CompetitorTask_Array(1..MaxCompetitors);
          Ada.Text_IO.Put_Line(INTEGER'IMAGE(MaxCompetitors) & " competitors");
 
-         Competition_Computer.Init_Stats(Competitor_Qty => MaxCompetitors,
-                          Laps           => Laps_In,
-                          Checkpoints_In => Checkpoints);
+         Competition_Computer.Initialize(MaxCompetitors,
+                                         Laps_In,
+                                         Checkpoints,
+                                         Unbounded_string.To_Unbounded_String(Name_In),
+                                         Circuit_Length);
 
 
 
          Registrations_Open := True;
-
-         Competition_Computer.Init_StaticInformation(Laps_In ,
-                                                    MaxCompetitors,
-                                                    Unbounded_string.To_Unbounded_String(Name_In),
-                                                    Circuit_Length);
 
 
          Monitor := Competition_Monitor.Init(MaxCompetitors,

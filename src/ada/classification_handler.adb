@@ -1,4 +1,8 @@
+with Competition_Computer;
+
 package body Classification_Handler is
+
+   Competitors : INTEGER;
 
    function Get_StatsRow(Competitor_Id_In : Integer;
                          Time_In : Float) return Stats_Row is
@@ -248,5 +252,235 @@ package body Classification_Handler is
       end Get_Size;
 
    end Synch_Ordered_Classification_Table;
+
+   procedure Update_Classific(Competitor_ID : INTEGER;
+                              CompletedLap : INTEGER;
+                              Time : FLOAT) is
+      Row : STATS_ROW;
+   begin
+      --Find the right table for this lap
+      Set_Competitor_Id(Row, Competitor_ID);
+      Set_Time(Row, Time);
+
+      --Add the information inside
+      Classification_Tables.all(CompletedLap).Add_Row(Row);
+      --Done
+
+   end Update_Classific;
+
+
+   --It returs the competitors who have been lapped at a certain time instant
+   --+ (the lap it's necessary to optimize the retrieval: only the competitors
+   --+ riding in a previous lap during the given instant will be kept in consideration).
+   procedure Get_LappedCompetitors(TimeInstant : FLOAT;
+                                   CurrentLap : INTEGER;
+                                   CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                                   Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                                   Competitor_IDs : out INTEGER_ARRAY_POINT;
+                                   Competitor_Lap : out INTEGER_ARRAY_POINT) is
+      Temp_Row : STATS_ROW;
+      PolePosition_Time : FLOAT;
+      ProcessedCompetitors_IdList : INTEGER_ARRAY(1..Competitors);--alias for Competitors
+      NotLapped_Count : INTEGER := 0;
+      PreviousClassific_Count : INTEGER := 0;
+      Lapped_Competitors : INTEGER := 0;
+      Lapped_Count : INTEGER := 0;
+      ExitLoop : BOOLEAN := false;
+   begin
+      --Init the processed competitors id list array: when the array position is filled with 1 it means that the
+      --+ competitor with id corresponding to that index has not been processed yet (we don't know whether he
+      --+ has been lapped or not)
+      for id in ProcessedCompetitors_IdList'RANGE loop
+         if(Competition_Computer.Is_CompetitorOut(id,TimeInstant) = TRUE) then
+            --The competitor is no longer in the classific
+            ProcessedCompetitors_IdList(id) := 1;
+            NotLapped_Count := NotLapped_Count + 1;
+         else
+            ProcessedCompetitors_IdList(id) := 0;
+         end if;
+      end loop;
+
+      --Pick up the pole position time in the classification table related the CurrentLap
+      PolePosition_Time := Get_Time(Classification_Tables.all(CurrentLap+1).Get_Row(1));
+
+      -- search backward (in the table list) the lap of the lapped competitors. It will be (for each competitor)
+      --+ the index of the first table where the competitor has written a time less then the best time
+      --+ found at the beginning of the method. If such table is the one before the current one, it's not lapped.
+
+      --Find out the competitors already into the previous table after the pole position time.
+      --+Those competitors will not be counted in the lapped list.
+      if( CurrentLap > 0) then
+
+         for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
+
+            Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
+            if (Get_Competitor_Id(Temp_Row) /= -1 and then Get_Time(Temp_Row) <= PolePosition_Time
+		and then ProcessedCompetitors_IdList(Get_Competitor_Id(Temp_Row)) /= 1) then
+
+               ProcessedCompetitors_IdList(Get_Competitor_Id(Temp_Row)) := 1;
+               NotLapped_Count := NotLapped_Count + 1;
+	       PreviousClassific_Count := PreviousClassific_Count + 1;
+	     --It means that it was considered as out of competition in the previous check and so not counted as being in the previous lap.
+	    --+ so now we find out that before being squalified he completed the previous lap and so he's to be added to the previousClassific count
+            elsif(Get_Competitor_Id(Temp_Row) /= -1 and then Get_Time(Temp_Row) <= PolePosition_Time
+		and then ProcessedCompetitors_IdList(Get_Competitor_Id(Temp_Row)) = 1 and then Competition_Computer.Is_CompetitorOut(Get_Competitor_Id(Temp_Row),TimeInstant) = TRUE) then
+		    PreviousClassific_Count := PreviousClassific_Count + 1;
+	    else
+               ExitLoop := true;
+            end if;
+
+            exit when ExitLoop = true;
+         end loop;
+
+         --Filling up the array with competitors that have not started the new lap yet but that have already
+         --+ finished the previous one (so, they have a classification time for that lap). This is done to
+         --+ avoid the problem o "skipped competitor in classification"
+         if(PreviousClassific_Count /= 0) then
+
+	    CompetitorIDs_PreviousClassific := new INTEGER_ARRAY(1..PreviousClassific_Count);
+	    Times_PreviousClassific := new FLOAT_ARRAY(1..PreviousClassific_Count);
+	    for Index in 1..Classification_Tables.all(CurrentLap).Get_Size loop
+	      Temp_Row := Classification_Tables.all(CurrentLap).Get_Row(Index);
+	      if (Get_Competitor_Id(Temp_Row) /= -1 and Get_Time(Temp_Row) <= PolePosition_Time) then
+
+		CompetitorIDs_PreviousClassific(Index) := Get_Competitor_Id(Temp_Row);
+		Times_PreviousClassific(Index) := Get_Time(Temp_Row);
+	      else
+		exit;
+	      end if;
+	    end loop;
+	 else
+	  CompetitorIDs_PreviousClassific := null;
+	  Times_PreviousClassific := null;
+	 end if;
+
+         if(Competitors-NotLapped_Count = 0) then
+            Competitor_IDs := null;
+            Competitor_Lap := null;
+         else
+
+            Competitor_IDs := new INTEGER_ARRAY(1..Competitors-NotLapped_Count);
+            Competitor_Lap := new INTEGER_ARRAY(1..Competitors-NotLapped_Count);
+            --Initialise these 2 arrays
+            for i in Competitor_Lap'RANGE loop
+               Competitor_IDs.all(i) := -1;
+               Competitor_Lap.all(i) := -1;
+            end loop;
+
+            ExitLoop := false;
+            --Loop backward in the classification table list and find id and lap of lapped competitors
+            for Index in reverse 1..CurrentLap-1 loop
+
+               for i in 1..Classification_Tables.all(Index).Get_Size loop
+
+                  Temp_Row := Classification_Tables.all(Index).Get_Row(i);
+                  if (Get_Time(Temp_Row) /= -1.0 and then
+                        Get_Time(Temp_Row) <= PolePosition_Time and then
+                          ProcessedCompetitors_IdList(Get_Competitor_Id(Temp_Row)) = 0 ) then
+
+                     Lapped_Count := Lapped_Count + 1;
+                     ProcessedCompetitors_IdList(Get_Competitor_Id(Temp_Row)) := 1;
+
+                     Competitor_IDs.all(Lapped_Count) := Get_Competitor_Id(Temp_Row);
+
+		     Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
+
+		  end if;
+               end loop;
+            end loop;
+
+            --If a competitor is still riding in the first lap, he will not appear in the tables.
+            --+ So let's fill up the remaining positions of the lapped array
+            for Index in 1..ProcessedCompetitors_IdList'LENGTH loop
+               if(ProcessedCompetitors_IdList(Index) = 0) then
+                  Lapped_Count := Lapped_Count + 1;
+                  ProcessedCompetitors_IdList(Index) := 1;
+                  Competitor_IDs.all(Lapped_Count) := Index;
+                  Competitor_Lap.all(Lapped_Count) := 0;
+               end if;
+            end loop;
+         end if;
+      else
+         --If the lap is the first one, impossible to have lapped competitors
+         Competitor_IDs := null;
+         Competitor_Lap := null;
+      end if;
+
+   end Get_LappedCompetitors;
+
+   procedure Get_LapClassific(Lap : INTEGER;
+                              TimeInstant : FLOAT;
+                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                              Times_InClassific : out FLOAT_ARRAY_POINT;
+                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
+      Temp_Row : STATS_ROW;
+      InClassific_Count : INTEGER := 0;
+      ExitLoop : BOOLEAN := FALSE;
+   begin
+
+      for Index in 1..Classification_Tables.all(Lap+1).Get_Size loop
+         Temp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
+
+         --Competitor in classific
+         if(Get_Competitor_Id(Temp_Row) /= -1 and Get_Time(Temp_Row) <= TimeInstant) then
+
+            InClassific_Count := InClassific_Count + 1;
+         else
+            -- it means that the following rows have either a greater time instant
+            --+ or are not set yet (and they will be set in a time instatn greater than
+            --+ the asked one)
+            ExitLoop := TRUE;
+         end if;
+
+         exit when ExitLoop = true;
+      end loop;
+
+      CompetitorID_InClassific := new INTEGER_ARRAY(1..InClassific_Count);
+      Times_InClassific := new FLOAT_ARRAY(1..InClassific_Count);
+      ExitLoop := FALSE;
+
+      for Index in 1..InClassific_Count loop
+         Temp_Row := Classification_Tables.all(Lap+1).Get_Row(Index);
+         if(Get_Competitor_Id(Temp_Row) /= -1 and then Get_Time(Temp_Row) <= TimeInstant) then
+            --Rows are already ordered by arrival time, so we can keep this order for
+            --+ writing the classific in the array
+            CompetitorID_InClassific.all(Index) := Get_Competitor_Id(Temp_Row);
+            Times_InClassific.all(Index) := Get_Time(Temp_Row);
+         else
+            ExitLoop := TRUE;
+         end if;
+
+         exit when ExitLoop = TRUE;
+      end loop;
+
+      Get_LappedCompetitors(TimeInstant,
+                            Lap,
+                            CompetitorIDs_PreviousClassific,
+                            Times_PreviousClassific,
+                            LappedCompetitors_ID,
+                            LappedCompetitors_CurrentLap);
+
+   end Get_LapClassific;
+
+   procedure Decrease_Classification_Size_From_Lap( Lap : Integer ) is
+   begin
+      for Index in Lap+1..Classification_Tables.all'LENGTH loop
+         Classification_Tables.all(Index).Remove_Competitor;
+      end loop;
+   end Decrease_Classification_Size_From_Lap;
+
+   procedure Initialize(Laps : Integer;
+                        Competitors_In : Integer) is
+   begin
+      Competitors := Competitors_In;
+      Classification_Tables := new SOCT_ARRAY(1..Laps);
+      for Index in Classification_Handler.Classification_Tables'RANGE loop
+         Classification_Tables.all(Index) := new SYNCH_ORDERED_CLASSIFICATION_TABLE;
+         Classification_Tables.all(Index).Init_Table(Competitors_In);
+      end loop;
+   end Initialize;
 
 end Classification_Handler;

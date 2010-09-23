@@ -29,7 +29,7 @@ package Competition_Computer is
 
    type COMPETITOR_STATS_POINT is access COMPETITOR_STATS;
 
-   procedure Init_StaticInformation(Laps_In : INTEGER;
+   procedure Initialize_Static_Information(Laps_In : INTEGER;
                                     Competitors_In : INTEGER;
                                     Name_In : Unbounded_String.Unbounded_String;
                                     CircuitLength_In : FLOAT);
@@ -85,9 +85,11 @@ package Competition_Computer is
 
    type STATISTIC_COLLECTION_POINT is access ALL_COMPETITOR_STAT_COLLECTION;
 
-   procedure Init_Stats(Competitor_Qty : INTEGER;
+   procedure Initialize(Competitor_Qty : INTEGER;
                         Laps : INTEGER;
-                        Checkpoints_In : INTEGER);
+                        Checkpoints_In : INTEGER;
+                        Name_In : Unbounded_String.Unbounded_String;
+                        Circuit_Length : Float);
 
    function Has_CompetitorFinished(Competitor_ID : INTEGER;
                                    Time : FLOAT) return BOOLEAN;
@@ -104,13 +106,6 @@ package Competition_Computer is
    --Method to be used by the onboard computer to add new stats to the competitor id related array
    procedure Add_Stat(Competitor_ID : INTEGER;
                       Data : COMPETITOR_STATS);
-
-   --Whenever a competitor reaches the end of a lap, he will invoke this method
-   --+ to add (the onboard computer will) himself to the classification table of
-   --+ that lap
-   procedure Update_Classific(Competitor_ID : INTEGER;
-                              CompletedLap : INTEGER;
-                              Time : FLOAT);
 
    -- It returns a statistic related to a certain time
    procedure Get_StatsByTime(Competitor_ID : INTEGER;
@@ -146,15 +141,6 @@ package Competition_Computer is
                               LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
                               LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
-   --It returs the competitors who have been lapped at a certain time instant
-   --+ (the lap it's necessary to optimize the retrieval: only the competitors
-   --+ riding in a previous lap during the given instant will be kept in consideration).
-   procedure Get_LappedCompetitors(TimeInstant : FLOAT;
-                                  CurrentLap : INTEGER;
-                                  CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
-				  Times_PreviousClassific : out FLOAT_ARRAY_POINT;
-                                  Competitor_IDs : out INTEGER_ARRAY_POINT;
-                                  Competitor_Lap : out INTEGER_ARRAY_POINT);
 
 private
 

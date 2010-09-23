@@ -20,7 +20,7 @@ package Checkpoint_Handler is
 
       procedure Signal_Arrival(CompetitorID_In : Integer);
       procedure Signal_Leaving(CompetitorID_In : Integer);
-      procedure Set_ArrivalTime(CompetitorID_In : Integer;
+      procedure Set_Lower_Bound_Arrival_Instant(CompetitorID_In : Integer;
                                 Time_In : FLOAT);
       procedure Remove_Competitor(CompetitorID_In : Integer);
       procedure Set_Competitors(Competitors : Common.COMPETITOR_LIST;
@@ -39,7 +39,7 @@ package Checkpoint_Handler is
 
       function Get_SectorID return Integer;
 
-      entry Wait_Ready(Competitor_ID : Integer);
+      entry Wait_To_Be_First(Competitor_ID : Integer);
 
       procedure Get_Paths(Paths2Cross : out CROSSING_POINT;
                           Go2Box : BOOLEAN);

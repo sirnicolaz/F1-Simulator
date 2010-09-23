@@ -764,7 +764,7 @@ package body Competitor is
          --When the competitor will be at the top of the list, he will be notified to
          --+ go ahead
 
-         C_Checkpoint.Wait_Ready(carDriver.Id);
+         C_Checkpoint.Wait_To_Be_First(carDriver.Id);
 
          --Now the competitor is for sure first and he can pick up the paths collection
          --+ evaluate the best way to take
@@ -1015,7 +1015,7 @@ package body Competitor is
          --+ time to cross a segment of the track.
          loop
             Circuit.Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint);
-            C_Checkpoint.Set_ArrivalTime(id,PredictedTime);
+            C_Checkpoint.Set_Lower_Bound_Arrival_Instant(id,PredictedTime);
             PredictedTime := PredictedTime + 0.001;--MinRaceTime - MinSegTime * Float(Index);
             Index := Index + 1;
 
@@ -1047,7 +1047,7 @@ package body Competitor is
             Get_BoxCheckpoint(carDriver.Current_Circuit_Race_Iterator ,C_Checkpoint);
             --HACK: in this way we add the competitor to the box queue (that is empty
             --+ by default)
-            C_Checkpoint.Set_ArrivalTime(carDriver.Id, predictedTime);
+            C_Checkpoint.Set_Lower_Bound_Arrival_Instant(carDriver.Id, predictedTime);
 
             --Those updates will be effective in the next loop, so
             --+ they'll be used while doing the after-box path.

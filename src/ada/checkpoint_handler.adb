@@ -56,13 +56,12 @@ package body Checkpoint_Handler is
 
    protected body CHECKPOINT_SYNCH is
 
-      --The method set the calling task Competitor as arrived.
-      --+If he's in the 1st position,
-      --+the Path2Cross is initialised,
-      --+in order to let the task choose the path and "cross" the segment.
+      -- The method set the calling task Competitor as "arrived".
+      --+ If he's in the 1st position,
+      --+ the guard in the waiting block related to the 1st competitor
+      --+ is opened to let him essentialy take the Paths.
       procedure Signal_Arrival(CompetitorID_In : INTEGER) is
       begin
-
 
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,TRUE);
          if Get_Position(F_Checkpoint.Queue.all,CompetitorID_In) = 1 then
@@ -84,15 +83,12 @@ package body Checkpoint_Handler is
       begin
 
          Set_Arrived(F_Checkpoint.Queue.all,CompetitorID_In,FALSE);
-         --NEW
-         --if Get_IsArrived(F_Checkpoint.Queue.all,1) then
-         --   Changed := TRUE;
-         --end if;
+
       end Signal_Leaving;
 
 
-      procedure Set_ArrivalTime(CompetitorID_In : INTEGER;
-                                Time_In : FLOAT) is
+      procedure Set_Lower_Bound_Arrival_Instant(CompetitorID_In : INTEGER;
+                                                Time_In : FLOAT) is
       begin
          Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
          -- If in the 1st position of the queue now there is a competitor who's
@@ -104,7 +100,7 @@ package body Checkpoint_Handler is
             Changed := TRUE;
          end if;
 
-      end Set_ArrivalTime;
+      end Set_Lower_Bound_Arrival_Instant;
 
       --The procedure virtually removes the competitor from the queue of
       --+the given checkpoint. It means that the competitor is not supposed
@@ -113,7 +109,7 @@ package body Checkpoint_Handler is
       begin
          Remove_CompetitorFromQueue(F_Checkpoint.Queue.all,CompetitorID_In);
          -- Removing the competitor it may happen that the first position
-         --+ of the queue becomes taken by a competitor that is ready to cross
+         --+ of the queue turns taken by a competitor that is ready to cross
          --+ the checkpoint ( in such a case the Get_IsArrived function with
          --+ "1" as the second parameter returns true). If that's the case, it's
          --+ necessary to notify that competitor about the change setting
@@ -166,10 +162,10 @@ package body Checkpoint_Handler is
          return F_Checkpoint.SectorID;
       end Get_SectorID;
 
-      entry Wait_Ready(Competitor_ID : INTEGER) when true is
+      entry Wait_To_Be_First(Competitor_ID : INTEGER) when true is
       begin
          requeue WaitBlock_Chain.all(Competitor_ID).Wait;
-      end Wait_Ready;
+      end Wait_To_Be_First;
 
       --Method that allows the tasks Competitor to Wait till they reach
       --the 1st position in the checkpoint queue. Once one of them is first,
