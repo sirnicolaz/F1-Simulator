@@ -323,14 +323,14 @@ Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 
       if(HighestCompletedLap /= -1) then
 
-         Competition_Computer.Get_LapClassific(HighestCompletedLap,
-                                TimeInstant,
-                                CompetitorID_InClassific,
-                                Times_InClassific,
-                                CompetitorIDs_PreviousClassific,
-                                Times_PreviousClassific,
-                                LappedCompetitors_ID,
-                                LappedCompetitors_CurrentLap);
+         Competition_Computer.Get_Lap_Classification(HighestCompletedLap,
+                                                     TimeInstant,
+                                                     CompetitorID_InClassific,
+                                                     Times_InClassific,
+                                                     CompetitorIDs_PreviousClassific,
+                                                     Times_PreviousClassific,
+                                                     LappedCompetitors_ID,
+                                                     LappedCompetitors_CurrentLap);
 
 	 Merge(CompetitorID_InClassific,Times_InClassific,
 	       CompetitorIDs_PreviousClassific,Times_PreviousClassific,

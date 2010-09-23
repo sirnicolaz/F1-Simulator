@@ -606,25 +606,25 @@ package body Competition_Computer is
       end;
    end Get_BestSectorTimes;
 
-   procedure Get_LapClassific(Lap : INTEGER;
-                              TimeInstant : FLOAT;
-                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
-                              Times_InClassific : out FLOAT_ARRAY_POINT;
-                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
-                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
-                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
-                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
+   procedure Get_Lap_Classification(Lap : INTEGER;
+                                    TimeInstant : FLOAT;
+                                    CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                                    Times_InClassific : out FLOAT_ARRAY_POINT;
+                                    CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                                    Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                                    LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                                    LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
 
    begin
-      Classification_Handler.Get_LapClassific(Lap,
-                                              TimeInstant,
-                                              CompetitorID_InClassific,
-                                              Times_InClassific,
-                                              CompetitorIDs_PreviousClassific,
-                                              Times_PreviousClassific,
-                                              LappedCompetitors_ID,
-                                              LappedCompetitors_CurrentLap);
-   end Get_LapClassific;
+      Classification_Handler.Get_Lap_Classification(Lap,
+                                                    TimeInstant,
+                                                    CompetitorID_InClassific,
+                                                    Times_InClassific,
+                                                    CompetitorIDs_PreviousClassific,
+                                                    Times_PreviousClassific,
+                                                    LappedCompetitors_ID,
+                                                    LappedCompetitors_CurrentLap);
+   end Get_Lap_Classification;
 
 end Competition_Computer;
 

@@ -13,14 +13,14 @@ package Classification_Handler is
                               CompletedLap : INTEGER;
                               Time : FLOAT);
 
-   procedure Get_LapClassific(Lap : INTEGER;
-                              TimeInstant : FLOAT;
-                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
-                              Times_InClassific : out FLOAT_ARRAY_POINT;
-                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
-                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
-                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
-                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
+   procedure Get_Lap_Classification(Last_Lap : INTEGER;
+                                    Time_Instant : FLOAT;
+                                    Classification_Competitor_IDs : out INTEGER_ARRAY_POINT;
+                                    Classification_Times : out FLOAT_ARRAY_POINT;
+                                    CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                                    Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                                    LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                                    LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
    procedure Decrease_Classification_Size_From_Lap( Lap : Integer );
 

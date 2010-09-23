@@ -132,14 +132,14 @@ package Competition_Computer is
                                  Competitor_IDs : out INTEGER_ARRAY;
                                  Laps : out INTEGER_ARRAY);
 
-   procedure Get_LapClassific(Lap : INTEGER;
-                              TimeInstant : FLOAT;
-                              CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
-                              Times_InClassific : out FLOAT_ARRAY_POINT;
-                              CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
-                              Times_PreviousClassific : out FLOAT_ARRAY_POINT;
-                              LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
-                              LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
+   procedure Get_Lap_Classification(Lap : INTEGER;
+                                    TimeInstant : FLOAT;
+                                    CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
+                                    Times_InClassific : out FLOAT_ARRAY_POINT;
+                                    CompetitorIDs_PreviousClassific : out INTEGER_ARRAY_POINT;
+                                    Times_PreviousClassific : out FLOAT_ARRAY_POINT;
+                                    LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
+                                    LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
 
 private
