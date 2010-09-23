@@ -22,8 +22,6 @@ package body Competition is
       end if;
 
       Ada.Text_IO.Put_Line("Ready!");
-
-
       Competition_In.Start;
 
    end Ready;
@@ -157,10 +155,10 @@ package body Competition is
          Name := Unbounded_String.To_Unbounded_String(Name_In);
 
 
-         Circuit.Set_MaxCompetitorsQty(MaxCompetitors);
+         Circuit.Set_Max_Competitors(MaxCompetitors);
          Track := Circuit.Get_Racetrack(Circuit_File);
          Circuit_Length := Circuit.RaceTrack_Length;
-         Checkpoint_Qty := Circuit.Checkpoints_Qty;
+         Checkpoints := Circuit.Checkpoints;
 
 
          Competitor.Set_Laps(Laps_In);
@@ -169,7 +167,7 @@ package body Competition is
 
          Competition_Computer.Init_Stats(Competitor_Qty => MaxCompetitors,
                           Laps           => Laps_In,
-                          Checkpoints_In => Checkpoint_Qty);
+                          Checkpoints_In => Checkpoints);
 
 
 

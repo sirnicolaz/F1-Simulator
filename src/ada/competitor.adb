@@ -188,16 +188,6 @@ package body Competitor is
          --Ada.Strings.Unbounded.Text_IO.Put_Line(Mixture_In);
          Model_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
          Tyre_Type_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
-         --Car_Temp := new CAR;
-         --Mixture_In := "morbidaxxxxxxxxxxxxx";
---           Model_In := "michelinxxxxxxxxxxxx";
---         Tyre_Type_In := "rainxxxxxxxxxxxxxxxx";
-         --Racetrack_In(Index) := CheckpointSynch_Current;
-
-
-         -- end if;
-
-
 
          Configure_Car(Car_In,
                        Max_Speed_In,
@@ -850,7 +840,7 @@ package body Competitor is
             begin
                Get_CurrentCheckpoint( carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);--NEW
                --Update all the statistics up to the goal checkpoint
-               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints_Qty  loop
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints  loop
                   --Update the statistic to send to the Competitor_Computer
                   compStats.Checkpoint := CurrentCheckpoint;
                   CurrentCheckpoint := CurrentCheckpoint + 1;
@@ -872,9 +862,9 @@ package body Competitor is
 
                   Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator ,Temp_Checkpoint);
                end loop;
-               CurrentCheckpoint := Circuit.Checkpoints_Qty;
+               CurrentCheckpoint := Circuit.Checkpoints;
                --Restore the iterator initial position
-               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints_Qty loop
+               while Get_Position(carDriver.Current_Circuit_Race_Iterator ) /= Circuit.Checkpoints loop
                   Get_NextCheckpoint(carDriver.Current_Circuit_Race_Iterator , Temp_Checkpoint );
                end loop;
             end;

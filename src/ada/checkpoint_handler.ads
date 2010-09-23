@@ -13,21 +13,6 @@ package Checkpoint_Handler is
    type Checkpoint is tagged private;
    type Checkpoint_Point is access Checkpoint'CLASS;
 
-   --Checkpoint methods implementation
-   procedure Set_Values(Checkpoint_In : in out Checkpoint_Point;
-                        SectorID_In : INTEGER;
-                        IsGoal_In : BOOLEAN;
-                        Length_In : FLOAT; -- y
-                        Angle_In : ANGLE_GRADE; -- alpha
-                        Grip_In : GRIP_RANGE;
-                        Difficulty_In : DIFFICULTY_RANGE;
-                        PathsQty_In : POSITIVE; -- mult
-                        Competitors_Qty : POSITIVE;
-                        IsPreBox_In : BOOLEAN;
-                        IsExitBox : BOOLEAN;
-                        IsFirstOfTheSector : BOOLEAN;
-                        IsLastOfTheSector : BOOLEAN);
-
    function Get_Time(Checkpoint_In : Checkpoint_Point;
                      CompetitorID_In : Integer) return FLOAT;
 
