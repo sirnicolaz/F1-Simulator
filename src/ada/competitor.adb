@@ -5,7 +5,6 @@
 with Ada.Float_Text_IO;
  use Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
-with Queue; use Queue;
 
 with Competition_Monitor;
 
@@ -16,6 +15,8 @@ use Ada.Calendar;
 with Competition_Computer;
 use Competition_Computer;
 
+with Checkpoint_Handler; use Checkpoint_Handler;
+with Path_Handler; use Path_Handler;
 
 with Ada.Exceptions;
 
