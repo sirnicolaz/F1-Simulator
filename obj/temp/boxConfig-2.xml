@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <config>
-<monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:44070//000000013Tc290815011d5d983</monitorCorbaLoc>
+<monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:43166//000000013Td2c66d4811d617b1</monitorCorbaLoc>
 <initialTyreType>Sun</initialTyreType>
 <laps>10</laps>
 <circuitLength>4192.0</circuitLength>
 <initialGasLevel>50.0</initialGasLevel>
 <gasTankCapacity>200.0</gasTankCapacity>
-<competitorID>1</competitorID>
+<competitorID>2</competitorID>
 <boxStrategy>NORMAL</boxStrategy>
 </config>
