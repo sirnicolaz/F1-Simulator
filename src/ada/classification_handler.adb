@@ -397,7 +397,6 @@ package body Classification_Handler is
       PreviousClassific_Count : INTEGER := 0;
       Lapped_Competitors : INTEGER := 0;
       Lapped_Count : INTEGER := 0;
-      ExitLoop : BOOLEAN := false;
    begin
       --Init the processed competitors id list array: when the array position is filled with 1 it means that the
       --+ competitor with id corresponding to that index has not been processed yet (we don't know whether he
@@ -436,8 +435,6 @@ package body Classification_Handler is
                Competitor_IDs.all(i) := -1;
                Competitor_Lap.all(i) := -1;
             end loop;
-
-            ExitLoop := false;
 
             Find_Lapped_Competitors(CurrentLap, PolePosition_Time,
                                     ProcessedCompetitors_IdList, Lapped_Count,

@@ -40,7 +40,7 @@ package Circuit is
 
    function Get_Iterator(Racetrack_In : Racetrack_Point) return Racetrack_Iterator;
 
-   procedure Init_Racetrack(Racetrack_In : in out Racetrack_Point;
+   procedure Initialize_Racetrack(Racetrack_In : in out Racetrack_Point;
                             Document_In : DOCUMENT);
    procedure Set_Competitors(Racetrack_In : in out Racetrack_Point;
                              Competitors : in Common.COMPETITOR_LIST);

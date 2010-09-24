@@ -12,23 +12,21 @@ package body Circuit is
 
    --Racetrack methods implementation
 
-   procedure Init_Racetrack(Racetrack_In : in out Racetrack_Point;
-                            Document_In : DOCUMENT) is
-      NodeQty : Integer;
-      --Checkpoints : Integer;
+   procedure Initialize_Sector(Checkpoint_List : Node_List;
+                               Checkpoint_Index : out Integer_Point;
+                               Racetrack_In : out Racetrack_Point;
+                               Sector : Integer) is
 
-      -- Between each XML tag there is a hidden "text" tag.
-      --+ So, while looping through the Checkpoint nodes, it's necessary
-      --+ to keep trace how many Checkpoints have been read.
+      -- We are sure that those parametres will have a value.
+      --+ They are initialized in Initialize_Racetrack.
+      pragma Warnings(Off,Racetrack_In);
+      pragma Warnings(Off,Racetrack_Length);
+      pragma Warnings(Off,Checkpoint_Index);
+
+      Node_Qty : Integer := Length(Checkpoint_List);
       CheckpointCounter : Integer := 0;
-      Sector_Qty : Integer := 3;
-      Sector_List : Node_List;
-      Checkpoint_List : Node_List;
-      Feature_List : Node_List;
-      Checkpoint_Index : Integer := 1;
-      Current_Node : Node;
+      Checkpoints_In_Sector : Integer := Node_Qty - (Node_Qty/2 + 1);
 
-      Angle : ANGLE_GRADE;
       IsGoal_Attr : Attr;
       IsGoal : BOOLEAN;
       Is_Pre_Box_Attr : Attr;
@@ -39,122 +37,56 @@ package body Circuit is
       Is_First_Of_The_Sector : BOOLEAN;
       Current_Length : Float;
       Current_Mult : Integer;
-      Current_Angle : Float;
+      Current_Angle : Angle_Grade;
       Current_Grip : Float;
       Checkpoint_Synch_Current : Checkpoint_Synch_Point;
+      Feature_List : Node_List;
+      Current_Node : Node;
 
-      Track_Iterator : Racetrack_Iterator;
-      BoxLane_Length : Float;
    begin
 
-      --If there is a conf file, use it to auto-init;
-      Ada.Text_IO.Put_Line("Start building circuit");
+      for Indez in 1..Node_Qty loop
 
-      if Document_In /= null then
+         if(DOM.Core.Nodes.Node_Name(Item(Checkpoint_List,Indez-1)) = "checkpoint") then
+            CheckpointCounter := CheckpointCounter + 1;
 
-         --Find out the number of Checkpoint and allocate the Racetrack
-         Checkpoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
-         Checkpoints := Length(Checkpoint_List);
-         Racetrack_In := new Racetrack(0..Checkpoints);
+            Current_Node := Item(Checkpoint_List, Indez-1);
+            IsGoal_Attr := Get_Named_Item (Attributes (Current_Node), "goal");
 
-         --Loop through the sectors and, for each one, init the related Checkpoints
-         Sector_List := Get_Elements_By_Tag_Name(Document_In,"sector");
+            if IsGoal_Attr = null then
+               IsGoal := False;
+            else
+               IsGoal := Boolean'Value(Value(IsGoal_Attr));
+            end if;
 
-         -- 3 is the standard number of sector in a circuit
-         for Index in 1..3 loop
-            --Taking the first sector
-            Current_Node := Item(Sector_List, Index-1);
-            Checkpoint_List := Child_Nodes(Current_Node);
+            Is_Pre_Box_Attr := Get_Named_Item (Attributes (Current_Node), "preBox");
 
-            NodeQty := Length(Checkpoint_List);
-            Checkpoints := NodeQty - (NodeQty/2+1);
-            Ada.Text_IO.Put_Line(Common.Integer_To_String(Checkpoints) & " Checkpoints");
+            if Is_Pre_Box_Attr = null then
+               Is_Pre_Box := False;
+            else
+               Is_Pre_Box := Boolean'Value(Value(Is_Pre_Box_Attr));
+            end if;
 
-            --Retrieve the information contained in each Checkpoint (if we are
-            --+ dealing with a Checkpoint node)
-            CheckpointCounter := 0;
-            for Indez in 1..NodeQty loop
-               if(DOM.Core.Nodes.Node_Name(Item(Checkpoint_List,Indez-1)) = "checkpoint") then
-                  CheckpointCounter := CheckpointCounter + 1;
+            Is_Exit_Box_Attr := Get_Named_Item (Attributes (Current_Node), "exitBox");
 
-                  Current_Node := Item(Checkpoint_List, Indez-1);
-                  IsGoal_Attr := Get_Named_Item (Attributes (Current_Node), "goal");
+            if Is_Exit_Box_Attr = null then
+               Is_Exit_Box := False;
+            else
+               Is_Exit_Box := Boolean'Value(Value(Is_Exit_Box_Attr));
+            end if;
 
-                  if IsGoal_Attr = null then
-                     IsGoal := False;
-                  else
-                     IsGoal := Boolean'Value(Value(IsGoal_Attr));
-                  end if;
+            Feature_List := Child_Nodes(Current_Node);
+            Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
+            Racetrack_Length := Racetrack_Length + Current_Length;
 
-                  Is_Pre_Box_Attr := Get_Named_Item (Attributes (Current_Node), "preBox");
+            Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
+            Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
+            Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
 
-                  if Is_Pre_Box_Attr = null then
-                     Is_Pre_Box := False;
-                  else
-                     Is_Pre_Box := Boolean'Value(Value(Is_Pre_Box_Attr));
-                  end if;
-
-                  Is_Exit_Box_Attr := Get_Named_Item (Attributes (Current_Node), "exitBox");
-
-                  if Is_Exit_Box_Attr = null then
-                     Is_Exit_Box := False;
-                  else
-                     Is_Exit_Box := Boolean'Value(Value(Is_Exit_Box_Attr));
-                  end if;
-
-                  Feature_List := Child_Nodes(Current_Node);
-                  Current_Length := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"length"))));
-                  Racetrack_Length := Racetrack_Length + Current_Length;
-
-                  Current_Mult := Positive'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"mult"))));
-                  Current_Angle := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"angle"))));
-                  Current_Grip := Float'Value(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"grip"))));
-
-                  if(CheckpointCounter = 1) then
-                     Is_First_Of_The_Sector := True;
-                     Is_Last_Of_The_Sector := False;
-                  elsif (CheckpointCounter = Checkpoints) then
-                     Is_First_Of_The_Sector := False;
-                     Is_Last_Of_The_Sector := True;
-                  else
-                     Is_First_Of_The_Sector := False;
-                     Is_Last_Of_The_Sector := False;
-                  end if;
-
-                  Initialize_Checkpoint_Synch(Checkpoint_Synch_Current,
-                                              Index,
-                                              IsGoal,
-                                              Current_Length,
-                                              Current_Angle,
-                                              Current_Grip,
-                                              1.0,
-                                              Current_Mult,
-                                              Max_Competitors,
-                                              Is_Pre_Box,
-                                              Is_Exit_Box,
-                                              Is_First_Of_The_Sector,
-                                              Is_Last_Of_The_Sector);
-
-                  Racetrack_In(Checkpoint_Index) := Checkpoint_Synch_Current;
-                  Checkpoint_Index := Checkpoint_Index + 1;
-
-               end if;
-            end loop;
-
-         end loop;
-	  Ada.Text_IO.Put_Line("Race Length " & Float'Image(Racetrack_Length));
-      else
-         --else automatically configure a default circular N_Checkpoints-M_Paths track (with N = Checkpoints and M = Max_Competitors -1;
-         Angle := 360.00 / Float(Checkpoints);
-         Checkpoints := Checkpoints;
-         Racetrack_In := new Racetrack(1..Checkpoints);
-         for Index in 1..Checkpoints loop
-            Racetrack_Length := Racetrack_Length + 100.00;--TODO: decide whether to keep the shortest path Length
-
-            if(Index = 1) then
+            if(CheckpointCounter = 1) then
                Is_First_Of_The_Sector := True;
                Is_Last_Of_The_Sector := False;
-            elsif (Index = Checkpoints) then
+            elsif (CheckpointCounter = Checkpoints_In_Sector) then
                Is_First_Of_The_Sector := False;
                Is_Last_Of_The_Sector := True;
             else
@@ -163,55 +95,55 @@ package body Circuit is
             end if;
 
             Initialize_Checkpoint_Synch(Checkpoint_Synch_Current,
-                                        1,
-                                        False,
-                                        100.00,
-                                        Angle,
-                                        5.0,
-                                        5.0,
+                                        Sector,
+                                        IsGoal,
+                                        Current_Length,
+                                        Current_Angle,
+                                        Current_Grip,
+                                        1.0,
+                                        Current_Mult,
                                         Max_Competitors,
-                                        Max_Competitors,
-                                        False,
-                                        False,
+                                        Is_Pre_Box,
+                                        Is_Exit_Box,
                                         Is_First_Of_The_Sector,
                                         Is_Last_Of_The_Sector);
 
-            Racetrack_In(Index) := Checkpoint_Synch_Current;
+            Racetrack_In(Checkpoint_Index.all) := Checkpoint_Synch_Current;
+            Checkpoint_Index.all := Checkpoint_Index.all + 1;
 
-         end loop;
+         end if;
+      end loop;
 
-      end if;
+   end Initialize_Sector;
 
-      --Setting the box lane
-      ---The method finds the pre-box and the exit-box checkpoints. The
-      --+ lane length between them will be the total Length of the box.
-      --+ Such lane has a Checkpoint in the middle (the box).
-      Track_Iterator := Get_Iterator(Racetrack_In);
+   procedure Initialize_Box_Lane( Racetrack_In : out Racetrack_Point ) is
 
+      pragma Warnings(Off,Racetrack_In);
+
+      Checkpoint_Synch_Current : Checkpoint_Synch_Point;
+      Pre_Box_Checkpoint : Checkpoint_Synch_Point;
+      Track_Iterator : Racetrack_Iterator := Get_Iterator(Racetrack_In);
+      BoxLane_Length : Float := 0.0;
+   begin
       Get_CurrentCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
 
-      declare
-         Pre_Box_Checkpoint : Checkpoint_Synch_Point;
-      begin
-
-         while Checkpoint_Synch_Current.Is_PreBox /= True loop
-            Get_NextCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
-         end loop;
-
-         Pre_Box_Checkpoint := Checkpoint_Synch_Current;
-         BoxLane_Length := Checkpoint_Synch_Current.Get_Length;
-
+      while Checkpoint_Synch_Current.Is_PreBox /= True loop
          Get_NextCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
-         while Checkpoint_Synch_Current.Is_ExitBox /= True loop
-            BoxLane_Length := BoxLane_Length + Checkpoint_Synch_Current.Get_Length;
-            Get_NextCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
-         end loop;
+      end loop;
 
-         Ada.Text_IO.Put_Line("Length of box " & Float'Image(BoxLane_Length));
-         -- The prebox checkpoint cen bring either to the next segment of the circuir
-         --+ or to the box lane. So the box lane Paths are set here.
-         Pre_Box_Checkpoint.Set_Pre_Box(Float'Ceiling(BoxLane_Length/2.0));
-      end;
+      Pre_Box_Checkpoint := Checkpoint_Synch_Current;
+      BoxLane_Length := Checkpoint_Synch_Current.Get_Length;
+
+      Get_NextCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
+      while Checkpoint_Synch_Current.Is_ExitBox /= True loop
+         BoxLane_Length := BoxLane_Length + Checkpoint_Synch_Current.Get_Length;
+         Get_NextCheckpoint(Track_Iterator,Checkpoint_Synch_Current);
+      end loop;
+
+      Ada.Text_IO.Put_Line("Box length " & Float'Image(BoxLane_Length));
+      -- The prebox checkpoint cen bring either to the next segment of the circuir
+      --+ or to the box lane. So the box lane Paths are set here.
+      Pre_Box_Checkpoint.Set_Pre_Box(Float'Ceiling(BoxLane_Length/2.0));
       --Initialise the box Checkpoint that'll take the position 0 in the Racetrack.
       --+ that position is never inspected by the iteration function.
       --+ Only the Get_BoxCheckpoint directly access that location of the array.
@@ -232,11 +164,69 @@ package body Circuit is
       --In this way we use the path generator included into the Set values.
       --+ But the Paths after the box should be like the ones after the prebox.
       Racetrack_In(0) := Checkpoint_Synch_Current;
+   end Initialize_Box_Lane;
+
+   procedure Initialize_Racetrack(Racetrack_In : in out Racetrack_Point;
+                            Document_In : DOCUMENT) is
+      --Checkpoints : Integer;
+
+      -- Between each XML tag there is a hidden "text" tag.
+      --+ So, while looping through the Checkpoint nodes, it's necessary
+      --+ to keep trace how many Checkpoints have been read.
+      Sector_Qty : Integer := 3;
+      Sector_List : Node_List;
+      Checkpoint_List : Node_List;
+      Feature_List : Node_List;
+      Checkpoint_Index : Integer_Point := new Integer;
+      Current_Node : Node;
+
+      File_Not_Found : exception;
+   begin
+
+      Checkpoint_Index.all := 1;
+      --If there is a conf file, use it to auto-init;
+      if Document_In /= null then
+
+         --Find out the number of Checkpoint and allocate the Racetrack
+         Checkpoint_List := Get_Elements_By_Tag_Name(Document_In,"checkpoint");
+         Checkpoints := Length(Checkpoint_List);
+         Racetrack_In := new Racetrack(0..Checkpoints);
+
+         --Loop through the sectors and, for each one, init the related Checkpoints
+         Sector_List := Get_Elements_By_Tag_Name(Document_In,"sector");
+
+         -- 3 is the standard number of sector in a circuit
+         for Index in 1..3 loop
+            --Taking the first sector
+            Current_Node := Item(Sector_List, Index-1);
+            Checkpoint_List := Child_Nodes(Current_Node);
+
+            --Retrieve the information contained in each Checkpoint (if we are
+            --+ dealing with a Checkpoint node)
+            Initialize_Sector(Checkpoint_List,
+                              Checkpoint_Index,
+                              Racetrack_In,
+                              Sector => Index);
+
+
+         end loop;
+	  Ada.Text_IO.Put_Line("Race Length " & Float'Image(Racetrack_Length));
+      else
+
+         raise File_Not_Found with "Not racetrack configuration file found";
+
+      end if;
+
+      --Setting the box lane
+      ---The method finds the pre-box and the exit-box checkpoints. The
+      --+ lane length between them will be the total Length of the box.
+      --+ Such lane has a Checkpoint in the middle (the box).
+      Initialize_Box_Lane(Racetrack_In);
 
       -- "-1" because the box has not to be included in the amount of Checkpoints
       Checkpoints := Racetrack_In'Length-1;
 
-   end Init_Racetrack;
+   end Initialize_Racetrack;
 
    function Get_Racetrack(Racetrack_File : STRING) return Racetrack_Point is
 
@@ -246,7 +236,7 @@ package body Circuit is
    begin
       Doc := Common.Get_Document(Racetrack_File);
 
-      Init_Racetrack(Racetrack_Out, Doc);
+      Initialize_Racetrack(Racetrack_Out, Doc);
 
       return Racetrack_Out;
 

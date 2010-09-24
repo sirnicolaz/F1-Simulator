@@ -23,6 +23,7 @@ package Common is
    type Competitor_List is array ( Integer range <> ) of Integer;
    type Float_Point is access Float;
    type String_Point is access String;
+   type Integer_Point is access Integer;
    type Float_Array is array ( Integer range <> ) of Float;
    type Float_Array_Point is access Float_Array;
    type Integer_Array is array ( Integer range <> ) of Integer;
