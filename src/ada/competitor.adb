@@ -299,7 +299,7 @@ package body Competitor is
 
       --Initializing onboard computer references in the Competition Monitor
       Ada.Text_IO.Put_Line("Add obc");
-      Competition_Monitor.AddOBC(carDriver.On_Board_Computer ,carDriver.Id);
+      Competition_Monitor.Add_Onboard_Computer(carDriver.On_Board_Computer ,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
       --+ (probably other problems are occured in such a case)
       Ada.Text_IO.Put_Line("Connecting to box");

@@ -55,7 +55,6 @@ package body Competitor_Computer is
                            Laps : INTEGER) is
    begin
       Computer_In.Competitor_Id := CompetitorId_In;
-      --Computer_In.Information := new SYNCH_COMPETITOR_STATS_HANDLER_ARRAY(1..Laps*Checkpoints);
       COmputer_In.BoxInformation := new SYNCH_INFO_FOR_BOX;
       Computer_In.BoxInformation.Init(Laps);
       Computer_In.CurrentBestSector_Times(1) := -1.0;
@@ -200,6 +199,7 @@ package body Competitor_Computer is
                                         Data);
 
    end CompetitorOut;
+
 
    -- It returns the competitor ID related to this Computer
    function Get_Id(Computer_In : COMPUTER_POINT) return INTEGER is
