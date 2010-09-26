@@ -243,7 +243,7 @@ package body Competition_Monitor is
             " id=""" & Common.Integer_To_String(Competitor_Computer.Get_Id(Onboard_Computers(Index))) & """>");
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
-            "<checkPoint pitstop=""" & Boolean'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.Integer_To_String(Tmp_Stats.CheckPoint) & "</checkPoint>" );
+            "<checkpoint pitstop=""" & Boolean'IMAGE(Tmp_Stats.IsPitStop) & """ compPosition=""" & Tmp_CompLocation.all & """ >" & Common.Integer_To_String(Tmp_Stats.CheckPoint) & "</checkpoint>" );
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String(
             "<lap>" & Common.Integer_To_String(Tmp_Stats.Lap) & "</lap>" &
