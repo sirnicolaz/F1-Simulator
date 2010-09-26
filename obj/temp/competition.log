@@ -1,50 +1,665 @@
 Retrieving ROOT_POA...
 Activating ROOT_POA...
-CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:58702//000000011Tf46f3b5811d664de'
-RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:58702//000000012Tf46f3b5811d664de'
-Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:58702//000000013Tf46f3b5811d664de'
-Waiting for competitor to be ready...
+CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:56416//000000011T2eb5b46011d706ea'
+RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:56416//000000012T2eb5b46011d706ea'
+Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:56416//000000013T2eb5b46011d706ea'
 Initialising CORBA.ORB
-Initialize sector with  11 checkpoints
-Current length  5.50000E+01
-Current length  5.00000E+01
-Current length  4.50000E+01
-Current length  1.45000E+02
-Current length  1.00000E+02
-Current length  6.00000E+01
-Current length  1.28000E+02
-Current length  1.01000E+02
-Current length  1.04000E+02
-Current length  1.79000E+02
-Current length  1.99100E+02
-Initialize sector with  11 checkpoints
-Current length  1.48100E+02
-Current length  3.02000E+01
-Current length  1.17000E+02
-Current length  1.14200E+02
-Current length  1.47000E+02
-Current length  4.93200E+02
-Current length  1.31000E+02
-Current length  1.09200E+02
-Current length  5.55000E+01
-Current length  5.75000E+01
-Current length  1.35000E+02
-Initialize sector with  9 checkpoints
-Current length  2.70000E+01
-Current length  5.50000E+01
-Current length  6.45000E+01
-Current length  1.37000E+02
-Current length  1.78000E+02
-Current length  2.70500E+02
-Current length  2.24000E+02
-Current length  1.68000E+02
-Current length  3.64000E+02
+Waiting for competitor to be ready...
 Race Length  4.19200E+03
-Going to init box lane
-Initialize box lane
-Length of box  9.87000E+02
+Box length  9.87000E+02
  3 competitors
 LORY : 0
 LORY : 1
 LORY : 2
 LORY : 3
+Registering competitor
+Init competitor...
+Begin
+Configure car
+Configure Racing driver
+Configure Race iterator
+Configure id
+Init Computer
+Adding min info
+Add obc
+Connecting to box
+Name : Pippo
+Setting laps
+ID int 1
+init task
+Ready box 1
+ 2 expected boxes
+Registering competitor
+Init competitor...
+Begin
+Configure car
+Configure Racing driver
+Configure Race iterator
+Configure id
+Init Computer
+Adding min info
+Add obc
+Connecting to box
+Name : Pippo
+Setting laps
+ID int 2
+init task
+Ready box 2
+ 1 expected boxes
+Registering competitor
+Init competitor...
+Begin
+Configure car
+Configure Racing driver
+Configure Race iterator
+Configure id
+Init Computer
+Adding min info
+Add obc
+Connecting to box
+Name : Pippo
+Stop
+Setting laps
+ID int 3
+Ready!
+Wating box to be ready
+init task
+Ready box 3
+ 0 expected boxes
+Box ready!
+Starting competitors
+ 1 Connecting for strategy
+ 2 Connecting for strategy
+ 3 Connecting for strategy
+Competition started!!!!!!!!!
+ 1 connected succesfully
+ 3 connected succesfully
+ 2 connected succesfully
+ 1 saved
+ 1 1: SUMMURY lap :  0, actual time :  0.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.50000E+01 crossing time  3.02765E+00 speed  1.30794E+02
+ 1: updaitng pc:  check  1 gas level  4.99642E+01 tyre usury  4.52100E-02 path length  5.50000E+01 speed  1.30794E+02
+ 3 saved
+ 3 3: SUMMURY lap :  0, actual time :  2.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+ 2 saved
+ 2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.66000E+01 crossing time  3.07137E+00 speed  1.32683E+02
+ 2: updaitng pc:  check  1 gas level  4.99632E+01 tyre usury  4.65252E-02 path length  5.66000E+01 speed  1.32683E+02
+Notifying
+ 3: evaluate done: length path  5.82000E+01 crossing time  3.11448E+00 speed  1.34546E+02
+ 3: updaitng pc:  check  1 gas level  4.99622E+01 tyre usury  4.78404E-02 path length  5.82000E+01 speed  1.34546E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.02765E+00, gas  4.99642E+01, tyre  4.52100E-02, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.00000E+01 crossing time  1.15565E+00 speed  1.80719E+02
+ 1: updaitng pc:  check  2 gas level  4.99317E+01 tyre usury  8.63100E-02 path length  5.00000E+01 speed  1.80719E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.07137E+00, gas  4.99632E+01, tyre  4.65252E-02, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.16000E+01 crossing time  1.17519E+00 speed  1.83452E+02
+ 2: updaitng pc:  check  2 gas level  4.99297E+01 tyre usury  8.89404E-02 path length  5.16000E+01 speed  1.83452E+02
+ 3 3: SUMMURY lap :  0, actual time :  5.11448E+00, gas  4.99622E+01, tyre  4.78404E-02, pit stop done FALSE
+ 1 1: SUMMURY lap :  0, actual time :  4.18330E+00, gas  4.99317E+01, tyre  8.63100E-02, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  4.50000E+01 crossing time  8.16699E-01 speed  2.16000E+02
+ 1: updaitng pc:  check  3 gas level  4.99002E+01 tyre usury  1.23435E-01 path length  4.50000E+01 speed  2.16000E+02
+ 2 2: SUMMURY lap :  0, actual time :  5.24657E+00, gas  4.99297E+01, tyre  8.89404E-02, pit stop done FALSE
+ 1 1: SUMMURY lap :  0, actual time :  5.00000E+00, gas  4.99002E+01, tyre  1.23435E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.45000E+02 crossing time  2.01364E+00 speed  2.96220E+02
+ 1: updaitng pc:  check  4 gas level  4.97987E+01 tyre usury  2.43060E-01 path length  1.45000E+02 speed  2.96220E+02
+Notifying
+ 3: evaluate done: length path  5.00000E+01 crossing time  1.13208E+00 speed  1.83452E+02
+ 3: updaitng pc:  check  2 gas level  4.99297E+01 tyre usury  8.89404E-02 path length  5.00000E+01 speed  1.83452E+02
+Notifying
+ 2: evaluate done: length path  4.50000E+01 crossing time  8.06484E-01 speed  2.18292E+02
+ 2: updaitng pc:  check  3 gas level  4.98982E+01 tyre usury  1.26065E-01 path length  4.50000E+01 speed  2.18292E+02
+ 2 2: SUMMURY lap :  0, actual time :  6.05305E+00, gas  4.98982E+01, tyre  1.26065E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.46600E+02 crossing time  2.01892E+00 speed  2.96220E+02
+ 2: updaitng pc:  check  4 gas level  4.97956E+01 tyre usury  2.47010E-01 path length  1.46600E+02 speed  2.96220E+02
+ 3 3: SUMMURY lap :  0, actual time :  6.24657E+00, gas  4.99297E+01, tyre  8.89404E-02, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.50000E+01 crossing time  8.06484E-01 speed  2.18292E+02
+ 3: updaitng pc:  check  3 gas level  4.98982E+01 tyre usury  1.26065E-01 path length  4.50000E+01 speed  2.18292E+02
+ 3 3: SUMMURY lap :  0, actual time :  7.05305E+00, gas  4.98982E+01, tyre  1.26065E-01, pit stop done FALSE
+ 1 1: SUMMURY lap :  0, actual time :  7.01364E+00, gas  4.97987E+01, tyre  2.43060E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.00000E+02 crossing time  1.21543E+00 speed  2.96192E+02
+ 1: updaitng pc:  check  5 gas level  4.97287E+01 tyre usury  3.25560E-01 path length  1.00000E+02 speed  2.96192E+02
+Notifying
+ 3: evaluate done: length path  1.45000E+02 crossing time  1.99948E+00 speed  2.96220E+02
+ 3: updaitng pc:  check  4 gas level  4.97967E+01 tyre usury  2.45690E-01 path length  1.45000E+02 speed  2.96220E+02
+ 2 2: SUMMURY lap :  0, actual time :  8.07197E+00, gas  4.97956E+01, tyre  2.47010E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.01600E+02 crossing time  1.23488E+00 speed  2.96191E+02
+ 2: updaitng pc:  check  5 gas level  4.97244E+01 tyre usury  3.30830E-01 path length  1.01600E+02 speed  2.96191E+02
+ 1 1: SUMMURY lap :  0, actual time :  8.22907E+00, gas  4.97287E+01, tyre  3.25560E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  6.00000E+01 crossing time  7.29304E-01 speed  2.96173E+02
+ 1: updaitng pc:  check  6 gas level  4.96867E+01 tyre usury  3.75060E-01 path length  6.00000E+01 speed  2.96173E+02
+ 1 1: SUMMURY lap :  0, actual time :  8.95837E+00, gas  4.96867E+01, tyre  3.75060E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.28000E+02 crossing time  1.55591E+00 speed  2.96161E+02
+ 1: updaitng pc:  check  7 gas level  4.95971E+01 tyre usury  4.80660E-01 path length  1.28000E+02 speed  2.96161E+02
+ 3 3: SUMMURY lap :  0, actual time :  9.05253E+00, gas  4.97967E+01, tyre  2.45690E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.00000E+02 crossing time  1.21543E+00 speed  2.96192E+02
+ 3: updaitng pc:  check  5 gas level  4.97267E+01 tyre usury  3.28190E-01 path length  1.00000E+02 speed  2.96192E+02
+ 2 2: SUMMURY lap :  0, actual time :  9.30685E+00, gas  4.97244E+01, tyre  3.30830E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  6.00000E+01 crossing time  7.29307E-01 speed  2.96171E+02
+ 2: updaitng pc:  check  6 gas level  4.96824E+01 tyre usury  3.80330E-01 path length  6.00000E+01 speed  2.96171E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.00362E+01, gas  4.96824E+01, tyre  3.80330E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.29600E+02 crossing time  1.57537E+00 speed  2.96160E+02
+ 2: updaitng pc:  check  7 gas level  4.95917E+01 tyre usury  4.87250E-01 path length  1.29600E+02 speed  2.96160E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.02680E+01, gas  4.97267E+01, tyre  3.28190E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  6.00000E+01 crossing time  7.29306E-01 speed  2.96172E+02
+ 3: updaitng pc:  check  6 gas level  4.96847E+01 tyre usury  3.77690E-01 path length  6.00000E+01 speed  2.96172E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.05143E+01, gas  4.95971E+01, tyre  4.80660E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.01000E+02 crossing time  1.22781E+00 speed  2.96136E+02
+ 1: updaitng pc:  check  8 gas level  4.95264E+01 tyre usury  5.63631E-01 path length  1.01000E+02 speed  2.96136E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.09973E+01, gas  4.96847E+01, tyre  3.77690E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.28000E+02 crossing time  1.55591E+00 speed  2.96160E+02
+ 3: updaitng pc:  check  7 gas level  4.95951E+01 tyre usury  4.83290E-01 path length  1.28000E+02 speed  2.96160E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.16115E+01, gas  4.95917E+01, tyre  4.87250E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.03512E+02 crossing time  1.25836E+00 speed  2.96134E+02
+ 2: updaitng pc:  check  8 gas level  4.95192E+01 tyre usury  5.72285E-01 path length  1.03512E+02 speed  2.96134E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.17421E+01, gas  4.95264E+01, tyre  5.63631E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.04000E+02 crossing time  1.26437E+00 speed  2.96116E+02
+ 1: updaitng pc:  check  9 gas level  4.94536E+01 tyre usury  6.49067E-01 path length  1.04000E+02 speed  2.96116E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.25532E+01, gas  4.95951E+01, tyre  4.83290E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.01000E+02 crossing time  1.22782E+00 speed  2.96135E+02
+ 3: updaitng pc:  check  8 gas level  4.95244E+01 tyre usury  5.66262E-01 path length  1.01000E+02 speed  2.96135E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.28699E+01, gas  4.95192E+01, tyre  5.72285E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.06512E+02 crossing time  1.29492E+00 speed  2.96114E+02
+ 2: updaitng pc:  check  9 gas level  4.94447E+01 tyre usury  6.59785E-01 path length  1.06512E+02 speed  2.96114E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.30065E+01, gas  4.94536E+01, tyre  6.49067E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.79000E+02 crossing time  2.17632E+00 speed  2.96096E+02
+ 1: updaitng pc:  check  10 gas level  4.93283E+01 tyre usury  7.96742E-01 path length  1.79000E+02 speed  2.96096E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.37810E+01, gas  4.95244E+01, tyre  5.66262E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.04000E+02 crossing time  1.26437E+00 speed  2.96116E+02
+ 3: updaitng pc:  check  9 gas level  4.94516E+01 tyre usury  6.51698E-01 path length  1.04000E+02 speed  2.96116E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.41648E+01, gas  4.94447E+01, tyre  6.59785E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.80116E+02 crossing time  2.18991E+00 speed  2.96094E+02
+ 2: updaitng pc:  check  10 gas level  4.93186E+01 tyre usury  8.08381E-01 path length  1.80116E+02 speed  2.96094E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.50454E+01, gas  4.94516E+01, tyre  6.51698E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.81233E+02 crossing time  2.20347E+00 speed  2.96096E+02
+ 3: updaitng pc:  check  10 gas level  4.93247E+01 tyre usury  8.01215E-01 path length  1.81233E+02 speed  2.96096E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.51828E+01, gas  4.93283E+01, tyre  7.96742E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.99100E+02 crossing time  2.42098E+00 speed  2.96061E+02
+ 1: updaitng pc:  check  11 gas level  4.91890E+01 tyre usury  9.60303E-01 path length  1.99100E+02 speed  2.96061E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.63547E+01, gas  4.93186E+01, tyre  8.08381E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.02366E+02 crossing time  2.46072E+00 speed  2.96059E+02
+ 2: updaitng pc:  check  11 gas level  4.91770E+01 tyre usury  9.74624E-01 path length  2.02366E+02 speed  2.96059E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.72488E+01, gas  4.93247E+01, tyre  8.01215E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.05631E+02 crossing time  2.50041E+00 speed  2.96060E+02
+ 3: updaitng pc:  check  11 gas level  4.91808E+01 tyre usury  9.70141E-01 path length  2.05631E+02 speed  2.96060E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.76038E+01, gas  4.91890E+01, tyre  9.60303E-01, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.48100E+02 crossing time  1.80108E+00 speed  2.96023E+02
+ 1: updaitng pc:  check  12 gas level  4.90853E+01 tyre usury  1.08197E+00 path length  1.48100E+02 speed  2.96023E+02
+ 2 2: SUMMURY lap :  0, actual time :  1.88154E+01, gas  4.91770E+01, tyre  9.74624E-01, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.49356E+02 crossing time  1.81637E+00 speed  2.96019E+02
+ 2: updaitng pc:  check  12 gas level  4.90724E+01 tyre usury  1.09732E+00 path length  1.49356E+02 speed  2.96019E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.94048E+01, gas  4.90853E+01, tyre  1.08197E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  3.02000E+01 crossing time  3.67305E-01 speed  2.95994E+02
+ 1: updaitng pc:  check  13 gas level  4.90642E+01 tyre usury  1.10688E+00 path length  3.02000E+01 speed  2.95994E+02
+ 3 3: SUMMURY lap :  0, actual time :  1.97492E+01, gas  4.91808E+01, tyre  9.70141E-01, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.48100E+02 crossing time  1.80109E+00 speed  2.96020E+02
+ 3: updaitng pc:  check  12 gas level  4.90771E+01 tyre usury  1.09181E+00 path length  1.48100E+02 speed  2.96020E+02
+ 1 1: SUMMURY lap :  0, actual time :  1.97721E+01, gas  4.90642E+01, tyre  1.10688E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.17000E+02 crossing time  1.42303E+00 speed  2.95988E+02
+ 1: updaitng pc:  check  14 gas level  4.89823E+01 tyre usury  1.20300E+00 path length  1.17000E+02 speed  2.95988E+02
+ 2 2: SUMMURY lap :  0, actual time :  2.06318E+01, gas  4.90724E+01, tyre  1.09732E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  3.02000E+01 crossing time  3.67309E-01 speed  2.95990E+02
+ 2: updaitng pc:  check  13 gas level  4.90513E+01 tyre usury  1.12224E+00 path length  3.02000E+01 speed  2.95990E+02
+ 2 2: SUMMURY lap :  0, actual time :  2.09991E+01, gas  4.90513E+01, tyre  1.12224E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.19707E+02 crossing time  1.45598E+00 speed  2.95984E+02
+ 2: updaitng pc:  check  14 gas level  4.89675E+01 tyre usury  1.22057E+00 path length  1.19707E+02 speed  2.95984E+02
+ 1 1: SUMMURY lap :  0, actual time :  2.11952E+01, gas  4.89823E+01, tyre  1.20300E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.14200E+02 crossing time  1.38908E+00 speed  2.95965E+02
+ 1: updaitng pc:  check  15 gas level  4.89023E+01 tyre usury  1.29681E+00 path length  1.14200E+02 speed  2.95965E+02
+ 3 3: SUMMURY lap :  0, actual time :  2.15503E+01, gas  4.90771E+01, tyre  1.09181E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.02000E+01 crossing time  3.67308E-01 speed  2.95992E+02
+ 3: updaitng pc:  check  13 gas level  4.90560E+01 tyre usury  1.11672E+00 path length  3.02000E+01 speed  2.95992E+02
+ 3 3: SUMMURY lap :  0, actual time :  2.19176E+01, gas  4.90560E+01, tyre  1.11672E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.17000E+02 crossing time  1.42304E+00 speed  2.95986E+02
+ 3: updaitng pc:  check  14 gas level  4.89741E+01 tyre usury  1.21284E+00 path length  1.17000E+02 speed  2.95986E+02
+ 2 2: SUMMURY lap :  0, actual time :  2.24551E+01, gas  4.89675E+01, tyre  1.22057E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.16879E+02 crossing time  1.42169E+00 speed  2.95961E+02
+ 2: updaitng pc:  check  15 gas level  4.88857E+01 tyre usury  1.31659E+00 path length  1.16879E+02 speed  2.95961E+02
+ 1 1: SUMMURY lap :  0, actual time :  2.25843E+01, gas  4.89023E+01, tyre  1.29681E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.53252E+02 crossing time  1.86423E+00 speed  2.95943E+02
+ 1: updaitng pc:  check  16 gas level  4.87950E+01 tyre usury  1.42271E+00 path length  1.53252E+02 speed  2.95943E+02
+ 3 3: SUMMURY lap :  0, actual time :  2.33407E+01, gas  4.89741E+01, tyre  1.21284E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.14200E+02 crossing time  1.38909E+00 speed  2.95963E+02
+ 3: updaitng pc:  check  15 gas level  4.88941E+01 tyre usury  1.30665E+00 path length  1.14200E+02 speed  2.95963E+02
+ 2 2: SUMMURY lap :  0, actual time :  2.38768E+01, gas  4.88857E+01, tyre  1.31659E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.53252E+02 crossing time  2.43598E+00 speed  2.95939E+02
+ 2: updaitng pc:  check  16 gas level  4.87784E+01 tyre usury  1.44249E+00 path length  1.53252E+02 speed  2.95939E+02
+ 1 1: SUMMURY lap :  0, actual time :  2.44485E+01, gas  4.87950E+01, tyre  1.42271E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  4.93200E+02 crossing time  6.00013E+00 speed  2.95914E+02
+ 1: updaitng pc:  check  17 gas level  4.84498E+01 tyre usury  1.82960E+00 path length  4.93200E+02 speed  2.95914E+02
+ 3 3: SUMMURY lap :  0, actual time :  2.47298E+01, gas  4.88941E+01, tyre  1.30665E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.53252E+02 crossing time  3.44723E+00 speed  2.95941E+02
+ 3: updaitng pc:  check  16 gas level  4.87868E+01 tyre usury  1.43255E+00 path length  1.53252E+02 speed  2.95941E+02
+ 2 2: SUMMURY lap :  0, actual time :  2.63128E+01, gas  4.87784E+01, tyre  1.44249E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  4.94800E+02 crossing time  6.01969E+00 speed  2.95909E+02
+ 2: updaitng pc:  check  17 gas level  4.84320E+01 tyre usury  1.85070E+00 path length  4.94800E+02 speed  2.95909E+02
+ 3 3: SUMMURY lap :  0, actual time :  2.81770E+01, gas  4.87868E+01, tyre  1.43255E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.96400E+02 crossing time  6.03911E+00 speed  2.95911E+02
+ 3: updaitng pc:  check  17 gas level  4.84394E+01 tyre usury  1.84208E+00 path length  4.96400E+02 speed  2.95911E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.04486E+01, gas  4.84498E+01, tyre  1.82960E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.31000E+02 crossing time  1.59423E+00 speed  2.95817E+02
+ 1: updaitng pc:  check  18 gas level  4.83581E+01 tyre usury  1.93722E+00 path length  1.31000E+02 speed  2.95817E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.20429E+01, gas  4.83581E+01, tyre  1.93722E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.09200E+02 crossing time  1.32904E+00 speed  2.95792E+02
+ 1: updaitng pc:  check  19 gas level  4.82817E+01 tyre usury  2.02692E+00 path length  1.09200E+02 speed  2.95792E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.23325E+01, gas  4.84320E+01, tyre  1.85070E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.31000E+02 crossing time  1.59425E+00 speed  2.95812E+02
+ 2: updaitng pc:  check  18 gas level  4.83403E+01 tyre usury  1.95831E+00 path length  1.31000E+02 speed  2.95812E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.33719E+01, gas  4.82817E+01, tyre  2.02692E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.55000E+01 crossing time  6.75523E-01 speed  2.95771E+02
+ 1: updaitng pc:  check  20 gas level  4.82428E+01 tyre usury  2.07263E+00 path length  5.55000E+01 speed  2.95771E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.39267E+01, gas  4.83403E+01, tyre  1.95831E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.09200E+02 crossing time  1.32906E+00 speed  2.95787E+02
+ 2: updaitng pc:  check  19 gas level  4.82639E+01 tyre usury  2.04802E+00 path length  1.09200E+02 speed  2.95787E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.40474E+01, gas  4.82428E+01, tyre  2.07263E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.75000E+01 crossing time  6.99892E-01 speed  2.95760E+02
+ 1: updaitng pc:  check  21 gas level  4.82026E+01 tyre usury  2.11986E+00 path length  5.75000E+01 speed  2.95760E+02
+ 3 3: SUMMURY lap :  0, actual time :  3.42161E+01, gas  4.84394E+01, tyre  1.84208E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.31000E+02 crossing time  1.59424E+00 speed  2.95814E+02
+ 3: updaitng pc:  check  18 gas level  4.83477E+01 tyre usury  1.94969E+00 path length  1.31000E+02 speed  2.95814E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.47473E+01, gas  4.82026E+01, tyre  2.11986E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.35000E+02 crossing time  1.64329E+00 speed  2.95749E+02
+ 1: updaitng pc:  check  22 gas level  4.81081E+01 tyre usury  2.23124E+00 path length  1.35000E+02 speed  2.95749E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.52558E+01, gas  4.82639E+01, tyre  2.04802E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.55000E+01 crossing time  6.75534E-01 speed  2.95766E+02
+ 2: updaitng pc:  check  20 gas level  4.82250E+01 tyre usury  2.09373E+00 path length  5.55000E+01 speed  2.95766E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.59313E+01, gas  4.82250E+01, tyre  2.09373E+00, pit stop done FALSE
+ 3 3: SUMMURY lap :  0, actual time :  3.58104E+01, gas  4.83477E+01, tyre  1.94969E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.09200E+02 crossing time  1.32906E+00 speed  2.95789E+02
+ 3: updaitng pc:  check  19 gas level  4.82712E+01 tyre usury  2.03940E+00 path length  1.09200E+02 speed  2.95789E+02
+Notifying
+ 2: evaluate done: length path  5.75000E+01 crossing time  6.99904E-01 speed  2.95755E+02
+ 2: updaitng pc:  check  21 gas level  4.81848E+01 tyre usury  2.14096E+00 path length  5.75000E+01 speed  2.95755E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.63906E+01, gas  4.81081E+01, tyre  2.23124E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  2.70000E+01 crossing time  3.28687E-01 speed  2.95723E+02
+ 1: updaitng pc:  check  23 gas level  4.80892E+01 tyre usury  2.25351E+00 path length  2.70000E+01 speed  2.95723E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.66312E+01, gas  4.81848E+01, tyre  2.14096E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.35000E+02 crossing time  1.64331E+00 speed  2.95744E+02
+ 2: updaitng pc:  check  22 gas level  4.80903E+01 tyre usury  2.25234E+00 path length  1.35000E+02 speed  2.95744E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.67193E+01, gas  4.80892E+01, tyre  2.25351E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.50000E+01 crossing time  6.69558E-01 speed  2.95717E+02
+ 1: updaitng pc:  check  24 gas level  4.80507E+01 tyre usury  2.29881E+00 path length  5.50000E+01 speed  2.95717E+02
+ 3 3: SUMMURY lap :  0, actual time :  3.71394E+01, gas  4.82712E+01, tyre  2.03940E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.55000E+01 crossing time  6.75530E-01 speed  2.95768E+02
+ 3: updaitng pc:  check  20 gas level  4.82324E+01 tyre usury  2.08511E+00 path length  5.55000E+01 speed  2.95768E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.73888E+01, gas  4.80507E+01, tyre  2.29881E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  6.45000E+01 crossing time  7.85238E-01 speed  2.95707E+02
+ 1: updaitng pc:  check  25 gas level  4.80055E+01 tyre usury  2.35202E+00 path length  6.45000E+01 speed  2.95707E+02
+ 3 3: SUMMURY lap :  0, actual time :  3.78149E+01, gas  4.82324E+01, tyre  2.08511E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.75000E+01 crossing time  6.99899E-01 speed  2.95757E+02
+ 3: updaitng pc:  check  21 gas level  4.81921E+01 tyre usury  2.13234E+00 path length  5.75000E+01 speed  2.95757E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.82745E+01, gas  4.80903E+01, tyre  2.25234E+00, pit stop done FALSE
+ 1 1: SUMMURY lap :  0, actual time :  3.81741E+01, gas  4.80055E+01, tyre  2.35202E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.37000E+02 crossing time  1.66794E+00 speed  2.95694E+02
+ 1: updaitng pc:  check  26 gas level  4.79096E+01 tyre usury  2.46504E+00 path length  1.37000E+02 speed  2.95694E+02
+Notifying
+ 2: evaluate done: length path  2.70000E+01 crossing time  3.28692E-01 speed  2.95718E+02
+ 2: updaitng pc:  check  23 gas level  4.80714E+01 tyre usury  2.27461E+00 path length  2.70000E+01 speed  2.95718E+02
+ 3 3: SUMMURY lap :  0, actual time :  3.85148E+01, gas  4.81921E+01, tyre  2.13234E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.35000E+02 crossing time  1.64330E+00 speed  2.95746E+02
+ 3: updaitng pc:  check  22 gas level  4.80976E+01 tyre usury  2.24372E+00 path length  1.35000E+02 speed  2.95746E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.86032E+01, gas  4.80714E+01, tyre  2.27461E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.50000E+01 crossing time  6.69570E-01 speed  2.95712E+02
+ 2: updaitng pc:  check  24 gas level  4.80329E+01 tyre usury  2.31991E+00 path length  5.50000E+01 speed  2.95712E+02
+ 2 2: SUMMURY lap :  0, actual time :  3.92728E+01, gas  4.80329E+01, tyre  2.31991E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  6.45000E+01 crossing time  7.85251E-01 speed  2.95702E+02
+ 2: updaitng pc:  check  25 gas level  4.79877E+01 tyre usury  2.37312E+00 path length  6.45000E+01 speed  2.95702E+02
+ 1 1: SUMMURY lap :  0, actual time :  3.98420E+01, gas  4.79096E+01, tyre  2.46504E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.78000E+02 crossing time  2.16730E+00 speed  2.95667E+02
+ 1: updaitng pc:  check  27 gas level  4.77850E+01 tyre usury  2.61163E+00 path length  1.78000E+02 speed  2.95667E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.00580E+01, gas  4.79877E+01, tyre  2.37312E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.37000E+02 crossing time  1.66797E+00 speed  2.95689E+02
+ 2: updaitng pc:  check  26 gas level  4.78918E+01 tyre usury  2.48614E+00 path length  1.37000E+02 speed  2.95689E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.01581E+01, gas  4.80976E+01, tyre  2.24372E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.70000E+01 crossing time  3.28690E-01 speed  2.95720E+02
+ 3: updaitng pc:  check  23 gas level  4.80787E+01 tyre usury  2.26599E+00 path length  2.70000E+01 speed  2.95720E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.04868E+01, gas  4.80787E+01, tyre  2.26599E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.50000E+01 crossing time  6.69565E-01 speed  2.95714E+02
+ 3: updaitng pc:  check  24 gas level  4.80402E+01 tyre usury  2.31129E+00 path length  5.50000E+01 speed  2.95714E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.11564E+01, gas  4.80402E+01, tyre  2.31129E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  6.45000E+01 crossing time  7.85246E-01 speed  2.95704E+02
+ 3: updaitng pc:  check  25 gas level  4.79951E+01 tyre usury  2.36450E+00 path length  6.45000E+01 speed  2.95704E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.17260E+01, gas  4.78918E+01, tyre  2.48614E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.79954E+02 crossing time  2.19113E+00 speed  2.95662E+02
+ 2: updaitng pc:  check  27 gas level  4.77659E+01 tyre usury  2.63434E+00 path length  1.79954E+02 speed  2.95662E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.19416E+01, gas  4.79951E+01, tyre  2.36450E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.37000E+02 crossing time  1.66796E+00 speed  2.95691E+02
+ 3: updaitng pc:  check  26 gas level  4.78992E+01 tyre usury  2.47752E+00 path length  1.37000E+02 speed  2.95691E+02
+ 1 1: SUMMURY lap :  0, actual time :  4.20093E+01, gas  4.77850E+01, tyre  2.61163E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  2.70500E+02 crossing time  3.29395E+00 speed  2.95633E+02
+ 1: updaitng pc:  check  28 gas level  4.75957E+01 tyre usury  2.83479E+00 path length  2.70500E+02 speed  2.95633E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.36096E+01, gas  4.78992E+01, tyre  2.47752E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.78000E+02 crossing time  2.16732E+00 speed  2.95664E+02
+ 3: updaitng pc:  check  27 gas level  4.77746E+01 tyre usury  2.62411E+00 path length  1.78000E+02 speed  2.95664E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.39171E+01, gas  4.77659E+01, tyre  2.63434E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.72100E+02 crossing time  3.31350E+00 speed  2.95627E+02
+ 2: updaitng pc:  check  28 gas level  4.75754E+01 tyre usury  2.85882E+00 path length  2.72100E+02 speed  2.95627E+02
+ 1 1: SUMMURY lap :  0, actual time :  4.53033E+01, gas  4.75957E+01, tyre  2.83479E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  2.24000E+02 crossing time  2.72820E+00 speed  2.95580E+02
+ 1: updaitng pc:  check  29 gas level  4.74389E+01 tyre usury  3.01959E+00 path length  2.24000E+02 speed  2.95580E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.57769E+01, gas  4.77746E+01, tyre  2.62411E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.70500E+02 crossing time  3.29399E+00 speed  2.95630E+02
+ 3: updaitng pc:  check  28 gas level  4.75852E+01 tyre usury  2.84727E+00 path length  2.70500E+02 speed  2.95630E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.72306E+01, gas  4.75754E+01, tyre  2.85882E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.24642E+02 crossing time  2.73607E+00 speed  2.95574E+02
+ 2: updaitng pc:  check  29 gas level  4.74181E+01 tyre usury  3.04415E+00 path length  2.24642E+02 speed  2.95574E+02
+ 1 1: SUMMURY lap :  0, actual time :  4.80315E+01, gas  4.74389E+01, tyre  3.01959E+00, pit stop done FALSE
+ 1 Connecting for strategy
+ 1 connected succesfully
+ 1 saved
+Notifying
+ 1: evaluate done: length path  1.68000E+02 crossing time  2.04645E+00 speed  2.95536E+02
+ 1: updaitng pc:  check  30 gas level  4.73213E+01 tyre usury  3.15819E+00 path length  1.68000E+02 speed  2.95536E+02
+ 3 3: SUMMURY lap :  0, actual time :  4.90709E+01, gas  4.75852E+01, tyre  2.84727E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  2.24000E+02 crossing time  2.72822E+00 speed  2.95577E+02
+ 3: updaitng pc:  check  29 gas level  4.74284E+01 tyre usury  3.03207E+00 path length  2.24000E+02 speed  2.95577E+02
+ 2 2: SUMMURY lap :  0, actual time :  4.99667E+01, gas  4.74181E+01, tyre  3.04415E+00, pit stop done FALSE
+ 2 Connecting for strategy
+ 2 connected succesfully
+ 2 saved
+Notifying
+ 2: evaluate done: length path  1.68530E+02 crossing time  2.05295E+00 speed  2.95530E+02
+ 2: updaitng pc:  check  30 gas level  4.73002E+01 tyre usury  3.18318E+00 path length  1.68530E+02 speed  2.95530E+02
+ 1 1: SUMMURY lap :  0, actual time :  5.00779E+01, gas  4.73213E+01, tyre  3.15819E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  3.64000E+02 crossing time  4.43447E+00 speed  2.95503E+02
+ 1: updaitng pc:  check  31 gas level  4.70665E+01 tyre usury  3.45849E+00 path length  3.64000E+02 speed  2.95503E+02
+ 3 3: SUMMURY lap :  0, actual time :  5.17991E+01, gas  4.74284E+01, tyre  3.03207E+00, pit stop done FALSE
+ 3 Connecting for strategy
+ 3 connected succesfully
+ 3 saved
+Notifying
+ 3: evaluate done: length path  1.68000E+02 crossing time  2.04647E+00 speed  2.95533E+02
+ 3: updaitng pc:  check  30 gas level  4.73108E+01 tyre usury  3.17067E+00 path length  1.68000E+02 speed  2.95533E+02
+ 2 2: SUMMURY lap :  0, actual time :  5.20196E+01, gas  4.73002E+01, tyre  3.18318E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  3.65600E+02 crossing time  4.45405E+00 speed  2.95498E+02
+ 2: updaitng pc:  check  31 gas level  4.70442E+01 tyre usury  3.48480E+00 path length  3.65600E+02 speed  2.95498E+02
+ 3 3: SUMMURY lap :  0, actual time :  5.38456E+01, gas  4.73108E+01, tyre  3.17067E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.67200E+02 crossing time  4.47350E+00 speed  2.95500E+02
+ 3: updaitng pc:  check  31 gas level  4.70538E+01 tyre usury  3.47361E+00 path length  3.67200E+02 speed  2.95500E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.45124E+01, gas  4.70665E+01, tyre  3.45849E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.50000E+01 crossing time  6.70204E-01 speed  2.95432E+02
+ 1: updaitng pc:  check  1 gas level  4.70280E+01 tyre usury  3.50387E+00 path length  5.50000E+01 speed  2.95432E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.51826E+01, gas  4.70280E+01, tyre  3.50387E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  5.00000E+01 crossing time  6.09298E-01 speed  2.95422E+02
+ 1: updaitng pc:  check  2 gas level  4.69930E+01 tyre usury  3.54512E+00 path length  5.00000E+01 speed  2.95422E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.57919E+01, gas  4.69930E+01, tyre  3.54512E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  4.50000E+01 crossing time  5.48387E-01 speed  2.95412E+02
+ 1: updaitng pc:  check  3 gas level  4.69615E+01 tyre usury  3.58224E+00 path length  4.50000E+01 speed  2.95412E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.63403E+01, gas  4.69615E+01, tyre  3.58224E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.45000E+02 crossing time  1.76708E+00 speed  2.95403E+02
+ 1: updaitng pc:  check  4 gas level  4.68600E+01 tyre usury  3.70187E+00 path length  1.45000E+02 speed  2.95403E+02
+ 2 2: SUMMURY lap :  1, actual time :  5.64737E+01, gas  4.70442E+01, tyre  3.48480E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.50000E+01 crossing time  6.70218E-01 speed  2.95426E+02
+ 2: updaitng pc:  check  1 gas level  4.70057E+01 tyre usury  3.53018E+00 path length  5.50000E+01 speed  2.95426E+02
+ 2 2: SUMMURY lap :  1, actual time :  5.71439E+01, gas  4.70057E+01, tyre  3.53018E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  5.00000E+01 crossing time  6.09311E-01 speed  2.95416E+02
+ 2: updaitng pc:  check  2 gas level  4.69707E+01 tyre usury  3.57143E+00 path length  5.00000E+01 speed  2.95416E+02
+ 2 2: SUMMURY lap :  1, actual time :  5.77532E+01, gas  4.69707E+01, tyre  3.57143E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  4.50000E+01 crossing time  5.48398E-01 speed  2.95406E+02
+ 2: updaitng pc:  check  3 gas level  4.69392E+01 tyre usury  3.60856E+00 path length  4.50000E+01 speed  2.95406E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.81073E+01, gas  4.68600E+01, tyre  3.70187E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.00000E+02 crossing time  1.21879E+00 speed  2.95375E+02
+ 1: updaitng pc:  check  5 gas level  4.67900E+01 tyre usury  3.78437E+00 path length  1.00000E+02 speed  2.95375E+02
+ 2 2: SUMMURY lap :  1, actual time :  5.83016E+01, gas  4.69392E+01, tyre  3.60856E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.45000E+02 crossing time  1.76711E+00 speed  2.95397E+02
+ 2: updaitng pc:  check  4 gas level  4.68377E+01 tyre usury  3.72818E+00 path length  1.45000E+02 speed  2.95397E+02
+ 3 3: SUMMURY lap :  1, actual time :  5.83191E+01, gas  4.70538E+01, tyre  3.47361E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.50000E+01 crossing time  6.70212E-01 speed  2.95429E+02
+ 3: updaitng pc:  check  1 gas level  4.70153E+01 tyre usury  3.51898E+00 path length  5.50000E+01 speed  2.95429E+02
+ 3 3: SUMMURY lap :  1, actual time :  5.89893E+01, gas  4.70153E+01, tyre  3.51898E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  5.00000E+01 crossing time  6.09306E-01 speed  2.95418E+02
+ 3: updaitng pc:  check  2 gas level  4.69803E+01 tyre usury  3.56023E+00 path length  5.00000E+01 speed  2.95418E+02
+ 1 1: SUMMURY lap :  1, actual time :  5.93261E+01, gas  4.67900E+01, tyre  3.78437E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  6.00000E+01 crossing time  7.31322E-01 speed  2.95355E+02
+ 1: updaitng pc:  check  6 gas level  4.67480E+01 tyre usury  3.83387E+00 path length  6.00000E+01 speed  2.95355E+02
+ 3 3: SUMMURY lap :  1, actual time :  5.95986E+01, gas  4.69803E+01, tyre  3.56023E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.50000E+01 crossing time  5.48393E-01 speed  2.95408E+02
+ 3: updaitng pc:  check  3 gas level  4.69488E+01 tyre usury  3.59736E+00 path length  4.50000E+01 speed  2.95408E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.00687E+01, gas  4.68377E+01, tyre  3.72818E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.00000E+02 crossing time  1.21882E+00 speed  2.95369E+02
+ 2: updaitng pc:  check  5 gas level  4.67677E+01 tyre usury  3.81068E+00 path length  1.00000E+02 speed  2.95369E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.00575E+01, gas  4.67480E+01, tyre  3.83387E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.28000E+02 crossing time  1.56022E+00 speed  2.95344E+02
+ 1: updaitng pc:  check  7 gas level  4.66584E+01 tyre usury  3.93947E+00 path length  1.28000E+02 speed  2.95344E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.01470E+01, gas  4.69488E+01, tyre  3.59736E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.45000E+02 crossing time  1.76710E+00 speed  2.95400E+02
+ 3: updaitng pc:  check  4 gas level  4.68473E+01 tyre usury  3.71698E+00 path length  1.45000E+02 speed  2.95400E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.12876E+01, gas  4.67677E+01, tyre  3.81068E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  6.00000E+01 crossing time  7.31338E-01 speed  2.95349E+02
+ 2: updaitng pc:  check  6 gas level  4.67257E+01 tyre usury  3.86018E+00 path length  6.00000E+01 speed  2.95349E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.16177E+01, gas  4.66584E+01, tyre  3.93947E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.01000E+02 crossing time  1.23121E+00 speed  2.95319E+02
+ 1: updaitng pc:  check  8 gas level  4.65877E+01 tyre usury  4.02244E+00 path length  1.01000E+02 speed  2.95319E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.19141E+01, gas  4.68473E+01, tyre  3.71698E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.00000E+02 crossing time  1.21880E+00 speed  2.95371E+02
+ 3: updaitng pc:  check  5 gas level  4.67773E+01 tyre usury  3.79948E+00 path length  1.00000E+02 speed  2.95371E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.20189E+01, gas  4.67257E+01, tyre  3.86018E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.28000E+02 crossing time  1.56025E+00 speed  2.95338E+02
+ 2: updaitng pc:  check  7 gas level  4.66361E+01 tyre usury  3.96578E+00 path length  1.28000E+02 speed  2.95338E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.28489E+01, gas  4.65877E+01, tyre  4.02244E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.04000E+02 crossing time  1.26787E+00 speed  2.95299E+02
+ 1: updaitng pc:  check  9 gas level  4.65149E+01 tyre usury  4.10787E+00 path length  1.04000E+02 speed  2.95299E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.31329E+01, gas  4.67773E+01, tyre  3.79948E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  6.00000E+01 crossing time  7.31331E-01 speed  2.95352E+02
+ 3: updaitng pc:  check  6 gas level  4.67353E+01 tyre usury  3.84898E+00 path length  6.00000E+01 speed  2.95352E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.35791E+01, gas  4.66361E+01, tyre  3.96578E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.01000E+02 crossing time  1.23124E+00 speed  2.95313E+02
+ 2: updaitng pc:  check  8 gas level  4.65654E+01 tyre usury  4.04875E+00 path length  1.01000E+02 speed  2.95313E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.38642E+01, gas  4.67353E+01, tyre  3.84898E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.28000E+02 crossing time  1.56023E+00 speed  2.95340E+02
+ 3: updaitng pc:  check  7 gas level  4.66457E+01 tyre usury  3.95458E+00 path length  1.28000E+02 speed  2.95340E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.41168E+01, gas  4.65149E+01, tyre  4.10787E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.79000E+02 crossing time  2.18234E+00 speed  2.95279E+02
+ 1: updaitng pc:  check  10 gas level  4.63896E+01 tyre usury  4.25555E+00 path length  1.79000E+02 speed  2.95279E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.48104E+01, gas  4.65654E+01, tyre  4.04875E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.04000E+02 crossing time  1.26789E+00 speed  2.95293E+02
+ 2: updaitng pc:  check  9 gas level  4.64926E+01 tyre usury  4.13419E+00 path length  1.04000E+02 speed  2.95293E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.54245E+01, gas  4.66457E+01, tyre  3.95458E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.01000E+02 crossing time  1.23123E+00 speed  2.95315E+02
+ 3: updaitng pc:  check  8 gas level  4.65750E+01 tyre usury  4.03756E+00 path length  1.01000E+02 speed  2.95315E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.60783E+01, gas  4.64926E+01, tyre  4.13419E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.80116E+02 crossing time  2.19600E+00 speed  2.95273E+02
+ 2: updaitng pc:  check  10 gas level  4.63666E+01 tyre usury  4.28278E+00 path length  1.80116E+02 speed  2.95273E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.62991E+01, gas  4.63896E+01, tyre  4.25555E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.99100E+02 crossing time  2.42769E+00 speed  2.95244E+02
+ 1: updaitng pc:  check  11 gas level  4.62502E+01 tyre usury  4.41911E+00 path length  1.99100E+02 speed  2.95244E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.66557E+01, gas  4.65750E+01, tyre  4.03756E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.04000E+02 crossing time  1.26788E+00 speed  2.95296E+02
+ 3: updaitng pc:  check  9 gas level  4.65022E+01 tyre usury  4.12299E+00 path length  1.04000E+02 speed  2.95296E+02
+ 3 3: SUMMURY lap :  1, actual time :  6.79236E+01, gas  4.65022E+01, tyre  4.12299E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.79000E+02 crossing time  2.18237E+00 speed  2.95275E+02
+ 3: updaitng pc:  check  10 gas level  4.63769E+01 tyre usury  4.27067E+00 path length  1.79000E+02 speed  2.95275E+02
+ 2 2: SUMMURY lap :  1, actual time :  6.82743E+01, gas  4.63666E+01, tyre  4.28278E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  2.02366E+02 crossing time  2.46756E+00 speed  2.95238E+02
+ 2: updaitng pc:  check  11 gas level  4.62249E+01 tyre usury  4.44903E+00 path length  2.02366E+02 speed  2.95238E+02
+ 1 1: SUMMURY lap :  1, actual time :  6.87268E+01, gas  4.62502E+01, tyre  4.41911E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.48100E+02 crossing time  1.80606E+00 speed  2.95206E+02
+ 1: updaitng pc:  check  12 gas level  4.61465E+01 tyre usury  4.54077E+00 path length  1.48100E+02 speed  2.95206E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.01060E+01, gas  4.63769E+01, tyre  4.27067E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.99100E+02 crossing time  2.42772E+00 speed  2.95241E+02
+ 3: updaitng pc:  check  11 gas level  4.62375E+01 tyre usury  4.43423E+00 path length  1.99100E+02 speed  2.95241E+02
+ 1 1: SUMMURY lap :  1, actual time :  7.05328E+01, gas  4.61465E+01, tyre  4.54077E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  3.02000E+01 crossing time  3.68322E-01 speed  2.95177E+02
+ 1: updaitng pc:  check  13 gas level  4.61254E+01 tyre usury  4.56569E+00 path length  3.02000E+01 speed  2.95177E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.07418E+01, gas  4.62249E+01, tyre  4.44903E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.48100E+02 crossing time  1.80611E+00 speed  2.95198E+02
+ 2: updaitng pc:  check  12 gas level  4.61212E+01 tyre usury  4.57069E+00 path length  1.48100E+02 speed  2.95198E+02
+ 1 1: SUMMURY lap :  1, actual time :  7.09012E+01, gas  4.61254E+01, tyre  4.56569E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.17000E+02 crossing time  1.42697E+00 speed  2.95171E+02
+ 1: updaitng pc:  check  14 gas level  4.60435E+01 tyre usury  4.66180E+00 path length  1.17000E+02 speed  2.95171E+02
+ 1 1: SUMMURY lap :  1, actual time :  7.23281E+01, gas  4.60435E+01, tyre  4.66180E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.14200E+02 crossing time  1.39293E+00 speed  2.95148E+02
+ 1: updaitng pc:  check  15 gas level  4.59635E+01 tyre usury  4.75562E+00 path length  1.14200E+02 speed  2.95148E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.25479E+01, gas  4.61212E+01, tyre  4.57069E+00, pit stop done FALSE
+ 3 3: SUMMURY lap :  1, actual time :  7.25337E+01, gas  4.62375E+01, tyre  4.43423E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.48100E+02 crossing time  1.82035E+00 speed  2.95202E+02
+ 3: updaitng pc:  check  12 gas level  4.61338E+01 tyre usury  4.55589E+00 path length  1.48100E+02 speed  2.95202E+02
+Notifying
+ 2: evaluate done: length path  3.02000E+01 crossing time  3.68331E-01 speed  2.95170E+02
+ 2: updaitng pc:  check  13 gas level  4.61001E+01 tyre usury  4.59561E+00 path length  3.02000E+01 speed  2.95170E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.29163E+01, gas  4.61001E+01, tyre  4.59561E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.17000E+02 crossing time  1.42700E+00 speed  2.95164E+02
+ 2: updaitng pc:  check  14 gas level  4.60182E+01 tyre usury  4.69172E+00 path length  1.17000E+02 speed  2.95164E+02
+ 1 1: SUMMURY lap :  1, actual time :  7.37211E+01, gas  4.59635E+01, tyre  4.75562E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  1.53252E+02 crossing time  1.86940E+00 speed  2.95126E+02
+ 1: updaitng pc:  check  16 gas level  4.58563E+01 tyre usury  4.88152E+00 path length  1.53252E+02 speed  2.95126E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.43433E+01, gas  4.60182E+01, tyre  4.69172E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.14200E+02 crossing time  1.39296E+00 speed  2.95141E+02
+ 2: updaitng pc:  check  15 gas level  4.59382E+01 tyre usury  4.78554E+00 path length  1.14200E+02 speed  2.95141E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.43540E+01, gas  4.61338E+01, tyre  4.55589E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  3.02000E+01 crossing time  3.68326E-01 speed  2.95173E+02
+ 3: updaitng pc:  check  13 gas level  4.61127E+01 tyre usury  4.58081E+00 path length  3.02000E+01 speed  2.95173E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.47223E+01, gas  4.61127E+01, tyre  4.58081E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.17000E+02 crossing time  1.42699E+00 speed  2.95167E+02
+ 3: updaitng pc:  check  14 gas level  4.60308E+01 tyre usury  4.67692E+00 path length  1.17000E+02 speed  2.95167E+02
+ 1 1: SUMMURY lap :  1, actual time :  7.55905E+01, gas  4.58563E+01, tyre  4.88152E+00, pit stop done FALSE
+Notifying
+ 1: evaluate done: length path  4.93200E+02 crossing time  6.01675E+00 speed  2.95096E+02
+ 1: updaitng pc:  check  17 gas level  4.55110E+01 tyre usury  5.28841E+00 path length  4.93200E+02 speed  2.95096E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.57362E+01, gas  4.59382E+01, tyre  4.78554E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  1.53252E+02 crossing time  1.86944E+00 speed  2.95119E+02
+ 2: updaitng pc:  check  16 gas level  4.58310E+01 tyre usury  4.91143E+00 path length  1.53252E+02 speed  2.95119E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.61493E+01, gas  4.60308E+01, tyre  4.67692E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.14200E+02 crossing time  1.39294E+00 speed  2.95145E+02
+ 3: updaitng pc:  check  15 gas level  4.59508E+01 tyre usury  4.77074E+00 path length  1.14200E+02 speed  2.95145E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.75423E+01, gas  4.59508E+01, tyre  4.77074E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  1.53252E+02 crossing time  1.93281E+00 speed  2.95122E+02
+ 3: updaitng pc:  check  16 gas level  4.58436E+01 tyre usury  4.89663E+00 path length  1.53252E+02 speed  2.95122E+02
+ 2 2: SUMMURY lap :  1, actual time :  7.76057E+01, gas  4.58310E+01, tyre  4.91143E+00, pit stop done FALSE
+Notifying
+ 2: evaluate done: length path  4.94800E+02 crossing time  6.03641E+00 speed  2.95089E+02
+ 2: updaitng pc:  check  17 gas level  4.54846E+01 tyre usury  5.31964E+00 path length  4.94800E+02 speed  2.95089E+02
+ 3 3: SUMMURY lap :  1, actual time :  7.94751E+01, gas  4.58436E+01, tyre  4.89663E+00, pit stop done FALSE
+Notifying
+ 3: evaluate done: length path  4.96400E+02 crossing time  6.05586E+00 speed  2.95093E+02
+ 3: updaitng pc:  check  17 gas level  4.54961E+01 tyre usury  5.30616E+00 path length  4.96400E+02 speed  2.95093E+02

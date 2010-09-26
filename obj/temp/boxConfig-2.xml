@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config>
-<monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:43330//000000013T653d72b011d628ca</monitorCorbaLoc>
+<monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:56416//000000013T2eb5b46011d706ea</monitorCorbaLoc>
 <initialTyreType>Sun</initialTyreType>
 <laps>10</laps>
 <circuitLength>4192.0</circuitLength>
