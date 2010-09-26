@@ -5,7 +5,8 @@
 with Ada.Float_Text_IO;
  use Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
-
+--with Physic_Engine;
+--use Physic_Engine;
 with Competition_Monitor;
 
 with Common;
@@ -568,10 +569,7 @@ package body Competitor is
 
       crossingTime_Out := CrossingTime;
    end evaluate;
-
-   -----------------------------------
-   -----------------------------------
-   -- TASKCOMPETITOR IMPLEMENTATION --
+--ITOR IMPLEMENTATION --
    -----------------------------------
    -----------------------------------
 
@@ -794,12 +792,18 @@ package body Competitor is
            OriginalSpeed : Float := CarDriver.Racing_Car.Max_Speed;
           begin
 	    carDriver.Racing_Car.Max_Speed := 80.0;
-	    Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+              	    Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+            --   Evaluate(C_Checkpoint,Paths2Cross,carDriver.Id,carDriver.Current_Strategy.Style,carDriver.Racing_Car.Max_Speed,
+--                          carDriver.Racing_Car.Max_Acceleration,carDriver.Racing_Car.Tyre_Type,carDriver.Racing_Car.Tyre_Usury,
+--                          carDriver.Racing_Car.Gasoline_Level,lengthPath, CrossingTime,Speed,carDriver.Racing_Car.Last_Speed_Reached);
 	    --original driver speed restored.
 	    carDriver.Racing_Car.Max_Speed := OriginalSpeed;
 	  end;
 	 else
-          Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+                      Evaluate(carDriver,C_Checkpoint, Paths2Cross, lengthPath, CrossingTime, Speed); -- NEW aggiunto parametro lunghezza del path scelto
+            --Evaluate(C_Checkpoint,Paths2Cross,carDriver.Id,carDriver.Current_Strategy.Style,carDriver.Racing_Car.Max_Speed,
+--                       carDriver.Racing_Car.Max_Acceleration,carDriver.Racing_Car.Tyre_Type,carDriver.Racing_Car.Tyre_Usury,
+--                       carDriver.Racing_Car.Gasoline_Level,lengthPath, CrossingTime,Speed,carDriver.Racing_Car.Last_Speed_Reached);
 	 end if;
          Ada.Text_IO.Put_Line(Integer'Image(carDriver.Id) & ": evaluate done:" &
                               " length path " & Float'IMAGE(lengthPath) &
