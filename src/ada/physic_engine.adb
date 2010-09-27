@@ -155,6 +155,45 @@ package body Physic_Engine is
                                Time_Critical);
    end Calculate_Crossing_Time;
 
+
+   procedure Update_Usury_Modifier_Angle(Choosen_Path  : Integer;
+                                         Paths_2_Cross : Crossing_Point;
+                                         Temp_Usury    : in out Float) is
+   begin
+      if Paths_2_Cross.Get_Angle(Choosen_Path) < 45.0 then Temp_Usury := Temp_Usury + 0.005;
+      elsif Paths_2_Cross.Get_Angle(Choosen_Path) > 45.0 and Paths_2_Cross.Get_Angle(Choosen_Path) < 90.0 then Temp_Usury := Temp_Usury + 0.0035;
+      else Temp_Usury := Temp_Usury + 0.0015;
+      end if;
+   end Update_Usury_Modifier_Angle;
+
+   procedure Update_Usury_Modifier_Tyre_Type(Tyre_Type  : String_Unb.Unbounded_String;
+                                             Temp_Usury : in out Float) is
+   begin
+      if Tyre_Type = "Soft" then temp_usury := temp_usury + 0.03;
+      else temp_usury := temp_usury + 0.01;
+      end if;
+   end Update_Usury_Modifier_Tyre_Type;
+
+   procedure Update_Usury_Modifier_Speed(Choosen_Path : Integer;
+                                         Speed_Array  : Float_Array;
+                                         Temp_Usury   : in out Float;
+                                         Gas_Modifier : in out Float) is
+   begin
+      if Speed_Array(Choosen_Path) >= 300.0 then
+         Temp_Usury   := Temp_Usury + 0.02;
+         Gas_Modifier := 0.15;
+      elsif Speed_Array(Choosen_Path) >= 200.0 and Speed_Array(Choosen_Path) < 300.0 then
+         Temp_Usury   := Temp_Usury + 0.01;
+         Gas_Modifier := 0.10;
+      elsif Speed_Array(Choosen_Path) >= 100.0 and Speed_Array(Choosen_Path) < 200.0 then
+         Temp_Usury   := Temp_Usury + 0.007;
+         Gas_Modifier := 0.05;
+      else
+         Temp_Usury   := Temp_Usury + 0.005;
+         Gas_Modifier := 0.0;
+      end if;
+   end Update_Usury_Modifier_Speed;
+
    -----------------------------------
    -----------------------------------
    ------------ EVALUATE  ------------
@@ -188,19 +227,17 @@ package body Physic_Engine is
       Min_Delay                : Float := -1.0;
       Path_Time_Min            : Float;
       Speed_Temp               : Float :=0.0;
-      traiettoria_Scelta       : Integer;
+      Choosen_Path       : Integer;
       Speed_Array              : Float_Array(1..Paths_2_Cross.Get_Size);
-      waiting_Time_Min         : Float := 0.0;
-      temp_usury               : Float := 0.0;
-      gas_modifier             : Float := 0.0;
+      Waiting_Time_Min         : Float := 0.0;
+      Temp_Usury               : Float := 0.0;
+      Gas_Modifier             : Float := 0.0;
       Time_Critical_Temp       : Float;
    begin
 
       -- loop on paths
       --Competitor.Get_Status(Driver, Competitor_Status_Tyre, Competitor_Status_Level);-- ?
-
       --loop per valutare le varie traiettorie.
-
       for Index in 1..Paths_2_Cross.Get_Size loop
          Path_Time := Paths_2_Cross.Get_PathTime(Index); -- tempo segnato sul path
          Waiting_Time := Path_Time - Competitor_Arrival_Time; -- tempo di attesa sul path
@@ -209,9 +246,7 @@ package body Physic_Engine is
             Waiting_Time := 0.0;
             Starting_Instant := Competitor_Arrival_Time; -- momento di partenza uguale al momento di arrivo sul path
          end if;
-         -----------------------------------------------
-         --+++++++++++++++++++++++++++++++++++++++++++--
-         --+
+
          Calculate_Crossing_Time (Time_Critical_Temp,
                                   Index,
                                   F_Segment,
@@ -223,97 +258,60 @@ package body Physic_Engine is
                                   Gasoline_Level,
                                   Max_Speed,
                                   Max_Acceleration);
-           --
          --CalculateCrossingTime(CrossingTimeTemp, driver, Index, F_Segment, Driver.Racing_Car.Last_Speed_Reached, Paths2Cross, velTemp);
-
          Speed_Array(Index):= Speed_Temp;
          Crossing_Time_Temp := Time_Critical_Temp + Waiting_Time;--StartingInstant;
 
          if Crossing_Time > Crossing_Time_Temp or else  Crossing_Time <= 0.0 then
             Crossing_Time := Crossing_Time_Temp;
-            traiettoria_Scelta := Index;
+            Choosen_Path := Index;
             Path_Time_Min := Path_Time;
             Waiting_Time_Min := Waiting_Time;
          end if;
 
-         -- NEW : ho sottratto il WaitingTime, altrimenti lo contavo 2 volte
-         --+ ora ho il delay totale da scrivere sul path, se ï¿½ quello minimo calcolato..quel controllo lo faccio nella prossima
-         --+ istruzione. il total delay minimo ï¿½ quello che corrisponde a tempo di attesa + tempo di attraversamento minore
-         --+ qua devo usare CrossingTimeTemp e WaitingTime perchï¿½ altrimenti rischio di usare il CrossingTime che ï¿½ il miglior tempo di attraversament
-         --+ anche nelle iterazioni successive, tanto non puï¿½ succedere che MinDelay venga aggiornato con TotalDelay nel caso non sia stato aggiornato anche CrossingTime
          Total_Delay := Starting_Instant + Crossing_Time_Temp - Waiting_Time;
 
          if Total_Delay < Min_Delay or else Min_Delay < 0.0 then
-            Min_Delay := Total_Delay;-- MinDelay ha cosï¿½ il valore da scrivere sul path
-
+            Min_Delay := Total_Delay;
          end if;
 
       end loop;
 
-
-      Paths_2_Cross.Update_Time(Min_Delay, traiettoria_Scelta);
-
-      --possono essere funzioni a parte
-      -- ritorno questo parametro, da ricordarsi di fare gli aggiornamenti nel competitor.
-      Last_Speed_Reached := Speed_Array(traiettoria_Scelta); --aggiorno la velocitï¿½ di entrata al tratto successivo
-
-
+      Paths_2_Cross.Update_Time(Min_Delay, Choosen_Path);
+      Last_Speed_Reached := Speed_Array(Choosen_Path); --aggiorno la velocità di entrata al tratto successivo
 
       --aggiorno il lengthPath in modo da averlo poi quando aggiorno l'onboardcomputer
-      length_Path := Paths_2_Cross.Get_Length(traiettoria_Scelta);
-
+      Length_Path := Paths_2_Cross.Get_Length(Choosen_Path);
       --aggiorno il modificatore in base all'angolo
-      if Paths_2_Cross.Get_Angle(traiettoria_Scelta) < 45.0 then temp_usury := temp_usury + 0.005;
-      elsif Paths_2_Cross.Get_Angle(traiettoria_Scelta) > 45.0 and Paths_2_Cross.Get_Angle(traiettoria_Scelta) < 90.0 then temp_usury := temp_usury + 0.0035;
-      else temp_usury := temp_usury + 0.0015;
-      end if;
-
+      Update_Usury_Modifier_Angle(Choosen_Path, Paths_2_Cross, Temp_Usury);
       --aggiorno il modificatore in base alla mescola
-      if Tyre_Type = "Soft" then temp_usury := temp_usury + 0.03;
-      else temp_usury := temp_usury + 0.01;
-      end if;
-
+      Update_Usury_Modifier_Tyre_Type(Tyre_Type, Temp_Usury);
       --aggiorno il modificatore in base alla velocitï¿½ massima raggiunta
-      if Speed_Array(traiettoria_Scelta) >= 300.0 then temp_usury := temp_usury + 0.02;
-      elsif Speed_Array(traiettoria_Scelta) >= 200.0 and Speed_Array(traiettoria_Scelta) <300.0 then temp_usury := temp_usury + 0.01;
-      elsif Speed_Array(traiettoria_Scelta) >= 100.0 and Speed_Array(traiettoria_Scelta) <200.0 then temp_usury := temp_usury + 0.007;
-      else temp_usury := temp_usury + 0.005;
-      end if;
-
-      -- adesso in temp_usury ï¿½ presente una percentuale da sommare a quella statica calcolata.
+      Update_Usury_Modifier_Speed(Choosen_Path, Speed_Array, Temp_Usury, Gas_Modifier);
+      -- adesso in Temp_Usury è presente una percentuale da sommare a quella statica calcolata.
       -- al massimo il valore di usura arriva a 0.86, nella peggiore delle ipotesi.
       -- il valore di usura si intende ogni 1000 metri
       -- quindi x = (1000*100)/0.80 = 125 km
       -- x = (1000*100)/0.86 = 116,279 km
       -- in totale quasi due giri (in media 5.5 km al giro) di differenza
-      if(Float(Tyre_Usury) + (Paths_2_Cross.Get_Length(traiettoria_Scelta)*(0.8+temp_usury)/1000.0) > 100.0) then
+      if(Float(Tyre_Usury) + (Paths_2_Cross.Get_Length(Choosen_Path)*(0.8+Temp_Usury)/1000.0) > 100.0) then
          Tyre_Usury := 100.0;
       else
-         Tyre_Usury := Tyre_Usury + (Paths_2_Cross.Get_Length(traiettoria_Scelta)*(0.8+temp_usury)/1000.0);
+         Tyre_Usury := Tyre_Usury + (Paths_2_Cross.Get_Length(Choosen_Path)*(0.8+Temp_Usury)/1000.0);
       end if;
-
-      --il valore di 0.8 ï¿½ stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
-      -- calcolo gas_modifier
-      if Speed_Array(traiettoria_Scelta) >= 300.0 then gas_modifier := 0.15;
-      elsif Speed_Array(traiettoria_Scelta) >= 200.0 and Speed_Array(traiettoria_Scelta) <300.0 then gas_modifier := 0.10;
-      elsif Speed_Array(traiettoria_Scelta) >= 100.0 and Speed_Array(traiettoria_Scelta) <200.0 then gas_modifier := 0.05;
-      else gas_modifier := 0.0;
-      end if;
-
-      Gasoline_Level := Gasoline_Level - ((0.6 + gas_modifier) * Paths_2_Cross.Get_Length(traiettoria_Scelta)/1000.0);
-      -- 0.6 ï¿½ il valore di  litri al km consumati
-      -- questo valore puï¿½ arrivare (in base alla velocitï¿½ ) fino a 0.75 litri al km
-      -- il calcolo ï¿½ quindi (0.6 + modificatore) * lunghezzaTratto /1000
+      --il valore di 0.8 è stato scelto facendo il calcolo che con le gomme si percorrono circa 115 km
+      -- calcolo Gas_Modifier
+      Gasoline_Level := Gasoline_Level - ((0.6 + Gas_Modifier) * Paths_2_Cross.Get_Length(Choosen_Path)/1000.0);
+      -- 0.6 è il valore di  litri al km consumati
+      -- questo valore può arrivare (in base alla velocità) fino a 0.75 litri al km
+      -- il calcolo è quindi (0.6 + modificatore) * lunghezzaTratto /1000
       -- derivante da (0.6+modificatore): 1000 = x : lunghezzaTratto
-      --aggiorno velocitÃ  raggiunta
-      Speed_Out := Speed_Array(traiettoria_Scelta);
+      --aggiorno velocità  raggiunta
+      Speed_Out := Speed_Array(Choosen_Path);
       --if(driver.Racing_Car.Gasoline_Level > 0.0 and driver.Racing_Car.Tyre_Usury < 100.0)  then
       --end if;
       Crossing_Time_Out := Crossing_Time;
-
-
       --ricordarsi di ritornare usura delle gomme, livello della benzina, velocità in uscita e tempo di attraversamento.
-
    end Evaluate;
 
 end Physic_Engine;

@@ -3,8 +3,8 @@
 <driver>
 <team>Ferrari</team>
 <firstname>Pippo</firstname>
-<lastname>2334</lastname></driver>
-<car><maxspeed>398.0</maxspeed>
+<lastname>Alonso</lastname></driver>
+<car><maxspeed>311.0</maxspeed>
 <maxacceleration>12.0</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>NORMAL</engine>
