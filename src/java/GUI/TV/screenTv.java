@@ -162,7 +162,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	readConfiguration();
 	String circuit = new String("Circuit "+circuitName+" - Length = "+lenghtCircuit+" metres");
 	classTable.addTables(model_1, model_2, numComp);
-	best.addBest(circuit);
+	best.addBest(circuit, monitor);
 	addLogInfo();
 	parent.add(classTable.panel1, BorderLayout.CENTER);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
@@ -264,7 +264,14 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 						if(indTable == posiz -1){//sono alla fine della classifica, devo inserire la riga e poi aumentare di uno posiz ovviamente
 						    System.out.println("LORY DEBUG : INSERIMENTO NUOVA RIGA");
 						    System.out.println("posiz = "+posiz+" "+ datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]+" time = "+convert(datiArray[index].getTime()));
+						    if(index==0){
 						    modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+}
+else{
+					    modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
+System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+
+}
 						    posiz = posiz+1;
 						    indTable = posiz+1;
 						}
@@ -313,6 +320,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 				else{
 				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime()))});
+				System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
 				index=index+1;
 				}
 			    }
@@ -336,11 +344,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
 					if(varCiclo==0){
 					  modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
-					  index=index+1;
+					  
 					}
 					else{
 					  modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
-					  index=index+1;
+System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
+					  
 					}
 // 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 // 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
@@ -363,7 +372,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 		    }
 		    updTime = updTime + interval;
- 		    sleep((long)((interval-0.001)*1000));
+ 		    //sleep((long)((interval-0.001)*1000));
 		    //sleep(100);
 		    for(int boolArray=0; boolArray<Array.getLength(endRace); boolArray++){
 			if(endRace[boolArray]==false){//controllo se tutti hanno finito la gara
@@ -870,8 +879,15 @@ class classificationTable{
 class bestPerformance{
     private JPanel bestPanel;
     private JPanel infoUp;
+    private JPanel speedPanel;
+    private SpinnerNumberModel modelSpeed;
+
+    private Competition_Monitor_Radio monitor;
+    private org.omg.CORBA.Object obj;
 
     private GridBagConstraints bestGrid = new GridBagConstraints();
+    private GridBagConstraints speedGrid = new GridBagConstraints();
+
     private JTextField textBoxLap = new JTextField("-",3);
     private JTextField textBoxLapId = new JTextField("-",2);
     private JTextField textBoxLapTime = new JTextField("-",10);
@@ -901,10 +917,11 @@ class bestPerformance{
     private JLabel labelSector3 = new JLabel("Best Sector 3 at lap n° : ");
     private JLabel labelSector3Id = new JLabel(" by competitor : ");
     private JLabel labelSector3Time = new JLabel(" , time : ");
-
+  
     private JLabel labelClock = new JLabel("Time 00:00:00");
     private JLabel labelCircuit;
-
+    private JLabel labelSpeed = new JLabel("Simulation time : ");
+    private JSpinner jsSpeed;
     public JPanel getInfoUp(){
 	return infoUp;
     }
@@ -917,12 +934,38 @@ class bestPerformance{
     public void setClock(String timeIn){
 	labelClock.setText(timeIn);
     }
-    public void addBest(String stringForLabel){
+    public void addBest(String stringForLabel, Competition_Monitor_Radio monitor_In){
+	monitor= monitor_In;
 	bestPanel = new JPanel(new BorderLayout());
-	infoUp = new JPanel(new BorderLayout());
+	speedPanel = new JPanel(new BorderLayout());
+	infoUp = new JPanel(new BorderLayout());	
+	modelSpeed = new SpinnerNumberModel(0.5, 0.1, 2, 0.1);
+	jsSpeed = new JSpinner(modelSpeed);
+	jsSpeed.addChangeListener(new ChangeListener() {
+					  public void stateChanged(ChangeEvent e) {
+					      Double valuejs = (Double) jsSpeed.getValue();
+					      Float value = new Float(valuejs.doubleValue());
+					      System.out.println("velocità di simulazione cambiata -> "+value.toString());
+					      monitor.Set_Simulation_Speed(value.floatValue());
+					      System.out.println("after set_simulation_Speed");
+					      }
+});
+
+// resetButton.addActionListener(new ActionListener() {
+// 			public void actionPerformed(ActionEvent e) {
+// 			    fileRacetrack.setText("../../race_tracks/indianapolis.xml");
+// 			    jsLap.setValue(10);
+// 			    jsConc.setValue(3);
+// 			    textName.setText("Indianapolis");
+// // 			    jsRefresh.setValue(43);
+// 			    
+// 		}
+// 		});
 
 	bestPanel.setLayout(new GridBagLayout());
 	bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+	speedPanel.setLayout(new GridBagLayout());
 
 	labelClock.setFont(new Font("Serif", Font.BOLD, 25));
 	labelCircuit= new JLabel(stringForLabel);
@@ -1053,8 +1096,21 @@ class bestPerformance{
 	bestGrid.gridy = 3;
 	bestGrid.ipady = 5;
 	bestPanel.add(textBoxSector3Time,bestGrid);
+
+	speedGrid.fill = GridBagConstraints.HORIZONTAL;
+	speedGrid.gridx = 0;
+	speedGrid.gridy = 0;
+	speedGrid.ipady = 5;
+	speedPanel.add(labelSpeed,speedGrid);
+	speedGrid.fill = GridBagConstraints.HORIZONTAL;
+	speedGrid.gridx = 1;
+	speedGrid.gridy = 0;
+	speedGrid.ipady = 5;
+	speedPanel.add(jsSpeed,speedGrid);
+
 	infoUp.add(labelClock, BorderLayout.NORTH);
-	infoUp.add(labelCircuit, BorderLayout.CENTER);
+	infoUp.add(labelCircuit, BorderLayout.WEST);
+	infoUp.add(speedPanel, BorderLayout.CENTER);
 	infoUp.add(bestPanel, BorderLayout.SOUTH);
     }
 

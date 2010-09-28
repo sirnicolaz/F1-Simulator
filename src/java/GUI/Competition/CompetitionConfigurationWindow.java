@@ -29,6 +29,7 @@ private JLabel labelFile = new JLabel("1: Racetrack file : ");
 private JLabel labelCompetitor = new JLabel("2: Competitors : ");
 private JLabel labelLap = new JLabel("3: Laps  : ");
 private JLabel labelName = new JLabel("4: Circuit name : ");
+/*private JLabel labelSimulationTime = new JLabel("5 : Simulation Speed : ");*/
 private JTextField fileRacetrack = new JTextField("../../race_tracks/indianapolis.xml", 20);
 private JFrame parent;
 private JTextField textName = new JTextField("Indianapolis", 10);
@@ -39,6 +40,7 @@ private JButton resetButton;
 private int intName=0;
 SpinnerNumberModel modelConc = new SpinnerNumberModel(3, 1, 20, 1); 
 SpinnerNumberModel modelLap = new SpinnerNumberModel(10, 1, 100, 1);
+/*SpinnerNumberModel modelSpeed = new SpinnerNumberModel(0.5, 0.5, 2, 0.5);*/
 private JSpinner jsConc = new JSpinner(modelConc);
 private JSpinner jsLap = new JSpinner(modelLap);
 private void init(JFrame p){
@@ -139,7 +141,18 @@ screen.start();
 		c.gridx = 1;
 		c.gridy = 3;
 		c.ipady = 5;
-		contentPane.add(textName, c);
+//		contentPane.add(labelSimulationTime, c);
+// 		c.fill = GridBagConstraints.HORIZONTAL;
+// 		c.gridx = 0;
+// 		c.gridy = 4;
+// 		c.ipady = 5;
+ 		contentPane.add(textName, c);
+// 		c.fill = GridBagConstraints.HORIZONTAL;
+// 		c.gridx = 1;
+// 		c.gridy = 4;
+// 		c.ipady = 5;
+// 		contentPane.add(modelSpeed, c);
+// 		
 //BUTTON PANEL
 		buttonPane.setLayout(new FlowLayout());
 		buttonPane.add(resetButton);
