@@ -307,8 +307,14 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			    index=0;
 			    while(index < datiArray.length){//posso scrivere la classifica
 				System.out.println("LORY DEBUG : INDEX = "+index );
+				if(index==0){
 				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
 				index=index+1;
+				}
+				else{
+				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime()))});
+				index=index+1;
+				}
 			    }
 			}
 			else{//non sono in presenza di un nuovo giro
@@ -328,8 +334,16 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println(" dopo cancellazione --- modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
 					System.out.println("DEBUG 3 : SCRIVO NUOVA CLASSIFICA "+varCiclo);
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
-					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
-					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
+					if(varCiclo==0){
+					  modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+					  index=index+1;
+					}
+					else{
+					  modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
+					  index=index+1;
+					}
+// 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+// 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 				    }
 				    catch(Exception ecd ){//ecd.printStackTrace();
 					varCiclo = datiArray.length +1;
@@ -700,6 +714,60 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 
 	return time;
     }
+
+
+    public String convert_diff(float timeIn){
+
+	int ore = (int)(timeIn/3600);
+	int minuti = (int)(timeIn/60)-(60*ore);
+	int secondi = (int)(timeIn-(minuti*60+ore*3600));
+	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
+	String time;
+	if(minuti<10){
+	    if(secondi <10){
+		if(millesimi<10){
+		  if(minuti==0){time = new String( "+ "+secondi+":00"+millesimi);}
+		  else{time = new String( "+ "+minuti+":0"+secondi+":00"+millesimi);}}
+		else if(millesimi<100){
+		  if(minuti==0){time = new String( "+ "+secondi+":0"+millesimi);}
+		  else{time = new String( "+ "+minuti+":0"+secondi+":0"+millesimi);}}
+		else{
+		  if(minuti==0){time = new String( "+ "+secondi+":"+millesimi);}
+		  else{time = new String( "+ "+minuti+":0"+secondi+":"+millesimi);}
+		   }
+		  }
+	    else{
+		if(millesimi<10){
+		   time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("+ "+minuti+":"+secondi+":"+millesimi);}
+	    }
+	}
+	else{
+	    if(secondi <10){
+		if(millesimi<10){
+		   time = new String("+ "+minuti+":0"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("+ "+minuti+":0"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("+ "+minuti+":0"+secondi+":"+millesimi);}
+	    }
+	    else{
+		if(millesimi<10){
+		   time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
+		else if(millesimi<100){
+		   time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
+		else{
+		    time = new String("+ "+minuti+":"+secondi+":"+millesimi);}
+	    }
+	  }
+
+	return time;
+    }
+
 
 
 }

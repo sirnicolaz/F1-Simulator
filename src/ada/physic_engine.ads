@@ -15,18 +15,6 @@ package Physic_Engine is
    package String_Unb renames Ada.Strings.Unbounded;
    use type String_Unb.Unbounded_String;
 
-   procedure Calculate_Crossing_Time (Time_Critical          : out Float;
-                                      Paths_Collection_Index : Integer;
-                                      F_Segment              : Checkpoint_Synch_Point;
-                                      Last_Speed_Reached     : Float;
-                                      Paths_2_Cross          : Crossing_Point;
-                                      Speed_Out              : out Float;
-                                      Strategy_Style         : Common.Driving_Style;
-                                      Tyre_Usury             : Common.Percentage;
-                                      Gasoline_Level         : Float;
-                                      Max_Speed              : Float;
-                                      Max_Acceleration       : Float);
-
    procedure Evaluate(F_Segment          : Checkpoint_Synch_Point;
                       Paths_2_Cross      : Crossing_Point;
                       Competitor_Id      : Integer;
