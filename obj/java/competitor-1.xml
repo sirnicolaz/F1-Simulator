@@ -3,10 +3,10 @@
 <driver>
 <team>Ferrari</team>
 <firstname>Pippo</firstname>
-<lastname>Pluto</lastname>
+<lastname>Massa</lastname>
 </driver>
 <car>
-<maxspeed>300.0</maxspeed>
+<maxspeed>388.0</maxspeed>
 <maxacceleration>12.0</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>NORMAL</engine>
