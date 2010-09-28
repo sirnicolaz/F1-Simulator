@@ -71,6 +71,10 @@ package body broker.radio.Competition_Monitor_Radio.Skel is
      CORBA.To_CORBA_String
         ("id");
 
+   Set_Simulation_Speed_Arg_Name_simulationSpeed_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("simulationSpeed");
+
    procedure Invoke
      (Self : PortableServer.Servant;
       Request : CORBA.ServerRequest.Object_Ptr);
@@ -424,6 +428,37 @@ package body broker.radio.Competition_Monitor_Radio.Skel is
                CORBA.ServerRequest.Set_Result
                  (Request,
                   Arg_Any_Result_Ü_Ü);
+               CORBA.NVList.Internals.Clone_Out_Args
+                 (Argument_List_Ü);
+            end;
+         elsif (Operation_Ü
+            = "Set_Simulation_Speed")
+         then
+            declare
+               Argument_simulationSpeed_Ü : CORBA.Float;
+               pragma Warnings (Off, Argument_simulationSpeed_Ü);
+               Arg_CC_simulationSpeed_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_simulationSpeed_Ü'Unrestricted_Access);
+               Arg_Any_simulationSpeed_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Float,
+                     Arg_CC_simulationSpeed_Ü'Unchecked_Access);
+            begin
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  Set_Simulation_Speed_Arg_Name_simulationSpeed_Ü,
+                  Arg_Any_simulationSpeed_Ü,
+                  CORBA.ARG_IN);
+               --  Processing request
+               CORBA.ServerRequest.Arguments
+                 (Request,
+                  Argument_List_Ü);
+               --  Call Implementation
+               broker.radio.Competition_Monitor_Radio.Impl.Set_Simulation_Speed
+                 (broker.radio.Competition_Monitor_Radio.Impl.Object'Class
+                    (Self.all)'Access,
+                  Argument_simulationSpeed_Ü);
                CORBA.NVList.Internals.Clone_Out_Args
                  (Argument_List_Ü);
             end;

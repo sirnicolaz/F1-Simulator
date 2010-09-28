@@ -56,6 +56,11 @@ package body Competition_Monitor is
       return false;
    end Ready;
 
+   procedure Set_Simulation_Speed( Simulation_Speed_In : Float ) is
+   begin
+      Common.Simulation_Speed := Simulation_Speed_In;
+   end Set_Simulation_Speed;
+
    function Init( CompetitorQty_In : Integer;
                  Laps_In : Integer) return STARTSTOPHANDLER_Point is
 

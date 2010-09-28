@@ -834,7 +834,7 @@ Evaluate(C_Checkpoint,Paths2Cross,carDriver.Id,carDriver.Current_Strategy.Style,
          end if;
 
          -- Just for simulation purpose
-         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime));
+         delay until(Ada.Calendar.Clock + Standard.Duration(CrossingTime*Common.Simulation_Speed));
          --Delay(1.0);
          --If the checkpoint is the goal, get the race over
          if C_CheckPoint.Is_Goal and CurrentLap = LastLap then

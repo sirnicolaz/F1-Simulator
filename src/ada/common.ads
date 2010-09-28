@@ -30,6 +30,8 @@ package Common is
    type Integer_Array_Point is access Integer_Array;
    type UNBOUNDED_String_Point is access Unbounded_String.Unbounded_String;
 
+   -- 1 = real time, 0.5 = double
+   Simulation_Speed : Float := 1.0;
 
    FilePath : constant String(1..8) := "../temp/";
 

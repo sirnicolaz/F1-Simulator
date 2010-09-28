@@ -77,6 +77,13 @@ package broker.radio.Competition_Monitor_Radio is
    Get_CompetitorConfiguration_Repository_Id : constant PolyORB.Std.String :=
      "IDL:broker/radio/Competition_Monitor_Radio/Get_CompetitorConfiguration:1.0";
 
+   procedure Set_Simulation_Speed
+     (Self : Ref;
+      simulationSpeed : CORBA.Float);
+
+   Set_Simulation_Speed_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:broker/radio/Competition_Monitor_Radio/Set_Simulation_Speed:1.0";
+
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)

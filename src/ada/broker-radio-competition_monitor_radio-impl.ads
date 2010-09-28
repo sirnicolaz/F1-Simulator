@@ -36,5 +36,8 @@ package Broker.Radio.Competition_Monitor_Radio.impl is
    function Get_CompetitorConfiguration(Self : access Object;
                                         Id : CORBA.Short) return CORBA.STRING;
 
+   procedure Set_Simulation_Speed(Self : access Object;
+                                  Simulation_Speed_In : Corba.Float);
+
 
 end Broker.Radio.Competition_Monitor_Radio.impl;

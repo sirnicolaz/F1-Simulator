@@ -27,6 +27,8 @@ package Competition_Monitor is
 
    function Ready(CompetitorID : INTEGER) return BOOLEAN;
 
+   procedure Set_Simulation_Speed( Simulation_Speed_In : Float );
+
    function Init( CompetitorQty_In : INTEGER;
                  Laps_In : INTEGER ) return STARTSTOPHANDLER_POINT;
 

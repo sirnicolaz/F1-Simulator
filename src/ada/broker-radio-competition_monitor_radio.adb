@@ -569,6 +569,85 @@ package body broker.radio.Competition_Monitor_Radio is
       return Result_Ü;
    end Get_CompetitorConfiguration;
 
+   Set_Simulation_Speed_Arg_Name_simulationSpeed_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("simulationSpeed");
+
+   Set_Simulation_Speed_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   -----------------------------------
+   -- Set_Simulation_Speed_Result_Ü --
+   -----------------------------------
+
+   function Set_Simulation_Speed_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Set_Simulation_Speed_Result_Ü);
+   begin
+      return (Name => Set_Simulation_Speed_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_Void),
+      Arg_Modes => 0);
+   end Set_Simulation_Speed_Result_Ü;
+
+   --------------------------
+   -- Set_Simulation_Speed --
+   --------------------------
+
+   procedure Set_Simulation_Speed
+     (Self : Ref;
+      simulationSpeed : CORBA.Float)
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Arg_CC_simulationSpeed_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (simulationSpeed'Unrestricted_Access);
+      Arg_Any_simulationSpeed_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Float,
+            Arg_CC_simulationSpeed_Ü'Unchecked_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Set_Simulation_Speed_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Set_Simulation_Speed_Arg_Name_simulationSpeed_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_simulationSpeed_Ü),
+         PolyORB.Any.ARG_IN);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Set_Simulation_Speed",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+   end Set_Simulation_Speed;
+
    ----------
    -- Is_A --
    ----------

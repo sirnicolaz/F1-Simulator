@@ -94,4 +94,10 @@ Ada.text_io.put_line("LORY : 3");
       return CORBA.To_CORBA_String(Unbounded_String.To_String(XmlInfo_Out));
    end Get_CompetitorConfiguration;
 
+   procedure Set_Simulation_Speed(Self : access Object;
+                                  Simulation_Speed_In : Corba.Float) is
+   begin
+      Competition_Monitor.Set_Simulation_Speed(Float(Simulation_Speed_In));
+   end Set_Simulation_Speed;
+
 end Broker.Radio.Competition_Monitor_Radio.impl;
