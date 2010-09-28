@@ -269,9 +269,9 @@ package body Classification_Handler is
    end Update_Classific;
 
 
-   procedure Find_Previous_Lap_Competitors(Previous_Lap_Competitors : out Integer;
-                                           Processed_Competitor_IDs : out Integer_Array;
-                                           Not_Lapped_Count : out Integer;
+   procedure Find_Previous_Lap_Competitors(Previous_Lap_Competitors : out Integer_Point;
+                                           Processed_Competitor_IDs : out Integer_Array_Point;
+                                           Not_Lapped_Count : out Integer_Point;
                                            Previous_Lap_Competitor_IDs : out Integer_Array_Point;
                                            Previous_Lap_Times : out Float_Array_Point;
                                            Pole_Position_Time : Float;
@@ -292,13 +292,13 @@ package body Classification_Handler is
              and then Processed_Competitor_IDs(Get_Competitor_Id(Temp_Row)) /= 1) then
 
             Processed_Competitor_IDs(Get_Competitor_Id(Temp_Row)) := 1;
-            Not_Lapped_Count := Not_Lapped_Count + 1;
-            Previous_Lap_Competitors := Previous_Lap_Competitors + 1;
+            Not_Lapped_Count.all := Not_Lapped_Count.all + 1;
+            Previous_Lap_Competitors.all := Previous_Lap_Competitors.all + 1;
             --It means that it was considered as out of competition in the previous check and so not counted as being in the previous lap.
             --+ so now we find out that before being squalified he completed the previous lap and so he's to be added to the previousClassific count
          elsif(Get_Competitor_Id(Temp_Row) /= -1 and then Get_Time(Temp_Row) <= Pole_Position_Time
                and then Processed_Competitor_IDs(Get_Competitor_Id(Temp_Row)) = 1 and then Competition_Computer.Is_CompetitorOut(Get_Competitor_Id(Temp_Row),Current_Time) = TRUE) then
-            Previous_Lap_Competitors := Previous_Lap_Competitors + 1;
+            Previous_Lap_Competitors.all := Previous_Lap_Competitors.all + 1;
          else
             Exit_Loop := true;
          end if;
@@ -309,10 +309,10 @@ package body Classification_Handler is
       --Filling up the array with competitors that have not started the new lap yet but that have already
       --+ finished the previous one (so, they have a classification time for that lap). This is done to
       --+ avoid the problem o "skipped competitor in classification"
-      if(Previous_Lap_Competitors /= 0) then
+      if(Previous_Lap_Competitors.all /= 0) then
 
-         Previous_Lap_Competitor_IDs := new INTEGER_ARRAY(1..Previous_Lap_Competitors);
-         Previous_Lap_Times := new FLOAT_ARRAY(1..Previous_Lap_Competitors);
+         Previous_Lap_Competitor_IDs := new INTEGER_ARRAY(1..Previous_Lap_Competitors.all);
+         Previous_Lap_Times := new FLOAT_ARRAY(1..Previous_Lap_Competitors.all);
          for Index in 1..Classification_Tables.all(Current_Lap).Get_Size loop
             Temp_Row := Classification_Tables.all(Current_Lap).Get_Row(Index);
             if (Get_Competitor_Id(Temp_Row) /= -1 and Get_Time(Temp_Row) <= Pole_Position_Time) then
@@ -334,8 +334,8 @@ package body Classification_Handler is
 
    procedure Find_Lapped_Competitors(Current_Lap : Integer;
                                      Pole_Position_Time : Float;
-                                     Processed_Competitor_Ids : out Integer_Array;
-                                     Lapped_Count : out Integer;
+                                     Processed_Competitor_Ids : out Integer_Array_Point;
+                                     Lapped_Count : out Integer_Point;
                                      Competitor_IDs : out Integer_Array_Point;
                                      Competitor_Lap : out Integer_Array_Point) is
 
@@ -353,10 +353,10 @@ package body Classification_Handler is
                   Get_Time(Temp_Row) <= Pole_Position_Time and then
                   Processed_Competitor_Ids(Get_Competitor_Id(Temp_Row)) = 0 ) then
 
-               Lapped_Count := Lapped_Count + 1;
+               Lapped_Count.all := Lapped_Count.all + 1;
                Processed_Competitor_Ids(Get_Competitor_Id(Temp_Row)) := 1;
-               Competitor_IDs.all(Lapped_Count) := Get_Competitor_Id(Temp_Row);
-               Competitor_Lap.all(Lapped_Count) := Index;--In the interface laps are counted starting by 0
+               Competitor_IDs.all(Lapped_Count.all) := Get_Competitor_Id(Temp_Row);
+               Competitor_Lap.all(Lapped_Count.all) := Index;--In the interface laps are counted starting by 0
 
             end if;
          end loop;
@@ -364,18 +364,18 @@ package body Classification_Handler is
       pragma Warnings(On);
    end Find_Lapped_Competitors;
 
-   procedure Find_Competitor_At_First_Lap(Processed_Competitor_Ids : out Integer_Array;
-                                          Lapped_Count : out Integer;
+   procedure Find_Competitor_At_First_Lap(Processed_Competitor_Ids : out Integer_Array_Point;
+                                          Lapped_Count : out Integer_Point;
                                           Competitor_IDs : out Integer_Array_Point;
                                           Competitor_Lap : out Integer_Array_Point) is
    begin
       pragma Warnings(Off);
       for Index in 1..Processed_Competitor_Ids'LENGTH loop
          if(Processed_Competitor_Ids(Index) = 0) then
-            Lapped_Count := Lapped_Count + 1;
+            Lapped_Count.all := Lapped_Count.all + 1;
             Processed_Competitor_Ids(Index) := 1;
-            Competitor_IDs.all(Lapped_Count) := Index;
-            Competitor_Lap.all(Lapped_Count) := 0;
+            Competitor_IDs.all(Lapped_Count.all) := Index;
+            Competitor_Lap.all(Lapped_Count.all) := 0;
          end if;
       end loop;
       pragma Warnings(On);
@@ -392,12 +392,16 @@ package body Classification_Handler is
                                    Competitor_IDs : out INTEGER_ARRAY_POINT;
                                    Competitor_Lap : out INTEGER_ARRAY_POINT) is
       PolePosition_Time : FLOAT;
-      ProcessedCompetitors_IdList : INTEGER_ARRAY(1..Competitors);
-      NotLapped_Count : INTEGER := 0;
-      PreviousClassific_Count : INTEGER := 0;
+      ProcessedCompetitors_IdList : Integer_Array_Point := new INTEGER_ARRAY(1..Competitors);
+      NotLapped_Count : INTEGER_Point := new Integer;
+      PreviousClassific_Count : INTEGER_Point := new Integer;
       Lapped_Competitors : INTEGER := 0;
-      Lapped_Count : INTEGER := 0;
+      Lapped_Count : INTEGER_Point := new Integer;
    begin
+
+      NotLapped_Count.all := 0;
+      PreviousClassific_Count.all := 0;
+      Lapped_Count.all := 0;
       --Init the processed competitors id list array: when the array position is filled with 1 it means that the
       --+ competitor with id corresponding to that index has not been processed yet (we don't know whether he
       --+ has been lapped or not)
@@ -405,7 +409,7 @@ package body Classification_Handler is
          if(Competition_Computer.Is_CompetitorOut(id,TimeInstant) = TRUE) then
             --The competitor is no longer in the classific
             ProcessedCompetitors_IdList(id) := 1;
-            NotLapped_Count := NotLapped_Count + 1;
+            NotLapped_Count.all := NotLapped_Count.all + 1;
          else
             ProcessedCompetitors_IdList(id) := 0;
          end if;
@@ -423,13 +427,13 @@ package body Classification_Handler is
                                        CompetitorIDs_PreviousClassific, Times_PreviousClassific,
                                        PolePosition_Time, CurrentLap, TimeInstant);
 
-         if(Competitors-NotLapped_Count = 0) then
+         if(Competitors-NotLapped_Count.all = 0) then
             Competitor_IDs := null;
             Competitor_Lap := null;
          else
 
-            Competitor_IDs := new INTEGER_ARRAY(1..Competitors-NotLapped_Count);
-            Competitor_Lap := new INTEGER_ARRAY(1..Competitors-NotLapped_Count);
+            Competitor_IDs := new INTEGER_ARRAY(1..Competitors-NotLapped_Count.all);
+            Competitor_Lap := new INTEGER_ARRAY(1..Competitors-NotLapped_Count.all);
             --Initialise these 2 arrays
             for i in Competitor_Lap'RANGE loop
                Competitor_IDs.all(i) := -1;
