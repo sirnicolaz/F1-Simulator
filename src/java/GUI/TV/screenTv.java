@@ -70,6 +70,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private float lenghtCircuit;
     private float[] arrayInfo;
     private float[] arrayOldInfo;
+    private float[] timeArray;
 
     //parsing xml
     private Integer idCompetitor;
@@ -224,6 +225,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    current_lap=0;
 	    while(inWhile){
 		try{
+
 		    boolean exit=true;
 		    org.omg.CORBA.StringHolder updateString = new org.omg.CORBA.StringHolder();
 		    arrayInfo = monitor.Get_CompetitionInfo(updTime, updateString);
@@ -231,9 +233,17 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    best.setClock("Time "+convertNoMill(updTime));
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
+
 		    try{
+			if(current_lap == 0 && datiArray[0].getLap()<=current_lap ){// fix per differenza tempi durante il cambio classifica
+			    timeArray = new float[datiArray.length];
+			    for(int indez= 0; indez <timeArray.length; indez++){
+				timeArray[indez] = datiArray[indez].getTime();
+			    }
+			}
 			System.out.println("DATIARRAY[0].GETLAP() =" +datiArray[0].getLap());
 			if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
+			        
 			    System.out.println("LORY DEBUG : NUOVA CLASSIFICA 1");
 			    int diff; 
 			    int posiz = modelClassific[current_index].getRowCount();
@@ -269,7 +279,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 }
 else{
 					    modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
-System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
 
 }
 						    posiz = posiz+1;
@@ -281,6 +291,7 @@ System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime
 				    }
 				    index=index+1;
 				}
+			    
 			    }catch (NullPointerException npEcc){
 
 // 				npEcc.printStackTrace();
@@ -319,8 +330,9 @@ System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime
 				index=index+1;
 				}
 				else{
-				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime()))});
-				System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
+				System.out.println("2 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+				System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
 				index=index+1;
 				}
 			    }
@@ -348,7 +360,7 @@ System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime
 					}
 					else{
 					  modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
-System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
+System.out.println("3 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
 					  
 					}
 // 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
@@ -396,6 +408,10 @@ System.out.println("SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getT
 		    this.sleep(3000);
 		}
 	    }
+timeArray = new float[datiArray.length];
+			    for(int indez= 0; indez <timeArray.length; indez++){
+				timeArray[indez] = datiArray[indez].getTime();
+			    }
 	}
 	catch(Exception e){//e.printStackTrace();
 }
