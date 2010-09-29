@@ -82,7 +82,7 @@ public class TvConfigurationWindow{
 		    try{
 			floatRefresh = new Float(textRefresh.getText()).floatValue();
 			if(connect()==true){
-			    screen = new ScreenTv(corbaloc, monitor, "Tv Screen", floatRefresh);
+			    screen = new ScreenTv(corbaloc, monitor, "Tv Screen", floatRefresh, false);
 			    screen.start();
 			    parent.dispose();
 			}

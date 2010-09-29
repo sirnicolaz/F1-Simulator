@@ -71,6 +71,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private float[] arrayInfo;
     private float[] arrayOldInfo;
     private float[] timeArray;
+    private boolean competitionBoolean;
 
     //parsing xml
     private Integer idCompetitor;
@@ -81,13 +82,14 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private int current_lap =0;
     private boolean new_table = false;
 
-    public ScreenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn){
+    public ScreenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn, boolean competition_In){
 	System.out.println("ScreenTv : 0");
 	parent = new JFrame(nameType);
 
 	corbaloc = corbalocIn;
 	monitor = monitorIn;
 	updTime = updTimeIn;
+	competitionBoolean = competition_In;
 	//effettua la connessione
     }
 
@@ -163,7 +165,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	readConfiguration();
 	String circuit = new String("Circuit "+circuitName+" - Length = "+lenghtCircuit+" metres");
 	classTable.addTables(model_1, model_2, numComp);
-	best.addBest(circuit, monitor);
+	best.addBest(circuit, monitor, competitionBoolean);
 	addLogInfo();
 	parent.add(classTable.panel1, BorderLayout.CENTER);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
@@ -950,7 +952,7 @@ class bestPerformance{
     public void setClock(String timeIn){
 	labelClock.setText(timeIn);
     }
-    public void addBest(String stringForLabel, Competition_Monitor_Radio monitor_In){
+    public void addBest(String stringForLabel, Competition_Monitor_Radio monitor_In, boolean competition){
 	monitor= monitor_In;
 	bestPanel = new JPanel(new BorderLayout());
 	speedPanel = new JPanel(new BorderLayout());
@@ -981,7 +983,6 @@ class bestPerformance{
 	bestPanel.setLayout(new GridBagLayout());
 	bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
-	speedPanel.setLayout(new GridBagLayout());
 
 	labelClock.setFont(new Font("Serif", Font.BOLD, 25));
 	labelCircuit= new JLabel(stringForLabel);
@@ -1113,6 +1114,9 @@ class bestPerformance{
 	bestGrid.ipady = 5;
 	bestPanel.add(textBoxSector3Time,bestGrid);
 
+if (competition == true){
+	
+	speedPanel.setLayout(new GridBagLayout());
 	speedGrid.fill = GridBagConstraints.HORIZONTAL;
 	speedGrid.gridx = 0;
 	speedGrid.gridy = 0;
@@ -1123,10 +1127,10 @@ class bestPerformance{
 	speedGrid.gridy = 0;
 	speedGrid.ipady = 5;
 	speedPanel.add(jsSpeed,speedGrid);
-
+	infoUp.add(speedPanel, BorderLayout.CENTER);
+}
 	infoUp.add(labelClock, BorderLayout.NORTH);
 	infoUp.add(labelCircuit, BorderLayout.WEST);
-	infoUp.add(speedPanel, BorderLayout.CENTER);
 	infoUp.add(bestPanel, BorderLayout.SOUTH);
     }
 
