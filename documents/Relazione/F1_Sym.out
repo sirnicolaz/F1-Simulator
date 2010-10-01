@@ -1,9 +1,20 @@
 \BOOKMARK [1][-]{section.1}{Progetto}{}
 \BOOKMARK [1][-]{section.2}{Problematiche}{}
 \BOOKMARK [2][-]{subsection.2.1}{Introduzione}{section.2}
-\BOOKMARK [2][-]{subsection.2.2}{Problematiche di concorrenza}{section.2}
-\BOOKMARK [3][-]{subsubsection.2.2.1}{Percorrenza concorrente della pista}{subsection.2.2}
-\BOOKMARK [2][-]{subsection.2.3}{Problematiche di distribuzione}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Enuncazione problematiche}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Gestione del tempo}{section.2}
+\BOOKMARK [2][-]{subsection.2.4}{Sorpassi impossibili}{section.2}
+\BOOKMARK [2][-]{subsection.2.5}{Determinismo}{section.2}
+\BOOKMARK [2][-]{subsection.2.6}{Componenti di non determinismo \(Lorenzo\)}{section.2}
+\BOOKMARK [2][-]{subsection.2.7}{Stalli \(Lorenzo\)}{section.2}
+\BOOKMARK [2][-]{subsection.2.8}{Realismo fisico}{section.2}
+\BOOKMARK [2][-]{subsection.2.9}{Starvation}{section.2}
+\BOOKMARK [2][-]{subsection.2.10}{Gestione delle istantanee di gara}{section.2}
+\BOOKMARK [2][-]{subsection.2.11}{Robustezza del sistema distribuito \(Lorenzo\)}{section.2}
+\BOOKMARK [2][-]{subsection.2.12}{Intelligenza artificiale}{section.2}
+\BOOKMARK [2][-]{subsection.2.13}{Start del sistema}{section.2}
+\BOOKMARK [2][-]{subsection.2.14}{Stop del sistema}{section.2}
+\BOOKMARK [2][-]{subsection.2.15}{Problematiche di distribuzione}{section.2}
 \BOOKMARK [1][-]{section.3}{Architettura ad alto livello}{}
 \BOOKMARK [2][-]{subsection.3.1}{Componenti di sistema}{section.3}
 \BOOKMARK [3][-]{subsubsection.3.1.1}{Competition}{subsection.3.1}

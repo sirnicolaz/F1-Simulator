@@ -1,0 +1,74 @@
+Nella seguente sezione verranno esposte le problematiche emerse nel corso dell'analisi del sistema da progettare. Tali
+problematiche esistono perchè il sistema presenta le seguenti caratteristiche:
+\begin{itemize}
+\item il sistema è concorrente. Di conseguenza presenterà un numero maggiore di 2 entità attive
+che eseguiranno concorrentemente;
+\item alcune risorse sono condivise e accedute quindi concorrentemente;
+\item il simulatore viene eseguito su un sistema operativo del cui scheduler non sono conosciute le specifiche;
+\item il sistema presenta delle componenti distribuite nella rete;
+\end{itemize}
+\subsection{Gestione del tempo}
+Un simulatore di formula 1 racchiude intrinsecamente dei vincoli in termini di coerenza temporale. 
+Una competizione è scandita da istanti di tempo: un istante iniziale, uno finale e vari istanti 
+intermedi che segnano, per esempio, la fine della lap di un concorrente, oppure il passaggio di un concorrente da un settore
+a quello dopo del circuito. Vi sono inoltre vincoli di coerenza temporale dati dai tempi accumulati nel corso
+della gara. Questi potrebbero essere il tempo di attraversamento di un tratto come il tempo necessario
+a effettuare un giro. I secondi, chiaramente, dipendono dai primi. 
+In un sistema simulato è necessario che per più simulazioni regolate dalle stesse condizioni, 
+gli intervalli temporali calcolati siano gli stessi. Questo potrebbe risultare problematico dal momento che
+lo scheduler non rispetta vincoli di tempo definiti o comunque conosciuti a priori.
+\subsection{Sorpassi impossibili}
+Una problematica affrontata nel corso dell'analisi del simulatore da progettare
+è stata quella relativa ai sorpassi. Come accennato all'inizio
+della sezione, non possono essere fatte assunzioni di determinismo sullo scheduler. 
+Ipotizzando un sistema in cui ogni concorrente
+corrisponda ad un'entità attiva (task) e in cui ogni tratto del circuito sia una risorsa condivisa fra i task a molteplicità
+limitata (come è plausibile pensare per un simulatore di F1), è possibile che si verifichino scenari anomali.\\
+Per esempio:
+\begin{enumerate}
+\item un task concorrente dovrebbe, per questioni temporali, iniziare ad attraversare un tratto e ottenere quindi la risorsa;
+\item lo scheduler prerilascia il task e assegna un quanto di tempo ad un altro task concorrente che in termini temporali
+è dietro. Il task ottiene la risorsa tratto (la stessa del task precedente);
+\item il task ottiene altri quanti e attraversa;
+\item lo scheduler prerilascia il task corrente e riassegna il processore al vecchio task il quale anche attraversa il tratto.
+\end{enumerate}
+Non prestando attenzione a possibilità di questo tipo, se il tratto fosse di molteplicità 1 si avrebbe che un concorrente 
+appare alla fine del tratto quando, per questioni fisico/temporali, avrebbe dovuto rimanere dietro.
+\subsection{Determinismo}
+Come definito in \url{http://it.wikipedia.org/wiki/Simulazione}, \\
+
+\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
+svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
+o dell'utente''}.\\
+Il comportamento del sistema deve essere quindi prevedibile. Considerando che invece il comportamento dello 
+scheduler sottostante non è prevedibile, si presenta il problema di riuscire a progettare il simulatore in modo
+che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
+modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
+\subsection{Componenti di non determinismo (Lorenzo)}
+\subsection{Stalli (Lorenzo)}
+\subsection{Realismo fisico}
+Il realismo fisico di un simulatore di formula uno è determinato principalmente da due fattori:
+\begin{itemize}
+\item realismo dato dall'interazione tra ogni concorrente e l'ambiente statico. Ovvero, l'impatto che hanno
+le caratteristiche fisiche dell'ambiente circostante quali, ad esempio, forma e caratteristiche della pista;
+\item realismo dato dall'interazione tra un concorrente e gli altri concorrenti. Questo tipo di realismo 
+dipende quindi da caratteristiche dinamiche dell'ambiente e richiede che le valutazioni dei singoli concorrenti
+vengano fatte in rapporto allo stato degli altri concorrenti. Viceversa, le scelte dei singoli concorrenti
+devono poter influenzare le scelte degli altri concorrenti.
+\end{itemize}
+\subsection{Gestione delle istantanee di gara}
+Requisito essenziale per poter presentare i dati relativi all'andamento della competizione è riuscire ad ottenere una
+snapshot della gara in un determinato istanto. Ovvero, dato un istante di tempo \emph{t} o un evento \emph{e}, bisogna
+poter risalire allo stato dei concorrenti e della gara in generale in quel momento. In tal modo sarà reso possibile
+monitorare l'evolversi della competizione. Bisogna però tenere in considerazione qualunque entità provvederà allo scatto
+dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità attive dipendenti dallo scheduler. 
+Di conseguenza è lecito pensare che uno snapshot possa risultare inconsistente se viene eseguito, per motivi di 
+prerilascio, metà ad un istante
+\emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio.
+\subsection{Robustezza del sistema distribuito (Lorenzo)}
+\subsection{Intelligenza artificiale}
+Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
+di intelligenza artificiale che riesca a far procedere la gara in modo verosimile.
+\subsection{Start del sistema}
+
+\subsection{Stop del sistema}

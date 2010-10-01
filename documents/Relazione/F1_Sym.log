@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  10 SEP 2010 05:01
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  1 OCT 2010 15:30
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -29,8 +29,224 @@ Package: inputenc 2008/03/30 v1.1d Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
 
-(/usr/share/texmf-texlive/tex/latex/base/latin1.def
-File: latin1.def 2008/03/30 v1.1d Input encoding file
+(/usr/share/texmf-texlive/tex/latex/base/utf8.def
+File: utf8.def 2008/04/05 v1.1m UTF-8 support for inputenc
+Now handling font encoding OML ...
+... no UTF-8 mapping file for font encoding OML
+Now handling font encoding T1 ...
+... processing UTF-8 mapping file for font encoding T1
+
+(/usr/share/texmf-texlive/tex/latex/base/t1enc.dfu
+File: t1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00AB (decimal 171)
+   defining Unicode char U+00BB (decimal 187)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C0 (decimal 192)
+   defining Unicode char U+00C1 (decimal 193)
+   defining Unicode char U+00C2 (decimal 194)
+   defining Unicode char U+00C3 (decimal 195)
+   defining Unicode char U+00C4 (decimal 196)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00C7 (decimal 199)
+   defining Unicode char U+00C8 (decimal 200)
+   defining Unicode char U+00C9 (decimal 201)
+   defining Unicode char U+00CA (decimal 202)
+   defining Unicode char U+00CB (decimal 203)
+   defining Unicode char U+00CC (decimal 204)
+   defining Unicode char U+00CD (decimal 205)
+   defining Unicode char U+00CE (decimal 206)
+   defining Unicode char U+00CF (decimal 207)
+   defining Unicode char U+00D0 (decimal 208)
+   defining Unicode char U+00D1 (decimal 209)
+   defining Unicode char U+00D2 (decimal 210)
+   defining Unicode char U+00D3 (decimal 211)
+   defining Unicode char U+00D4 (decimal 212)
+   defining Unicode char U+00D5 (decimal 213)
+   defining Unicode char U+00D6 (decimal 214)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00D9 (decimal 217)
+   defining Unicode char U+00DA (decimal 218)
+   defining Unicode char U+00DB (decimal 219)
+   defining Unicode char U+00DC (decimal 220)
+   defining Unicode char U+00DD (decimal 221)
+   defining Unicode char U+00DE (decimal 222)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E0 (decimal 224)
+   defining Unicode char U+00E1 (decimal 225)
+   defining Unicode char U+00E2 (decimal 226)
+   defining Unicode char U+00E3 (decimal 227)
+   defining Unicode char U+00E4 (decimal 228)
+   defining Unicode char U+00E5 (decimal 229)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00E7 (decimal 231)
+   defining Unicode char U+00E8 (decimal 232)
+   defining Unicode char U+00E9 (decimal 233)
+   defining Unicode char U+00EA (decimal 234)
+   defining Unicode char U+00EB (decimal 235)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F0 (decimal 240)
+   defining Unicode char U+00F1 (decimal 241)
+   defining Unicode char U+00F2 (decimal 242)
+   defining Unicode char U+00F3 (decimal 243)
+   defining Unicode char U+00F4 (decimal 244)
+   defining Unicode char U+00F5 (decimal 245)
+   defining Unicode char U+00F6 (decimal 246)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+00F9 (decimal 249)
+   defining Unicode char U+00FA (decimal 250)
+   defining Unicode char U+00FB (decimal 251)
+   defining Unicode char U+00FC (decimal 252)
+   defining Unicode char U+00FD (decimal 253)
+   defining Unicode char U+00FE (decimal 254)
+   defining Unicode char U+00FF (decimal 255)
+   defining Unicode char U+0102 (decimal 258)
+   defining Unicode char U+0103 (decimal 259)
+   defining Unicode char U+0104 (decimal 260)
+   defining Unicode char U+0105 (decimal 261)
+   defining Unicode char U+0106 (decimal 262)
+   defining Unicode char U+0107 (decimal 263)
+   defining Unicode char U+010C (decimal 268)
+   defining Unicode char U+010D (decimal 269)
+   defining Unicode char U+010E (decimal 270)
+   defining Unicode char U+010F (decimal 271)
+   defining Unicode char U+0110 (decimal 272)
+   defining Unicode char U+0111 (decimal 273)
+   defining Unicode char U+0118 (decimal 280)
+   defining Unicode char U+0119 (decimal 281)
+   defining Unicode char U+011A (decimal 282)
+   defining Unicode char U+011B (decimal 283)
+   defining Unicode char U+011E (decimal 286)
+   defining Unicode char U+011F (decimal 287)
+   defining Unicode char U+0130 (decimal 304)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0132 (decimal 306)
+   defining Unicode char U+0133 (decimal 307)
+   defining Unicode char U+0139 (decimal 313)
+   defining Unicode char U+013A (decimal 314)
+   defining Unicode char U+013D (decimal 317)
+   defining Unicode char U+013E (decimal 318)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0143 (decimal 323)
+   defining Unicode char U+0144 (decimal 324)
+   defining Unicode char U+0147 (decimal 327)
+   defining Unicode char U+0148 (decimal 328)
+   defining Unicode char U+014A (decimal 330)
+   defining Unicode char U+014B (decimal 331)
+   defining Unicode char U+0150 (decimal 336)
+   defining Unicode char U+0151 (decimal 337)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+0154 (decimal 340)
+   defining Unicode char U+0155 (decimal 341)
+   defining Unicode char U+0158 (decimal 344)
+   defining Unicode char U+0159 (decimal 345)
+   defining Unicode char U+015A (decimal 346)
+   defining Unicode char U+015B (decimal 347)
+   defining Unicode char U+015E (decimal 350)
+   defining Unicode char U+015F (decimal 351)
+   defining Unicode char U+0160 (decimal 352)
+   defining Unicode char U+0161 (decimal 353)
+   defining Unicode char U+0162 (decimal 354)
+   defining Unicode char U+0163 (decimal 355)
+   defining Unicode char U+0164 (decimal 356)
+   defining Unicode char U+0165 (decimal 357)
+   defining Unicode char U+016E (decimal 366)
+   defining Unicode char U+016F (decimal 367)
+   defining Unicode char U+0170 (decimal 368)
+   defining Unicode char U+0171 (decimal 369)
+   defining Unicode char U+0178 (decimal 376)
+   defining Unicode char U+0179 (decimal 377)
+   defining Unicode char U+017A (decimal 378)
+   defining Unicode char U+017B (decimal 379)
+   defining Unicode char U+017C (decimal 380)
+   defining Unicode char U+017D (decimal 381)
+   defining Unicode char U+017E (decimal 382)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201A (decimal 8218)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+   defining Unicode char U+201E (decimal 8222)
+   defining Unicode char U+2030 (decimal 8240)
+   defining Unicode char U+2031 (decimal 8241)
+   defining Unicode char U+2039 (decimal 8249)
+   defining Unicode char U+203A (decimal 8250)
+   defining Unicode char U+2423 (decimal 9251)
+)
+Now handling font encoding OT1 ...
+... processing UTF-8 mapping file for font encoding OT1
+
+(/usr/share/texmf-texlive/tex/latex/base/ot1enc.dfu
+File: ot1enc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A1 (decimal 161)
+   defining Unicode char U+00A3 (decimal 163)
+   defining Unicode char U+00B8 (decimal 184)
+   defining Unicode char U+00BF (decimal 191)
+   defining Unicode char U+00C5 (decimal 197)
+   defining Unicode char U+00C6 (decimal 198)
+   defining Unicode char U+00D8 (decimal 216)
+   defining Unicode char U+00DF (decimal 223)
+   defining Unicode char U+00E6 (decimal 230)
+   defining Unicode char U+00EC (decimal 236)
+   defining Unicode char U+00ED (decimal 237)
+   defining Unicode char U+00EE (decimal 238)
+   defining Unicode char U+00EF (decimal 239)
+   defining Unicode char U+00F8 (decimal 248)
+   defining Unicode char U+0131 (decimal 305)
+   defining Unicode char U+0141 (decimal 321)
+   defining Unicode char U+0142 (decimal 322)
+   defining Unicode char U+0152 (decimal 338)
+   defining Unicode char U+0153 (decimal 339)
+   defining Unicode char U+2013 (decimal 8211)
+   defining Unicode char U+2014 (decimal 8212)
+   defining Unicode char U+2018 (decimal 8216)
+   defining Unicode char U+2019 (decimal 8217)
+   defining Unicode char U+201C (decimal 8220)
+   defining Unicode char U+201D (decimal 8221)
+)
+Now handling font encoding OMS ...
+... processing UTF-8 mapping file for font encoding OMS
+
+(/usr/share/texmf-texlive/tex/latex/base/omsenc.dfu
+File: omsenc.dfu 2008/04/05 v1.1m UTF-8 support for inputenc
+   defining Unicode char U+00A7 (decimal 167)
+   defining Unicode char U+00B6 (decimal 182)
+   defining Unicode char U+00B7 (decimal 183)
+   defining Unicode char U+2020 (decimal 8224)
+   defining Unicode char U+2021 (decimal 8225)
+   defining Unicode char U+2022 (decimal 8226)
+)
+Now handling font encoding OMX ...
+... no UTF-8 mapping file for font encoding OMX
+Now handling font encoding U ...
+... no UTF-8 mapping file for font encoding U
+   defining Unicode char U+00A9 (decimal 169)
+   defining Unicode char U+00AA (decimal 170)
+   defining Unicode char U+00AE (decimal 174)
+   defining Unicode char U+00BA (decimal 186)
+   defining Unicode char U+02C6 (decimal 710)
+   defining Unicode char U+02DC (decimal 732)
+   defining Unicode char U+200C (decimal 8204)
+   defining Unicode char U+2026 (decimal 8230)
+   defining Unicode char U+2122 (decimal 8482)
+   defining Unicode char U+2423 (decimal 9251)
+))
+(/usr/share/texmf-texlive/tex/latex/base/fontenc.sty
+Package: fontenc 2005/09/27 v1.99g Standard LaTeX package
+
+(/usr/share/texmf-texlive/tex/latex/base/t1enc.def
+File: t1enc.def 2005/09/27 v1.99g Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
 ))
 (/usr/share/texmf-texlive/tex/generic/babel/babel.sty
 Package: babel 2008/07/06 v3.8l The Babel package
@@ -142,6 +358,8 @@ Package: xcolor-patch 2009/10/02 xcolor patch
 
 (/usr/share/texmf-texlive/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2009/10/09 v6.79a Hyperref: PDFDocEncoding definition (HO)
+Now handling font encoding PD1 ...
+... no UTF-8 mapping file for font encoding PD1
 )
 (/usr/share/texmf-texlive/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2007/12/12 v1.2 Prefix for e-TeX command names (HO)
@@ -283,8 +501,8 @@ Package: amsthm 2004/08/06 v2.20
 \thm@headsep=\skip56
 \dth@everypar=\toks29
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 19.
-Package hyperref Info: Option `breaklinks' set `true' on input line 19.
+Package hyperref Info: Option `colorlinks' set `true' on input line 20.
+Package hyperref Info: Option `breaklinks' set `true' on input line 20.
 \@indexfile=\write3
 \openout3 = `F1_Sym.idx'.
 
@@ -299,28 +517,21 @@ Writing index file F1_Sym.idx
 (./F1_Sym.aux)
 \openout1 = `F1_Sym.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 65.
-LaTeX Font Info:    Try loading font information for LGR+cmr on input line 65.
- (/usr/share/texmf-texlive/tex/generic/babel/lgrcmr.fd
-File: lgrcmr.fd 2008/06/17 v2.3 Greek Computer Modern
-)
-LaTeX Font Info:    ... okay on input line 65.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 65.
-LaTeX Font Info:    ... okay on input line 65.
-
-(/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
+LaTeX Font Info:    ... okay on input line 66.
+ (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count106
 \scratchdimen=\dimen120
@@ -333,7 +544,7 @@ LaTeX Font Info:    ... okay on input line 65.
 \MPnumerator=\count110
 \everyMPtoPDFconversion=\toks37
 ) ABD: EveryShipout initializing macros
-Package hyperref Info: Link coloring ON on input line 65.
+Package hyperref Info: Link coloring ON on input line 66.
 
 (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
 Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
@@ -343,8 +554,8 @@ Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
 \c@section@level=\count111
 )
-LaTeX Info: Redefining \ref on input line 65.
-LaTeX Info: Redefining \pageref on input line 65.
+LaTeX Info: Redefining \ref on input line 66.
+LaTeX Info: Redefining \pageref on input line 66.
  (./F1_Sym.out)
 (./F1_Sym.out)
 \@outlinefile=\write4
@@ -353,9 +564,9 @@ LaTeX Info: Redefining \pageref on input line 65.
 \AtBeginShipoutBox=\box31
 \c@lstlisting=\count112
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 88.
+(Font)              <7> on input line 89.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 88.
+(Font)              <5> on input line 89.
  [1.1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
@@ -363,140 +574,153 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write5
 \openout5 = `F1_Sym.toc'.
 
- [3.3] (./F1_Sym.lof)
+ [3.3] [4.4] (./F1_Sym.lof)
 \tf@lof=\write6
 \openout6 = `F1_Sym.lof'.
 
- [4.4] (./descrizione_progetto.tex
+ [5.5]
+(./descrizione_progetto.tex
 LaTeX Font Info:    Try loading font information for OMS+cmr on input line 6.
-
-(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+ (/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 6.
+) (./enunciazione_problematiche.tex [6.6]
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 38.
+
+(/usr/share/texmf-texlive/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-(./problematiche_concorrenza.tex
-Underfull \hbox (badness 10000) in paragraph at lines 10--12
+Underfull \hbox (badness 10000) in paragraph at lines 38--39
 
  []
 
-[5.5]) (./problematiche_distribuzione.tex) (./soluzione_proposta.tex [6.6]
+[7.7]
+Underfull \hbox (badness 10000) in paragraph at lines 42--43
+
+ []
+
+) (./problematiche_distribuzione.tex) (./soluzione_proposta.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--6
 
  []
 
-<img/ComponentDiagram.jpg, id=417, 676.5275pt x 537.00626pt>
+<img/ComponentDiagram.jpg, id=488, 676.5275pt x 537.00626pt>
 File: img/ComponentDiagram.jpg Graphic file (type jpg)
 
-<use img/ComponentDiagram.jpg> [7.7 <./img/ComponentDiagram.jpg>] [8.8]
-Overfull \hbox (12.86174pt too wide) in paragraph at lines 79--80
-[]\OT1/cmr/m/n/10 banalmente, con-tin-uare a cor-rere fi-no al-la fine delle la
-p presta-bilite, dopodich^^Re
+<use img/ComponentDiagram.jpg>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[8.8] [9.9 <./img/ComponentDiagram.jpg>] [10.10]
+Overfull \hbox (12.77988pt too wide) in paragraph at lines 80--81
+[]\T1/cmr/m/n/10 banalmente, con-tin-uare a cor-rere fi-no al-la fine delle lap
+ presta-bilite, dopodichè
  []
 
-[9.9]
-Overfull \hbox (2.25629pt too wide) in paragraph at lines 94--96
-[]\OT1/cmr/bx/n/10 posizione nel-la pista\OT1/cmr/m/n/10 : un \OT1/cmr/m/it/10 
-Check-point \OT1/cmr/m/n/10 pu^^Ru es-sere il tra-guar-do, l'inizio
+[11.11]
+Overfull \hbox (2.18356pt too wide) in paragraph at lines 95--97
+[]\T1/cmr/bx/n/10 posizione nel-la pista\T1/cmr/m/n/10 : un \T1/cmr/m/it/10 Che
+ck-point \T1/cmr/m/n/10 puù es-sere il tra-guar-do, l'inizio
  []
 
-[10.10] [11.11]
-Underfull \hbox (badness 10000) in paragraph at lines 169--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 169--170
+[12.12] [13.13]
+Underfull \hbox (badness 10000) in paragraph at lines 166--167
 
  []
 
-[12.12]
+
+Underfull \hbox (badness 10000) in paragraph at lines 166--167
+
+ []
+
+
 <img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg, id
-=453, 555.07375pt x 312.16624pt>
+=528, 555.07375pt x 312.16624pt>
 File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jp
 g Graphic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg
-> [13.13 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
-ion.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=4
-60, 526.96875pt x 192.72pt>
+> [14.14 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
+ion.jpg>] [15.15]
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=5
+39, 526.96875pt x 192.72pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg 
 Graphic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg, id=461,
+<img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg, id=540,
  451.6875pt x 171.64125pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg Gra
 phic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>
-[14.14
+[16.16
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg> <
 ./img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg, id=467,
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg, id=546,
  528.97626pt x 157.58875pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg Gra
 phic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg, id=468, 4
+<img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg, id=547, 4
 79.7925pt x 157.58875pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg Graph
 ic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>
-[15.15
+[17.17
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg> <./i
 mg/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg, id=474, 43
+<img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg, id=553, 43
 7.635pt x 143.53625pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg Graphi
 c file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg, id=475, 
+<img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg, id=554, 
 479.7925pt x 220.825pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg Grap
 hic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>
-[16.16
+[18.18
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg> <./img/
 InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg, id=481, 472.7
+<img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg, id=560, 472.7
 6625pt x 270.00874pt>
 File: img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg Graphic f
 ile (type jpg)
 
-<use img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg> [17.17 <.
+<use img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg> [19.19 <.
 /img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg, id=487, 54
+<img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg, id=567, 54
 3.02875pt x 241.90375pt>
 File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg Graphi
 c file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg>
-<img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg, id=488, 550.055
+<img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg, id=568, 550.055
 pt x 316.18124pt>
 File: img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg Graphic fil
 e (type jpg)
 
-<use img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg> [18.18
+<use img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg> [20.20
 
  <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg> <./img/
 InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg, id=494, 493.
+<img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg, id=574, 493.
 845pt x 284.06125pt>
 File: img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg Graphic 
 file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg, id=495, 451.6
+<img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg, id=575, 451.6
 875pt x 150.5625pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg Graphic f
 ile (type jpg)
@@ -505,234 +729,270 @@ ile (type jpg)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[19.19 <./img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>]
-[20.20 <./img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>]
-[21.21] [22.22]
-Underfull \hbox (badness 10000) in paragraph at lines 400--406
+[21.21 <./img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>]
+
+LaTeX Warning: Reference `problematiche_concorrenza' on page 22 undefined on in
+put line 321.
+
+[22.22 <./img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>]
+[23.23] [24.24]
+Underfull \hbox (badness 10000) in paragraph at lines 398--404
 
  []
 
-[23.23]
-Underfull \hbox (badness 10000) in paragraph at lines 406--415
+[25.25]
+Underfull \hbox (badness 10000) in paragraph at lines 404--413
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 416--418
+Underfull \hbox (badness 10000) in paragraph at lines 414--416
 
  []
 
-[24.24]
-<img/ClassDiagrams/CompetitionClassDiagram.jpg, id=538, 730.73pt x 710.655pt>
+[26.26]
+<img/ClassDiagrams/CompetitionClassDiagram.jpg, id=619, 730.73pt x 710.655pt>
 File: img/ClassDiagrams/CompetitionClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/CompetitionClassDiagram.jpg>
-Overfull \hbox (20.3641pt too wide) in paragraph at lines 428--429
+Overfull \hbox (20.3641pt too wide) in paragraph at lines 426--427
 [][] 
  []
 
-[25.25 <./img/ClassDiagrams/CompetitionClassDiagram.jpg>] [26.26]
-<img/ClassDiagrams/CompetitorClassDiagram.jpg, id=550, 523.9575pt x 545.03625pt
+[27.27 <./img/ClassDiagrams/CompetitionClassDiagram.jpg>] [28.28]
+<img/ClassDiagrams/CompetitorClassDiagram.jpg, id=630, 523.9575pt x 545.03625pt
 >
 File: img/ClassDiagrams/CompetitorClassDiagram.jpg Graphic file (type jpg)
- <use img/ClassDiagrams/CompetitorClassDiagram.jpg> [27.27 <./img/ClassDiagrams
+ <use img/ClassDiagrams/CompetitorClassDiagram.jpg> [29.29 <./img/ClassDiagrams
 /CompetitorClassDiagram.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 485--494
+Underfull \hbox (badness 10000) in paragraph at lines 483--493
 
  []
 
-[28.28]
-<img/ClassDiagrams/CircuitClassDiagram.jpg, id=562, 688.5725pt x 393.47pt>
+[30.30]
+<img/ClassDiagrams/CircuitClassDiagram.jpg, id=642, 688.5725pt x 393.47pt>
 File: img/ClassDiagrams/CircuitClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/CircuitClassDiagram.jpg>
-Overfull \hbox (4.12357pt too wide) in paragraph at lines 522--524
-\OT1/cmr/m/n/10 in un ar-ray chiam-a-to \OT1/cmr/bx/n/10 Race-track\OT1/cmr/m/n
-/10 . Questo sar^^Ra l'ar-ray it-er-a-to dal \OT1/cmr/bx/n/10 Race[]Iterator\OT
-1/cmr/m/n/10 . 
+Overfull \hbox (8.84184pt too wide) in paragraph at lines 521--523
+\T1/cmr/m/n/10 in un ar-ray chiam-a-to \T1/cmr/bx/n/10 Race-track\T1/cmr/m/n/10
+ . Questo sarà l'ar-ray it-er-a-to dal \T1/cmr/bx/n/10 Race_Iterator\T1/cmr/m/n
+/10 . 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 522--524
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 525--541
-
- []
-
-[29.29 <./img/ClassDiagrams/CircuitClassDiagram.jpg>] [30.30]
-Overfull \hbox (8.77666pt too wide) in paragraph at lines 557--565
-[]\OT1/cmr/bx/n/10 procedure Get[]Paths(Paths2Cross : out CROSS-ING[]POINT; Go2
-Box
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 566--570
+Underfull \hbox (badness 10000) in paragraph at lines 521--523
 
  []
 
 
-Overfull \hbox (18.52185pt too wide) in paragraph at lines 566--570
-\OT1/cmr/m/n/10 Infine sono of-fer-ti un in-sieme di meto-di da uti-liz-zare in
--sieme al \OT1/cmr/bx/n/10 Race-Track[]Iterator
+Underfull \hbox (badness 10000) in paragraph at lines 524--540
+
  []
 
-[31.31] [32.32]
-<img/ClassDiagrams/StatsClassDiagram.jpg, id=585, 761.84625pt x 669.50125pt>
+[31.31 <./img/ClassDiagrams/CircuitClassDiagram.jpg>]
+Overfull \hbox (10.97679pt too wide) in paragraph at lines 545--547
+[]\T1/cmr/bx/n/10 procedure Set_ArrivalTime(CompetitorID_In : IN-TE-GER; Time_I
+n
+ []
+
+[32.32]
+Overfull \hbox (18.3pt too wide) in paragraph at lines 556--564
+[]\T1/cmr/bx/n/10 procedure Get_Paths(Paths2Cross : out CROSS-ING_POINT; Go2Box
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 565--569
+
+ []
+
+
+Overfull \hbox (23.23647pt too wide) in paragraph at lines 565--569
+\T1/cmr/m/n/10 Infine sono of-fer-ti un in-sieme di meto-di da uti-liz-zare in-
+sieme al \T1/cmr/bx/n/10 Race-Track_Iterator
+ []
+
+[33.33] [34.34]
+<img/ClassDiagrams/StatsClassDiagram.jpg, id=665, 761.84625pt x 669.50125pt>
 File: img/ClassDiagrams/StatsClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/StatsClassDiagram.jpg>
-Overfull \hbox (35.9222pt too wide) in paragraph at lines 591--592
+Overfull \hbox (35.9222pt too wide) in paragraph at lines 590--591
 [][] 
  []
 
-[33.33 <./img/ClassDiagrams/StatsClassDiagram.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 617--627
-
- []
-
-[34.34] [35.35]
-Underfull \hbox (badness 10000) in paragraph at lines 654--660
+[35.35 <./img/ClassDiagrams/StatsClassDiagram.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 616--626
 
  []
 
 [36.36]
-Overfull \hbox (4.40721pt too wide) in paragraph at lines 677--681
-\OT1/cmr/bx/n/10 CompetitorID[]InClassific : out IN-TE-GER[]ARRAY[]POINT; 
+Overfull \hbox (30.08102pt too wide) in paragraph at lines 640--647
+\T1/cmr/m/n/10 com-peti-tor è ded-i-ca-to un ar-ray di \T1/cmr/bx/n/10 Synch_Co
+mpetitor_Stats_Handler\T1/cmr/m/n/10 .
  []
 
 
-Overfull \hbox (40.23068pt too wide) in paragraph at lines 677--681
-\OT1/cmr/bx/n/10 LappedCompetitor[]CurrentLap : out IN-TE-GER[]ARRAY[]POINT); 
+Overfull \hbox (0.67154pt too wide) in paragraph at lines 640--647
+\T1/cmr/bx/n/10 Synch_Competitor_Stats_Handler \T1/cmr/m/n/10 mette a dis-po-si
+zione un en-
  []
 
 [37.37]
-<img/ClassDiagrams/MonitorClassDiagram.jpg, id=613, 690.58pt x 556.0775pt>
-File: img/ClassDiagrams/MonitorClassDiagram.jpg Graphic file (type jpg)
-
-<use img/ClassDiagrams/MonitorClassDiagram.jpg>
-Underfull \hbox (badness 10000) in paragraph at lines 693--699
+Underfull \hbox (badness 10000) in paragraph at lines 653--659
 
  []
 
-[38.38 <./img/ClassDiagrams/MonitorClassDiagram.jpg>]
-Overfull \hbox (11.1701pt too wide) in paragraph at lines 705--709
-\OT1/cmr/m/n/10 reperire le in-for-mazioni date, pre-cisa-mente uti-liz-zan-do 
-il meto-do $[]$
+[38.38]
+Overfull \hbox (18.7449pt too wide) in paragraph at lines 676--680
+\T1/cmr/bx/n/10 CompetitorID_InClassific : out IN-TE-GER_ARRAY_POINT; 
  []
 
 
-Overfull \hbox (20.09361pt too wide) in paragraph at lines 710--713
-\OT1/cmr/m/n/10 tramite un in-ter-me-di-ario: \OT1/cmr/bx/n/10 Box[]Monitor[]Ra
-dio \OT1/cmr/m/n/10 e \OT1/cmr/bx/n/10 Com-pe-ti-tion[]Monitor[]Radio\OT1/cmr/m
-/n/10 ,
+Overfull \hbox (7.02289pt too wide) in paragraph at lines 676--680
+\T1/cmr/bx/n/10 LappedCompetitors_ID : out IN-TE-GER_ARRAY_POINT; 
+ []
+
+
+Overfull \hbox (54.55977pt too wide) in paragraph at lines 676--680
+\T1/cmr/bx/n/10 LappedCompetitor_CurrentLap : out IN-TE-GER_ARRAY_POINT); 
  []
 
 [39.39]
-<img/ClassDiagrams/BoxClassDiagram.jpg, id=624, 857.2025pt x 760.8425pt>
-File: img/ClassDiagrams/BoxClassDiagram.jpg Graphic file (type jpg)
+<img/ClassDiagrams/MonitorClassDiagram.jpg, id=693, 690.58pt x 556.0775pt>
+File: img/ClassDiagrams/MonitorClassDiagram.jpg Graphic file (type jpg)
 
-<use img/ClassDiagrams/BoxClassDiagram.jpg>
-Overfull \hbox (46.61154pt too wide) in paragraph at lines 719--720
- [][] 
+<use img/ClassDiagrams/MonitorClassDiagram.jpg>
+Underfull \hbox (badness 10000) in paragraph at lines 692--698
+
  []
 
-[40.40 <./img/ClassDiagrams/BoxClassDiagram.jpg>]
-Overfull \hbox (18.43376pt too wide) in paragraph at lines 733--740
-\OT1/cmr/m/n/10 Rac-coglie gli ag-gior-na-men-ti di gara dal buffer \OT1/cmr/bx
-/n/10 Synch[]Competition[]Updates
+[40.40 <./img/ClassDiagrams/MonitorClassDiagram.jpg>]
+Overfull \hbox (15.26538pt too wide) in paragraph at lines 704--708
+\T1/cmr/m/n/10 reperire le in-for-mazioni date, pre-cisa-mente uti-liz-zan-do i
+l meto-do $[]$
+ []
+
+
+Overfull \hbox (39.21867pt too wide) in paragraph at lines 709--712
+\T1/cmr/m/n/10 tramite un in-ter-me-di-ario: \T1/cmr/bx/n/10 Box_Monitor_Radio 
+\T1/cmr/m/n/10 e \T1/cmr/bx/n/10 Com-pe-ti-tion_Monitor_Radio\T1/cmr/m/n/10 ,
  []
 
 [41.41]
-Underfull \hbox (badness 10000) in paragraph at lines 760--771
+<img/ClassDiagrams/BoxClassDiagram.jpg, id=704, 857.2025pt x 760.8425pt>
+File: img/ClassDiagrams/BoxClassDiagram.jpg Graphic file (type jpg)
 
+<use img/ClassDiagrams/BoxClassDiagram.jpg>
+Overfull \hbox (46.61154pt too wide) in paragraph at lines 718--719
+ [][] 
  []
 
-[42.42]
-<img/ClassDiagrams/ConfiguratorClassDiagram.jpg, id=640, 726.715pt x 542.025pt>
-File: img/ClassDiagrams/ConfiguratorClassDiagram.jpg Graphic file (type jpg)
-<use img/ClassDiagrams/ConfiguratorClassDiagram.jpg>
-Overfull \hbox (18.3566pt too wide) in paragraph at lines 775--776
-[][] 
+
+Overfull \hbox (12.32304pt too wide) in paragraph at lines 725--732
+\T1/cmr/m/n/10 ag-gior-na-men-ti ven-gono in-ser-i-ti nel buffer \T1/cmr/bx/n/1
+0 Synch_Competition_Updates\T1/cmr/m/n/10 .
  []
 
-[43.43 <./img/ClassDiagrams/ConfiguratorClassDiagram.jpg>]
-Overfull \hbox (0.94463pt too wide) in paragraph at lines 803--805
-\OT1/cmr/m/n/10 La classe \OT1/cmr/bx/n/10 Box-Mon-i-tor \OT1/cmr/m/n/10 vi-su-
-al-iz-za l'an-da-men-to del-la com-pe-tizione da parte
+[42.42 <./img/ClassDiagrams/BoxClassDiagram.jpg>]
+Overfull \hbox (27.95811pt too wide) in paragraph at lines 732--739
+\T1/cmr/m/n/10 Rac-coglie gli ag-gior-na-men-ti di gara dal buffer \T1/cmr/bx/n
+/10 Synch_Competition_Updates
+ []
+
+
+Overfull \hbox (6.58833pt too wide) in paragraph at lines 742--746
+\T1/cmr/m/n/10 Supporta la co-mu-ni-cazione fra \T1/cmr/bx/n/10 Up-date_Retriev
+er \T1/cmr/m/n/10 e \T1/cmr/bx/n/10 Strat-e-gy_History\T1/cmr/m/n/10 .
+ []
+
+[43.43]
+Underfull \hbox (badness 10000) in paragraph at lines 759--770
+
  []
 
 [44.44]
-<img/ClassDiagrams/ScreenClassDiagram.jpg, id=654, 555.07375pt x 646.415pt>
-File: img/ClassDiagrams/ScreenClassDiagram.jpg Graphic file (type jpg)
-
-<use img/ClassDiagrams/ScreenClassDiagram.jpg> [45.45 <./img/ClassDiagrams/Scre
-enClassDiagram.jpg>]
-Overfull \hbox (26.63303pt too wide) in paragraph at lines 829--833
-\OT1/cmr/m/n/10 fra task, ^^Re sta-to suf-fi-ciente in-serir-lo in una risor-sa
- pro-tet-ta: \OT1/cmr/bx/n/10 Synch[]Checkpoint\OT1/cmr/m/n/10 .
+<img/ClassDiagrams/ConfiguratorClassDiagram.jpg, id=721, 726.715pt x 542.025pt>
+File: img/ClassDiagrams/ConfiguratorClassDiagram.jpg Graphic file (type jpg)
+<use img/ClassDiagrams/ConfiguratorClassDiagram.jpg>
+Overfull \hbox (18.3566pt too wide) in paragraph at lines 774--775
+[][] 
  []
 
-<img/SequenceDiagrams/ArriveAndCross.jpg, id=661, 945.5325pt x 1180.41pt>
+[45.45 <./img/ClassDiagrams/ConfiguratorClassDiagram.jpg>] [46.46]
+<img/ClassDiagrams/ScreenClassDiagram.jpg, id=734, 555.07375pt x 646.415pt>
+File: img/ClassDiagrams/ScreenClassDiagram.jpg Graphic file (type jpg)
+
+<use img/ClassDiagrams/ScreenClassDiagram.jpg> [47.47 <./img/ClassDiagrams/Scre
+enClassDiagram.jpg>]
+Overfull \hbox (31.35173pt too wide) in paragraph at lines 828--832
+\T1/cmr/m/n/10 fra task, è sta-to suf-fi-ciente in-serir-lo in una risor-sa pro
+-tet-ta: \T1/cmr/bx/n/10 Synch_Checkpoint\T1/cmr/m/n/10 .
+ []
+
+[48.48]
+<img/SequenceDiagrams/ArriveAndCross.jpg, id=746, 945.5325pt x 1180.41pt>
 File: img/SequenceDiagrams/ArriveAndCross.jpg Graphic file (type jpg)
 
 <use img/SequenceDiagrams/ArriveAndCross.jpg>
-Overfull \hbox (48.23828pt too wide) in paragraph at lines 847--848
+Overfull \hbox (48.23828pt too wide) in paragraph at lines 846--847
  [][] 
  []
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[46.46] [47.47 <./img/SequenceDiagrams/ArriveAndCross.jpg>]
-Overfull \hbox (25.82745pt too wide) in paragraph at lines 852--853
-\OT1/cmr/m/n/10 quali casi un con-cor-rente pu^^Ro cam-biare sta-to nel-la co-d
-a del \OT1/cmr/bx/n/10 Synch[]Checkpoint\OT1/cmr/m/n/10 : 
+[49.49] [50.50 <./img/SequenceDiagrams/ArriveAndCross.jpg>]
+Overfull \hbox (30.54637pt too wide) in paragraph at lines 851--852
+\T1/cmr/m/n/10 quali casi un con-cor-rente può cam-biare sta-to nel-la co-da de
+l \T1/cmr/bx/n/10 Synch_Checkpoint\T1/cmr/m/n/10 : 
  []
 
 
-Overfull \hbox (12.98955pt too wide) in paragraph at lines 854--856
-\OT1/cmr/m/n/10 seg-na un nuo-vo tem-po min-i-mo (o ef-fet-ti-vo) di ar-ri-vo c
-on $[]$
+Overfull \hbox (17.08975pt too wide) in paragraph at lines 853--855
+\T1/cmr/m/n/10 seg-na un nuo-vo tem-po min-i-mo (o ef-fet-ti-vo) di ar-ri-vo co
+n $[]$
  []
 
-[48.48
+[51.51
 
 ]
-Overfull \hbox (35.74075pt too wide) in paragraph at lines 872--885
-\OT1/cmr/m/n/10 venire popo-la-ta con i dati di fine lap di og-ni con-cor-rente
- (\OT1/cmr/bx/n/10 Synch[]Classification[]Table\OT1/cmr/m/n/10 ). 
+Overfull \hbox (45.2547pt too wide) in paragraph at lines 871--884
+\T1/cmr/m/n/10 venire popo-la-ta con i dati di fine lap di og-ni con-cor-rente 
+(\T1/cmr/bx/n/10 Synch_Classification_Table\T1/cmr/m/n/10 ). 
  []
 
-[49.49] [50.50]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 933.
 
- (/usr/share/texmf-texlive/tex/latex/base/omlcmr.fd
-File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 933.
- [51.51]
-<img/SequenceDiagrams/InitCompetition.jpg, id=697, 1674.255pt x 1506.62875pt>
+Overfull \hbox (16.96486pt too wide) in paragraph at lines 885--895
+\T1/cmr/bx/n/10 Synch_All_Info_Buffer\T1/cmr/m/n/10 . Tale risor-sa viene val-o
+riz-za-ta da \T1/cmr/bx/n/10 Strat-e-gy_Updater
+ []
+
+[52.52] [53.53] [54.54]
+<img/SequenceDiagrams/InitCompetition.jpg, id=782, 1674.255pt x 1506.62875pt>
 File: img/SequenceDiagrams/InitCompetition.jpg Graphic file (type jpg)
 
 <use img/SequenceDiagrams/InitCompetition.jpg>
-Overfull \hbox (91.27925pt too wide) in paragraph at lines 952--953
+Overfull \hbox (91.27925pt too wide) in paragraph at lines 953--954
  [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 14.94247pt on input line 954.
+LaTeX Warning: Float too large for page by 14.942pt on input line 955.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[52.52] [53.53 <./img/SequenceDiagrams/InitCompetition.jpg>] [54.54
+[55.55] [56.56 <./img/SequenceDiagrams/InitCompetition.jpg>]
+Overfull \hbox (6.5438pt too wide) in paragraph at lines 958--975
+\T1/cmr/bx/n/10 tionHan-dler Com-pe-ti-tion_Monitor_Radio\T1/cmr/m/n/10 . Viene
+ avvi-a-to un task \T1/cmr/bx/n/10 Starter
+ []
 
-])
-(./analisi_supporto_tecnologico.tex [55.55]) (./glossario.tex
+[57.57
+
+]) (./analisi_supporto_tecnologico.tex [58.58]) (./glossario.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--5
 
  []
@@ -747,7 +1007,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--21
 
  []
 
-[56.56]
+[59.59]
 Underfull \hbox (badness 10000) in paragraph at lines 21--25
 
  []
@@ -767,32 +1027,65 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--45
 
  []
 
-) (./manuale_utente.tex [57.57] [58.58] [59.59] [60.60]) [61.61] (./F1_Sym.aux)
+) (./manuale_utente.tex [60.60] [61.61] [62.62]
+<img/ScreenshotRelazione/BoxAdminWindows.jpg, id=836, 319.94531pt x 313.9228pt>
+File: img/ScreenshotRelazione/BoxAdminWindows.jpg Graphic file (type jpg)
+<use img/ScreenshotRelazione/BoxAdminWindows.jpg>
+<img/ScreenshotRelazione/boxMonitor.jpg, id=837, 457.71pt x 380.92313pt>
+File: img/ScreenshotRelazione/boxMonitor.jpg Graphic file (type jpg)
+
+<use img/ScreenshotRelazione/boxMonitor.jpg> [63.63 <./img/ScreenshotRelazione/
+BoxAdminWindows.jpg>] [64.64 <./img/ScreenshotRelazione/boxMonitor.jpg>]
+<img/ScreenshotRelazione/configureCompetition.jpg, id=870, 404.26031pt x 138.51
+75pt>
+File: img/ScreenshotRelazione/configureCompetition.jpg Graphic file (type jpg)
+ <use img/ScreenshotRelazione/configureCompetition.jpg> [65.65 <./img/Screensho
+tRelazione/configureCompetition.jpg>]
+<img/ScreenshotRelazione/screenTvCompetition.jpg, id=881, 472.76625pt x 305.641
+88pt>
+File: img/ScreenshotRelazione/screenTvCompetition.jpg Graphic file (type jpg)
+ <use img/ScreenshotRelazione/screenTvCompetition.jpg>
+Overfull \hbox (9.5738pt too wide) in paragraph at lines 134--135
+[][] 
+ []
+
+
+<img/ScreenshotRelazione/configurationScreen.jpg, id=882, 349.305pt x 144.54pt>
+File: img/ScreenshotRelazione/configurationScreen.jpg Graphic file (type jpg)
+<use img/ScreenshotRelazione/configurationScreen.jpg> [66.66 <./img/ScreenshotR
+elazione/screenTvCompetition.jpg>]) [67.67 <./img/ScreenshotRelazione/configura
+tionScreen.jpg>] (./F1_Sym.aux)
+
+LaTeX Warning: There were undefined references.
+
  ) 
 Here is how much of TeX's memory you used:
- 7063 strings out of 495061
- 104039 string characters out of 1182621
- 177104 words of memory out of 3000000
- 9881 multiletter control sequences out of 15000+50000
- 7545 words of font info for 27 fonts, out of 3000000 for 9000
+ 7433 strings out of 495061
+ 106659 string characters out of 1182621
+ 174493 words of memory out of 3000000
+ 10206 multiletter control sequences out of 15000+50000
+ 13726 words of font info for 28 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 38i,12n,43p,1163b,1216s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
-re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
-xlive/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmbxti10.pfb></usr/share/texmf-texlive/fonts/type1/pub
-lic/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfon
-ts/cm/cmmi10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7
-.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/s
-hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-t
+ 38i,12n,43p,1148b,1799s stack positions out of 5000i,500n,10000p,200000b,50000s
+ </home/jack/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbi1000.600pk> </home/ja
+ck/.texmf-var/fonts/pk/ljfour/jknappen/ec/eccc1000.600pk> </home/jack/.texmf-va
+r/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </home/jack/.texmf-var/fonts/pk/l
+jfour/jknappen/ec/ectt1000.600pk> </home/jack/.texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecbx1200.600pk> </home/jack/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx14
+40.600pk> </home/jack/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </
+home/jack/.texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </home/jack/.t
+exmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0900.600pk> </home/jack/.texmf-var/fon
+ts/pk/ljfour/jknappen/ec/ecbx0900.600pk> </home/jack/.texmf-var/fonts/pk/ljfour
+/jknappen/ec/ecrm1200.600pk> </home/jack/.texmf-var/fonts/pk/ljfour/jknappen/ec
+/ecbx2074.600pk></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi10
+.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/s
+hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/
-type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/fonts/type1/public/
-amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm
-/cmsy7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on F1_Sym.pdf (61 pages, 2540839 bytes).
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/publi
+c/amsfonts/cm/cmsy7.pfb>
+Output written on F1_Sym.pdf (67 pages, 2776198 bytes).
 PDF statistics:
- 880 PDF objects out of 1000 (max. 8388607)
- 203 named destinations out of 1000 (max. 500000)
- 628 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1438 PDF objects out of 1440 (max. 8388607)
+ 226 named destinations out of 1000 (max. 500000)
+ 741 words of extra memory for PDF output out of 10000 (max. 10000000)
 
