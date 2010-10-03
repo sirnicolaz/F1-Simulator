@@ -31,6 +31,20 @@ package body Artificial_Intelligence is
    -- Circuit length. Initialised after the competitor registration
    Circuit_Length : Float := 6.0;
 
+
+   protected body Synch_Pitstop_Handler is
+      procedure Force_Pitstop ( Force : Boolean ) is
+      begin
+         Pitstop_Requested := Force;
+      end Force_PitStop;
+
+      procedure Is_Pitstop_Requested ( Requested : out Boolean ) is
+      begin
+         Requested := Pitstop_Requested;
+         Pitstop_Requested := False;
+      end Is_Pitstop_Requested;
+   end Synch_Pitstop_Handler;
+
    -- Configure the static parameters
    procedure Configure(Laps_In : Integer;
                        Box_Strategy_In : Box_Strategy;
@@ -289,9 +303,16 @@ package body Artificial_Intelligence is
    function Update_Laps_To_Pitstop(Old_Laps_To_Pitstop : Integer;
                                    Doable_Laps : Integer) return Integer is
 
-     Laps_To_Pitstop : Integer;
+      Laps_To_Pitstop : Integer;
+      Forced_Pitstop : Boolean;
 
    begin
+
+      -- Verify if any external entity asked for a pitstop
+      Pitstop_Handler.Is_Pitstop_Requested(Forced_Pitstop);
+      if(Forced_Pitstop = True) then
+         return 0;
+      end if;
 
       Laps_To_Pitstop := Old_Laps_To_Pitstop - 1;
 

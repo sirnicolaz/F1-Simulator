@@ -142,7 +142,6 @@ package body Box is
 
          UpdateBuffer.Add_Data(Info);
 
-
          if(Sector = Sector_Qty) then
             Sector := 0;
             Lap := Lap + 1;
@@ -152,10 +151,6 @@ package body Box is
 
          Sector := Sector + 1;
       end loop;
-
-
-
-
    end Update_Retriever;
 
    task body Strategy_Updater is
@@ -320,8 +315,6 @@ package body Box is
 
       All_Info.Add_Info(Update_In   => Extended_Information);
 
-
-
    end Strategy_Updater;
 
    --StrategyUpdater_Task : access Strategy_Updater;
@@ -370,12 +363,8 @@ package body Box is
       Gas_Level : Float;
       Max_Speed : Float;
       Tyre_Usury : Percentage;
-  --    Time : Float;
       Lap : Integer;
       Sector : Integer;
-  --    Path_Length : Float;
-
-      --Update_FileName : Unbounded_String.Unbounded_String := Unbounded_String.To_Unbounded_String("new_update.xml");
       Success : BOOLEAN := false;
    begin
       --TODO: handle the exception

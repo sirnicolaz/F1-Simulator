@@ -10,6 +10,8 @@ package Box_Monitor is
 
    procedure Init( CompetitionUpdates_Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT);
 
+   procedure Force_Pitstop ( Force : Boolean);
+
    procedure GetUpdate(Num : in INTEGER;
                        Time : out FLOAT;
                        PathLength : out FLOAT;

@@ -9,6 +9,9 @@ package Broker.Radio.Box_Monitor_Radio.impl is
 
    type Object_Acc is access Object;
 
+   procedure Force_Pitstop (Self : access Object;
+                            Force : Corba.Boolean);
+
    procedure GetUpdate(Self : access Object;
                        num : in CORBA.Short;
                        time : out CORBA.Float;

@@ -41,6 +41,10 @@ package body broker.radio.Box_Monitor_Radio.Skel is
      CORBA.To_CORBA_String
         ("metres");
 
+   Force_Pitstop_Arg_Name_force_Ü : constant CORBA.Identifier :=
+     CORBA.To_CORBA_String
+        ("force");
+
    procedure Invoke
      (Self : PortableServer.Servant;
       Request : CORBA.ServerRequest.Object_Ptr);
@@ -168,6 +172,37 @@ package body broker.radio.Box_Monitor_Radio.Skel is
                CORBA.ServerRequest.Set_Result
                  (Request,
                   Arg_Any_Result_Ü_Ü);
+               CORBA.NVList.Internals.Clone_Out_Args
+                 (Argument_List_Ü);
+            end;
+         elsif (Operation_Ü
+            = "Force_Pitstop")
+         then
+            declare
+               Argument_force_Ü : CORBA.Boolean;
+               pragma Warnings (Off, Argument_force_Ü);
+               Arg_CC_force_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Argument_force_Ü'Unrestricted_Access);
+               Arg_Any_force_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Boolean,
+                     Arg_CC_force_Ü'Unchecked_Access);
+            begin
+               CORBA.NVList.Add_Item
+                 (Argument_List_Ü,
+                  Force_Pitstop_Arg_Name_force_Ü,
+                  Arg_Any_force_Ü,
+                  CORBA.ARG_IN);
+               --  Processing request
+               CORBA.ServerRequest.Arguments
+                 (Request,
+                  Argument_List_Ü);
+               --  Call Implementation
+               broker.radio.Box_Monitor_Radio.Impl.Force_Pitstop
+                 (broker.radio.Box_Monitor_Radio.Impl.Object'Class
+                    (Self.all)'Access,
+                  Argument_force_Ü);
                CORBA.NVList.Internals.Clone_Out_Args
                  (Argument_List_Ü);
             end;

@@ -1,3 +1,5 @@
+with Artificial_Intelligence;
+
 package body Box_Monitor is
 
    Buffer : Box_Data.SYNCH_ALL_INFO_BUFFER_POINT;
@@ -6,6 +8,11 @@ package body Box_Monitor is
    begin
       Buffer := CompetitionUpdates_Buffer;
    end Init;
+
+   procedure Force_Pitstop ( Force : Boolean ) is
+   begin
+      Artificial_Intelligence.Pitstop_Handler.Force_Pitstop(Force);
+   end Force_Pitstop;
 
    procedure GetUpdate(Num : in INTEGER;
                        Time : out FLOAT;

@@ -12,6 +12,12 @@ package body Broker.Radio.Box_Monitor_Radio.impl is
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
 
+   procedure Force_Pitstop (Self : access Object;
+                            Force : Corba.Boolean) is
+   begin
+      Box_Monitor.Force_Pitstop(Boolean(Force));
+   end Force_Pitstop;
+
    procedure GetUpdate(Self : access Object;
                        num : in CORBA.Short;
                        time : out CORBA.Float;

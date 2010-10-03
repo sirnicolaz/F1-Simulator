@@ -31,6 +31,13 @@ package broker.radio.Box_Monitor_Radio is
    GetUpdate_Repository_Id : constant PolyORB.Std.String :=
      "IDL:broker/radio/Box_Monitor_Radio/GetUpdate:1.0";
 
+   procedure Force_Pitstop
+     (Self : Ref;
+      force : CORBA.Boolean);
+
+   Force_Pitstop_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:broker/radio/Box_Monitor_Radio/Force_Pitstop:1.0";
+
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)

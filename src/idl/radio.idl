@@ -3,6 +3,7 @@ module broker{
 
 		interface Box_Monitor_Radio {
         		string GetUpdate ( in short num, out float time, out float metres );
+			void Force_Pitstop ( in boolean force );
 		};
 
 		interface Competition_Monitor_Radio {

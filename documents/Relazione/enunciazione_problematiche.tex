@@ -60,15 +60,16 @@ devono poter influenzare le scelte degli altri concorrenti.
 Requisito essenziale per poter presentare i dati relativi all'andamento della competizione è riuscire ad ottenere una
 snapshot della gara in un determinato istanto. Ovvero, dato un istante di tempo \emph{t} o un evento \emph{e}, bisogna
 poter risalire allo stato dei concorrenti e della gara in generale in quel momento. In tal modo sarà reso possibile
-monitorare l'evolversi della competizione. Bisogna però tenere in considerazione qualunque entità provvederà allo scatto
+monitorare l'evolversi della competizione. Bisogna però tenere in considerazione che qualunque entità provvede allo scatto
 dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità attive dipendenti dallo scheduler. 
 Di conseguenza è lecito pensare che uno snapshot possa risultare inconsistente se viene eseguito, per motivi di 
 prerilascio, metà ad un istante
-\emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio.
+\emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio. La distribuzione aggiunge un ulteriore livello di complessità
+al problema, poichè il ritardo potrebbe essere causato non solo dallo scheduler, ma anche dalla rete.
 \subsection{Robustezza del sistema distribuito (Lorenzo)}
 \subsection{Intelligenza artificiale}
 Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
-di intelligenza artificiale che riesca a far procedere la gara in modo verosimile.
+di intelligenza artificiale che riesca a far procedere la gara in modo verosimile. Il problema in questo caso
 \subsection{Start del sistema}
 
 \subsection{Stop del sistema}

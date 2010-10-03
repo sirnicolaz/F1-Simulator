@@ -146,6 +146,85 @@ package body broker.radio.Box_Monitor_Radio is
         (Request_Ü);
    end GetUpdate;
 
+   Force_Pitstop_Arg_Name_force_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("force");
+
+   Force_Pitstop_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   ----------------------------
+   -- Force_Pitstop_Result_Ü --
+   ----------------------------
+
+   function Force_Pitstop_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Force_Pitstop_Result_Ü);
+   begin
+      return (Name => Force_Pitstop_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_Void),
+      Arg_Modes => 0);
+   end Force_Pitstop_Result_Ü;
+
+   -------------------
+   -- Force_Pitstop --
+   -------------------
+
+   procedure Force_Pitstop
+     (Self : Ref;
+      force : CORBA.Boolean)
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Arg_CC_force_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (force'Unrestricted_Access);
+      Arg_Any_force_Ü : constant CORBA.Any :=
+        CORBA.Internals.Get_Wrapper_Any
+           (CORBA.TC_Boolean,
+            Arg_CC_force_Ü'Unchecked_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Force_Pitstop_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Fill the Argument list
+      PolyORB.Any.NVList.Add_Item
+        (Argument_List_Ü,
+         Force_Pitstop_Arg_Name_force_Ü,
+         PolyORB.Any.Any
+           (Arg_Any_force_Ü),
+         PolyORB.Any.ARG_IN);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Force_Pitstop",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+   end Force_Pitstop;
+
    ----------
    -- Is_A --
    ----------
