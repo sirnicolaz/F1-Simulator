@@ -1,5 +1,5 @@
 box:
-	javac -d ../../obj/java/ GUI/Box/BoxConfigurationWindow.java
+	javac -d ../../obj/java/ GUI/Box/PreBoxConfigurationWindow.java
 
 competition: tv
 	javac -d ../../obj/java/ GUI/Competition/CompetitionConfigurationWindow.java 

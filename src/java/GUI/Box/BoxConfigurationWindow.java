@@ -126,9 +126,13 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private int intStrategy;
     private Double valueUsuryDouble;
     private Integer valueFuelInt;
-    public BoxConfigurationWindow(JFrame frame, String param){
+    private String nameFile;
+    private boolean updateConfig;
+    public BoxConfigurationWindow(JFrame frame, String param, boolean updateConfig_In, String nameFile_In){
 	stringId = param;
 	parent=frame;
+	updateConfig = updateConfig_In;
+	nameFile = nameFile_In;
 	try{
 	    // LETTURA CORBALOC DA FILE
 	    FileReader doc=new FileReader("../temp/boxCorbaLoc-"+stringId+".txt");
@@ -493,9 +497,17 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	buttonPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 	buttonPanel.setLayout(new FlowLayout());
 
-	carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
-	boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
-	buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
+/*	if(updateConfig == true ){
+		carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid, nameFile);
+		boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid, nameFile);
+		buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel, nameFile);
+
+	}*/
+// 	else{	
+		carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
+		boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
+		buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
+// 	}
 	frame.add(carPanel, BorderLayout.WEST);
 	frame.add(boxPanel, BorderLayout.NORTH);
 	frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -632,11 +644,15 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    e.printStackTrace();
 	}
     }
+//   public void readXml(String nameFile){
+// 
+// 
+//   }
 
-    public static void main(String[] args){
-	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
-	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
-	boxWindow.init(j);
-
-    }
+//     public static void main(String[] args){
+// 	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
+// 	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
+// 	boxWindow.init(j);
+// 
+//     }
 }
