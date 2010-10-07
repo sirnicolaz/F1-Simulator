@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  1 OCT 2010 15:30
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  7 OCT 2010 10:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -570,11 +570,11 @@ LaTeX Font Info:    External font `cmex10' loaded for size
  [1.1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-(./F1_Sym.toc [2.2])
+(./F1_Sym.toc [2.2] [3.3])
 \tf@toc=\write5
 \openout5 = `F1_Sym.toc'.
 
- [3.3] [4.4] (./F1_Sym.lof)
+ [4.4] (./F1_Sym.lof)
 \tf@lof=\write6
 \openout6 = `F1_Sym.lof'.
 
@@ -596,36 +596,36 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--39
 
  []
 
-[7.7]
+[7.7] [8.8]) (./analisi_soluzioni.tex [9.9] [10.10]
 Underfull \hbox (badness 10000) in paragraph at lines 42--43
 
  []
 
-) (./problematiche_distribuzione.tex) (./soluzione_proposta.tex
+[11.11] [12.12]) (./problematiche_distribuzione.tex) (./soluzione_proposta.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--6
 
  []
 
-<img/ComponentDiagram.jpg, id=488, 676.5275pt x 537.00626pt>
+<img/ComponentDiagram.jpg, id=576, 676.5275pt x 537.00626pt>
 File: img/ComponentDiagram.jpg Graphic file (type jpg)
 
 <use img/ComponentDiagram.jpg>
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[8.8] [9.9 <./img/ComponentDiagram.jpg>] [10.10]
+[13.13] [14.14 <./img/ComponentDiagram.jpg>] [15.15]
 Overfull \hbox (12.77988pt too wide) in paragraph at lines 80--81
 []\T1/cmr/m/n/10 banalmente, con-tin-uare a cor-rere fi-no al-la fine delle lap
  presta-bilite, dopodichè
  []
 
-[11.11]
+
 Overfull \hbox (2.18356pt too wide) in paragraph at lines 95--97
 []\T1/cmr/bx/n/10 posizione nel-la pista\T1/cmr/m/n/10 : un \T1/cmr/m/it/10 Che
 ck-point \T1/cmr/m/n/10 puù es-sere il tra-guar-do, l'inizio
  []
 
-[12.12] [13.13]
+[16.16] [17.17] [18.18]
 Underfull \hbox (badness 10000) in paragraph at lines 166--167
 
  []
@@ -637,90 +637,90 @@ Underfull \hbox (badness 10000) in paragraph at lines 166--167
 
 
 <img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg, id
-=528, 555.07375pt x 312.16624pt>
+=614, 555.07375pt x 312.16624pt>
 File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jp
 g Graphic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg
-> [14.14 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
-ion.jpg>] [15.15]
-<img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=5
-39, 526.96875pt x 192.72pt>
+> [19.19 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
+ion.jpg>] [20.20]
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=6
+26, 526.96875pt x 192.72pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg 
 Graphic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg, id=540,
+<img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg, id=627,
  451.6875pt x 171.64125pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg Gra
 phic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>
-[16.16
+[21.21
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg> <
 ./img/InteractionDiagram/Implementation_Diagram__CompetitionMonitor.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg, id=546,
+<img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg, id=633,
  528.97626pt x 157.58875pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg Gra
 phic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg, id=547, 4
+<img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg, id=634, 4
 79.7925pt x 157.58875pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg Graph
 ic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>
-[17.17
+[22.22
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitionCircuit.jpg> <./i
 mg/InteractionDiagram/Implementation_Diagram__CompetitionStats.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg, id=553, 43
+<img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg, id=640, 43
 7.635pt x 143.53625pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg Graphi
 c file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg, id=554, 
+<img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg, id=641, 
 479.7925pt x 220.825pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg Grap
 hic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>
-[18.18
+[23.23
 
  <./img/InteractionDiagram/Implementation_Diagram__CompetitorStats.jpg> <./img/
 InteractionDiagram/Implementation_Diagram__CompetitorCircuit.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg, id=560, 472.7
+<img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg, id=647, 472.7
 6625pt x 270.00874pt>
 File: img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg Graphic f
 ile (type jpg)
 
-<use img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg> [19.19 <.
+<use img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg> [24.24 <.
 /img/InteractionDiagram/Implementation_Diagram__MonitorStats.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg, id=567, 54
+<img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg, id=653, 54
 3.02875pt x 241.90375pt>
 File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg Graphi
 c file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg>
-<img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg, id=568, 550.055
+<img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg, id=654, 550.055
 pt x 316.18124pt>
 File: img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg Graphic fil
 e (type jpg)
 
-<use img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg> [20.20
+<use img/InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg> [25.25
 
  <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorBox.jpg> <./img/
 InteractionDiagram/Implementation_Diagram__BoxMonitor.jpg>]
-<img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg, id=574, 493.
+<img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg, id=661, 493.
 845pt x 284.06125pt>
 File: img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg Graphic 
 file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>
-<img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg, id=575, 451.6
+<img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg, id=662, 451.6
 875pt x 150.5625pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg Graphic f
 ile (type jpg)
@@ -729,18 +729,18 @@ ile (type jpg)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[21.21 <./img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>]
+[26.26 <./img/InteractionDiagram/Implementation_Diagram__ScreenMonitor.jpg>]
 
-LaTeX Warning: Reference `problematiche_concorrenza' on page 22 undefined on in
+LaTeX Warning: Reference `problematiche_concorrenza' on page 27 undefined on in
 put line 321.
 
-[22.22 <./img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>]
-[23.23] [24.24]
+[27.27 <./img/InteractionDiagram/Implementation_Diagram__CompetitoBox.jpg>]
+[28.28] [29.29]
 Underfull \hbox (badness 10000) in paragraph at lines 398--404
 
  []
 
-[25.25]
+[30.30]
 Underfull \hbox (badness 10000) in paragraph at lines 404--413
 
  []
@@ -750,8 +750,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 414--416
 
  []
 
-[26.26]
-<img/ClassDiagrams/CompetitionClassDiagram.jpg, id=619, 730.73pt x 710.655pt>
+[31.31]
+<img/ClassDiagrams/CompetitionClassDiagram.jpg, id=705, 730.73pt x 710.655pt>
 File: img/ClassDiagrams/CompetitionClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/CompetitionClassDiagram.jpg>
@@ -759,18 +759,18 @@ Overfull \hbox (20.3641pt too wide) in paragraph at lines 426--427
 [][] 
  []
 
-[27.27 <./img/ClassDiagrams/CompetitionClassDiagram.jpg>] [28.28]
-<img/ClassDiagrams/CompetitorClassDiagram.jpg, id=630, 523.9575pt x 545.03625pt
+[32.32 <./img/ClassDiagrams/CompetitionClassDiagram.jpg>] [33.33]
+<img/ClassDiagrams/CompetitorClassDiagram.jpg, id=716, 523.9575pt x 545.03625pt
 >
 File: img/ClassDiagrams/CompetitorClassDiagram.jpg Graphic file (type jpg)
- <use img/ClassDiagrams/CompetitorClassDiagram.jpg> [29.29 <./img/ClassDiagrams
+ <use img/ClassDiagrams/CompetitorClassDiagram.jpg> [34.34 <./img/ClassDiagrams
 /CompetitorClassDiagram.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 483--493
 
  []
 
-[30.30]
-<img/ClassDiagrams/CircuitClassDiagram.jpg, id=642, 688.5725pt x 393.47pt>
+[35.35]
+<img/ClassDiagrams/CircuitClassDiagram.jpg, id=728, 688.5725pt x 393.47pt>
 File: img/ClassDiagrams/CircuitClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/CircuitClassDiagram.jpg>
@@ -790,13 +790,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 524--540
 
  []
 
-[31.31 <./img/ClassDiagrams/CircuitClassDiagram.jpg>]
+[36.36 <./img/ClassDiagrams/CircuitClassDiagram.jpg>]
 Overfull \hbox (10.97679pt too wide) in paragraph at lines 545--547
 []\T1/cmr/bx/n/10 procedure Set_ArrivalTime(CompetitorID_In : IN-TE-GER; Time_I
 n
  []
 
-[32.32]
+[37.37]
 Overfull \hbox (18.3pt too wide) in paragraph at lines 556--564
 []\T1/cmr/bx/n/10 procedure Get_Paths(Paths2Cross : out CROSS-ING_POINT; Go2Box
 
@@ -813,8 +813,8 @@ Overfull \hbox (23.23647pt too wide) in paragraph at lines 565--569
 sieme al \T1/cmr/bx/n/10 Race-Track_Iterator
  []
 
-[33.33] [34.34]
-<img/ClassDiagrams/StatsClassDiagram.jpg, id=665, 761.84625pt x 669.50125pt>
+[38.38] [39.39]
+<img/ClassDiagrams/StatsClassDiagram.jpg, id=751, 761.84625pt x 669.50125pt>
 File: img/ClassDiagrams/StatsClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/StatsClassDiagram.jpg>
@@ -822,12 +822,12 @@ Overfull \hbox (35.9222pt too wide) in paragraph at lines 590--591
 [][] 
  []
 
-[35.35 <./img/ClassDiagrams/StatsClassDiagram.jpg>]
+[40.40 <./img/ClassDiagrams/StatsClassDiagram.jpg>]
 Underfull \hbox (badness 10000) in paragraph at lines 616--626
 
  []
 
-[36.36]
+[41.41]
 Overfull \hbox (30.08102pt too wide) in paragraph at lines 640--647
 \T1/cmr/m/n/10 com-peti-tor è ded-i-ca-to un ar-ray di \T1/cmr/bx/n/10 Synch_Co
 mpetitor_Stats_Handler\T1/cmr/m/n/10 .
@@ -839,12 +839,12 @@ Overfull \hbox (0.67154pt too wide) in paragraph at lines 640--647
 zione un en-
  []
 
-[37.37]
+[42.42]
 Underfull \hbox (badness 10000) in paragraph at lines 653--659
 
  []
 
-[38.38]
+[43.43]
 Overfull \hbox (18.7449pt too wide) in paragraph at lines 676--680
 \T1/cmr/bx/n/10 CompetitorID_InClassific : out IN-TE-GER_ARRAY_POINT; 
  []
@@ -859,8 +859,8 @@ Overfull \hbox (54.55977pt too wide) in paragraph at lines 676--680
 \T1/cmr/bx/n/10 LappedCompetitor_CurrentLap : out IN-TE-GER_ARRAY_POINT); 
  []
 
-[39.39]
-<img/ClassDiagrams/MonitorClassDiagram.jpg, id=693, 690.58pt x 556.0775pt>
+[44.44]
+<img/ClassDiagrams/MonitorClassDiagram.jpg, id=779, 690.58pt x 556.0775pt>
 File: img/ClassDiagrams/MonitorClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/MonitorClassDiagram.jpg>
@@ -868,7 +868,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 692--698
 
  []
 
-[40.40 <./img/ClassDiagrams/MonitorClassDiagram.jpg>]
+[45.45 <./img/ClassDiagrams/MonitorClassDiagram.jpg>]
 Overfull \hbox (15.26538pt too wide) in paragraph at lines 704--708
 \T1/cmr/m/n/10 reperire le in-for-mazioni date, pre-cisa-mente uti-liz-zan-do i
 l meto-do $[]$
@@ -880,8 +880,8 @@ Overfull \hbox (39.21867pt too wide) in paragraph at lines 709--712
 \T1/cmr/m/n/10 e \T1/cmr/bx/n/10 Com-pe-ti-tion_Monitor_Radio\T1/cmr/m/n/10 ,
  []
 
-[41.41]
-<img/ClassDiagrams/BoxClassDiagram.jpg, id=704, 857.2025pt x 760.8425pt>
+[46.46]
+<img/ClassDiagrams/BoxClassDiagram.jpg, id=790, 857.2025pt x 760.8425pt>
 File: img/ClassDiagrams/BoxClassDiagram.jpg Graphic file (type jpg)
 
 <use img/ClassDiagrams/BoxClassDiagram.jpg>
@@ -895,7 +895,7 @@ Overfull \hbox (12.32304pt too wide) in paragraph at lines 725--732
 0 Synch_Competition_Updates\T1/cmr/m/n/10 .
  []
 
-[42.42 <./img/ClassDiagrams/BoxClassDiagram.jpg>]
+[47.47 <./img/ClassDiagrams/BoxClassDiagram.jpg>]
 Overfull \hbox (27.95811pt too wide) in paragraph at lines 732--739
 \T1/cmr/m/n/10 Rac-coglie gli ag-gior-na-men-ti di gara dal buffer \T1/cmr/bx/n
 /10 Synch_Competition_Updates
@@ -907,32 +907,32 @@ Overfull \hbox (6.58833pt too wide) in paragraph at lines 742--746
 er \T1/cmr/m/n/10 e \T1/cmr/bx/n/10 Strat-e-gy_History\T1/cmr/m/n/10 .
  []
 
-[43.43]
+[48.48]
 Underfull \hbox (badness 10000) in paragraph at lines 759--770
 
  []
 
-[44.44]
-<img/ClassDiagrams/ConfiguratorClassDiagram.jpg, id=721, 726.715pt x 542.025pt>
+[49.49]
+<img/ClassDiagrams/ConfiguratorClassDiagram.jpg, id=807, 726.715pt x 542.025pt>
 File: img/ClassDiagrams/ConfiguratorClassDiagram.jpg Graphic file (type jpg)
 <use img/ClassDiagrams/ConfiguratorClassDiagram.jpg>
 Overfull \hbox (18.3566pt too wide) in paragraph at lines 774--775
 [][] 
  []
 
-[45.45 <./img/ClassDiagrams/ConfiguratorClassDiagram.jpg>] [46.46]
-<img/ClassDiagrams/ScreenClassDiagram.jpg, id=734, 555.07375pt x 646.415pt>
+[50.50 <./img/ClassDiagrams/ConfiguratorClassDiagram.jpg>] [51.51]
+<img/ClassDiagrams/ScreenClassDiagram.jpg, id=820, 555.07375pt x 646.415pt>
 File: img/ClassDiagrams/ScreenClassDiagram.jpg Graphic file (type jpg)
 
-<use img/ClassDiagrams/ScreenClassDiagram.jpg> [47.47 <./img/ClassDiagrams/Scre
+<use img/ClassDiagrams/ScreenClassDiagram.jpg> [52.52 <./img/ClassDiagrams/Scre
 enClassDiagram.jpg>]
 Overfull \hbox (31.35173pt too wide) in paragraph at lines 828--832
 \T1/cmr/m/n/10 fra task, è sta-to suf-fi-ciente in-serir-lo in una risor-sa pro
 -tet-ta: \T1/cmr/bx/n/10 Synch_Checkpoint\T1/cmr/m/n/10 .
  []
 
-[48.48]
-<img/SequenceDiagrams/ArriveAndCross.jpg, id=746, 945.5325pt x 1180.41pt>
+[53.53]
+<img/SequenceDiagrams/ArriveAndCross.jpg, id=832, 945.5325pt x 1180.41pt>
 File: img/SequenceDiagrams/ArriveAndCross.jpg Graphic file (type jpg)
 
 <use img/SequenceDiagrams/ArriveAndCross.jpg>
@@ -943,7 +943,7 @@ Overfull \hbox (48.23828pt too wide) in paragraph at lines 846--847
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[49.49] [50.50 <./img/SequenceDiagrams/ArriveAndCross.jpg>]
+[54.54] [55.55 <./img/SequenceDiagrams/ArriveAndCross.jpg>]
 Overfull \hbox (30.54637pt too wide) in paragraph at lines 851--852
 \T1/cmr/m/n/10 quali casi un con-cor-rente può cam-biare sta-to nel-la co-da de
 l \T1/cmr/bx/n/10 Synch_Checkpoint\T1/cmr/m/n/10 : 
@@ -955,7 +955,7 @@ Overfull \hbox (17.08975pt too wide) in paragraph at lines 853--855
 n $[]$
  []
 
-[51.51
+[56.56
 
 ]
 Overfull \hbox (45.2547pt too wide) in paragraph at lines 871--884
@@ -969,8 +969,8 @@ Overfull \hbox (16.96486pt too wide) in paragraph at lines 885--895
 riz-za-ta da \T1/cmr/bx/n/10 Strat-e-gy_Updater
  []
 
-[52.52] [53.53] [54.54]
-<img/SequenceDiagrams/InitCompetition.jpg, id=782, 1674.255pt x 1506.62875pt>
+[57.57] [58.58] [59.59]
+<img/SequenceDiagrams/InitCompetition.jpg, id=868, 1674.255pt x 1506.62875pt>
 File: img/SequenceDiagrams/InitCompetition.jpg Graphic file (type jpg)
 
 <use img/SequenceDiagrams/InitCompetition.jpg>
@@ -984,15 +984,15 @@ LaTeX Warning: Float too large for page by 14.942pt on input line 955.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[55.55] [56.56 <./img/SequenceDiagrams/InitCompetition.jpg>]
+[60.60] [61.61 <./img/SequenceDiagrams/InitCompetition.jpg>]
 Overfull \hbox (6.5438pt too wide) in paragraph at lines 958--975
 \T1/cmr/bx/n/10 tionHan-dler Com-pe-ti-tion_Monitor_Radio\T1/cmr/m/n/10 . Viene
  avvi-a-to un task \T1/cmr/bx/n/10 Starter
  []
 
-[57.57
+[62.62
 
-]) (./analisi_supporto_tecnologico.tex [58.58]) (./glossario.tex
+]) (./analisi_supporto_tecnologico.tex [63.63]) (./glossario.tex
 Underfull \hbox (badness 10000) in paragraph at lines 3--5
 
  []
@@ -1007,7 +1007,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--21
 
  []
 
-[59.59]
+[64.64]
 Underfull \hbox (badness 10000) in paragraph at lines 21--25
 
  []
@@ -1027,21 +1027,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--45
 
  []
 
-) (./manuale_utente.tex [60.60] [61.61] [62.62]
-<img/ScreenshotRelazione/BoxAdminWindows.jpg, id=836, 319.94531pt x 313.9228pt>
+) (./manuale_utente.tex [65.65] [66.66] [67.67]
+<img/ScreenshotRelazione/BoxAdminWindows.jpg, id=922, 319.94531pt x 313.9228pt>
 File: img/ScreenshotRelazione/BoxAdminWindows.jpg Graphic file (type jpg)
 <use img/ScreenshotRelazione/BoxAdminWindows.jpg>
-<img/ScreenshotRelazione/boxMonitor.jpg, id=837, 457.71pt x 380.92313pt>
+<img/ScreenshotRelazione/boxMonitor.jpg, id=923, 457.71pt x 380.92313pt>
 File: img/ScreenshotRelazione/boxMonitor.jpg Graphic file (type jpg)
 
-<use img/ScreenshotRelazione/boxMonitor.jpg> [63.63 <./img/ScreenshotRelazione/
-BoxAdminWindows.jpg>] [64.64 <./img/ScreenshotRelazione/boxMonitor.jpg>]
-<img/ScreenshotRelazione/configureCompetition.jpg, id=870, 404.26031pt x 138.51
+<use img/ScreenshotRelazione/boxMonitor.jpg> [68.68 <./img/ScreenshotRelazione/
+BoxAdminWindows.jpg>] [69.69 <./img/ScreenshotRelazione/boxMonitor.jpg>]
+<img/ScreenshotRelazione/configureCompetition.jpg, id=956, 404.26031pt x 138.51
 75pt>
 File: img/ScreenshotRelazione/configureCompetition.jpg Graphic file (type jpg)
- <use img/ScreenshotRelazione/configureCompetition.jpg> [65.65 <./img/Screensho
+ <use img/ScreenshotRelazione/configureCompetition.jpg> [70.70 <./img/Screensho
 tRelazione/configureCompetition.jpg>]
-<img/ScreenshotRelazione/screenTvCompetition.jpg, id=881, 472.76625pt x 305.641
+<img/ScreenshotRelazione/screenTvCompetition.jpg, id=967, 472.76625pt x 305.641
 88pt>
 File: img/ScreenshotRelazione/screenTvCompetition.jpg Graphic file (type jpg)
  <use img/ScreenshotRelazione/screenTvCompetition.jpg>
@@ -1050,20 +1050,20 @@ Overfull \hbox (9.5738pt too wide) in paragraph at lines 134--135
  []
 
 
-<img/ScreenshotRelazione/configurationScreen.jpg, id=882, 349.305pt x 144.54pt>
+<img/ScreenshotRelazione/configurationScreen.jpg, id=968, 349.305pt x 144.54pt>
 File: img/ScreenshotRelazione/configurationScreen.jpg Graphic file (type jpg)
-<use img/ScreenshotRelazione/configurationScreen.jpg> [66.66 <./img/ScreenshotR
-elazione/screenTvCompetition.jpg>]) [67.67 <./img/ScreenshotRelazione/configura
+<use img/ScreenshotRelazione/configurationScreen.jpg> [71.71 <./img/ScreenshotR
+elazione/screenTvCompetition.jpg>]) [72.72 <./img/ScreenshotRelazione/configura
 tionScreen.jpg>] (./F1_Sym.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 7433 strings out of 495061
- 106659 string characters out of 1182621
- 174493 words of memory out of 3000000
- 10206 multiletter control sequences out of 15000+50000
+ 7467 strings out of 495061
+ 107091 string characters out of 1182621
+ 175500 words of memory out of 3000000
+ 10217 multiletter control sequences out of 15000+50000
  13726 words of font info for 28 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
  38i,12n,43p,1148b,1799s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1083,9 +1083,9 @@ hare/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texmf-texlive/fonts/
 type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/publi
 c/amsfonts/cm/cmsy7.pfb>
-Output written on F1_Sym.pdf (67 pages, 2776198 bytes).
+Output written on F1_Sym.pdf (72 pages, 2798314 bytes).
 PDF statistics:
- 1438 PDF objects out of 1440 (max. 8388607)
- 226 named destinations out of 1000 (max. 500000)
- 741 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1529 PDF objects out of 1728 (max. 8388607)
+ 246 named destinations out of 1000 (max. 500000)
+ 829 words of extra memory for PDF output out of 10000 (max. 10000000)
 

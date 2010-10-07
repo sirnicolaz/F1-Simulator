@@ -70,6 +70,23 @@ al problema, poichè il ritardo potrebbe essere causato non solo dallo scheduler
 \subsection{Intelligenza artificiale}
 Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
 di intelligenza artificiale che riesca a far procedere la gara in modo verosimile. Il problema in questo caso
-\subsection{Start del sistema}
-
+\subsection{Avvio del sistema}
+L'avvio del sistema presenta dei problemi legati alla natura concorrente e distribuita dello stesso.\\
+In dettaglio:
+\begin{itemize}
+\item la natura distribuita introduce il problema della messa in connessione dei nodi. Quando un nodo si connette
+è necessario che esso sappia dove sono dislocati gli altri nodi (o almeno quelli necessari) e che gli altri nodi
+possano reperire quello appena connesso.
+\item la natura concorrente invece introduce dei problemi relativi alla comunicazione delle entità attive. Tali entità
+saranno presumibilmente messe in comunicazione o tramite risorse condivise o in modo diretto. Si prospetta quindi la
+possibilità che in fase di avvio (essendo l'avvio un processo sequenziale) alcune entità richiedano la connessione con 
+altre che non siano ancora pronte o allocate, causando un fault in alcuni casi, in altri un'esecuzione con risultati 
+errati.
+\end{itemize}
 \subsection{Stop del sistema}
+Nel caso specifico di un simulatore di formula 1, lo stop deve avvenire innanzitutto a livello logico. Ovvero, deve essere
+possibile al sistema poter capire quando la gara è finita in modo da poterlo annunciare.\\
+Una volta che la competizione risulti essere completata, le risorse non più necessarie devono essere deallocate e i task
+fermati.\\
+Quando il sistema viene interrotto definitivamente, non devono più essere presenti server in attesa di connessioni o
+thread attivi.
