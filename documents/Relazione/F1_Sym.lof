@@ -1,29 +1,29 @@
 \select@language {italian}
-\contentsline {figure}{\numberline {1}{\ignorespaces Diagramma delle componenti}}{9}{figure.1}
-\contentsline {figure}{\numberline {2}{\ignorespaces Protocol / Interface diagram - Configurator/Competition}}{14}{figure.2}
-\contentsline {figure}{\numberline {3}{\ignorespaces Protocol / Interface diagram - Competition/Competitor}}{16}{figure.3}
-\contentsline {figure}{\numberline {4}{\ignorespaces Protocol / Interface diagram - Competition/Monitor}}{16}{figure.4}
-\contentsline {figure}{\numberline {5}{\ignorespaces Protocol / Interface diagram - Competition/Circuit}}{17}{figure.5}
-\contentsline {figure}{\numberline {6}{\ignorespaces Protocol / Interface diagram - Competition/Stats}}{17}{figure.6}
-\contentsline {figure}{\numberline {7}{\ignorespaces Protocol / Interface diagram - Competitor/Stats}}{18}{figure.7}
-\contentsline {figure}{\numberline {8}{\ignorespaces Protocol / Interface diagram - Competitor/Circuit}}{18}{figure.8}
-\contentsline {figure}{\numberline {9}{\ignorespaces Protocol / Interface diagram - Monitor/Stats}}{19}{figure.9}
-\contentsline {figure}{\numberline {10}{\ignorespaces Protocol / Interface diagram - Configurator/Box}}{20}{figure.10}
-\contentsline {figure}{\numberline {11}{\ignorespaces Protocol / Interface diagram - Box/Monitor}}{20}{figure.11}
-\contentsline {figure}{\numberline {12}{\ignorespaces Protocol / Interface diagram - Screen/Monitor}}{21}{figure.12}
-\contentsline {figure}{\numberline {13}{\ignorespaces Protocol / Interface diagram - Competitor/Box}}{22}{figure.13}
-\contentsline {figure}{\numberline {14}{\ignorespaces Class diagram - Competition}}{27}{figure.14}
-\contentsline {figure}{\numberline {15}{\ignorespaces Class diagram - Competitor}}{29}{figure.15}
-\contentsline {figure}{\numberline {16}{\ignorespaces Class diagram - Circuit}}{31}{figure.16}
-\contentsline {figure}{\numberline {17}{\ignorespaces Class diagram - Stats}}{35}{figure.17}
-\contentsline {figure}{\numberline {18}{\ignorespaces Class diagram - Monitor}}{40}{figure.18}
-\contentsline {figure}{\numberline {19}{\ignorespaces Class diagram - Box}}{42}{figure.19}
-\contentsline {figure}{\numberline {20}{\ignorespaces Class diagram - Configurator}}{45}{figure.20}
-\contentsline {figure}{\numberline {21}{\ignorespaces Class diagram - Screen}}{47}{figure.21}
-\contentsline {figure}{\numberline {22}{\ignorespaces Sequence Diagram - Arrivo al checkpoint e recupero lista traiettorie}}{50}{figure.22}
-\contentsline {figure}{\numberline {23}{\ignorespaces Sequence Diagram - Inizializzazione competizione}}{56}{figure.23}
-\contentsline {figure}{\numberline {24}{\ignorespaces Finestra di configurazione del box e del concorrente}}{63}{figure.24}
-\contentsline {figure}{\numberline {25}{\ignorespaces Monitor dei box}}{64}{figure.25}
-\contentsline {figure}{\numberline {26}{\ignorespaces Finestra di configurazione della competizione}}{65}{figure.26}
-\contentsline {figure}{\numberline {27}{\ignorespaces Finestra di visualizzazione dell'andamento della gara}}{66}{figure.27}
-\contentsline {figure}{\numberline {28}{\ignorespaces Finestra di configurazione della tv}}{67}{figure.28}
+\contentsline {figure}{\numberline {1}{\ignorespaces Diagramma delle componenti}}{14}{figure.1}
+\contentsline {figure}{\numberline {2}{\ignorespaces Protocol / Interface diagram - Configurator/Competition}}{19}{figure.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces Protocol / Interface diagram - Competition/Competitor}}{21}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Protocol / Interface diagram - Competition/Monitor}}{21}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Protocol / Interface diagram - Competition/Circuit}}{22}{figure.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Protocol / Interface diagram - Competition/Stats}}{22}{figure.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Protocol / Interface diagram - Competitor/Stats}}{23}{figure.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Protocol / Interface diagram - Competitor/Circuit}}{23}{figure.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Protocol / Interface diagram - Monitor/Stats}}{24}{figure.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Protocol / Interface diagram - Configurator/Box}}{25}{figure.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Protocol / Interface diagram - Box/Monitor}}{25}{figure.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Protocol / Interface diagram - Screen/Monitor}}{26}{figure.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Protocol / Interface diagram - Competitor/Box}}{27}{figure.13}
+\contentsline {figure}{\numberline {14}{\ignorespaces Class diagram - Competition}}{32}{figure.14}
+\contentsline {figure}{\numberline {15}{\ignorespaces Class diagram - Competitor}}{34}{figure.15}
+\contentsline {figure}{\numberline {16}{\ignorespaces Class diagram - Circuit}}{36}{figure.16}
+\contentsline {figure}{\numberline {17}{\ignorespaces Class diagram - Stats}}{40}{figure.17}
+\contentsline {figure}{\numberline {18}{\ignorespaces Class diagram - Monitor}}{45}{figure.18}
+\contentsline {figure}{\numberline {19}{\ignorespaces Class diagram - Box}}{47}{figure.19}
+\contentsline {figure}{\numberline {20}{\ignorespaces Class diagram - Configurator}}{50}{figure.20}
+\contentsline {figure}{\numberline {21}{\ignorespaces Class diagram - Screen}}{52}{figure.21}
+\contentsline {figure}{\numberline {22}{\ignorespaces Sequence Diagram - Arrivo al checkpoint e recupero lista traiettorie}}{55}{figure.22}
+\contentsline {figure}{\numberline {23}{\ignorespaces Sequence Diagram - Inizializzazione competizione}}{61}{figure.23}
+\contentsline {figure}{\numberline {24}{\ignorespaces Finestra di configurazione del box e del concorrente}}{68}{figure.24}
+\contentsline {figure}{\numberline {25}{\ignorespaces Monitor dei box}}{69}{figure.25}
+\contentsline {figure}{\numberline {26}{\ignorespaces Finestra di configurazione della competizione}}{70}{figure.26}
+\contentsline {figure}{\numberline {27}{\ignorespaces Finestra di visualizzazione dell'andamento della gara}}{71}{figure.27}
+\contentsline {figure}{\numberline {28}{\ignorespaces Finestra di configurazione della tv}}{72}{figure.28}
