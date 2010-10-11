@@ -47,13 +47,14 @@ openButton = new JButton("Sfoglia...");
 //azione per il bottone sfoglia. viene cosi selezionato il circuito.
 	openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			JFileChooser fc = new JFileChooser("../");
+			JFileChooser fc = new JFileChooser(".");
 		        fc.setAcceptAllFileFilterUsed(false);
 				int returnVal = fc.showOpenDialog(parent);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
 						fileCompetitor.setText(fc.getSelectedFile().getName());
 						fileName = fc.getSelectedFile().getName();
+						System.out.println("FileName = "+fileName);
 					} catch(Exception ecc) {
 // 					    ecc.printStackTrace();
 					}
@@ -64,7 +65,7 @@ openButton = new JButton("Sfoglia...");
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			 JFrame j = new JFrame("Box Admin Window n° "+ argument);
-
+System.out.println("FileName = "+fileName);
 			 BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, argument, uploadConfig, fileName);
 			 boxWindow.init(j);
 			 parent.dispose();
@@ -74,7 +75,7 @@ openButton = new JButton("Sfoglia...");
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileCompetitor.setText("../competitor-1.xml");
+			    fileCompetitor.setText("competitor-1.xml");
 // 			    jsRefresh.setValue(43);
 			    
 		}

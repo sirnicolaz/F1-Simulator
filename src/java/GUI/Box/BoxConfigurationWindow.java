@@ -17,6 +17,12 @@ import org.omg.CosNaming.NamingContextHelper;
 import broker.radio.*;
 import broker.init.*;
 
+
+import java.lang.*;
+import javax.xml.parsers.*;
+import org.xml.sax.InputSource;
+import org.w3c.dom.*;
+
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 
@@ -31,7 +37,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private org.omg.CORBA.StringHolder monitorCorbaLoc = new org.omg.CORBA.StringHolder();
     private ORB orb;
     //sezione JSlider
-    private JSlider sliderTyreUsury;
+//     private JSlider sliderTyreUsury;
     private JSlider sliderFuelTank;
     private JSlider sliderGasLevel;
     private JSlider sliderSpeed;
@@ -63,7 +69,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JComboBox comboPitStop;
     private JComboBox comboTypeTyre;
     private JComboBox comboBox;
-    private JComboBox comboStrategypitstop;
+     private JComboBox comboStrategypitstop;
 
     //sezione spinner giro di fermata
     //sezione spinner Quantità di benzina
@@ -83,9 +89,9 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JPanel buttonPanel;
     private JPanel dataPanel;
     //sezione JSpinner
-    private JSpinner jsLap;
+   /* private JSpinner jsLap;
     private JSpinner jsFuel;
-    private JSpinner jsVelocita;
+    private JSpinner jsVelocita;*/
     private JSpinner jsAcc;
     //sezione GridBagConstraints
     private GridBagConstraints carConfigurationGrid;
@@ -338,7 +344,10 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     }
 
     class driverConfigurationPanel{
-	driverConfigurationPanel(JPanel dataPanel, GridBagConstraints driverConfigurationGrid){createData(dataPanel, driverConfigurationGrid);}
+	driverConfigurationPanel(JPanel dataPanel, GridBagConstraints driverConfigurationGrid){
+	      createData(dataPanel, driverConfigurationGrid);
+	}
+	
 	public void createData(JPanel dataPanel, GridBagConstraints driverConfigurationGrid){
 	    driverConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    driverConfigurationGrid.gridx = 0;
@@ -497,17 +506,40 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	buttonPanel.setBorder(BorderFactory.createTitledBorder(null, "Submit & Undo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 	buttonPanel.setLayout(new FlowLayout());
 
-/*	if(updateConfig == true ){
-		carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid, nameFile);
-		boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid, nameFile);
-		buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel, nameFile);
-
-	}*/
-// 	else{	
+	
 		carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
 		boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
 		buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
-// 	}
+ 	
+	// settaggio parametri in base al file di configurazione, se già presente
+	if(updateConfig == true){
+	    String competitorFile=new String();
+	    System.out.println(nameFile);
+	    try{
+	    FileReader doc=new FileReader(nameFile);
+	    BufferedReader bufRead = new BufferedReader(doc);
+	    //read configuratorCorbaloc
+	    competitorFile = bufRead.readLine();
+	    String tempString = new String();
+	    while((tempString = bufRead.readLine())!=null){
+	    competitorFile=competitorFile + tempString;
+	    System.out.println(competitorFile);
+	    }
+	    bufRead.close();
+	}
+	catch (IOException e ){
+System.out.println("settaggio parametri : errore di apertura/chiusura del file");
+e.printStackTrace();
+}
+	catch (Exception e){
+System.out.println("settaggioparametri : problemi con la lettura del file");
+e.printStackTrace();
+}
+	
+	readXmlCompetitor(competitorFile);
+	  }
+
+	// aggiunta pannelli
 	frame.add(carPanel, BorderLayout.WEST);
 	frame.add(boxPanel, BorderLayout.NORTH);
 	frame.add(buttonPanel, BorderLayout.SOUTH);
@@ -527,6 +559,108 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	textSurname.setText("Pluto");//cognome predefinito
 	textTeam.setText("Ferrari");//scuderia predefinita
 	sliderSpeed.setValue(300);
+    }
+     public void readXmlCompetitor(String xmlRecords){
+	try {
+	    DocumentBuilderFactory dbf =
+		DocumentBuilderFactory.newInstance();
+	    DocumentBuilder db = dbf.newDocumentBuilder();
+	    InputSource is = new InputSource();
+	    is.setCharacterStream(new StringReader(xmlRecords));
+
+	    Document doc = db.parse(is);
+	    //         NodeList nodes3 = doc.getElementsByTagName("update");
+	    NodeList nodes = doc.getElementsByTagName("driver");
+	    // nodes = doc.getElementsByTagName("car_driver");
+	    // 	Element element = (Element) nodes.item(i);
+
+	    int i=0;
+
+	    Element element = (Element) nodes.item(i);
+	    NodeList team = element.getElementsByTagName("team");
+	    Element line = (Element) team.item(0);
+	    textTeam.setText(new String(getCharacterDataFromElement(line)));
+// 	    System.out.println("team value "+ teamValue);
+
+	    element = (Element) nodes.item(i);
+	    NodeList firstname = element.getElementsByTagName("firstname");
+	    line = (Element) firstname.item(0);
+	    textName.setText(new String(getCharacterDataFromElement(line)));
+// 	    System.out.println("first "+firstnameValue);
+
+	    element = (Element) nodes.item(i);
+	    NodeList lastname = element.getElementsByTagName("lastname");
+	    line = (Element) lastname.item(0);
+	    textSurname.setText(new String(getCharacterDataFromElement(line)));
+
+	    nodes = doc.getElementsByTagName("car");
+	    System.out.println("in car");
+	    element = (Element) nodes.item(i);
+	    NodeList maxspeed = element.getElementsByTagName("maxspeed");
+	    line = (Element) maxspeed.item(0);
+	    sliderSpeed.setValue(new Double(getCharacterDataFromElement(line)).intValue());
+
+	    element = (Element) nodes.item(i);
+	    NodeList maxacceleration = element.getElementsByTagName("maxacceleration");
+	    line = (Element) maxacceleration.item(0);
+	    jsAcc.setValue(new Double(getCharacterDataFromElement(line)));
+
+	    element = (Element) nodes.item(i);
+	    NodeList gastank = element.getElementsByTagName("gastankcapacity");
+	    line = (Element) gastank.item(0);
+	    Double sliderFuelTankInteger = new Double(getCharacterDataFromElement(line)); 
+	    sliderFuelTank.setValue(sliderFuelTankInteger.intValue());
+	    System.out.println("SliderFuelTank = "+sliderFuelTankInteger.intValue());
+
+	    element = (Element) nodes.item(i);
+	    NodeList engine = element.getElementsByTagName("engine");
+	    line = (Element) engine.item(0);
+	    String engineValue = new String(getCharacterDataFromElement(line));
+	    if(engineValue.equals("Normal")){
+		      comboBox.setSelectedIndex(0);
+	    }
+	    else{ 
+	      if(engineValue.equals("Save")){
+		    comboBox.setSelectedIndex(1);
+	      }
+	     else{
+		  comboBox.setSelectedIndex(2);
+	      }
+	    }
+	    
+	    element = (Element) nodes.item(i);
+	    NodeList tyre = element.getElementsByTagName("tyreusury");
+	    line = (Element) tyre.item(0);
+	    
+	    element = (Element) nodes.item(i);
+	    NodeList level = element.getElementsByTagName("gasolinelevel");
+	    line = (Element) level.item(0);
+	    sliderGasLevel.setValue(new Double(getCharacterDataFromElement(line)).intValue());
+
+	    element = (Element) nodes.item(i);
+	    NodeList mixture = element.getElementsByTagName("mixture");
+	    line = (Element) mixture.item(0);
+	    String mixtureValue = new String(getCharacterDataFromElement(line));
+	    if(mixtureValue.equals("Soft")){
+		comboTypeTyre.setSelectedIndex(0);
+	    }
+	    else{
+		comboTypeTyre.setSelectedIndex(1);
+	    }
+
+	    }
+	catch (Exception e){
+ e.printStackTrace();
+}
+
+    }
+    public static String getCharacterDataFromElement(Element e) {
+	Node child = e.getFirstChild();
+	if (child instanceof CharacterData) {
+	    CharacterData cd = (CharacterData) child;
+	    return cd.getData();
+	}
+	return "-";
     }
     public boolean writerCompetitorXML(){
 	try{
