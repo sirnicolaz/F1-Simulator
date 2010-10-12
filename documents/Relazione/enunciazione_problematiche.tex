@@ -45,7 +45,17 @@ scheduler sottostante non è prevedibile, si presenta il problema di riuscire a 
 che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
 modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
 \subsection{Componenti di non determinismo (Lorenzo)}
+Dopo aver analizzato le problematiche dovute al determinismo del progetto si possono pensare anche ai fattori che diano del non determinismo.
+Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente l'andamento della gara a priori. Questa componente pu\`{o} essere non desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile riuscire a gestire il non determinismo, che da quindi valore aggiunto al progetto.
 \subsection{Stalli (Lorenzo)}
+In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} importanti da affrontare. Per stallo si intende lo stato in cui nessun processo pu\`{o} pi\`{u} eseguire. Affinch\`{e} si verifichi lo stallo di devono verificare tutte le 4 pre-condizioni ben riconoscibili:
+\begin{itemize}
+\item {Mutua Esclusione :} assicura che, a ogni instante, non pi\`{u} di un processo abbia possesso di una risorsa (fisica o logica) condivisa.La sequenza di azioni che opera sulla risorsa \`{e} detta sezione critica
+\item{Cumulazione di risorse (hold-and-wait) :} i processi possono accumulare risorse e trattenerle mentre attendono di acquisirne altre
+\item{Assenza di prerilascio :} le risorse vengono rilasciate solo volontariamente
+\item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del successivo processo in catena
+\end{itemize}
+Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare attenzione per evitare il verificarsi delle quattro condizioni, impedendo cos\`{i} gli stalli.
 \subsection{Realismo fisico}
 Il realismo fisico di un simulatore di formula uno è determinato principalmente da due fattori:
 \begin{itemize}

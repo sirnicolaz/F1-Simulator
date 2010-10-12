@@ -14,18 +14,7 @@
 \BOOKMARK [2][-]{subsection.3.10}{Avvio del sistema}{section.3}
 \BOOKMARK [2][-]{subsection.3.11}{Stop del sistema}{section.3}
 \BOOKMARK [1][-]{section.4}{Analisi della soluzione}{}
-\BOOKMARK [2][-]{subsection.4.1}{Gestione del tempo}{section.4}
-\BOOKMARK [2][-]{subsection.4.2}{Sorpassi impossibili}{section.4}
-\BOOKMARK [2][-]{subsection.4.3}{Determinismo}{section.4}
-\BOOKMARK [2][-]{subsection.4.4}{Componenti di non determinismo \(Lorenzo\)}{section.4}
-\BOOKMARK [2][-]{subsection.4.5}{Stalli \(Lorenzo\)}{section.4}
-\BOOKMARK [2][-]{subsection.4.6}{Realismo fisico}{section.4}
-\BOOKMARK [2][-]{subsection.4.7}{Gestione delle istantanee di gara}{section.4}
-\BOOKMARK [2][-]{subsection.4.8}{Robustezza del sistema distribuito \(Lorenzo\)}{section.4}
-\BOOKMARK [2][-]{subsection.4.9}{Intelligenza artificiale}{section.4}
-\BOOKMARK [2][-]{subsection.4.10}{Avvio del sistema}{section.4}
-\BOOKMARK [2][-]{subsection.4.11}{Stop del sistema}{section.4}
-\BOOKMARK [2][-]{subsection.4.12}{Problematiche di distribuzione}{section.4}
+\BOOKMARK [2][-]{subsection.4.1}{Problematiche di distribuzione}{section.4}
 \BOOKMARK [1][-]{section.5}{Architettura ad alto livello}{}
 \BOOKMARK [2][-]{subsection.5.1}{Componenti di sistema}{section.5}
 \BOOKMARK [3][-]{subsubsection.5.1.1}{Competition}{subsection.5.1}
