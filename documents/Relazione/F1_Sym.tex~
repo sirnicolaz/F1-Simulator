@@ -3,7 +3,8 @@
 \let\subsubsubsubsection\subparagraph
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[italian]{babel}
 \usepackage{graphicx}
 \usepackage{lscape}
@@ -40,12 +41,12 @@
 \newtoks\distribuzione
 
 % Titolo documento + titolo a pie' pagina e data (tokens)
-\titolo={F1 Symulator} 
+\titolo={F1 Simulator} 
 \sottotitolo={Progetto di Sistemi concorrenti e distribuiti} 
-\data={02 Luglio 2009}
+\data={12 Settembre 2010}
 
 % Informazioni documento (tokens)
-\filename={F1\_Sym.pdf}
+\filename={Relazione.pdf}
 \versione={0.3}
 \distribuzione={Prof. Vardanega Tullio \\
 		     	& Miotto Nicola \\
@@ -104,8 +105,10 @@ Relazione sul progetto di Sistemi Concorrenti e Distribuiti.
 \section{Problematiche}
 \subsection{Introduzione}
 In questo capitolo verranno analizzate le problematiche legate alla realizzazione di un sistema concorrente e distribuito.
-\subsection{Problematiche di concorrenza}
-\input{problematiche_concorrenza}
+\section{Enunciazione problematiche}
+\input{enunciazione_problematiche}
+\section{Analisi della soluzione}
+\input{analisi_soluzioni}
 \subsection{Problematiche di distribuzione}
 \input{problematiche_distribuzione}
 \input{soluzione_proposta}
@@ -123,6 +126,5 @@ In questo capitolo verranno analizzate le problematiche legate alla realizzazion
 %\chapter{Bibliografia}
 \appendix
 \input{glossario}
-
-\section{Manuale utente}
+\input{manuale_utente}
 \end{document}

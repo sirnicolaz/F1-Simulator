@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.19)  12 OCT 2010 13:27
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.19)  13 OCT 2010 12:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -599,12 +599,12 @@ Type X to quit or <RETURN> to proceed,
 or enter new name. (Default extension: tex)
 
 Enter file name: 
-(./problematiche_distribuzione.tex) (./soluzione_proposta.tex
+(./problematiche_distribuzione.tex) (./soluzione_proposta.tex [10.10]
 Underfull \hbox (badness 10000) in paragraph at lines 3--6
 
  []
 
-[10.10] <img/ComponentDiagram.jpg, id=505, 676.5275pt x 537.00626pt>
+<img/ComponentDiagram.jpg, id=505, 676.5275pt x 537.00626pt>
 File: img/ComponentDiagram.jpg Graphic file (type jpg)
 
 <use img/ComponentDiagram.jpg> [11.11 <./img/ComponentDiagram.jpg>] [12.12]
@@ -618,15 +618,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 166--167
 
  []
 
-
+[16.16]
 <img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg, id
-=538, 555.07375pt x 312.16624pt>
+=543, 555.07375pt x 312.16624pt>
 File: img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jp
 g Graphic file (type jpg)
 
 <use img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetition.jpg
-> [16.16 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
-ion.jpg>] [17.17]
+> [17.17 <./img/InteractionDiagram/Implementation_Diagram__ConfiguratorCompetit
+ion.jpg>]
 <img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg, id=5
 49, 526.96875pt x 192.72pt>
 File: img/InteractionDiagram/Implementation_Diagram__CompetitionCompetitor.jpg 
@@ -1031,7 +1031,7 @@ nts/cm/cmmi7.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr10
 .pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/sh
 are/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-t
 exlive/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on F1_Sym.pdf (69 pages, 2784215 bytes).
+Output written on F1_Sym.pdf (69 pages, 2784398 bytes).
 PDF statistics:
  1453 PDF objects out of 1728 (max. 8388607)
  228 named destinations out of 1000 (max. 500000)
