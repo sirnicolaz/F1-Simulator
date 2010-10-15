@@ -558,3 +558,12 @@ public class BoxScreen extends Thread{
     // b.init();
     // }
 }
+class PitStop extends Thread{
+private JPanel PitStopPanel = new JPanel("Forza PitStop");
+private double Fuel_Qty = 0.0;
+private int TypeTyre = 0;
+PitStop(){
+
+
+}
+}
