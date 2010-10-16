@@ -1,0 +1,28 @@
+\label{analisi_soluzioni}
+\subsection{Gestione del tempo}
+\subsection{Sorpassi impossibili}
+\subsection{Determinismo}
+\subsection{Componenti di non determinismo (Lorenzo)}
+Come introdotto nel paragrafo \ref{non_determinismo} le componenti di non determinismo possono essere desiderabili se opportunamente gestite, o non desiderabili, se non portano valore aggiunto al prodotto. Nella realizzazione di un simulatore di formula 1 la scelta di introdurre delle componenti che possono modificare l'andamento della gara in maniera non prevedibile prima dell'esecuzione aiuta a simulare in maniera migliore l'andamento di una vera gara di automobili. Le soluzioni possibili che sono state considerate per realizzare il progetto \emph{F1\_Sim} sono principalmente tre:
+\begin{itemize}
+\item Nessuna possibilit\`{a} di componenti di non determinismo
+\item Possibilit\`{a} di componenti di non determinismo opportunamente gestite
+\item Possibilit\`{a} di componenti che simulino il non determinismo opportunamente gestite
+\end{itemize}
+\subsection{Stalli (Lorenzo)}
+Per quanto riguarda gli stalli si \`{e} visto nel paragrafo \ref{stalli} quali siano le condizioni perch\`{e} si verifichino. Le soluzioni da adottare sono, semplicemente, l'evitare che si presentino le 4 pre-condizioni simultaneamente non andando incontro, cos\`{i}, al verificarsi di uno stallo.
+\subsection{Realismo fisico}
+\subsection{Gestione delle istantanee di gara}
+\subsection{Robustezza del sistema distribuito (Lorenzo)}
+Per quanto riguarda la robustezza del sistema distribuito le soluzioni possibili variano in base alla scelta dello standard di comunicazione, della scelta del tipo di dati che viaggia nella rete e dal livello di distribuzione scelta per il prodotto finale.
+Per quanto riguarda il tipo di middleware di comunicazione la scelta potr\`{a} (fra i pià conosciuti) fra
+\begin{itemize}
+\item CORBA
+\item Distributed System Annex 
+\item MOM
+\end{itemize}
+oppure con la costruzione ad hoc di un middleware di comunicazione scritto su misura per la nostra applicazione.
+La scelta dei dati da trasferire fra i vari nodi della rete dipende fortemente dal tipo di sistema di comunicazione che si sceglie, anche se può comunque essere orientata verso un utilizzo prevalente delle stringhe o di tipi primitivi o di una combinazione dei due. Il livello di distribuizione va deciso in base alle funzionalit\`{a} e alle caratteristiche che si vogliono dare al prodotto in uscita. Si può pensare di spingere al massimo la distribuzione mettendo ogni entit\`{a} in nodi separati oppure di ridurre al minimo la distribuzione mettendo solo degli schermi che visualizzino l'andamento della competizione. Ovviamente si pu\`{o} anche scegliere una mediazione fra le due soluzioni. Altra scelta fondamentale che va pensata e decisa in fase di progettazione \`{e} quella del tipo di chiamate da effettuare, se sincrone o asincrone.
+\subsection{Intelligenza artificiale}
+\subsection{Avvio del sistema}
+\subsection{Stop del sistema}

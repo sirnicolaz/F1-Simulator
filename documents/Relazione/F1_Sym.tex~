@@ -43,11 +43,11 @@
 % Titolo documento + titolo a pie' pagina e data (tokens)
 \titolo={F1 Simulator} 
 \sottotitolo={Progetto di Sistemi concorrenti e distribuiti} 
-\data={12 Settembre 2010}
+\data={16 Ottobre 2010}
 
 % Informazioni documento (tokens)
 \filename={Relazione.pdf}
-\versione={1.1}
+\versione={1.2}
 \distribuzione={Prof. Vardanega Tullio \\
 		     	& Miotto Nicola \\
 			& Nesello Lorenzo
@@ -107,10 +107,12 @@ Relazione sul progetto di Sistemi Concorrenti e Distribuiti.
 In questo capitolo verranno analizzate le problematiche legate alla realizzazione di un sistema concorrente e distribuito.
 \section{Enunciazione problematiche}
 \input{enunciazione_problematiche}
-\section{Analisi delle soluzione}
-\input{analisi_soluzioni}
 \subsection{Problematiche di distribuzione}
 \input{problematiche_distribuzione}
+\section{Analisi delle soluzioni}
+\input{analisi_soluzioni}
+\section{Soluzioni adottate}
+\input{soluzione_problematiche}
 \input{soluzione_proposta}
 %\section{Competizione}
 %\section{Circuito}
