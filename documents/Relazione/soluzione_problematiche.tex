@@ -1,5 +1,55 @@
 \label{soluzione_problematiche}
 \subsection{Entit\`{a} Circuito}
+Nella soluzione proposta il circuito è un'unità composta da più entità passive ad accesso mutuamente esclusivo. Più precisamente:
+\begin{itemize}
+\item \textbf{Path}: rappresenta la traiettoria percorsa da un concorrente. Un insieme di \textbf{Path} costituisce un tratto e il loro
+numero all'interno del tratto identifica la molteplicità dello stesso. Ogni path è caratterizzato da:
+\begin{itemize}
+\item lunghezza
+\item angolo
+\item tenuta
+\item istante di liberazione
+\end{itemize}
+I \textbf{Path} di uno stesso tratto possono essere uguali o differire per caratteristiche, rimanendo comunque entro i limiti globali del tratto
+(non si potrà ad esempio avere un tratto lungo 11 km in un tratto lungo 42 m).\\
+Per quanto riguarda l'\textbf{istante di liberazione}, esso indica da che istante non ci saranno più concorrenti sul \textbf{Path}.
+\item \textbf{Checkpoint}: è una risorsa passiva ad accesso mutuamente esclusivo. Rappresenta la coda di accesso ad un tratto. Ogni posizione
+della coda è stata arricchita con delle informazioni che aiutano a gestire l'accesso al tratto:
+\begin{itemize}
+\item \textbf{istante di arrivo}: l'istante di tempo più ottimista in cui l'auto è prevista arrivare oppure l'istante in cui l'auto realmente
+arriva al tratto (in base al valore della flag ``arrivato'', descritta in seguito);
+\item \textbf{id concorrente}: l'id del concorrente presente nella posizione della coda;
+\item \textbf{flag ``arrivato''}: se valorizzata con \emph{true}, significa che il concorrente sta effettivamente attendendo di accedere al tratto
+e che il valore temporale segnato nell'\textbf{istante di arrivo} è l'istante di arrivo effettivo. Altrimenti significa che il concorrente non
+è ancora arrivato ma arriverà ad un istante maggiore o uguale a quello segnato nell'\textbf{istante di arrivo}.
+\end{itemize}
+Ogni \textbf{Checkpoint} inoltre punta ad un insieme di \textbf{Path}.
+\item \textbf{Racetrack iterator}: ogni concorrente dispone di un'istanza di questo iteratore per poter navigare il circuito e richiedere
+di accedere eventualmente ai box.
+\end{itemize}
+La struttura è stata pensata principalmente per venire a capo del problema dei sorpassi impossibili.\\
+Come visto nella sezione \ref{tempo}, non esiste un orologio assoluto. Ogni concorrente segna sulla
+coda il tempo di arrivo in base ai tempi accumulati per l'attraversamento dei tratti precedenti. Quindi si può dire che ogni
+concorrente aggiorni un proprio orologio relativo all'andamento della sua corsa. Inoltre ogni concorre segna
+un tempo ottimistico di arrivo sui tratti che (salvo squalifica) attraverserà. Tale istante sarà di sicuro maggiore dell'istante segnato
+nel \textbf{Checkpoint} in cui il concorrente effettivamente è arrivato. Questo permette ad ogni conccorrente di sapere, quindi, non solo
+i dettagli relativi alla sua corsa, ma anche quelli relativi agli altri concorrenti (quando necessario). Di conseguenza, se un concorrente
+è interessato ad attraversare un tratto, potrà confrontare il suo tempo di arrivo effettivo con i tempi di arrivo effettivi e previsti
+degli altri concorrenti. Nel momento in cui il suo istante di arrivo effettivo risulti cronologicamente il più basso della coda, sarà certo
+che, stando al suo istante di tempo e a quello relativo agli altri concorrenti, il suo turno per attraversare sia arrivato. Ovvero che, in 
+termini di tempo relativi, il suo istante, essendo il più basso, indichi che è il primo arrivato al tratto in quell'istante, avendo così
+il diritto di accesso.\\
+Quando un concorrente deve valutare la traiettoria (\textbf{Path}) da attraversare in un tratto, può farlo semplicemente valutando le caratteristiche
+del tratto. Le prime tre elencate qualche riga più sopra garantiscono un minimo di realismo fisico. Le caratteristiche fisiche del tratto infatti
+influiranno sui consumi e i tempi dell'auto. Il concorrente dovrà scegliere in modo da minimizzare entrambi.\\
+L'ultimo parametro è anche oggetto di valutazione in quanto serve all'utente verificare lo stato di occupazione del tratto. Se l'istante
+di liberazione segnato è maggiore di quello di accesso al tratto del concorrente, significa che l'attraversamento richiederà, in aggiunta, 
+l'attesa che il tratto si liberi. In un contesto reale questo potrebbe significare che un concorrente, prendendo una traiettoria, sia rallentato
+dal concorrente più lento davanti. Quando un concorrente calcola il proprio tempo di attraversamento chiaramente dovrà aggiornare l'istante
+di liberazione della traiettoria. Questo garantisce il realismo fisico concorrente-concorrenti descritto nella sezione \ref{analisi_realismo_fisico}.
+I tempi segnati nelle code invece mettono in pratica, in parte, il concetto di orologio relativo enunciato nella sezione \ref{tempo}.
+Maggiori dettagli sull'interazione fra concorrenti e circuito e sull'algoritmo che regola l'attraversamento del circuito da parte dei concorrenti
+verranno forniti nelle sezioni seguenti.
 \subsection{Entit\`{a} Concorrente (Lorenzo)}
 L'entità concorrente del progetto mappa la soluzione di alcune problematiche analizzate nei paragrafi precedenti. Si tratta di un'entità attiva, costruita come un task che utilizza le altre componenti per la sua gara. In seguito verranno analizzate le interazioni che questa entità hanno fra di loro e con le entità passive che compongono il circuito.
 \subsection{Interazione concorrenti - circuito (Lorenzo - ricordarsi assenza di stallo)}
