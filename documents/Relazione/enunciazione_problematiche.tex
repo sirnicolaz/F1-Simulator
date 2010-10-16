@@ -35,13 +35,22 @@ Per esempio:
 Non prestando attenzione a possibilità di questo tipo, se il tratto fosse di molteplicità 1 si avrebbe che un concorrente 
 appare alla fine del tratto quando, per questioni fisico/temporali, avrebbe dovuto rimanere dietro.
 \subsection{Determinismo}
-Come definito in \url{http://it.wikipedia.org/wiki/Simulazione}, \\
+Come definito in \emph{Simulation: The Engine Behind The Virtual World, Roger D. Smith, Chief Scientist, ModelBenders LLC}:
 
-\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
-svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
-o dell'utente''}.\\
-Il comportamento del sistema deve essere quindi prevedibile. Considerando che invece il comportamento dello 
-scheduler sottostante non è prevedibile, si presenta il problema di riuscire a progettare il simulatore in modo
+\emph{``Simulation is the process of designing a model of a real or imagined system and
+conducting experiments with that model. The purpose of simulation experiments is to
+understand the behavior of the system or evaluate strategies for the operation of the system.''}
+
+%\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
+%svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
+%o dell'utente''}.\\
+Considerando quindi che la simulazione deve permettere di comprendere il comportamento del sistema, è necessario che il sistema abbia 
+un comportamento prevedibile. Ciò non significa che ogni componente di non determinismo sia non desiderata. Il non determinismo
+può essere inserito in modo controllato, ovvero consapevoli del contensto e dei momenti in cui esso si possa verificare. Soprattutto,
+il nondeterminismo deve rispecchiare un eventuale non determinismo presente anche nel sistema reale e non solo in quello simulato.\\
+Il comportamento dello scheduler sottostante il sistema che verrà sviluppato non è prevedibile. Considerando che il non determinismo
+introdotto dallo scheduler non è controllabile, si presenta
+il problema di riuscire a progettare il simulatore in modo
 che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
 modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
 \subsection{Componenti di non determinismo (Lorenzo)}
@@ -91,6 +100,7 @@ I punti principali su cui focalizzare l'attenzione sono
 Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
 di intelligenza artificiale che riesca a far procedere la gara in modo verosimile. Il problema in questo caso
 \subsection{Avvio del sistema}
+\label{enunciazione_avvio}
 L'avvio del sistema presenta dei problemi legati alla natura concorrente e distribuita dello stesso.\\
 In dettaglio:
 \begin{itemize}
