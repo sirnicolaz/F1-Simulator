@@ -190,9 +190,29 @@ che se le entità remote venissero spostate, la lista dovrebbe essere aggiornata
 Sia chiaro che questo non è un problema non risolvibile in alcun modo, ma si pensa potrebbe richiedere uno sforzo progettuale maggiore del previsto.
 \item Il nodo centrale viene avviato e rimane in attesa che i nodi remoti lo contattino fornendo le proprie informazioni di posizionamento.
 In questo modo i nodi remoti, una volta avviati, dovrebbero conoscere l'indirizzo del nodo centrale e contattarlo. Così facendo, una volta
-che tutti i nodi necessari all'avvio della competizione saranno avviati, il nodo centrale avrà già a disposizione gli indirizzi per la comunicazione
+che tutti i nodi necessari all'avvio della competizione saranno inizializzati, il nodo centrale avrà già a disposizione gli indirizzi per la comunicazione
 bidirezionale con la certezza che essi siano avviati. I nodi remoti potrebbero comunque dover effetture polling in attesa che il nodo centrale sia avviato.
 \end{itemize}
-\item a
+\item Per gestire l'avvio delle entità concorrenti, una soluzione plausibile è quella di organizzare l'inizializzazione del sistema a step.
+Fra le entità intercorrono varie relazioni di dipendenza. Alcune necessitano di dati ottenibili a partire da altre, le quali a loro volta
+possono aver bisogno di accedere a risorse disponibili solo ad un determinato momento della fase di avvio. Per modellare la soluzione
+è quindi necessaria una classificazione delle componenti in base alle risorse richieste. Il primo step dell'avvio dovrà occuparsi di inizializzare
+le risorse (attive, passive o reattive che siano) le quali non richiedono dati decisi a tempo di esecuzione. Durante gli step successivi
+si dovranno man mano avviare le risorse (o parti di risorse) che dipendono dai dati precedentemente inizializzati. Se un'entità attiva necessita
+di dati ottenibili in due step diversi per poter considerarsi pronta, sarà necessario che di step in step venga messa in attesa di tali dati.
+Questo può avvenire mettendo l'entità in attesa su una risorsa (finchè questa non raggiunga uno stato adeguato per fornire i dati richiesi)
+oppure mettendo l'entità stessa in attesa di messaggi (che potrebbero contenere i dati richiesti o semplicemente segnalare che è possibile
+procedere). Come postcondizione alla fine dell'ultimo step è necessario che tutte le entità passive e reattive che verranno richieste dopo l'init
+siano disponibili e che le risorse attive siano pronte ad iniziare con la reale esecuzione.
 \end{itemize}
 \subsection{Stop del sistema}
+Si è visto che lo stop del sistema è suddiviso in uno stop riferito alla fine della gara ed uno legato alla finalizzazione delle risorse allocate.
+Di seguito i dettagli relativi 
+\begin{itemize}
+\item Per lo stop logico si potrebbe delegare alle entità attive che gestiscono la corsa dei singoli concorrenti l'onere di tenere conto 
+dello stato della gara (il numero di giri effettuati ad esempio) e decidere, al momento opportuno, di procedere con lo stop di quelle che
+finiscono la competizione (o per numero di giri effettuati o per impossibilità a continuare).
+\item La finalizzazione delle risorse potrebbe avvenire anche prima che la competizione finisca se l'utente decide di interrompere prima
+l'esecuzione del simulatore. Di conseguenza, per permettere uno stop definitivo del sistema, sarà necessario che il processo del simulatore
+venga terminato nel momento in cui l'utente chiude l'applicazione.
+\end{itemize}
