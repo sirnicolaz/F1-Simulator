@@ -57,14 +57,15 @@ modo si potrà avere un sistema la cui correttezza sia verificabile e capace di 
 \label{non_determinismo}
 Dopo aver analizzato le problematiche dovute al determinismo del progetto si possono pensare anche ai fattori che diano del non determinismo.
 Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente l'andamento della gara a priori. Questa componente pu\`{o} essere non desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile riuscire a gestire il non determinismo, che da quindi valore aggiunto al progetto.
+Esempi di non determinismo che si possono trovare progettando un simulatore e che possono portare valore aggiunto sono ad esempio interazioni dell'utente esterno al sistema tramite azioni esplicite .
 \subsection{Stalli (Lorenzo)}
 \label{stalli}
 In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} importanti da affrontare. Per stallo si intende lo stato in cui nessun processo pu\`{o} pi\`{u} eseguire. Affinch\`{e} si verifichi lo stallo di devono verificare tutte le 4 pre-condizioni ben riconoscibili:
 \begin{itemize}
-\item {Mutua Esclusione :} assicura che, a ogni instante, non pi\`{u} di un processo abbia possesso di una risorsa (fisica o logica) condivisa.La sequenza di azioni che opera sulla risorsa \`{e} detta sezione critica
+\item {Mutua Esclusione :} assicura che, a ogni instante, non pi\`{u} di un processo abbia possesso di una risorsa (fisica o logica) condivisa.La sequenza di azioni che opera sulla risorsa \`{e} detta sezione critica. Nel realizzare un simulatore di Formula 1 bisogner\`{a} fare in modo che prevedendo l'uso esclusivo di risorse, come ad esempio pezzi di tracciato, queste non pregiudichino il buon funzionamento del sistema.
 \item{Cumulazione di risorse (hold-and-wait) :} i processi possono accumulare risorse e trattenerle mentre attendono di acquisirne altre
 \item{Assenza di prerilascio :} le risorse vengono rilasciate solo volontariamente
-\item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del successivo processo in catena
+\item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del successivo processo in catena. Nella progettazione di un sistema distribuito bisogner\`{a} quindi evitare la formazione di catene chiuse di processi che attendono una risorsa.
 \end{itemize}
 Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare attenzione per evitare il verificarsi delle quattro condizioni, impedendo cos\`{i} gli stalli.
 \subsection{Realismo fisico}
