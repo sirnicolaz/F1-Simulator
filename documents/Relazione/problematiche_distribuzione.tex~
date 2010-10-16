@@ -1,5 +1,0 @@
-Un sistema che funzioni grazie alla comunicazione remota fra componenti dislocati in diversi nodi nella rete, presenta certamente delle
-specifiche problematiche da affrontare. La più critica riguarda di sicuro la robustezza. \`{E} difficile o addiritura utopico sperare
-nell'affidabilità della rete. La rete presenta sempre dei fault, la cosa importante è gestirli e non farli propagare in errori. Sicuramente
-quindi bisognerà minimizzare la probabilità che un nodo distribuito, perdendo il contatto con il resto del sistema, possa provocare un 
-malfunzionamento globale.
