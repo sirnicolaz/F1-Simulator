@@ -141,6 +141,9 @@ package Competition_Computer is
                                     LappedCompetitors_ID : out INTEGER_ARRAY_POINT;
                                     LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT);
 
+   --The function takes the the latest time instant that every car passed
+   function Get_Latest_Time_Instant return Float;
+
 
 private
 
@@ -149,7 +152,7 @@ private
    --+ on the assumption that usually the accesses to the resource are close in a narrow interval
    type STATS_ARRAY_OPTIMIZER is record
       Competitor_Info : access SYNCH_COMPETITOR_STATS_HANDLER_ARRAY;
-      LastAccessedPosition : INTEGER := 1;
+      Last_Initialized_Index : INTEGER := 1; --LastAccessedPosition
       --This time will be updated as soon as the competitor get off the competition
       Retired_Time : FLOAT := -1.0;
       Competition_Finished : BOOLEAN := FALSE;

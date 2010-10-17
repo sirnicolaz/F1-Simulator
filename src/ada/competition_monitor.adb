@@ -433,4 +433,10 @@ package body Competition_Monitor is
 
       return XMLString;
    end Get_CompetitorConfiguration;
+
+   function Get_Latest_Time_Instant return Float is
+   begin
+   	return Competition_Computer.Get_Latest_Time_Instant;
+   end Get_Latest_Time_Instant;
+
 end Competition_Monitor;

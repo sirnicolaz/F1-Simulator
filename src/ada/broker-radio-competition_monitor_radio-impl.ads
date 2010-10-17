@@ -39,5 +39,6 @@ package Broker.Radio.Competition_Monitor_Radio.impl is
    procedure Set_Simulation_Speed(Self : access Object;
                                   Simulation_Speed_In : Corba.Float);
 
+   function Get_Latest_Time_Instant(Self : access Object) return Corba.Float;
 
 end Broker.Radio.Competition_Monitor_Radio.impl;

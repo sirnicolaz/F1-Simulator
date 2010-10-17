@@ -48,4 +48,6 @@ package Competition_Monitor is
 
    function Get_CompetitorConfiguration( Id : INTEGER ) return Unbounded_String.Unbounded_String;
 
+   function Get_Latest_Time_Instant return Float;
+
 end Competition_Monitor;

@@ -100,4 +100,9 @@ Ada.text_io.put_line("LORY : 3");
       Competition_Monitor.Set_Simulation_Speed(Float(Simulation_Speed_In));
    end Set_Simulation_Speed;
 
+   function Get_Latest_Time_Instant(Self : access Object) return Corba.Float is
+   begin
+      return Corba.Float(Competition_Monitor.Get_Latest_Time_Instant);
+   end Get_Latest_Time_Instant;
+
 end Broker.Radio.Competition_Monitor_Radio.impl;

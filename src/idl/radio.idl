@@ -15,6 +15,7 @@ module broker{
 	        	float Get_CompetitionConfiguration(inout string xmlConf);
 	        	string Get_CompetitorConfiguration(in short id);
 			void Set_Simulation_Speed(in float simulationSpeed);
+			float Get_Latest_Time_Instant();
 		};
 
 		interface BoxRadio {

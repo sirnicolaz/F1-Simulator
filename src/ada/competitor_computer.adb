@@ -63,7 +63,6 @@ package body Competitor_Computer is
       Computer_In.CurrentBestLap_Time := -1.0;
       Computer_In.CurrentBestLap_Num := -1;
       Computer_In.CurrentMaxSpeed := -1.0;
-      Computer_In.LastSlotAccessed := 1;
       Computer_In.SectorLength_Helper := 0.0;
    end Init_Computer;
 
