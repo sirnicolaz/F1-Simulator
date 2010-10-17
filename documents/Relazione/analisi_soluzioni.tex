@@ -148,20 +148,21 @@ Questa idea è applicabile ad un sistema come quello dato poichè non necessita 
 \end{itemize}
 \end{description}
 \subsection{Gestione delle istantanee di gara}
-\label{enunciazione_istantanee}
+\label{analisi_istantanee}
 Un'istantanea di gara è lo stato della gara ad un determinato istante di tempo. Intuitivamente l'idea più semplice per ottenere
 uno snapshot sembrerebbe essere quella di inoltrare la richiesta al sistema all'istante desiderato, mettere in pausa la gara, 
 salvare lo stato e riprendere la competizione dall'istante di pausa. Si riconsideri però la problematica enunciata nella
 sezione \ref{enunciazione_istantanee}:\\
-\emph{[...]Bisogna però tenere in considerazione che qualunque entità provvede allo scatto
+\emph{[...]Bisogna però tenere in considerazione che qualunque entità provveda allo scatto
 dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità attive dipendenti dallo scheduler[...]}\\
 Il ``mettere in pausa'' la gara, quindi, non è banale. Ogni thread concorrente, ad esempio, potrebbe essere messo in pausa
-in istanti diversi rispetto al \emph{t} richiesto, fornendo quindi uno stato non valido. Se si considera poi che un orologio
-assoluto nel sistema si è dimostrato non plausibile da implementare, l'istante \emph{t} richiesto per la pausa non corrisponderebbe ad un'istante
+in istanti diversi rispetto al \emph{t} richiesto, fornendo quindi uno stato non valido rispetto al tempo richeisto. 
+Se si considera poi che un orologio assoluto nel sistema si è dimostrato non plausibile da implementare, l'istante \emph{t} richiesto 
+per la pausa non corrisponderebbe ad un'istante
 di tempo assoluto di pausa per la gara. All'interno della competizione le singole entità (che ne necessitano) seguono un orologio interno.\\
 \`{E} quindi opportuno che, una volta richiesto lo snapshot di un istante temporale, lo stato di ogni entità (utile all'istantanea) in 
 quell'istante sia disponibile o, alternativamente, l'unità richiedente si metta in attesa fino alla disponibilità completa dello stato
-in tale istante. Sarà quindi opportuno tenere una storia della gara che permetta di risalire allo stato globale ad un dato istante.
+in tale istante. Bisognerà tenere una storia della gara che permetta di risalire allo stato globale ad un dato istante.
 \subsection{Robustezza del sistema distribuito (Lorenzo)}
 Per quanto riguarda la robustezza del sistema distribuito le soluzioni possibili variano in base alla scelta dello standard di comunicazione, della scelta del tipo di dati che viaggia nella rete e dal livello di distribuzione scelta per il prodotto finale.
 Per quanto riguarda il tipo di middleware di comunicazione la scelta potr\`{a} cadere tra 

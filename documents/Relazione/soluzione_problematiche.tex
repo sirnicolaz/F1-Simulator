@@ -59,8 +59,51 @@ L'entità concorrente del progetto mappa la soluzione di alcune problematiche an
      \subsubsection{Cosa fa (Lorenzo)}
      \subsubsection{Distrbuzione del box (Lorenzo)}
 \subsection{Gestione delle statistiche di gara}
+Come analizzato nella sezione \ref{analisi_istantanee}, per poter reperire un'istantanea di gara ad un dato istante di tempo, è necessario
+disporre di una storia degli eventi avvenuti nel corso della competizione, strutturati in modo che risulti possibile risalire a qualunque evento
+(rilevante) già avvenuto.\\ 
+Nel corso delle due seguenti sottosezioni verranno analizzate le soluzioni adottate per immagazinare i dati realtivi ai singoli concorrenti
+e calcolare quelli relativi alla gara.
      \subsubsection{Dati singolo concorrente}
+     Come visto nel capitolo relativo all'entità \textbf{Circuito}, ogni concorrente aggiorna, ad ogni 
+     \textbf{Checkpoint}, un orologio relativo alla sua corsa. Per ognuno si può quindi sapere, per ogni checkpoint passato in un determinato giro,
+     l'istante di arrivo.\\
+     Per implementare, in parte, la soluzione proposta si è quindi pensato di salvare per ogni concorrente una lista di dati cronologicamente ordinata.
+     Ogni posizione della lista mantiene informazioni legate ad un determinato istante di tempo. In questo modo è possibile all'idea discussa nella
+     sezione \ref{analisi_istantanee}:\\
+     \emph{[...]una volta richiesto lo snapshot di un istante temporale, lo stato di ogni entità (utile all'istantanea) in 
+     quell'istante sia disponibile[...]}\\
+     Ogni posizione della lista fornisce i seguenti dati:
+     \begin{itemize}
+     \item Time: l'istante di riferimento delle informazioni;
+     \item Checkpoint: il tratto puntato da questo \textbf{Checkpoint} che è stato attraversato (che si è cioè finito di attraversare) 
+     all'istante dato;
+     \item Sector: il settore di appartenenza del tratto;
+     \item Lap: il giro di riferimento;
+     \item Gas\_Level: il livello di gas presente nel serbatoio alla fine dell'attraversamento;
+     \item Tyre\_Usury: il livello di usura gomme alla fine dell'attraversamento;
+     \item BestLapNum: la miglior lap dall'inizio della competizione fino all'istante dato;
+     \item BestLaptime: il tempo della miglior lap dall'inizio della competizione fino all'istante dato;
+     \item BestSectorTimes: i migliori tempi per ogni settore dall'inizio della competizione;
+     \item Max\_Speed: la massima velocità raggiunta dall'inizio della competizione;
+     \item PathLength: la lunghezza della traiettoria attraversata.
+     \end{itemize}
+     Lo stato del concorrente ad un istante \emph{t} si può ottenere navigando la lista fino a trovare la posizione che contiene le informazioni
+     dell'istante di tempo esatto (poco probabile). Altrimenti, se il tempo richiesto è compreso in un intervallo limitato dagli istanti
+     indicati in due posizioni contigue, lo stato sarà anche compreso fra gli stati forniti dalle due posizioni. Più precisamente:\\
+     \begin{itemize}
+     \item per quanto riguarda la posizione sul circuito, si può indicare fra quali \textbf{Checkpoint} è il concorrente;
+     \item per quanto riguarda i migliori tempi e altri dati statistici, valgono quelli indicati dalla posizione con istante di tempo più basso (è chiaramente
+     un'approssimazione);
+     \end{itemize}
+     Ogni posizione della lista è stata progettata come una risorsa passiva ad accesso controllato con guardia. Vale a dire che la risorsa può
+     essere acceduta solo nel momento in cui essa sia valorizzata con dei dati di gara. Fino a tal momento l'entità richiedente dovrà rimanere
+     in attesa. Questa soluzione aiuta a mettere in pratica il suggerimento discusso durante l'analisi. Ovvero: se uno stato ad un istante
+     \emph{t} non è ancora disponibile, il richiedente dovrà rimanere in attesa. In questo caso, nel momento in cui una qualunque entità attiva
+     avanzerà la richiesta di un'istantanea ad un dato istante, finchè tutti i concorrenti non avranno fornito il proprio stato relativo 
+     a quell'istante, il riechiedente verrà fatto attendere.
      \subsubsection{Dati globali di gara}
+     
 \subsection{Reperimento istantanea di gara}
 \subsection{Interazione utente-sistema (Lorenzo)}
      \subsubsection{Osservazione gara ( lato box, lato tv )(Lorenzo)}
