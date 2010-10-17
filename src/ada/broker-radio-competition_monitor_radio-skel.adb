@@ -463,6 +463,36 @@ package body broker.radio.Competition_Monitor_Radio.Skel is
                  (Argument_List_Ü);
             end;
          elsif (Operation_Ü
+            = "Get_Latest_Time_Instant")
+         then
+            declare
+               Result_Ü : CORBA.Float;
+               pragma Warnings (Off, Result_Ü);
+               Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+                 CORBA.Wrap
+                    (Result_Ü'Unrestricted_Access);
+               Arg_Any_Result_Ü_Ü : constant CORBA.Any :=
+                 CORBA.Internals.Get_Wrapper_Any
+                    (CORBA.TC_Float,
+                     Arg_CC_Result_Ü_Ü'Unchecked_Access);
+            begin
+               --  Processing request
+               CORBA.ServerRequest.Arguments
+                 (Request,
+                  Argument_List_Ü);
+               --  Call Implementation
+               Result_Ü :=
+                 broker.radio.Competition_Monitor_Radio.Impl.Get_Latest_Time_Instant
+                    (broker.radio.Competition_Monitor_Radio.Impl.Object'Class
+                       (Self.all)'Access);
+               --  Setting the result
+               CORBA.ServerRequest.Set_Result
+                 (Request,
+                  Arg_Any_Result_Ü_Ü);
+               CORBA.NVList.Internals.Clone_Out_Args
+                 (Argument_List_Ü);
+            end;
+         elsif (Operation_Ü
             = "_interface")
          then
             CORBA.ServerRequest.Arguments

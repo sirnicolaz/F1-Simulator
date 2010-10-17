@@ -254,7 +254,6 @@ package body Competition_Computer is
          Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(Index).Get_IsLastCheckInSector (Tmp_Bool);
          exit when Tmp_Sector = Sector and Tmp_Bool = TRUE;
       end loop;
-      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := Index;
 
       if( Stats_In = null ) then
         Stats_In := new COMPETITOR_STATS;
@@ -313,7 +312,7 @@ package body Competition_Computer is
                              Time : FLOAT;
                              Stats_In : out COMPETITOR_STATS_POINT) is
 
-      Index : INTEGER := Competitor_Statistics.all(Competitor_ID).LastAccessedPosition;
+      Index : INTEGER := Competitor_Statistics.all(Competitor_ID).Last_Initialized_Index;
       Tmp_Time : FLOAT;
       ExitLoop : BOOLEAN := FALSE;
    begin
@@ -368,7 +367,7 @@ package body Competition_Computer is
                end if;
 
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(CHoosenIndex).Get_All(Stats_In.all);
-               Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := CHoosenIndex;
+
             end;
          else
 
@@ -408,7 +407,7 @@ package body Competition_Computer is
 
 
                Competitor_Statistics.all(Competitor_ID).Competitor_Info.all(ChoosenIndex).Get_All(Stats_In.all);
-               Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := ChoosenIndex;
+
             end;
          end if;
       end if;
@@ -427,7 +426,6 @@ package body Competition_Computer is
       end if;
 
       Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Lap*Checkpoints)+Checkpoint).Get_All(Stats_In.all);
-      Competitor_Statistics.all(Competitor_ID).LastAccessedPosition := (Lap*Checkpoints)+Checkpoint;
    end Get_StatsByCheck;
 
    --It Just initializes the Statistic_Collection with the right size
@@ -500,7 +498,8 @@ package body Competition_Computer is
 
       --Update the statistics
 
-   Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
+      Competitor_Statistics.all(Competitor_ID).Competitor_Info.all((Data.Lap*Checkpoints) + Data.Checkpoint).Initialise(Data);
+      Competitor_Statistics.all(Competitor_ID).Last_Initialized_Index := (Data.Lap*Checkpoints) + Data.Checkpoint;
 
    --The competitor is out
       if(Data.Gas_Level > 0.0 and Data.Tyre_Usury < 100.0) then
@@ -625,6 +624,26 @@ package body Competition_Computer is
                                                     LappedCompetitors_ID,
                                                     LappedCompetitors_CurrentLap);
    end Get_Lap_Classification;
+
+   --The function takes the the latest time instant that every car passed
+   function Get_Latest_Time_Instant return Float is
+
+      Minimum_Latest_Time : Float := -1.0;
+      Current_Checked_Time : Float := 0.0;
+      Current_Last_Initialised_Index : Integer := 0;
+
+   begin
+      for Index in Competitor_Statistics'RANGE loop
+         Current_Last_Initialised_Index := Competitor_Statistics.all(Index).Last_Initialized_Index;
+         Competitor_Statistics.all(Index).Competitor_Info.all(Current_Last_Initialised_Index).Get_Time(Current_Checked_Time);
+         if(Minimum_Latest_Time = -1.0 or else Current_Checked_Time < Minimum_Latest_Time) then
+            Minimum_Latest_Time := Current_Checked_Time;
+         end if;
+      end loop;
+
+      return Minimum_Latest_Time;
+
+   end Get_Latest_Time_Instant;
 
 end Competition_Computer;
 

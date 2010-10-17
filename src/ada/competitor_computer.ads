@@ -67,10 +67,7 @@ private
 
       --Information : access SYNCH_COMPETITOR_STATS_HANDLER_ARRAY;
       BoxInformation : SYNCH_INFO_FOR_BOX_POINT;
-      LastSlotAccessed : INTEGER;
-
       SectorLength_Helper : FLOAT;
-
       -- These values can be calculated dinamically using COMPETITOR_STATS list,
       --+ but for a matter of efficiency we keep the latest computed values
       --+ here.

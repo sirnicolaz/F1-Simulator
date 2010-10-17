@@ -648,6 +648,79 @@ package body broker.radio.Competition_Monitor_Radio is
         (Request_Ü);
    end Set_Simulation_Speed;
 
+   Get_Latest_Time_Instant_Result_Name_Ü : constant PolyORB.Types.Identifier :=
+     PolyORB.Types.To_PolyORB_String
+        ("Result");
+
+   --------------------------------------
+   -- Get_Latest_Time_Instant_Result_Ü --
+   --------------------------------------
+
+   function Get_Latest_Time_Instant_Result_Ü return PolyORB.Any.NamedValue is
+      pragma Inline (Get_Latest_Time_Instant_Result_Ü);
+   begin
+      return (Name => Get_Latest_Time_Instant_Result_Name_Ü,
+      Argument => CORBA.Internals.Get_Empty_Any
+        (CORBA.TC_Float),
+      Arg_Modes => 0);
+   end Get_Latest_Time_Instant_Result_Ü;
+
+   -----------------------------
+   -- Get_Latest_Time_Instant --
+   -----------------------------
+
+   function Get_Latest_Time_Instant
+     (Self : Ref)
+     return CORBA.Float
+   is
+      Argument_List_Ü : PolyORB.Any.NVList.Ref;
+      Result_Ü : CORBA.Float;
+      pragma Warnings (Off, Result_Ü);
+      Arg_CC_Result_Ü_Ü : aliased PolyORB.Any.Content'Class :=
+        CORBA.Wrap
+           (Result_Ü'Unrestricted_Access);
+      Request_Ü : PolyORB.Requests.Request_Access;
+      Result_Nv_Ü : PolyORB.Any.NamedValue :=
+        Get_Latest_Time_Instant_Result_Ü;
+   begin
+      if CORBA.Object.Is_Nil
+        (CORBA.Object.Ref
+           (Self))
+      then
+         CORBA.Raise_Inv_Objref
+           (CORBA.Default_Sys_Member);
+      end if;
+      --  Create the Argument list
+      PolyORB.Any.NVList.Create
+        (Argument_List_Ü);
+      --  Setting the result value
+      PolyORB.Any.Set_Value
+        (PolyORB.Any.Get_Container
+           (Result_Nv_Ü.Argument).all,
+         Arg_CC_Result_Ü_Ü'Unrestricted_Access);
+      --  Creating the request
+      PolyORB.Requests.Create_Request
+        (Target => CORBA.Object.Internals.To_PolyORB_Ref
+           (CORBA.Object.Ref
+              (Self)),
+         Operation => "Get_Latest_Time_Instant",
+         Arg_List => Argument_List_Ü,
+         Result => Result_Nv_Ü,
+         Req => Request_Ü);
+      --  Invoking the request (synchronously or asynchronously)
+      PolyORB.CORBA_P.Interceptors_Hooks.Client_Invoke
+        (Request_Ü,
+         PolyORB.Requests.Flags
+           (0));
+      --  Raise exception, if needed
+      PolyORB.CORBA_P.Exceptions.Request_Raise_Occurrence
+        (Request_Ü);
+      PolyORB.Requests.Destroy_Request
+        (Request_Ü);
+      --  Return value
+      return Result_Ü;
+   end Get_Latest_Time_Instant;
+
    ----------
    -- Is_A --
    ----------

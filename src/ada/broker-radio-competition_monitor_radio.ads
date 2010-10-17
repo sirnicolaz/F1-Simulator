@@ -84,6 +84,13 @@ package broker.radio.Competition_Monitor_Radio is
    Set_Simulation_Speed_Repository_Id : constant PolyORB.Std.String :=
      "IDL:broker/radio/Competition_Monitor_Radio/Set_Simulation_Speed:1.0";
 
+   function Get_Latest_Time_Instant
+     (Self : Ref)
+     return CORBA.Float;
+
+   Get_Latest_Time_Instant_Repository_Id : constant PolyORB.Std.String :=
+     "IDL:broker/radio/Competition_Monitor_Radio/Get_Latest_Time_Instant:1.0";
+
    function Is_A
      (Self : Ref;
       Logical_Type_Id : PolyORB.Std.String)
