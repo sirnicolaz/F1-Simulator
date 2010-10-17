@@ -59,12 +59,14 @@ L'entità concorrente del progetto mappa la soluzione di alcune problematiche an
      \subsubsection{Cosa fa (Lorenzo)}
      \subsubsection{Distrbuzione del box (Lorenzo)}
 \subsection{Gestione delle statistiche di gara}
+\label{statistiche}
 Come analizzato nella sezione \ref{analisi_istantanee}, per poter reperire un'istantanea di gara ad un dato istante di tempo, è necessario
 disporre di una storia degli eventi avvenuti nel corso della competizione, strutturati in modo che risulti possibile risalire a qualunque evento
 (rilevante) già avvenuto.\\ 
 Nel corso delle due seguenti sottosezioni verranno analizzate le soluzioni adottate per immagazinare i dati realtivi ai singoli concorrenti
 e calcolare quelli relativi alla gara.
      \subsubsection{Dati singolo concorrente}
+     
      Come visto nel capitolo relativo all'entità \textbf{Circuito}, ogni concorrente aggiorna, ad ogni 
      \textbf{Checkpoint}, un orologio relativo alla sua corsa. Per ognuno si può quindi sapere, per ogni checkpoint passato in un determinato giro,
      l'istante di arrivo.\\
@@ -101,10 +103,36 @@ e calcolare quelli relativi alla gara.
      in attesa. Questa soluzione aiuta a mettere in pratica il suggerimento discusso durante l'analisi. Ovvero: se uno stato ad un istante
      \emph{t} non è ancora disponibile, il richiedente dovrà rimanere in attesa. In questo caso, nel momento in cui una qualunque entità attiva
      avanzerà la richiesta di un'istantanea ad un dato istante, finchè tutti i concorrenti non avranno fornito il proprio stato relativo 
-     a quell'istante, il riechiedente verrà fatto attendere.
+     a quell'istante, il richiedente verrà fatto attendere.\\
+     Nello specifico, la componente che si occupa dell'aggiornamento dei dati della lista è \textbf{Competitor\_Computer}. Ogni concorrente
+     mantiene un riferimento ad un istanza di \textbf{Computer} (è una parte della componente \textbf{Competitor\_Computer}) 
+     che utilizza per aggiornare i dati ad ogni checkpoint.
      \subsubsection{Dati globali di gara}
-     
+     \label{dati_globali}
+     I dati globali di gara, concettualmente, altro non sono che una rielaborazione dei dati dei singoli concorrenti. Ad esempio, la classifica
+     ad un dato istante viene calcolata a partire dalle posizioni dei singoli concorrenti in tale istante. Ancora, il miglior giro è dato dal
+     tempo più basso fra i tempi di miglior giro di tutti i concorrenti. E così via. La componente che si occupa di questo è \textbf{Competition\_Computer}.
+     Venendo costantemente aggiornata (indirettamente) tramite i singoli concorrenti, è in grado di fornire, quando disponibile, dati di gara
+     calcolati sulle informazioni dei singoli concorrenti. A supporto è stata prevista inoltre una struttura denominata \textbf{Placement\_Handler}
+     che serve per tenere aggiornata costantemente la classifica e poterla fornire in relazione ad un giro o ad un istante temporale.
+     Più in dettaglio, il \textbf{Placement\_Handler} consiste di una lista di tabelle che rappresentano la classifica. Una per ogni lap.
+     Ognuna mantiene una lista ordinata per tempo crescente di concorrenti che hanno finito il dato giro (anche l'istante di fine giro è
+     salvato).
+     Ognuna di queste, quindi, è stata implementata come una risorsa passiva ad accesso mutuamente esclusivo, 
+     per evitare race condition fra due o più concorrenti (thread) che stiano aggiornando la tabella di una lap in modo concorrente.
 \subsection{Reperimento istantanea di gara}
+    In seguito a quanto detto nella sezione \ref{statistiche}, è abbastanza facile intuire come venga effettuata un'istantanea della competizione.
+    Si è visto che ogni concorrente genera una storia della sua gara fino all'ultimo \textbf{Checkpoint} raggiunto. Per ogni istante è (o sarà)
+    quindi disponibile posizione e statistiche di ogni singolo concorrente.\\
+    La componente dedicata ai dati globali di gara (\textbf{Competition\_Monitor}) si occupa invece di rielaborare i dati dei singoli concorrenti
+    per estrarre informazioni statistiche sulla competizione, quali:
+    \begin{itemize}
+    \item classifica
+    \item miglior giro con relativo tempo e concorrente
+    \item migliori tempi per ogni settore con relativo concorrente per ognuno di essi
+    \end{itemize}
+    Di conseguenza, dato un istante di tempo \emph{t}, è possibile reperire tutte le informazioni di gara relative a tale istante. Se qualche 
+    concorrente non ha ancora raggiunto l'istante dato, la richiesta dello snapshot (come si è visto) verrà messa in attesa.
 \subsection{Interazione utente-sistema (Lorenzo)}
      \subsubsection{Osservazione gara ( lato box, lato tv )(Lorenzo)}
      \subsubsection{Intervento sulla gara ( lato box, lato tv )(Lorenzo)}
