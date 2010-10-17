@@ -96,6 +96,7 @@ il problema di riuscire a progettare il simulatore in modo
 che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
 modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
 \subsection{Componenti di non determinismo (Lorenzo)}
+\label{componenti_non_determinismo}
 Come introdotto nel paragrafo \ref{non_determinismo} le componenti di non determinismo possono essere desiderabili se opportunamente gestite, o non desiderabili, se non portano valore aggiunto al prodotto. Nella realizzazione di un simulatore di formula 1 la scelta di introdurre delle componenti che possono modificare l'andamento della gara in maniera non prevedibile prima dell'esecuzione aiuta a simulare in maniera migliore l'andamento di una vera gara di automobili. Le soluzioni possibili che sono state considerate per realizzare il progetto \emph{F1\_Sim} sono principalmente tre:
 \begin{itemize}
 \item Nessuna possibilit\`{a} di componenti di non determinismo

@@ -53,12 +53,37 @@ Maggiori dettagli sull'interazione fra concorrenti e circuito e sull'algoritmo c
 verranno forniti nelle sezioni seguenti.
 \subsection{Entit\`{a} Concorrente (Lorenzo)}
 L'entità concorrente del progetto mappa la soluzione di alcune problematiche analizzate nei paragrafi precedenti. Si tratta di un'entità attiva, costruita come un task che utilizza le altre componenti per la sua gara. In seguito verranno analizzate le interazioni che questa entità hanno fra di loro e con le entità passive che compongono il circuito.
+Questa componente è composta da quattro principali parti che sono
+\begin{itemize}
+\item Car : oggetto che rappresenta l'auto con tutte le caratteristiche
+\item Driver : oggetto che rappresenta il pilota
+\item Competitor\_Details : oggetto che rappresenta il concorrente nel suo insieme, auto, pilota e componenti di strategia e di monitoraggio
+\end{itemize}
 \subsection{Interazione concorrenti - circuito (Lorenzo - ricordarsi assenza di stallo)}
+L'analisi di questa interazione non viene mappata in una o più componenti precise ma serve a capire come si sono affrontate le problematiche esposte nel paragrafo \ref{enunciazione_problematiche}. I concorrenti (entità attive) utilizzano il circuito per gareggiare nella competizione.
+Ogni concorrente per gareggiare deve riuscire a ottenere il tratto di pista che vuole attraversare. La struttura di chiamate (insieme alla struttura del circuito già descritta nel paragrafo \ref{entita_circuito}) è stata studiata per evitare le possibili situazioni di stallo. Infatti per attraversare un tratto di pista il concorrente dev'essere il primo nella coda di attesa del \emph{Checkpoint}. Una volta che un concorrente si trova nella prima posizione della coda può utilizzare la risorsa passiva in mutua esclusione che rappresenta il pezzo di pista. Le operazioni di calcolo dei tempi e di scelta delle traiettorie avvengono mantenendo il possesso della risorsa, con la certezza che nessuno modifichi le condizioni che si stanno valutando. Lo stallo è evitato in quanto il sistema di code garantisce che per ogni Checkpoint stia eseguendo al più un concorrente e che quel concorrente possiede solo l'accesso alla risorsa interessata, impedendo l'accumulo di risorse (una delle cause di stallo viste nel paragrafo \ref{stalli}). Inoltre l'interazione che c'è fra concorrente e circuito non permette il verificarsi dell'attesa circolare in quanto ad ogni processo che richiede l'utilizzo di una risorsa è , per come sono strutturate le code di attesa, l'unico che può eseguire in quel momento e una volta liberata la risorsa (e questo avviene sempre dopo il calcolo dei tempi di attraversamento e l'aggiornamento delle statistiche che verrà spiegato in seguito) diventa subito in possesso del richiedente, che non deve quindi attendere oltre. 
 \subsection{Interazione concorrenti - concorrenti (Lorenzo)}
+All'interno del progetto non è prevista una comunicazione diretta fra concorrenti. Esiste però un metodo per i concorrenti di capire dove sono gli altri concorrenti in gara. I concorrenti interagiscono tra di loro ogni volta che attraversano un tratto, infatti ogni concorrente che esegue lascia segnato il proprio tempo (tempoin cui libererà il tratto). Questo tempo salvato sul \emph{Path} indica agli altri concorrenti che qualcuno sta attraversando quella traiettoria permettendo così una migliore stima relativa alla scelta della strada da intraprendere.
 \subsection{Entità box (Lorenzo)}
-     \subsubsection{Interazione con il concorrente (Lorenzo)}
-     \subsubsection{Cosa fa (Lorenzo)}
+L'entità Box è una delle componenti che si è scelto di distribuire nella rete. Il Box si occupa di gestire la configurazione e la corsa di un concorrente. Durante la competizione, il Box verifica costantemente lo stato dell'auto e fornisce eventuali cambi di strategia se ritenuto opportuno. Inoltre decide quando giugne il momento del pitstop e aggiorna di conseguenza le impostazioni della macchina, ovvero benzina nel serbatoio e gomme nuove. Ogni Box è caratterizzato da uno fra 4 tipi di strategia, diversi per grado di ``ottimismo'' nelle valutazioni e nei calcoli dati lo stato della macchina, le medie calcolate e lo stile di guida del concorrente:
+\begin{enumerate}
+\item Cautious: cauto, sottostima il numero di giri ancora fattibili;
+\item Normal: stima abbastanza realistica delle possibilità del concorrente, considera anche un margine di errore nei calcoli per effettuare una valutazione;
+\item Risky: le stime vengono effettuate in base a calcoli esatti che di solito non tengono in considerazione fattori che nella realtà possono incidere in modo negativo;
+\item Fool: nella realtà normalmente non si arriva a tanto, ma per fini di test è stato inserito anche un tipo di strategia che sovrastima le possibilita del concorrente, portandolo a squalifica quasi certa.
+\end{enumerate}
+\subsubsection{Interazione con il concorrente (Lorenzo)}
+L'entità box interagisce costantemente con il concorrente, anche se non in modo diretto.
+Il box suggerisce al concorrente durante la gara :
+\begin{itemize}
+\item stile di guida. Verrà suggerito uno stile più conservativo se i consumi si sono rivelati maggiori del previsto e viceversa;
+\item numero di lap al pitstop
+\end{itemize}
+Il Box riceve informazioni sullo stato del concorrente alla fine di ogni settore e ricalcola la strategia alla fine del secondo settore. Il concorrente richiede la  nuova strategia al box in prossimità del checkpoint dove è possibile proseguire o andare ai box.
+E sembrata più realistica la scelta di non calcolare la strategia alla fine del terzo settore, perchè si suppone che nella realtà non si possa essere così veloci da calcolare una nuova strategia istantaneamente alla fine del circuito con i dati del terzo settore. \`{E} piuttosto più probabile che qualunque cambio di strategia o richiesta di rientro ai box venga stabilita già alla fine del secondo settore, in modo che in prossimità dei box il concorrente possa ottenere l’informazione istantaneamente e possa quindi decidere come e dove procedere.
      \subsubsection{Distrbuzione del box (Lorenzo)}
+La componente box è una delle principali parti che si è scelte di distribuire. Per impedire che un fault della rete (o del nodo) vada a intaccare la robustezza del sistema e il regolare svolgimento della competizione si è scelto di prevenire questi problemi implementando un sistema che riesca a continuare la sua esecuzione anche se un nodo dovesse cadere. La competizione continua il suo svolgimento e l'unico problema visibile è la mancata comunicazione fra il concorrente e i box che, in caso di danni permanenti al nodo (ad esempio non torna on-line prima della fine della gara) porterà al mancato pitstop e cambio di strategia del concorrente. Questa è la soluzione ad una parte del problema dovuto al sistema distribuito, gestendo questi fault e garantendo la corretta e continua esecuzione della simulazione si è arrivati alla robustezza del sistema distribuito.
+Inoltre la consapevolezza di errori di rete porta alla presenza di componenti di "non determinismo" comunque controllato e gestito, come richiesto nel paragrafo \ref{componenti_non_determinismo}.
 \subsection{Gestione delle statistiche di gara}
 \label{statistiche}
 Come analizzato nella sezione \ref{analisi_istantanee}, per poter reperire un'istantanea di gara ad un dato istante di tempo, è necessario
@@ -67,7 +92,6 @@ disporre di una storia degli eventi avvenuti nel corso della competizione, strut
 Nel corso delle due seguenti sottosezioni verranno analizzate le soluzioni adottate per immagazinare i dati realtivi ai singoli concorrenti
 e calcolare quelli relativi alla gara.
      \subsubsection{Dati singolo concorrente}
-     
      Come visto nel capitolo relativo all'entità \textbf{Circuito}, ogni concorrente aggiorna, ad ogni 
      \textbf{Checkpoint}, un orologio relativo alla sua corsa. Per ognuno si può quindi sapere, per ogni checkpoint passato in un determinato giro,
      l'istante di arrivo.\\
@@ -135,5 +159,9 @@ e calcolare quelli relativi alla gara.
     Di conseguenza, dato un istante di tempo \emph{t}, è possibile reperire tutte le informazioni di gara relative a tale istante. Se qualche 
     concorrente non ha ancora raggiunto l'istante dato, la richiesta dello snapshot (come si è visto) verrà messa in attesa.
 \subsection{Interazione utente-sistema (Lorenzo)}
-     \subsubsection{Osservazione gara ( lato box, lato tv )(Lorenzo)}
-     \subsubsection{Intervento sulla gara ( lato box, lato tv )(Lorenzo)}
+Nella simulazione si è scelto di permettere una interazione fra l'utente esterno e il sistema. Le modalità verranno esposte approfonditamente nei prossimi paragrafi. L'interazione che verrà analizzata è divisa in due tipologie, la prima riguarda l'osservazione della gara e la velocità di simulazione, la seconda invece parla di interventi sulla gara da parte di un utente esterno, evento che completa le funzionalità di "non determinismo" permesse nel sistema.
+\subsubsection{Osservazione gara ( lato box, lato tv )(Lorenzo)}
+Per quanto riguarda l'osservazione della gara questa avviene in due modalità differenti. La prima è la visione della gara nel suo insieme, con la visualizzazione istante dopo istante della posizione di tutti i concorrenti in pista, la classifica giro dopo giro e le migliori prestazioni. La seconda invece è la visualizzazione da parte dei box con i dati del solo concorrente a cui fa riferimento. Vengono visualizzate informazioni relative ai consumi e ai tempi di percorrenza. La sola osservazione della gara non introduce errori in quanto non l'unica azione prevista è il reperimento di informazioni giò presenti nel sistema centrale. Nel caso non siano ancora presenti i dati richiesti la chiamata (essendo sincrona) diventa bloccante in attesa delle informazioni richieste. La possibilità di richiesta di informazioni che non saranno mai disponibili nel sistema (ad esempio istanti di tempo a cui la gara non arriverà mai) non sono verificabili in quanto le informazioni vengono richieste in maniera sequenziale e viene comunicato quando non sono più disponibili dati di interesse.
+\subsubsection{Intervento sulla gara ( lato box, lato tv )(Lorenzo)}
+Per quanto riguarda gli interventi permessi sulla gara sono di due tipi. Lato tv viene permessa la modifica del tempo di simulazione, velocizzandolo o rallentandolo. Lato box invece è possibile richiamare la macchina ai box per un pitstop forzato, introducendo così l'ultima caratteristica di "non determinismo" permessa.
+Ogni intervento che è stato permesso sulla gara non introduce altri errori in quanto in un caso va a modificare il delay inserito per rendere reale la simulazione e nell'altro forza una azione comunque prevista (e presente) nel sistema. 
