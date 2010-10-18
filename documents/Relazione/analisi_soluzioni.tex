@@ -1,43 +1,69 @@
 \label{analisi_soluzioni}
 \subsection{Gestione del tempo}
 \label{tempo}
-La competizione dovrebbe essere regolata e scandita da un orologio. La funzione di tale orologio è quella di permettere
-di tenere traccia della durata degli eventi. \`{E} necessario ad esempio ai concorrenti per decidere quanto attendere all'entrata
+La competizione dovrebbe essere regolata e scandita da un orologio. La funzione
+di tale orologio è quella di permettere
+di tenere traccia della durata degli eventi. \`{E} necessario ad esempio ai
+(thread) concorrenti per decidere quanto attendere all'entrata
 di un tratto prima che esso si liberi.\\
 L'orologio potrebbe essere di due tipi:
 \begin{description}
 \item[Assoluto]:\\
-ovvero un orologio che fa riferimento ad un tempo assoluto. L'orologio dispone di un suo flusso temporale costante 
+ovvero un orologio che fa riferimento ad un tempo assoluto. L'orologio dispone
+di un suo flusso temporale costante 
 interno a cui le entità esterne attingono.
 \item[Relativo]:\\
-in questo caso non esiste un unico orologio esterno di riferimento. Ogni entità possiede un orologio interno con il proprio istante
-zero e che viene fatto procedere incrementalmente dall'entità stessa.
+in questo caso non esiste un unico orologio esterno di riferimento. Ogni entità
+possiede un orologio interno con il proprio istante
+zero che viene fatto procedere incrementalmente dall'entità stessa.
 \end{description}
-La prima soluzione non si presta ad un sistema come quello in analisi per i seguenti motivi:
+La prima soluzione non si presta ad un sistema come quello in analisi per i
+seguenti motivi:
 \begin{itemize}
-\item un orologio assoluto non tiene in considerazione i ritardi dati dalle caratteristiche del sistema su cui il simulatore dovrebbe
-essere eseguito. Ad esempio non tiene conto di un ritardo dato da quando un thread è sulla coda dei pronti a quando gli viene assegnata la CPU.
-Di conseguenza un concorrente (che supponiamo essere rappresentato da un thread) che si annunci pronto ad attraversare un tratto all'istante
-\emph{t}, potrebbe essere (con alta probabilità) che inizi effettivamente ad attraveraslo ad un istante \emph{t+$\epsilon$}. In questo caso
-il risultato della simulazione sarebbe errato. Il tempo di attraversamento di tale concorrente, cioè, sarebbe slittato di $\epsilon$.
-\item il flusso di un orologio assoluto è unico. Ovvero, l'orologio assoluto segue un'unica linea temporale. La natura concorrente del sistema
-invece vorrebbe che l'orologio segua una linea per ogni thread in esecuzione. Supponendo per esempio che ogni concorrente sia un thread,
-i concorrenti otterrebbero quanti di esecuzione in modo sequenziale anche se nella realtà simulata starebbero teoricamente svolgendo
-attività in parallelo. Nel caso quindi due o più thread debbano chiedere l'istante di tempo contemporaneamente, 
+\item un orologio assoluto non tiene in considerazione i ritardi dati dalle
+caratteristiche del sistema su cui il simulatore dovrebbe
+essere eseguito. Ad esempio non tiene conto del tempo che intercorre da quando
+un thread è sulla coda dei pronti a quando gli viene assegnata la CPU.
+Di conseguenza un concorrente (che supponiamo essere rappresentato da un thread)
+che si annunci pronto ad attraversare un tratto all'istante
+\emph{t}, potrebbe (con alta probabilità) iniziare effettivamente ad
+attraverarlo ad un istante \emph{t+$\epsilon$}. In questo caso
+il risultato della simulazione sarebbe errato. Il tempo di attraversamento di
+tale concorrente, cioè, sarebbe slittato di $\epsilon$.
+\item il flusso di un orologio assoluto è unico. Ovvero, l'orologio assoluto
+segue un'unica linea temporale. La natura concorrente del sistema
+invece vorrebbe che l'orologio segua una linea per ogni thread in esecuzione.
+Supponendo per esempio che ogni concorrente sia un thread,
+i concorrenti otterrebbero quanti di esecuzione in modo sequenziale anche se
+nella realtà simulata starebbero teoricamente svolgendo
+attività in parallelo. Nel caso quindi due o più thread debbano chiedere
+l'istante di tempo contemporaneamente, 
 l'orologio verrebbe interrogato in modo sequenziale fornendo due tempi diversi.
 \end{itemize}
-I problemi sopra citati sarebbero invece superati implementando tempo in modo relativo. Durante lo svolgimento della competizione, determinati eventi richiedono un determinato
-intervallo di tempo per essere portati a termine (come l'attraversamento di un tratto da parte di un concorrente). Questi eventi influenzano altri eventi (ad esempio
+I problemi sopra citati sarebbero invece superati implementando tempo in modo
+relativo. Durante lo svolgimento della competizione, 
+determinati eventi richiedono un preciso
+intervallo di tempo per essere portati a termine (come l'attraversamento di un
+tratto da parte di un concorrente). 
+Questi eventi influenzano altri eventi (ad esempio
 l'attraversamento dello stesso tratto da un altro concorrente). 
-% Influenzano inoltre l'informazione che un osservatore esterno riceve (lo spettatore vede che un concorrente ha impiegato un tempo \emph{t} per attraversare un tratto di pista).
-La gestione del tempo in modo relativo vuole, in questo caso, che l'istante in cui un tratto si libera è dato
-non dall'istante reale in cui l'ultimo concorrente ha lasciato il tratto (o meglio, in cui l'ultimo thread ha rilasciato
-la risorsa tratto), ma dall'accumulo degli intervalli temporali richiesti da tutti i concorrenti per attraversarlo (assumendo che il tratto
+% Influenzano inoltre l'informazione che un osservatore esterno riceve (lo
+spettatore vede che un concorrente ha impiegato un tempo \emph{t} per
+attraversare un tratto di pista).
+La gestione del tempo in modo relativo vuole, in questo caso, che l'istante in
+cui un tratto si libera sia dato
+non dall'istante reale in cui l'ultimo concorrente ha lasciato il tratto (o
+meglio, in cui l'ultimo thread ha rilasciato
+la risorsa tratto), ma dall'accumulo degli intervalli temporali richiesti da
+tutti i concorrenti per attraversarlo (assumendo che il tratto
 sia a molteplicità uno).\\
-Da questo esempio si evince che la competizione non possa essere regolata da un unico flusso temporale assoluto. Ogni risorsa il cui uso
+Da questo esempio si evince che la competizione non possa essere regolata da un
+unico flusso temporale assoluto. Ogni risorsa il cui uso
 coinvolga fattori temporali (una traiettoria ad esempio), deve
-possedere un ``orologio'' interno che venga incrementato di un dato offset ogni volta un evento avvenuto su tale risorsa inluenzi i tempi
-prodotti dai suoi futuri utilizzatori. L'orologio interno chiaramente ha un istante zero uguale a tutti gli orologi presenti nel sistema
+possedere un ``orologio'' interno che venga incrementato di un dato offset ogni
+volta un evento avvenuto su tale risorsa inluenzi i tempi
+prodotti dai suoi futuri utilizzatori. L'orologio interno chiaramente ha un
+istante zero uguale a tutti gli orologi presenti nel sistema
 e non ha vita propria. Cambia cioè solo se qualcuno lo aggiorna.\\
 \subsection{Sorpassi impossibili}
 \label{sorpassi_impossibili_soluzioni}
@@ -46,180 +72,358 @@ Il problema dei sorpassi impossibili è dovuto essenzialmente a due fattori:
 \item natura concorrente del sistema
 \item risorse condivise (tratti) fra thread concorrenti
 \end{itemize}
-Esisterebbe un metodo semplice e veloce di risolvere entrambi i problemi elencati: ridurre tutti i concorrenti ad un unico thread.
-Dovrebbe cioè essere presente un thread destinato a calcolare lo svolgimento della gara, utilizzando come  parametri decisionali
-le caratteristiche dei concorrenti e i dettagli del circuito. In questo modo sparirebbe il problema delle risorse condivise fra
-i thread designati a svolgere il ruolo di concorrenti di gara. Tuttavia sarebbe una scelta poco elegante che porterebbe
+Esisterebbe un metodo semplice e veloce di risolvere entrambi i problemi
+elencati: ridurre tutti i concorrenti ad un unico thread.
+Dovrebbe cioè essere presente un thread destinato a calcolare lo svolgimento
+della gara, utilizzando come  parametri decisionali
+le caratteristiche dei concorrenti e i dettagli del circuito. In questo modo
+sparirebbe il problema delle risorse condivise fra
+i thread designati a svolgere il ruolo di concorrenti di gara. Tuttavia sarebbe
+una scelta poco elegante che porterebbe
 ad annullare più che risolvere le problematiche di concorrenza.\\
-Una soluzione più valida dovrebbe invece mantenere una reale concorrenza fra concorrenti, rispecchiando quanto accade nella realtà.
-Bisognerebbe quindi istanziare un task per ogni concorrente. Per simulare una gara di formula 1 adeguatamente sarebbe poi necessario
-fornire una serie di risorse che rappresentino il circuito. Emerge qui il concetto di \textbf{tratto}: un singolo segmento di pista.
-Per rendere la simulazione più realistica, un tratto dovrebbe avere molteplicità limitata per permettere ad un numero finito di macchine
+Una soluzione più valida dovrebbe invece mantenere una reale concorrenza fra
+concorrenti, rispecchiando quanto accade nella realtà.
+Bisognerebbe quindi istanziare un task per ogni concorrente. Per simulare una
+gara di formula 1 adeguatamente sarebbe poi necessario
+fornire una serie di risorse che rappresentino il circuito. Emerge qui il
+concetto di \textbf{tratto}: un singolo segmento di pista.
+Per rendere la simulazione più realistica, un tratto dovrebbe avere molteplicità
+limitata per permettere ad un numero finito di macchine
 di attraversarlo contemporaneamente. Per ora quindi le entità usate sarebbero:
 \begin{itemize}
-\item \textbf{Concorrente}, entità attiva istanziata una volta per ogni concorrente;
-\item \textbf{Tratto}, entità passiva condivisa fra concorrenti e quindi ad accesso mutuamente esclusivo (con molteplicità arbitraria non infinita);
+\item \textbf{Concorrente}, entità attiva istanziata una volta per ogni
+concorrente;
+\item \textbf{Tratto}, entità passiva condivisa fra concorrenti e quindi ad
+accesso mutuamente esclusivo (con molteplicità arbitraria non infinita);
 \end{itemize}
-In questa soluzione ogni concorrente procede verso il tratto N solo dopo aver passato il tratto N-1. Per ottenere il tratto N deve attendere
-che la risorsa si liberi. Questa bozza di soluzione però espone un problema fondamentale: non essendoci accumulo di risorse,
-un concorrente che abbia ottenuto un tratto N e debba richiedere l'attraversamento del tratto N+1, dovrà rilasciare N e poi ottenere N+1. Nell'intervallo
-di tempo in mezzo ai due eventi, il thread che gestisce il concorrente potrebbe essere prerilasciato a far passare avanti altri concorrenti
-in modo incontrollato. In questo caso si potrebbe facilmente presentare lo scenario esposto durante l'enunciazione del problema nella sezione
+In questa soluzione ogni concorrente procede verso il tratto N solo dopo aver
+passato il tratto N-1. Per ottenere il tratto N deve attendere
+che la risorsa si liberi. Questa bozza di soluzione però espone un problema
+fondamentale: non essendoci accumulo di risorse,
+un concorrente che abbia ottenuto un tratto N e debba richiedere
+l'attraversamento del tratto N+1, dovrà rilasciare N e poi ottenere N+1.
+Nell'intervallo
+di tempo in mezzo ai due eventi, il thread che gestisce il concorrente potrebbe
+essere prerilasciato a far passare avanti altri concorrenti
+in modo incontrollato. In questo caso si potrebbe facilmente presentare lo
+scenario esposto durante l'enunciazione del problema nella sezione
 precedente.\\
-Permettendo l'accumulo di risorse da parte dei thread si presenterebbe la possibilità di stallo. Con un numero di concorrenti pari al numero di
-segmenti, se ogni concorrente per procedere avesse bisogno del tratto corrente e di quello successivo e se ogni concorrente
+Permettendo l'accumulo di risorse da parte dei thread si presenterebbe la
+possibilità di stallo. Con un numero di concorrenti pari al numero di
+segmenti, se ogni concorrente per procedere avesse bisogno del tratto corrente e
+di quello successivo e se ogni concorrente
 fosse su un tratto diverso, lo stallo non esiterebbe a presentarsi.
-Il problema dello stallo verrà comunque trattato più dettagliatamente qualche sezione più avanti.\\
-Per gestire quindi il problema è necessario introdurre delle strutture che permettano di creare una certa dipendenza fra eventi. Più precisamente,
-bisogna garantire che ogni concorrente sappia quale sia il momento adatto per procedere alla richiesta del tratto successivo senza il rischio
-di teletrasportarsi davanti ad un altro concorrente o di craere incoerenza temporale. Allo stesso modo, il thread che rappresenta il concorrente
-deve poter essere prerilasciato senza che ciò implichi un potenziale problema. Come vedremo meglio nella sezione riguardante l'esplicazione
-della soluzione, il risultato desiderato viene ottenuto regolando l'accesso ai tratti tramite code. Questo, insieme agli orologi relativi,
-permetteranno ad un concorrente di sapere quando la sua esecuzione non potrà creare conflitti con altri concorrenti.
-\subsection{Determinismo}
-Come definito in \emph{Simulation: The Engine Behind The Virtual World, Roger D. Smith, Chief Scientist, ModelBenders LLC}:
-
-\emph{``Simulation is the process of designing a model of a real or imagined system and
-conducting experiments with that model. The purpose of simulation experiments is to
-understand the behavior of the system or evaluate strategies for the operation of the system.''}
-
-%\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
-%svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
-%o dell'utente''}.\\
-Considerando quindi che la simulazione deve permettere di comprendere il comportamento del sistema, è necessario che il sistema abbia 
-un comportamento prevedibile. Ciò non significa che ogni componente di non determinismo sia non desiderata. Il non determinismo
-può essere inserito in modo controllato, ovvero consapevoli del contensto e dei momenti in cui esso si possa verificare. Soprattutto,
-il nondeterminismo deve rispecchiare un eventuale non determinismo presente anche nel sistema reale e non solo in quello simulato.\\
-Il comportamento dello scheduler sottostante il sistema che verrà sviluppato non è prevedibile. Considerando che il non determinismo
-introdotto dallo scheduler non è controllabile, si presenta
-il problema di riuscire a progettare il simulatore in modo
-che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
-modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
+Il problema dello stallo verrà comunque trattato più dettagliatamente qualche
+sezione più avanti.\\
+Per gestire quindi il problema è necessario introdurre delle strutture che
+permettano di creare una certa dipendenza fra eventi. Più precisamente,
+bisogna garantire che ogni concorrente sappia quale sia il momento adatto per
+procedere alla richiesta del tratto successivo senza il rischio
+di teletrasportarsi davanti ad un altro concorrente o di craere incoerenza
+temporale. Allo stesso modo, il thread che rappresenta il concorrente
+deve poter essere prerilasciato senza che ciò implichi un potenziale problema.
+Come vedremo meglio nella sezione riguardante l'esplicazione
+della soluzione, il risultato desiderato viene ottenuto regolando l'accesso ai
+tratti tramite code. Questo, insieme agli orologi relativi,
+permetteranno ad un concorrente di sapere quando la sua esecuzione non potrà
+creare conflitti con altri concorrenti.
+\subsection{Determinismo} 
+Il determinismo della simulazione non può essere ottenuto tramite una precisa
+idea o soluzione. Il suggerimento, come già enunciato,
+dovrebbe semplicemente essere che l'architettura e il funzionamento del sistema
+siano indipendenti da come il sistema operativo
+sottostante sia stato progettato. Si può già dire che implementando un orologio
+relativo, parte del non determinismo regalato dallo scheduler
+venga eliminato. L'avanzamento il funzionamento dell'orologio relativo dipende
+esclusivamente dalle scelte progettuali effettuate per 
+il simulatore di formula 1.\\
+Allo stesso modo, l'implementazione di un protocollo di attraversamento dei
+tratti che segua le direttive suggerite nella sottosezione precedente
+dovrebbe evitare che la gestione dei processi dello scheduler possa introdurre
+non determinismo indesiderato.\\
+Rimane ancora il problema del comportamento non prevedibile della rete. Per
+quanto riguarda i ritardi di rete, devono essere trattati come
+se tali ritardi fossero quelli introdotti dallo scheduler. Ovvero: il sistema
+non deve dipendere dalla puntualità delle chiamate remote.\\
+Per quanto riguarda invece i fault di connessione (ad esempio un nodo per
+qualche motivo smette di essere connesso al sistema), il problema 
+si potrebbe risolvere applicando ridondanza alle componenti remote, ovvero
+dislocando le stesse componenti su più nodi in modo da attivarne
+di alternative in caso di fault. Ma si è pensato che l'intorduzione di questa
+caratteristica nel sistema avrebbe richiesto uno sforzo progettuale
+maggiore rispetto alle pianificazioni. Inoltre, questo tipo di problema potrebbe
+essere facilmente associato ad un problema esistente anche nella
+realtà per determinate scelte delle componenti distribuite. Come si vedrà in
+seguito, infatti, si è scelto di distribuire i box e le TV per
+la visione della gara. \`{E} plausibile che nella realtà una TV venga spenta
+(chiudendo il contatto con il sistema) o che un box perda
+il contatto radio con il proprio concorrente. In questi casi i fault vanno
+gestiti in modo che non risultino in errori durante la competizione.
 \subsection{Componenti di non determinismo (Lorenzo)}
 \label{componenti_non_determinismo}
-Come introdotto nel paragrafo \ref{non_determinismo} le componenti di non determinismo possono essere desiderabili se opportunamente gestite, o non desiderabili, se non portano valore aggiunto al prodotto. Nella realizzazione di un simulatore di formula 1 la scelta di introdurre delle componenti che possono modificare l'andamento della gara in maniera non prevedibile prima dell'esecuzione aiuta a simulare in maniera migliore l'andamento di una vera gara di automobili. Le soluzioni possibili che sono state considerate per realizzare il progetto \emph{F1\_Sim} sono principalmente tre:
+Come introdotto nel paragrafo \ref{non_determinismo} le componenti di non
+determinismo possono essere desiderabili se opportunamente gestite, o non
+desiderabili, se non portano valore aggiunto al prodotto. Nella realizzazione di
+un simulatore di formula 1 la scelta di introdurre delle componenti che possono
+modificare l'andamento della gara in maniera non prevedibile prima
+dell'esecuzione aiuta a simulare in maniera migliore l'andamento di una vera
+gara di automobili. Le soluzioni possibili che sono state considerate per
+realizzare il progetto \emph{F1\_Sim} sono principalmente tre:
 \begin{itemize}
 \item Nessuna possibilit\`{a} di componenti di non determinismo
 \item Possibilit\`{a} di componenti di non determinismo opportunamente gestite
-\item Possibilit\`{a} di componenti che simulino il non determinismo opportunamente gestite
+\item Possibilit\`{a} di componenti che simulino il non determinismo
+opportunamente gestite
 \end{itemize}
-La prima opzione prevede la mancanza di interazione dell'utente che sta visualizzando la simulazione oltre che la mancanza di parti non deterministiche, cioè zone del progetto dove non si ha la padronanza e non si prevede il comportamento. Ad esempio affidarsi a tecniche di sleep per far funzionare la simulazione porta inevitabilmente a problemi di non predicibilit\`{a}. La seconda opzione permette zone del progetto non controllabili e verificabili mentre la terza opzione permette delle componenti che rendono l'esecuzione pi\`{u} reale e non verificabile a priori ma comunque gestita e controllata gi\`{a} a livello di progettazione. Un esempio di componente è quella che permette l'interazione di un utente che visualizza l'esecuzione del simulatore. Tale azione pu\`{o} provocare, ad esempio, il rientro ai box del concorrente e questo andr\`{a} certamente a influire in modo non prevedibile a priori sull'andamento della gara.\\
-Una buona soluzione che pu\`{o} essere adottata è data quindi dalla presenza di possibilit\`{a} di interazione dell'utente esterno con l'ambiente di simulazione ad esempio permettendo di provocare un pitstop non previsto e di impedire (tramite una buona progettazione) la presenza di componenti di che portano non determinismo al sistema, come ad esempio utilizzare le istruzioni di sleep per creare l'ordine di uscita da un tratto (cioè accodare i concorrenti man mano che vengono risvegliati).
+La prima opzione prevede la mancanza di interazione dell'utente che sta
+visualizzando la simulazione oltre che la mancanza di parti non deterministiche,
+cioè zone del progetto dove non si ha la padronanza e non si prevede il
+comportamento. Ad esempio affidarsi a tecniche di sleep per far funzionare la
+simulazione porta inevitabilmente a problemi di non predicibilit\`{a}. La
+seconda opzione permette zone del progetto non controllabili e verificabili
+mentre la terza opzione permette delle componenti che rendono l'esecuzione
+pi\`{u} reale e non verificabile a priori ma comunque gestita e controllata
+gi\`{a} a livello di progettazione. Un esempio di componente è quella che
+permette l'interazione di un utente che visualizza l'esecuzione del simulatore.
+Tale azione pu\`{o} provocare, ad esempio, il rientro ai box del concorrente e
+questo andr\`{a} certamente a influire in modo non prevedibile a priori
+sull'andamento della gara.\\
+Una buona soluzione che pu\`{o} essere adottata è data quindi dalla presenza di
+possibilit\`{a} di interazione dell'utente esterno con l'ambiente di simulazione
+ad esempio permettendo di provocare un pitstop non previsto e di impedire
+(tramite una buona progettazione) la presenza di componenti di che portano non
+determinismo al sistema, come ad esempio utilizzare le istruzioni di sleep per
+creare l'ordine di uscita da un tratto (cioè accodare i concorrenti man mano che
+vengono risvegliati).
 \subsection{Stalli (Lorenzo)}
-Per quanto riguarda gli stalli si \`{e} visto nel paragrafo \ref{stalli} quali siano le condizioni perch\`{e} si verifichino. Le soluzioni da adottare sono, semplicemente, l'evitare che si presentino le 4 pre-condizioni simultaneamente non andando incontro, cos\`{i}, al verificarsi di uno stallo.
-Trattando nel progetto entit\`{a} attive e passive si possono creare situazioni che, se non controllate, portano a stalli. Le entit\`{a} attive in un sistema distribuito sono le parti che solitamente utilizzano le entit\`{a} passive. Uno degli esempi \`{e} gi\`{a} descritto nel paragrafo \ref{sorpassi_impossibili_soluzioni}. e verr\`{a} qui approfondito. Se fornissimo la possibilit\`{a} a un concorrente  di accumulare risorse per evitare il problema del teletrasporto (segnalato nel paragrafo \ref{sorpassi_impossibili}) andremo incontro certamente a una situazione di stallo nonch\`{e} alla realizzazione di un sistema che rischia di perdere la concorrenza in quanto, avendo tutte le risorse, il concorrente che pu\`{o} eseguire sulla pista (insieme di tratti, definiti precedentemente) \`{e} solo uno. Nel caso non riesca ad ottenere tutta la pista (ad esempio perch\`{e} un altro concorrente \`{e} stato prerilasciato prima di liberare tutte le risorse) la simulazione rimarrebbe ferma in una situazione di stallo. La soluzione \`{e} quindi di studiare e progettare un sistema che preveda la mancanza assoluta di comportamenti anomali (come sorpassi impossibili), dia la possibilit\`{a} di esecuzione simultanea a pi\`{u} concorrenti e non presenti per questo situazioni di stallo.
+Per quanto riguarda gli stalli si \`{e} visto nel paragrafo \ref{stalli} quali
+siano le condizioni perch\`{e} si verifichino. Le soluzioni da adottare sono,
+semplicemente, l'evitare che si presentino le 4 pre-condizioni simultaneamente
+non andando incontro, cos\`{i}, al verificarsi di uno stallo.
+Trattando nel progetto entit\`{a} attive e passive si possono creare situazioni
+che, se non controllate, portano a stalli. Le entit\`{a} attive in un sistema
+distribuito sono le parti che solitamente utilizzano le entit\`{a} passive. Uno
+degli esempi \`{e} gi\`{a} descritto nel paragrafo
+\ref{sorpassi_impossibili_soluzioni}. e verr\`{a} qui approfondito. Se
+fornissimo la possibilit\`{a} a un concorrente  di accumulare risorse per
+evitare il problema del teletrasporto (segnalato nel paragrafo
+\ref{sorpassi_impossibili}) andremo incontro certamente a una situazione di
+stallo nonch\`{e} alla realizzazione di un sistema che rischia di perdere la
+concorrenza in quanto, avendo tutte le risorse, il concorrente che pu\`{o}
+eseguire sulla pista (insieme di tratti, definiti precedentemente) \`{e} solo
+uno. Nel caso non riesca ad ottenere tutta la pista (ad esempio perch\`{e} un
+altro concorrente \`{e} stato prerilasciato prima di liberare tutte le risorse)
+la simulazione rimarrebbe ferma in una situazione di stallo. La soluzione \`{e}
+quindi di studiare e progettare un sistema che preveda la mancanza assoluta di
+comportamenti anomali (come sorpassi impossibili), dia la possibilit\`{a} di
+esecuzione simultanea a pi\`{u} concorrenti e non presenti per questo situazioni
+di stallo.
 \subsection{Realismo fisico}
 \ref{analisi_realismo_fisico}
-Come enunciato nella sezione precedente, il realismo fisico di un simulatore di formula 1 è ottenuto dall'interazione
-concorrente-ambiente statico e concorrente-concorrenti. Verrà ora analizzata la traccia di soluzione per entrambti:
+Come enunciato nella sezione precedente, il realismo fisico di un simulatore di
+formula 1 è ottenuto dall'interazione
+concorrente-ambiente statico e concorrente-concorrenti. Verrà ora analizzata la
+traccia di soluzione per entrambi:
 \begin{description}
 \item{Concorrente - ambiente statico:}\\
-Per ottenere un minimo livello di realismo da questo punto di vista, è necessario fornire dei dettagli riguardanti l'aspetto fisico
-del circuito. Ogni concorrente. prima di valutare la traiettoria da percorrere per attraversare il tratto, deve poter conoscere
+Per ottenere un minimo livello di realismo da questo punto di vista, è
+necessario fornire dei dettagli riguardanti l'aspetto fisico
+del circuito. Ogni concorrente, prima di valutare la traiettoria da percorrere
+per attraversare il tratto, deve poter conoscere
 gli aspetti caratterizzanti di tale traiettoria, quali ad esempio:
 \begin{itemize}
 \item lunghezza 
 \item livello di aderenza
 \item angolo
 \end{itemize}
-Queste caratteristiche, unite a quelle dell'auto (benzina disponibile, tipo di gomme ed usura, massima accelerazione ecc.)
+Queste caratteristiche, unite a quelle dell'auto (benzina disponibile, tipo di
+gomme ed usura, massima accelerazione ecc.)
 possono essere utilizzate per dare realismo alla simulazione.
-Arricchendo quindi la descrizione del circuito e dei suoi tratti con le precedenti caratteristiche, il concorrente potrà
-valutare per ogni possibile traiettoria la benzina consumata, l'usura delle gomme, la velocità massima raggiungibile.
+Arricchendo quindi la descrizione del circuito e dei suoi tratti con le
+precedenti caratteristiche, il concorrente potrà
+valutare per ogni possibile traiettoria la benzina consumata, l'usura delle
+gomme, la velocità massima raggiungibile.
 \item{Concorrente - concorrenti:}\\
 Un livello di interattività fra concorrenti potrebbe essere raggiunto se 
-un concorrente potesse controllare, una volta sul tratto, quali concorrenti siano contemporaneamente presenti sul tratto
-per poi valutare quale traiettoria scegliere in base all'``affollamento''. Eistono chiaramente vari modi di ottenere questo:
+un concorrente potesse controllare, una volta sul tratto, quali concorrenti
+siano contemporaneamente presenti sul tratto
+per poi valutare quale traiettoria scegliere in base all'``affollamento''.
+Eistono chiaramente vari modi di ottenere questo:
 \begin{itemize}
-\item il concorrente interroga i diversi concorrenti per sapere quale sia la loro posizione sulla pista. In questo modo potrebbe
-avere una visione di insieme della situazione e valutare quindi la scelta della traiettoria. Per fare ciò, però, sarebbe 
-necessario che l'istante \emph{t} del concorrente corrisponda all'istante \emph{t} dei concorrenti interrogati. In questo caso
-è necessario un orologio assoluto che come visto nella sezione \ref{tempo} è difficilmente realizzabile in un sistema come
+\item il concorrente interroga i diversi concorrenti per sapere quale sia la
+loro posizione sulla pista. In questo modo potrebbe
+avere una visione di insieme della situazione e valutare quindi la scelta della
+traiettoria. Per fare ciò, però, sarebbe 
+necessario che l'istante \emph{t} del concorrente corrisponda all'istante
+\emph{t} dei concorrenti interrogati. In questo caso
+è necessario un orologio assoluto che come visto nella sezione \ref{tempo} è
+difficilmente realizzabile in un sistema come
 quello descritto.\\
-Alternativamente ogni concorrente dovrebbe mantenere una storia della sua corsa fino al momento corrente. Una volta interrogato
-sulla sua posizione all'istante \emph{t} dovrebbe ripercorrere all'indietro la storia fino a collidere con l'istante richiesta
-e ritornare l'informazione. Ma una soluzione come questa risulterebbe alquanto inefficiente.
-\item il concorrente dovrebbe poter sapere solo l'informazione utile per l'attraversamento del tratto corrente. Non è necessario
-conoscere la posizione di ogni concorrente o quale concorrente si trova su una determinata traiettoria. \`{E} sufficiente che
-si possa sapere in che istante una data traiettoria si liberi. Questa soluzione può essere implementata aggiornando un valore
-temporale interno alla traiettoria ogni volta che essa venga attraversata, incrementando (o settando) tale valore in base al 
-tempo di attraversamento. Il concorrente potrebbe quindi confrontare l'istante di tempo relativo
-al suo arrivo con quello di liberazione del tratto per poter poi effettuare una scelta.\\
-Questa idea è applicabile ad un sistema come quello dato poichè non necessita di un orologio assoluto.
+Alternativamente ogni concorrente dovrebbe mantenere una storia della sua corsa
+fino al momento corrente. Una volta interrogato
+sulla sua posizione all'istante \emph{t} dovrebbe ripercorrere all'indietro la
+storia fino a collidere con l'istante richiesto
+e ritornare l'informazione. Ma una soluzione come questa risulterebbe alquanto
+inefficiente.
+\item il concorrente dovrebbe poter sapere solo l'informazione utile per
+l'attraversamento del tratto corrente. Non è necessario
+conoscere la posizione di ogni concorrente o quale concorrente si trova su una
+determinata traiettoria. \`{E} sufficiente che
+si possa sapere in che istante una data traiettoria si liberi. Questa soluzione
+può essere implementata aggiornando un valore
+temporale interno alla traiettoria ogni volta che essa venga attraversata,
+incrementando (o settando) tale valore in base al 
+tempo di attraversamento. Il concorrente potrebbe quindi confrontare l'istante
+di tempo relativo
+al suo arrivo con quello di liberazione del tratto per poter poi effettuare una
+scelta.\\
+Questa idea è applicabile ad un sistema come quello dato poichè non necessita di
+un orologio assoluto.
 \end{itemize}
 \end{description}
 \subsection{Gestione delle istantanee di gara}
 \label{analisi_istantanee}
-Un'istantanea di gara è lo stato della gara ad un determinato istante di tempo. Intuitivamente l'idea più semplice per ottenere
-uno snapshot sembrerebbe essere quella di inoltrare la richiesta al sistema all'istante desiderato, mettere in pausa la gara, 
-salvare lo stato e riprendere la competizione dall'istante di pausa. Si riconsideri però la problematica enunciata nella
+Un'istantanea di gara è lo stato della gara ad un determinato istante di tempo.
+Intuitivamente l'idea più semplice per ottenere
+uno snapshot sembrerebbe essere quella di inoltrare la richiesta al sistema
+all'istante desiderato, mettere in pausa la gara, 
+salvare lo stato e riprendere la competizione dall'istante di pausa. Si
+riconsideri però la problematica enunciata nella
 sezione \ref{enunciazione_istantanee}:\\
-\emph{[...]Bisogna però tenere in considerazione che qualunque entità provveda allo scatto
-dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità attive dipendenti dallo scheduler[...]}\\
-Il ``mettere in pausa'' la gara, quindi, non è banale. Ogni thread concorrente, ad esempio, potrebbe essere messo in pausa
-in istanti diversi rispetto al \emph{t} richiesto, fornendo quindi uno stato non valido rispetto al tempo richeisto. 
-Se si considera poi che un orologio assoluto nel sistema si è dimostrato non plausibile da implementare, l'istante \emph{t} richiesto 
+\emph{[...]Bisogna però tenere in considerazione che qualunque entità provveda
+allo scatto
+dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità
+attive dipendenti dallo scheduler[...]}\\
+Il ``mettere in pausa'' la gara, quindi, non è banale. Ogni thread concorrente,
+ad esempio, potrebbe essere messo in pausa
+in istanti diversi rispetto al \emph{t} richiesto, fornendo quindi uno stato non
+valido rispetto \emph{t}. 
+Se si considera poi che un orologio assoluto nel sistema si è dimostrato non
+plausibile da implementare, l'istante \emph{t} richiesto 
 per la pausa non corrisponderebbe ad un'istante
-di tempo assoluto di pausa per la gara. All'interno della competizione le singole entità (che ne necessitano) seguono un orologio interno.\\
-\`{E} quindi opportuno che, una volta richiesto lo snapshot di un istante temporale, lo stato di ogni entità (utile all'istantanea) in 
-quell'istante sia disponibile o, alternativamente, l'unità richiedente si metta in attesa fino alla disponibilità completa dello stato
-in tale istante. Bisognerà tenere una storia della gara che permetta di risalire allo stato globale ad un dato istante.
+di tempo assoluto di pausa per la gara. All'interno della competizione le
+singole entità (che ne necessitano) seguono un orologio interno.\\
+\`{E} quindi opportuno che, una volta richiesto lo snapshot di un istante
+temporale, lo stato di ogni entità (utile all'istantanea) in 
+quell'istante sia disponibile o, alternativamente, l'unità richiedente si metta
+in attesa fino alla disponibilità completa dello stato richiesto. 
+Bisognerà tenere una storia della gara che permetta di risalire
+allo stato globale ad un dato istante.
 \subsection{Robustezza del sistema distribuito (Lorenzo)}
-Per quanto riguarda la robustezza del sistema distribuito le soluzioni possibili variano in base alla scelta dello standard di comunicazione, della scelta del tipo di dati che viaggia nella rete e dal livello di distribuzione scelta per il prodotto finale.
-Per quanto riguarda il tipo di middleware di comunicazione la scelta potr\`{a} cadere tra 
+Per quanto riguarda la robustezza del sistema distribuito le soluzioni possibili
+variano in base alla scelta dello standard di comunicazione, della scelta del
+tipo di dati che viaggia nella rete e dal livello di distribuzione scelta per il
+prodotto finale.
+Per quanto riguarda il tipo di middleware di comunicazione la scelta potr\`{a}
+cadere tra 
 \begin{itemize}
 \item CORBA
 \item Distributed System Annex 
 \item MOM
 \end{itemize}
-oppure con la costruzione ad hoc di un middleware di comunicazione scritto su misura per la nostra applicazione.
-La scelta dei dati da trasferire fra i vari nodi della rete dipende fortemente dal tipo di sistema di comunicazione che si sceglie, anche se può comunque essere orientata verso un utilizzo prevalente delle stringhe o di tipi primitivi o di una combinazione dei due. Il livello di distribuizione va deciso in base alle funzionalit\`{a} e alle caratteristiche che si vogliono dare al prodotto in uscita. Si può pensare di spingere al massimo la distribuzione mettendo ogni entit\`{a} in nodi separati oppure di ridurre al minimo la distribuzione mettendo solo degli schermi che visualizzino l'andamento della competizione. Ovviamente si pu\`{o} anche scegliere una mediazione fra le due soluzioni.Un esempio \`{e} dato dalla scelta di distribuire componenti che visualizzino l'andamento della gara (e possano anche interagire, come i box) e lasciare centralizzata la gara vera e propria, quindi con le entit\`{a} attive e passive situate nella stessa macchina. Altra scelta fondamentale che va pensata e decisa in fase di progettazione \`{e} quella del tipo di chiamate da effettuare, se sincrone o asincrone, considerandone i vantaggi e gli svantaggi. Per quanto riguarda questo simulatore di formula uno concorrente e distribuito le chiamate sincrone forniscono uno strumento adatto e semplice per la sincronizzazione fra oggetti remoti. Inoltre se opportunamente gestite l forniscono risultati senza la presenza di polling o altri meccanismi di recupero dei parametri o dei valori di ritorno.
+oppure con la costruzione ad hoc di un middleware di comunicazione scritto su
+misura per la nostra applicazione.
+La scelta dei dati da trasferire fra i vari nodi della rete dipende fortemente
+dal tipo di sistema di comunicazione che si sceglie, anche se può comunque
+essere orientata verso un utilizzo prevalente delle stringhe o di tipi primitivi
+o di una combinazione dei due. Il livello di distribuizione va deciso in base
+alle funzionalit\`{a} e alle caratteristiche che si vogliono dare al prodotto in
+uscita. Si può pensare di spingere al massimo la distribuzione mettendo ogni
+entit\`{a} in nodi separati oppure di ridurre al minimo la distribuzione
+mettendo solo degli schermi che visualizzino l'andamento della competizione.
+Ovviamente si pu\`{o} anche scegliere una mediazione fra le due soluzioni.Un
+esempio \`{e} dato dalla scelta di distribuire componenti che visualizzino
+l'andamento della gara (e possano anche interagire, come i box) e lasciare
+centralizzata la gara vera e propria, quindi con le entit\`{a} attive e passive
+situate nella stessa macchina. Altra scelta fondamentale che va pensata e decisa
+in fase di progettazione \`{e} quella del tipo di chiamate da effettuare, se
+sincrone o asincrone, considerandone i vantaggi e gli svantaggi. Per quanto
+riguarda questo simulatore di formula uno concorrente e distribuito le chiamate
+sincrone forniscono uno strumento adatto e semplice per la sincronizzazione fra
+oggetti remoti. Inoltre se opportunamente gestite l forniscono risultati senza
+la presenza di polling o altri meccanismi di recupero dei parametri o dei valori
+di ritorno.
 \subsection{Intelligenza artificiale}
 \subsection{Avvio del sistema}
-Indipendentemente da quali saranno, nel dettaglio dell'implementazione, le relazioni fra entità e il livello di distribuzione
-delle unità componenti il sistema, l'avvio del sistema dovrebbe seguire, per i due problemi enunciati alla sezione \ref{enunciazione_avvio},
+Indipendentemente da quali saranno, nel dettaglio dell'implementazione, le
+relazioni fra entità e il livello di distribuzione
+delle unità componenti il sistema, l'avvio del sistema dovrebbe seguire, per i
+due problemi enunciati alla sezione \ref{enunciazione_avvio},
 le seguenti linee guida:
 \begin{itemize}
-\item Assumendo l'esistenza di un nodo centralizzato che ospiterà la maggior parte del calcolo computazionale legato alla gara e
-un numero di nodi distribuiti che interagiranno con esso (anche bidirezionalmente), le possibilità per la messa in connessione
+\item Assumendo l'esistenza di un nodo centralizzato che ospiterà la maggior
+parte del calcolo computazionale legato alla gara e
+un numero di nodi distribuiti che interagiranno con esso (anche
+bidirezionalmente), le possibilità per la messa in connessione
 dei nodi sono 2:
 \begin{itemize}
-\item Il nodo centrale dispone già di una lista di indirizzi da utilizzare per contattare i nodi remoti. Ma questo richiederebbe
-che nella fase di init o tutti i nodi (come precondizione) siano già avviati, o che l'unità centrale effettui polling verso tutte
-le entità remote fino al loro avvio o, infine, che il nodo centrale si occupi anche dell'avvio dei nodi remoti. \\
-La prima idea richiede un'assunzione troppo forte: con un numero elevato di nodi remoti potrebbe diventare operazione
-lunga sapere quando tutti siano pronti. La seconda comporta uno certo spreco computazionale: un polling sequenziale dei nodi
-potrebbe far attendere per un certo intervallo di tempo un nodo pronto (nel caso venga avviato subito dopo essere stato interrogato).
-Con un insieme di polling paralleli il problema si risolverebbe, ma il sistema sarebbe comunque poco elastico se inaspettatamente
+\item Il nodo centrale dispone già di una lista di indirizzi da utilizzare per
+contattare i nodi remoti. Ma questo richiederebbe
+che nella fase di init o tutti i nodi (come precondizione) siano già avviati, o
+che l'unità centrale effettui polling verso tutte
+le entità remote fino al loro avvio o, infine, che il nodo centrale si occupi
+anche dell'avvio dei nodi remoti. \\
+La prima idea richiede un'assunzione troppo forte: con un numero elevato di nodi
+remoti potrebbe diventare operazione
+lunga sapere quando tutti siano pronti. La seconda comporta uno certo spreco
+computazionale: un polling sequenziale dei nodi
+potrebbe far attendere per un certo intervallo di tempo un nodo pronto (nel caso
+venga avviato subito dopo essere stato interrogato).
+Con un insieme di polling paralleli il problema si risolverebbe, ma il sistema
+sarebbe comunque poco elastico se inaspettatamente
 uno dei nodi previsti dovesse cambiare locazione.
-L'ultima idea potrebbe essere una soluzione elegante, ma espone il problema (presente anche nelle altre due idee di soluzione)
-che se le entità remote venissero spostate, la lista dovrebbe essere aggiornata di volta in volta.\\
-Sia chiaro che questo non è un problema non risolvibile in alcun modo, ma si pensa potrebbe richiedere uno sforzo progettuale maggiore del previsto.
-\item Il nodo centrale viene avviato e rimane in attesa che i nodi remoti lo contattino fornendo le proprie informazioni di posizionamento.
-In questo modo i nodi remoti, una volta avviati, dovrebbero conoscere l'indirizzo del nodo centrale e contattarlo. Così facendo, una volta
-che tutti i nodi necessari all'avvio della competizione saranno inizializzati, il nodo centrale avrà già a disposizione gli indirizzi per la comunicazione
-bidirezionale con la certezza che essi siano avviati. I nodi remoti potrebbero comunque dover effetture polling in attesa che il nodo centrale sia avviato.
+L'ultima idea potrebbe essere una soluzione elegante, ma espone il problema
+(presente anche nelle altre due idee di soluzione)
+che se le entità remote venissero spostate, la lista dovrebbe essere aggiornata
+di volta in volta.\\
+Sia chiaro che questo non è un problema non risolvibile in alcun modo, ma si
+pensa potrebbe richiedere uno sforzo progettuale maggiore del previsto.
+\item Il nodo centrale viene avviato e rimane in attesa che i nodi remoti lo
+contattino fornendo le proprie informazioni di posizionamento.
+In questo modo i nodi remoti, una volta avviati, dovrebbero conoscere
+l'indirizzo del nodo centrale e contattarlo. Così facendo, una volta
+che tutti i nodi necessari all'avvio della competizione saranno inizializzati,
+il nodo centrale avrà già a disposizione gli indirizzi per la comunicazione
+bidirezionale con la certezza che essi siano avviati. I nodi remoti potrebbero
+comunque dover effetture polling in attesa che il nodo centrale sia avviato.
 \end{itemize}
-\item Per gestire l'avvio delle entità concorrenti, una soluzione plausibile è quella di organizzare l'inizializzazione del sistema a step.
-Fra le entità intercorrono varie relazioni di dipendenza. Alcune necessitano di dati ottenibili a partire da altre, le quali a loro volta
-possono aver bisogno di accedere a risorse disponibili solo ad un determinato momento della fase di avvio. Per modellare la soluzione
-è quindi necessaria una classificazione delle componenti in base alle risorse richieste. Il primo step dell'avvio dovrà occuparsi di inizializzare
-le risorse (attive, passive o reattive che siano) le quali non richiedono dati decisi a tempo di esecuzione. Durante gli step successivi
-si dovranno man mano avviare le risorse (o parti di risorse) che dipendono dai dati precedentemente inizializzati. Se un'entità attiva necessita
-di dati ottenibili in due step diversi per poter considerarsi pronta, sarà necessario che di step in step venga messa in attesa di tali dati.
-Questo può avvenire mettendo l'entità in attesa su una risorsa (finchè questa non raggiunga uno stato adeguato per fornire i dati richiesi)
-oppure mettendo l'entità stessa in attesa di messaggi (che potrebbero contenere i dati richiesti o semplicemente segnalare che è possibile
-procedere). Come postcondizione alla fine dell'ultimo step è necessario che tutte le entità passive e reattive che verranno richieste dopo l'init
-siano disponibili e che le risorse attive siano pronte ad iniziare con la reale esecuzione.
+\item Per gestire l'avvio delle entità concorrenti, una soluzione plausibile è
+quella di organizzare l'inizializzazione del sistema a step.
+Fra le entità intercorrono varie relazioni di dipendenza. Alcune necessitano di
+dati ottenibili a partire da altre, le quali a loro volta
+possono aver bisogno di accedere a risorse disponibili solo ad un determinato
+momento della fase di avvio. Per modellare la soluzione
+è quindi necessaria una classificazione delle componenti in base alle risorse
+richieste. Il primo step dell'avvio dovrà occuparsi di inizializzare
+le risorse (attive, passive o reattive che siano) che non richiedano dati
+decisi a tempo di esecuzione. Durante gli step successivi
+si dovranno man mano avviare le risorse (o parti di risorse) che dipendono dai
+dati precedentemente inizializzati. Se un'entità attiva necessita
+di dati ottenibili in due o più step diversi per poter considerarsi pronta, sarà
+necessario che di step in step venga messa in attesa di tali dati.
+Questo può avvenire mettendo l'entità in attesa su una risorsa (finchè questa
+non raggiunga uno stato adeguato per fornire i dati richiesi)
+oppure mettendo l'entità stessa in attesa di messaggi (che potrebbero contenere
+i dati richiesti o semplicemente segnalare che è possibile
+procedere). Come postcondizione alla fine dell'ultimo step è necessario che
+tutte le entità passive e reattive che verranno richieste dopo l'init
+siano disponibili e che le risorse attive siano pronte ad iniziare con la reale
+esecuzione.
 \end{itemize}
 \subsection{Stop del sistema}
-Si è visto che lo stop del sistema è suddiviso in uno stop riferito alla fine della gara ed uno legato alla finalizzazione delle risorse allocate.
-Di seguito i dettagli relativi 
+Si è visto che lo stop del sistema è suddiviso in uno stop riferito alla fine
+della gara ed uno legato alla finalizzazione delle risorse allocate.
+Di seguito i dettagli:
 \begin{itemize}
-\item Per lo stop logico si potrebbe delegare alle entità attive che gestiscono la corsa dei singoli concorrenti l'onere di tenere conto 
-dello stato della gara (il numero di giri effettuati ad esempio) e decidere, al momento opportuno, di procedere con lo stop di quelle che
-finiscono la competizione (o per numero di giri effettuati o per impossibilità a continuare).
-\item La finalizzazione delle risorse potrebbe avvenire anche prima che la competizione finisca se l'utente decide di interrompere prima
-l'esecuzione del simulatore. Di conseguenza, per permettere uno stop definitivo del sistema, sarà necessario che il processo del simulatore
-venga terminato nel momento in cui l'utente chiude l'applicazione.
+\item Per lo stop logico si potrebbe delegare alle entità attive che gestiscono
+la corsa dei singoli concorrenti l'onere di tenere conto 
+dello stato della gara (il numero di giri effettuati ad esempio) e decidere, al
+momento opportuno, di procedere con lo stop di quelle che
+finiscono la competizione (o per numero di giri effettuati o per impossibilità a
+continuare).
+\item La finalizzazione delle risorse potrebbe avvenire anche prima che la
+competizione finisca se l'utente decide di interrompere anticipatamente
+l'esecuzione del simulatore. Di conseguenza, per permettere uno stop definitivo
+del sistema, sarà necessario che il processo del simulatore
+venga terminato nel momento in cui l'utente chiuda l'applicazione.
 \end{itemize}

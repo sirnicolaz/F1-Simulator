@@ -1,9 +1,5 @@
---with Circuit;
---use Circuit;
---with Strategy;
---use Strategy;
 with Ada.Float_Text_IO;
- use Ada.Float_Text_IO;
+use Ada.Float_Text_IO;
 with Ada.Numerics.Elementary_Functions;
 with Physic_Engine;
 use Physic_Engine;
@@ -131,21 +127,16 @@ package body Competitor is
       function Configure_Car_File(xml_file_In : DOCUMENT) return CAR is
          Max_Speed_In : Float;
          Max_Acceleration_In : Float;
-         Gas_Tank_Capacity_In : Float;--Float;
-         --Engine_In : String(1..50);
+         Gas_Tank_Capacity_In : Float;
          Tyre_Usury_In : Float;
-         Gasoline_Level_In : Float;--Float;
-         Mixture_In : Str.Unbounded_String;--access String;
-         Model_In : Str.Unbounded_String;-- String(1..20);
-         Tyre_Type_In : Str.Unbounded_String;-- String(1..20);
+         Gasoline_Level_In : Float;
+         Mixture_In : Str.Unbounded_String;
+         Model_In : Str.Unbounded_String;
+         Tyre_Type_In : Str.Unbounded_String;
          car_XML : Node_List;
          Current_Node : Node;
-         -- Current_Team : String(1..7) :="Ferrari";
-         -- Current_First_Name : String(1..8):="Fernando";
-         -- Current_Last_Name : String(1..6) :="Alonso";
          Car_In : CAR;
-         --Car_Current : CAR;
-         Engine_In : Str.Unbounded_String;--String(1..6):="xxxxxx";
+         Engine_In : Str.Unbounded_String;
 
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : String) return NODE is
@@ -179,8 +170,6 @@ package body Competitor is
          Gasoline_Level_In := Float'Value(Node_Value(First_Child(Get_Feature_Node(Current_Node,"gasolinelevel"))));
 
          Mixture_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"mixture"))));
-
-         --Ada.Strings.Unbounded.Text_IO.Put_Line(Mixture_In);
          Model_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"model"))));
          Tyre_Type_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"type_tyre"))));
 
@@ -195,17 +184,18 @@ package body Competitor is
                        Model_In ,
                        Tyre_Type_In);
          return Car_In;
+
       end Configure_Car_File;
 
       function Configure_Driver_File(xml_file_In : DOCUMENT) return DRIVER is
-         Team_In : Str.Unbounded_String;--String(1..7):="xxxxxxx";
-         First_Name_In : Str.Unbounded_String;-- String(1..8):="xxxxxxxx";
-         Last_Name_In : Str.Unbounded_String;-- String(1..6):="xxxxxx";
+         Team_In : Str.Unbounded_String;
+         First_Name_In : Str.Unbounded_String;
+         Last_Name_In : Str.Unbounded_String;
          Last_Speed_Reached : Float :=0.0;
          driver_XML : Node_List;
          Current_Node : Node;
          Car_In : DRIVER;
-         --global : GLOBAL_STATS_HANDLER_POINT;-- global stats handler - "singleton"
+
          function Get_Feature_Node(Node_In : NODE;
                                    FeatureName_In : String) return NODE is
             Child_Nodes_In : NODE_LIST;
@@ -224,26 +214,12 @@ package body Competitor is
          end Get_Feature_Node;
 
       begin
-
-         --If there is a conf file, use it to Racing_Car-init;
-
-         --if Document_In /= null then
-
          driver_XML := Get_Elements_By_Tag_Name(xml_file_In,"driver");
          Current_Node := Item(driver_XML, 0);
          driver_XML := Child_Nodes(Current_Node);
          Team_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"team"))));
          First_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"firstname"))));
          Last_Name_In := Str.To_Unbounded_String(Node_Value(First_Child(Get_Feature_Node(Current_Node,"lastname"))));
-         --Car_Temp := new CAR;
-         --Team_In := "Ferrari";
-         --First_Name_In := "Fernando";
-         --Last_Name_In := "Alonso";
-         --Racetrack_In(Index) := CheckpointSynch_Current;
-         --end loop;
-         --end if;
-
-         --lettura parametri, Last_Speed_Reached esclusa
          Configure_Driver(Car_In,
                           Team_In,
                           First_Name_In,
@@ -258,22 +234,19 @@ package body Competitor is
       --apertura del file
       Try_OpenFile;
       --configurazione parametri
-
       Ada.Text_IO.Put_Line("Configure car");
       carDriver.Racing_Car := Configure_Car_File(doc);
-
       Ada.Text_IO.Put_Line("Configure Racing driver");
       carDriver.Racing_Driver := Configure_Driver_File(doc);
       Ada.Text_IO.Put_Line("Configure Race iterator");
       carDriver.Current_Circuit_Race_Iterator :=Current_Circuit_Race_Iterator ;
       Ada.Text_IO.Put_Line("Configure id");
       carDriver.Id:=id_In;
-
       --Init onboard computer
       Ada.Text_IO.Put_Line("Init Computer");
       Competitor_Computer.Init_Computer(Computer_In     => carDriver.On_Board_Computer ,
-                                    CompetitorId_In => id_in,
-                                    Laps            => laps_in);
+                                        CompetitorId_In => id_in,
+                                        Laps            => laps_in);
 
       --Adding minimal information to stats (for presentation purspose)
       Ada.Text_IO.Put_Line("Adding min info");
@@ -286,7 +259,7 @@ package body Competitor is
       Ada.Text_IO.Put_Line("Add obc");
       Competition_Monitor.Add_Onboard_Computer(carDriver.On_Board_Computer ,carDriver.Id);
       --Try to initialize the competitor radio. If it's still down, retry in 5 seconds
-      --+ (probably other problems are occured in such a case)
+      --+ (probably other problems have occured in such a case)
       Ada.Text_IO.Put_Line("Connecting to box");
       loop CompetitorRadio.Init_BoxConnection(BoxRadio_CorbaLOC => BoxRadio_CorbaLOC,
                                             Radio             => carDriver.Radio,
@@ -336,9 +309,9 @@ package body Competitor is
          Current_Checkpoint.all := Current_Checkpoint.all + 1;
          Temp_Competitor_Statistics.LastCheckInSect := FALSE;
          Temp_Competitor_Statistics.FirstCheckInSect := FALSE;
-         Temp_Competitor_Statistics.Sector := Temp_Checkpoint.Get_SectorID; --Temp_Checkpoint.Get_SectorID;
-         Temp_Competitor_Statistics.Gas_Level := Gas_Level; --carDriver.Racing_Car.Gasoline_Level;
-         Temp_Competitor_Statistics.Tyre_Usury := Tyre_Usury; --carDriver.Racing_Car.Tyre_Usury;
+         Temp_Competitor_Statistics.Sector := Temp_Checkpoint.Get_SectorID;
+         Temp_Competitor_Statistics.Gas_Level := Gas_Level;
+         Temp_Competitor_Statistics.Tyre_Usury := Tyre_Usury;
          Temp_Competitor_Statistics.IsPitStop := TRUE;
          Temp_Competitor_Statistics.Time := Predicted_Time - (Step * UpdatedCheckpoints);
          UpdatedCheckpoints := UpdatedCheckpoints + 1.0;
@@ -464,9 +437,8 @@ package body Competitor is
       PredictedTime : Float := 0.0;
       DelayTime : Float := 1.0;
       Paths2Cross : CROSSING_POINT;
-      MinSegTime : Float :=1.0;-- <minima quantit� di tempo per attraversare un tratto>
+      MinSegTime : Float :=1.0;-- minima quantit� di tempo per attraversare un tratto
       lengthPath : Float := 0.0;
-      --<minima quantit� di tempo per attraversare la pista>
       carDriver : Competitor_Details_Point := carDriver_In;--
       MinRaceTime : Float := MinSegTime * Float(Get_RaceLength(carDriver.Current_Circuit_Race_Iterator ));
       CurrentCheckpoint : Common.Integer_Point := new Integer;
@@ -481,10 +453,10 @@ package body Competitor is
       j: Integer:=0;
       tempoTotale : Float := 0.0;
       valore:BOOLEAN :=False;
-      --statistiche COMPETITOR_STATS
       compStats : COMPETITOR_STATS;
       SectorID : Integer;
-      PitStop : BOOLEAN := false;  -- NEW, indica se fermarsi o meno ai box
+      PitStop : BOOLEAN := false;  --indica se fermarsi o meno ai box
+
       -- The lap count is kept in this variable
       CurrentLap : Integer := 0;
 
@@ -587,19 +559,18 @@ package body Competitor is
          end if;
 
          C_Checkpoint.Signal_Arrival(id);
+
          --When the competitor will be at the top of the list, he will be notified to
          --+ go ahead
-
          C_Checkpoint.Wait_To_Be_First(carDriver.Id);
-         --Now the competitor is for sure first and he can pick up the paths collection
-         --+ evaluate the best way to take
 
+         --Now the competitor is for sure first and he can pick up the path collection to
+         --+ evaluate the best path to cross
          C_Checkpoint.Get_Paths(Paths2Cross,
                                 Go2Box      => PitStop);
 
          StartingPosition := Get_Position(carDriver.Current_Circuit_Race_Iterator );
 
-         --NEW: Moved. It was just before the crossing time calculation.
          SectorID:=C_Checkpoint.Get_SectorID;
 
          --If the competitor is in the box lane, set up the maximum speed to 80 km/h
@@ -637,6 +608,7 @@ package body Competitor is
          --If a pitstop occured, add the pit stop time to the crossing time.
          --+ We assume that the pitstop is in the first half of the lane, so before
          --+ the goal.
+
          -- TODO: add the time when the competitor has to leave the box
          if (PitStop = true) then
             CrossingTime := CrossingTime + BrandNewStrategy.Pit_Stop_Delay;
@@ -647,7 +619,6 @@ package body Competitor is
          --procedere degli altri competitor
 
          PredictedTime := ActualTime + CrossingTime;
-         --NEW, Ricordarsi del tempo di stop ai box in caso ci sia
 
          --If the checkpoint is the prebox, it's necessary to update all
          --+ the statistics from the prebox to the goal
@@ -676,8 +647,8 @@ package body Competitor is
 
          -- The prebox might be way before the last checkpoint in the sector.
          --+ It's necessary though to set the field to TRUE to allow the update
-         --+ of the box. Otherwise the information related to the 3rd sectod
-         --+ of this lap would never be add.
+         --+ of the box. Otherwise the information related to the 3rd sector
+         --+ of this lap would never be added.
          if(PitStop = true) then
             compStats.LastCheckInSect := true;
          end if;

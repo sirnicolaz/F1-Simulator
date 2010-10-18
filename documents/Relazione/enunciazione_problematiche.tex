@@ -1,124 +1,209 @@
-Nella seguente sezione verranno esposte le problematiche emerse nel corso dell'analisi del sistema da progettare. Tali
-problematiche esistono perchè il sistema presenta le seguenti caratteristiche:
+Nella seguente sezione verranno esposte le problematiche emerse nel corso
+dell'analisi del sistema da progettare. Tali
+problematiche derivano, oltre che dalla tipologia di progetto, anche dalle
+caratteristiche implicite del sistema:
 \begin{itemize}
-\item il sistema è concorrente. Di conseguenza presenterà un numero maggiore di 2 entità attive
+\item il sistema è concorrente. Di conseguenza presenterà un numero maggiore di
+2 entità attive
 che eseguiranno concorrentemente;
 \item alcune risorse sono condivise e accedute quindi concorrentemente;
-\item il simulatore viene eseguito su un sistema operativo del cui scheduler non sono conosciute le specifiche;
+\item il simulatore viene eseguito su un sistema operativo del cui scheduler non
+sono conosciute le specifiche;
 \item il sistema presenta delle componenti distribuite nella rete;
 \end{itemize}
 \subsection{Gestione del tempo}
-Un simulatore di formula 1 racchiude intrinsecamente dei vincoli in termini di coerenza temporale. 
-Una competizione è scandita da istanti di tempo: un istante iniziale, uno finale e vari istanti 
-intermedi che segnano, per esempio, la fine della lap di un concorrente, oppure il passaggio di un concorrente da un settore
-a quello dopo del circuito. Vi sono inoltre vincoli di coerenza temporale dati dai tempi accumulati nel corso
-della gara. Questi potrebbero essere il tempo di attraversamento di un tratto come il tempo necessario
+Un simulatore di formula 1 racchiude intrinsecamente dei vincoli in termini di
+coerenza temporale. 
+Una competizione è scandita da istanti di tempo: un istante iniziale, uno finale
+e vari istanti 
+intermedi che segnano, per esempio, la fine della lap di un concorrente, oppure
+il passaggio di un concorrente da un settore
+a quello dopo del circuito. Vi sono inoltre vincoli di coerenza temporale dati
+dai tempi accumulati nel corso
+della gara. Questi potrebbero essere il tempo di attraversamento di un tratto
+come il tempo necessario
 a effettuare un giro. I secondi, chiaramente, dipendono dai primi. 
-In un sistema simulato è necessario che per più simulazioni regolate dalle stesse condizioni, 
-gli intervalli temporali calcolati siano gli stessi. Questo potrebbe risultare problematico dal momento che
-lo scheduler non rispetta vincoli di tempo definiti o comunque conosciuti a priori.
+In un sistema simulato è necessario che per più simulazioni regolate dalle
+stesse condizioni, 
+gli intervalli temporali calcolati siano gli stessi. Questo potrebbe risultare
+problematico dal momento che
+lo scheduler non rispetta vincoli di tempo definiti o comunque conosciuti a
+priori.
 \subsection{Sorpassi impossibili}
 \label{sorpassi_impossibili}
 Una problematica affrontata nel corso dell'analisi del simulatore da progettare
 è stata quella relativa ai sorpassi. Come accennato all'inizio
-della sezione, non possono essere fatte assunzioni di determinismo sullo scheduler. 
+della sezione, non possono essere fatte assunzioni di determinismo sullo
+scheduler. 
 Ipotizzando un sistema in cui ogni concorrente
-corrisponda ad un'entità attiva (task) e in cui ogni tratto del circuito sia una risorsa condivisa fra i task a molteplicità
-limitata (come è plausibile pensare per un simulatore di F1), è possibile che si verifichino scenari anomali.\\
+corrisponda ad un'entità attiva (task) e in cui ogni tratto del circuito sia una
+risorsa condivisa fra i task a molteplicità
+limitata (come è plausibile pensare per un simulatore di F1), è possibile che si
+verifichino scenari anomali.\\
 Per esempio:
 \begin{enumerate}
-\item un task concorrente dovrebbe, per questioni temporali, iniziare ad attraversare un tratto e ottenere quindi la risorsa;
-\item lo scheduler prerilascia il task e assegna un quanto di tempo ad un altro task concorrente che in termini temporali
+\item un task concorrente dovrebbe, per questioni temporali, iniziare ad
+attraversare un tratto e ottenere quindi la risorsa;
+\item lo scheduler prerilascia il task e assegna un quanto di tempo ad un altro
+task concorrente che in termini temporali
 è dietro. Il task ottiene la risorsa tratto (la stessa del task precedente);
 \item il task ottiene altri quanti e attraversa;
-\item lo scheduler prerilascia il task corrente e riassegna il processore al vecchio task il quale anche attraversa il tratto.
+\item lo scheduler prerilascia il task corrente e riassegna il processore al
+vecchio task il quale anche attraversa il tratto.
 \end{enumerate}
-Non prestando attenzione a possibilità di questo tipo, se il tratto fosse di molteplicità 1 si avrebbe che un concorrente 
-appare alla fine del tratto quando, per questioni fisico/temporali, avrebbe dovuto rimanere dietro.
+Non prestando attenzione a possibilità di questo tipo, se il tratto fosse di
+molteplicità 1 si avrebbe che un concorrente 
+appare alla fine del tratto quando, per questioni fisico/temporali, avrebbe
+dovuto rimanere dietro.
 \subsection{Determinismo}
-Come definito in \emph{Simulation: The Engine Behind The Virtual World, Roger D. Smith, Chief Scientist, ModelBenders LLC}:
+Come definito in \emph{Simulation: The Engine Behind The Virtual World, Roger D.
+Smith, Chief Scientist, ModelBenders LLC}:
 
-\emph{``Simulation is the process of designing a model of a real or imagined system and
-conducting experiments with that model. The purpose of simulation experiments is to
-understand the behavior of the system or evaluate strategies for the operation of the system.''}
+\emph{``Simulation is the process of designing a model of a real or imagined
+system and
+conducting experiments with that model. The purpose of simulation experiments is
+to
+understand the behavior of the system or evaluate strategies for the operation
+of the system.''}
 
-%\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
-%svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
+%\emph{``per simulazione si intende un modello della realtà che consente di
+valutare e prevedere lo 
+%svolgersi dinamico di una serie di eventi o processi susseguenti
+all'imposizione di certe condizioni da parte dell'analista
 %o dell'utente''}.\\
-Considerando quindi che la simulazione deve permettere di comprendere il comportamento del sistema, è necessario che il sistema abbia 
-un comportamento prevedibile. Ciò non significa che ogni componente di non determinismo sia non desiderata. Il non determinismo
-può essere inserito in modo controllato, ovvero consapevoli del contensto e dei momenti in cui esso si possa verificare. Soprattutto,
-il nondeterminismo deve rispecchiare un eventuale non determinismo presente anche nel sistema reale e non solo in quello simulato.\\
-Il comportamento dello scheduler sottostante il sistema che verrà sviluppato non è prevedibile. Considerando che il non determinismo
+Considerando quindi che la simulazione deve permettere di comprendere il
+comportamento del sistema, è necessario che il sistema abbia 
+un comportamento prevedibile. Ciò non significa che ogni componente di non
+determinismo sia non desiderata. Il non determinismo
+può essere inserito in modo controllato, ovvero consapevoli del contensto e dei
+momenti in cui esso si possa verificare. Soprattutto,
+il nondeterminismo deve rispecchiare un eventuale non determinismo presente
+anche nel sistema reale e non solo in quello simulato.\\
+Il comportamento dello scheduler sottostante il sistema che verrà sviluppato non
+è prevedibile. Considerando che il non determinismo
 introdotto dallo scheduler non è controllabile, si presenta
 il problema di riuscire a progettare il simulatore in modo
-che il comportamento sia del tutto indipendente dall'architettura del sistema operativo su cui viene eseguito. In questo
-modo si potrà avere un sistema la cui correttezza sia verificabile e capace di fornire dati consistenti.
+che il comportamento sia del tutto indipendente dall'architettura del sistema
+operativo su cui viene eseguito. In questo
+modo si potrà avere un sistema la cui correttezza sia verificabile e capace di
+fornire dati consistenti.
 \subsection{Componenti di non determinismo (Lorenzo)}
 \label{non_determinismo}
-Dopo aver analizzato le problematiche dovute al determinismo del progetto si possono pensare anche ai fattori che diano del non determinismo.
-Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente l'andamento della gara a priori. Questa componente pu\`{o} essere non desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile riuscire a gestire il non determinismo, che da quindi valore aggiunto al progetto.
-Esempi di non determinismo che si possono trovare progettando un simulatore e che possono portare valore aggiunto sono ad esempio interazioni dell'utente esterno al sistema tramite azioni esplicite .
+Dopo aver analizzato le problematiche dovute al determinismo del progetto si
+possono pensare anche ai fattori che diano del non determinismo.
+Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente
+l'andamento della gara a priori. Questa componente pu\`{o} essere non
+desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore
+aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile
+riuscire a gestire il non determinismo, che da quindi valore aggiunto al
+progetto.
+Esempi di non determinismo che si possono trovare progettando un simulatore e
+che possono portare valore aggiunto sono ad esempio interazioni dell'utente
+esterno al sistema tramite azioni esplicite .
 \subsection{Stalli (Lorenzo)}
 \label{stalli}
-In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} importanti da affrontare. Per stallo si intende lo stato in cui nessun processo pu\`{o} pi\`{u} eseguire. Affinch\`{e} si verifichi lo stallo di devono verificare tutte le 4 pre-condizioni ben riconoscibili:
+In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} importanti
+da affrontare. Per stallo si intende lo stato in cui nessun processo pu\`{o}
+pi\`{u} eseguire. Affinch\`{e} si verifichi lo stallo di devono verificare tutte
+le 4 pre-condizioni ben riconoscibili:
 \begin{itemize}
-\item {Mutua Esclusione :} assicura che, a ogni instante, non pi\`{u} di un processo abbia possesso di una risorsa (fisica o logica) condivisa.La sequenza di azioni che opera sulla risorsa \`{e} detta sezione critica. Nel realizzare un simulatore di Formula 1 bisogner\`{a} fare in modo che prevedendo l'uso esclusivo di risorse, come ad esempio pezzi di tracciato, queste non pregiudichino il buon funzionamento del sistema.
-\item{Cumulazione di risorse (hold-and-wait) :} i processi possono accumulare risorse e trattenerle mentre attendono di acquisirne altre
-\item{Assenza di prerilascio :} le risorse vengono rilasciate solo volontariamente
-\item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del successivo processo in catena. Nella progettazione di un sistema distribuito bisogner\`{a} quindi evitare la formazione di catene chiuse di processi che attendono una risorsa.
+\item {Mutua Esclusione :} assicura che, a ogni instante, non pi\`{u} di un
+processo abbia possesso di una risorsa (fisica o logica) condivisa.La sequenza
+di azioni che opera sulla risorsa \`{e} detta sezione critica. Nel realizzare un
+simulatore di Formula 1 bisogner\`{a} fare in modo che prevedendo l'uso
+esclusivo di risorse, come ad esempio pezzi di tracciato, queste non
+pregiudichino il buon funzionamento del sistema.
+\item{Cumulazione di risorse (hold-and-wait) :} i processi possono accumulare
+risorse e trattenerle mentre attendono di acquisirne altre
+\item{Assenza di prerilascio :} le risorse vengono rilasciate solo
+volontariamente
+\item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del
+successivo processo in catena. Nella progettazione di un sistema distribuito
+bisogner\`{a} quindi evitare la formazione di catene chiuse di processi che
+attendono una risorsa.
 \end{itemize}
-Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare attenzione per evitare il verificarsi delle quattro condizioni, impedendo cos\`{i} gli stalli.
+Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare
+attenzione per evitare il verificarsi delle quattro condizioni, impedendo
+cos\`{i} gli stalli.
 \subsection{Realismo fisico}
-Il realismo fisico di un simulatore di formula uno è determinato principalmente da due fattori:
+Il realismo fisico di un simulatore di formula uno è determinato principalmente
+da due fattori:
 \begin{itemize}
-\item realismo dato dall'interazione tra ogni concorrente e l'ambiente statico. Ovvero, l'impatto che hanno
-le caratteristiche fisiche dell'ambiente circostante quali, ad esempio, forma e caratteristiche della pista;
-\item realismo dato dall'interazione tra un concorrente e gli altri concorrenti. Questo tipo di realismo 
-dipende quindi da caratteristiche dinamiche dell'ambiente e richiede che le valutazioni dei singoli concorrenti
-vengano fatte in rapporto allo stato degli altri concorrenti. Viceversa, le scelte dei singoli concorrenti
-devono poter influenzare le scelte degli altri concorrenti.
+\item realismo dato dall'interazione tra ogni concorrente e l'ambiente statico.
+Ovvero, l'impatto che hanno sulla corsa
+le caratteristiche fisiche dell'ambiente circostante quali, ad esempio, forma e
+caratteristiche della pista;
+\item realismo dato dall'interazione tra un concorrente e gli altri concorrenti.
+Questo tipo di realismo 
+dipende quindi da caratteristiche dinamiche dell'ambiente e richiede che le
+valutazioni dei singoli concorrenti
+vengano fatte in rapporto allo stato degli altri concorrenti. Viceversa, le
+scelte dei singoli concorrenti
+devono poter influenzare i moviementi degli altri concorrenti.
 \end{itemize}
 \subsection{Gestione delle istantanee di gara}
-Requisito essenziale per poter presentare i dati relativi all'andamento della competizione è riuscire ad ottenere una
-snapshot della gara in un determinato istanto. Ovvero, dato un istante di tempo \emph{t} o un evento \emph{e}, bisogna
-poter risalire allo stato dei concorrenti e della gara in generale in quel momento. In tal modo sarà reso possibile
-monitorare l'evolversi della competizione. Bisogna però tenere in considerazione che qualunque entità provvede allo scatto
-dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità attive dipendenti dallo scheduler. 
-Di conseguenza è lecito pensare che uno snapshot possa risultare inconsistente se viene eseguito, per motivi di 
+Requisito essenziale per poter presentare i dati relativi all'andamento della
+competizione è riuscire ad ottenere una
+snapshot della gara in un determinato istante. Ovvero, dato un istante di tempo
+\emph{t} o un evento \emph{e}, bisogna
+poter risalire allo stato dei concorrenti e della gara in generale a partire da \emph{t} o da \emph{e}. 
+In tal modo sarà reso possibile
+monitorare l'evolversi della competizione. Bisogna però tenere in considerazione
+che qualunque entità provveda allo scatto
+dell'istantanea sarà soggetta alle stesse problematiche legate alle altre entità
+attive dipendenti dallo scheduler. 
+Di conseguenza è lecito pensare che uno snapshot possa risultare inconsistente
+se viene eseguito, per motivi di 
 prerilascio, metà ad un istante
-\emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio. La distribuzione aggiunge un ulteriore livello di complessità
-al problema, poichè il ritardo potrebbe essere causato non solo dallo scheduler, ma anche dalla rete.
+\emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio. La distribuzione
+aggiunge un ulteriore livello di complessità
+al problema, poichè il ritardo potrebbe essere causato non solo dallo scheduler,
+ma anche dalla rete.
 \subsection{Robustezza del sistema distribuito (Lorenzo)}
-Progettando un sistema distribuito bisogna tenere in considerazione alcune problematiche che, se ben risolte, portano a un prodotto distribuito robusto.
+Progettando un sistema distribuito bisogna tenere in considerazione alcune
+problematiche che, se ben risolte, portano a un prodotto distribuito robusto.
 I punti principali su cui focalizzare l'attenzione sono
 \begin{itemize}
-\item Apparenza all'utente di un sistema unitario e non l'insieme di pi\`{u} elaboratori
+\item Apparenza all'utente di un sistema unitario e non l'insieme di pi\`{u}
+elaboratori
 \item Comunicazione fra elaboratori nascosta all'utente
 \item Scelta del livello di distribuzione
 \item Architettura invariata rispetto al sistema in locale
 \end{itemize}
 \subsection{Intelligenza artificiale}
-Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
-di intelligenza artificiale che riesca a far procedere la gara in modo verosimile. Il problema in questo caso
+Per poter rendere indipendente da controlli esterni l'esecuzione della
+simulazione, è necessario fornire almeno un accenno
+di intelligenza artificiale che riesca a far procedere la gara in modo
+verosimile. Il problema in questo caso
 \subsection{Avvio del sistema}
 \label{enunciazione_avvio}
-L'avvio del sistema presenta dei problemi legati alla natura concorrente e distribuita dello stesso.\\
+L'avvio del sistema presenta dei problemi legati alla natura concorrente e
+distribuita dello stesso.\\
 In dettaglio:
 \begin{itemize}
-\item la natura distribuita introduce il problema della messa in connessione dei nodi. Quando un nodo si connette
-è necessario che esso sappia dove sono dislocati gli altri nodi (o almeno quelli necessari) e che gli altri nodi
+\item la natura distribuita introduce il problema della messa in connessione dei
+nodi. Quando un nodo si connette
+è necessario che esso sappia dove sono dislocati gli altri nodi (o almeno quelli
+necessari) e che gli altri nodi
 possano reperire quello appena connesso.
-\item la natura concorrente invece introduce dei problemi relativi alla comunicazione delle entità attive. Tali entità
-saranno presumibilmente messe in comunicazione o tramite risorse condivise o in modo diretto. Si prospetta quindi la
-possibilità che in fase di avvio (essendo l'avvio un processo sequenziale) alcune entità richiedano la connessione con 
-altre che non siano ancora pronte o allocate, causando un fault in alcuni casi, in altri un'esecuzione con risultati 
+\item la natura concorrente invece introduce dei problemi relativi alla
+comunicazione delle entità attive. Tali entità
+saranno presumibilmente messe in comunicazione o tramite risorse condivise o in
+modo diretto. Si prospetta quindi la
+possibilità che in fase di avvio (essendo l'avvio un processo sequenziale)
+alcune entità richiedano la connessione con 
+altre che non siano ancora pronte o allocate, causando un fault in alcuni casi,
+in altri un'esecuzione con risultati 
 errati.
 \end{itemize}
 \subsection{Stop del sistema}
-Nel caso specifico di un simulatore di formula 1, lo stop deve avvenire innanzitutto a livello logico. Ovvero, deve essere
-possibile al sistema poter capire quando la gara è finita in modo da poterlo annunciare.\\
-Una volta che la competizione risulti essere completata, le risorse non più necessarie devono essere deallocate e i task
+Nel caso specifico di un simulatore di formula 1, lo stop deve avvenire
+innanzitutto a livello logico. Ovvero, deve essere
+possibile al sistema poter capire quando la gara è finita in modo da poterlo
+annunciare.\\
+Una volta che la competizione risulti essere completata, le risorse non più
+necessarie devono essere deallocate e i task
 fermati.\\
-Quando il sistema viene interrotto definitivamente, non devono più essere presenti server in attesa di connessioni o
+Quando il sistema viene interrotto definitivamente, non devono più essere
+presenti server in attesa di connessioni o
 thread attivi.
