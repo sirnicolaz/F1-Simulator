@@ -1,15 +1,17 @@
 with Broker.Radio.BoxRadio;
 
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with CORBA.ORB;
---with PolyORB.Setup.Client;
---pragma Warnings (Off, PolyORB.Setup.Client);
 
---with PolyORB.Utils.Report;
-
+with Common;
+use Common;
 
 package CompetitorRadio is
+
+   package Unbounded_String renames Ada.Strings.Unbounded;
+   use type Unbounded_String.Unbounded_String;
 
    type BOX_CONNECTION is private;
 
@@ -21,7 +23,7 @@ package CompetitorRadio is
    procedure Close_BoxConnection ( Radio : out BOX_CONNECTION);
 
    function Get_Strategy( Radio : BOX_CONNECTION;
-                         Lap : in INTEGER) return STRING;
+                         Lap : in INTEGER) return Strategy;
 
 private
    type BOX_CONNECTION is record
