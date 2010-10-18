@@ -6,7 +6,7 @@
 <lastname>3</lastname>
 </driver>
 <car>
-<maxspeed>335.0</maxspeed>
+<maxspeed>300.0</maxspeed>
 <maxacceleration>12.0</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>NORMAL</engine>

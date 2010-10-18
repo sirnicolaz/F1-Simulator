@@ -68,7 +68,7 @@ In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} important
 \item{Assenza di prerilascio :} le risorse vengono rilasciate solo volontariamente
 \item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del successivo processo in catena. Nella progettazione di un sistema distribuito bisogner\`{a} quindi evitare la formazione di catene chiuse di processi che attendono una risorsa.
 \end{itemize}
-Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare attenzione per evitare il verificarsi delle quattro condizioni, impedendo cos\`{i} gli stalli.
+Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare attenzione per evitare il verificarsi delle quattro condizioni, impedendo cos\`{i} gli stalli. Le possibili problematiche che portano alla presenza di uno stallo in un simulatore automobilistico sono principalmente la possibilità di accumulo delle risorse (ad esempio possesso della pista per gareggiare), l'esecuzione garantita, in certe zone, solo a un concorrente alla volta (in un tratto di strada nello spazio occupato da un autovettura non è possibile che ce ne siano altre nello stesso istante di tempo), la volontarietà del rilascio di una risorsa (un concorrente che non ha finito di attraversare un pezzo di pista non può lasciarla percorrere ad altri).
 \subsection{Realismo fisico}
 Il realismo fisico di un simulatore di formula uno è determinato principalmente da due fattori:
 \begin{itemize}
@@ -98,6 +98,7 @@ I punti principali su cui focalizzare l'attenzione sono
 \item Scelta del livello di distribuzione
 \item Architettura invariata rispetto al sistema in locale
 \end{itemize}
+Simulando una competizione di formula uno bisognerà fare in modo che la comunicazione (ad esempio concorrente - box) sia sicura e robusta, in quanto, come nella realtà, può precludere il buon andamento della gara. Inoltre bisogna riuscire a fornire funzionalità adatte ad eventuali osservatori esterni (che non influiscono sulla gara) per coinvolgerli in prima persona con la gara, un po' come avviene nella realtà con le tv collegate direttamente dall'autodromo ma visibili in tutto il mondo. Tutto questo porta a possibili problemi dovuti alla presenza della rete; tali problemi vanno gestiti e considerati per dare robustezza al sistema in uscita, dando l'idea all'utente di avere la simulazione in locale.
 \subsection{Intelligenza artificiale}
 Per poter rendere indipendente da controlli esterni l'esecuzione della simulazione, è necessario fornire almeno un accenno
 di intelligenza artificiale che riesca a far procedere la gara in modo verosimile. Il problema in questo caso
