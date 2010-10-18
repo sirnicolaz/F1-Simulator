@@ -66,10 +66,8 @@ to
 understand the behavior of the system or evaluate strategies for the operation
 of the system.''}
 
-%\emph{``per simulazione si intende un modello della realtà che consente di
-valutare e prevedere lo 
-%svolgersi dinamico di una serie di eventi o processi susseguenti
-all'imposizione di certe condizioni da parte dell'analista
+%\emph{``per simulazione si intende un modello della realtà che consente di valutare e prevedere lo 
+%svolgersi dinamico di una serie di eventi o processi susseguenti all'imposizione di certe condizioni da parte dell'analista
 %o dell'utente''}.\\
 Considerando quindi che la simulazione deve permettere di comprendere il
 comportamento del sistema, è necessario che il sistema abbia 
@@ -170,6 +168,7 @@ elaboratori
 \item Scelta del livello di distribuzione
 \item Architettura invariata rispetto al sistema in locale
 \end{itemize}
+Simulando una competizione di formula uno bisognerà fare in modo che la comunicazione (ad esempio concorrente - box) sia sicura e robusta, in quanto, come nella realtà, può precludere il buon andamento della gara. Inoltre bisogna riuscire a fornire funzionalità adatte ad eventuali osservatori esterni (che non influiscono sulla gara) per coinvolgerli in prima persona con la gara, un po' come avviene nella realtà con le tv collegate direttamente dall'autodromo ma visibili in tutto il mondo. Tutto questo porta a possibili problemi dovuti alla presenza della rete; tali problemi vanno gestiti e considerati per dare robustezza al sistema in uscita, dando l'idea all'utente di avere la simulazione in locale.
 \subsection{Intelligenza artificiale}
 Per poter rendere indipendente da controlli esterni l'esecuzione della
 simulazione, è necessario fornire almeno un accenno
@@ -181,28 +180,19 @@ L'avvio del sistema presenta dei problemi legati alla natura concorrente e
 distribuita dello stesso.\\
 In dettaglio:
 \begin{itemize}
-\item la natura distribuita introduce il problema della messa in connessione dei
-nodi. Quando un nodo si connette
-è necessario che esso sappia dove sono dislocati gli altri nodi (o almeno quelli
-necessari) e che gli altri nodi
+\item la natura distribuita introduce il problema della messa in connessione dei nodi. Quando un nodo si connette
+è necessario che esso sappia dove sono dislocati gli altri nodi (o almeno quelli necessari) e che gli altri nodi
 possano reperire quello appena connesso.
-\item la natura concorrente invece introduce dei problemi relativi alla
-comunicazione delle entità attive. Tali entità
-saranno presumibilmente messe in comunicazione o tramite risorse condivise o in
-modo diretto. Si prospetta quindi la
-possibilità che in fase di avvio (essendo l'avvio un processo sequenziale)
-alcune entità richiedano la connessione con 
-altre che non siano ancora pronte o allocate, causando un fault in alcuni casi,
-in altri un'esecuzione con risultati 
+\item la natura concorrente invece introduce dei problemi relativi alla comunicazione delle entità attive. Tali entità
+saranno presumibilmente messe in comunicazione o tramite risorse condivise o in modo diretto. Si prospetta quindi la
+possibilità che in fase di avvio (essendo l'avvio un processo sequenziale) alcune entità richiedano la connessione con 
+altre che non siano ancora pronte o allocate, causando un fault in alcuni casi, in altri un'esecuzione con risultati 
 errati.
 \end{itemize}
 \subsection{Stop del sistema}
-Nel caso specifico di un simulatore di formula 1, lo stop deve avvenire
-innanzitutto a livello logico. Ovvero, deve essere
-possibile al sistema poter capire quando la gara è finita in modo da poterlo
-annunciare.\\
-Una volta che la competizione risulti essere completata, le risorse non più
-necessarie devono essere deallocate e i task
+Nel caso specifico di un simulatore di formula 1, lo stop deve avvenire innanzitutto a livello logico. Ovvero, deve essere
+possibile al sistema poter capire quando la gara è finita in modo da poterlo annunciare.\\
+Una volta che la competizione risulti essere completata, le risorse non più necessarie devono essere deallocate e i task
 fermati.\\
 Quando il sistema viene interrotto definitivamente, non devono più essere
 presenti server in attesa di connessioni o
