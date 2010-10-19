@@ -29,6 +29,7 @@ public class BoxScreen extends Thread{
     private Integer laps;
     private String id;
     private JFrame parent;
+    private org.omg.CORBA.Object obj_radio;
     // private JTextArea outArea;
 
     private JPanel outPanel;
@@ -56,6 +57,7 @@ public class BoxScreen extends Thread{
     private JLabel labelInfo_6 = new JLabel("Laps to pitstop = - , Driving style -");
     private JLabel labelInfo_7 = new JLabel("Pitstop delay at lap - = -");
     private JLabel labelInfo_8 = new JLabel("Box strategy = - ");
+    private JButton pitstopButton = new JButton("Force PitStop");
 
     private String boxCorbaLoc;
     private String monitorBoxCorbaLoc;
@@ -145,6 +147,13 @@ public class BoxScreen extends Thread{
 	outPanelGrid.gridy = 6;
 	outPanelGrid.ipady = 5;
 	outPanel.add(labelInfo_7, outPanelGrid);
+	//add button to forcing pitstop
+	outPanelGrid.gridx = 0;
+	outPanelGrid.gridy = 7;
+	outPanelGrid.ipady = 5;
+	outPanelGrid.gridwidth = 3;
+	outPanel.add(pitstopButton, outPanelGrid);
+	
 
     }
     public void createConsumptionMeans(){
@@ -213,6 +222,10 @@ public class BoxScreen extends Thread{
 
     }
 
+public void Force_Pitstop(){
+	      Box_Monitor_Radio comp_radio_pitstop = Box_Monitor_RadioHelper.narrow(obj_radio);
+	      comp_radio_pitstop.Force_Pitstop(true);
+}
     public void run(){
 	createBoxOutput();
 	createConsumptionMeans();
@@ -239,9 +252,14 @@ public class BoxScreen extends Thread{
 	    conf.Configure("boxConfig-"+id+".xml");
 	    // outArea.append("\nAfter configure");
 	    // outArea.append("\n pre string_to_object");
-	    org.omg.CORBA.Object obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
+	    obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
 	    // outArea.append("\n pre narrow box_monitor");
 	    Box_Monitor_Radio comp_radio = Box_Monitor_RadioHelper.narrow(obj_radio);
+	    pitstopButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					  Force_Pitstop();
+	    }});
+
 	    // outArea.append("\npre getupdate");
 	    short i=1;
 	    short qee=1;

@@ -1,1081 +1,2878 @@
 Try to connect to Competition
 ScreenTv : 0
-<?xml version="1.0" ?><competitionConfiguration><laps>10</laps><competitors>1</competitors><name>
+<?xml version="1.0" ?><competitionConfiguration><laps>10</laps><competitors>3</competitors><name>
 Indianapolis</name></competitionConfiguration>
 <?xml version="1.0" ?><competitorConfiguration id="1" ><name>Pippo</name><surname>3</surname><team>Ferrari</team></competitorConfiguration>
+<?xml version="1.0" ?><competitorConfiguration id="2" ><name>Pippo</name><surname>1</surname><team>Ferrari</team></competitorConfiguration>
+<?xml version="1.0" ?><competitorConfiguration id="3" ><name>Pippo</name><surname>2</surname><team>Ferrari</team></competitorConfiguration>
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.28267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="over" >31</checkpoint><lap>0</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes></competitionStatus>
-competitor: - length =1
-attributo id : 1
-attributo checkpoint 31 : over
-attributo checkpoint 31 : FALSE
-lap : 0
-sector : 3
-bestTimes
-attributo lap - : 0
-attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
-attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
-attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
---printing classific : 
-stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.38267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >2</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
-attributo id : 1
-attributo checkpoint 2 : passed
-attributo checkpoint 2 : FALSE
-lap : 1
-sector : 1
-bestTimes
-attributo lap - : 0
-attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
-attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
-attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
---printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
-------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
-stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.48267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >3</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
-attributo id : 1
-attributo checkpoint 3 : passed
-attributo checkpoint 3 : FALSE
-lap : 1
-sector : 1
-bestTimes
-attributo lap - : 0
-attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
-attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
-attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
---printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
-------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
-stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.58267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >4</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.54955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >4</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="over" >12</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >11</checkpoint><lap>9</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 4 : passed
 attributo checkpoint 4 : FALSE
-lap : 1
+lap : 9
+sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 12 : over
+attributo checkpoint 12 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 11 : arriving
+attributo checkpoint 11 : FALSE
+lap : 9
 sector : 1
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 3
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 3
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 2
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.68267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >6</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.55955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >5</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >13</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >11</checkpoint><lap>9</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 6 : arriving
-attributo checkpoint 6 : FALSE
-lap : 1
+attributo checkpoint 5 : passed
+attributo checkpoint 5 : FALSE
+lap : 9
+sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 13 : passed
+attributo checkpoint 13 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 11 : passed
+attributo checkpoint 11 : FALSE
+lap : 9
 sector : 1
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 3
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 2
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.78267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >7</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.56955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >6</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >14</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >12</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 6 : passed
+attributo checkpoint 6 : FALSE
+lap : 9
+sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 14 : passed
+attributo checkpoint 14 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 12 : arriving
+attributo checkpoint 12 : FALSE
+lap : 9
+sector : 2
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79822E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.57955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >7</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >15</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >13</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 7 : arriving
 attributo checkpoint 7 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 15 : arriving
+attributo checkpoint 15 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 13 : passed
+attributo checkpoint 13 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.88267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >8</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.58955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >8</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >14</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 8 : arriving
 attributo checkpoint 8 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 16 : arriving
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 14 : passed
+attributo checkpoint 14 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 4.98267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >9</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.59955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >8</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >15</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 9 : arriving
-attributo checkpoint 9 : FALSE
-lap : 1
+attributo checkpoint 8 : passed
+attributo checkpoint 8 : FALSE
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 15 : arriving
+attributo checkpoint 15 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.08267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >9</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.60955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >9</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >16</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 9 : passed
 attributo checkpoint 9 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 16 : arriving
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.18267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >10</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.52025E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.61955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >10</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 10 : arriving
+attributo checkpoint 10 : FALSE
+lap : 9
+sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79822E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 1
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.62955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >10</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 10 : passed
 attributo checkpoint 10 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.52025E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
 modelClassific[current_index].getRowCount()==1
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.28267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >11</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.63955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >10</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 10 : passed
+attributo checkpoint 10 : FALSE
+lap : 9
+sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 16 : passed
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79822E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.64955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >11</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 11 : arriving
 attributo checkpoint 11 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.38267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >11</checkpoint><lap>1</lap><sector>1</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.65955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >11</checkpoint><lap>9</lap><sector>1</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 11 : passed
 attributo checkpoint 11 : FALSE
-lap : 1
+lap : 9
 sector : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 17 : passed
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.48267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >12</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.66955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >12</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >18</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 12 : arriving
 attributo checkpoint 12 : FALSE
-lap : 1
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 18 : arriving
+attributo checkpoint 18 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
 sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.58267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >14</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.67955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >13</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >19</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >17</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 14 : arriving
-attributo checkpoint 14 : FALSE
-lap : 1
+attributo checkpoint 13 : passed
+attributo checkpoint 13 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 19 : arriving
+attributo checkpoint 19 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 17 : passed
+attributo checkpoint 17 : FALSE
+lap : 9
 sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.68267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >15</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.68955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >14</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >20</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >18</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 14 : passed
+attributo checkpoint 14 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 20 : passed
+attributo checkpoint 20 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 18 : arriving
+attributo checkpoint 18 : FALSE
+lap : 9
+sector : 2
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79822E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.69955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >15</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >21</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >19</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79822E+01</time><competitorId>3</competitorId><lap>6</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 15 : arriving
 attributo checkpoint 15 : FALSE
-lap : 1
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 21 : passed
+attributo checkpoint 21 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 19 : arriving
+attributo checkpoint 19 : FALSE
+lap : 9
 sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79822E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.78267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >15</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.70955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >15</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >22</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >20</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79798E+01</time><competitorId>2</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 15 : passed
 attributo checkpoint 15 : FALSE
-lap : 1
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 22 : arriving
+attributo checkpoint 22 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 20 : arriving
+attributo checkpoint 20 : FALSE
+lap : 9
 sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79798E+01
+--id : 2
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.88267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.71955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >24</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >21</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79798E+01</time><competitorId>2</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 16 : arriving
+attributo checkpoint 16 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 24 : arriving
+attributo checkpoint 24 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 21 : passed
+attributo checkpoint 21 : FALSE
+lap : 9
+sector : 2
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79798E+01
+--id : 2
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.72955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >25</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >22</checkpoint><lap>9</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 16 : passed
 attributo checkpoint 16 : FALSE
-lap : 1
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 25 : passed
+attributo checkpoint 25 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 22 : arriving
+attributo checkpoint 22 : FALSE
+lap : 9
 sector : 2
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 5.98267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.73955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >26</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >24</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 16 : passed
 attributo checkpoint 16 : FALSE
-lap : 1
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 26 : arriving
+attributo checkpoint 26 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 24 : arriving
+attributo checkpoint 24 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.08267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >16</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
-attributo id : 1
-attributo checkpoint 16 : passed
-attributo checkpoint 16 : FALSE
-lap : 1
-sector : 2
-bestTimes
-attributo lap - : 0
-attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
-attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
-attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
---printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
-------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
-stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.18267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.74955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >26</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >25</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 17 : arriving
 attributo checkpoint 17 : FALSE
-lap : 1
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 26 : passed
+attributo checkpoint 26 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 25 : passed
+attributo checkpoint 25 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.28267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.75955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >26</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 17 : arriving
 attributo checkpoint 17 : FALSE
-lap : 1
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 27 : arriving
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 26 : arriving
+attributo checkpoint 26 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.38267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >18</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.76955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >26</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 17 : arriving
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 27 : passed
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 26 : passed
+attributo checkpoint 26 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.77955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >17</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >27</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 17 : passed
+attributo checkpoint 17 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 27 : passed
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 27 : arriving
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.78955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >18</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 18 : arriving
 attributo checkpoint 18 : FALSE
-lap : 1
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 28 : arriving
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 27 : passed
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.48267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >19</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.79955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >18</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 19 : arriving
+attributo checkpoint 18 : passed
+attributo checkpoint 18 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 28 : passed
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 27 : passed
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.80955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >19</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >28</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 19 : passed
 attributo checkpoint 19 : FALSE
-lap : 1
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 28 : passed
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 28 : arriving
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.58267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >20</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.81955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >21</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >29</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 20 : passed
-attributo checkpoint 20 : FALSE
-lap : 1
+attributo checkpoint 21 : arriving
+attributo checkpoint 21 : FALSE
+lap : 9
 sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 29 : arriving
+attributo checkpoint 29 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 28 : passed
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.68267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >21</checkpoint><lap>1</lap><sector>2</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.82955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >21</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >29</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 21 : passed
 attributo checkpoint 21 : FALSE
-lap : 1
+lap : 9
 sector : 2
-bestTimes
-attributo lap - : 0
-attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
-attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
-attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
---printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
-------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
-DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
- dopo cancellazione --- modelClassific[current_index].getRowCount()==0
-DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
-stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.78267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >23</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
-attributo id : 1
-attributo checkpoint 23 : passed
-attributo checkpoint 23 : FALSE
-lap : 1
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 29 : passed
+attributo checkpoint 29 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 28 : passed
+attributo checkpoint 28 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.88267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >25</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.83955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >22</checkpoint><lap>9</lap><sector>2</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >29</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
-attributo checkpoint 25 : arriving
+attributo checkpoint 22 : passed
+attributo checkpoint 22 : FALSE
+lap : 9
+sector : 2
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 30 : arriving
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 29 : arriving
+attributo checkpoint 29 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.84955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >24</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >29</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 24 : passed
+attributo checkpoint 24 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 29 : passed
+attributo checkpoint 29 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74544E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.85955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >25</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >30</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74544E+01</time><competitorId>2</competitorId><lap>6</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 25 : passed
 attributo checkpoint 25 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 30 : arriving
+attributo checkpoint 30 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74544E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 6.98267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >26</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.86955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >26</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 26 : arriving
 attributo checkpoint 26 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.08267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >26</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.87955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >26</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>8</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 26 : passed
 attributo checkpoint 26 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 8
+posizione 0 del concorrente 2 in tempo : 00:08:40:572
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =8
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 8
+modelClassific[current_index].getRowCount()==3
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 2
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:08:40:572
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:08:42:519
+3 : SCREEN DEBUG LORY : + 1:946
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:09:11:078
+3 : SCREEN DEBUG LORY : + 0:28:558
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.18267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.88955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 27 : arriving
+attributo checkpoint 27 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+LORY DEBUG : NUOVA CLASSIFICA 1
+LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = 3
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : IF
+LORY DEBUG : OPERAND 1 3 : 2
+LORY DEBUG : OPERAND 2 2 : 1
+LORY DEBUG : OPERAND 1 3 : 2
+LORY DEBUG : OPERAND 2 3 : 2
+LORY DEBUG : HO GIA' IL DATO'
+LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO 
+LORY DEBUG : IF
+LORY DEBUG : OPERAND 1 1 : 3
+LORY DEBUG : OPERAND 2 2 : 1
+LORY DEBUG : OPERAND 1 1 : 3
+LORY DEBUG : OPERAND 2 3 : 2
+LORY DEBUG : OPERAND 1 1 : 3
+LORY DEBUG : OPERAND 2 1 : 3
+LORY DEBUG : HO GIA' IL DATO'
+ LORY : PRIMA DI INVERT
+modelClassific[current_index].getRowCount() dopo invert 1
+DEBUG : RIMOZIONE VECCHIA CLASSIFICA 0
+LORY DEBUG : INDEX = 0
+LORY DEBUG : INDEX = 1
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.89955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="FALSE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>8</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 27 : passed
 attributo checkpoint 27 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 8
+posizione 1 del concorrente 3 in tempo : 00:08:42:519
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
 modelClassific[current_index].getRowCount()==1
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.28267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.90955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >27</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 27 : passed
 attributo checkpoint 27 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
 modelClassific[current_index].getRowCount()==1
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.38267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >28</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.91955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 28 : arriving
 attributo checkpoint 28 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.48267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.92955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 28 : passed
 attributo checkpoint 28 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
 stringa da parsare : 
-<?xml version="1.0"?><competitionStatus time=" 7.58267E+01"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >29</checkpoint><lap>1</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="0"></lap><time> 4.28267E+01</time><competitorId>1</competitorId><sectors><sector num="1"><time> 1.06606E+01</time><competitorId>1</competitorId><lap>1</lap></sector><sector num="2"><time> 1.40330E+01</time><competitorId>1</competitorId><lap>0</lap></sector><sector num="3"><time> 1.35912E+01</time><competitorId>1</competitorId><lap>0</lap></sector></sectors></bestTimes><classification><competitor id="1"><lap>0</lap></competitor></classification></competitionStatus>
-competitor: - length =1
+<?xml version="1.0"?><competitionStatus time=" 5.93955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >28</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 28 : passed
+attributo checkpoint 28 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.94955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >29</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
 attributo id : 1
 attributo checkpoint 29 : arriving
 attributo checkpoint 29 : FALSE
-lap : 1
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
 sector : 3
 bestTimes
-attributo lap - : 0
+attributo lap - : 7
 attributo sector 1 - : 1
---time :  1.06606E+01
---id : 1
+--time :  1.36908E+01
+--id : 2
 attributo sector 2 - : 2
---time :  1.40330E+01
---id : 1
+--time :  1.79402E+01
+--id : 3
 attributo sector 3- : 3
---time :  1.35912E+01
---id : 1
+--time :  1.74137E+01
+--id : 2
 --printing classific : 
- LORY : COMP42.GETLENGTH =1 arrayinfo.length = 1
-----competitor: - length =1
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
 ------attributo id : 1
-------lap : 0
-posizione 0 del concorrente 1 in tempo : 00:00:42:826
-DATIARRAY[0].GETLAP() =0
- ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 0
-modelClassific[current_index].getRowCount()==1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
 DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
  dopo cancellazione --- modelClassific[current_index].getRowCount()==0
 DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
-Dati da scrivere qw= 0 congnome 3 00:00:42:826
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.95955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >29</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 29 : passed
+attributo checkpoint 29 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.96955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 30 : arriving
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.97955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.98955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >30</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 30 : passed
+attributo checkpoint 30 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 5.99955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 6.00955E+02"><competitors><competitor end="FALSE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="arriving" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>8</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 31 : arriving
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 8
+posizione 2 del concorrente 1 in tempo : 00:09:11:078
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+stringa da parsare : 
+<?xml version="1.0"?><competitionStatus time=" 6.01955E+02"><competitors><competitor end="TRUE" retired="FALSE" id="1"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="2"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor><competitor end="TRUE" retired="FALSE" id="3"><checkpoint pitstop="FALSE" compPosition="passed" >31</checkpoint><lap>9</lap><sector>3</sector></competitor></competitors><bestTimes><lap num="7"></lap><time> 4.92497E+01</time><competitorId>3</competitorId><sectors><sector num="1"><time> 1.36908E+01</time><competitorId>2</competitorId><lap>7</lap></sector><sector num="2"><time> 1.79402E+01</time><competitorId>3</competitorId><lap>9</lap></sector><sector num="3"><time> 1.74137E+01</time><competitorId>2</competitorId><lap>9</lap></sector></sectors></bestTimes><classification><competitor id="2"><lap>9</lap></competitor><competitor id="3"><lap>9</lap></competitor><competitor id="1"><lap>9</lap></competitor></classification></competitionStatus>
+competitor: - length =3
+attributo id : 1
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 2
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+competitor: - length =3
+attributo id : 3
+attributo checkpoint 31 : passed
+attributo checkpoint 31 : FALSE
+lap : 9
+sector : 3
+bestTimes
+attributo lap - : 7
+attributo sector 1 - : 1
+--time :  1.36908E+01
+--id : 2
+attributo sector 2 - : 2
+--time :  1.79402E+01
+--id : 3
+attributo sector 3- : 3
+--time :  1.74137E+01
+--id : 2
+--printing classific : 
+ LORY : COMP42.GETLENGTH =3 arrayinfo.length = 3
+----competitor: - length =3
+------attributo id : 2
+------lap : 9
+posizione 0 del concorrente 2 in tempo : 00:09:48:617
+----competitor: - length =3
+------attributo id : 3
+------lap : 9
+posizione 1 del concorrente 3 in tempo : 00:09:50:661
+----competitor: - length =3
+------attributo id : 1
+------lap : 9
+posizione 2 del concorrente 1 in tempo : 00:10:01:926
+DATIARRAY[0].GETLAP() =9
+ ELSE : NON SONO IN PRESENZA DI UN NUOVO GIRO, CURRENT LAP = 9
+modelClassific[current_index].getRowCount()==2
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 0
+DEBUG 2 : RIMOZIONE VECCHIA CLASSIFICA 1
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==0
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 0
+Dati da scrivere qw= 0 congnome 1 00:09:48:617
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==1
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 1
+Dati da scrivere qw= 1 congnome 2 00:09:50:661
+3 : SCREEN DEBUG LORY : + 2:043
+ dopo cancellazione --- modelClassific[current_index].getRowCount()==2
+DEBUG 3 : SCRIVO NUOVA CLASSIFICA 2
+Dati da scrivere qw= 2 congnome 3 00:10:01:926
+3 : SCREEN DEBUG LORY : + 0:11:265
