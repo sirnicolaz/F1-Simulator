@@ -179,7 +179,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    cognome = new String[numComp];
 	    scuderia = new String[numComp];
 	    String xmlComp;
-
 	    for(int index = 0; index<numComp; index++){
 		try{
 		    xmlComp = monitor.Get_CompetitorConfiguration((short)(index+1));
@@ -224,6 +223,10 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 
 	    float interval = updTime;
+	    float initial_time = monitor.Get_Latest_Time_Instant();
+	    if (initial_time != 0.0 && competitionBoolean== false) {//supporto per sincronizzazione della tv
+		    updTime = initial_time;
+		}
 	    current_lap=0;
 	    while(inWhile){
 		try{
