@@ -165,3 +165,47 @@ Per quanto riguarda l'osservazione della gara questa avviene in due modalità di
 \subsubsection{Intervento sulla gara ( lato box, lato tv )(Lorenzo)}
 Per quanto riguarda gli interventi permessi sulla gara sono di due tipi. Lato tv viene permessa la modifica del tempo di simulazione, velocizzandolo o rallentandolo. Lato box invece è possibile richiamare la macchina ai box per un pitstop forzato, introducendo così l'ultima caratteristica di "non determinismo" permessa.
 Ogni intervento che è stato permesso sulla gara non introduce altri errori in quanto in un caso va a modificare il delay inserito per rendere reale la simulazione e nell'altro forza una azione comunque prevista (e presente) nel sistema. 
+\subsection{Inizializzazione competizione}
+Il seguente diagramma di sequenza spiega come avviene la sequenza di init della competizione, a partire dal main della competizione \textbf{main\_competition.adb}.
+\`{E} necessario premettere che l'init vero e proprio non avviene eseguendo il file \textbf{main\_competition.adb}. 
+\`{E} stato infatti creato uno script (in bash) che effettua l'avvio di tale main e che successivamente inizializza 
+l'interfaccia di configurazione (in java) della competizione.
+\begin{center}
+\begin{figure}[h!]
+\advance\leftskip-3.2cm
+	\includegraphics[angle=90,scale=0.35]{img/SequenceDiagrams/InitCompetition.jpg}
+\caption{Sequence Diagram - Inizializzazione competizione}
+\end{figure}
+\end{center}
+\clearpage
+Una volta avviato il main della competizione, per prima cosa vengono inizializzati tutti i server, vale a dire \textbf{CompetitionConfigurator},
+\textbf{RegistrationHandler} \textbf{Competition\_Monitor\_Radio}. Viene avviato un task \textbf{Starter} che rimane in attesa
+della configurazione e registrazione concorrenti avvenuti per dare lo \underline{Start} alla gara. Viene inoltre allocata una risorsa protetta di tipo \textbf{Synch\_Competition} pensata
+per agevolare la fase di init. Ne viene condivisa un'istanza fra \textbf{CompetitionConfigurator}, \textbf{RegistrationHandler} e \textbf{Starter}.
+Tale risorsa permette di regolare i vari step dell'inizializzazione. Finch\`{e} la competizione non viene configurata (dal passo \textbf{10} al passo \textbf{16}),
+non sar\`{a} concesso di registrare concorrenti. Una volta configurata la competizione, viene aperta la guardia \textsc{Registration\_Open} e il metodo
+\underline{Register\_NewCompetitor} potr\`{a} essere invocato (in \textbf{Synch\_Competition}). L'iscrizione dei concorrenti avviene a partire dai \emph{Box}.
+Nel diagramma l'azione iniziale del \emph{Box} e la \textbf{20}. In realt\`{a}, nel nodo del box, viene prima avviato uno script che esegue il main del box
+seguito dal main dell'interfaccia (java) di configurazione del concorrente e del box. A configurazione avvenuta, i parametri vengono inviati al server della
+competizione invocando il metodo del server \textbf{Registration\_Handler} \underline{Join\_Competition}, come scritto nel diagramma. A iscrizione avvenuta, 
+i parametri di configurazione della competizione tornati vengono usati per inizializzare e avviare il box e relativi task grazie a cui successivamente
+sar\`{a} possibile mandare il messaggio di \underline{Ready} alla competizione. Per ulteriori dettagli su questa parte, fare riferimento al capitolo
+\ref{box_class} relativo al \emph{Box}.\\
+Quando tutti i concorrenti sono stati registrati (\textbf{23}), bisogna rimanere in attesa della conferma di avvenuta inizializzazione dei \emph{Box}. Ci\`{o}
+avviene quando il thread del task \textbf{Starter} invoca il metodo \underline{Start} del \textbf{Synch\_Competition}, dentro cui viene messo in attesa
+sul \textbf{Competition\_Monitor} tramite \underline{Wait\_Ready}. Quando tutti i \emph{Box} hanno dato l'ok, significa che sono pronti per ricevere
+richieste dai rispettivi competitor e la gara pu\`{o} cominciare. Vengono cos\`{i} avviati uno ad uno (\textbf{32}) e la competizione ha inizio.
+\subsection{Stop competizione}
+Lo stop del sistema avviene su 3 livelli: stop dei task, stop delle interfacce utente e stop dei server. Vediamo in dettaglio:
+\begin{description}
+\item{\textbf{Stop dei task}}:\\
+i task che devono essere fermati sono i \textbf{TaskCompetitor} lato competizione e i task \textbf{Update\_Retriever} e \textbf{Strategy\_Updater} lato box.
+I primi si fermano in automatico quando le condizioni dell'auto non permettono di procedere (benzina finita o gomme troppo usurate) oppure a competizione finita
+(fine ultima lap). I secondi due si fermano quando l'aggiornamento fornito dal monitor della competizione segnala uno stato dell'auto a causa di cui il 
+concorrente non pu\`{o} procedere (poca benzina o molta usura gomme), oppure quando il concorrente finisce l'ultima lap (sempre grazie agli aggiornamenti);
+\item{\textbf{Stop delle interfacce utente}}:\\
+\`{e} sufficiente chiudere le interfacce con il tasto \textbf{x} in alto a destra;
+\item{\textbf{Stop dei server}}:\\
+una volta finita la gara e chiuse le interfacce utente, lo script di avvio procede l'esecuzione invocando un \textbf{killall -9} sui main avviati, interrompendo
+cos\`{i} anche i task server.
+\end{description}
