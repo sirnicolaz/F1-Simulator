@@ -111,7 +111,4 @@ Updater asking for info
 Updater parsing info
 Update savinmg
 Updater asking for info
-Requesting strategy for lap: 10
-Strategy got
-Updater parsing info
-Update savinmg
+Exception: 00000000M

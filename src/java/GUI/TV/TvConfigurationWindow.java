@@ -131,9 +131,9 @@ public class TvConfigurationWindow{
 	    return true;
 	}
 	catch (Exception e){
-// 	    System.out.println("Eccezione");
+	    // 	    System.out.println("Eccezione");
 	    JOptionPane.showMessageDialog(parent, "Attention : connection error", "Error", JOptionPane.ERROR_MESSAGE);
-// 	    e.printStackTrace();
+	    // 	    e.printStackTrace();
 	    return false;
 	}
     }

@@ -3,13 +3,13 @@
 <driver>
 <team>Ferrari</team>
 <firstname>Pippo</firstname>
-<lastname>3</lastname></driver>
+<lastname>Pluto</lastname></driver>
 <car><maxspeed>300.0</maxspeed>
 <maxacceleration>12.0</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>NORMAL</engine>
 <tyreusury>0.0</tyreusury>
-<gasolinelevel>50.0</gasolinelevel>
+<gasolinelevel>5.0</gasolinelevel>
 <mixture>Soft</mixture>
 <model>michelin</model>
 <type_tyre>Sun</type_tyre>

@@ -37,7 +37,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private org.omg.CORBA.StringHolder monitorCorbaLoc = new org.omg.CORBA.StringHolder();
     private ORB orb;
     //sezione JSlider
-//     private JSlider sliderTyreUsury;
+    //     private JSlider sliderTyreUsury;
     private JSlider sliderFuelTank;
     private JSlider sliderGasLevel;
     private JSlider sliderSpeed;
@@ -69,7 +69,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JComboBox comboPitStop;
     private JComboBox comboTypeTyre;
     private JComboBox comboBox;
-     private JComboBox comboStrategypitstop;
+    private JComboBox comboStrategypitstop;
 
     //sezione spinner giro di fermata
     //sezione spinner Quantità di benzina
@@ -89,9 +89,9 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JPanel buttonPanel;
     private JPanel dataPanel;
     //sezione JSpinner
-   /* private JSpinner jsLap;
-    private JSpinner jsFuel;
-    private JSpinner jsVelocita;*/
+    /* private JSpinner jsLap;
+       private JSpinner jsFuel;
+       private JSpinner jsVelocita;*/
     private JSpinner jsAcc;
     //sezione GridBagConstraints
     private GridBagConstraints carConfigurationGrid;
@@ -158,11 +158,11 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
 	}
 	catch (IOException e ){
-// System.out.println("costruttore : errore di apertura/chiusura del file");
-}
+	    // System.out.println("costruttore : errore di apertura/chiusura del file");
+	}
 	catch (Exception e){
-// System.out.println("costruttore : problemi con la lettura del file");
-}
+	    // System.out.println("costruttore : problemi con la lettura del file");
+	}
     }
 
     class carConfigurationPanel{
@@ -191,7 +191,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueFuelTank, carConfigurationGrid);
 	
-    sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
+	    sliderGasLevel = new JSlider(0,(Integer)sliderFuelTank.getValue());
 	    sliderGasLevel.setValue(50);
 	    valueLevelFuel = new JLabel("50L");
 	    sliderGasLevel.addChangeListener(new MyChangeAction("L",sliderGasLevel,  valueLevelFuel));
@@ -311,7 +311,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		corbaLocFile.readLine();
 		textCorbaloc.setText(corbaLocFile.readLine());
 	    }catch(Exception e){
-// 		System.out.println("File non presente");
+		// 		System.out.println("File non presente");
 	    }
 
 	}
@@ -345,7 +345,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
     class driverConfigurationPanel{
 	driverConfigurationPanel(JPanel dataPanel, GridBagConstraints driverConfigurationGrid){
-	      createData(dataPanel, driverConfigurationGrid);
+	    createData(dataPanel, driverConfigurationGrid);
 	}
 	
 	public void createData(JPanel dataPanel, GridBagConstraints driverConfigurationGrid){
@@ -507,37 +507,37 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	buttonPanel.setLayout(new FlowLayout());
 
 	
-		carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
-		boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
-		buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
+	carConfigurationPanel car = new carConfigurationPanel(carPanel, carConfigurationGrid);
+	boxConfigurationPanel box = new boxConfigurationPanel(boxPanel, boxConfigurationGrid);
+	buttonConfigurationPanel button = new buttonConfigurationPanel(buttonPanel);
  	
 	// settaggio parametri in base al file di configurazione, se già presente
 	if(updateConfig == true){
 	    String competitorFile=new String();
 	    System.out.println(nameFile);
 	    try{
-	    FileReader doc=new FileReader(nameFile);
-	    BufferedReader bufRead = new BufferedReader(doc);
-	    //read configuratorCorbaloc
-	    competitorFile = bufRead.readLine();
-	    String tempString = new String();
-	    while((tempString = bufRead.readLine())!=null){
-	    competitorFile=competitorFile + tempString;
-	    System.out.println(competitorFile);
+		FileReader doc=new FileReader(nameFile);
+		BufferedReader bufRead = new BufferedReader(doc);
+		//read configuratorCorbaloc
+		competitorFile = bufRead.readLine();
+		String tempString = new String();
+		while((tempString = bufRead.readLine())!=null){
+		    competitorFile=competitorFile + tempString;
+		    System.out.println(competitorFile);
+		}
+		bufRead.close();
 	    }
-	    bufRead.close();
-	}
-	catch (IOException e ){
-System.out.println("settaggio parametri : errore di apertura/chiusura del file");
-e.printStackTrace();
-}
-	catch (Exception e){
-System.out.println("settaggioparametri : problemi con la lettura del file");
-e.printStackTrace();
-}
+	    catch (IOException e ){
+		System.out.println("settaggio parametri : errore di apertura/chiusura del file");
+		e.printStackTrace();
+	    }
+	    catch (Exception e){
+		System.out.println("settaggioparametri : problemi con la lettura del file");
+		e.printStackTrace();
+	    }
 	
-	readXmlCompetitor(competitorFile);
-	  }
+	    readXmlCompetitor(competitorFile);
+	}
 
 	// aggiunta pannelli
 	frame.add(carPanel, BorderLayout.WEST);
@@ -560,7 +560,7 @@ e.printStackTrace();
 	textTeam.setText("Ferrari");//scuderia predefinita
 	sliderSpeed.setValue(300);
     }
-     public void readXmlCompetitor(String xmlRecords){
+    public void readXmlCompetitor(String xmlRecords){
 	try {
 	    DocumentBuilderFactory dbf =
 		DocumentBuilderFactory.newInstance();
@@ -580,13 +580,13 @@ e.printStackTrace();
 	    NodeList team = element.getElementsByTagName("team");
 	    Element line = (Element) team.item(0);
 	    textTeam.setText(new String(getCharacterDataFromElement(line)));
-// 	    System.out.println("team value "+ teamValue);
+	    // 	    System.out.println("team value "+ teamValue);
 
 	    element = (Element) nodes.item(i);
 	    NodeList firstname = element.getElementsByTagName("firstname");
 	    line = (Element) firstname.item(0);
 	    textName.setText(new String(getCharacterDataFromElement(line)));
-// 	    System.out.println("first "+firstnameValue);
+	    // 	    System.out.println("first "+firstnameValue);
 
 	    element = (Element) nodes.item(i);
 	    NodeList lastname = element.getElementsByTagName("lastname");
@@ -616,16 +616,16 @@ e.printStackTrace();
 	    NodeList engine = element.getElementsByTagName("engine");
 	    line = (Element) engine.item(0);
 	    String engineValue = new String(getCharacterDataFromElement(line));
-	    if(engineValue.equals("Normal")){
-		      comboBox.setSelectedIndex(0);
+	    if(engineValue.equals("NORMAL")){
+		comboStrategypitstop.setSelectedIndex(0);
 	    }
 	    else{ 
-	      if(engineValue.equals("Save")){
-		    comboBox.setSelectedIndex(1);
-	      }
-	     else{
-		  comboBox.setSelectedIndex(2);
-	      }
+		if(engineValue.equals("SAVE")){
+		    comboStrategypitstop.setSelectedIndex(1);
+		}
+		else{
+		    comboStrategypitstop.setSelectedIndex(2);
+		}
 	    }
 	    
 	    element = (Element) nodes.item(i);
@@ -648,10 +648,10 @@ e.printStackTrace();
 		comboTypeTyre.setSelectedIndex(1);
 	    }
 
-	    }
+	}
 	catch (Exception e){
- e.printStackTrace();
-}
+	    e.printStackTrace();
+	}
 
     }
     public static String getCharacterDataFromElement(Element e) {
@@ -665,9 +665,9 @@ e.printStackTrace();
     public boolean writerCompetitorXML(){
 	try{
 	    PrintWriter out;
-	    File f = new File("competitor-"+stringId+".xml");
+	    File f = new File("configuration-competitors/competitor-"+stringId+".xml");
 	    if (f.exists() == false ) {
-		out=new PrintWriter(new File("competitor-"+stringId+".xml"));
+		out=new PrintWriter(new File("configuration-competitors/competitor-"+stringId+".xml"));
 	    }
 	    else {
 		out=new PrintWriter(f);
@@ -696,7 +696,7 @@ e.printStackTrace();
 	    return true;
 	}
 	catch(IOException e){
-// 	   e.printStackTrace();
+	    // 	   e.printStackTrace();
 	    return false;
 	}
     }
@@ -723,15 +723,15 @@ e.printStackTrace();
 	    out.println("</config>");
 	    out.close();
 	    return true;
-
 	}
 	catch(IOException e){
-// 	    e.printStackTrace();
+	    // 	    e.printStackTrace();
 	    return false;
 	}
     }
 
     public void switchPanel(){
+	JOptionPane.showMessageDialog(parent,"File di configurazione salvato in obj/java/configuration-competitors/competitor-"+stringId+".xml","File saved", JOptionPane.INFORMATION_MESSAGE);
 	BoxScreen p = new BoxScreen(stringId, competitorXML, (String)comboBox.getSelectedItem());
 	System.out.println("id del BoxScreen : "+stringId);
 	parent.dispose();
@@ -774,19 +774,19 @@ e.printStackTrace();
 		JOptionPane.showMessageDialog(parent, "Attention : connection refused by RegistrationHandler", "Error", JOptionPane.ERROR_MESSAGE);
 	    }
 	} catch (Exception e) {
-// 	    JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
+	    // 	    JOptionPane.showMessageDialog(parent, "Exception : "+e.getMessage().toString(), "Error", JOptionPane.ERROR_MESSAGE);
 	    e.printStackTrace();
 	}
     }
-//   public void readXml(String nameFile){
-// 
-// 
-//   }
+    //   public void readXml(String nameFile){
+    // 
+    // 
+    //   }
 
-//     public static void main(String[] args){
-// 	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
-// 	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
-// 	boxWindow.init(j);
-// 
-//     }
+    //     public static void main(String[] args){
+    // 	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
+    // 	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
+    // 	boxWindow.init(j);
+    // 
+    //     }
 }

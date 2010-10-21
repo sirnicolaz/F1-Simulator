@@ -30,7 +30,7 @@ private JLabel labelCompetitor = new JLabel("2: Competitors : ");
 private JLabel labelLap = new JLabel("3: Laps  : ");
 private JLabel labelName = new JLabel("4: Circuit name : ");
 /*private JLabel labelSimulationTime = new JLabel("5 : Simulation Speed : ");*/
-private JTextField fileRacetrack = new JTextField("../../race_tracks/indianapolis.xml", 20);
+private JTextField fileRacetrack = new JTextField("indianapolis.xml", 20);
 private JFrame parent;
 private JTextField textName = new JTextField("Indianapolis", 10);
 private JButton openButton;
@@ -59,7 +59,7 @@ openButton = new JButton("Sfoglia...");
 				int returnVal = fc.showOpenDialog(parent);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
-						fileRacetrack.setText(fc.getSelectedFile().getCanonicalPath());
+						fileRacetrack.setText(fc.getSelectedFile().getName());
 					} catch(Exception ecc) {
 // 					    ecc.printStackTrace();
 					}
@@ -82,7 +82,7 @@ screen.start();
 		resetButton = new JButton("Ripristina predefinito");
 		resetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    fileRacetrack.setText("../../race_tracks/indianapolis.xml");
+			    fileRacetrack.setText("indianapolis.xml");
 			    jsLap.setValue(10);
 			    jsConc.setValue(3);
 			    textName.setText("Indianapolis");

@@ -222,10 +222,10 @@ public class BoxScreen extends Thread{
 
     }
 
-public void Force_Pitstop(){
-	      Box_Monitor_Radio comp_radio_pitstop = Box_Monitor_RadioHelper.narrow(obj_radio);
-	      comp_radio_pitstop.Force_Pitstop(true);
-}
+    public void Force_Pitstop(){
+	Box_Monitor_Radio comp_radio_pitstop = Box_Monitor_RadioHelper.narrow(obj_radio);
+	comp_radio_pitstop.Force_Pitstop(true);
+    }
     public void run(){
 	createBoxOutput();
 	createConsumptionMeans();
@@ -256,9 +256,9 @@ public void Force_Pitstop(){
 	    // outArea.append("\n pre narrow box_monitor");
 	    Box_Monitor_Radio comp_radio = Box_Monitor_RadioHelper.narrow(obj_radio);
 	    pitstopButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					  Force_Pitstop();
-	    }});
+		    public void actionPerformed(ActionEvent e) {
+			Force_Pitstop();
+		    }});
 
 	    // outArea.append("\npre getupdate");
 	    short i=1;
@@ -428,11 +428,11 @@ public void Force_Pitstop(){
 		pitstopDelayValue = new Float(getCharacterDataFromElement(line)).floatValue();
 	    }
 	    catch(Exception e){
-// 		System.out.println("strategia non presente");}
-	}
+		// 		System.out.println("strategia non presente");}
+	    }
 	}
 	catch (Exception e) {
-// 	    e.printStackTrace();
+	    // 	    e.printStackTrace();
  	    System.out.println("eccezione in readXml");
 	}
     }
@@ -513,8 +513,8 @@ public void Force_Pitstop(){
 	    typetyreValue = new String(getCharacterDataFromElement(line));
 	}
 	catch (Exception e){
-// e.printStackTrace();
-}
+	    // e.printStackTrace();
+	}
 
     }
     public static String getCharacterDataFromElement(Element e) {

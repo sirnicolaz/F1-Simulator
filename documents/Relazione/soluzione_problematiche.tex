@@ -125,6 +125,28 @@ code di attesa, l'unico che può eseguire in quel momento e una volta liberata l
 risorsa (e questo avviene sempre dopo il calcolo dei tempi di attraversamento e
 l'aggiornamento delle statistiche che verrà spiegato in seguito) diventa subito
 in possesso del richiedente, che non deve quindi attendere oltre. 
+Nel prossimo paragrafo verrà esposta l'assenza di stalli in maniera più formale.
+% Dimostrazione dell'assenza di stallo
+\subsubsection{Assenza di stallo}
+Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
+una macchina A attende la prima posizione nella coda associata al tratto 3 (per esempio). 
+Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2. Ma B risulta prima di A nella coda 3 e A 
+risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
+lo stallo porterebbe ad una contraddizione.\\
+\begin{proof}
+\textcolor{white}{42}\\
+\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul checkpoint N.}\\
+	Se nella coda 2 ci sono A in testa seguita da B, avremo che $tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
+	determinato dai tempi di arrivo segnati.
+	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
+	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a} aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta t$, 
+	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
+	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi $tempo(3B)<tempo(3A)$.
+	Avremo quindi:\\
+
+	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
+	che \`{e} una contraddizione, quindi la situazione non si pu\`{o} verificare.
+\end{proof}
 \subsection{Interazione concorrenti - concorrenti (Lorenzo)}
 All'interno del progetto non è prevista una comunicazione diretta fra
 concorrenti. Esiste però un metodo per i concorrenti di capire dove sono gli
@@ -324,7 +346,7 @@ pista, la classifica giro dopo giro e le migliori prestazioni. La seconda invece
 è la visualizzazione da parte dei box con i dati del solo concorrente a cui fa
 riferimento. Vengono visualizzate informazioni relative ai consumi e ai tempi di
 percorrenza. La sola osservazione della gara non introduce errori in quanto non
-l'unica azione prevista è il reperimento di informazioni giò presenti nel
+l'unica azione prevista è il reperimento di informazioni già presenti nel
 sistema centrale. Nel caso non siano ancora presenti i dati richiesti la
 chiamata (essendo sincrona) diventa bloccante in attesa delle informazioni
 richieste. La possibilità di richiesta di informazioni che non saranno mai

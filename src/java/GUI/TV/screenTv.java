@@ -129,7 +129,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 	}
 	catch(Exception eccIn){
-// 	    eccIn.printStackTrace();
+	    // 	    eccIn.printStackTrace();
 	}
     }
     public void writeDati(String xmlComp, int numCompetitor){
@@ -150,7 +150,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    scuderia[numCompetitor] = getNode("team", upd);
 	}
 	catch(Exception eccIn){
-// 	    eccIn.printStackTrace();
+	    // 	    eccIn.printStackTrace();
 	}
     }
     public void addLogInfo(){
@@ -158,7 +158,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	logPanel.setLayout(new GridBagLayout());
 	logPanel.setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 	logPanel.setPreferredSize(new Dimension(0,30+35*numComp));
-}
+    }
 
 
     public void run(){
@@ -225,8 +225,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    float interval = updTime;
 	    float initial_time = monitor.Get_Latest_Time_Instant();
 	    if (initial_time != 0.0 && competitionBoolean== false) {//supporto per sincronizzazione della tv
-		    updTime = initial_time;
-		}
+		updTime = initial_time;
+	    }
 	    current_lap=0;
 	    while(inWhile){
 		try{
@@ -280,13 +280,13 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 						    System.out.println("LORY DEBUG : INSERIMENTO NUOVA RIGA");
 						    System.out.println("posiz = "+posiz+" "+ datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]+" time = "+convert(datiArray[index].getTime()));
 						    if(index==0){
-						    modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
-}
-else{
-					    modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
-System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+						    }
+						    else{
+							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
+							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
 
-}
+						    }
 						    posiz = posiz+1;
 						    indTable = posiz+1;
 						}
@@ -299,7 +299,7 @@ System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].get
 			    
 			    }catch (NullPointerException npEcc){
 
-// 				npEcc.printStackTrace();
+				// 				npEcc.printStackTrace();
 			    }
 			    try{
 				index=0;
@@ -315,7 +315,7 @@ System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].get
 				}
 
 			    }catch (NullPointerException npEcc){
-// 				npEcc.printStackTrace();
+				// 				npEcc.printStackTrace();
 			    }
 			    System.out.println(" LORY : PRIMA DI INVERT");
 			    classTable.invert(current_index, new Integer(current_lap+1));//inverto le classifiche
@@ -331,14 +331,14 @@ System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].get
 			    while(index < datiArray.length){//posso scrivere la classifica
 				System.out.println("LORY DEBUG : INDEX = "+index );
 				if(index==0){
-				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
-				index=index+1;
+				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+				    index=index+1;
 				}
 				else{
-				modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
-				System.out.println("2 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
-				System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
-				index=index+1;
+				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
+				    System.out.println("2 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+				    System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
+				    index=index+1;
 				}
 			    }
 			}
@@ -354,38 +354,38 @@ System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].get
 
 			    varCiclo=0;
 			    while(varCiclo<datiArray.length){//posso scrivere la classifica
-			      if(datiArray[varCiclo].getLap()==current_lap){
+				if(datiArray[varCiclo].getLap()==current_lap){
 				    try{
 					System.out.println(" dopo cancellazione --- modelClassific[current_index].getRowCount()=="+modelClassific[current_index].getRowCount());
 					System.out.println("DEBUG 3 : SCRIVO NUOVA CLASSIFICA "+varCiclo);
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
 					if(varCiclo==0){
-					  modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
 					  
 					}
 					else{
-					  modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
-System.out.println("3 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
+					    modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
+					    System.out.println("3 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
 					  
 					}
-// 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
-// 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
+					// 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+					// 					System.out.println("DEBUG 4 : SCRITTA NUOVA CLASSIFICA "+varCiclo);
 				    }
 				    catch(Exception ecd ){//ecd.printStackTrace();
 					varCiclo = datiArray.length +1;
 				    }
 				}
 				varCiclo = varCiclo+1;
-		 	   }
+			    }
 
 			}
 		    }
 		    catch(NullPointerException eccCl){
-// 			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
+			// 			System.out.println("LORY DEBUG : CLASSIFICA NON ANCORA PRESENTE");
 		    }
 		    catch(Exception eccGen){
-// 			eccGen.printStackTrace();
-// 			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
+			// 			eccGen.printStackTrace();
+			// 			System.out.println("LORY DEBUG : ECCEZIONE GENERICA");
 
 		    }
 		    updTime = updTime + interval;
@@ -413,13 +413,13 @@ System.out.println("3 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].
 		    this.sleep(3000);
 		}
 	    }
-timeArray = new float[datiArray.length];
-			    for(int indez= 0; indez <timeArray.length; indez++){
-				timeArray[indez] = datiArray[indez].getTime();
-			    }
+	    timeArray = new float[datiArray.length];
+	    for(int indez= 0; indez <timeArray.length; indez++){
+		timeArray[indez] = datiArray[indez].getTime();
+	    }
 	}
 	catch(Exception e){//e.printStackTrace();
-}
+	}
     }
     // parsing xml
     public void readXml(String xmlRecords){//, float istant){
@@ -469,62 +469,62 @@ timeArray = new float[datiArray.length];
 		int ind = new Integer(attributoComp.getNodeValue()).intValue();
 
 		if(attributoCompRit.getValue().equals("TRUE")){
-			if(ritRace[ind-1]== false){
-			    ritRace[ind-1] = true;
-			    endRace[ind-1] = true;
-			}
+		    if(ritRace[ind-1]== false){
+			ritRace[ind-1] = true;
+			endRace[ind-1] = true;
+		    }
 
-			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			if(temp.equals("arriving")){
-			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired while arriving ");}
+		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+		    if(temp.equals("arriving")){
+			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired while arriving ");}
+		    else{
+			if(temp.equals("passed")){
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired after passing ");}
 			else{
-			    if(temp.equals("passed")){
-				infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired after passing ");}
-			    else{
-				infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired on ");}
-			}
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" Ritired on ");}
+		    }
+		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+		    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+		}
+		else {
+		    if(attributoCompEnd.getValue().equals("TRUE")){
+			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
 			infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
-		    }
-		else {
-			if(attributoCompEnd.getValue().equals("TRUE")){
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" End Race ");
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
 
-			  if(endRace[ind-1]== false){
+			if(endRace[ind-1]== false){
 			    endRace[ind-1] = true;
-			  }
-			  }
-			else{
-			      if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
-// 				    JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
-				    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-				    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
-					if (temp.equals("arriving")){
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-					}
-					else{
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-					    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
-					}
-				    }
-				}
-			  else{
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
-			  infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
-			  }
 			}
 		    }
-	     }	
+		    else{
+			if(attributoCheck_2.getNodeValue().equals("TRUE")){// sono al pitstop?
+			    // 				    JOptionPane.showMessageDialog(parent, "Competitor ai box!", "Messagge from competition",JOptionPane.INFORMATION_MESSAGE);
+			    System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+			    if(new Integer(getNode("checkpoint",element)).intValue() == 1){
+				if (temp.equals("arriving")){
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" leaving box ");
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+				}
+				else{
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(" in box ");
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+				    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(" Box ");
+				}
+			    }
+			}
+			else{
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setLap(getNode("lap", element));
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setState(temp);
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setCheckpoint(getNode("checkpoint", element));
+			    infos[new Integer(attributoComp.getNodeValue()).intValue()-1].setSector(getNode("sector", element));
+			}
+		    }
+		}
+	    }	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
 	    Element element = (Element)bestT.item(0);
@@ -613,7 +613,7 @@ timeArray = new float[datiArray.length];
 			    j=j+1;
 			}
 			catch(Exception arrayBound){
-// 			    arrayBound.printStackTrace();
+			    // 			    arrayBound.printStackTrace();
 			    j= arrayInfo.length +1;
 			}
 		    }
@@ -626,13 +626,13 @@ timeArray = new float[datiArray.length];
 		}
 	    }
 	    catch (Exception e){
-// 		System.out.println("classification non presente");
+		// 		System.out.println("classification non presente");
 	    }
 	
 	}
 	catch (Exception e) {
-// 	    e.printStackTrace();
-// 	    System.out.println("eccezione in readXml");
+	    // 	    e.printStackTrace();
+	    // 	    System.out.println("eccezione in readXml");
 	}
     }
     public static String getNode(String tag, Element element){
@@ -662,17 +662,17 @@ timeArray = new float[datiArray.length];
 	if(minuti<10){
 	    if(secondi <10){
 		if(millesimi<10){
-		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":0"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
 		if(millesimi<10){
-		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
+		    time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
+		    time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":0"+minuti+":"+secondi+":"+millesimi);}
 	    }
@@ -680,17 +680,17 @@ timeArray = new float[datiArray.length];
 	else{
 	    if(secondi <10){
 		if(millesimi<10){
-		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+		    time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+		    time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":"+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
 		if(millesimi<10){
-		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+		    time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+		    time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("0"+ore+":"+minuti+":"+secondi+":"+millesimi);}
 	    }}
@@ -698,48 +698,48 @@ timeArray = new float[datiArray.length];
 	return time;
     }
 
- public String convertNoMill(float timeIn){
+    public String convertNoMill(float timeIn){
 
 	int ore = (int)(timeIn/3600);
 	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
-// 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
+	// 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
 	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
 	    if(secondi <10){
-// 		if(millesimi<10){
-// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
-// 		else if(millesimi<100){
-// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
-// 		else{
-		    time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+millesimi);}
+		// 		if(millesimi<10){
+		// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
+		// 		else if(millesimi<100){
+		// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
+		// 		else{
+		time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+millesimi);}
 	    }
 	    else{/*
-		if(millesimi<10){
+		   if(millesimi<10){
 		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
-		else if(millesimi<100){
+		   else if(millesimi<100){
 		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
-		else{*/
-		    time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+millesimi);}
+		   else{*/
+		time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+millesimi);}
 	    }
 	}
 	else{
 	    if(secondi <10){
-// 		if(millesimi<10){
-// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
-// 		else if(millesimi<100){
-// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
-// 		else{
-		    time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+millesimi);}
+		// 		if(millesimi<10){
+		// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
+		// 		else if(millesimi<100){
+		// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
+		// 		else{
+		time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+millesimi);}
 	    }
 	    else{
-// 		if(millesimi<10){
-// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
-// 		else if(millesimi<100){
-// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
-// 		else{
-		    time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+millesimi);}
+		// 		if(millesimi<10){
+		// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
+		// 		else if(millesimi<100){
+		// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
+		// 		else{
+		time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+millesimi);}
 	    }}
 
 	return time;
@@ -757,21 +757,21 @@ timeArray = new float[datiArray.length];
 	if(minuti<10){
 	    if(secondi <10){
 		if(millesimi<10){
-		  if(minuti==0){time = new String( "+ "+secondi+":00"+millesimi);}
-		  else{time = new String( "+ "+minuti+":0"+secondi+":00"+millesimi);}}
+		    if(minuti==0){time = new String( "+ "+secondi+":00"+millesimi);}
+		    else{time = new String( "+ "+minuti+":0"+secondi+":00"+millesimi);}}
 		else if(millesimi<100){
-		  if(minuti==0){time = new String( "+ "+secondi+":0"+millesimi);}
-		  else{time = new String( "+ "+minuti+":0"+secondi+":0"+millesimi);}}
+		    if(minuti==0){time = new String( "+ "+secondi+":0"+millesimi);}
+		    else{time = new String( "+ "+minuti+":0"+secondi+":0"+millesimi);}}
 		else{
-		  if(minuti==0){time = new String( "+ "+secondi+":"+millesimi);}
-		  else{time = new String( "+ "+minuti+":0"+secondi+":"+millesimi);}
-		   }
-		  }
+		    if(minuti==0){time = new String( "+ "+secondi+":"+millesimi);}
+		    else{time = new String( "+ "+minuti+":0"+secondi+":"+millesimi);}
+		}
+	    }
 	    else{
 		if(millesimi<10){
-		   time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
+		    time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
+		    time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("+ "+minuti+":"+secondi+":"+millesimi);}
 	    }
@@ -779,21 +779,21 @@ timeArray = new float[datiArray.length];
 	else{
 	    if(secondi <10){
 		if(millesimi<10){
-		   time = new String("+ "+minuti+":0"+secondi+":00"+millesimi);}
+		    time = new String("+ "+minuti+":0"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("+ "+minuti+":0"+secondi+":0"+millesimi);}
+		    time = new String("+ "+minuti+":0"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("+ "+minuti+":0"+secondi+":"+millesimi);}
 	    }
 	    else{
 		if(millesimi<10){
-		   time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
+		    time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
 		else if(millesimi<100){
-		   time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
+		    time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
 		else{
 		    time = new String("+ "+minuti+":"+secondi+":"+millesimi);}
 	    }
-	  }
+	}
 
 	return time;
     }
@@ -963,25 +963,25 @@ class bestPerformance{
 	modelSpeed = new SpinnerNumberModel(0.5, 0.1, 2, 0.1);
 	jsSpeed = new JSpinner(modelSpeed);
 	jsSpeed.addChangeListener(new ChangeListener() {
-					  public void stateChanged(ChangeEvent e) {
-					      Double valuejs = (Double) jsSpeed.getValue();
-					      Float value = new Float(valuejs.doubleValue());
-					      System.out.println("velocità di simulazione cambiata -> "+value.toString());
-					      monitor.Set_Simulation_Speed(value.floatValue());
-					      System.out.println("after set_simulation_Speed");
-					      }
-});
+		public void stateChanged(ChangeEvent e) {
+		    Double valuejs = (Double) jsSpeed.getValue();
+		    Float value = new Float(valuejs.doubleValue());
+		    System.out.println("velocità di simulazione cambiata -> "+value.toString());
+		    monitor.Set_Simulation_Speed(value.floatValue());
+		    System.out.println("after set_simulation_Speed");
+		}
+	    });
 
-// resetButton.addActionListener(new ActionListener() {
-// 			public void actionPerformed(ActionEvent e) {
-// 			    fileRacetrack.setText("../../race_tracks/indianapolis.xml");
-// 			    jsLap.setValue(10);
-// 			    jsConc.setValue(3);
-// 			    textName.setText("Indianapolis");
-// // 			    jsRefresh.setValue(43);
-// 			    
-// 		}
-// 		});
+	// resetButton.addActionListener(new ActionListener() {
+	// 			public void actionPerformed(ActionEvent e) {
+	// 			    fileRacetrack.setText("../../race_tracks/indianapolis.xml");
+	// 			    jsLap.setValue(10);
+	// 			    jsConc.setValue(3);
+	// 			    textName.setText("Indianapolis");
+	// // 			    jsRefresh.setValue(43);
+	// 			    
+	// 		}
+	// 		});
 
 	bestPanel.setLayout(new GridBagLayout());
 	bestPanel.setBorder(BorderFactory.createTitledBorder(null, "Best Performance", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
@@ -1117,21 +1117,21 @@ class bestPerformance{
 	bestGrid.ipady = 5;
 	bestPanel.add(textBoxSector3Time,bestGrid);
 
-if (competition == true){
+	if (competition == true){
 	
-	speedPanel.setLayout(new GridBagLayout());
-	speedGrid.fill = GridBagConstraints.HORIZONTAL;
-	speedGrid.gridx = 0;
-	speedGrid.gridy = 0;
-	speedGrid.ipady = 5;
-	speedPanel.add(labelSpeed,speedGrid);
-	speedGrid.fill = GridBagConstraints.HORIZONTAL;
-	speedGrid.gridx = 1;
-	speedGrid.gridy = 0;
-	speedGrid.ipady = 5;
-	speedPanel.add(jsSpeed,speedGrid);
-	infoUp.add(speedPanel, BorderLayout.CENTER);
-}
+	    speedPanel.setLayout(new GridBagLayout());
+	    speedGrid.fill = GridBagConstraints.HORIZONTAL;
+	    speedGrid.gridx = 0;
+	    speedGrid.gridy = 0;
+	    speedGrid.ipady = 5;
+	    speedPanel.add(labelSpeed,speedGrid);
+	    speedGrid.fill = GridBagConstraints.HORIZONTAL;
+	    speedGrid.gridx = 1;
+	    speedGrid.gridy = 0;
+	    speedGrid.ipady = 5;
+	    speedPanel.add(jsSpeed,speedGrid);
+	    infoUp.add(speedPanel, BorderLayout.CENTER);
+	}
 	infoUp.add(labelClock, BorderLayout.NORTH);
 	infoUp.add(labelCircuit, BorderLayout.WEST);
 	infoUp.add(bestPanel, BorderLayout.SOUTH);
