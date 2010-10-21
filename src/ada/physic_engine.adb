@@ -225,7 +225,7 @@ package body Physic_Engine is
       Crossing_Time_Temp       : Float;
       Total_Delay              : Float := 0.0;
       Min_Delay                : Float := -1.0;
-      Path_Time_Min            : Float;
+      --Path_Time_Min            : Float;
       Speed_Temp               : Float :=0.0;
       Choosen_Path       : Integer;
       Speed_Array              : Float_Array(1..Paths_2_Cross.Get_Size);
@@ -265,8 +265,8 @@ package body Physic_Engine is
          if Crossing_Time > Crossing_Time_Temp or else  Crossing_Time <= 0.0 then
             Crossing_Time := Crossing_Time_Temp;
             Choosen_Path := Index;
-            Path_Time_Min := Path_Time;
-            Waiting_Time_Min := Waiting_Time;
+            --Path_Time_Min := Path_Time;
+            --Waiting_Time_Min := Waiting_Time;
          end if;
 
          Total_Delay := Starting_Instant + Crossing_Time_Temp - Waiting_Time;

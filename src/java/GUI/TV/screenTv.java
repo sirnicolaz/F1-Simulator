@@ -243,6 +243,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			if(current_lap == 0 && datiArray[0].getLap()<=current_lap ){// fix per differenza tempi durante il cambio classifica
 			    timeArray = new float[datiArray.length];
 			    for(int indez= 0; indez <timeArray.length; indez++){
+				System.out.println("1 : LORY DEBUG : AGGIORNAMENTO TIME ARRAY - LAP "+current_lap);
 				timeArray[indez] = datiArray[indez].getTime();
 			    }
 			}
@@ -281,6 +282,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 						    System.out.println("posiz = "+posiz+" "+ datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1]+" time = "+convert(datiArray[index].getTime()));
 						    if(index==0){
 							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+							System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
 						    }
 						    else{
 							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
@@ -332,12 +334,16 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				System.out.println("LORY DEBUG : INDEX = "+index );
 				if(index==0){
 				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
+				    System.out.println("1 : SCREEN DEBUG LORY : "+ convert(datiArray[index].getTime()));
+				    System.out.println("1 : SCREEN DEBUG LORY : datiArray[0] = "+datiArray[index].getTime()+" time array "+timeArray[index]);
 				    index=index+1;
 				}
 				else{
+				  if(datiArray[index].getLap()== current_lap){
 				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
-				    System.out.println("2 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+				    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
 				    System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
+				  }
 				    index=index+1;
 				}
 			    }
@@ -361,11 +367,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
 					if(varCiclo==0){
 					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
+					     System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
 					  
 					}
 					else{
 					    modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
-					    System.out.println("3 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
+					    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
 					  
 					}
 					// 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
