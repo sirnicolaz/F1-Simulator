@@ -87,23 +87,22 @@ Maggiori dettagli sull'interazione fra concorrenti e circuito e sull'algoritmo
 che regola l'attraversamento del circuito da parte dei concorrenti
 verranno forniti nelle sezioni seguenti.
 \subsection{Entit\`{a} Concorrente (Lorenzo)}
-L'entità concorrente del progetto mappa la soluzione di alcune problematiche
-analizzate nei paragrafi precedenti. Si tratta di un'entità attiva, costruita
-come un task che utilizza le altre componenti per la sua gara. In seguito
+L'entità concorrente è un'entità attiva, concepita
+come un task che utilizza l'entità \textbf{Circuito} per iterare sulla pista. In
+seguito
 verranno analizzate le interazioni che questa entità hanno fra di loro e con le
 entità passive che compongono il circuito.
-Questa componente è composta da quattro principali parti che sono
+Questa componente è composta principalmente da tre parti che sono:
 \begin{itemize}
 \item Car : oggetto che rappresenta l'auto con tutte le caratteristiche
 \item Driver : oggetto che rappresenta il pilota
 \item Competitor\_Details : oggetto che rappresenta il concorrente nel suo
-insieme, auto, pilota e componenti di strategia e di monitoraggio
+insieme, ovvero auto, pilota e componenti di strategia e di monitoraggio
 \end{itemize}
-\subsection{Interazione concorrenti - circuito (Lorenzo - ricordarsi assenza di
-stallo)}
+\subsection{Interazione concorrenti - circuito}
 L'analisi di questa interazione non viene mappata in una o più componenti
-precise ma serve a capire come si sono affrontate le problematiche esposte nel
-paragrafo \ref{enunciazione_problematiche}. I concorrenti (entità attive)
+precise ma serve a capire come si sono affrontate le problematiche esposte nella
+sezione \ref{enunciazione_problematiche}. I concorrenti (entità attive)
 utilizzano il circuito per gareggiare nella competizione.
 Ogni concorrente per gareggiare deve riuscire a ottenere il tratto di pista che
 vuole attraversare. La struttura di chiamate (insieme alla struttura del
@@ -126,26 +125,176 @@ risorsa (e questo avviene sempre dopo il calcolo dei tempi di attraversamento e
 l'aggiornamento delle statistiche che verrà spiegato in seguito) diventa subito
 in possesso del richiedente, che non deve quindi attendere oltre. 
 Nel prossimo paragrafo verrà esposta l'assenza di stalli in maniera più formale.
+\\\\
+Detto questo \`{e} possibile vedere l'algoritmo per l'attraversamento di un
+tratto dal momento in cui il concorrente arriva 
+fisicamente ad un checkpoint
+fino al raggiungimento di quello successivo.\\
+\emph{Premessa}: un concorrente controlla la sua posizione su una coda ogni
+volta che essa viene riordinata.\\
+\emph{Precondizione}: il concorrente ha gi\`{a} segnato il suo tempo di arrivo
+effettivo sulla coda del checkpoint che vuole attraversare.
+\begin{enumerate}
+\item il concorrente setta la flag ``arrivato'' nella coda del checkpoint sulla
+posizione a lui riservata;
+\item controlla in che posizione \`{e} nella coda;
+\item se non \`{e} primo, attende di essere primo;
+\item quando \`{e} primo, richiede l'insieme di traiettorie (\textbf{Path}) da
+cui \`{e} costituito il tratto;
+\item valutando gli istanti di liberazione e le caratteristiche della
+traiettorie, 
+decide quale sia quella che garantisce l'arrivo al checkpoint
+successivo all'istante di tempo pi\`{u} vicino.
+\item aggiunge il tempo di attraversamento calcolato (in base alle
+caratteristiche dell'auto e alla strategia) 
+al tempo di liberazione del tratto o, 
+se il tempo di liberazione segnato \`{e} minore dell'istante di arrivo del
+concorrente, 
+segna come istante di liberazione \emph{istante di arrivo}+\emph{tempo
+di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata
+liberata all'arrivo del concorrente). Altrimenti segnerà \emph{tempo
+segnato+tempo di attraversamento}.
+\item segna il tempo di arrivo effettivo (dipendente chiaramente dal tempo
+segnato sulla traiettoria) sulla coda del checkpoint successivo, che verr\`{a}
+\textbf{riordinata} in base al nuovo tempo.
+\item segna il tempo di arrivo limite su tutte le altre code, da quella
+successiva al checkpoint che si sta per raggiungere a quella del checkpoint
+appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene
+\textbf{riordinata}.
+\item delay per fini di simulazione;
+\item ritorna al passo uno per il checkpoint successivo;
+\end{enumerate}
+La strategia adottata si presta a simulare la corsa tenendo in considerazione ad
+ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
+anomali. Questo perch\`{e}:
+\begin{itemize}
+\item \emph{quando un concorrente \`{e} primo sulla coda ed effettivamente
+presente sulla coda, nessun concorrente potr\`{a} diventare primo finch\`{e} non
+sia il concorrente
+stesso attualmente primo a riordinare la lista}. Questo perch\`{e}, i tempi
+limite segnati sono i tempi minimi. Se il tempo effettivo del concorrente
+attualmente
+primo \`{e} inferiore a tutti tempi limite, essendo minimi, non potranno
+diventare pi\`{u} piccoli successivamente. Se nel frattempo qualcun altro arriva
+sul 
+checkpoint, esso segner\`{a} un tempo effettivo. Essendo il tempo effettivo per
+definizione maggiore o uguale al tempo limite, non sar\`{a} possibile che un
+tempo
+effettivo segnato successivamente possa essere minore di quello del concorrente
+attualmente primo.
+\item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo
+esclusivo}. Questa condizione \`{e} assicurata dal punto precedente. Mentre il 
+concorrente valuta le traiettorie, nessuno pu\`{o} diventare primo e effettuare
+una valutazione parallela delle stesse traiettorie. Il concorrente
+riordiner\`{a}
+la lista solo a traiettoria valutata, scelta e segnata con istante di
+liberazione, permettendo ad un altro concorrente di procedere.
+\item \emph{non possono esserci teletrasporti}. 
+Si premette che un teletrasporto avviene al verificarsi di queste tre condizioni:
+\begin{itemize}
+\item due concorrenti \emph{x} e \emph{y} arrivano al checkpoint \emph{n} ed entrano nella stessa traiettoria (\textbf{Path});
+\item l'istante di entrata per i due (segnato nel checkpoint \emph{n}) è rispettivamente \emph{$tx_n$} e \emph{$ty_n$} con \emph{$tx_n$} < \emph{$ty_n$} (banalmente);
+\item l'istante di entrata segnato al checkpoint successivo (che corrisponde all'uscita dalla traiettoria del checkpoint precedente) è
+rispettivamente \emph{$tx_{n+1}$} e \emph{$ty_{n+1}$} con \emph{$ty_{n+1}$} < \emph{$tx_{n+1}$};
+\end{itemize}
+In questo caso è chiaro che sia avvenuto un teletrasporto, in quanto il concorrente \emph{a}, stanto all'ordine di entrata nella
+traiettoria, avrebbe dovuto arrivare per ragioni fisiche prima del concorrente \emph{b} al checkpoint successivo. Nella peggiore 
+delle ipostesi il concorrente \emph{b} avrebbe dovuto rallentare ed arrivare al checkpoint \emph{n+1} subito dopo \emph{a}. 
+% In caso i due concorrenti prendato due traiettorie differenti, non si possono verificare anomalie per quanto riguarda i tempi
+% segnati sul checkpoint di destinazione, poichè
+Dimostriamo che questa situazione non si può verificare. Definiamo prima di tutto i seguenti simboli aggiuntivi:
+\begin{itemize}
+\item $CheckIn_{(x,n)}$ : tempo di arrivo effettivo di \emph{x} al checkpoint \emph{n};
+\item $CrossingTime_{(x,n,z)}$ : tempo di attraversamento della traiettoria \emph{n} per il concorrente \emph{x} supponendo usi la traiettoria
+\emph{z}; 
+\item $PathAvailableInstant_{(n,z)}$ : istante di liberazione della traiettoria \emph{z} al tratto \emph{n};
+\item $CrossingStartingTime_{(x,n,z)}$ : istante in cui \emph{x} iniza ad attraversare la traiettoria \emph{z} del tratto \emph{n};
+\end{itemize}
+Assumiamo la presenza di due concorrenti \emph{x} e \emph{y}. Dimostriamo che non possono verificarsi teletrasporti se entrambi
+prendono la stessa traiettoria
+\begin{proof}
+\begin{itemize}
+\item \emph{x} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_x$};
+\item \emph{y} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_y$};
+\item quindi $CheckIn_{(x,n)}$ = $t_x$ e $CheckIn_{(y,n)}$ = $t_y$. Assumiamo $CheckIn_{(x,n)}$ < $CheckIn_{(y,n)}$ per come i due concorrenti
+ipoteticamente sono arrivadi al checkpoint;
+\item \emph{x} è il primo ad attraversare. Mentre analizza le traiettorie si è visto che \emph{y} non può eseguire operazioni
+sullo stesso tratto. Assumiamo che la traiettoria scelta sia 1;
+\item il tempo per andare dall'altra parte corrisponderà all'istante che verrà segnato nel checkpoint 
+n+1. Quindi, per l'algoritmo visto, \\
+$CrossingStartingTime_{(x,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}$,$CheckIn_{(x,n)}$\}}\\
+segue che\\
+$CheckIn_{(x,n+1)}$ = $CrossingStartingTime_{(x,n,1)}$ + $CrossingTime_{(x,n,1)}$;
+\item \emph{x} aggiornerà l'istante di liberazione del \textbf{Path} nel modo seguente:
+$PathAvailableInstant_{(n,1)}$ = $CrossingStartingTime_{(x,n,1)}$ + $CrossingTime_{(x,n,1)}$\\
+quindi avremo che\\
+$CheckIn_{(x,n)}$ < $CheckIn_{(x,n+1)}$ con $CheckIn_{(x,n+1)}$ == $PathAvailableInstant_{(n,1)}$
+\item come da algoritmo, \emph{x} aggiornerà tutte le code dei checkpoint da n+1 a n (passando per il checkpoint 1) con tempi $CheckIn_{(x,n+1)}$ + $\epsilon$ 
+crescente di checkpoint in checkpoint. Supponiamo che il tempi segnato sul checkpoint n sia sufficientemente alto da mandare \emph{x}
+in una posizione posteriore a \emph{y}, così che \emph{y} possa effettuare l'attraversamento;
+\item dopo che \emph{y} avrà computato i calcoli necessari per l'attraversamento del tratto, si avrà che:\\
+$CrossingStartingTime_{(y,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}$,$CheckIn_{(y,n)}$\}};\\
+Se il valore massimo verrà rappresentato da $PathAvailableInstant_{(n,1)}$, si avrà che \\
+$CrossingStartingTime_{(y,n,1)}$ == $CheckIn_{(x,n+1)}$\\
+di conseguenza con $CheckIn_{(y,n+1)}$ = $CrossingStartingTime_{(y,n,1)}$ + $CrossingTime_{(y,n,1)}$ ne consegue che\\
+$CheckIn_{(y,n+1)}$ > $CheckIn_{(x,n+1)}$, quindi non verrà effettuato alcun teletrasporto.
+\item Se invece il valore massimo era rappresentato da $CheckIn_{(y,n)}$, allora\\ 
+$CheckIn_{(y,n)}$ > $PathAvailableInstant_{(n,1)}$ $\rightarrow$ $CheckIn_{(y,n)}$ > $CheckIn_{(x,n+1)}$ \\e, con l'assegnamento
+$CrossingStartingTime_{(y,n,1)}$ = $CheckIn_{(y,n)}$ si avrà \\
+$CheckIn_{(y,n+1)}$ = $CrossingStartingTime_{(y,n,1)}$ + $CrossingTime_{(y,n,1)}$ \\
+$\rightarrow$ $CheckIn_{(y,n+1)}$ > $CheckIn_{(x,n+1)}$.
+\end{itemize}
+\end{proof}
+Nel caso i due concorrenti prendano due traiettorie differenti, non si potrebbe più parlare di teletrasporto, bensì di sorpasso.
+\end{itemize}
+Del rientro ai box non se ne \`{e} ancora discusso per evitare di rendere
+pi\`{u} confusionaria la spiegazione. Comunque la cosa non costituisce
+un grande problema: vi saranno due checkpoint speciali, quello esattamente prima
+della corsia dei box e quello subito all'uscita dei box.
+Quando un concorrente arriva sul checkpoint precedente ai box, richiede delle
+informazioni di strategia ai box. Se tali informazioni
+richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box
+\`{e} poi rappresentato da un checkpoint come tutti gli altri nel circuito.
+Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al
+checkpoint di uscita (nel circuito).\\
+I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di
+concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
+velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro
+l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
+sorpasso \`{e} data dalla velocit\`{a} che un concorrente richiede per il
+rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
+che verr\`{a} segnato nel checkpoint di uscita.
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
-Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
-una macchina A attende la prima posizione nella coda associata al tratto 3 (per esempio). 
-Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2. Ma B risulta prima di A nella coda 3 e A 
+Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per
+assurdo, uno stallo si potrebbe verificare se:
+una macchina A attende la prima posizione nella coda associata al tratto 3 (per
+esempio). 
+Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2.
+Ma B risulta prima di A nella coda 3 e A 
 risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
 lo stallo porterebbe ad una contraddizione.\\
 \begin{proof}
 \textcolor{white}{42}\\
-\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul checkpoint N.}\\
-	Se nella coda 2 ci sono A in testa seguita da B, avremo che $tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
+\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul
+checkpoint N.}\\
+	Se nella coda 2 ci sono A in testa seguita da B, avremo che
+$tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
 	determinato dai tempi di arrivo segnati.
-	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
-	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a} aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta t$, 
-	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
-	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi $tempo(3B)<tempo(3A)$.
+	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per
+ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
+	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a}
+aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta
+t$, 
+	con $ \delta t$ un valore minimo diverso da zero previsto per
+l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
+	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A,
+quindi $tempo(3B)<tempo(3A)$.
 	Avremo quindi:\\
 
 	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
-	che \`{e} una contraddizione, quindi la situazione non si pu\`{o} verificare.
+	che \`{e} una contraddizione, quindi la situazione non si pu\`{o}
+verificare.
 \end{proof}
 \subsection{Interazione concorrenti - concorrenti (Lorenzo)}
 All'interno del progetto non è prevista una comunicazione diretta fra
@@ -381,7 +530,8 @@ l'interfaccia di configurazione (in java) della competizione.
 \clearpage
 Una volta avviato il main della competizione, per prima cosa vengono
 inizializzati tutti i server, vale a dire \textbf{CompetitionConfigurator},
-\textbf{RegistrationHandler} e \textbf{Competition\_Monitor\_Radio}. Viene avviato
+\textbf{RegistrationHandler} e \textbf{Competition\_Monitor\_Radio}. Viene
+avviato
 un task \textbf{Starter} che rimane in attesa
 della configurazione e registrazione concorrenti avvenuti per dare lo
 \underline{Start} alla gara. Viene inoltre allocata una risorsa protetta di tipo
