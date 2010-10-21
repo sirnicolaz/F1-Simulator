@@ -419,11 +419,11 @@ public class BoxScreen extends Thread{
 		line = (Element) gasLevel2.item(0);
 		gasLevelStrategyValue = new Double(getCharacterDataFromElement(line));
 
-		NodeList pitStopLaps = element2.getElementsByTagName("pitStopLaps");
+		NodeList pitStopLaps = element2.getElementsByTagName("Laps_To_Pitstop");
 		line = (Element) pitStopLaps.item(0);
 		pitstopLapValue = new Integer(getCharacterDataFromElement(line));
 
-		NodeList pitStopDelay = element2.getElementsByTagName("pitStopDelay");
+		NodeList pitStopDelay = element2.getElementsByTagName("Pit_Stop_Delay");
 		line = (Element) pitStopDelay.item(0);
 		pitstopDelayValue = new Float(getCharacterDataFromElement(line)).floatValue();
 	    }
@@ -490,7 +490,8 @@ public class BoxScreen extends Thread{
 	    element = (Element) nodes.item(i);
 	    NodeList engine = element.getElementsByTagName("engine");
 	    line = (Element) engine.item(0);
-	    engineValue = new String(getCharacterDataFromElement(line));
+	    styleValue = new String(getCharacterDataFromElement(line));
+
 
 	    element = (Element) nodes.item(i);
 	    NodeList tyre = element.getElementsByTagName("tyreusury");

@@ -9,7 +9,7 @@
 <maxspeed>312.0</maxspeed>
 <maxacceleration>12.1</maxacceleration>
 <gastankcapacity>201.0</gastankcapacity>
-<engine>NORMAL</engine>
+<engine>Normal</engine>
 <tyreusury>0.0</tyreusury>
 <gasolinelevel>50.0</gasolinelevel>
 <mixture>Soft</mixture>

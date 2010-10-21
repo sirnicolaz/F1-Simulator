@@ -114,8 +114,8 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private String gasolineString = new String ("<gasolinelevel>50</gasolinelevel>");
     private String stringTipoGomme = new String("<mixture>Soft</mixture>");
     private String stringGomme = new String("<type_tyre>Sun</type_tyre>");
-    private String stringStyle = new String("<engine>NORMAL</engine>");
-    private String stringStrategy = new String("<boxStrategy>NORMAL</boxStrategy>");
+    private String stringStyle = new String("<engine>Normal</engine>");
+    private String stringStrategy = new String("<boxStrategy>Normal</boxStrategy>");
     private String stringSerbatoio = new String("<gastankcapacity>200.0</gastankcapacity>");
     private String stringMaxAcc = new String("<maxacceleration>7.0</maxacceleration>");
     private String stringMaxSpeed = new String("<maxspeed>300.0</maxspeed>");
@@ -241,7 +241,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		    public void actionPerformed(ActionEvent e) {
 			JComboBox cb = (JComboBox)e.getSource();
 			String s = (String)cb.getSelectedItem();
- 			stringStyle = new String("<engine>"+s.toUpperCase()+"</engine>");
+ 			stringStyle = new String("<engine>"+s+"</engine>");
 		    }
 		});
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
@@ -616,11 +616,11 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    NodeList engine = element.getElementsByTagName("engine");
 	    line = (Element) engine.item(0);
 	    String engineValue = new String(getCharacterDataFromElement(line));
-	    if(engineValue.equals("NORMAL")){
+	    if(engineValue.equals("Normal")){
 		comboStrategypitstop.setSelectedIndex(0);
 	    }
 	    else{ 
-		if(engineValue.equals("SAVE")){
+		if(engineValue.equals("Save")){
 		    comboStrategypitstop.setSelectedIndex(1);
 		}
 		else{
