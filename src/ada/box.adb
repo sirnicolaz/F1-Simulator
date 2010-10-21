@@ -23,11 +23,6 @@ with ADA.Float_Text_IO;
 
 package body Box is
 
-
-   --Competitor_Qty : Integer := 10;
-   --TODO:if possible, sooner or later try to use the cmpetitor classific
-   --+ for calculating the Strategy
-
    -- Circuit length. Initialised after the competitor registration
    Circuit_Length : Float := 6.0;
 
@@ -207,9 +202,7 @@ package body Box is
 
          UpdateBuffer.Get_Update(New_Info.all, Index);
 
-
          Box_Data.Competition_Update(Extended_Information) := New_Info.all;
-
 
          if( New_Info.Gas_Level < 0.0 ) then
             New_Info.Gas_Level := 0.0;
@@ -240,8 +233,6 @@ package body Box is
 
             --TODO: don't use so stupid values for the means
          else
-
-
             Partial_Gas_Consumption_Mean :=
               Partial_Gas_Consumption_Mean +
                 ((Previous_Sector_Gas_Level - New_Info.Gas_Level)/
@@ -317,8 +308,6 @@ package body Box is
 
    end Strategy_Updater;
 
-   --StrategyUpdater_Task : access Strategy_Updater;
-
    -- Used to send to the client interface the information concerning the competition
    function CompetitionUpdateToXML(update : Competition_Update) return STRING is
 
@@ -328,27 +317,12 @@ package body Box is
 
       begin
 
-      --Updating related to the classific are temporary removed.
-      --if update.Classific /= null then
-        -- Competitor_Qty := update.Classific'LENGTH;
-      --end if;
-
       XML_String := Unbounded_String.To_Unbounded_String("<update>" &
                                                          "<gasLevel>" & Common.Float_To_String(update.Gas_Level) & "</gasLevel> <!-- % -->" &
                                                          "<tyreUsury>" & Common.Float_To_String(update.Tyre_Usury) & "</tyreUsury> <!-- % -->" &
-                                                         --"<meanSpeed>" & Common.Float_To_String(update.MeanSpeed) & "</meanSpead> <!-- km/h --> " &
-                                                         --"<Mean_Gas_Consumption>" & Common.Float_To_String(update.Mean_Gas_Consumption) & "</Mean_Gas_Consumption> <!-- l/h --> " &
                                                          "<lap>" & Common.Integer_To_String(update.Lap) & "</lap> " &
                                                          "<sector>" & Common.Integer_To_String(update.Sector) & "</sector>" &
-                                                         "</update>" );-- &
-                                                         --"<classific competitors="" " & Common.Integer_To_String(Competitor_Qty) & " "" >   <!-- competitor ids, pol position = first one --> ");
-      -- The classific is expressed as an Integer sequence where the first place
-      --+ in the competition is related to the first position in the array.
-      --for Index in 1..Competitor_Qty loop
-        -- XML_String := XML_String & "<compId>" & Common.Integer_To_String(update.Classific(Index)) & "</compId> ";
-      --end loop;
-
-      --XML_String := XML_String & "</classific></update> ";
+                                                         "</update>" );
 
       return Unbounded_String.To_String(XML_String);
    end CompetitionUpdateToXML;
