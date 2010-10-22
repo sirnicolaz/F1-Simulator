@@ -13,7 +13,8 @@ package Path_Handler is
                         Length_In : FLOAT;
                         Angle_In : ANGLE_GRADE;
                         Grip_In : GRIP_RANGE;
-                        Difficulty_In : DIFFICULTY_RANGE);
+                        Difficulty_In : DIFFICULTY_RANGE;
+                        Max_Cars : Integer);
 
    -- The Paths within a segment can have different lengths. For instance
    --+ in a turn the innermost path is shorter than the others.
@@ -30,6 +31,11 @@ package Path_Handler is
    function Get_Release_Instant( Path_In : PATH ) return FLOAT;
    procedure Set_Release_Instant( Path_In : out Path;
                                  Instant : Float );
+
+   -- The upper bound max speed due to a competitor already in the path
+   function Get_Max_Speed(Path_In : PATH ) return FLOAT;
+   procedure Set_Max_Speed(Path_In : out Path;
+                           Max_Speed : Float );
 
    --This array represents the set of Paths a segment of the
    --+ circuit has.
@@ -51,13 +57,20 @@ package Path_Handler is
                                Length : FLOAT);
 
    protected type CROSSING(Paths_In : Paths_Point) is
-      procedure Update_Time(Time_In : in FLOAT;
-                            PathIndex : in Integer);
+
       function Get_Size return Integer;
       function Get_Length(PathIndex : Integer) return FLOAT;
       function Get_Angle(PathIndex : Integer) return FLOAT;
       function Get_Grip(PathIndex : Integer) return FLOAT;
       function Get_PathTime(PathIndex : Integer) return FLOAT;
+      function Get_Max_Speed(PathIndex : Integer) return Float;
+      function Is_Path_Available(PathIndex     : Integer;
+                                 Arriving_Time : Float) return Boolean;
+
+      procedure Cross(Arriving_Instant : Float;
+                      Exit_Instant     : Float;
+                      Speed_In         : Float;
+                      PathIndex        : Integer);
 
    private
       F_Paths : Paths_Point := Paths_In;
@@ -75,6 +88,8 @@ private
       Difficulty : DIFFICULTY_RANGE;
       Angle : ANGLE_GRADE;
       Release_Instant : FLOAT;
+      Max_Speed : Float;
+      Competitor_Exit_Times : Float_Array_Point;
    end record;
 
 end Path_Handler;

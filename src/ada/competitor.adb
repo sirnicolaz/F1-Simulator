@@ -395,7 +395,7 @@ package body Competitor is
 
    begin
 
-      CompetitorOut(Computer_In => Onboard_Computer ,
+      CompetitorOut(Computer_In => Onboard_Computer,
                     Lap         => Current_Lap,
                     Data        => Statistics);
 
@@ -606,15 +606,14 @@ package body Competitor is
          --+ We assume that the pitstop is in the first half of the lane, so before
          --+ the goal.
 
-         -- TODO: add the time when the competitor has to leave the box
-         if (PitStop = true) then
+         -- add the delay when the competitor has to leave the box
+         if (PitStopDone = true) then
             CrossingTime := CrossingTime + BrandNewStrategy.Pit_Stop_Delay;
          end if;
 
          --Da adesso in poi, essendo state  rilasciate tutte le risorse, si possono
          --aggiornare i tempi di arrivo sui vari checkpoint senza rallentare il
          --procedere degli altri competitor
-
          Predicted_Time := ActualTime + CrossingTime;
 
          --If the checkpoint is the prebox, it's necessary to update all
@@ -666,11 +665,12 @@ package body Competitor is
                                                                 Speed, Predicted_Time,
                                                                 carDriver.Racing_Car.Gasoline_Level, carDriver.Racing_Car.Tyre_Usury,
                                                                 carDriver.On_Board_Computer);
-
          end if;
 
-         if(carDriver.Racing_Car.Gasoline_Level <= 0.0 or else carDriver.Racing_Car.Tyre_Usury >= 100.0) then
---
+         if(carDriver.Racing_Car.Gasoline_Level <= 0.0 or else
+              carDriver.Racing_Car.Tyre_Usury >= 100.0 or else
+                Length_Path = 0.0) then
+
             Ada.Text_IO.Put_Line(Integer'IMAGE(carDriver.Id) & ": Sendin away competitor at " & Float'IMAGE(compStats.Time) & " last lap " & Integer'IMAGE(LastLap));
 
             Finalize_Competitor_Statistics(carDriver.Current_Circuit_Race_Iterator,

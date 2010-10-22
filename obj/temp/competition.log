@@ -1,10 +1,10 @@
 Retrieving ROOT_POA...
 Activating ROOT_POA...
-CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.1.1:38502//000000011Tff9f723011dedebc'
-RegistrationHandler: 'corbaloc:iiop:1.2@127.0.1.1:38502//000000012Tff9f723011dedebc'
-Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.1.1:38502//000000013Tff9f723011dedebc'
-Initialising CORBA.ORB
+CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.0.1:59055//000000011Td1938ba011defb7d'
+RegistrationHandler: 'corbaloc:iiop:1.2@127.0.0.1:59055//000000012Td1938ba011defb7d'
+Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.0.1:59055//000000013Td1938ba011defb7d'
 Waiting for competitor to be ready...
+Initialising CORBA.ORB
 Race Length  4.90300E+02
 Box length  1.70000E+02
  2 competitors
@@ -29,10 +29,6 @@ ID int 1
 init task
 Ready box 1
  1 expected boxes
-LORY : 0
-LORY : 1
-LORY : 2
-LORY : 3
 Registering competitor
 Init competitor...
 Begin
@@ -44,13 +40,13 @@ Init Computer
 Adding min info
 Add obc
 Connecting to box
-Name : Pippo
+init task
+Name : Pippo2
 Stop
-Setting laps
-ID int 2
 Ready!
 Wating box to be ready
-init task
+Setting laps
+ID int 2
 Ready box 2
  0 expected boxes
 Box ready!
@@ -58,53 +54,53 @@ Starting competitors
  1 Connecting for strategy
  2 Connecting for strategy
 Competition started!!!!!!!!!
- 2 connected succesfully
- 2 saved
- 2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
  1 connected succesfully
+ 2 connected succesfully
  1 saved
  1 1: SUMMURY lap :  0, actual time :  0.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  2.88675E+00 speed  1.24708E+02
+ 2 saved
+ 2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.88675E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  2.88675E+00 speed  1.24708E+02
  1 1: SUMMURY lap :  0, actual time :  2.88675E+00, gas  4.99675E+01, tyre  4.11000E-02, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  1.76799E+00 speed  2.01085E+02
  2 2: SUMMURY lap :  0, actual time :  3.88675E+00, gas  4.99675E+01, tyre  4.11000E-02, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.65475E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  1.76799E+00 speed  2.01085E+02
  1 1: SUMMURY lap :  0, actual time :  4.65475E+00, gas  4.99115E+01, tyre  1.07100E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  1.26274E+00 speed  2.55636E+02
  2 2: SUMMURY lap :  0, actual time :  5.65475E+00, gas  4.99115E+01, tyre  1.07100E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.91748E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  1.26274E+00 speed  2.55636E+02
  1 1: SUMMURY lap :  0, actual time :  5.91748E+00, gas  4.98554E+01, tyre  1.73183E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  1.03782E+00 speed  2.96209E+02
  2 2: SUMMURY lap :  0, actual time :  6.91748E+00, gas  4.98554E+01, tyre  1.73183E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  6.95531E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  1.03782E+00 speed  2.96209E+02
  1 1: SUMMURY lap :  0, actual time :  6.95531E+00, gas  4.97994E+01, tyre  2.39265E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.73553E-01 speed  2.96193E+02
  2 2: SUMMURY lap :  0, actual time :  7.95531E+00, gas  4.97994E+01, tyre  2.39265E-01, pit stop done FALSE
@@ -113,16 +109,16 @@ Notifying
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.72389E-01 speed  2.96178E+02
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  7.92886E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.73553E-01 speed  2.96193E+02
- 1 1: SUMMURY lap :  0, actual time :  8.90125E+00, gas  4.96873E+01, tyre  3.71347E-01, pit stop done FALSE
+ 1 1: SUMMURY lap :  0, actual time :  8.90125E+00, gas  4.96873E+01, tyre  3.71348E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  0.00000E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.86220E-01 speed  2.96162E+02
  2 2: SUMMURY lap :  0, actual time :  8.92886E+00, gas  4.97433E+01, tyre  3.05348E-01, pit stop done FALSE
@@ -130,75 +126,75 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  8.90125E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.72389E-01 speed  2.96178E+02
- 1 1: SUMMURY lap :  1, actual time :  9.38747E+00, gas  4.96593E+01, tyre  4.04347E-01, pit stop done FALSE
+ 1 1: SUMMURY lap :  1, actual time :  9.38747E+00, gas  4.96593E+01, tyre  4.04348E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.88675E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.07791E-01 speed  2.96154E+02
- 2 2: SUMMURY lap :  0, actual time :  9.90125E+00, gas  4.96873E+01, tyre  3.71347E-01, pit stop done FALSE
+ 2 2: SUMMURY lap :  0, actual time :  9.90125E+00, gas  4.96873E+01, tyre  3.71348E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  9.38747E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.86220E-01 speed  2.96162E+02
  1 1: SUMMURY lap :  1, actual time :  9.99526E+00, gas  4.96243E+01, tyre  4.45597E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.65475E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.72498E-01 speed  2.96145E+02
- 2 2: SUMMURY lap :  1, actual time :  1.03875E+01, gas  4.96593E+01, tyre  4.04347E-01, pit stop done FALSE
+ 2 2: SUMMURY lap :  1, actual time :  1.03875E+01, gas  4.96593E+01, tyre  4.04348E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  9.99526E+00
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.07791E-01 speed  2.96154E+02
- 1 1: SUMMURY lap :  1, actual time :  1.09678E+01, gas  4.95683E+01, tyre  5.11597E-01, pit stop done FALSE
+ 1 1: SUMMURY lap :  1, actual time :  1.09678E+01, gas  4.95683E+01, tyre  5.11598E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  6.91748E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.73765E-01 speed  2.96129E+02
  2 2: SUMMURY lap :  1, actual time :  1.09953E+01, gas  4.96243E+01, tyre  4.45597E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.09678E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.72498E-01 speed  2.96145E+02
  1 1: SUMMURY lap :  1, actual time :  1.19415E+01, gas  4.95122E+01, tyre  5.77680E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  7.95531E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 1: evaluate done: length path  8.01000E+01 crossing time  9.73817E-01 speed  2.96113E+02
- 2 2: SUMMURY lap :  1, actual time :  1.19678E+01, gas  4.95683E+01, tyre  5.11597E-01, pit stop done FALSE
+ 1: evaluate done: length path  8.01000E+01 crossing time  9.73816E-01 speed  2.96113E+02
+ 2 2: SUMMURY lap :  1, actual time :  1.19678E+01, gas  4.95683E+01, tyre  5.11598E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.19415E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.73765E-01 speed  2.96129E+02
  1 1: SUMMURY lap :  1, actual time :  1.29153E+01, gas  4.94562E+01, tyre  6.43762E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  8.92886E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.73868E-01 speed  2.96098E+02
  2 2: SUMMURY lap :  1, actual time :  1.29415E+01, gas  4.95122E+01, tyre  5.77680E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.29153E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 2: evaluate done: length path  8.01000E+01 crossing time  9.73817E-01 speed  2.96113E+02
+ 2: evaluate done: length path  8.01000E+01 crossing time  9.73816E-01 speed  2.96113E+02
  1 1: SUMMURY lap :  1, actual time :  1.38892E+01, gas  4.94001E+01, tyre  7.09845E-01, pit stop done FALSE
  1 Connecting for strategy
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  9.90125E+00
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.72703E-01 speed  2.96082E+02
  2 2: SUMMURY lap :  1, actual time :  1.39153E+01, gas  4.94562E+01, tyre  6.43762E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.38892E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.73868E-01 speed  2.96098E+02
  1 1: SUMMURY lap :  1, actual time :  1.48619E+01, gas  4.93441E+01, tyre  7.75845E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.03875E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.86377E-01 speed  2.96066E+02
  2 2: SUMMURY lap :  1, actual time :  1.48892E+01, gas  4.94001E+01, tyre  7.09845E-01, pit stop done FALSE
@@ -206,68 +202,62 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.48619E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.72703E-01 speed  2.96082E+02
  1 1: SUMMURY lap :  2, actual time :  1.53483E+01, gas  4.93161E+01, tyre  8.08845E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.09953E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.07988E-01 speed  2.96059E+02
  2 2: SUMMURY lap :  1, actual time :  1.58619E+01, gas  4.93441E+01, tyre  7.75845E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.53483E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.86377E-01 speed  2.96066E+02
  1 1: SUMMURY lap :  2, actual time :  1.59563E+01, gas  4.92811E+01, tyre  8.50095E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.19678E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.72812E-01 speed  2.96049E+02
 Copy false
  2 2: SUMMURY lap :  2, actual time :  1.63483E+01, gas  4.93161E+01, tyre  8.08845E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.59563E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.07988E-01 speed  2.96059E+02
-Copy false
-Copy false
  1 1: SUMMURY lap :  2, actual time :  1.69291E+01, gas  4.92251E+01, tyre  9.16095E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.29415E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74080E-01 speed  2.96033E+02
  2 2: SUMMURY lap :  2, actual time :  1.69563E+01, gas  4.92811E+01, tyre  8.50095E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.69291E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.72812E-01 speed  2.96049E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  2, actual time :  1.79032E+01, gas  4.91690E+01, tyre  9.82177E-01, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.39153E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74131E-01 speed  2.96018E+02
  2 2: SUMMURY lap :  2, actual time :  1.79291E+01, gas  4.92251E+01, tyre  9.16095E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.79032E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74080E-01 speed  2.96033E+02
 Copy false
 Copy false
  1 1: SUMMURY lap :  2, actual time :  1.88773E+01, gas  4.91130E+01, tyre  1.04826E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.48892E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74182E-01 speed  2.96002E+02
-Copy false
-Copy false
  2 2: SUMMURY lap :  2, actual time :  1.89032E+01, gas  4.91690E+01, tyre  9.82177E-01, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.88773E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74131E-01 speed  2.96018E+02
 Copy false
@@ -277,21 +267,19 @@ Copy false
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.58619E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73018E-01 speed  2.95986E+02
  2 2: SUMMURY lap :  2, actual time :  1.98773E+01, gas  4.91130E+01, tyre  1.04826E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  1.98515E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74182E-01 speed  2.96002E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  2, actual time :  2.08245E+01, gas  4.90009E+01, tyre  1.18034E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.63483E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.86534E-01 speed  2.95971E+02
  2 2: SUMMURY lap :  2, actual time :  2.08515E+01, gas  4.90569E+01, tyre  1.11434E+00, pit stop done FALSE
@@ -299,76 +287,66 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.08245E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73018E-01 speed  2.95986E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  3, actual time :  2.13110E+01, gas  4.89729E+01, tyre  1.21334E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.69563E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.08184E-01 speed  2.95963E+02
  2 2: SUMMURY lap :  2, actual time :  2.18245E+01, gas  4.90009E+01, tyre  1.18034E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.13110E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.86534E-01 speed  2.95971E+02
-Copy false
-Copy false
  1 1: SUMMURY lap :  3, actual time :  2.19192E+01, gas  4.89379E+01, tyre  1.25459E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.79291E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73127E-01 speed  2.95953E+02
 Copy false
  2 2: SUMMURY lap :  3, actual time :  2.23110E+01, gas  4.89729E+01, tyre  1.21334E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.19192E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.08184E-01 speed  2.95963E+02
-Copy false
-Copy false
  1 1: SUMMURY lap :  3, actual time :  2.28923E+01, gas  4.88819E+01, tyre  1.32059E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.89032E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74394E-01 speed  2.95938E+02
  2 2: SUMMURY lap :  3, actual time :  2.29192E+01, gas  4.89379E+01, tyre  1.25459E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.28923E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73127E-01 speed  2.95953E+02
 Copy false
 Copy false
  1 1: SUMMURY lap :  3, actual time :  2.38667E+01, gas  4.88258E+01, tyre  1.38667E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  1.98773E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74446E-01 speed  2.95922E+02
-Copy false
-Copy false
  2 2: SUMMURY lap :  3, actual time :  2.38923E+01, gas  4.88819E+01, tyre  1.32059E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.38667E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74394E-01 speed  2.95938E+02
 Copy false
 Copy false
  1 1: SUMMURY lap :  3, actual time :  2.48412E+01, gas  4.87697E+01, tyre  1.45276E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.08515E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74497E-01 speed  2.95906E+02
  2 2: SUMMURY lap :  3, actual time :  2.48667E+01, gas  4.88258E+01, tyre  1.38667E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.48412E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74446E-01 speed  2.95922E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  3, actual time :  2.58157E+01, gas  4.87137E+01, tyre  1.51884E+00, pit stop done FALSE
@@ -376,21 +354,19 @@ Copy false
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.18245E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73332E-01 speed  2.95891E+02
  2 2: SUMMURY lap :  3, actual time :  2.58412E+01, gas  4.87697E+01, tyre  1.45276E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.58157E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74497E-01 speed  2.95906E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  3, actual time :  2.67890E+01, gas  4.86577E+01, tyre  1.58484E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.23110E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.86692E-01 speed  2.95875E+02
  2 2: SUMMURY lap :  3, actual time :  2.68157E+01, gas  4.87137E+01, tyre  1.51884E+00, pit stop done FALSE
@@ -398,75 +374,66 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.67890E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73332E-01 speed  2.95891E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  4, actual time :  2.72757E+01, gas  4.86297E+01, tyre  1.61784E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.29192E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.08381E-01 speed  2.95867E+02
  2 2: SUMMURY lap :  3, actual time :  2.77890E+01, gas  4.86577E+01, tyre  1.58484E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.72757E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.86692E-01 speed  2.95875E+02
  1 1: SUMMURY lap :  4, actual time :  2.78841E+01, gas  4.85947E+01, tyre  1.65909E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.38923E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73441E-01 speed  2.95858E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  4, actual time :  2.82757E+01, gas  4.86297E+01, tyre  1.61784E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.78841E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.08381E-01 speed  2.95867E+02
  1 1: SUMMURY lap :  4, actual time :  2.88575E+01, gas  4.85387E+01, tyre  1.72509E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.48667E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74709E-01 speed  2.95842E+02
  2 2: SUMMURY lap :  4, actual time :  2.88841E+01, gas  4.85947E+01, tyre  1.65909E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.88575E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73441E-01 speed  2.95858E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  4, actual time :  2.98322E+01, gas  4.84826E+01, tyre  1.79117E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.58412E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74761E-01 speed  2.95826E+02
  2 2: SUMMURY lap :  4, actual time :  2.98575E+01, gas  4.85387E+01, tyre  1.72509E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  2.98322E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74709E-01 speed  2.95842E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  4, actual time :  3.08070E+01, gas  4.84265E+01, tyre  1.85725E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.68157E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.74812E-01 speed  2.95811E+02
  2 2: SUMMURY lap :  4, actual time :  3.08322E+01, gas  4.84826E+01, tyre  1.79117E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.08070E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74761E-01 speed  2.95826E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  4, actual time :  3.17818E+01, gas  4.83705E+01, tyre  1.92334E+00, pit stop done FALSE
@@ -474,21 +441,19 @@ Copy false
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.77890E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 1: evaluate done: length path  8.00000E+01 crossing time  9.73646E-01 speed  2.95795E+02
+ 1: evaluate done: length path  8.00000E+01 crossing time  9.73647E-01 speed  2.95795E+02
  2 2: SUMMURY lap :  4, actual time :  3.18070E+01, gas  4.84265E+01, tyre  1.85725E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.17818E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.74812E-01 speed  2.95811E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  4, actual time :  3.27555E+01, gas  4.83145E+01, tyre  1.98934E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.82757E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.86849E-01 speed  2.95780E+02
  2 2: SUMMURY lap :  4, actual time :  3.27818E+01, gas  4.83705E+01, tyre  1.92334E+00, pit stop done FALSE
@@ -496,75 +461,66 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.27555E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 2: evaluate done: length path  8.00000E+01 crossing time  9.73646E-01 speed  2.95795E+02
-Copy false
-Copy false
+ 2: evaluate done: length path  8.00000E+01 crossing time  9.73647E-01 speed  2.95795E+02
 Copy false
 Copy false
  1 1: SUMMURY lap :  5, actual time :  3.32423E+01, gas  4.82865E+01, tyre  2.02234E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.88841E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.08577E-01 speed  2.95772E+02
  2 2: SUMMURY lap :  4, actual time :  3.37555E+01, gas  4.83145E+01, tyre  1.98934E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.32423E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.86849E-01 speed  2.95780E+02
  1 1: SUMMURY lap :  5, actual time :  3.38509E+01, gas  4.82515E+01, tyre  2.06359E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  2.98575E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73756E-01 speed  2.95762E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  5, actual time :  3.42423E+01, gas  4.82865E+01, tyre  2.02234E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.38509E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.08577E-01 speed  2.95772E+02
  1 1: SUMMURY lap :  5, actual time :  3.48246E+01, gas  4.81955E+01, tyre  2.12959E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.08322E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75024E-01 speed  2.95746E+02
  2 2: SUMMURY lap :  5, actual time :  3.48509E+01, gas  4.82515E+01, tyre  2.06359E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.48246E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73756E-01 speed  2.95762E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  5, actual time :  3.57997E+01, gas  4.81394E+01, tyre  2.19567E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.18070E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75076E-01 speed  2.95731E+02
  2 2: SUMMURY lap :  5, actual time :  3.58246E+01, gas  4.81955E+01, tyre  2.12959E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.57997E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75024E-01 speed  2.95746E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  5, actual time :  3.67747E+01, gas  4.80833E+01, tyre  2.26175E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.27818E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75127E-01 speed  2.95715E+02
  2 2: SUMMURY lap :  5, actual time :  3.67997E+01, gas  4.81394E+01, tyre  2.19567E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.67747E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75076E-01 speed  2.95731E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  5, actual time :  3.77499E+01, gas  4.80273E+01, tyre  2.32783E+00, pit stop done FALSE
@@ -572,21 +528,19 @@ Copy false
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.37555E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.73961E-01 speed  2.95700E+02
  2 2: SUMMURY lap :  5, actual time :  3.77747E+01, gas  4.80833E+01, tyre  2.26175E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.77499E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75127E-01 speed  2.95715E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  5, actual time :  3.87238E+01, gas  4.79713E+01, tyre  2.39383E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.42423E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.87006E-01 speed  2.95684E+02
  2 2: SUMMURY lap :  5, actual time :  3.87499E+01, gas  4.80273E+01, tyre  2.32783E+00, pit stop done FALSE
@@ -594,97 +548,86 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.87238E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.73961E-01 speed  2.95700E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  3.92108E+01, gas  4.79433E+01, tyre  2.42683E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.48509E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.08774E-01 speed  2.95676E+02
  2 2: SUMMURY lap :  5, actual time :  3.97238E+01, gas  4.79713E+01, tyre  2.39383E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.92108E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.87006E-01 speed  2.95684E+02
  1 1: SUMMURY lap :  6, actual time :  3.98196E+01, gas  4.79083E+01, tyre  2.46808E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.58246E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74071E-01 speed  2.95666E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  6, actual time :  4.02108E+01, gas  4.79433E+01, tyre  2.42683E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  3.98196E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.08774E-01 speed  2.95676E+02
+ 2 2: SUMMURY lap :  6, actual time :  4.08196E+01, gas  4.79083E+01, tyre  2.46808E+00, pit stop done FALSE
  1 1: SUMMURY lap :  6, actual time :  4.07937E+01, gas  4.78523E+01, tyre  2.53408E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.67997E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75340E-01 speed  2.95651E+02
- 2 2: SUMMURY lap :  6, actual time :  4.08196E+01, gas  4.79083E+01, tyre  2.46808E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.07937E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74071E-01 speed  2.95666E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  4.17690E+01, gas  4.77962E+01, tyre  2.60017E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.77747E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75391E-01 speed  2.95635E+02
  2 2: SUMMURY lap :  6, actual time :  4.17937E+01, gas  4.78523E+01, tyre  2.53408E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.17690E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75340E-01 speed  2.95651E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  4.27444E+01, gas  4.77401E+01, tyre  2.66625E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.87499E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75443E-01 speed  2.95620E+02
  2 2: SUMMURY lap :  6, actual time :  4.27690E+01, gas  4.77962E+01, tyre  2.60017E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.27444E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75391E-01 speed  2.95635E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  4.37198E+01, gas  4.76841E+01, tyre  2.73233E+00, pit stop done FALSE
  1 Connecting for strategy
+ 2 2: SUMMURY lap :  6, actual time :  4.37444E+01, gas  4.77401E+01, tyre  2.66625E+00, pit stop done FALSE
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  3.97238E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74276E-01 speed  2.95604E+02
- 2 2: SUMMURY lap :  6, actual time :  4.37444E+01, gas  4.77401E+01, tyre  2.66625E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.37198E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75443E-01 speed  2.95620E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  4.46941E+01, gas  4.76281E+01, tyre  2.79833E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.02108E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.87164E-01 speed  2.95588E+02
  2 2: SUMMURY lap :  6, actual time :  4.47198E+01, gas  4.76841E+01, tyre  2.73233E+00, pit stop done FALSE
@@ -692,195 +635,173 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.46941E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74276E-01 speed  2.95604E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  7, actual time :  4.51813E+01, gas  4.76001E+01, tyre  2.83133E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.08196E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.08971E-01 speed  2.95581E+02
  2 2: SUMMURY lap :  6, actual time :  4.56941E+01, gas  4.76281E+01, tyre  2.79833E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.51813E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.87164E-01 speed  2.95588E+02
  1 1: SUMMURY lap :  7, actual time :  4.57903E+01, gas  4.75651E+01, tyre  2.87258E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.17937E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74386E-01 speed  2.95571E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  7, actual time :  4.61813E+01, gas  4.76001E+01, tyre  2.83133E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.57903E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.08971E-01 speed  2.95581E+02
  1 1: SUMMURY lap :  7, actual time :  4.67646E+01, gas  4.75091E+01, tyre  2.93858E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.27690E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75655E-01 speed  2.95555E+02
  2 2: SUMMURY lap :  7, actual time :  4.67903E+01, gas  4.75651E+01, tyre  2.87258E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.67646E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74386E-01 speed  2.95571E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  7, actual time :  4.77403E+01, gas  4.74530E+01, tyre  3.00466E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.37444E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75707E-01 speed  2.95540E+02
  2 2: SUMMURY lap :  7, actual time :  4.77646E+01, gas  4.75091E+01, tyre  2.93858E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.77403E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75655E-01 speed  2.95555E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  7, actual time :  4.87160E+01, gas  4.73969E+01, tyre  3.07075E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.47198E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75758E-01 speed  2.95524E+02
  2 2: SUMMURY lap :  7, actual time :  4.87403E+01, gas  4.74530E+01, tyre  3.00466E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.87160E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75707E-01 speed  2.95540E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  7, actual time :  4.96918E+01, gas  4.73409E+01, tyre  3.13683E+00, pit stop done FALSE
  1 Connecting for strategy
+ 2 2: SUMMURY lap :  7, actual time :  4.97160E+01, gas  4.73969E+01, tyre  3.07075E+00, pit stop done FALSE
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.56941E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74592E-01 speed  2.95508E+02
- 2 2: SUMMURY lap :  7, actual time :  4.97160E+01, gas  4.73969E+01, tyre  3.07075E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  4.96918E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75758E-01 speed  2.95524E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  7, actual time :  5.06664E+01, gas  4.72849E+01, tyre  3.20283E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.61813E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 1: evaluate done: length path  4.00000E+01 crossing time  4.87321E-01 speed  2.95493E+02
+ 1: evaluate done: length path  4.00000E+01 crossing time  4.87322E-01 speed  2.95493E+02
  2 2: SUMMURY lap :  7, actual time :  5.06918E+01, gas  4.73409E+01, tyre  3.13683E+00, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.06664E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74592E-01 speed  2.95508E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  8, actual time :  5.11537E+01, gas  4.72569E+01, tyre  3.23583E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.67903E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.09168E-01 speed  2.95485E+02
+ 1 1: SUMMURY lap :  8, actual time :  5.17628E+01, gas  4.72219E+01, tyre  3.27708E+00, pit stop done FALSE
  2 2: SUMMURY lap :  7, actual time :  5.16664E+01, gas  4.72849E+01, tyre  3.20283E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.11537E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
- 2: evaluate done: length path  4.00000E+01 crossing time  4.87321E-01 speed  2.95493E+02
- 1 1: SUMMURY lap :  8, actual time :  5.17628E+01, gas  4.72219E+01, tyre  3.27708E+00, pit stop done FALSE
+ 2: evaluate done: length path  4.00000E+01 crossing time  4.87322E-01 speed  2.95493E+02
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.77646E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74701E-01 speed  2.95475E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  8, actual time :  5.21537E+01, gas  4.72569E+01, tyre  3.23583E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.17628E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.09168E-01 speed  2.95485E+02
  1 1: SUMMURY lap :  8, actual time :  5.27375E+01, gas  4.71659E+01, tyre  3.34308E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.87403E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.75971E-01 speed  2.95460E+02
  2 2: SUMMURY lap :  8, actual time :  5.27628E+01, gas  4.72219E+01, tyre  3.27708E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.27375E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74701E-01 speed  2.95475E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  8, actual time :  5.37135E+01, gas  4.71098E+01, tyre  3.40916E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  4.97160E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.76022E-01 speed  2.95444E+02
  2 2: SUMMURY lap :  8, actual time :  5.37375E+01, gas  4.71659E+01, tyre  3.34308E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.37135E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.75971E-01 speed  2.95460E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  8, actual time :  5.46895E+01, gas  4.70537E+01, tyre  3.47524E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.06918E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.76074E-01 speed  2.95428E+02
  2 2: SUMMURY lap :  8, actual time :  5.47135E+01, gas  4.71098E+01, tyre  3.40916E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.46895E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.76022E-01 speed  2.95444E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  8, actual time :  5.56656E+01, gas  4.69977E+01, tyre  3.54133E+00, pit stop done FALSE
  1 Connecting for strategy
+ 2 2: SUMMURY lap :  8, actual time :  5.56895E+01, gas  4.70537E+01, tyre  3.47524E+00, pit stop done FALSE
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.16664E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.74907E-01 speed  2.95413E+02
- 2 2: SUMMURY lap :  8, actual time :  5.56895E+01, gas  4.70537E+01, tyre  3.47524E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.56656E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.76074E-01 speed  2.95428E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  8, actual time :  5.66405E+01, gas  4.69417E+01, tyre  3.60733E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.21537E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.87479E-01 speed  2.95397E+02
  2 2: SUMMURY lap :  8, actual time :  5.66656E+01, gas  4.69977E+01, tyre  3.54133E+00, pit stop done FALSE
@@ -888,75 +809,66 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.66405E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.74907E-01 speed  2.95413E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  9, actual time :  5.71280E+01, gas  4.69137E+01, tyre  3.64033E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.27628E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  5.00000E+01 crossing time  6.09365E-01 speed  2.95389E+02
  2 2: SUMMURY lap :  8, actual time :  5.76405E+01, gas  4.69417E+01, tyre  3.60733E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.71280E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.87479E-01 speed  2.95397E+02
  1 1: SUMMURY lap :  9, actual time :  5.77374E+01, gas  4.68787E+01, tyre  3.68158E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.37375E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.75016E-01 speed  2.95380E+02
 Copy false
-Copy false
  2 2: SUMMURY lap :  9, actual time :  5.81280E+01, gas  4.69137E+01, tyre  3.64033E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.77374E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  5.00000E+01 crossing time  6.09365E-01 speed  2.95389E+02
  1 1: SUMMURY lap :  9, actual time :  5.87124E+01, gas  4.68227E+01, tyre  3.74758E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.47135E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.76287E-01 speed  2.95364E+02
  2 2: SUMMURY lap :  9, actual time :  5.87374E+01, gas  4.68787E+01, tyre  3.68158E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.87124E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.75016E-01 speed  2.95380E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  9, actual time :  5.96887E+01, gas  4.67666E+01, tyre  3.81366E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.56895E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.76338E-01 speed  2.95348E+02
  2 2: SUMMURY lap :  9, actual time :  5.97124E+01, gas  4.68227E+01, tyre  3.74758E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  5.96887E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.76287E-01 speed  2.95364E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  9, actual time :  6.06650E+01, gas  4.67105E+01, tyre  3.87974E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.66656E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.01000E+01 crossing time  9.76390E-01 speed  2.95333E+02
  2 2: SUMMURY lap :  9, actual time :  6.06887E+01, gas  4.67666E+01, tyre  3.81366E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  6.06650E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.76338E-01 speed  2.95348E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  9, actual time :  6.16414E+01, gas  4.66545E+01, tyre  3.94582E+00, pit stop done FALSE
@@ -964,21 +876,19 @@ Copy false
  1 connected succesfully
  1 saved
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.76405E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  8.00000E+01 crossing time  9.75223E-01 speed  2.95317E+02
  2 2: SUMMURY lap :  9, actual time :  6.16650E+01, gas  4.67105E+01, tyre  3.87974E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  6.16414E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.01000E+01 crossing time  9.76390E-01 speed  2.95333E+02
 Copy false
 Copy false
-Copy false
-Copy false
  1 1: SUMMURY lap :  9, actual time :  6.26166E+01, gas  4.65985E+01, tyre  4.01182E+00, pit stop done FALSE
 Notifying
- 1DEBUG NOTTURNO : PATH TIME =  5.81280E+01
+ 1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  1: evaluate done: length path  4.00000E+01 crossing time  4.87637E-01 speed  2.95302E+02
  2 2: SUMMURY lap :  9, actual time :  6.26414E+01, gas  4.66545E+01, tyre  3.94582E+00, pit stop done FALSE
@@ -986,22 +896,17 @@ Notifying
  2 connected succesfully
  2 saved
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  6.26166E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  8.00000E+01 crossing time  9.75223E-01 speed  2.95317E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 Last lap reached
  2 2: SUMMURY lap :  9, actual time :  6.36166E+01, gas  4.65985E+01, tyre  4.01182E+00, pit stop done FALSE
 Notifying
- 2DEBUG NOTTURNO : PATH TIME =  6.31043E+01
+ 2DEBUG NOTTURNO : PATH TIME = -1.00000E+00
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
  2: evaluate done: length path  4.00000E+01 crossing time  4.87637E-01 speed  2.95302E+02
-Copy false
-Copy false
-Copy false
 Copy false
 Copy false
 Copy false

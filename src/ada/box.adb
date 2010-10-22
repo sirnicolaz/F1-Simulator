@@ -96,43 +96,37 @@ package body Box is
 
 
          declare
-               INFO_GOT : BOOLEAN := false;
+            INFO_GOT : BOOLEAN := false;
          begin
 
-		loop
-
-
+            loop
                Ada.Text_IO.Put_Line("Updater asking for info");
-		      Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
-		      (
-		      Radio,
-		      CORBA.Short(Lap),
-		      CORBA.Short(Sector),
-		      CORBA.Short(Competitor_Id),
-		      CORBA.Float(Time),
-		      CORBA.Float(Metres),
-		      CorbaInfo);
+               Broker.Radio.Competition_Monitor_Radio.Get_CompetitorInfo
+                 (
+                  Radio,
+                  CORBA.Short(Lap),
+                  CORBA.Short(Sector),
+                  CORBA.Short(Competitor_Id),
+                  CORBA.Float(Time),
+                  CORBA.Float(Metres),
+                  CorbaInfo);
 
-
-
-		      Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
+               Info_XMLStr := Unbounded_String.To_Unbounded_String(CORBA.To_Standard_String(CorbaInfo));
                Ada.Text_IO.Put_Line("Updater parsing info");
 
                Info := XML2CompetitionUpdate(Unbounded_String.To_String(Info_XMLStr),"../temp/competitor-" & Common.Integer_To_String(Competitor_Id) & "-update.xml");
 
                Ada.Text_IO.Put_Line("Update savinmg");
-		      INFO_GOT := true;
-		      exit when INFO_GOT = true;
-		end loop;
-		exception
-		      when Error : others =>
-			  Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
-			  delay until(Ada.Calendar.Clock + Standard.Duration(3));
+               INFO_GOT := true;
+               exit when INFO_GOT = true;
+            end loop;
+         exception
+            when Error : others =>
+               Ada.Text_IO.Put_Line("Exception: " & Ada.Exceptions.Exception_Message(Error));
+               delay until(Ada.Calendar.Clock + Standard.Duration(3));
          end;
 
          Info.Time := Time;
-
-
          Info.Path_Length := Metres;
 
          UpdateBuffer.Add_Data(Info);
@@ -142,7 +136,7 @@ package body Box is
             Lap := Lap + 1;
          end if;
 
-         exit when (Info.Gas_Level <= 0.0 or Info.Tyre_Usury >= 100.0) or else Lap = Laps;
+         exit when (Info.Path_Length = 0.0 or Info.Gas_Level <= 0.0 or Info.Tyre_Usury >= 100.0) or else Lap = Laps;
 
          Sector := Sector + 1;
       end loop;
@@ -266,7 +260,7 @@ package body Box is
 
 
 
-         exit when (New_Info.Gas_Level <= 0.0 or New_Info.Tyre_Usury >= 100.0) or else --The car is out
+         exit when (New_Info.Path_Length = 0.0 or New_Info.Gas_Level <= 0.0 or New_Info.Tyre_Usury >= 100.0) or else --The car is out
            (New_Info.Lap = Laps-1 and New_Info.Sector = 3); --The competition is over
 
 
