@@ -11,6 +11,7 @@ package body Path_Handler is
       Path_In.Angle := Angle_In;
       Path_In.Difficulty := Difficulty_In;
       Path_In.Grip := Grip_In;
+      Path_In.Release_Instant := 0.0;
    end Set_Values;
 
    function Get_Length(Path_In : PATH) return FLOAT is
