@@ -82,6 +82,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private int current_lap =0;
     private boolean new_table = false;
 
+    private Vector<Competitor_Position> Vector_Competitor_Position;
+
     public ScreenTv(String corbalocIn, Competition_Monitor_Radio monitorIn, String nameType, float updTimeIn, boolean competition_In){
 	System.out.println("ScreenTv : 0");
 	parent = new JFrame(nameType);
@@ -213,6 +215,15 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    gridLog.gridy = index;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getLap(),gridLog);
+		    gridLog.gridx = 5;
+		    gridLog.gridy = index;
+		    gridLog.ipady = 5;
+		    logPanel.add(infos[index].getBefore(),gridLog);
+		    gridLog.gridx = 6;
+		    gridLog.gridy = index;
+		    gridLog.ipady = 5;
+		    logPanel.add(infos[index].getAfter(),gridLog);
+
 		    model_1.insertRow(index,new Object[]{index+1, "---","---","---","---"});
 		    model_2.insertRow(index,new Object[]{index+1, "---","---","---","---"});
 		    logPanel.updateUI();
@@ -239,6 +250,35 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
 
+//DEBUG
+		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
+		     System.out.println("VECTOR DEBUG : Vector_Competitor_Position ["+index_vector+"] = "+Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id());
+}
+
+		    //faccio un for di aggiornamento della situazione dei concorrenti prima / dopo di un certo concorrente
+		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
+		    //scorro tutti i concorrenti, quindi uso infos[index].setAfter e setBefore
+		    String After = new String("");
+		    String Before = new String("");
+		    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 0 : Vector_Competitor_Position.size() = "+Vector_Competitor_Position.size());
+		    for(int index_other_position = 0; index_other_position<Vector_Competitor_Position.size(); index_other_position++){
+			  if(index_other_position < index_vector){
+			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 1");
+			    After = After + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 2");
+			  }
+			  if(index_other_position > index_vector){
+			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 3");
+			    Before = Before + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 4");
+			  }
+		    }
+		    System.out.println(Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id() +" : DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 5 After = "+After+" Before = "+Before);
+		    infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setAfter(After);
+		    infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setBefore(Before);
+		    //System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 6 After = "+After+" Before = "+Before);
+		    }
+
 		    try{
 			if(current_lap == 0 && datiArray[0].getLap()<=current_lap ){// fix per differenza tempi durante il cambio classifica
 			    timeArray = new float[datiArray.length];
@@ -249,7 +289,6 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 			System.out.println("DATIARRAY[0].GETLAP() =" +datiArray[0].getLap());
 			if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
-			        
 			    System.out.println("LORY DEBUG : NUOVA CLASSIFICA 1");
 			    int diff; 
 			    int posiz = modelClassific[current_index].getRowCount();
@@ -339,14 +378,14 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    //index=index+1;
 				}
 				else{
-				  if(datiArray[index].getLap()== current_lap){
-				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
-				    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
-				    System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
-				  }
+				    if(datiArray[index].getLap()== current_lap){
+					modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
+					System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+					System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
+				    }
 				    //index=index+1;
 				}
-			      index=index+1;
+				index=index+1;
 			    }
 			}
 			else{//non sono in presenza di un nuovo giro
@@ -368,7 +407,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
 					if(varCiclo==0){
 					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
-					     System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[varCiclo].getTime()));
+					    System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[varCiclo].getTime()));
 					  
 					}
 					else{
@@ -432,6 +471,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     // parsing xml
     public void readXml(String xmlRecords){//, float istant){
 	System.out.println("stringa da parsare : \n"+xmlRecords);
+	Vector_Competitor_Position = new Vector<Competitor_Position>();
 	try {
 	    DocumentBuilderFactory dbf =
 		DocumentBuilderFactory.newInstance();
@@ -475,6 +515,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		System.out.println("lap : "+getNode("lap", element));
 		System.out.println("sector : "+getNode("sector", element));
 		int ind = new Integer(attributoComp.getNodeValue()).intValue();
+
+		//inizializzo un oggetto di tipo Competitor_Position
+		Competitor_Position My_Competitor_Position = new Competitor_Position(new Integer(getNode("lap", element)).intValue(), new Integer(getNode("checkpoint", element)).intValue(), temp, new Integer(attributoComp.getNodeValue()).intValue());
+		System.out.println("DEBUG SORPASSI : PRIMA DI COMPARE_AND_INSERT");
+		//confronto quell'oggetto con quelli presenti nel vector e lo inserisco nella posizione opportuna
+		Compare_And_Insert(Vector_Competitor_Position, My_Competitor_Position);
 
 		if(attributoCompRit.getValue().equals("TRUE")){
 		    if(ritRace[ind-1]== false){
@@ -532,7 +578,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 		    }
 		}
-	    }	
+		}	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
 	    Element element = (Element)bestT.item(0);
@@ -658,6 +704,50 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	return "-";
     }
 
+    public void Compare_And_Insert(Vector<Competitor_Position> Vector_Competitor_Position, Competitor_Position My_Competitor_Position){
+	//int index_position = 0;
+	boolean inserted = false;
+	for(int index_position = 0; index_position < Vector_Competitor_Position.size(); index_position++){
+	    //controllo prima le lap
+	    if(Vector_Competitor_Position.elementAt(index_position).get_Lap() < My_Competitor_Position.get_Lap()){
+		//sono sicuramente davanti a questo, mi inserisco al suo posto ed esco dal for
+		Vector_Competitor_Position.insertElementAt(My_Competitor_Position, index_position);
+		index_position = Vector_Competitor_Position.size();//esci
+		inserted = true;
+		System.out.println("DEBUG SORPASSI : 1");
+	    }
+	    else{
+		if(Vector_Competitor_Position.elementAt(index_position).get_Lap() == My_Competitor_Position.get_Lap()){
+		    //sono nello stesso giro, devo controllare il checkpoint
+		    if(Vector_Competitor_Position.elementAt(index_position).get_Checkpoint() < My_Competitor_Position.get_Checkpoint()){
+			//il checkpoint segnato è più basso del mio, quindi io sono davanti, mi inserisco.
+			Vector_Competitor_Position.insertElementAt(My_Competitor_Position, index_position);
+			index_position = Vector_Competitor_Position.size();//esci
+			inserted = true;
+			System.out.println("DEBUG SORPASSI : 2");
+		    }
+		    else{
+			if(Vector_Competitor_Position.elementAt(index_position).get_Checkpoint() == My_Competitor_Position.get_Checkpoint()){
+			    //sono nello stesso checkpoint, devo controllare la posizione
+			    if(Vector_Competitor_Position.elementAt(index_position).get_Position() <= My_Competitor_Position.get_Position()){
+				//la posizione segnata è più bassa o uguale alla mia, quindi mi inserisco
+				Vector_Competitor_Position.insertElementAt(My_Competitor_Position, index_position);
+				index_position = Vector_Competitor_Position.size();//esci
+				inserted = true;
+				System.out.println("DEBUG SORPASSI : 3");
+			    }
+			}
+		    }
+
+		}
+	    }
+	}
+	if(inserted == false){//non ho inserito l'elemento da nessuna parte, lo appendo alla fine del Vector_Competitor_Position
+	System.out.println("DEBUG SORPASSI : My_Competitor_Position . id = "+My_Competitor_Position.get_Competitor_Id());
+	Vector_Competitor_Position.addElement(My_Competitor_Position);
+	System.out.println("DEBUG SORPASSI : INSERTED == FALSE");
+	}
+    }
 
     public String convert(float timeIn){
 
@@ -711,42 +801,20 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	int ore = (int)(timeIn/3600);
 	int minuti = (int)(timeIn/60)-(60*ore);
 	int secondi = (int)(timeIn-(minuti*60+ore*3600));
-	// 	int millesimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*1000);
-	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
 	    if(secondi <10){
-		// 		if(millesimi<10){
-		// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":00"+millesimi);}
-		// 		else if(millesimi<100){
-		// 		   time = new String("0"+ore+":0"+minuti+":0"+secondi+":0"+millesimi);}
-		// 		else{
 		time = new String("0"+ore+":0"+minuti+":0"+secondi);//+":"+millesimi);}
 	    }
-	    else{/*
-		   if(millesimi<10){
-		   time = new String("0"+ore+":0"+minuti+":"+secondi+":00"+millesimi);}
-		   else if(millesimi<100){
-		   time = new String("0"+ore+":0"+minuti+":"+secondi+":0"+millesimi);}
-		   else{*/
+	    else{
 		time = new String("0"+ore+":0"+minuti+":"+secondi);//+":"+millesimi);}
 	    }
 	}
 	else{
 	    if(secondi <10){
-		// 		if(millesimi<10){
-		// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":00"+millesimi);}
-		// 		else if(millesimi<100){
-		// 		   time = new String("0"+ore+":"+minuti+":0"+secondi+":0"+millesimi);}
-		// 		else{
 		time = new String("0"+ore+":"+minuti+":0"+secondi);//+":"+millesimi);}
 	    }
 	    else{
-		// 		if(millesimi<10){
-		// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":00"+millesimi);}
-		// 		else if(millesimi<100){
-		// 		   time = new String("0"+ore+":"+minuti+":"+secondi+":0"+millesimi);}
-		// 		else{
 		time = new String("0"+ore+":"+minuti+":"+secondi);//+":"+millesimi);}
 	    }}
 
@@ -1178,6 +1246,25 @@ class competitorLog{
     private JLabel name;
     private JLabel state = new JLabel(" Iscritto alla competizione ");
     private JLabel sector = new JLabel("");
+    private JLabel before_this = new JLabel(" before : ");
+    private JLabel after_this = new JLabel(" after : ");
+
+    public void setBefore(String beforeIn){
+	before_this.setText(" before : "+ beforeIn);
+    }
+
+    public void setAfter(String afterIn){
+	after_this.setText(" after : "+afterIn);
+    }
+    
+    public JLabel getBefore(){
+	return before_this;
+    }
+
+    public JLabel getAfter(){
+	return after_this;
+    }
+
     public void setSector(String sectorIn){
 	sector.setText(", sector "+sectorIn);
     }
@@ -1219,5 +1306,46 @@ class competitorLog{
     }
     public competitorLog(String nameIn){
 	name= new JLabel(nameIn);
+    }
+}
+
+class Competitor_Position{
+  
+    private int lap;
+    private int checkpoint;
+    private int position;
+    private int competitor_id;
+  
+    public int get_Lap(){
+	return lap;
+    }
+
+    public int get_Checkpoint(){
+	return checkpoint;
+    }
+ 
+    public int get_Position(){
+	return position;
+    }
+  
+    public int get_Competitor_Id(){
+	return competitor_id;
+    }
+
+    public Competitor_Position(int lap_In, int checkpoint_In, String position_In, int competitor_id_In){
+	lap = lap_In;
+	checkpoint = checkpoint_In;
+	competitor_id = competitor_id_In;
+	if(position_In.equals("arriving")){
+	    position = 0;
+	}
+	else{
+	    if(position_In.equals("over")){
+		position = 1;
+	    }
+	    else{
+		position = 2;
+	    }
+	}
     }
 }

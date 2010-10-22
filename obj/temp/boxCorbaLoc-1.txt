@@ -1,3 +1,3 @@
-corbaloc:iiop:1.2@127.0.1.1:51693//000000013Tfdddc06011dedec0
-corbaloc:iiop:1.2@127.0.1.1:51693//000000011Tfdddc06011dedec0
-corbaloc:iiop:1.2@127.0.1.1:51693//000000012Tfdddc06011dedec0
+corbaloc:iiop:1.2@127.0.1.1:34824//000000013Tbf979d0811defffe
+corbaloc:iiop:1.2@127.0.1.1:34824//000000011Tbf979d0811defffe
+corbaloc:iiop:1.2@127.0.1.1:34824//000000012Tbf979d0811defffe

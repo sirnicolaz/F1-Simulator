@@ -20,6 +20,7 @@ import broker.init.*;
 import broker.radio.*;
 
 public class CompetitionConfigurationWindow {
+private String complete_path_file = "../../race_tracks/indianapolis.xml";
 private String corbalocMonitor;
 private Competition_Monitor_Radio monitor;
 private ScreenTv screen;
@@ -60,6 +61,8 @@ openButton = new JButton("Sfoglia...");
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					try {
 						fileRacetrack.setText(fc.getSelectedFile().getName());
+						complete_path_file = fc.getSelectedFile().getCanonicalPath();
+						System.out.println("canonical path : "+complete_path_file);
 					} catch(Exception ecc) {
 // 					    ecc.printStackTrace();
 					}
@@ -228,7 +231,7 @@ return false;
 
 public void raceFileCreator(){
 try{
-BufferedReader raceTrackFile = new BufferedReader(new FileReader(fileRacetrack.getText()));
+BufferedReader raceTrackFile = new BufferedReader(new FileReader(complete_path_file));
 //              configCorbaLoc = corbaLocFile.readLine() ;
 PrintWriter out;
 File f = new File("../temp/race.xml");

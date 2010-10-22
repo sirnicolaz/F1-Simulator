@@ -1,8 +1,8 @@
 Box package initialized
+Updater Starting
 Calculate first doable laps
 Adding strategy
 Done
-Updater Starting
 Updater asking for info
 Requesting strategy for lap: 0
 Strategy got
@@ -105,13 +105,8 @@ Strategy got
 Updater parsing info
 Update savinmg
 Updater asking for info
-Updater parsing info
-Update savinmg
+Exception: 00000000M
 Updater asking for info
-Updater parsing info
-Update savinmg
+Exception: 00000000N
 Updater asking for info
-Requesting strategy for lap: 10
-Strategy got
-Updater parsing info
-Update savinmg
+Exception: 00000000N
