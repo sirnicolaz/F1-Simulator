@@ -336,7 +336,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
 				    System.out.println("1 : SCREEN DEBUG LORY : "+ convert(datiArray[index].getTime()));
 				    System.out.println("1 : SCREEN DEBUG LORY : datiArray[0] = "+datiArray[index].getTime()+" time array "+timeArray[index]);
-				    index=index+1;
+				    //index=index+1;
 				}
 				else{
 				  if(datiArray[index].getLap()== current_lap){
@@ -344,8 +344,9 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
 				    System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
 				  }
-				    index=index+1;
+				    //index=index+1;
 				}
+			      index=index+1;
 			    }
 			}
 			else{//non sono in presenza di un nuovo giro
@@ -367,11 +368,11 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					System.out.println("Dati da scrivere qw= "+varCiclo+" congnome "+cognome[datiArray[varCiclo].getId()-1] +" "+ convert(datiArray[varCiclo].getTime()));
 					if(varCiclo==0){
 					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
-					     System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
+					     System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[varCiclo].getTime()));
 					  
 					}
 					else{
-					    modelClassific[current_index].addRow(new Object[]{index, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
+					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
 					    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
 					  
 					}

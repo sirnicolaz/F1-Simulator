@@ -259,7 +259,7 @@ package body Circuit is
       for index in 1..Race_Length-1 loop
          Get_Checkpoint(Race_It.Race_Point.all,index).Set_Competitors(Competitors,Times);
          for indez in Times'RANGE loop
-            Times(indez) := Times(indez)+1.0;
+            Times(indez) := Times(indez)+0.001;
          end loop;
       end loop;
 
