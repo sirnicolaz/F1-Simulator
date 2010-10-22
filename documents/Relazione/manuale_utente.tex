@@ -52,7 +52,8 @@ nodo distribuito ed eseguire lo starter.
 \subsection{Terminazione}
 Per terminare il programma (box, competizione o tv che sia) premere il tasto ``x'' in alto a destra sulla finestra.
 \subsection{Interfaccia box}
-Nella prima schermata che appare vanno inseriti i dati relativi al concorrente che si intende registrare.
+Nella prima schermata che appare si può selezionare un file di configurazione da cui caricare i dati per i concorrenti. Se non si seleziona l'opzione si passa alla seconda schermata dove si possono impostare a mano, partendo dai valori di default. 
+I parametri impostabili sono:
 \begin{enumerate}
 \item Impostare il nome del concorrente
 \item Impostare il cognome del concorrente
@@ -70,8 +71,14 @@ Nella prima schermata che appare vanno inseriti i dati relativi al concorrente c
 \end{enumerate}
 \begin{center}
 \begin{figure}[H]
-	\includegraphics[scale=0.75]{img/ScreenshotRelazione/BoxAdminWindows.jpg}
-	\caption{Finestra di configurazione del box e del concorrente}
+	\includegraphics[scale=0.75]{screenshotRelazione/box1.jpeg}
+	\caption{Finestra di pre - configurazione del box e del concorrente}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}[H]
+	\includegraphics[scale=0.75]{screenshotRelazione/box2.jpeg}
+	\caption{Finestra di  configurazione del box e del concorrente}
 \end{figure}
 \end{center}
 Una volta inseriti i dati e premuto il pulsante di avvio della competizione comparir\`{a} una finestra con al suo interno 
@@ -79,10 +86,11 @@ Una volta inseriti i dati e premuto il pulsante di avvio della competizione comp
 \item Pannello dei consumi medi del concorrente con dati relativi alla benzina (in litri al kilometro) e dell'usura delle gomme (in percentuale relativo a 1 km)
 \item Pannello con il log della gara aggiornato a ogni fine settore con dati di tempo di gara, livello di benzina e usura delle gomme
 \item Pannello con altre informazioni statiche sulla gara (configurazione iniziale, stile di guida)
+\item Pulsante per forzare il pitstop
 \end{enumerate}
 \begin{center}
 \begin{figure}[H]
-	\includegraphics[scale=0.75]{img/ScreenshotRelazione/boxMonitor.jpg}
+	\includegraphics[scale=0.75]{screenshotRelazione/box3.jpeg}
 	\caption{Monitor dei box}
 \end{figure}
 \end{center}
@@ -131,11 +139,18 @@ Il pannello centrale offre la visualizzazione di due tabelle. La tabella a destr
 Nella parte bassa della finestra viene presentato un log della competizione rappresentando a ogni istante di tempo posizione nella pista, numero di checkpoint, numero di settore e giro per ogni concorrente.
 \begin{center}
 \begin{figure}[h]
-	\includegraphics[scale=0.75]{img/ScreenshotRelazione/screenTvCompetition.jpg}
+	\includegraphics[scale=0.75]{screenshotRelazione/competition2.jpeg}
 	\caption{Finestra di visualizzazione dell'andamento della gara}
 \end{figure}
 \end{center}
-La componente di avvio dell'interfaccia TV pu\`{o} essere l'interfaccia di competizione oppure una schermata di configurazione dove va inserito il corbaloc del Monitor della competizione e impostato il tempo di refresh per il reperimento delle informazioni.
+\begin{center}
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{screenshotRelazione/tv2.jpeg}
+	\caption{Finestra di visualizzazione dell'andamento della gara - durante la simulazione}
+\end{figure}
+\end{center}
+La componente di avvio dell'interfaccia TV pu\`{o} essere l'interfaccia di competizione oppure una schermata di configurazione dove va inserito il corbaloc del Monitor della competizione e impostato il tempo di refresh per il reperimento delle informazioni. Il pulsante (presente solo nel monitor della competizione) presente in alto a destra permette di modificare il tempo della simulazione.
+Nel pannello con il log della competizione sono presenti tre campi per ogni concorrente che rappresentano rispettivamente i concorrenti davanti a lui, nello stesso tratto e dopo di lui.
 \begin{center}
 \begin{figure}[H]
 	\includegraphics[scale=0.75]{img/ScreenshotRelazione/configurationScreen.jpg}
