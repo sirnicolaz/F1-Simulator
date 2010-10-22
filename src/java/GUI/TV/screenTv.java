@@ -3,6 +3,7 @@ package GUI.TV;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
+import java.awt.color.*;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.table.*;
@@ -39,6 +40,10 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private boolean[] endRace;
     private boolean[] ritRace;
     
+    private JLabel labelAhead = new JLabel("Ahead ");
+    private JLabel labelBack = new JLabel(" Back");
+    private JLabel labelSame = new JLabel("Same");
+
     private classificationTable classTable = new classificationTable();
     private bestPerformance best = new bestPerformance();
     private Competition_Monitor_Radio monitor;
@@ -187,40 +192,44 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    System.out.println(xmlComp);
 		    writeDati(xmlComp, index);
 
-		    infos[index] = new competitorLog(" Id "+(index+1)+"  "+cognome[index]+" ");
+		    infos[index] = new competitorLog(" Id "+(index+1)+"  "+cognome[index]+" ", numComp);
 
 		    gridLog.fill = GridBagConstraints.HORIZONTAL;
 		    gridLog.gridx = 0;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getName(),gridLog);
 		    gridLog.fill = GridBagConstraints.HORIZONTAL;
 		    gridLog.gridx = 1;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getState(),gridLog);
 
 		    gridLog.fill = GridBagConstraints.HORIZONTAL;
 		    gridLog.gridx = 2;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getCheckpoint(),gridLog);
 		    gridLog.fill = GridBagConstraints.HORIZONTAL;
 		    gridLog.gridx = 3;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getSector(),gridLog);
 		    gridLog.fill = GridBagConstraints.HORIZONTAL;
 		    gridLog.gridx = 4;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getLap(),gridLog);
 		    gridLog.gridx = 5;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getBefore(),gridLog);
 		    gridLog.gridx = 6;
-		    gridLog.gridy = index;
+		    gridLog.gridy = index+1;
+		    gridLog.ipady = 5;
+		    logPanel.add(infos[index].getEqual(),gridLog);
+		    gridLog.gridx = 7;
+		    gridLog.gridy = index+1;
 		    gridLog.ipady = 5;
 		    logPanel.add(infos[index].getAfter(),gridLog);
 
@@ -232,6 +241,19 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    JOptionPane.showMessageDialog(parent,debug.getStackTrace(), "Error",JOptionPane.ERROR_MESSAGE);
 		}
 	    }
+	    gridLog.gridx = 5;
+	    gridLog.gridy = 0;
+	    gridLog.ipady = 5;
+	    logPanel.add(labelAhead,gridLog);
+	    gridLog.gridx = 6;
+	    gridLog.gridy = 0;
+	    gridLog.ipady = 5;
+	    logPanel.add(labelSame,gridLog);
+	    gridLog.gridx = 7;
+	    gridLog.gridy = 0;
+	    gridLog.ipady = 5;
+	    logPanel.add(labelBack,gridLog);
+	    logPanel.updateUI();
 
 	    float interval = updTime;
 	    float initial_time = monitor.Get_Latest_Time_Instant();
@@ -239,6 +261,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		updTime = initial_time;
 	    }
 	    current_lap=0;
+	    
 	    while(inWhile){
 		try{
 
@@ -250,33 +273,69 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
 
-//DEBUG
+		    //DEBUG
 		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
-		     System.out.println("VECTOR DEBUG : Vector_Competitor_Position ["+index_vector+"] = "+Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id());
-}
+			System.out.println("VECTOR DEBUG : Vector_Competitor_Position ["+index_vector+"] = "+Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id());
+		    }
 
 		    //faccio un for di aggiornamento della situazione dei concorrenti prima / dopo di un certo concorrente
 		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
-		    //scorro tutti i concorrenti, quindi uso infos[index].setAfter e setBefore
-		    String After = new String("");
-		    String Before = new String("");
-		    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 0 : Vector_Competitor_Position.size() = "+Vector_Competitor_Position.size());
-		    for(int index_other_position = 0; index_other_position<Vector_Competitor_Position.size(); index_other_position++){
-			  if(index_other_position > index_vector){
-			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 1");
-			    After = After + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
-			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 2");
-			  }
-			  if(index_other_position < index_vector){
-			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 3");
-			    Before = Before + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
-			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 4");
-			  }
-		    }
-		    System.out.println(Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id() +" : DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 5 After = "+After+" Before = "+Before);
-		    infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setAfter(After);
-		    infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setBefore(Before);
-		    //System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 6 After = "+After+" Before = "+Before);
+			//scorro tutti i concorrenti, quindi uso infos[index].setAfter e setBefore
+			String After = new String("");
+			String Before = new String(" ");
+			String Equal = new String("");
+			System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 0 : Vector_Competitor_Position.size() = "+Vector_Competitor_Position.size());
+			for(int index_other_position = 0; index_other_position<Vector_Competitor_Position.size(); index_other_position++){
+			    if(index_other_position > index_vector){
+				//se sta dopo devo vedere se è perchè è effettivamente dopo o se è sullo stesso tratto
+				if(Vector_Competitor_Position.elementAt(index_other_position).get_Lap() == Vector_Competitor_Position.elementAt(index_vector).get_Lap() && Vector_Competitor_Position.elementAt(index_other_position).get_Checkpoint() == Vector_Competitor_Position.elementAt(index_vector).get_Checkpoint() && Vector_Competitor_Position.elementAt(index_other_position).get_Position() == Vector_Competitor_Position.elementAt(index_vector).get_Position()) {
+				    //sono nello stesso punto
+				    if(Equal.equals("")){//solo per questioni di output
+					Equal = Equal + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				    else {
+					Equal = Equal + ","+ Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				}
+				else{
+				    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 1");
+				    if(After.equals("")){
+					After = After + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				    else{
+					After = After + ","+ Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 2");
+				}	
+			    }
+			    if(index_other_position < index_vector){
+				if(Vector_Competitor_Position.elementAt(index_other_position).get_Lap() == Vector_Competitor_Position.elementAt(index_vector).get_Lap() && Vector_Competitor_Position.elementAt(index_other_position).get_Checkpoint() == Vector_Competitor_Position.elementAt(index_vector).get_Checkpoint() && Vector_Competitor_Position.elementAt(index_other_position).get_Position() == Vector_Competitor_Position.elementAt(index_vector).get_Position()) {
+				    //sono nello stesso punto
+				    if(Equal.equals("")){//solo per questioni di output
+					Equal = Equal + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				    else {
+					Equal = Equal + ","+Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+				    }
+				}
+				else{
+				    if(Before.equals(" ")){
+					System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 3");
+					Before = Before + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
+					System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 4");
+				    }
+				    else{
+					Before = Before + ","+ Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id(); 
+				    }
+				}
+			    }
+			}
+			System.out.println(Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id() +" : DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 5 After = "+After+" Before = "+Before);
+		    
+			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setAfter(After);
+			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setEqual(Equal);
+			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setBefore(Before);
+			//System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 6 After = "+After+" Before = "+Before);
 		    }
 
 		    try{
@@ -578,7 +637,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 		    }
 		}
-		}	
+	    }	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
 	    Element element = (Element)bestT.item(0);
@@ -743,9 +802,9 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 	}
 	if(inserted == false){//non ho inserito l'elemento da nessuna parte, lo appendo alla fine del Vector_Competitor_Position
-	System.out.println("DEBUG SORPASSI : My_Competitor_Position . id = "+My_Competitor_Position.get_Competitor_Id());
-	Vector_Competitor_Position.addElement(My_Competitor_Position);
-	System.out.println("DEBUG SORPASSI : INSERTED == FALSE");
+	    System.out.println("DEBUG SORPASSI : My_Competitor_Position . id = "+My_Competitor_Position.get_Competitor_Id());
+	    Vector_Competitor_Position.addElement(My_Competitor_Position);
+	    System.out.println("DEBUG SORPASSI : INSERTED == FALSE");
 	}
     }
 
@@ -1246,22 +1305,33 @@ class competitorLog{
     private JLabel name;
     private JLabel state = new JLabel(" Iscritto alla competizione ");
     private JLabel sector = new JLabel("");
-    private JLabel before_this = new JLabel(" before : ");
-    private JLabel after_this = new JLabel(" after : ");
-
+    private int numComp;
+    private JTextField before_this;
+    private JTextField after_this;
+    private JTextField equal_this;
+    //     private JLabel before_this = new JLabel("");
+    //     private JLabel after_this = new JLabel("");
+    //     private JLabel equal_this = new JLabel("");
+    //     
+    public void setEqual(String equalIn){
+	equal_this.setText(" "+equalIn+" ");
+    }
+    public JTextField getEqual(){
+	return equal_this;
+    }
     public void setBefore(String beforeIn){
-	before_this.setText(" before : "+ beforeIn);
+	before_this.setText(beforeIn);
     }
 
     public void setAfter(String afterIn){
-	after_this.setText(" after : "+afterIn);
+	after_this.setText(afterIn);
     }
     
-    public JLabel getBefore(){
+    public JTextField getBefore(){
 	return before_this;
     }
 
-    public JLabel getAfter(){
+    public JTextField getAfter(){
 	return after_this;
     }
 
@@ -1304,8 +1374,15 @@ class competitorLog{
     public JLabel getLap(){
 	return lap;
     }
-    public competitorLog(String nameIn){
+    public competitorLog(String nameIn, int numComp_In){
 	name= new JLabel(nameIn);
+	numComp = numComp_In;
+	equal_this = new JTextField("    ", (numComp-1) *2 -2);
+	before_this = new JTextField("    ", (numComp-1) *2 -2);
+	after_this = new JTextField("    ", (numComp-1) *2 -2);
+	equal_this.setForeground(Color.magenta);
+	before_this.setForeground(Color.blue);
+	after_this.setForeground(Color.red);
     }
 }
 

@@ -665,7 +665,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     public boolean writerCompetitorXML(){
 	try{
 	    PrintWriter out;
-	    File f = new File("configuration-competitors/competitor-"+stringId+".xml");
+	    File f = new File(nameFile);
 	    if (f.exists() == false ) {
 		out=new PrintWriter(new File("configuration-competitors/competitor-"+stringId+".xml"));
 	    }
@@ -731,7 +731,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     }
 
     public void switchPanel(){
-	JOptionPane.showMessageDialog(parent,"File di configurazione salvato in obj/java/configuration-competitors/competitor-"+stringId+".xml","File saved", JOptionPane.INFORMATION_MESSAGE);
+	JOptionPane.showMessageDialog(parent,"File di configurazione salvato in obj/java/"+nameFile,"File saved", JOptionPane.INFORMATION_MESSAGE);
 	BoxScreen p = new BoxScreen(stringId, competitorXML, (String)comboBox.getSelectedItem());
 	System.out.println("id del BoxScreen : "+stringId);
 	parent.dispose();

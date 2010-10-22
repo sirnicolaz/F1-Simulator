@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 
 public class PreBoxConfigurationWindow{
     private JLabel labelFile = new JLabel("1: Competitor file : ");
+    private boolean selected = false;
     private JTextField fileCompetitor;
     private String fileName;//
     private JFrame parent;
@@ -24,7 +25,7 @@ public class PreBoxConfigurationWindow{
     private JButton resetButton;
     private boolean uploadConfig = true;
     private void init(){
-    fileCompetitor = new JTextField("competitor-"+argument+".xml",20);
+	fileCompetitor = new JTextField("competitor-"+argument+".xml",20);
 	//parent=p;
 	JPanel buttonPane = new JPanel(new BorderLayout());
 	JPanel contentPane = new JPanel(new BorderLayout());
@@ -54,8 +55,9 @@ public class PreBoxConfigurationWindow{
 		    if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 			    fileCompetitor.setText(fc.getSelectedFile().getName());
-			    fileName = fc.getSelectedFile().getName();
+			    fileName = fc.getSelectedFile().getCanonicalPath();
 			    System.out.println("FileName = "+fileName);
+			    selected = true;
 			} catch(Exception ecc) {
 			    // 					    ecc.printStackTrace();
 			}
@@ -64,11 +66,11 @@ public class PreBoxConfigurationWindow{
 	    });
 
 	fileCompetitor.addActionListener( new ActionListener(){
-		 public void actionPerformed( ActionEvent e ){
+		public void actionPerformed( ActionEvent e ){
 		    System.out.println( fileCompetitor.getText() );
 		    fileName = fileCompetitor.getText();
-		    }
-	     });
+		}
+	    });
 
 
 	startButton = new JButton("Carica Impostazione Box");
@@ -76,7 +78,9 @@ public class PreBoxConfigurationWindow{
 		public void actionPerformed(ActionEvent e) {
 		    JFrame j = new JFrame("Box Admin Window n° "+ argument);
 		    if(fileCompetitor.isEnabled() == true){
-			fileName = fileCompetitor.getText();
+			if(selected != true){
+			    fileName = "configuration-competitors/"+fileCompetitor.getText();
+			}
 		    }
 		    System.out.println("FileName = "+fileName);
 		    BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, argument, uploadConfig, fileName);
