@@ -3,9 +3,9 @@
 <monitorCorbaLoc>corbaloc:iiop:1.2@127.0.0.1:59055//000000013Td1938ba011defb7d</monitorCorbaLoc>
 <initialTyreType>Sun</initialTyreType>
 <laps>10</laps>
-<circuitLength>490.30002</circuitLength>
+<circuitLength>4192.0</circuitLength>
 <initialGasLevel>50.0</initialGasLevel>
 <gasTankCapacity>200.0</gasTankCapacity>
-<competitorID>2</competitorID>
+<competitorID>1</competitorID>
 <boxStrategy>Normal</boxStrategy>
 </config>

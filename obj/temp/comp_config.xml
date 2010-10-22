@@ -3,6 +3,6 @@
 <name>
 Indianapolis</name>
 <circuitConfigFile>race.xml</circuitConfigFile>
-<competitorQty>2</competitorQty>
+<competitorQty>3</competitorQty>
 <laps>10</laps>
 </config>
