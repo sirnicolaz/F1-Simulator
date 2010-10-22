@@ -6,19 +6,27 @@ ad accesso mutuamente esclusivo. Più precisamente:
 \begin{itemize}
 \item \textbf{Path}: rappresenta la traiettoria percorsa da un concorrente. Un
 insieme di \textbf{Path} costituisce un tratto e il loro
-numero all'interno del tratto identifica la molteplicità dello stesso. Ogni path
-è caratterizzato da:
+numero all'interno del tratto identifica le possibili vie che si possono intraprendere per attraversarlo. 
+Ogni path ha una molteplicità limitata da\\
+
+\emph{lunghezza / 4.5}\\
+dove 4.5 è lo spazio longitudinale richiesto da un'auto di formula 1 per non entrare in collisione con altre auto. Per ``\emph{molteplicità}
+si intende il numero di auto che possono restare in file all'interno di una traiettoria.
+Il \textbf{Path} è caratterizzato da:
 \begin{itemize}
 \item lunghezza
 \item angolo
 \item tenuta
-\item istante di liberazione
+\item istanti di liberazione, ovvero gli istanti di tempo 
+in cui le ultime \emph{N} auto (con \emph{N} pari alla molteplicità del \textbf{Path}) sono previste lasciare il tratto;
+\item istante di liberazione, ovvero l'istante in cui il tratto è previsto essere libero da tutte le auto;
+\item massima velocità raggiungibile, determinata dal concorrente che è entrato più recentemente nel \textbf{Path}.
+Questo valore viene usato per limitare la velocità di un concorrente nel caso esso entri quando altre auto lo stanno
+attraversando.
 \end{itemize}
 I \textbf{Path} di uno stesso tratto possono essere uguali o differire per
 caratteristiche, rimanendo comunque entro i limiti globali del tratto
-(non si potrà ad esempio avere un tratto lungo 11 km in un tratto lungo 42 m).\\
-Per quanto riguarda l'\textbf{istante di liberazione}, esso indica da che
-istante non ci saranno più concorrenti sul \textbf{Path}.
+(non si potrà ad esempio avere un tratto lungo 11 km in un tratto lungo 42 m).
 \item \textbf{Checkpoint}: è una risorsa passiva ad accesso mutuamente
 esclusivo. Rappresenta la coda di accesso ad un tratto. Ogni posizione
 della coda è stata arricchita con delle informazioni che aiutano a gestire
@@ -71,15 +79,21 @@ del tratto. Le prime tre elencate qualche riga più sopra garantiscono un minimo
 di realismo fisico. Le caratteristiche fisiche del tratto infatti
 influiranno sui consumi e i tempi dell'auto. Il concorrente dovrà scegliere in
 modo da minimizzare entrambi.\\
-L'ultimo parametro è anche oggetto di valutazione in quanto serve all'utente
-verificare lo stato di occupazione del tratto. Se l'istante
-di liberazione segnato è maggiore di quello di accesso al tratto del
-concorrente, significa che l'attraversamento richiederà, in aggiunta, 
-l'attesa che il tratto si liberi. In un contesto reale questo potrebbe
-significare che un concorrente, prendendo una traiettoria, sia rallentato
-dal concorrente più lento davanti. Quando un concorrente calcola il proprio
-tempo di attraversamento chiaramente dovrà aggiornare l'istante
-di liberazione della traiettoria. Questo garantisce il realismo fisico
+Gli ultimi parametri sono anche oggetto di valutazione in quanto servono all'utente per
+verificare lo stato di occupazione del tratto.\\
+Un concorrente può certamente decidere di attraversare tratto utilizzando una traiettoria
+su cui sia già presente un altro concorrente. Ma ne conseguirà che se il concorrente
+più veloce è dietro, esso verrà limitato dalla velocità di quello davanti.\\
+Altra questione importante riguarda i tempi di liberazione: come già detto, una
+traiettoria può essere contemporaneamente occupata da al più N (con N limitato) macchine.
+Quindi ogni concorrente inizi ad percorrere una traiettoria, dovrà salvare in una posizione
+libera della lista dei tempi di liberazione il proprio istante di uscita dal tratto.
+Quando un concorrente vuole iniziare a percorrere una traiettoria, di conseguenza, dovrà verificare
+che il suo tempo di arrivo sia maggiore almeno ad uno dei tempi di liberazione segnati
+nella lista. Solo in questo caso potrà essere certo che la traiettoria può ancora ospitare auto.
+In tutte le traiettorie di un tratto siano sovraffollate, il concorrente dovrà
+uscire di pista per evitare una collisione e venire squalificato.\\
+Questo garantisce il realismo fisico
 concorrente-concorrenti descritto nella sezione \ref{analisi_realismo_fisico}.
 I tempi segnati nelle code invece mettono in pratica, in parte, il concetto di
 orologio relativo enunciato nella sezione \ref{tempo}.
@@ -107,7 +121,7 @@ utilizzano il circuito per gareggiare nella competizione.
 Ogni concorrente per gareggiare deve riuscire a ottenere il tratto di pista che
 vuole attraversare. La struttura di chiamate (insieme alla struttura del
 circuito già descritta nel paragrafo \ref{entita_circuito}) è stata studiata per
-evitare le possibili situazioni di stallo. Infatti per attraversare un tratto di
+evitare le possibili situazioni di stallo e di sorpasso impossibile. Infatti per attraversare un tratto di
 pista il concorrente dev'essere il primo nella coda di attesa del
 \emph{Checkpoint}. Una volta che un concorrente si trova nella prima posizione
 della coda può utilizzare la risorsa passiva in mutua esclusione che rappresenta
@@ -115,21 +129,48 @@ il pezzo di pista. Le operazioni di calcolo dei tempi e di scelta delle
 traiettorie avvengono mantenendo il possesso della risorsa, con la certezza che
 nessuno modifichi le condizioni che si stanno valutando. Lo stallo è evitato in
 quanto il sistema di code garantisce che per ogni Checkpoint stia eseguendo al
-più un concorrente e che quel concorrente possiede solo l'accesso alla risorsa
+più un concorrente e che quel concorrente possieda solo l'accesso alla risorsa
 interessata, impedendo l'accumulo di risorse (una delle cause di stallo viste
-nel paragrafo \ref{stalli}). Inoltre l'interazione che c'è fra concorrente e
-circuito non permette il verificarsi dell'attesa circolare in quanto ad ogni
-processo che richiede l'utilizzo di una risorsa è , per come sono strutturate le
-code di attesa, l'unico che può eseguire in quel momento e una volta liberata la
-risorsa (e questo avviene sempre dopo il calcolo dei tempi di attraversamento e
-l'aggiornamento delle statistiche che verrà spiegato in seguito) diventa subito
-in possesso del richiedente, che non deve quindi attendere oltre. 
+nel paragrafo \ref{stalli}).
 Nel prossimo paragrafo verrà esposta l'assenza di stalli in maniera più formale.
 \\\\
 Detto questo \`{e} possibile vedere l'algoritmo per l'attraversamento di un
 tratto dal momento in cui il concorrente arriva 
 fisicamente ad un checkpoint
 fino al raggiungimento di quello successivo.\\
+Per chiarezza, la spiegazione verrà scomposta in due parti che poi, integrate,
+formeranno l'algoritmo completo.
+\begin{description}
+\item{Scelta traiettoria (\textbf{Path}):}\\
+In questo passo della simulazione, il concorrente ha già ottenuto accesso esclusivo alla collezione di \textbf{Path} e potrà quindi
+effettuare la valutazione senza rischio di race condition (il perchè verrà spiegato successivamente). L'algoritmo procede quindi nel
+seguente modo:
+\begin{itemize}
+\item Per ogni \textbf{Traiettoria} a disposizione:
+\begin{itemize}
+\item Calcola il tempo di atrraversamento (in assenza di auto sulla traiettoria);
+\item Confronta l'istante di uscita dato tale tempo di attraversamento con l'istante di liberazione
+segnato sul tratto;
+\item Se l'istante di liberazione è inferiore (il che significa che il tratto sarà già libero quando l'auto proverà ad attraversarlo),
+salva l'istante di uscita associato al \textbf{Path} come \emph{istante di arrivo} + \emph{tempo di attraversamento};
+\item Se l'istante di liberazione invece è superiore, verifica se ci sia spazio per entrare nella traiettoria. Per fare ciò, bisogna considerare
+la lista di istanti di liberazione. Se tutti gli istanti segnati sono maggiori dell'istante di ARRIVO del concorrente, significa che 
+non sarà possibile usare quella traiettoria.\\
+In caso contrario, il concorrente può attraversare mettendosi dietro alla/e auto già presente/i nella traiettoria. Per questo la velocità
+sarà limitata da quella dell'auto davanti e l'istante di uscita associato al path 
+corrisponderà all'istante di uscita della macchina entrata più di recente (ovvero
+\emph{l'istante di liberazione del tratto}) + \emph{il tempo che rappresenta la distanza minima fra due auto per evitare tamponamenti} (costante).
+\end{itemize}
+\item Se almeno un \textbf{Path} è percorribile, 
+\begin{itemize}
+\item scegli quello ottimo (con istante di uscita minore);
+\item aggiorna il tempo di liberazione del tratto con quello appena calcolato;
+\item aggiorna la lista degli istanti di liberazione aggiungendo quello nuovo in una posizione il cui istante segnato sia inferiore all'istante
+di arrivo di quello del concorrente;
+\end{itemize}
+\item Altrimenti l'utente deve uscire dal circuito per evitare collisioni e venire squalificato.
+\end{itemize}
+\item{Attraversamento tratto:}\\
 \emph{Premessa}: un concorrente controlla la sua posizione su una coda ogni
 volta che essa viene riordinata.\\
 \emph{Precondizione}: il concorrente ha gi\`{a} segnato il suo tempo di arrivo
@@ -141,55 +182,86 @@ posizione a lui riservata;
 \item se non \`{e} primo, attende di essere primo;
 \item quando \`{e} primo, richiede l'insieme di traiettorie (\textbf{Path}) da
 cui \`{e} costituito il tratto;
-\item valutando gli istanti di liberazione e le caratteristiche della
-traiettorie, 
-decide quale sia quella che garantisce l'arrivo al checkpoint
-successivo all'istante di tempo pi\`{u} vicino.
-\item aggiunge il tempo di attraversamento calcolato (in base alle
-caratteristiche dell'auto e alla strategia) 
-al tempo di liberazione del tratto o, 
-se il tempo di liberazione segnato \`{e} minore dell'istante di arrivo del
-concorrente, 
-segna come istante di liberazione \emph{istante di arrivo}+\emph{tempo
-di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata
-liberata all'arrivo del concorrente). Altrimenti segnerà \emph{tempo
-segnato+tempo di attraversamento}.
-\item segna il tempo di arrivo effettivo (dipendente chiaramente dal tempo
-segnato sulla traiettoria) sulla coda del checkpoint successivo, che verr\`{a}
+\item Calcola la traiettoria (\textbf{Path}) di attraversamento ottimale secondo l'algoritmo spiegato precedentemente.
+Si otterrà quindi un istante di uscita, che corrisponderà al tempo di arrivo effettivo al checkpoint successivo;
+\item segna il tempo di arrivo effettivo sulla coda del checkpoint successivo, che verr\`{a}
 \textbf{riordinata} in base al nuovo tempo.
-\item segna il tempo di arrivo limite su tutte le altre code, da quella
+\item segna il tempo di arrivo limite su tutte le altre code (aggiungendo il minimo tempo richiesto da un'auto
+per andare da un checkpoint a quello successivo), da quella
 successiva al checkpoint che si sta per raggiungere a quella del checkpoint
 appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene
 \textbf{riordinata}.
+\item Se nella coda del checkpoint l'istante di arrivo limite del concorrente risulterà maggiore di qualche altro, 
+verrà riordinato in una posizione inferiore, lasciando eventualmente spazio
+ad altri di effettuare valutazioni su quel tratto.
 \item delay per fini di simulazione;
 \item ritorna al passo uno per il checkpoint successivo;
 \end{enumerate}
+\end{description}
 La strategia adottata si presta a simulare la corsa tenendo in considerazione ad
 ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
-anomali. Questo perch\`{e}:
+anomali. \`{E} necessario, tuttavita, dimostrare che l'algoritmo sia corretto. Per farlo
 \begin{itemize}
-\item \emph{quando un concorrente \`{e} primo sulla coda ed effettivamente
-presente sulla coda, nessun concorrente potr\`{a} diventare primo finch\`{e} non
-sia il concorrente
-stesso attualmente primo a riordinare la lista}. Questo perch\`{e}, i tempi
-limite segnati sono i tempi minimi. Se il tempo effettivo del concorrente
-attualmente
-primo \`{e} inferiore a tutti tempi limite, essendo minimi, non potranno
-diventare pi\`{u} piccoli successivamente. Se nel frattempo qualcun altro arriva
-sul 
-checkpoint, esso segner\`{a} un tempo effettivo. Essendo il tempo effettivo per
-definizione maggiore o uguale al tempo limite, non sar\`{a} possibile che un
-tempo
-effettivo segnato successivamente possa essere minore di quello del concorrente
-attualmente primo.
 \item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo
-esclusivo}. Questa condizione \`{e} assicurata dal punto precedente. Mentre il 
-concorrente valuta le traiettorie, nessuno pu\`{o} diventare primo e effettuare
-una valutazione parallela delle stesse traiettorie. Il concorrente
-riordiner\`{a}
-la lista solo a traiettoria valutata, scelta e segnata con istante di
-liberazione, permettendo ad un altro concorrente di procedere.
-\item \emph{non possono esserci teletrasporti}. 
+esclusivo}.
+Perchè due concorrenti \emph{x} e \emph{y} possano iniziare a valutare le traiettorie del tratto \emph{n}
+contemporaneamente, deve verificarsi una delle seguenti due condizioni:
+\textbf{Condizione 1}:\\
+\begin{itemize}
+\item entrambi i concorrenti sono effettivamente presenti sulla coda del \textbf{Checkpoint} e in attesa di attraversare;
+\item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo cresente, hanno assegnati rispettivamente i tempi
+\emph{$t_x$} e \emph{$t_y$}, con $t_x$ < $t_y$; per come è definito l'algoritmo, finchè la disposizione è tale, \emph{y} non potrà effettuare
+valutazioni sul tratto;
+\item mentre \emph{x} sta valutando la traiettoria da percorrere e prima che abbia potuto segnare l'istante di arrivo
+sulle code di tutti i checkpoint, si ha che $t_y$ < $t_x$ e \emph{y} inizia quindi a valutare;
+\end{itemize}
+\textbf{Condizione 2}:\\
+\begin{itemize}
+\item il concorrente \emph{x} risulta primo effettivo sulla coda del \textbf{Checkpoint} \emph{n}; 
+\item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo cresente, hanno assegnati rispettivamente i tempi
+\emph{$t_x$} e \emph{$t_y$}, con $t_x$ < $t_y$; 
+\item quindi \emph{y} risulta in posizione inferiore ad \emph{x} sullo stesso \textbf{Checkpoint}, ma non è effettivamente arrivato;
+\item \emph{x} inizia la valutazione del tratto \emph{n};
+\item \emph{y} cambia il suo istante di arrivo sul tratto \emph{n} facendo risultare $t_y$ < $t_x$;
+\item prima che \emph{x} finisca di valutare il tratto o aggiornare i tempi nei \textbf{Checkpoint}, \emph{y} arriva effettivamente sul 
+tratto e come da algoritmo inizia a valutarlo;
+\end{itemize}
+Queste situazioni non si possono verificare e verrà ora dimostrato perchè:
+\begin{proof} \textbf{Condizione 1}\\
+Si è detto che la coda viene riordinata ogni qualvolta venga inserito un nuovo valore al suo interno o venga cambiato un'istante temporale
+relativo ad un concorrente. Si premette che, perchè l'ordine tra \emph{x} e \emph{y} venga cambiato, o \emph{x} o \emph{y} devono effettuare
+un cambiamento. Un qualunque concorrente \emph{z} che applichi modifiche alla coda cambiarà l'ordinamento senza alterare l'ordine tra \emph{x}
+e \emph{y}.\\
+Quando \emph{x} sta eseguendo la valutazione, il concorrente \emph{y} è bloccato, non potendo quindi in alcun modo cambiare l'ordinamento della 
+coda.\\ 
+Nel momento in cui \emph{x} finisce di valutare, itera su tutte le code da \emph{n+1} a \emph{n} per aggiornare i tempi limite di arrivo.\\
+\emph{n}, che è il \textbf{Checkpoint} dove \emph{y} sta attendendo, viene modificata per ultima. A questo punto viene riordinata.\\
+Nella peggiore delle ipotesi \emph{y} risulta prima e il processo che gestisce il concorrente viene assegnato alla CPU immediatamente.\\
+Non si presentano anomalie poichè \emph{x} ha analizzato i \textbf{Path}, aggiornato il tempo di uscita su quello scelto e aggiornato
+gli istanti di arrivo su tutti i \textbf{Checkpoint}.
+\end{proof}
+Per arrivare a contraddire lo scenario presentato nella condizione 2, è necessario dimostrare che una volta che un istante temporale
+viene segnato sulla coda di un \textbf{Checkpoint}, non può accadere che possa essere aggiornato con un'istante antecedente. In questo modo
+non sarebbe possibile per \emph{y} aggiornare il tempo sulla coda \emph{n} in modo da finire prima di \emph{x}.
+\begin{proof} \textbf{Condizione 2}\\
+Assumiamo un circuito a \emph{S} checkpoint come istante di partenza per un concorrente generico \emph{y} $t_n$ al tratto \emph{n}. Il \textbf{Checkpoint} \emph{n} avrà quindi nella coda associata
+alla posizione dedicata a \emph{y} l'istante di tempo $t_n$. I checkpoint successivi avranno nella coda associata alla posizione per \emph{y}
+l'istante $t_n+\epsilon$ con $\epsilon$ monotonicamente cresente di checkpoint in checkpoint.
+Questo istante iniziale subirà le seguenti modifiche nel corso della competizione:
+\begin{itemize}
+\item Dopo l'attraversamento di un tratto, verrà sommata una quantità di tempo $\delta_t$ che rappresenta il tempo di attraversamento.
+Per ogni tratto attraversato, quindi, $t_n$ verrà incrementato secondo una funzione crescente;
+\item Dopo aver segnato il tempo di arrivo effettivo sul checkpoint \emph{n+1}, verranno aggiornati i tempi nei checkpoint successivi dello
+stesso $\epsilon$ crescente utilizzato all'inizio.
+\item Di conseguenza, quando il concorrente passerà al tratto \emph{n+1}, segnerà un tempo $t_{n+1}$ = $t_n$ + $\delta_t$ > $t_n$;\\
+nei checkpoint successivi verrà segnato un tempo $t_k$ = $t_{k-1}$ + $\epsilon$ > $t_{k-1}$.
+\item Considerando che il primo tratto aggiornato con $\epsilon$ sarà $t_{n+2}$, si avrà $t_{n+2}$ = $t_{n+1}$ + $\epsilon$ > $t_{n+1}$,
+e così per ogni \emph{k} = \emph{n+2}, ...,\emph{s}, \emph{1}, ...,\emph{n}.
+\end{itemize}
+Ne consegue che ogni volta che un concorrente segna un istante temporale, esso sarà maggiore di quello segnato precedentemente sul
+\textbf{Checkpoint}.
+\end{proof}
+\item \emph{non possono esserci teletrasporti}.\\
 Si premette che un teletrasporto avviene al verificarsi di queste tre condizioni:
 \begin{itemize}
 \item due concorrenti \emph{x} e \emph{y} arrivano al checkpoint \emph{n} ed entrano nella stessa traiettoria (\textbf{Path});
@@ -197,7 +269,7 @@ Si premette che un teletrasporto avviene al verificarsi di queste tre condizioni
 \item l'istante di entrata segnato al checkpoint successivo (che corrisponde all'uscita dalla traiettoria del checkpoint precedente) è
 rispettivamente \emph{$tx_{n+1}$} e \emph{$ty_{n+1}$} con \emph{$ty_{n+1}$} < \emph{$tx_{n+1}$};
 \end{itemize}
-In questo caso è chiaro che sia avvenuto un teletrasporto, in quanto il concorrente \emph{a}, stanto all'ordine di entrata nella
+In questo caso è chiaro che sia avvenuto un teletrasporto, in quanto il concorrente \emph{a}, stando all'ordine di entrata nella
 traiettoria, avrebbe dovuto arrivare per ragioni fisiche prima del concorrente \emph{b} al checkpoint successivo. Nella peggiore 
 delle ipostesi il concorrente \emph{b} avrebbe dovuto rallentare ed arrivare al checkpoint \emph{n+1} subito dopo \emph{a}. 
 % In caso i due concorrenti prendato due traiettorie differenti, non si possono verificare anomalie per quanto riguarda i tempi
@@ -207,41 +279,46 @@ Dimostriamo che questa situazione non si può verificare. Definiamo prima di tut
 \item $CheckIn_{(x,n)}$ : tempo di arrivo effettivo di \emph{x} al checkpoint \emph{n};
 \item $CrossingTime_{(x,n,z)}$ : tempo di attraversamento della traiettoria \emph{n} per il concorrente \emph{x} supponendo usi la traiettoria
 \emph{z}; 
-\item $PathAvailableInstant_{(n,z)}$ : istante di liberazione della traiettoria \emph{z} al tratto \emph{n};
-\item $CrossingStartingTime_{(x,n,z)}$ : istante in cui \emph{x} iniza ad attraversare la traiettoria \emph{z} del tratto \emph{n};
+\item $PathAvailableInstant_{(n,z)}$ : istante di liberazione della traiettoria \emph{z} al tratto \emph{n} dell'ultimo concorrente entrato;
+\item $ExitInstant_{(x,n,z)}$ : istante di uscita di \emph{x} dalla traiettoria \emph{z} del tratto \emph{n};
+\item $t_c$ : è una costante che rappresenta il la distanza temporale minima fra due macchine per evitare tamponamento;
 \end{itemize}
 Assumiamo la presenza di due concorrenti \emph{x} e \emph{y}. Dimostriamo che non possono verificarsi teletrasporti se entrambi
 prendono la stessa traiettoria
-\begin{proof}
+\begin{proof}.
 \begin{itemize}
 \item \emph{x} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_x$};
 \item \emph{y} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_y$};
-\item quindi $CheckIn_{(x,n)}$ = $t_x$ e $CheckIn_{(y,n)}$ = $t_y$. Assumiamo $CheckIn_{(x,n)}$ < $CheckIn_{(y,n)}$ per come i due concorrenti
+\item quindi $CheckIn_{(x,n)}$ = $t_x$ e $CheckIn_{(y,n)}$ = $t_y$. 
+\\Assumiamo $CheckIn_{(x,n)}$ < $CheckIn_{(y,n)}$ per come i due concorrenti
 ipoteticamente sono arrivadi al checkpoint;
 \item \emph{x} è il primo ad attraversare. Mentre analizza le traiettorie si è visto che \emph{y} non può eseguire operazioni
 sullo stesso tratto. Assumiamo che la traiettoria scelta sia 1;
 \item il tempo per andare dall'altra parte corrisponderà all'istante che verrà segnato nel checkpoint 
 n+1. Quindi, per l'algoritmo visto, \\
-$CrossingStartingTime_{(x,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}$,$CheckIn_{(x,n)}$\}}\\
-segue che\\
-$CheckIn_{(x,n+1)}$ = $CrossingStartingTime_{(x,n,1)}$ + $CrossingTime_{(x,n,1)}$;
+$ExitInstant_{(x,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}+t_c$,$CheckIn_{(x,n)}+CrossingTime_{(x,n,1)}$\}}\\
+assumendo che la traiettoria fosse libera, segue che\\
+$CheckIn_{(x,n+1)}$ = $CheckIn_{(x,n)}$ + $CrossingTime_{(x,n,1)}$;
 \item \emph{x} aggiornerà l'istante di liberazione del \textbf{Path} nel modo seguente:
-$PathAvailableInstant_{(n,1)}$ = $CrossingStartingTime_{(x,n,1)}$ + $CrossingTime_{(x,n,1)}$\\
+$PathAvailableInstant_{(n,1)}$ = $CheckIn_{(x,n)}$ + $CrossingTime_{(x,n,1)}$;\\
 quindi avremo che\\
 $CheckIn_{(x,n)}$ < $CheckIn_{(x,n+1)}$ con $CheckIn_{(x,n+1)}$ == $PathAvailableInstant_{(n,1)}$
 \item come da algoritmo, \emph{x} aggiornerà tutte le code dei checkpoint da n+1 a n (passando per il checkpoint 1) con tempi $CheckIn_{(x,n+1)}$ + $\epsilon$ 
 crescente di checkpoint in checkpoint. Supponiamo che il tempi segnato sul checkpoint n sia sufficientemente alto da mandare \emph{x}
 in una posizione posteriore a \emph{y}, così che \emph{y} possa effettuare l'attraversamento;
 \item dopo che \emph{y} avrà computato i calcoli necessari per l'attraversamento del tratto, si avrà che:\\
-$CrossingStartingTime_{(y,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}$,$CheckIn_{(y,n)}$\}};\\
-Se il valore massimo verrà rappresentato da $PathAvailableInstant_{(n,1)}$, si avrà che \\
-$CrossingStartingTime_{(y,n,1)}$ == $CheckIn_{(x,n+1)}$\\
-di conseguenza con $CheckIn_{(y,n+1)}$ = $CrossingStartingTime_{(y,n,1)}$ + $CrossingTime_{(y,n,1)}$ ne consegue che\\
+$ExitInstant_{(y,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}+t_c$,$CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$\}};\\
+Se il valore massimo verrà rappresentato da $PathAvailableInstant_{(n,1)}+t_c$, si avrà che \\
+$ExitInstant_{(y,n,1)}$ == $CheckIn_{(x,n+1)}+t_c$ $\rightarrow$ $CheckIn_{(y,n+1)}==CheckIn_{(x,n+1)}+t_c$\\
+ne consegue che\\
 $CheckIn_{(y,n+1)}$ > $CheckIn_{(x,n+1)}$, quindi non verrà effettuato alcun teletrasporto.
-\item Se invece il valore massimo era rappresentato da $CheckIn_{(y,n)}$, allora\\ 
-$CheckIn_{(y,n)}$ > $PathAvailableInstant_{(n,1)}$ $\rightarrow$ $CheckIn_{(y,n)}$ > $CheckIn_{(x,n+1)}$ \\e, con l'assegnamento
-$CrossingStartingTime_{(y,n,1)}$ = $CheckIn_{(y,n)}$ si avrà \\
-$CheckIn_{(y,n+1)}$ = $CrossingStartingTime_{(y,n,1)}$ + $CrossingTime_{(y,n,1)}$ \\
+\item Se invece il valore massimo era rappresentato da\\ 
+$CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$, allora\\ 
+$CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$ > $PathAvailableInstant_{(n,1)}$ $\rightarrow$\\ 
+$CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$ > $CheckIn_{(x,n+1)}$ \\
+e, con l'assegnamento
+$ExitInstant_{(y,n,1)}$ = $CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$ si avrà \\
+$CheckIn_{(y,n+1)}$ = $CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$\\
 $\rightarrow$ $CheckIn_{(y,n+1)}$ > $CheckIn_{(x,n+1)}$.
 \end{itemize}
 \end{proof}
@@ -266,33 +343,37 @@ rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
 che verr\`{a} segnato nel checkpoint di uscita.
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
-Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per
-assurdo, uno stallo si potrebbe verificare se:
-una macchina A attende la prima posizione nella coda associata al tratto 3 (per
-esempio). 
-Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2.
-Ma B risulta prima di A nella coda 3 e A 
-risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
-lo stallo porterebbe ad una contraddizione.\\
+Il verificarsi dello stallo, nello specifico caso, sarebbe dato dal presentarsi
+delle seguenti condizioni, determinate dall'accumulo di risorse dei concorrenti che gareggiano nel circuito:
+\begin{itemize}
+\item un concorrente \emph{x} è arrivato effettivamente sulla coda associata al \textbf{Checkpoint} \emph{n} ed
+è in attesa di essere primo per poter valutare il tratto;
+\item davanti a \emph{x} è segnato (ma non arrivato effettivamente} \emph{y}, con un tempo di arrivo previsto, quindi, inferiore a \emph{x}. 
+Si può quindi dire che \emph{y} sia in possesso della risorsa \textbf{Checkpoint} \emph{n}, pur non standolo direttamente usando;
+\item nel tratto \emph{n+1}, \emph{x} è primo non effettivo, avendo quindi in possesso la risorsa \textbf{Checkpoint} \emph{n+1} pur
+non stando ancora usandola.
+\item dietro a \emph{x} nel tratto \emph{n+1} è presente \emph{y}, arrivato effettivamente e in attesa di attraversare.
+\end{itemize}
+Si nota quindi come \emph{x} e \emph{y} possiedano entrambi una risorsa (poichè ne impediscono l'uso ad altri concorrenti)
+ma nel frattempo richiedano altre risorse per poter eseguire. In qusto caso \emph{y} e \emph{x} resterebbero in attesa infinita.
+Dimostriamo che tale scenario non è possibile.
 \begin{proof}
 \textcolor{white}{42}\\
-\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul
-checkpoint N.}\\
-	Se nella coda 2 ci sono A in testa seguita da B, avremo che
-$tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
+\emph{Premessa: $t_{x,n}$ $\rightarrow$ tempo del concorrente \emph{x} segnato sul
+checkpoint \emph{n}.}\\
+	Se nella coda \emph{n} ci sono \emph{x} in testa seguito da \emph{y}, avremo che
+$t_{x,n}<t_{y,n}$, poich\`{e} l'ordine della coda \`{e} 
 	determinato dai tempi di arrivo segnati.
-	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per
-ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
-	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a}
-aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta
-t$, 
-	con $ \delta t$ un valore minimo diverso da zero previsto per
-l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
-	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A,
-quindi $tempo(3B)<tempo(3A)$.
+	Se \emph{x} \`{e} in attesa sulla coda \emph{n}, vuol dire che all'iterzione precedente avr\`{a} aggiornato per
+ultimo l'istante segnato sulla coda del \textbf{Checkpoint} \emph{n-1} e di conseguenza $t_{x,n-1}>t_{x,n}$ (come visto precedentemente).
+	\emph{y} invece \`{e} in attesa effettiva sulla coda \emph{n-1}, quindi avr\`{a}
+aggiornato la coda del tratto successivo con un valore dato da $t_{y,n} + \delta_t$, 
+	con $ \delta_t$ un valore minimo diverso da zero previsto per
+l'attraversamento da \emph{n-1} a \emph{n}. Quindi $t_{y,n-1}<t_{y,n}$.
+	L'ipotesi di stallo prevede che nella coda \emph{n} vi sia primo il concorrente \emph{y} e poi \emph{x},
+quindi $t_{y,n}<t_{x,n}$.
 	Avremo quindi:\\
-
-	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
+	$t_{x,n}<t_{x,n-1}<t_{y,n-1}<t_{y,n}<t_{x,n}$\\\\
 	che \`{e} una contraddizione, quindi la situazione non si pu\`{o}
 verificare.
 \end{proof}
@@ -301,10 +382,13 @@ All'interno del progetto non è prevista una comunicazione diretta fra
 concorrenti. Esiste però un metodo per i concorrenti di capire dove sono gli
 altri concorrenti in gara. I concorrenti interagiscono tra di loro ogni volta
 che attraversano un tratto, infatti ogni concorrente che esegue lascia segnato
-il proprio tempo (tempoin cui libererà il tratto). Questo tempo salvato sul
-\emph{Path} indica agli altri concorrenti che qualcuno sta attraversando quella
-traiettoria permettendo così una migliore stima relativa alla scelta della
-strada da intraprendere.
+il proprio tempo (tempo in cui libererà il tratto). 
+Inoltre ogni concorrente valorizza una posizione di un'array associato al \textbf{Path}
+con il proprio istante di uscita. Essendo l'array grande quanto il numero massimo di concorrenti
+che possono restare sul traiettoria in fila, può essere usato per capire se il tratto sia pieno o no.
+Queste informazioni salvate sul \textbf{Path}
+indicano agli altri concorrenti di valutare il livello di affollamento del tratto e valutare
+opportunamente i tempi di attraversamento.
 \subsection{Entità box (Lorenzo)}
 L'entità Box è una delle componenti che si è scelto di distribuire nella rete.
 Il Box si occupa di gestire la configurazione e la corsa di un concorrente.
@@ -480,14 +564,14 @@ essi
 tutte le informazioni di gara relative a tale istante. Se qualche 
     concorrente non ha ancora raggiunto l'istante dato, la richiesta dello
 snapshot (come si è visto) verrà messa in attesa.
-\subsection{Interazione utente-sistema (Lorenzo)}
+\subsection{Interazione utente-sistema}
 Nella simulazione si è scelto di permettere una interazione fra l'utente esterno
 e il sistema. Le modalità verranno esposte approfonditamente nei prossimi
 paragrafi. L'interazione che verrà analizzata è divisa in due tipologie, la
 prima riguarda l'osservazione della gara e la velocità di simulazione, la
 seconda invece parla di interventi sulla gara da parte di un utente esterno,
 evento che completa le funzionalità di "non determinismo" permesse nel sistema.
-\subsubsection{Osservazione gara ( lato box, lato tv )(Lorenzo)}
+\subsubsection{Osservazione gara ( lato box, lato tv )}
 Per quanto riguarda l'osservazione della gara questa avviene in due modalità
 differenti. La prima è la visione della gara nel suo insieme, con la
 visualizzazione istante dopo istante della posizione di tutti i concorrenti in
@@ -503,7 +587,7 @@ disponibili nel sistema (ad esempio istanti di tempo a cui la gara non arriverà
 mai) non sono verificabili in quanto le informazioni vengono richieste in
 maniera sequenziale e viene comunicato quando non sono più disponibili dati di
 interesse.
-\subsubsection{Intervento sulla gara ( lato box, lato tv )(Lorenzo)}
+\subsubsection{Intervento sulla gara ( lato box, lato tv )}
 Per quanto riguarda gli interventi permessi sulla gara sono di due tipi. Lato tv
 viene permessa la modifica del tempo di simulazione, velocizzandolo o
 rallentandolo. Lato box invece è possibile richiamare la macchina ai box per un
