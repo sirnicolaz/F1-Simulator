@@ -262,12 +262,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    String Before = new String("");
 		    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 0 : Vector_Competitor_Position.size() = "+Vector_Competitor_Position.size());
 		    for(int index_other_position = 0; index_other_position<Vector_Competitor_Position.size(); index_other_position++){
-			  if(index_other_position < index_vector){
+			  if(index_other_position > index_vector){
 			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 1");
 			    After = After + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
 			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 2");
 			  }
-			  if(index_other_position > index_vector){
+			  if(index_other_position < index_vector){
 			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 3");
 			    Before = Before + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
 			    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 4");
@@ -379,8 +379,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 				else{
 				    if(datiArray[index].getLap()== current_lap){
-					modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-timeArray[index-1]))});
-					System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
+					modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime()))});
+					System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
 					System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
 				    }
 				    //index=index+1;
@@ -729,7 +729,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    else{
 			if(Vector_Competitor_Position.elementAt(index_position).get_Checkpoint() == My_Competitor_Position.get_Checkpoint()){
 			    //sono nello stesso checkpoint, devo controllare la posizione
-			    if(Vector_Competitor_Position.elementAt(index_position).get_Position() <= My_Competitor_Position.get_Position()){
+			    if(Vector_Competitor_Position.elementAt(index_position).get_Position() < My_Competitor_Position.get_Position()){
 				//la posizione segnata è più bassa o uguale alla mia, quindi mi inserisco
 				Vector_Competitor_Position.insertElementAt(My_Competitor_Position, index_position);
 				index_position = Vector_Competitor_Position.size();//esci
