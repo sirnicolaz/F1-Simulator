@@ -5,7 +5,7 @@
 <firstname>Pippo</firstname>
 <lastname>Pluto</lastname></driver>
 <car><maxspeed>300.0</maxspeed>
-<maxacceleration>12.02</maxacceleration>
+<maxacceleration>12.0</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>Normal</engine>
 <tyreusury>0.0</tyreusury>

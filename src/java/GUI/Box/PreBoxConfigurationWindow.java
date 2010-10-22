@@ -80,7 +80,12 @@ public class PreBoxConfigurationWindow{
 		    if(fileCompetitor.isEnabled() == true){
 			if(selected != true){
 			    fileName = "configuration-competitors/"+fileCompetitor.getText();
+			    uploadConfig= true;
 			}
+		    }
+		    else{
+		      fileName = "configuration-competitors/competitor-1.xml";
+		      uploadConfig=false;
 		    }
 		    System.out.println("FileName = "+fileName);
 		    BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, argument, uploadConfig, fileName);

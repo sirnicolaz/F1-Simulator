@@ -76,7 +76,7 @@ package Competitor is
    --type Competitor_Details_Access is Access Competitor_Details;
 --task TASKCOMPETITOR(Car_In : Competitor_Details_Access);
 
-   task type TASKCOMPETITOR(CarDriver_In : Competitor_Details_Point) is
+   task type TASKCOMPETITOR(Car_Driver_In : Competitor_Details_Point) is
       entry Start;
    end TASKCOMPETITOR;
    --type taskdebug is Access TASKCOMPETITOR;

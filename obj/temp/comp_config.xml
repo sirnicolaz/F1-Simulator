@@ -4,5 +4,5 @@
 Indianapolis</name>
 <circuitConfigFile>race.xml</circuitConfigFile>
 <competitorQty>6</competitorQty>
-<laps>70</laps>
+<laps>10</laps>
 </config>

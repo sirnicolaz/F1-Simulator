@@ -40,9 +40,9 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private boolean[] endRace;
     private boolean[] ritRace;
     
-    private JLabel labelAhead = new JLabel("Ahead ");
-    private JLabel labelBack = new JLabel(" Back");
-    private JLabel labelSame = new JLabel("Same");
+    private JLabel labelAhead = new JLabel("  Ahead  ");
+    private JLabel labelBack = new JLabel("  Back  ");
+    private JLabel labelSame = new JLabel("  Same  ");
 
     private classificationTable classTable = new classificationTable();
     private bestPerformance best = new bestPerformance();
@@ -1377,9 +1377,9 @@ class competitorLog{
     public competitorLog(String nameIn, int numComp_In){
 	name= new JLabel(nameIn);
 	numComp = numComp_In;
-	equal_this = new JTextField("    ", (numComp-1) *2 -2);
-	before_this = new JTextField("    ", (numComp-1) *2 -2);
-	after_this = new JTextField("    ", (numComp-1) *2 -2);
+	equal_this = new JTextField("    ", (numComp-1) *2 -1);
+	before_this = new JTextField("    ", (numComp-1) *2 -1);
+	after_this = new JTextField("    ", (numComp-1) *2 -1);
 	equal_this.setForeground(Color.magenta);
 	before_this.setForeground(Color.blue);
 	after_this.setForeground(Color.red);
