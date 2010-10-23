@@ -383,9 +383,11 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 							System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
 						    }
 						    else{
-							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1].getTime())});
-							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-timeArray[index-1])));
-
+							//if(datiArray[index].getLap()==datiArray[index-1].getLap()){
+							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1])});
+//qua bug
+							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+							//}
 						    }
 						    posiz = posiz+1;
 						    indTable = posiz+1;
