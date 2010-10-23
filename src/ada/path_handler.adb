@@ -1,3 +1,4 @@
+with Ada.Text_IO;
 package body Path_Handler is
 
    --Minimum space required for a single car
@@ -48,6 +49,7 @@ package body Path_Handler is
    procedure Set_Release_Instant( Path_In : out Path;
                                 Instant : Float ) is
    begin
+      Ada.Text_IO.Put_Line("SET_RELEASE_INSTANT : instant = "&Float'Image(Instant));
       Path_In.Release_Instant := Instant;
    end Set_Release_Instant;
 
@@ -158,19 +160,19 @@ package body Path_Handler is
                       Exit_Instant     : Float;
                       Speed_In         : Float;
                       PathIndex        : Integer) is
-         Path_To_Cross : Path := F_Paths.all(PathIndex);
+         --Path_To_Cross : Path := F_Paths.all(PathIndex);
       begin
          --Update the latest exit time
-         Set_Release_Instant(Path_To_Cross, Exit_Instant );
+         Set_Release_Instant( F_Paths.all(PathIndex), Exit_Instant );
 
          --Update max speed reachable for the competitors running at the same time through the path
-         Set_Max_Speed(Path_To_Cross,Speed_In);
+         Set_Max_Speed( F_Paths.all(PathIndex),Speed_In);
 
          --Find a position in the Competitor_Exit_Times array that refers to a competitor
          --+ who already left the path and save the new leaving time into it
-         for Index in Path_To_Cross.Competitor_Exit_Times'Range loop
-            if( Path_To_Cross.Competitor_Exit_Times(Index) < Arriving_Instant ) then
-               Path_To_Cross.Competitor_Exit_Times(Index) := Exit_Instant;
+         for Index in  F_Paths.all(PathIndex).Competitor_Exit_Times'Range loop
+            if(  F_Paths.all(PathIndex).Competitor_Exit_Times(Index) < Arriving_Instant ) then
+                F_Paths.all(PathIndex).Competitor_Exit_Times(Index) := Exit_Instant;
                exit;
             end if;
          end loop;

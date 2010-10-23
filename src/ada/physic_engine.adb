@@ -249,14 +249,29 @@ package body Physic_Engine is
                                   Max_Speed,
                                   Max_Acceleration);
 
-         if( Crossing_Time_Temp + Competitor_Arrival_Time >= Path_Available_Instant ) then
+         if( Crossing_Time_Temp + Competitor_Arrival_Time > Path_Available_Instant ) then
             Exit_Instant := Crossing_Time_Temp + Competitor_Arrival_Time;
             Speed_Array(Index):= Speed_Temp;
+            Ada.Text_IO.Put_Line("DATI DAL COMPETITOR :  RAMO IF ID "&Integer'Image(Competitor_Id)&
+                        " CROSSING_TIME_TEMP = "&Float'Image(Crossing_Time_Temp)&
+                        " COMPETITOR_ARRIVAL_TIME = "&Float'Image(Competitor_Arrival_Time)&
+                        " EXIT_INSTANT = "&Float'Image(Exit_Instant)&
+                        " PATH_AVAILABLE_INSTANT = "&Float'Image(Path_Available_Instant)&
+                        " SPEED_TEMP = "&Float'Image(Speed_Temp)&
+                        " CHECKPOINT NUM = "&Float'Image(F_Segment.Get_Length));
          else
             if( Paths_2_Cross.Is_Path_Available(Index,Competitor_Arrival_Time)) then
                Exit_Instant := Path_Available_Instant + Minimum_Car_To_Car_Distance;
                Crossing_Time_Temp := Exit_Instant -  Competitor_Arrival_Time;
                Speed_Array(Index):= Paths_2_Cross.Get_Max_Speed(Index);
+
+            Ada.Text_IO.Put_Line("DATI DAL COMPETITOR :  RAMO ELSE ID "&Integer'Image(Competitor_Id)&
+                        " CROSSING_TIME_TEMP = "&Float'Image(Crossing_Time_Temp)&
+                        " COMPETITOR_ARRIVAL_TIME = "&Float'Image(Competitor_Arrival_Time)&
+                        " EXIT_INSTANT = "&Float'Image(Exit_Instant)&
+                        " PATH_AVAILABLE_INSTANT = "&Float'Image(Path_Available_Instant)&
+                        " SPEED_TEMP = "&Float'Image(Speed_Temp)&
+                        " CHECKPOINT NUM = "&Float'Image(F_Segment.Get_Length));
             else
                Exit_Instant := -1.0;
             end if;
