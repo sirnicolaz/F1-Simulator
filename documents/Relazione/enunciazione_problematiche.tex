@@ -73,9 +73,9 @@ Considerando quindi che la simulazione deve permettere di comprendere il
 comportamento del sistema, è necessario che il sistema abbia 
 un comportamento prevedibile. Ciò non significa che ogni componente di non
 determinismo sia non desiderata. Il non determinismo
-può essere inserito in modo controllato, ovvero consapevoli del contensto e dei
+può essere inserito in modo controllato, ovvero consapevoli del contesto e dei
 momenti in cui esso si possa verificare. Soprattutto,
-il nondeterminismo deve rispecchiare un eventuale non determinismo presente
+il non-determinismo deve rispecchiare un eventuale non determinismo presente
 anche nel sistema reale e non solo in quello simulato.\\
 Il comportamento dello scheduler sottostante il sistema che verrà sviluppato non
 è prevedibile. Considerando che il non determinismo
@@ -100,7 +100,7 @@ che possono portare valore aggiunto sono ad esempio interazioni dell'utente
 esterno al sistema tramite azioni esplicite .
 \subsection{Stalli }
 \label{stalli}
-In un sistema concorrente lo stallo è una delle probelmatiche pi\`{u} importanti
+In un sistema concorrente lo stallo è una delle problematiche pi\`{u} importanti
 da affrontare. Per stallo si intende lo stato in cui nessun processo pu\`{o}
 pi\`{u} eseguire. Affinch\`{e} si verifichi lo stallo di devono verificare tutte
 le 4 pre-condizioni ben riconoscibili:
@@ -137,7 +137,7 @@ dipende quindi da caratteristiche dinamiche dell'ambiente e richiede che le
 valutazioni dei singoli concorrenti
 vengano fatte in rapporto allo stato degli altri concorrenti. Viceversa, le
 scelte dei singoli concorrenti
-devono poter influenzare i moviementi degli altri concorrenti.
+devono poter influenzare i movimenti degli altri concorrenti.
 \end{itemize}
 \subsection{Gestione delle istantanee di gara}
 Requisito essenziale per poter presentare i dati relativi all'andamento della
@@ -155,7 +155,7 @@ se viene eseguito, per motivi di
 prerilascio, metà ad un istante
 \emph{t} e l'altra metà ad un istante \emph{t+f}, ad esempio. La distribuzione
 aggiunge un ulteriore livello di complessità
-al problema, poichè il ritardo potrebbe essere causato non solo dallo scheduler,
+al problema, poiché il ritardo potrebbe essere causato non solo dallo scheduler,
 ma anche dalla rete.
 \subsection{Robustezza del sistema distribuito }
 Progettando un sistema distribuito bisogna tenere in considerazione alcune
