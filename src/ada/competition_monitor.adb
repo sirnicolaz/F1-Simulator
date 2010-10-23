@@ -192,7 +192,7 @@ package body Competition_Monitor is
    end Contains;
 
    procedure Get_CompetitionInfo( TimeInstant : Float;
-                                 ClassificationTimes : out Float_Array_Point;
+                                 Placement_Times : out Float_Array_Point;
                                  XMLInfo : out Unbounded_String.Unbounded_String) is
       Tmp_Stats : COMPETITOR_STATS_Point := new COMPETITOR_STATS;
       Tmp_StatsString : Common.Unbounded_String.Unbounded_String := Common.Unbounded_String.Null_Unbounded_String;
@@ -326,7 +326,7 @@ package body Competition_Monitor is
       ---------------------------
       if(HighestCompletedLap /= -1) then
 
-         Competition_Computer.Get_Lap_Classification(HighestCompletedLap,
+         Competition_Computer.Get_Lap_Placement(HighestCompletedLap,
                                                      TimeInstant,
                                                      CompetitorID_InClassific,
                                                      Times_InClassific,
@@ -337,7 +337,7 @@ package body Competition_Monitor is
 
 	 Merge(CompetitorID_InClassific,Times_InClassific,
 	       CompetitorIDs_PreviousClassific,Times_PreviousClassific,
-	       CompetitorIDs_WithTimes,ClassificationTimes);
+	       CompetitorIDs_WithTimes,Placement_Times);
 
          Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
            ("<classification>");
