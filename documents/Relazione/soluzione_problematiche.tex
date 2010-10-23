@@ -18,7 +18,7 @@ Il \textbf{Path} è caratterizzato da:
 \item angolo
 \item tenuta
 \item istanti di liberazione, ovvero gli istanti di tempo 
-in cui le ultime \emph{N} auto (con \emph{N} pari alla molteplicità del \textbf{Path}) sono previste lasciare il tratto;
+in cui le ultime \emph{N} auto che sono entrate nella traiettoria (con \emph{N} pari alla molteplicità del \textbf{Path}) sono previste uscirne;
 \item istante di liberazione, ovvero l'istante in cui il tratto è previsto essere libero da tutte le auto;
 \item massima velocità raggiungibile, determinata dal concorrente che è entrato più recentemente nel \textbf{Path}.
 Questo valore viene usato per limitare la velocità di un concorrente nel caso esso entri quando altre auto lo stanno
@@ -26,7 +26,7 @@ attraversando.
 \end{itemize}
 I \textbf{Path} di uno stesso tratto possono essere uguali o differire per
 caratteristiche, rimanendo comunque entro i limiti globali del tratto
-(non si potrà ad esempio avere un tratto lungo 11 km in un tratto lungo 42 m).
+(non si potrà ad esempio avere un \textbf{Path} lungo 11 km in un tratto lungo 42 m).
 \item \textbf{Checkpoint}: è una risorsa passiva ad accesso mutuamente
 esclusivo. Rappresenta la coda di accesso ad un tratto. Ogni posizione
 della coda è stata arricchita con delle informazioni che aiutano a gestire
@@ -69,14 +69,14 @@ arrivo effettivo con i tempi di arrivo effettivi e previsti
 degli altri concorrenti. Nel momento in cui il suo istante di arrivo effettivo
 risulti cronologicamente il più basso della coda, sarà certo
 che, stando al suo istante di tempo e a quello relativo agli altri concorrenti,
-il suo turno per attraversare sia arrivato. Ovvero che, in 
-termini di tempo relativi, il suo istante, essendo il più basso, indichi che è
+il suo turno per attraversare sia arrivato (verrà dimostrato formalmente in seguito). Ovvero che, in 
+termini di tempo relativi, il suo istante, essendo il più basso, indicha che è
 il primo arrivato al tratto in quell'istante, avendo così
 il diritto di accesso.\\
 Quando un concorrente deve valutare la traiettoria (\textbf{Path}) da
 attraversare in un tratto, può farlo semplicemente valutando le caratteristiche
 del tratto. Le prime tre elencate qualche riga più sopra garantiscono un minimo
-di realismo fisico. Le caratteristiche fisiche del tratto infatti
+di realismo fisico nell'interazione concorrente-ambiente statico. Le caratteristiche fisiche del tratto infatti
 influiranno sui consumi e i tempi dell'auto. Il concorrente dovrà scegliere in
 modo da minimizzare entrambi.\\
 Gli ultimi parametri sono anche oggetto di valutazione in quanto servono all'utente per
@@ -86,12 +86,12 @@ su cui sia già presente un altro concorrente. Ma ne conseguirà che se il conco
 più veloce è dietro, esso verrà limitato dalla velocità di quello davanti.\\
 Altra questione importante riguarda i tempi di liberazione: come già detto, una
 traiettoria può essere contemporaneamente occupata da al più N (con N limitato) macchine.
-Quindi ogni concorrente inizi ad percorrere una traiettoria, dovrà salvare in una posizione
+Quando un concorrente inizia a percorrere una traiettoria, dovrà salvare in una posizione
 libera della lista dei tempi di liberazione il proprio istante di uscita dal tratto.
 Quando un concorrente vuole iniziare a percorrere una traiettoria, di conseguenza, dovrà verificare
-che il suo tempo di arrivo sia maggiore almeno ad uno dei tempi di liberazione segnati
-nella lista. Solo in questo caso potrà essere certo che la traiettoria può ancora ospitare auto.
-In tutte le traiettorie di un tratto siano sovraffollate, il concorrente dovrà
+che il suo tempo di arrivo sia maggiore almeno di uno dei tempi di liberazione segnati
+nella lista. Solo in questo caso potrà essere certo che la traiettoria può ospitare auto.
+Se tutte le traiettorie di un tratto siano sovraffollate, il concorrente dovrà
 uscire di pista per evitare una collisione e venire squalificato.\\
 Questo garantisce il realismo fisico
 concorrente-concorrenti descritto nella sezione \ref{analisi_realismo_fisico}.
@@ -100,8 +100,8 @@ orologio relativo enunciato nella sezione \ref{tempo}.
 Maggiori dettagli sull'interazione fra concorrenti e circuito e sull'algoritmo
 che regola l'attraversamento del circuito da parte dei concorrenti
 verranno forniti nelle sezioni seguenti.
-\subsection{Entit\`{a} Concorrente (Lorenzo)}
-L'entità concorrente è un'entità attiva, concepita
+\subsection{Entit\`{a} Concorrente}
+Il concorrente è un'entità attiva, concepita
 come un task che utilizza l'entità \textbf{Circuito} per iterare sulla pista. In
 seguito
 verranno analizzate le interazioni che questa entità hanno fra di loro e con le
@@ -114,34 +114,36 @@ Questa componente è composta principalmente da tre parti che sono:
 insieme, ovvero auto, pilota e componenti di strategia e di monitoraggio
 \end{itemize}
 \subsection{Interazione concorrenti - circuito}
-L'analisi di questa interazione non viene mappata in una o più componenti
-precise ma serve a capire come si sono affrontate le problematiche esposte nella
-sezione \ref{enunciazione_problematiche}. I concorrenti (entità attive)
+I concorrenti (entità attive)
 utilizzano il circuito per gareggiare nella competizione.
 Ogni concorrente per gareggiare deve riuscire a ottenere il tratto di pista che
 vuole attraversare. La struttura di chiamate (insieme alla struttura del
 circuito già descritta nel paragrafo \ref{entita_circuito}) è stata studiata per
-evitare le possibili situazioni di stallo e di sorpasso impossibile. Infatti per attraversare un tratto di
-pista il concorrente dev'essere il primo nella coda di attesa del
-\emph{Checkpoint}. Una volta che un concorrente si trova nella prima posizione
+evitare le possibili situazioni di stallo e di sorpasso impossibile oltre che mantenere
+coerenza temporale nel corso della gara. 
+Ogni concorrente utilizza un iteratore (\textbf{Racetrack\_Iterator}) per iterare
+attraverso i tratti della pista. Grazie ad esso il concorrente può ottenere il
+\textbf{Checkpoint} del circuito nell'ordine stabilito dalla configurazione.
+Può inoltre ottenere informazioni relative al tratto di entrata e uscita ai box, oltre
+che ottenere il \textbf{Checkpoint} relativo ai box.\\
+Come visto nella sezione \ref{entita_circuito}, i checkpoint espongono delle code
+per gestire l'accesso al tratto. Per attraversare un tratto di
+pista il concorrente dev'essere il primo nella coda. Una volta che un concorrente si trova nella prima posizione
 della coda può utilizzare la risorsa passiva in mutua esclusione che rappresenta
 il pezzo di pista. Le operazioni di calcolo dei tempi e di scelta delle
 traiettorie avvengono mantenendo il possesso della risorsa, con la certezza che
-nessuno modifichi le condizioni che si stanno valutando. Lo stallo è evitato in
-quanto il sistema di code garantisce che per ogni Checkpoint stia eseguendo al
-più un concorrente e che quel concorrente possieda solo l'accesso alla risorsa
-interessata, impedendo l'accumulo di risorse (una delle cause di stallo viste
-nel paragrafo \ref{stalli}).
-Nel prossimo paragrafo verrà esposta l'assenza di stalli in maniera più formale.
-\\\\
-Detto questo \`{e} possibile vedere l'algoritmo per l'attraversamento di un
+nessuno modifichi le condizioni che si stanno valutando. Si evita inoltre che un concorrente
+possa valutare l'attraversamento del tratto quando spetterebbe (per motivi temporali) ad un
+altro concorrente.\\
+Successivamente verrà spiegato più formalmente quanto detto.\\
+Vediamo ora l'algoritmo per l'attraversamento di un
 tratto dal momento in cui il concorrente arriva 
 fisicamente ad un checkpoint
 fino al raggiungimento di quello successivo.\\
 Per chiarezza, la spiegazione verrà scomposta in due parti che poi, integrate,
 formeranno l'algoritmo completo.
 \begin{description}
-\item{Scelta traiettoria (\textbf{Path}):}\\
+\item{\textbf{Scelta traiettoria (Path):}}\\
 In questo passo della simulazione, il concorrente ha già ottenuto accesso esclusivo alla collezione di \textbf{Path} e potrà quindi
 effettuare la valutazione senza rischio di race condition (il perchè verrà spiegato successivamente). L'algoritmo procede quindi nel
 seguente modo:
@@ -149,30 +151,33 @@ seguente modo:
 \item Per ogni \textbf{Traiettoria} a disposizione:
 \begin{itemize}
 \item Calcola il tempo di atrraversamento (in assenza di auto sulla traiettoria);
-\item Confronta l'istante di uscita dato tale tempo di attraversamento con l'istante di liberazione
+\item Confronta l'istante di uscita dato oò tempo di attraversamento calcolato con l'istante di liberazione
 segnato sul tratto;
-\item Se l'istante di liberazione è inferiore (il che significa che il tratto sarà già libero quando l'auto proverà ad attraversarlo),
+\item Se l'istante di liberazione è inferiore (il che significa che il tratto è già libero quando l'auto proverà ad attraversarlo),
 salva l'istante di uscita associato al \textbf{Path} come \emph{istante di arrivo} + \emph{tempo di attraversamento};
 \item Se l'istante di liberazione invece è superiore, verifica se ci sia spazio per entrare nella traiettoria. Per fare ciò, bisogna considerare
-la lista di istanti di liberazione. Se tutti gli istanti segnati sono maggiori dell'istante di ARRIVO del concorrente, significa che 
+la lista di istanti di liberazione. Se tutti gli istanti segnati sono maggiori dell'\emph{istante di arrivo} del concorrente, significa che 
 non sarà possibile usare quella traiettoria.\\
 In caso contrario, il concorrente può attraversare mettendosi dietro alla/e auto già presente/i nella traiettoria. Per questo la velocità
 sarà limitata da quella dell'auto davanti e l'istante di uscita associato al path 
 corrisponderà all'istante di uscita della macchina entrata più di recente (ovvero
-\emph{l'istante di liberazione del tratto}) + \emph{il tempo che rappresenta la distanza minima fra due auto per evitare tamponamenti} (costante).
+\emph{l'istante di liberazione del tratto}) + \emph{il tempo che rappresenta la distanza minima fra due auto per evitare tamponamenti} 
+(costante).
 \end{itemize}
 \item Se almeno un \textbf{Path} è percorribile, 
 \begin{itemize}
 \item scegli quello ottimo (con istante di uscita minore);
 \item aggiorna il tempo di liberazione del tratto con quello appena calcolato;
 \item aggiorna la lista degli istanti di liberazione aggiungendo quello nuovo in una posizione il cui istante segnato sia inferiore all'istante
-di arrivo di quello del concorrente;
+di arrivo di quello del concorrente (significa che quell'istante è già passato e non è più utile ai fini della valutazione dell'affollamento
+della traiettoria);
 \end{itemize}
-\item Altrimenti l'utente deve uscire dal circuito per evitare collisioni e venire squalificato.
+\item Altrimenti l'utente deve uscire dal circuito per evitare collisioni, venendo così squalificato.
 \end{itemize}
-\item{Attraversamento tratto:}\\
-\emph{Premessa}: un concorrente controlla la sua posizione su una coda ogni
-volta che essa viene riordinata.\\
+\item{\textbf{Attraversamento tratto:}}\\
+\emph{Premessa}: un concorrente arrivato effettivamente su una coda ma non primo, si mette in attesa. 
+Verrà risvegliato automaticamente dall'ultimo concorrente che avrà \textbf{modificato l'ordine} della coda nel
+caso risultasse primo dopo l'aggiornamento.\\
 \emph{Precondizione}: il concorrente ha gi\`{a} segnato il suo tempo di arrivo
 effettivo sulla coda del checkpoint che vuole attraversare.
 \begin{enumerate}
@@ -195,12 +200,18 @@ appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene
 verrà riordinato in una posizione inferiore, lasciando eventualmente spazio
 ad altri di effettuare valutazioni su quel tratto.
 \item delay per fini di simulazione;
-\item ritorna al passo uno per il checkpoint successivo;
+\item ritorna al passo 1 per il checkpoint successivo;
 \end{enumerate}
 \end{description}
-La strategia adottata si presta a simulare la corsa tenendo in considerazione ad
+La strategia adottata si presta a simulare la corsa garantendo che un concorrente possa tenere in considerazione ad
 ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
-anomali. \`{E} necessario, tuttavita, dimostrare che l'algoritmo sia corretto. Per farlo
+anomali. \`{E} necessario, tuttavita, dimostrare che l'algoritmo sia corretto. Per farlo bisogna provare che i concorrenti
+non collidano (logicamente) nel corso dell'esecuzione. Ovvero:
+\begin{itemize}
+\item L'aggiornamento delle code sia mutuamente esclusivo
+\item La valutazione di un tratto sia effettuata in modo esclusivo;
+\item L'aggiornamento dei checkpoint successivi a quello la cui traiettoria è stata valutata avvenga in modo atomico 
+\end{itemize}
 \begin{itemize}
 \item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo
 esclusivo}.
@@ -212,8 +223,8 @@ contemporaneamente, deve verificarsi una delle seguenti due condizioni:
 \item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo cresente, hanno assegnati rispettivamente i tempi
 \emph{$t_x$} e \emph{$t_y$}, con $t_x$ < $t_y$; per come è definito l'algoritmo, finchè la disposizione è tale, \emph{y} non potrà effettuare
 valutazioni sul tratto;
-\item mentre \emph{x} sta valutando la traiettoria da percorrere e prima che abbia potuto segnare l'istante di arrivo
-sulle code di tutti i checkpoint, si ha che $t_y$ < $t_x$ e \emph{y} inizia quindi a valutare;
+\item mentre \emph{x} sta valutando la traiettoria da percorrere% e prima che abbia potuto segnare l'istante di arrivo sulle code di tutti i checkpoint, 
+si ha che $t_y$ < $t_x$ e \emph{y} inizia quindi a valutare;
 \end{itemize}
 \textbf{Condizione 2}:\\
 \begin{itemize}
@@ -237,8 +248,7 @@ coda.\\
 Nel momento in cui \emph{x} finisce di valutare, itera su tutte le code da \emph{n+1} a \emph{n} per aggiornare i tempi limite di arrivo.\\
 \emph{n}, che è il \textbf{Checkpoint} dove \emph{y} sta attendendo, viene modificata per ultima. A questo punto viene riordinata.\\
 Nella peggiore delle ipotesi \emph{y} risulta prima e il processo che gestisce il concorrente viene assegnato alla CPU immediatamente.\\
-Non si presentano anomalie poichè \emph{x} ha analizzato i \textbf{Path}, aggiornato il tempo di uscita su quello scelto e aggiornato
-gli istanti di arrivo su tutti i \textbf{Checkpoint}.
+Non si presentano anomalie poichè \emph{x} ha analizzato i \textbf{Path} e aggiornato il tempo di uscita su quello scelto. %e aggiornato gli istanti di arrivo su tutti i \textbf{Checkpoint}.
 \end{proof}
 Per arrivare a contraddire lo scenario presentato nella condizione 2, è necessario dimostrare che una volta che un istante temporale
 viene segnato sulla coda di un \textbf{Checkpoint}, non può accadere che possa essere aggiornato con un'istante antecedente. In questo modo
@@ -324,23 +334,29 @@ $\rightarrow$ $CheckIn_{(y,n+1)}$ > $CheckIn_{(x,n+1)}$.
 \end{proof}
 Nel caso i due concorrenti prendano due traiettorie differenti, non si potrebbe più parlare di teletrasporto, bensì di sorpasso.
 \end{itemize}
+\
 Del rientro ai box non se ne \`{e} ancora discusso per evitare di rendere
-pi\`{u} confusionaria la spiegazione. Comunque la cosa non costituisce
-un grande problema: vi saranno due checkpoint speciali, quello esattamente prima
-della corsia dei box e quello subito all'uscita dei box.
-Quando un concorrente arriva sul checkpoint precedente ai box, richiede delle
-informazioni di strategia ai box. Se tali informazioni
-richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box
-\`{e} poi rappresentato da un checkpoint come tutti gli altri nel circuito.
-Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al
-checkpoint di uscita (nel circuito).\\
-I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di
-concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
-velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro
-l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
-sorpasso \`{e} data dalla velocit\`{a} che un concorrente richiede per il
-rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
-che verr\`{a} segnato nel checkpoint di uscita.
+pi\`{u} confusionaria la spiegazione. Ne vengono forniti i dettagli nella sezione seguente.
+\subsubsection{Corsia dei box}
+L'entrata ai box è gestita in modo leggermente diverso rispetto a come si è gestita l'entrata in ogni tratto.
+Innanzitutto è necessario premettere le caratteristiche della corsia dei box:
+\begin{itemize}
+\item è possibile entrare nella corsia dei box solo in prossimità del \textbf{Checkpoint} corrsipondente al \textbf{preBox} (proprietà booleana
+dei \textbf{Checkpoint}); tale checkpoint punterà quindi a due tratti: uno riferito al tratto successivo del circuito, l'altro riferito
+alla corsia dei box;
+\item quando si esce dai box, deve ottenere accesso al tratto preceduto dal \textbf{Checkpoint} \textbf{exitBox} (altra proprietà booleana
+dei \textbf{Checkpoint});
+\item il box stesso è un checkpoint;
+\end{itemize}
+Il checkpoint del box è posizionato in linea con il goal. Di conseguenza se un concorrente rientra ai 
+box durante l'ultima lap, finirà la gara ai box. Il checkpoint dei box è stato introdotto proprio per
+fornire questa possibilità.\\
+Il tempo di permanenza ai box viene fornito dal box remoto (il quale si occupa di calcolare
+i tempi per il cambio gomme e il rifornimento), e viene aggiunto al tempo che verrà segnato sul checkpoint
+di uscita dai box.\\
+Il tempo di attraversamento dei tratti relativi ai box è limitato superiormente a 80 km/h. Quindi si suppone
+che auto che entraranno insieme non proveranno comunque a sorpassarsi. L'unica possibilità di sorpasso è data
+dai tempi di rifornimento che possono creare più o meno ritardo sul tempo di percorrenza della corsia successiva.\\
 % Dimostrazione dell'assenza di stallo
 \subsubsection{Assenza di stallo}
 Il verificarsi dello stallo, nello specifico caso, sarebbe dato dal presentarsi
@@ -348,7 +364,7 @@ delle seguenti condizioni, determinate dall'accumulo di risorse dei concorrenti 
 \begin{itemize}
 \item un concorrente \emph{x} è arrivato effettivamente sulla coda associata al \textbf{Checkpoint} \emph{n} ed
 è in attesa di essere primo per poter valutare il tratto;
-\item davanti a \emph{x} è segnato (ma non arrivato effettivamente} \emph{y}, con un tempo di arrivo previsto, quindi, inferiore a \emph{x}. 
+\item davanti a \emph{x} è segnato (ma non arrivato effettivamente) \emph{y}, con un tempo di arrivo previsto, quindi, inferiore a \emph{x}. 
 Si può quindi dire che \emph{y} sia in possesso della risorsa \textbf{Checkpoint} \emph{n}, pur non standolo direttamente usando;
 \item nel tratto \emph{n+1}, \emph{x} è primo non effettivo, avendo quindi in possesso la risorsa \textbf{Checkpoint} \emph{n+1} pur
 non stando ancora usandola.
@@ -360,36 +376,37 @@ Dimostriamo che tale scenario non è possibile.
 \begin{proof}
 \textcolor{white}{42}\\
 \emph{Premessa: $t_{x,n}$ $\rightarrow$ tempo del concorrente \emph{x} segnato sul
-checkpoint \emph{n}.}\\
-	Se nella coda \emph{n} ci sono \emph{x} in testa seguito da \emph{y}, avremo che
-$t_{x,n}<t_{y,n}$, poich\`{e} l'ordine della coda \`{e} 
+checkpoint \emph{n+1}.}\\
+	Se nella coda \emph{n+1} ci sono \emph{x} in testa seguito da \emph{y}, avremo che
+$t_{x,n+1}<t_{y,n+1}$, poich\`{e} l'ordine della coda \`{e} 
 	determinato dai tempi di arrivo segnati.
-	Se \emph{x} \`{e} in attesa sulla coda \emph{n}, vuol dire che all'iterzione precedente avr\`{a} aggiornato per
-ultimo l'istante segnato sulla coda del \textbf{Checkpoint} \emph{n-1} e di conseguenza $t_{x,n-1}>t_{x,n}$ (come visto precedentemente).
-	\emph{y} invece \`{e} in attesa effettiva sulla coda \emph{n-1}, quindi avr\`{a}
-aggiornato la coda del tratto successivo con un valore dato da $t_{y,n} + \delta_t$, 
+	Se \emph{x} \`{e} in attesa sulla coda \emph{n+1}, vuol dire che all'iterzione precedente avr\`{a} aggiornato per
+ultimo l'istante segnato sulla coda del \textbf{Checkpoint} \emph{n} e di conseguenza $t_{x,n}>t_{x,n+1}$ (come visto precedentemente).
+	\emph{y} invece \`{e} in attesa effettiva sulla coda \emph{n}, quindi avr\`{a}
+aggiornato la coda del tratto successivo con un valore dato da $t_{y,n+1} + \delta_t$, 
 	con $ \delta_t$ un valore minimo diverso da zero previsto per
-l'attraversamento da \emph{n-1} a \emph{n}. Quindi $t_{y,n-1}<t_{y,n}$.
-	L'ipotesi di stallo prevede che nella coda \emph{n} vi sia primo il concorrente \emph{y} e poi \emph{x},
-quindi $t_{y,n}<t_{x,n}$.
+l'attraversamento da \emph{n} a \emph{n+1}. Quindi $t_{y,n}<t_{y,n+1}$.
+	L'ipotesi di stallo prevede che nella coda \emph{n+1} vi sia primo il concorrente \emph{y} e poi \emph{x},
+quindi $t_{y,n+1}<t_{x,n+1}$.
 	Avremo quindi:\\
-	$t_{x,n}<t_{x,n-1}<t_{y,n-1}<t_{y,n}<t_{x,n}$\\\\
+	$t_{x,n+1}<t_{x,n}<t_{y,n}<t_{y,n+1}<t_{x,n+1}$\\\\
 	che \`{e} una contraddizione, quindi la situazione non si pu\`{o}
 verificare.
 \end{proof}
-\subsection{Interazione concorrenti - concorrenti (Lorenzo)}
+\subsection{Interazione concorrenti - concorrenti}
 All'interno del progetto non è prevista una comunicazione diretta fra
 concorrenti. Esiste però un metodo per i concorrenti di capire dove sono gli
 altri concorrenti in gara. I concorrenti interagiscono tra di loro ogni volta
 che attraversano un tratto, infatti ogni concorrente che esegue lascia segnato
-il proprio tempo (tempo in cui libererà il tratto). 
+il proprio istante di liberazione della traiettoria percorsa (istante di liberazione della traiettoria). 
 Inoltre ogni concorrente valorizza una posizione di un'array associato al \textbf{Path}
 con il proprio istante di uscita. Essendo l'array grande quanto il numero massimo di concorrenti
 che possono restare sul traiettoria in fila, può essere usato per capire se il tratto sia pieno o no.
 Queste informazioni salvate sul \textbf{Path}
 indicano agli altri concorrenti di valutare il livello di affollamento del tratto e valutare
-opportunamente i tempi di attraversamento.
-\subsection{Entità box (Lorenzo)}
+opportunamente i tempi di attraversamento. Maggiori dettagli riguardo all'entità tratto sono presenti nella sezione
+\ref{entita_circuito}.
+\subsection{Entità box}
 L'entità Box è una delle componenti che si è scelto di distribuire nella rete.
 Il Box si occupa di gestire la configurazione e la corsa di un concorrente.
 Durante la competizione, il Box verifica costantemente lo stato dell'auto e
@@ -410,7 +427,7 @@ negativo;
 è stato inserito anche un tipo di strategia che sovrastima le possibilita del
 concorrente, portandolo a squalifica quasi certa.
 \end{enumerate}
-\subsubsection{Interazione con il concorrente (Lorenzo)}
+\subsubsection{Interazione con il concorrente}
 L'entità box interagisce costantemente con il concorrente, anche se non in modo
 diretto.
 Il box suggerisce al concorrente durante la gara :
@@ -419,8 +436,10 @@ Il box suggerisce al concorrente durante la gara :
 sono rivelati maggiori del previsto e viceversa;
 \item numero di lap al pitstop
 \end{itemize}
-Il Box riceve informazioni sullo stato del concorrente alla fine di ogni settore
-e ricalcola la strategia alla fine del secondo settore. Il concorrente richiede
+Il Box riceve informazioni sullo stato del concorrente alla fine di ogni settore dal monitor di gara (il quale attinge
+le sue informazioni dalla componente dedicata all'accumulo delle statistiche, per dettagli vedere \ref{stat_competitor}).
+Ad ogni aggiornamento, aggiorna delle statistiche interne. Viene ricalcola la strategia alla fine del secondo settore. 
+Il concorrente richiede
 la  nuova strategia al box in prossimità del checkpoint dove è possibile
 proseguire o andare ai box.
 E sembrata più realistica la scelta di non calcolare la strategia alla fine del
@@ -430,19 +449,23 @@ con i dati del terzo settore. \`{E} piuttosto più probabile che qualunque cambi
 di strategia o richiesta di rientro ai box venga stabilita già alla fine del
 secondo settore, in modo che in prossimità dei box il concorrente possa ottenere
 l’informazione istantaneamente e possa quindi decidere come e dove procedere.
-     \subsubsection{Distrbuzione del box (Lorenzo)}
-La componente box è una delle principali parti che si è scelte di distribuire.
+     \subsubsection{Distrbuzione del box}
+La componente box è una delle parti che si è scelto di distribuire.\\
+La comunicazione box-concorrente avviene su un piano separato rispetto alla comunicazione box-monitor.
+Il box reperisce i dati di ogni settore dalla componente \textbf{Competition\_Monitor}, la quale si limita
+a richiedere le informazioni necessarie ai gestori delle statistiche (che vedremo in seguito).\\
+Una parte separata rispetto all'\textbf{Update\_Retriever} (così si chiama il task che recupera gli aggiornamenti) è
+il \textbf{Box\_Radio}. Questà è un'entità reattiva (un server) che rimane in attesa della richiesta di strategia (chiamata remota)
+da parte del concorrente, per poi fornire la strategia più aggiornata.\\
 Per impedire che un fault della rete (o del nodo) vada a intaccare la robustezza
-del sistema e il regolare svolgimento della competizione si è scelto di
-prevenire questi problemi implementando un sistema che riesca a continuare la
+del sistema e il regolare svolgimento della competizione si è implementato un sistema che riesca a continuare la
 sua esecuzione anche se un nodo dovesse cadere. La competizione continua il suo
 svolgimento e l'unico problema visibile è la mancata comunicazione fra il
 concorrente e i box che, in caso di danni permanenti al nodo (ad esempio non
 torna on-line prima della fine della gara) porterà al mancato pitstop e cambio
 di strategia del concorrente. Questa è la soluzione ad una parte del problema
 dovuto al sistema distribuito, gestendo questi fault e garantendo la corretta e
-continua esecuzione della simulazione si è arrivati alla robustezza del sistema
-distribuito.
+continua esecuzione della simulazione.
 Inoltre la consapevolezza di errori di rete porta alla presenza di componenti di
 "non determinismo" comunque controllato e gestito, come richiesto nel paragrafo
 \ref{componenti_non_determinismo}.
@@ -457,6 +480,7 @@ Nel corso delle due seguenti sottosezioni verranno analizzate le soluzioni
 adottate per immagazinare i dati realtivi ai singoli concorrenti
 e calcolare quelli relativi alla gara.
      \subsubsection{Dati singolo concorrente}
+     \label{stat_competitor}
      Come visto nel capitolo relativo all'entità \textbf{Circuito}, ogni
 concorrente aggiorna, ad ogni 
      \textbf{Checkpoint}, un orologio relativo alla sua corsa. Per ognuno si può
@@ -567,10 +591,14 @@ snapshot (come si è visto) verrà messa in attesa.
 \subsection{Interazione utente-sistema}
 Nella simulazione si è scelto di permettere una interazione fra l'utente esterno
 e il sistema. Le modalità verranno esposte approfonditamente nei prossimi
-paragrafi. L'interazione che verrà analizzata è divisa in due tipologie, la
-prima riguarda l'osservazione della gara e la velocità di simulazione, la
+paragrafi. L'interazione che verrà analizzata è divisa in due tipologie:
+\begin{itemize}
+\item la
+prima riguarda l'osservazione della gara e la velocità di simulazione;
+\item la
 seconda invece parla di interventi sulla gara da parte di un utente esterno,
 evento che completa le funzionalità di "non determinismo" permesse nel sistema.
+\end{itemize}
 \subsubsection{Osservazione gara ( lato box, lato tv )}
 Per quanto riguarda l'osservazione della gara questa avviene in due modalità
 differenti. La prima è la visione della gara nel suo insieme, con la
@@ -580,22 +608,23 @@ pista, la classifica giro dopo giro e le migliori prestazioni. La seconda invece
 riferimento. Vengono visualizzate informazioni relative ai consumi e ai tempi di
 percorrenza. La sola osservazione della gara non introduce errori in quanto non
 l'unica azione prevista è il reperimento di informazioni già presenti nel
-sistema centrale. Nel caso non siano ancora presenti i dati richiesti la
+sistema centrale. Nel caso non siano ancora presenti i dati richiesti, la
 chiamata (essendo sincrona) diventa bloccante in attesa delle informazioni
 richieste. La possibilità di richiesta di informazioni che non saranno mai
 disponibili nel sistema (ad esempio istanti di tempo a cui la gara non arriverà
-mai) non sono verificabili in quanto le informazioni vengono richieste in
+mai) non sono possibili in quanto le informazioni vengono richieste in
 maniera sequenziale e viene comunicato quando non sono più disponibili dati di
 interesse.
 \subsubsection{Intervento sulla gara ( lato box, lato tv )}
-Per quanto riguarda gli interventi permessi sulla gara sono di due tipi. Lato tv
+Gli interventi permessi sulla gara sono di due tipi. Lato tv
 viene permessa la modifica del tempo di simulazione, velocizzandolo o
 rallentandolo. Lato box invece è possibile richiamare la macchina ai box per un
-pitstop forzato, introducendo così l'ultima caratteristica di "non determinismo"
+pitstop forzato, introducendo così l'ultima componente di "non determinismo"
 permessa.
 Ogni intervento che è stato permesso sulla gara non introduce altri errori in
 quanto in un caso va a modificare il delay inserito per rendere reale la
-simulazione e nell'altro forza una azione comunque prevista (e presente) nel
+simulazione (non vincolante quindi ai fini della correttezza temporale)
+e nell'altro forza una azione comunque prevista (e presente) nel
 sistema. 
 \subsection{Inizializzazione competizione}
 Il seguente diagramma di sequenza spiega come avviene la sequenza di init della
