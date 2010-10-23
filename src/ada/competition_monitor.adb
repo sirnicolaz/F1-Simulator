@@ -21,8 +21,24 @@ package body Competition_Monitor is
 
    Onboard_Computers : Onboard_Computer_List_Point;
 
+   function Init( CompetitorQty_In : Integer;
+                 Laps_In : Integer) return STARTSTOPHANDLER_Point is
+
+   begin
+
+      CompetitorQty := CompetitorQty_In;
+      Laps := Laps_In;
+      Onboard_Computers := new Onboard_Computer_List(1..CompetitorQty);
+      CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
+      IsConfigured := true;
+
+      return CompetitionHandler;
+   end Init;
+
    protected body StartStopHandler is
 
+      -- This method's inoked remotely (through "Ready" defined below) by the boxes to notify the competition system
+      --+ that they're ready to start
       procedure Ready ( CompetitorID : in Integer) is
       begin
 
@@ -30,7 +46,7 @@ package body Competition_Monitor is
 	Ada.Text_IO.Put_Line(Integer'IMAGE(ExpectedBoxes) & " expected boxes");
       end Ready;
 
-      --Through this method the competition knows when to start the competitors
+      --By invoking this method, the Competition will know when to start the competitors
       entry WaitReady when ExpectedBoxes = 0 is
       begin
          null;
@@ -45,7 +61,7 @@ package body Competition_Monitor is
 
    function Ready(CompetitorID : Integer) return Boolean is
    begin
-      --Verify that the monitor is initialised and the competitor
+      --Verify that the monitor is initialised and that the competitor's
       --+ onboard computer is added (everything should already be
       --+ fine automatically once the box invokes this method, but
       --+ just for bug tracing we inserted this control)
@@ -60,20 +76,6 @@ package body Competition_Monitor is
    begin
       Common.Simulation_Speed := Simulation_Speed_In;
    end Set_Simulation_Speed;
-
-   function Init( CompetitorQty_In : Integer;
-                 Laps_In : Integer) return STARTSTOPHANDLER_Point is
-
-   begin
-
-      CompetitorQty := CompetitorQty_In;
-      Laps := Laps_In;
-      Onboard_Computers := new Onboard_Computer_List(1..CompetitorQty);
-      CompetitionHandler.Set_ExpectedBoxes(CompetitorQty);
-      IsConfigured := true;
-
-      return CompetitionHandler;
-   end Init;
 
    procedure Add_Onboard_Computer(Computer_In : Competitor_Computer.COMPUTER_Point;
                                   Competitor_ID_In : Integer) is
@@ -102,8 +104,8 @@ package body Competition_Monitor is
 
    end Get_CompetitorInfo;
 
-   --Given 2 Float Arrays with times e ids of competitors in classific, the function creates
-   --+ 1 Array with the firs Array + the elements of the second one whose id is not itn the first one.
+   --Given 2 Float Arrays with times e IDs of the competitors in classific, the function creates
+   --+ 1 Array with the firs Array + the elements of the second one whose id is not in the first one.
    procedure Merge(IdArray1 : Integer_Array_Point;
 		   TimeArray1 : Float_Array_Point;
 		   IdArray2 : Integer_Array_Point;
@@ -176,7 +178,7 @@ package body Competition_Monitor is
 
    end Merge;
 
-   function Is_Present(ID : Integer;
+   function Contains(ID : Integer;
                        IdArray : Integer_Array_Point) return Boolean is
    begin
       if(IdArray /= null) then
@@ -187,7 +189,7 @@ package body Competition_Monitor is
 	end loop;
       end if;
       return FALSE;
-   end Is_Present;
+   end Contains;
 
    procedure Get_CompetitionInfo( TimeInstant : Float;
                                  ClassificationTimes : out Float_Array_Point;
@@ -214,6 +216,10 @@ package body Competition_Monitor is
    begin
       CompetitionHandler.WaitReady;
 
+      -------------------------
+      --Calculate race status--
+      -------------------------
+      -- The race status is the position of each competitor at the given time instant
       Tmp_StatsString := Common.Unbounded_String.To_Unbounded_String
         ("<?xml version=""1.0""?>" &
          "<competitionStatus time=""" & Float'IMAGE(TimeInstant) & """><competitors>");
@@ -255,8 +261,6 @@ package body Competition_Monitor is
             "<sector>" & Common.Integer_To_String(Tmp_Stats.Sector) & "</sector>" &
             "</competitor>");
 
-
-
          declare
 	  HighestCompletedLapThisCompetitor : Integer;
 	 begin
@@ -280,7 +284,9 @@ package body Competition_Monitor is
 
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String("</competitors>");
 
-      --Retrieving best performances
+      ----------------------------
+      --Retrie best performances--
+      ----------------------------
       Competition_Computer.Get_BestLap(TimeInstant,
                         LapTime       => Tmp_BestLapTime,
                         LapNum        => Tmp_BestLapNum,
@@ -294,7 +300,7 @@ package body Competition_Monitor is
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("<bestTimes>" &
          "<lap num=""" & Common.Integer_To_String(Tmp_BestLapNum) & """></lap>" &
-         "<time>" & Float'IMAGE(Tmp_BestLapTime) & "</time>" & --TODO perform a better conversion to string
+         "<time>" & Float'IMAGE(Tmp_BestLapTime) & "</time>" &
          "<competitorId>" & Common.Integer_To_String(Tmp_BestLapCompetitor) & "</competitorId>" &
          "<sectors>"
         );
@@ -315,6 +321,9 @@ package body Competition_Monitor is
          "</bestTimes>"
         );
 
+      ---------------------------
+      --Calculate the classific--
+      ---------------------------
       if(HighestCompletedLap /= -1) then
 
          Competition_Computer.Get_Lap_Classification(HighestCompletedLap,
@@ -357,7 +366,7 @@ package body Competition_Monitor is
 
          if(LappedCompetitors_ID /= null) then
             for Index in 1..LappedCompetitors_ID.all'LENGTH loop
-		if(Is_Present(LappedCompetitors_ID(Index),CompetitorIDs_WithTimes) = FALSE) then
+		if(Contains(LappedCompetitors_ID(Index),CompetitorIDs_WithTimes) = FALSE) then
 		  Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
 		    ("<competitor id=""" & Common.Integer_To_String(LappedCompetitors_ID(Index)) & """>" &
 		     "<lap>" & Common.Integer_To_String(LappedCompetitors_CurrentLap(Index)) & "</lap>" &
@@ -375,6 +384,7 @@ package body Competition_Monitor is
       Tmp_StatsString := Tmp_StatsString & Common.Unbounded_String.To_Unbounded_String
         ("</competitionStatus>");
 
+      --XMLInfo will contain the XML string describing the competition state
       XMLInfo := Tmp_StatsString;
 
    end Get_CompetitionInfo;
@@ -434,6 +444,7 @@ package body Competition_Monitor is
       return XMLString;
    end Get_CompetitorConfiguration;
 
+   --This method's used by to approximately know which instant the competition reached
    function Get_Latest_Time_Instant return Float is
    begin
    	return Competition_Computer.Get_Latest_Time_Instant;

@@ -315,107 +315,107 @@ A partire da queste informazioni produce una nuova strategia ogni giro. Per ques
 utilizza nel corso della gara per ottenere suggerimenti utili per proseguire. La strategia fornita dal \emph{Box} potrebbe anche richiedere 
 un pitstop per un rifornimento benzina e cambio gomme.
 % Strategia adottata per la correttezza temporale
-\subsection{Strategia di simulazione}
-\label{strategia_simulazione}
-In questa sezione viene spiegata la strategia che \`{e} stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
-affrontare sono gi\`{a} state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
-La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entit\`{a} di supporto per evitare 
-i problemi visti. Tali entit\`{a} sono:
-\begin{itemize}
-  \item \textbf{coda al checkpoint}: ogni checkpoint introduce tratti di circuito con caratteristiche diverse rispetto a quello precedente.
-	      \`{E} quindi possibile che da un tratto a molteplicit\`{a} 5 si passi ad uno a molteplicit\`{a} 3. L'accesso a tale tratto va quindi
-	      regolato per evitare situazioni anomale. La coda \`{e} ordinata in base ai tempi segnati (ulteriori dettagli in seguito).
-  \item \textbf{istante di arrivo}: \`{e} l'istante in cui il concorrente \`{e} previsto arrivare. Indica l'istante reale di arrivo e dipende
-	      dal tempo di attraversamento (oltre che dal tempo accumulato fino a quel momento).
-  \item \textbf{istante limite di arrivo previsto}: \`{e} l'istante in cui il concorrente arriverebbe sotto ipotesi ottimistiche al massimo. 
-	      E' impossibile che il concorrente possa arrivare ad un checkpoint prima di questo istante. 
-  \item \textbf{flag ``arrivato''}: ogni posizione della coda di un checkpoint \`{e} caratterizzata anche da questa flag. Se \`{e} settata, significa
-	      che il concorrente in tale posizione \`{e} effettivamente in attesa sul checkpoint pronto ad attraversare. Altrimenti significa
-	      che \`{e} fisicamente su un altro tratto e che il tempo segnato \`{e} un tempo limite (e non l'istante di arrivo effettivo).
-  \item \textbf{istante di liberazione traiettoria}: ogni traiettoria presente in un tratto \`{e} contrassegnata da questo tempo. Se un concorrente
-	      arriva all'istante 42.0, la traiettoria in quel momento \`{e} libera e calcola un tempo di attraversamento di 3.0, l'istante di liberazione
-	      della traiettoria sar\`{a} 42.0+3.0 = 45.0. 
-\end{itemize}
-Detto questo \`{e} possibile vedere l'algoritmo per l'attraversamento di un tratto dal momento in cui il concorrente arriva fisicamente ad un checkpoint
-fino al raggiungimento di quello successivo.\\
-\emph{Premessa}: un concorrente controlla la sua posizione su una coda ogni volta che essa viene riordinata.\\
-\emph{Precondizione}: il concorrente ha gi\`{a} segnato il suo tempo di arrivo effettivo sulla coda del checkpoint che vuole attraversare.
-\begin{enumerate}
-\item il concorrente setta la flag ``arrivato'' nella coda del checkpoint sulla posizione a lui riservata;
-\item controlla in che posizione \`{e} nella coda;
-\item se non \`{e} primo, attende di essere primo;
-\item quando \`{e} primo, richiede l'insieme di traiettorie da cui \`{e} costituito il tratto;
-\item valutando gli istanti di liberazione e le caratteristiche della traiettorie, decide quale sia quella che garantisce l'arrivo al checkpoint
-successivo all'istante di tempo pi\`{u} vicino.
-\item aggiunge il tempo di attraversamento calcolato (in base alle caratteristiche dell'auto e alla strategia) al tempo di liberazione del tratto o, 
-se il tempo di liberazione segnato \`{e} minore dell'istante di arrivo del concorrente, segna come istante di liberazione \emph{istante di arrivo}+\emph{tempo
-di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata liberata all'arrivo del concorrente). Altrimenti segnerà \emph{tempo segnato+tempo di attraversamento}.
-\item segna il tempo di arrivo effettivo (dipendente chiaramente dal tempo segnato sulla traiettoria) sulla coda del checkpoint successivo, che verr\`{a} \textbf{riordinata} in base al nuovo tempo.
-\item segna il tempo di arrivo limite su tutte le altre code, da quella successiva al checkpoint che si sta per raggiungere a quella del checkpoint
-appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene \textbf{riordinata}.
-\item delay per fini di simulazione;
-\item ritorna al passo uno per il checkpoint successivo;
-\end{enumerate}
-La strategia adottata si presta a simulare la corsa tenendo in considerazione ad ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
-anomali. Questo perch\`{e}:
-\begin{itemize}
-\item \emph{quando un concorrente \`{e} primo sulla coda ed effettivamente presente sulla coda, nessun concorrente potr\`{a} diventare primo finch\`{e} non sia il concorrente
-stesso attualmente primo a riordinare la lista}. Questo perch\`{e}, i tempi limite segnati sono i tempi minimi. Se il tempo effettivo del concorrente attualmente
-primo \`{e} inferiore a tutti tempi limite, essendo minimi, non potranno diventare pi\`{u} piccoli successivamente. Se nel frattempo qualcun altro arriva sul 
-checkpoint, esso segner\`{a} un tempo effettivo. Essendo il tempo effettivo per definizione maggiore o uguale al tempo limite, non sar\`{a} possibile che un tempo
-effettivo segnato successivamente possa essere minore di quello del concorrente attualmente primo.
-\item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo esclusivo}. Questa condizione \`{e} assicurata dal punto precedente. Mentre il 
-concorrente valuta le traiettorie, nessuno pu\`{o} diventare primo e effettuare una valutazione parallela delle stesse traiettorie. Il concorrente riordiner\`{a}
-la lista solo a traiettoria valutata, scelta e segnata con istante di liberazione, permettendo ad un altro concorrente di procedere.
-\item \emph{non possono esserci teletrasporti}. Prendendo il caso peggiore, ovvero un tratto ad una traiettoria, un segnale di teletrasporto avvenuto sarebbe
-che nel checkpoint N il concorrente A abbia tempo di arrivo effettivo 4.0 e il concorrente B 7.0. Dopo l'attraversamento di entrambi dovrebbe esserci nella 
-coda del checkpoint N+1 il concorrente B con 6.0 in prima posizione (ad esempio) e A con 8.0 a seguire. Il che significherebbe che in qualche modo B, nonostante
-abbia avuto accesso al tratto dopo A, sia riuscito lo stesso a sorpassarlo arrivando primo al checkpoint dopo. La cosa non pu\`{o} succedere. Per i punti spiegati
-prima, quando A arriva primo effettivo sulla coda del checkpoint N, potr\`{a} eseguire la valutazione delle traiettorie in modo esclusivo. Verr\`{a} quindi segnato
-un istante di liberazione sull'unica traiettoria disponibile maggiore o uguale a 4.0. Supponiamo 8.0. Verr\`{a} quindi segnato 8.0 nella coda del checkpoint N+1. A
-seguire verranno segnati $8.0+\epsilon$ su tutti gli altri tratti, fino al tratto N di nuovo dove la coda verr\`{a} riordinata e B risulter\`{a} primo effettivo.
-Ora, supponiamo (caso pessimo) che A non possa eseguire per un bel po' di tempo. B diventa primo su N, valuta la traiettoria e segna l'istante di liberazione.
-Tale istante non potr\`{a} essere minore di 8.0, poich\`{e} \`{e} stato il tempo segnato da A. Quindi, qualunque tempo di arrivo effettivo segnato al checkpoint
-N+1, sar\`{a} maggior di 8.0. Quindi B finir\`{a} in una posizione nella coda meno prioritaria rispetto ad A. In qualunque momento A venga riattivato quindi, sar\`{a}
-sicuro di non trovarsi B inaspettatamente davanti.
-\item \emph{un numero maggiore di o uguale a 2 di concorrenti eseguono in modo concorrente}: prendendo il caso precedente, dove A ha appena finito di valutare le
-traiettorie del tratto N. A segna un tempo pari a 8.0 effettivo sulla coda N+1 e $N+1+\epsilon$ (crescente) su tutti gli altri fino ad N di nuovo. Supponiamo
-B abbia segnato un tempo inferiore a $N+1+max(\epsilon)$ su N. B valuter\`{a} le traiettorie del tratto N. Nel frattempo A \`{e} primo sul tratto N+1 (assumendo
-che B avesse segnato un tempo limite comunque pi\`{u} basso del tempo effettivo di A). A valuter\`{a} le traiettorie
-''simultaneamente'' a B. Abbiamo quindi un sistema con task concorrenti.
-\end{itemize}
-Del rientro ai box non se ne \`{e} ancora discusso per evitare di rendere pi\`{u} confusionaria la spiegazione. Comunque la cosa non costituisce
-un grande problema: vi saranno due checkpoint speciali, quello esattamente prima della corsia dei box e quello subito all'uscita dei box.
-Quando un concorrente arriva sul checkpoint precedente ai box, richiede delle informazioni di strategia ai box. Se tali informazioni
-richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box \`{e} poi rappresentato da un checkpoint come tutti gli altri nel circuito.
-Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al checkpoint di uscita (nel circuito).\\
-I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
-velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
-sorpasso \`{e} data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
-che verr\`{a} segnato nel checkpoint di uscita.
-% Dimostrazione dell'assenza di stallo
-\subsection{Assenza di stallo}
-Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
-una macchina A attende la prima posizione nella coda associata al tratto 3 (per esempio). 
-Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2. Ma B risulta prima di A nella coda 3 e A 
-risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
-lo stallo porterebbe ad una contraddizione.\\
-\begin{proof}
-\textcolor{white}{42}\\
-\emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul checkpoint N.}\\
-	Se nella coda 2 ci sono A in testa seguita da B, avremo che $tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
-	determinato dai tempi di arrivo segnati.
-	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
-	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a} aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta t$, 
-	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
-	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi $tempo(3B)<tempo(3A)$.
-	Avremo quindi:\\
-
-	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
-	che \`{e} una contraddizione, quindi la situazione non si pu\`{o} verificare.
-\end{proof}
-\newpage
-%%% Architettura in dettaglio %%
+% \subsection{Strategia di simulazione}
+% \label{strategia_simulazione}
+% In questa sezione viene spiegata la strategia che \`{e} stata adottata per ottenere una simulazione realistica della gara. Le problematiche da 
+% affrontare sono gi\`{a} state discusse nel capitolo \ref{problematiche_concorrenza}.\\ 
+% La soluzione prevede l'esistenza di concorrenti che simultaneamente percorrono il circuito e un insieme di entit\`{a} di supporto per evitare 
+% i problemi visti. Tali entit\`{a} sono:
+% \begin{itemize}
+%   \item \textbf{coda al checkpoint}: ogni checkpoint introduce tratti di circuito con caratteristiche diverse rispetto a quello precedente.
+% 	      \`{E} quindi possibile che da un tratto a molteplicit\`{a} 5 si passi ad uno a molteplicit\`{a} 3. L'accesso a tale tratto va quindi
+% 	      regolato per evitare situazioni anomale. La coda \`{e} ordinata in base ai tempi segnati (ulteriori dettagli in seguito).
+%   \item \textbf{istante di arrivo}: \`{e} l'istante in cui il concorrente \`{e} previsto arrivare. Indica l'istante reale di arrivo e dipende
+% 	      dal tempo di attraversamento (oltre che dal tempo accumulato fino a quel momento).
+%   \item \textbf{istante limite di arrivo previsto}: \`{e} l'istante in cui il concorrente arriverebbe sotto ipotesi ottimistiche al massimo. 
+% 	      E' impossibile che il concorrente possa arrivare ad un checkpoint prima di questo istante. 
+%   \item \textbf{flag ``arrivato''}: ogni posizione della coda di un checkpoint \`{e} caratterizzata anche da questa flag. Se \`{e} settata, significa
+% 	      che il concorrente in tale posizione \`{e} effettivamente in attesa sul checkpoint pronto ad attraversare. Altrimenti significa
+% 	      che \`{e} fisicamente su un altro tratto e che il tempo segnato \`{e} un tempo limite (e non l'istante di arrivo effettivo).
+%   \item \textbf{istante di liberazione traiettoria}: ogni traiettoria presente in un tratto \`{e} contrassegnata da questo tempo. Se un concorrente
+% 	      arriva all'istante 42.0, la traiettoria in quel momento \`{e} libera e calcola un tempo di attraversamento di 3.0, l'istante di liberazione
+% 	      della traiettoria sar\`{a} 42.0+3.0 = 45.0. 
+% \end{itemize}
+% Detto questo \`{e} possibile vedere l'algoritmo per l'attraversamento di un tratto dal momento in cui il concorrente arriva fisicamente ad un checkpoint
+% fino al raggiungimento di quello successivo.\\
+% \emph{Premessa}: un concorrente controlla la sua posizione su una coda ogni volta che essa viene riordinata.\\
+% \emph{Precondizione}: il concorrente ha gi\`{a} segnato il suo tempo di arrivo effettivo sulla coda del checkpoint che vuole attraversare.
+% \begin{enumerate}
+% \item il concorrente setta la flag ``arrivato'' nella coda del checkpoint sulla posizione a lui riservata;
+% \item controlla in che posizione \`{e} nella coda;
+% \item se non \`{e} primo, attende di essere primo;
+% \item quando \`{e} primo, richiede l'insieme di traiettorie da cui \`{e} costituito il tratto;
+% \item valutando gli istanti di liberazione e le caratteristiche della traiettorie, decide quale sia quella che garantisce l'arrivo al checkpoint
+% successivo all'istante di tempo pi\`{u} vicino.
+% \item aggiunge il tempo di attraversamento calcolato (in base alle caratteristiche dell'auto e alla strategia) al tempo di liberazione del tratto o, 
+% se il tempo di liberazione segnato \`{e} minore dell'istante di arrivo del concorrente, segna come istante di liberazione \emph{istante di arrivo}+\emph{tempo
+% di attraversamento} (poich\`{e} significa che la traiettoria era gi\`{a} stata liberata all'arrivo del concorrente). Altrimenti segnerà \emph{tempo segnato+tempo di attraversamento}.
+% \item segna il tempo di arrivo effettivo (dipendente chiaramente dal tempo segnato sulla traiettoria) sulla coda del checkpoint successivo, che verr\`{a} \textbf{riordinata} in base al nuovo tempo.
+% \item segna il tempo di arrivo limite su tutte le altre code, da quella successiva al checkpoint che si sta per raggiungere a quella del checkpoint
+% appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene \textbf{riordinata}.
+% \item delay per fini di simulazione;
+% \item ritorna al passo uno per il checkpoint successivo;
+% \end{enumerate}
+% La strategia adottata si presta a simulare la corsa tenendo in considerazione ad ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
+% anomali. Questo perch\`{e}:
+% \begin{itemize}
+% \item \emph{quando un concorrente \`{e} primo sulla coda ed effettivamente presente sulla coda, nessun concorrente potr\`{a} diventare primo finch\`{e} non sia il concorrente
+% stesso attualmente primo a riordinare la lista}. Questo perch\`{e}, i tempi limite segnati sono i tempi minimi. Se il tempo effettivo del concorrente attualmente
+% primo \`{e} inferiore a tutti tempi limite, essendo minimi, non potranno diventare pi\`{u} piccoli successivamente. Se nel frattempo qualcun altro arriva sul 
+% checkpoint, esso segner\`{a} un tempo effettivo. Essendo il tempo effettivo per definizione maggiore o uguale al tempo limite, non sar\`{a} possibile che un tempo
+% effettivo segnato successivamente possa essere minore di quello del concorrente attualmente primo.
+% \item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo esclusivo}. Questa condizione \`{e} assicurata dal punto precedente. Mentre il 
+% concorrente valuta le traiettorie, nessuno pu\`{o} diventare primo e effettuare una valutazione parallela delle stesse traiettorie. Il concorrente riordiner\`{a}
+% la lista solo a traiettoria valutata, scelta e segnata con istante di liberazione, permettendo ad un altro concorrente di procedere.
+% \item \emph{non possono esserci teletrasporti}. Prendendo il caso peggiore, ovvero un tratto ad una traiettoria, un segnale di teletrasporto avvenuto sarebbe
+% che nel checkpoint N il concorrente A abbia tempo di arrivo effettivo 4.0 e il concorrente B 7.0. Dopo l'attraversamento di entrambi dovrebbe esserci nella 
+% coda del checkpoint N+1 il concorrente B con 6.0 in prima posizione (ad esempio) e A con 8.0 a seguire. Il che significherebbe che in qualche modo B, nonostante
+% abbia avuto accesso al tratto dopo A, sia riuscito lo stesso a sorpassarlo arrivando primo al checkpoint dopo. La cosa non pu\`{o} succedere. Per i punti spiegati
+% prima, quando A arriva primo effettivo sulla coda del checkpoint N, potr\`{a} eseguire la valutazione delle traiettorie in modo esclusivo. Verr\`{a} quindi segnato
+% un istante di liberazione sull'unica traiettoria disponibile maggiore o uguale a 4.0. Supponiamo 8.0. Verr\`{a} quindi segnato 8.0 nella coda del checkpoint N+1. A
+% seguire verranno segnati $8.0+\epsilon$ su tutti gli altri tratti, fino al tratto N di nuovo dove la coda verr\`{a} riordinata e B risulter\`{a} primo effettivo.
+% Ora, supponiamo (caso pessimo) che A non possa eseguire per un bel po' di tempo. B diventa primo su N, valuta la traiettoria e segna l'istante di liberazione.
+% Tale istante non potr\`{a} essere minore di 8.0, poich\`{e} \`{e} stato il tempo segnato da A. Quindi, qualunque tempo di arrivo effettivo segnato al checkpoint
+% N+1, sar\`{a} maggior di 8.0. Quindi B finir\`{a} in una posizione nella coda meno prioritaria rispetto ad A. In qualunque momento A venga riattivato quindi, sar\`{a}
+% sicuro di non trovarsi B inaspettatamente davanti.
+% \item \emph{un numero maggiore di o uguale a 2 di concorrenti eseguono in modo concorrente}: prendendo il caso precedente, dove A ha appena finito di valutare le
+% traiettorie del tratto N. A segna un tempo pari a 8.0 effettivo sulla coda N+1 e $N+1+\epsilon$ (crescente) su tutti gli altri fino ad N di nuovo. Supponiamo
+% B abbia segnato un tempo inferiore a $N+1+max(\epsilon)$ su N. B valuter\`{a} le traiettorie del tratto N. Nel frattempo A \`{e} primo sul tratto N+1 (assumendo
+% che B avesse segnato un tempo limite comunque pi\`{u} basso del tempo effettivo di A). A valuter\`{a} le traiettorie
+% ''simultaneamente'' a B. Abbiamo quindi un sistema con task concorrenti.
+% \end{itemize}
+% Del rientro ai box non se ne \`{e} ancora discusso per evitare di rendere pi\`{u} confusionaria la spiegazione. Comunque la cosa non costituisce
+% un grande problema: vi saranno due checkpoint speciali, quello esattamente prima della corsia dei box e quello subito all'uscita dei box.
+% Quando un concorrente arriva sul checkpoint precedente ai box, richiede delle informazioni di strategia ai box. Se tali informazioni
+% richiedono un rientro, il concorrente prender\`{a} il tratto dei box. Il box \`{e} poi rappresentato da un checkpoint come tutti gli altri nel circuito.
+% Tale checkpoint introduce il tratto di uscita dai box, che porter\`{a} al checkpoint di uscita (nel circuito).\\
+% I tratti nella corsia dei box hanno molteplicit\`{a} pari al numero di concorrenti. Questo perch\`{e} i concorrenti vanno alla stessa
+% velocit\`{a} nelle corsie dei box e potenzialmente tutti insieme (uno dietro l'altro), quindi non possono avvenire sorpassi. L'unica ipotesi di
+% sorpasso \`{e} data dalla velocit\`{a} che un concorrente richiede per il rifornimento e il cambio gomme. Tale tempo influir\`{a} sull'istante di arrivo
+% che verr\`{a} segnato nel checkpoint di uscita.
+% % Dimostrazione dell'assenza di stallo
+% \subsection{Assenza di stallo}
+% Le situazioni di stallo non si verificano per i seguenti motivi. Ragionando per assurdo, uno stallo si potrebbe verificare se:
+% una macchina A attende la prima posizione nella coda associata al tratto 3 (per esempio). 
+% Nel frattempo Un concorrente B \`{e} in attesa sulla coda associata al tratto 2. Ma B risulta prima di A nella coda 3 e A 
+% risulta prima di B nella coda 2 e il tratto 2-3 possiede una sola traiettoria.\\
+% lo stallo porterebbe ad una contraddizione.\\
+% \begin{proof}
+% \textcolor{white}{42}\\
+% \emph{Premessa: tempo(NX) $\rightarrow$ tempo del concorrente X segnato sul checkpoint N.}\\
+% 	Se nella coda 2 ci sono A in testa seguita da B, avremo che $tempo(2A)<tempo(2B)$, poich\`{e} l'ordine della coda \`{e} 
+% 	determinato dai tempi di arrivo segnati.
+% 	Se A \`{e} in attesa sulla coda 3, vuol dire che avr\`{a} aggiornato per ultima la coda 3-1, ovvero 2, e di conseguenza $tempo(2A)>tempo(3A)$.
+% 	B invece \`{e} in attesa effettiva sulla coda 2, quindi avr\`{a} aggiornato la coda del tratto successivo con un valore dato da $t(2B)+ \delta t$, 
+% 	con $ \delta t$ un valore minimo diverso da zero previsto per l'attraversamento da 2 a 3. Quindi $tempo(2B)<tempo(3B)$.
+% 	L'ipotesi di stallo prevede che nella coda 3 vi sia prima B e poi A, quindi $tempo(3B)<tempo(3A)$.
+% 	Avremo quindi:\\
+% 
+% 	$tempo(3A)<tempo(2A)<tempo(2B)<tempo(3B)<tempo(3A)$\\\\
+% 	che \`{e} una contraddizione, quindi la situazione non si pu\`{o} verificare.
+% \end{proof}
+% \newpage
+% %%% Architettura in dettaglio %%
 \section{Architettura in dettaglio}
 Si spiegher\`{a} ora con maggior dettaglio l'architettura di sistema, esplicando come le principali classi implementate svolgano le funzionalit\`{a}
 esposte dalle interfacce illustrate nel capitolo precedente.
@@ -430,32 +430,32 @@ esposte dalle interfacce illustrate nel capitolo precedente.
 La \emph{Competition} \`{e}, come gi\`{a} accennato, una componente di init.\\
 Il tutto ha inizio a partire da \textbf{Main\_Competition} che, come dice il nome, \`{e} l'unit\`{a} di avvio.\\
 \textbf{Main\_Competition} si occupa di istanziare gli oggetti necessari all'avvio e configurazione della competizione. Per la configurazione
-vengono istanziati \textbf{RegistrationHandler} e \textbf{CompetitionConfigurator} (della componente \emph{Configurator}).
+vengono istanziati \textbf{Registration\_Handler} e \textbf{Competition\_Configurator} (della componente \emph{Configurator}).
 Per l'avvio invece \textbf{Starter}. \\
 Ad orchestrare la scena, un unica istanza del \textbf{Synch\_Competition} condivisa fra le altre 3 unit\`{a}. Il loro scopo \`{e}:
 \begin{itemize}
 \item \textbf{Synch\_Competition}, \`{e} una risorsa protetta che gestisce l'accesso in mutua esclusione alla configurazione della competizione
 e dell'inizializzazione dei concorrenti. La risorsa assicura tramite \emph{entry} a guardia booleana
 che avvengano in ordine prima la configurazione
-della competizione (da parte del \textbf{CompetitionConfigurator}) e poi la registrazione dei concorrenti (per opera del \textbf{RegistrationHandler}).
-Questo vincolo \`{e} dato dal fatto che alcune impostazioni di competizioni devono essere fornite ai box dopo la configurazione del concorrente, 
+della competizione (da parte del \textbf{Competition\_Configurator}) e poi la registrazione dei concorrenti (per opera del \textbf{Registration\_Handler}).
+Questo vincolo \`{e} dato dal fatto che alcune impostazioni di competizione devono essere fornite ai box dopo la configurazione del concorrente, 
 come ad esempio il numero di lap. Inoltre fra i parametri configurabili vi \`{e} anche il numero massimo di partecipanti alla gara. Di conseguenza
 \`{e} prima necessario conoscere il limite per poi poter regolare il flusso di registrazioni.\\
 Durante la fase di configurazione (metodo \underline{Configure}), vengono inizializzati \emph{Circuit} e \emph{Stats} tramite le interfacce
 illustrate nel diagramma.\\
-A configurazione di competizione avvenuta, verr\`{a} aperta le entry\\ \underline{Register\_NewCompetitor}, utilizzata dal \textbf{RegistrationHandler}
-per registrare i vari concorrenti. Ad ogni invocazione verr\`{a} inizializzato un concorrente (\textbf{TaskCompetitor}) con un iteratore al circuito
+A configurazione di competizione avvenuta, verr\`{a} aperta le entry\\ \underline{Register\_New\_Competitor}, utilizzata dal \textbf{Registration\_Handler}
+per registrare i vari concorrenti. Ad ogni invocazione verr\`{a} inizializzato un concorrente (\textbf{Competitor\_Task}) con un iteratore al circuito
 e le impostazioni passate in input. Il task del concorrente cos\`{i} istanziato rimarr\`{a} in attesa dello ``start''.\\
 Oltre alla funzionalit\`{a} di configurazione, questa classe offre anche la funzionalit\`{a} di avvio (metodo \underline{Start}).
 Tale entry si aprir\`{a} solo quando tutti i concorrenti previsti sono stati iscritti. Viene invocata dall'unit\`{a} \textbf{Starter}.
-Il metodo mette il task richiedente in attesa sulla risorsa \textbf{StartHandler} (componente \emph{Monitor}) sull'entry \underline{MonitorBoxReadyState}.
-Quanto tutti i box avranno dato il loro ok (maggiori dettagli a seguire), il thread potr\`{a} continuare la sua esecuzione e passare allo \underline{Start}
+Il metodo mette il task richiedente in attesa sulla risorsa \textbf{Start\_Handler} (componente \emph{Monitor}) sull'entry \underline{Wait\_To\_Be\_First}.
+Quando tutti i box avranno dato il loro ok (maggiori dettagli a seguire), il thread potr\`{a} continuare la sua esecuzione e passare allo \underline{Start}
 di tutti i concorrenti in attesa di partire.
 \item \textbf{Starter} \`{e} il task finalizzato a gestire l'avvio della competizione. Una volta avviato dal main, il task utilizza il metodo \underline{Ready}
 offerto dal package \emph{Competition} per manovrare l'avvio. All'interno del metodo, prima si mette in attesa che tutti i concorrenti
 si siano iscritti (utilizzando il metodo \underline{Wait} del singleton di \textbf{Synch\_Competition}) per poi invocare il metodo \underline{Start} dello
 stesso \textbf{Synch\_Competition}, descritto poche righe pi\`{u} sopra.
-\item \textbf{RegistrationHandler} \`{e} l'oggetto che rimane in attesa di concorrenti. Pi\`{u} precisamente, \`{e} un server dedicato ad accogliere
+\item \textbf{Registration\_Handler} \`{e} l'oggetto che rimane in attesa di concorrenti. Pi\`{u} precisamente, \`{e} un server dedicato ad accogliere
 le richieste di registrazione dei concorrenti. Con il supporto di Polyorb \`{e} possibile invocare questo oggetto da remoto. Ad ogni richiesta,
 vengono salvati i parametri di configurazione in un file xml il cui nome e locazione verranno passati a \textbf{Synch\_Competition} per
  effettuare il resto delle procedure di inizializzazione del concorrente. Di ritorno ci saranno l'ID del concorrente, il numero di lap,
@@ -469,7 +469,7 @@ del \textbf{Competition\_Monitor} che il \emph{Box} dovr\`{a} utilizzare per rim
 \caption{Class diagram - Competitor}
 \end{figure}
 \end{center}
-L'unit\`{a} principale del \emph{Competitor} \`{e} il \textbf{TaskCompetitor}. \`{E} la risorsa attiva che si occupa di percorrere la pista e valutare
+L'unit\`{a} principale del \emph{Competitor} \`{e} il \textbf{Competitor\_Task}. \`{E} la risorsa attiva che si occupa di percorrere la pista e valutare
 la traiettoria ottima in base alle condizioni del tratto e dei competitor presenti nelle vicinanze. Le informazioni statiche del concorrente
 sono contenute in \textbf{Driver}. \textbf{Car} mantiene alcune caratteristiche statiche sulla macchina e altre dinamiche, come il livello
 di benzina e l'usura delle gomme. \textbf{Strategy} mantiene le seguenti informazioni:
@@ -485,16 +485,17 @@ e \textsc{Livello di gas} vengono tenute in considerazione solo in caso di pitst
 le impostazioni di \textbf{Car} (le gomme vengono automaticamente messe a nuovo). 
 La durata del pitstop viene usata per aggiornare correttamente il tempo di arrivo segnato nel checkpoint di uscita
 dai box.\\
-Quando un concorrente si trova sul checkpoint prima della corsia dei box, effettua una chiamata al \emph{Box} tramite la \textbf{CompetitorRadio}
-per richiedere una strategia aggiornata. Se la strategia tornata contiene un numero di giri al pitstop pari a 0, il \textbf{TaskCompetitor}
+Quando un concorrente si trova sul checkpoint prima della corsia dei box, effettua una chiamata al \emph{Box} tramite la \textbf{Competitor\_Radio}
+per richiedere una strategia aggiornata. Se la strategia tornata contiene un numero di giri al pitstop pari a 0, il \textbf{Competitor\_Task}
 valuter\`{a} e percorrer\`{a} la corsia dei box invece che quella del circuito, per poter effettuare il pitstop.\\\\
-Il \textbf{TaskCompetitor} e tutte le unit\`{a} associate vengono inizializzate in fase di init tramite i seguenti metodi offerti dal package
+Il \textbf{Competitor\_Task} e tutte le unit\`{a} associate vengono inizializzate in fase di init tramite i seguenti metodi offerti dal package
 \textbf{Competitor}:
 \begin{itemize}
 \item \underline{Configure\_Driver}
 \item \underline{Configure\_Car}
-\item \underline{Costruttore \textbf{TaskCompetitor}}
+\item \underline{Costruttore \textbf{Competitor\_Task}}
 \end{itemize}
+Il \textbf{Competitor} si appoggia al motore fisico gestito da \textbf{Physic\_Engine} per calcolare i tempi e i consumi.
 \newpage
 \subsubsection{Circuit}
 \begin{center}
@@ -509,7 +510,7 @@ i parametri per la creazione del circuito. Il file XML descrittore del circuito 
 \begin{itemize}
   \item lunghezza
   \item angolo
-  \item molteplicit\`{a} (numero di concorrenti che possono attraversare contemporaneamente il tratto)
+  \item numero di traiettorie percorribili
   \item grip, ovvero aderenza sul tratto
 \end{itemize}
 Vi sono inoltre 3 checkpoint che dovranno avere uno dei seguenti attributi booleani:
@@ -526,23 +527,25 @@ i concorrenti che tentano di accedere al tratto. Il \textbf{Checkpoint} \`{e} po
 \textbf{Checkpoint\_Synch} finalizzata a regolare l'accesso in mutua esclusione. La risorsa inoltre incapsula la lista di \textbf{Path}
 che costituiscono il tratto associato al checkpoint. Infine offre una serie di metodi da utilizzarsi per interagire con le risorse sottostanti.\\
 I \textbf{Path} appena accennati vengono generati in fase di creazione del \textbf{Checkpoint} a partire dalle informazioni di base
-reperite dal file di configurazione. Vengono generati tanti \textbf{Path} quanto la molteplicit\`{a} impostata del tratto. Ogni \textbf{Path} 
+reperite dal file di configurazione. Viene generator un numero di \textbf{Path} pari alle traiettorie percorribili. Ogni \textbf{Path} 
 riceve valori di lunghezza che possono variare. Bisogna assicurare 1.5 m di larghezza per ogni macchina (approssimativamente). La prima
 riceve i valori di base e viene virtualmente posizionata su un bordo del tratto. Le altre vengono posizionate man mano una di fianco all'altra,
-quindi la lunghezza della traiettoria cresce in rapporto alla distanza dalla prima e all'angolo del tratto. Tutti i \textbf{Path} di un tratto
+quindi la lunghezza della traiettoria cresce in rapporto alla distanza dalla prima e all'angolo del tratto. 
+Infine viene definito quante macchine possono restare in fila dentro ogni \textbf{Path} in base alla sua lunghezza e all'assunzione
+che una macchina necessiti di 4.5 m di spazio.\\Tutti i \textbf{Path} di un tratto
 vengono incapsulati in una risorsa protetta denominata \textbf{Crossing} che ne regola l'accesso in mutua esclusione e offre i metodi di 
 accesso pubblici.\\
 Infine viene creata una corsia dei box coerente con la distanza fra i checkpoint ``prebox'' e l'``exitbox''. I tratti prima e dopo il checkpoint
 dei box sono a molteplicit\`{a} uguale al numero di concorrenti. Questo perch\`{e} potenzialmente ai box potrebbero esserci contemporaneamente tutte
 le auto. Inoltre si \`{e} deciso di posizionare il checkpoint del box in coincidenza con il traguardo. Quindi ogni box \`{e} anche un goal.\\\\
-Verranno ora elencati metodi pi\`{u} rilevanti esposti dal \textbf{Checkpoint\_Synch} 
-per poter mettere in pratica la strategia di attraversamento descritta nella sezione \ref{strategia_simulazione}:
+I checkpoint vengono gestiti dal package \textbf{Checkpoint\_Handler}, mentre i path da \textbf{Path\_Handler}.
+Verranno ora elencati metodi pi\`{u} rilevanti esposti dal \textbf{Checkpoint\_Synch}:
 \begin{description}
 \item{\textbf{procedure Signal\_Arrival(CompetitorID\_In : INTEGER)}}\\
 Il metodo marca nella coda del checkpoint l'arrivo effettivo del concorrente;
 \item{\textbf{procedure Signal\_Leaving(CompetitorID\_In : INTEGER)}}\\
 Il metodo marca nella coda del checkpoint l'uscita del concorrente;
-\item{\textbf{procedure Set\_ArrivalTime(CompetitorID\_In : INTEGER; Time\_In : FLOAT)}}\\
+\item{\textbf{procedure Set\_Lower\_Bound\_Arrival\_Instant(CompetitorID\_In : INTEGER; Time\_In : FLOAT)}}\\
 Il metodo segna il tempo previsto di arrivo del concorrente nella coda del checkpoint;
 \item{\textbf{procedure Remove\_Competitor(CompetitorID\_In : INTEGER)}}\\
 Il metodo rimuove il competitor dalla coda. Ci\`{o} significa che l'id e il tempo del competitor non apparir\`{a} pi\`{u}
@@ -550,12 +553,12 @@ nella coda. Questo metodo \`{e} utilizzato, per esempio, quando un concorrente f
 e deve quindi liberare i checkpoint per evitare di creare starvation;
 \item{\textbf{function Get\_Time(CompetitorID\_In : INTEGER) return FLOAT}}
 La funzione ritorna il tempo segnato sulla coda del concorrente con ID dato in input;
-\item{\textbf{entry Wait\_Ready(Competitor\_ID : INTEGER)}}
+\item{\textbf{entry Wait\_To\_Be\_First(Competitor\_ID : INTEGER)}}
 Nel momento in cui un concorrente arriva fisicamente su un checkpoint, dopo aver marcato il suo arrivo
 utilizza questo metodo per sapere quando arriva il suo turno per attraversare (viene cio\`{e} posizionato nella prima posizione della coda);
 \item{\textbf{procedure Get\_Paths(Paths2Cross : out CROSSING\_POINT;  Go2Box : BOOLEAN)}}
 Quando il concorrente sa di essere primo sulla coda del \textbf{Checkpoint}
-(in seguito all'invocazione del metodo \underline{Wait\_Ready}), potr\`{a} invocare questa procedura per
+(in seguito all'invocazione del metodo \underline{Wait\_To\_Be\_First}), potr\`{a} invocare questa procedura per
 ottenere l'insieme di \textbf{Path} che costituiscono il tratto e procedere alla valutazione. Il booleano ``Go2Box'', se valorizzato a ``true'',
 impone al \textbf{Checkpoint\_Synch} di tornare (se presente) l'insieme di \textbf{Path} relativi alla corsia dei box.
 Si \`{e} sicuri che nessuno star\`{a} effettuando operazioni sul tratto nel frattempo perch\`{e} tale azione da parte
@@ -591,9 +594,9 @@ sua copia dell'\textbf{Racetrack\_Iterator}.
 \caption{Class diagram - Stats}
 \end{figure}
 \end{center}
-La componente \emph{Stats} \`{e} implicitamente suddivisa in 2 sotto-componenti: \textbf{OnboardComputer} e \textbf{CompetitionComputer}. 
+La componente \emph{Stats} \`{e} implicitamente suddivisa in 2 sotto-componenti: \textbf{OnboardComputer} e \textbf{Competition\_Computer}. 
 Prima di discutere dei dettagli delle due, \`{e} necessario introdurre la struttura di una risorsa che viene utilizzata come
-pacchetto per il trasporto degli aggiornamenti tra \emph{Competitor}, \textbf{OnboardComputer} e \textbf{CompetitionComputer}. La risorsa \`{e} 
+pacchetto per il trasporto degli aggiornamenti tra \emph{Competitor}, \textbf{OnboardComputer} e \textbf{Competition\_Computer}. La risorsa \`{e} 
 un tipo record denominato \textbf{Competitor\_Stats}, contenente i seguenti dati:
 \begin{itemize}
       \item\textbf{Time : FLOAT;}\\l'istante a cui fa riferimento l'aggiornamento
@@ -629,13 +632,13 @@ anche ai dati passati) e se migliore di quello precedentemente salvato (in \text
 \item se la fine del tratto coincide con la fine del settore vengono anche aggiornate le informazioni in \textbf{Synch\_Info\_For\_Box}. 
 Si ricorda infatti che il \emph{Box} riceve le informazioni aggiornate alla fine di ogni settore.
 \item se la fine del tratto corrisponde con la fine del giro, viene aggiornato il miglior tempo di giro come fatto per i settori.
-\item una volta effettuati tutti i controlli, le informazioni vengono impacchettate e inviate a \textbf{CompetitionComputer} per ulteriori
+\item una volta effettuati tutti i controlli, le informazioni vengono impacchettate e inviate a \textbf{Competition\_Computer} per ulteriori
 controlli e per essere salvate.
 \end{itemize}
-\item \textbf{CompetitionComputer}:\\
+\item \textbf{Competition\_Computer}:\\
 \`{e} invece il computer dedicato al calcolo delle statistiche globali, ovvero riguardanti tutti i partecipanti. Qualunque informazione 
 che riguardi uno o pi\`{u} concorrenti \`{e} da richiedere a questa entit\`{a}. 
-Il \textbf{CompetitionComputer} si appoggia a due risorse per l'archiviazione e l'organizzazione dei dati:
+Il \textbf{Competition\_Computer} si appoggia a due risorse per l'archiviazione e l'organizzazione dei dati:
 \begin{description}
 \item{\textbf{All\_Competitor\_Stats\_Collection}}: la risorsa \`{e} destinata a mantenere la storia degli aggiornamenti di tutti i concorrenti. 
 Ad ogni competitor \`{e} dedicato un array di \textbf{Synch\_Competitor\_Stats\_Handler}. Questa entit\`{a} serve ad racchiudere un \textbf{Competitor\_Stats}
@@ -644,7 +647,8 @@ vengono aggiunte ad ogni checkpoint. Ogni posizione dell'array quindi fa riferim
 tempo crescente.\\
 \textbf{Synch\_Competitor\_Stats\_Handler} mette a disposizione un entry di get (\underline{Get\_All}) che si apre solo nel momento in cui
 la risorsa \`{e} inizializzata. Questo permette di mettere in attesa i client che richiederanno informazioni non ancora disponibili.
-\item{\textbf{SOCT\_Array}}: questo array \`{e} la parte pi\`{u} alta di una struttura utilizzata per il supporto alla creazione della classifica.
+\item{Classification\_Handler}: come dice il nome, questo package è pensato per gestire la classifica.
+Al suo interno è presente {\textbf{SOCT\_Array}} che \`{e} la parte pi\`{u} alta di una struttura utilizzata per il supporto alla creazione della classifica.
 Nel punto pi\`{u} basso c'\`{e} \textbf{Classification\_Table}, unit\`{a} finalizzata a raccogliere i tempi di lap dei concorrenti. A gestire questa 
 tabella virtuale c'\`{e}\\ \textbf{Synch\_Ordered\_Classification\_Table}, che permette di mantenere la tabella ordinata in base ai tempi e offre un set
 di metodi per il reperimento dei dati. Infine \textbf{SOCT\_Array} (SOCT sta per Synch Ordered Classification Table) \`{e} un array in cui
@@ -654,7 +658,7 @@ Tramite il metodo \underline{Add\_Stat}, il \textbf{Computer} di \textbf{Onboard
 di salvare definitivamente un aggiornamento, viene verificato se fa riferimento ad un checkpoint di fine lap. In tal caso viene prima aggiornata
 la tabella della classifica corrispondente alla lap appena percorsa con l'istante di tempo segnato. Successivamente l'aggiornamento
 viene salvato nell'array di riferimento del concorrente, aprendo cos\`{i} la risorsa a chiunque la richieda o la stesse gi\`{a} richiedendo.\\\\
-Quanto descritto costituisce le fondamenta di \textbf{CompetitionComputer}. Il metodi offerti navigano queste strutture per ottenere
+Quanto descritto costituisce le fondamenta di \textbf{Competition\_Computer}. Il metodi offerti navigano queste strutture per ottenere
 i dati richiesti:
 \begin{description}
 \item{\textbf{procedure Get\_StatsByTime\\
@@ -672,14 +676,14 @@ fornisce il miglior giro, il tempo di tale giro e il concorrente che fatto il re
 \item{\textbf{procedure Get\_BestSectorTimes(TimeInstant : FLOAT;\\  Times : out FLOAT\_ARRAY;\\  Competitor\_IDs : out INTEGER\_ARRAY;\\
 Laps : out INTEGER\_ARRAY);}}\\
 fornisce il miglior tempo per ogni settore con i concorrenti che hanno fatto il record.
-\item{\textbf{procedure Get\_LapClassific(Lap : INTEGER;\\ TimeInstant : FLOAT;\\ CompetitorID\_InClassific : out INTEGER\_ARRAY\_POINT;\\ 
+\item{\textbf{procedure Get\_Lap\_Classification(Lap : INTEGER;\\ TimeInstant : FLOAT;\\ CompetitorID\_InClassific : out INTEGER\_ARRAY\_POINT;\\ 
 Times\_InClassific : out FLOAT\_ARRAY\_POINT;\\ LappedCompetitors\_ID : out INTEGER\_ARRAY\_POINT;\\ LappedCompetitor\_CurrentLap : out INTEGER\_ARRAY\_POINT);}}\\
 dato l'istante di tempo in input, il metodo fornisce la classifica pi\`{u} aggiornata con i tempi per quell'istante, compresi i concorrenti doppiati in ordine
 di posizione e la lap che stanno percorrendo. I concorrenti che invece non sono doppiati ma devono ancora finire la lap a cui la classifica si
 riferisce non vengono inclusi nella lista.
 \end{description}
 \end{itemize}
-Il \textbf{Competition\_Monitor}, (come vedremo poi pi\`{u} in dettaglio \`{e} una sotto-componente di \emph{Monitor}) fa riferimento al \textbf{CompetitionComputer} per 
+Il \textbf{Competition\_Monitor}, (come vedremo poi pi\`{u} in dettaglio \`{e} una sotto-componente di \emph{Monitor}) fa riferimento al \textbf{Competition\_Computer} per 
 ottenere le informazioni di competizione.
 \newpage
 \subsubsection{Monitor}
@@ -729,10 +733,11 @@ settore. Tali informazioni vengono convertite in un formato compatibile con il s
 \textbf{Competition\_Update}). Fatto ci\`{o}, gli aggiornamenti vengono inseriti nel buffer \textbf{Synch\_Competition\_Updates}. Il task
 \textbf{Strategy\_Updater} potr\`{a} cos\`{i} leggere gli aggiornamenti non appena disponibili (essendo tale buffer condiviso fra i due task).\\
 Il task richiede le informazioni per lap e settore. Se un'informazione non \`{e} ancora stata prodotta, il thread verr\`{a} messo in attesa.
-\item{\textbf{Strategy\_Updated}}:\\
+\item{\textbf{Strategy\_Updater}}:\\
 L'entit\`{a} rappresenta una parte dell'``intelligenza artificiale'' del sistema. Raccoglie gli aggiornamenti di gara dal buffer \textbf{Synch\_Competition\_Updates}
 man mano che essi vengono aggiunti. Tali aggiornamenti vengono di volta in volta usati per aggiornare le medie sui consumi
-e aggiornare la strategia di gara. L'aggiornamento della strategia avviene alla fine di ogni secondo settore.
+e aggiornare la strategia di gara. L'aggiornamento della strategia avviene alla fine di ogni secondo settore appoggiandosi al package \textbf{Artificial\_Intelligence},
+disaccoppiato dal resto per poterlo modificare con facilità.
 Una volta ottenuto l'aggiornamento del secondo settore, vengono usate le informazioni relative al 3$^{\circ}$ settore del giro precedente e quelle
 relative al 1$^{\circ}$ e 2$^{\circ}$ settore del giro corrente per computare una nuova strategia. Una volta che la strategia \`{e} stata calcolata
 viene inserita nel buffer \textbf{Strategy\_History}, da dove diventa disponibile nel caso il concorrente la richieda.
@@ -745,7 +750,7 @@ concorrente raccolte dal task \textbf{Update\_Retriever}. \textbf{Strategy\_Hist
 di inserimento.
 \item{\textbf{Synch\_Strategy\_History}}:\\
 Supporta la comunicazione fra \textbf{Strategy\_History} e \textbf{BoxRadio}. Il primo aggiunge una nuova strategia alla fine di ogni secondo settore
-al buffer. Il secondo \`{e} un tramite fra \emph{Competitor} e \emph{Box} e permette al \textbf{TaskCompetitor} di richiedere una strategia
+al buffer. Il secondo \`{e} un tramite fra \emph{Competitor} e \emph{Box} e permette al \textbf{Competitor\_Task} di richiedere una strategia
 nuova alla fine di ogni lap tramite il metodo \underline{Get\_Strategy}. Se la strategia \`{e} presente, verr\`{a} tornata. 
 Altrimenti il thread che si occupa di gestire la richiesta
 viene messo in attesa.
@@ -757,7 +762,7 @@ ad un indice. L'indice va da 1 a $3 * Lap Totali$, poich\`{e} i settori sono tre
 \`{e} disponibile, il richiedente viene messo in attesa fino a che l'aggiornamento non risulti disponibile.
 \end{description}
 Si pu\`{o} constatare che a concorrere per le informazioni collezionate nel \emph{Box} non vi sono solo unit\`{a} interne alla componente, ma anche
-thread che agiscono da altre componenti. Tali thread sono il \textbf{TaskCompetitor} lato \emph{Competition} e l'interfaccia di visualizzazione
+thread che agiscono da altre componenti. Tali thread sono il \textbf{Competitor\_Task} lato \emph{Competition} e l'interfaccia di visualizzazione
 delle informazioni del box lato \emph{Screen}. Il primo richiede una nuova strategia alla fine di ogni lap tramite \textbf{CompetitorRadio} (lato
 \emph{Competition}) che si mette in contatto con \textbf{BoxRadio} che comunica direttamente con \textbf{Synch\_Strategy\_History} per recuperare
 la strategia richiesta o essere messo in attesa.\\
@@ -819,15 +824,15 @@ Quando viene creato lo ScreenTv la connessione con il monitor di sistema \`{e} g
 %"Analisi della concorrenza"
 \subsection{Analisi della concorrenza}
 	%. analisi dell'interazione risorse e task (senza menzionare la distribuzione)
-	  %TaskCompetitor - Synch_Checkpoint
+	  %Competitor\_Task - Synch_Checkpoint
 \subsubsection{Interazione Competitor - Circuit}
-La strategia adottata per permettere ai concorrenti di percorrere la pista \`{e} stata descritta ad alto livello nel capitolo \ref{strategia_simulazione}.
+La strategia adottata per permettere ai concorrenti di percorrere la pista \`{e} stata descritta ad alto livello nel corso della relazione.
 Tale strategia \`{e} indipendente dal linguaggio o dall'implementazione, quindi il codice scritto ha semplicemente tradotto la teoria in pratica.
 Gli aspetti legati all'implementazione a cui si \`{e} dovuto prestare attenzione invece sono descritti di seguito:
 \begin{description}
 \item{Accesso simultaneo ai checkpoint}\\
 Per garantire che il checkpoint sia acceduto in modo mutamente esclusivo fra task, \`{e} stato sufficiente inserirlo in una risorsa protetta:
-\textbf{Synch\_Checkpoint}. Tale risorsa offre i metodi necessari ai \textbf{TaskCompetitor} per segnalare il proprio arrivo sulla coda,
+\textbf{Synch\_Checkpoint}. Tale risorsa offre i metodi necessari ai \textbf{Competitor\_Task} per segnalare il proprio arrivo sulla coda,
 ``scrivere'' il tempo di arrivo limite ecc. in modo da evitare race condition.
 \item{Prima posizione raggiunta}\\
 Come si \`{e} visto, quando un concorrente arriva ad un checkpoint deve segnalare il suo arrivo effettivo e, una volta raggiunta la prima posizione
@@ -838,7 +843,7 @@ Quando un concorrente necessita di attendere su una qualunque condizione, viene 
 sul suo rispettivo \textbf{Waiting\_Block}. Quando la condizione si verifica, il thread che ha causato il cambio
 di condizione invoca il metodo \underline{Notify} nel \textbf{Waitin\_Block}, che risveglia il thread che era in attesa.
 La condizione per cui viene utilizzata questa struttura \`{e} il raggiungimento della prima posizione nella coda del checkpoint. Il seguente diagramma
-descrive la sequenza di eventi che portano il \textbf{TaskCompetitor} da segnalare il suo arrivo al checkpoint all'ottenere i path tra cui
+descrive la sequenza di eventi che portano il \textbf{Competitor\_Task} da segnalare il suo arrivo al checkpoint all'ottenere i path tra cui
 scegliere per effettuare l'attraversamento del tratto.
 \begin{center}
 \begin{figure}[h!]
@@ -856,13 +861,13 @@ di arrivo con \underline{Set\_ArrivalTime} o quando un concorrente viene rimosso
 arriva (passando da ``in arrivo'' ad ``arrivato'') o del metodo \underline{Signal\_Leaving}, quando il concorrente ha finito ed \`{e} pronto
 a lasciare il checkpoint (passando da ``arrivato'' a ``in arrivo'').
 \end{itemize}
-Quando il \textbf{TaskCompetitor} segnala il suo arrivo ( a partire dalla chiamata \textbf{1}), viene segnato l'arrivo effettivo all'interno del checkpoint. Successivamente
+Quando il \textbf{Competitor\_Task} segnala il suo arrivo ( a partire dalla chiamata \textbf{1}), viene segnato l'arrivo effettivo all'interno del checkpoint. Successivamente
 viene controllata la posizione del concorrente in coda (chiamate dalla \textbf{6} alla \textbf{9}). Se il concorrente \`{e} primo, \`{e} necessario segnalarlo al rispettivo 
-\textbf{Waiting\_Block}, anche se il thread non si \`{e} ancora messo in ``wait'' (giusto per aprire la guardia). Successivamente il thread del \textbf{TaskCompetitor} attende
-il suo momento con \underline{Wait\_Ready}. Se era gi\`{a} primo, il metodo ritorna subito, dando la possibilit\`{a} al concorrente di ricevere la lista di path (sicuro che nessun
+\textbf{Waiting\_Block}, anche se il thread non si \`{e} ancora messo in ``wait'' (giusto per aprire la guardia). Successivamente il thread del \textbf{Competitor\_Task} attende
+il suo momento con \underline{Wait\_To\_Be\_First}. Se era gi\`{a} primo, il metodo ritorna subito, dando la possibilit\`{a} al concorrente di ricevere la lista di path (sicuro che nessun
 altro in quel momento la star\`{a} valutando). Altrimenti il thread viene messo in attesa nel \textbf{Waiting\_Block} relativo al concorrente. Il thread viene risvegliato
-nel momento in cui un altro \textbf{TaskCompetitor} modifica il suo istante di arrivo limite (facendo in modo che il concorrente in attesa venga a trovarsi nella prima
-posizione della coda) o quando viene rimosso dal checkpoint. Eseguendo una qualunque delle azioni accennate nella premessa, il \textbf{TaskCompetitor} verifica quindi
+nel momento in cui un altro \textbf{Competitor\_Task} modifica il suo istante di arrivo limite (facendo in modo che il concorrente in attesa venga a trovarsi nella prima
+posizione della coda) o quando viene rimosso dal checkpoint. Eseguendo una qualunque delle azioni accennate nella premessa, il \textbf{Competitor\_Task} verifica quindi
 la presenza di un concorrente effettivamente arrivato in prima posizione nella lista ed effettua una \underline{Notify} sul relativo \textbf{Waiting\_Block} (nel diagramma
 viene espresso come un evento esterno al punto \textbf{18}). In questo modo il concorrente in attesa pu\`{o} procedere alla valutazione.
 \end{description}
@@ -895,7 +900,7 @@ soluzione per\`{o} si presta a risolvere il problema per tutte le situazioni in 
 \subsubsection{Conclusioni}
 Quanto descritto riguarda i casi pi\`{u} problematici di gestione dell'accesso concorrente a risorse. Il resto dei casi viene trattato con semplici risorse protette
 e \textbf{entry} con guardie. Non si presenta quindi il rischio di racecondition. Nemmeno starvation dovrebbe essere possibile, 
-a meno che per qualche motivo un thread relativo ad un \textbf{TaskCompetitor}
+a meno che per qualche motivo un thread relativo ad un \textbf{Competitor\_Task}
 non si interrompa inaspettatamente, bloccando il processo di aggiornamento delle statistiche e quindi la produzione di snapshot di gara.
 %"Distribuzione"
 \subsection{Distribuzione}
@@ -942,47 +947,3 @@ connessione semplicemente facendo mantenere al concorrente la stessa strategia a
 Se la connessione venisse invece a mancare temporaneamente al \emph{Box}, esso rimarrebbe in attesa che la connessione ritorni per procedere all'aggiornamento
 delle strategie.
 % Inizializzazione gara
-\subsection{Inizializzazione competizione}
-Il seguente diagramma di sequenza spiega come avviene la sequenza di init della competizione, a partire dal main della competizione \textbf{main\_competition.adb}.
-\`{E} necessario premettere che l'init vero e proprio non avviene eseguendo il file \textbf{main\_competition.adb}. 
-\`{E} stato infatti creato uno script (in bash) che effettua l'avvio di tale main e che successivamente inizializza 
-l'interfaccia di configurazione (in java) della competizione.
-\begin{center}
-\begin{figure}[h!]
-\advance\leftskip-3.2cm
-	\includegraphics[angle=90,scale=0.35]{img/SequenceDiagrams/InitCompetition.jpg}
-\caption{Sequence Diagram - Inizializzazione competizione}
-\end{figure}
-\end{center}
-\clearpage
-Una volta avviato il main della competizione, per prima cosa vengono inizializzati tutti i server, vale a dire \textbf{CompetitionConfigurator},
-\textbf{RegistrationHandler} \textbf{Competition\_Monitor\_Radio}. Viene avviato un task \textbf{Starter} che rimane in attesa
-della configurazione e registrazione concorrenti avvenuti per dare lo \underline{Start} alla gara. Viene inoltre allocata una risorsa protetta di tipo \textbf{Synch\_Competition} pensata
-per agevolare la fase di init. Ne viene condivisa un'istanza fra \textbf{CompetitionConfigurator}, \textbf{RegistrationHandler} e \textbf{Starter}.
-Tale risorsa permette di regolare i vari step dell'inizializzazione. Finch\`{e} la competizione non viene configurata (dal passo \textbf{10} al passo \textbf{16}),
-non sar\`{a} concesso di registrare concorrenti. Una volta configurata la competizione, viene aperta la guardia \textsc{Registration\_Open} e il metodo
-\underline{Register\_NewCompetitor} potr\`{a} essere invocato (in \textbf{Synch\_Competition}). L'iscrizione dei concorrenti avviene a partire dai \emph{Box}.
-Nel diagramma l'azione iniziale del \emph{Box} e la \textbf{20}. In realt\`{a}, nel nodo del box, viene prima avviato uno script che esegue il main del box
-seguito dal main dell'interfaccia (java) di configurazione del concorrente e del box. A configurazione avvenuta, i parametri vengono inviati al server della
-competizione invocando il metodo del server \textbf{Registration\_Handler} \underline{Join\_Competition}, come scritto nel diagramma. A iscrizione avvenuta, 
-i parametri di configurazione della competizione tornati vengono usati per inizializzare e avviare il box e relativi task grazie a cui successivamente
-sar\`{a} possibile mandare il messaggio di \underline{Ready} alla competizione. Per ulteriori dettagli su questa parte, fare riferimento al capitolo
-\ref{box_class} relativo al \emph{Box}.\\
-Quando tutti i concorrenti sono stati registrati (\textbf{23}), bisogna rimanere in attesa della conferma di avvenuta inizializzazione dei \emph{Box}. Ci\`{o}
-avviene quando il thread del task \textbf{Starter} invoca il metodo \underline{Start} del \textbf{Synch\_Competition}, dentro cui viene messo in attesa
-sul \textbf{Competition\_Monitor} tramite \underline{Wait\_Ready}. Quando tutti i \emph{Box} hanno dato l'ok, significa che sono pronti per ricevere
-richieste dai rispettivi competitor e la gara pu\`{o} cominciare. Vengono cos\`{i} avviati uno ad uno (\textbf{32}) e la competizione ha inizio.
-\subsection{Stop competizione}
-Lo stop del sistema avviene su 3 livelli: stop dei task, stop delle interfacce utente e stop dei server. Vediamo in dettaglio:
-\begin{description}
-\item{\textbf{Stop dei task}}:\\
-i task che devono essere fermati sono i \textbf{TaskCompetitor} lato competizione e i task \textbf{Update\_Retriever} e \textbf{Strategy\_Updater} lato box.
-I primi si fermano in automatico quando le condizioni dell'auto non permettono di procedere (benzina finita o gomme troppo usurate) oppure a competizione finita
-(fine ultima lap). I secondi due si fermano quando l'aggiornamento fornito dal monitor della competizione segnala uno stato dell'auto a causa di cui il 
-concorrente non pu\`{o} procedere (poca benzina o molta usura gomme), oppure quando il concorrente finisce l'ultima lap (sempre grazie agli aggiornamenti);
-\item{\textbf{Stop delle interfacce utente}}:\\
-\`{e} sufficiente chiudere le interfacce con il tasto \textbf{x} in alto a destra;
-\item{\textbf{Stop dei server}}:\\
-una volta finita la gara e chiuse le interfacce utente, lo script di avvio procede l'esecuzione invocando un \textbf{killall -9} sui main avviati, interrompendo
-cos\`{i} anche i task server.
-\end{description}

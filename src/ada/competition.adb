@@ -67,7 +67,7 @@ package body Competition is
                               Content  => CompetitorDescriptor,
                               Path     => "");
 
-	    --Instantiate a new CAR_DRIVER to initialise the TASKCOMPETITOR
+	    --Instantiate a new CAR_DRIVER to initialise the Competitor_Task
             Ada.Text_IO.Put_Line("Init competitor...");
             Driver := Init_Competitor(Unbounded_String.To_String(File_Name),
                                       Circuit.Get_Iterator(Track),
@@ -76,7 +76,7 @@ package body Competition is
                                       Box_CorbaLOC);
             --Initialise the task competitor
 
-            Competitors.all(ID) := new TASKCOMPETITOR(Driver);
+            Competitors.all(ID) := new Competitor_Task(Driver);
 
             Given_ID := ID;
 

@@ -74,12 +74,12 @@ package Competitor is
    -- almeno 2 direi.
 
    --type Competitor_Details_Access is Access Competitor_Details;
---task TASKCOMPETITOR(Car_In : Competitor_Details_Access);
+--task Competitor_Task(Car_In : Competitor_Details_Access);
 
-   task type TASKCOMPETITOR(Car_Driver_In : Competitor_Details_Point) is
+   task type Competitor_Task(Car_Driver_In : Competitor_Details_Point) is
       entry Start;
-   end TASKCOMPETITOR;
-   --type taskdebug is Access TASKCOMPETITOR;
+   end Competitor_Task;
+   --type taskdebug is Access Competitor_Task;
 --procedure Set_endWait(temp : in taskdebug);
    -- subtype str is Strategy.STRATEGY;
 
