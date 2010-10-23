@@ -148,7 +148,7 @@ In questo passo della simulazione, il concorrente ha già ottenuto accesso esclu
 effettuare la valutazione senza rischio di race condition (il perchè verrà spiegato successivamente). L'algoritmo procede quindi nel
 seguente modo:
 \begin{itemize}
-\item Per ogni \textbf{Traiettoria} a disposizione:
+\item Per ogni traiettoria (\textbf{Path}) a disposizione:
 \begin{itemize}
 \item Calcola il tempo di atrraversamento (in assenza di auto sulla traiettoria);
 \item Confronta l'istante di uscita dato oò tempo di attraversamento calcolato con l'istante di liberazione
@@ -203,6 +203,7 @@ ad altri di effettuare valutazioni su quel tratto.
 \item ritorna al passo 1 per il checkpoint successivo;
 \end{enumerate}
 \end{description}
+Il diagramma di sequenza \ref{arriveAndCross} in appendice esplica a livello implementativo come l'attraversamento avviene.
 La strategia adottata si presta a simulare la corsa garantendo che un concorrente possa tenere in considerazione ad
 ogni istante le auto presenti sulla pista e sui tratti senza comportamenti
 anomali. \`{E} necessario, tuttavita, dimostrare che l'algoritmo sia corretto. Per farlo bisogna provare che i concorrenti
@@ -210,14 +211,13 @@ non collidano (logicamente) nel corso dell'esecuzione. Ovvero:
 \begin{itemize}
 \item L'aggiornamento delle code sia mutuamente esclusivo
 \item La valutazione di un tratto sia effettuata in modo esclusivo;
-\item L'aggiornamento dei checkpoint successivi a quello la cui traiettoria è stata valutata avvenga in modo atomico 
 \end{itemize}
 \begin{itemize}
 \item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo
 esclusivo}.
 Perchè due concorrenti \emph{x} e \emph{y} possano iniziare a valutare le traiettorie del tratto \emph{n}
-contemporaneamente, deve verificarsi una delle seguenti due condizioni:
-\textbf{Condizione 1}:\\
+contemporaneamente, deve verificarsi una delle seguenti due condizioni:\\
+\textbf{Condizione 1}:
 \begin{itemize}
 \item entrambi i concorrenti sono effettivamente presenti sulla coda del \textbf{Checkpoint} e in attesa di attraversare;
 \item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo cresente, hanno assegnati rispettivamente i tempi
@@ -226,7 +226,7 @@ valutazioni sul tratto;
 \item mentre \emph{x} sta valutando la traiettoria da percorrere% e prima che abbia potuto segnare l'istante di arrivo sulle code di tutti i checkpoint, 
 si ha che $t_y$ < $t_x$ e \emph{y} inizia quindi a valutare;
 \end{itemize}
-\textbf{Condizione 2}:\\
+\textbf{Condizione 2}:
 \begin{itemize}
 \item il concorrente \emph{x} risulta primo effettivo sulla coda del \textbf{Checkpoint} \emph{n}; 
 \item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo cresente, hanno assegnati rispettivamente i tempi
