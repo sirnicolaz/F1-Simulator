@@ -2,10 +2,10 @@
  <car_driver>
 <driver>
 <team>Ferrari</team>
-<firstname>Gianni</firstname>
-<lastname>Rossi</lastname></driver>
-<car><maxspeed>300.0</maxspeed>
-<maxacceleration>12.0</maxacceleration>
+<firstname>Pippo</firstname>
+<lastname>Pluto2</lastname></driver>
+<car><maxspeed>400.0</maxspeed>
+<maxacceleration>12.02</maxacceleration>
 <gastankcapacity>200.0</gastankcapacity>
 <engine>Normal</engine>
 <tyreusury>0.0</tyreusury>

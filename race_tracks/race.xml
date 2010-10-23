@@ -21,6 +21,12 @@
 			<grip>6.0</grip>
 			<angle>0.0</angle>
 	        </checkpoint>
+	        <checkpoint>
+	                <length>148.10</length>
+	                <mult>1</mult>
+			<grip>6.0</grip>
+			<angle>0.0</angle>
+	        </checkpoint>
 	</sector>
 	<sector>
 	        <checkpoint preBox="true" >
