@@ -297,7 +297,7 @@ Dimostriamo che questa situazione non si può verificare. Definiamo prima di tut
 \end{itemize}
 Assumiamo la presenza di due concorrenti \emph{x} e \emph{y}. Dimostriamo che non possono verificarsi teletrasporti se entrambi
 prendono la stessa traiettoria
-\begin{proof}.
+\begin{proof}
 \begin{itemize}
 \item \emph{x} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_x$};
 \item \emph{y} ha segnato sul checkpoint \emph{n} il tempo \emph{$t_y$};
@@ -367,9 +367,9 @@ delle seguenti condizioni, determinate dall'accumulo di risorse dei concorrenti 
 \item un concorrente \emph{x} è arrivato effettivamente sulla coda associata al \textbf{Checkpoint} \emph{n} ed
 è in attesa di essere primo per poter valutare il tratto;
 \item davanti a \emph{x} è segnato (ma non arrivato effettivamente) \emph{y}, con un tempo di arrivo previsto, quindi, inferiore a \emph{x}. 
-Si può quindi dire che \emph{y} sia in possesso della risorsa \textbf{Checkpoint} \emph{n}, pur non standolo direttamente usando;
+Si può quindi dire che \emph{y} sia in possesso della risorsa \textbf{Checkpoint} \emph{n}, pur non usandolo direttamente;
 \item nel tratto \emph{n+1}, \emph{x} è primo non effettivo, avendo quindi in possesso la risorsa \textbf{Checkpoint} \emph{n+1} pur
-non stando ancora usandola.
+non ancora usandola.
 \item dietro a \emph{x} nel tratto \emph{n+1} è presente \emph{y}, arrivato effettivamente e in attesa di attraversare.
 \end{itemize}
 Si nota quindi come \emph{x} e \emph{y} possiedano entrambi una risorsa (poiché ne impediscono l'uso ad altri concorrenti)
@@ -400,7 +400,7 @@ All'interno del progetto non è prevista una comunicazione diretta fra
 concorrenti. Esiste però un metodo per i concorrenti di capire dove sono gli
 altri concorrenti in gara. I concorrenti interagiscono tra di loro ogni volta
 che attraversano un tratto, infatti ogni concorrente che esegue lascia segnato
-il proprio istante di liberazione della traiettoria percorsa (istante di liberazione della traiettoria). 
+il proprio istante di liberazione della traiettoria percorsa. 
 Inoltre ogni concorrente valorizza una posizione di un'array associato al \textbf{Path}
 con il proprio istante di uscita. Essendo l'array grande quanto il numero massimo di concorrenti
 che possono restare sul traiettoria in fila, può essere usato per capire se il tratto sia pieno o no.
@@ -623,16 +623,17 @@ mai) non sono possibili in quanto le informazioni vengono richieste in
 maniera sequenziale e viene comunicato quando non sono più disponibili dati di
 interesse.
 \subsubsection{Intervento sulla gara ( lato box, lato tv )}
-Gli interventi permessi sulla gara sono di due tipi. Lato tv
+Gli interventi permessi sulla gara sono di due tipi. Lato tv del monitor della competizione
 viene permessa la modifica del tempo di simulazione, velocizzandolo o
-rallentandolo. Lato box invece è possibile richiamare la macchina ai box per un
+rallentandolo. Lato tv per la sola visualizzazione dell'andamento della gara non è previsto nessun
+intervento. Lato box invece è possibile richiamare la macchina ai box per un
 pitstop forzato, introducendo così l'ultima componente di "non determinismo"
 permessa.
 Ogni intervento che è stato permesso sulla gara non introduce altri errori in
 quanto in un caso va a modificare il delay inserito per rendere reale la
 simulazione (non vincolante quindi ai fini della correttezza temporale)
 e nell'altro forza una azione comunque prevista (e presente) nel
-sistema. 
+sistema.
 \subsection{Inizializzazione competizione}
 Il seguente diagramma di sequenza spiega come avviene la sequenza di init della
 competizione, a partire dal main della competizione
