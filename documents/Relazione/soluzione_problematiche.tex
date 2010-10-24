@@ -8,10 +8,9 @@ ad accesso mutuamente esclusivo. Più precisamente:
 insieme di \textbf{Path} costituisce un tratto e il loro
 numero all'interno del tratto identifica le possibili vie che si possono intraprendere per attraversarlo. 
 Ogni path ha una molteplicità limitata da\\
-
 \emph{lunghezza / 4.5}\\
 dove 4.5 è lo spazio longitudinale richiesto da un'auto di formula 1 per non entrare in collisione con altre auto. Per ``\emph{molteplicità}
-si intende il numero di auto che possono restare in file all'interno di una traiettoria.
+si intende il numero di auto che possono restare in fila all'interno di una traiettoria.
 Il \textbf{Path} è caratterizzato da:
 \begin{itemize}
 \item lunghezza
@@ -58,7 +57,7 @@ coda il tempo di arrivo in base ai tempi accumulati per l'attraversamento dei
 tratti precedenti. Quindi si può dire che ogni
 concorrente aggiorni un proprio orologio relativo all'andamento della sua corsa.
 Inoltre ogni concorre segna
-un tempo ottimistico di arrivo sui tratti che (salvo squalifica) attraverserà.
+un tempo ottimistico di arrivo sui checkpoint che (salvo squalifica) attraverserà.
 Tale istante sarà di sicuro maggiore dell'istante segnato
 nel \textbf{Checkpoint} in cui il concorrente effettivamente è arrivato. Questo
 permette ad ogni concorrente di sapere, quindi, non solo
@@ -81,7 +80,7 @@ influiranno sui consumi e i tempi dell'auto. Il concorrente dovrà scegliere in
 modo da minimizzare entrambi.\\
 Gli ultimi parametri sono anche oggetto di valutazione in quanto servono all'utente per
 verificare lo stato di occupazione del tratto.\\
-Un concorrente può certamente decidere di attraversare tratto utilizzando una traiettoria
+Un concorrente può certamente decidere di attraversare il tratto utilizzando una traiettoria
 su cui sia già presente un altro concorrente. Ma ne conseguirà che se il concorrente
 più veloce è dietro, esso verrà limitato dalla velocità di quello davanti.\\
 Altra questione importante riguarda i tempi di liberazione: come già detto, una
@@ -91,7 +90,7 @@ libera della lista dei tempi di liberazione il proprio istante di uscita dal tra
 Quando un concorrente vuole iniziare a percorrere una traiettoria, di conseguenza, dovrà verificare
 che il suo tempo di arrivo sia maggiore almeno di uno dei tempi di liberazione segnati
 nella lista. Solo in questo caso potrà essere certo che la traiettoria può ospitare auto.
-Se tutte le traiettorie di un tratto siano sovraffollate, il concorrente dovrà
+Se tutte le traiettorie di un tratto sono sovraffollate, il concorrente dovrà
 uscire di pista per evitare una collisione e venire squalificato.\\
 Questo garantisce il realismo fisico
 concorrente-concorrenti descritto nella sezione \ref{analisi_realismo_fisico}.
@@ -169,7 +168,7 @@ corrisponderà all'istante di uscita della macchina entrata più di recente (ovv
 \item scegli quello ottimo (con istante di uscita minore);
 \item aggiorna il tempo di liberazione del tratto con quello appena calcolato;
 \item aggiorna la lista degli istanti di liberazione aggiungendo quello nuovo in una posizione il cui istante segnato sia inferiore all'istante
-di arrivo di quello del concorrente (significa che quell'istante è già passato e non è più utile ai fini della valutazione dell'affollamento
+di arrivo del concorrente (significa che quell'istante è già passato e non è più utile ai fini della valutazione dell'affollamento
 della traiettoria);
 \end{itemize}
 \item Altrimenti l'utente deve uscire dal circuito per evitare collisioni, venendo così squalificato.
@@ -191,7 +190,7 @@ cui \`{e} costituito il tratto;
 Si otterrà quindi un istante di uscita, che corrisponderà al tempo di arrivo effettivo al checkpoint successivo;
 \item segna il tempo di arrivo effettivo sulla coda del checkpoint successivo, che verr\`{a}
 \textbf{riordinata} in base al nuovo tempo.
-\item segna il tempo di arrivo limite su tutte le altre code (aggiungendo il minimo tempo richiesto da un'auto
+\item segna il tempo di arrivo limite su tutte le altre code (aggiungendo il minimo tempo richiesto dall'auto
 per andare da un checkpoint a quello successivo), da quella
 successiva al checkpoint che si sta per raggiungere a quella del checkpoint
 appena attraversato. Ad ogni aggiornamento del tempo limite, la coda viene
@@ -212,6 +211,7 @@ non collidano (logicamente) nel corso dell'esecuzione. Ovvero:
 \item L'aggiornamento delle code sia mutuamente esclusivo
 \item La valutazione di un tratto sia effettuata in modo esclusivo;
 \end{itemize}
+Dimostriamo che quanto detto accade:
 \begin{itemize}
 \item \emph{quando un concorrente valuta le traiettorie, lo sta facendo in modo
 esclusivo}.
@@ -223,7 +223,8 @@ contemporaneamente, deve verificarsi una delle seguenti due condizioni:\\
 \item i due concorrenti \emph{x} e \emph{y}, ordinati nella coda per tempo di arrivo crescente, hanno assegnati rispettivamente i tempi
 \emph{$t_x$} e \emph{$t_y$}, con $t_x$ < $t_y$; per come è definito l'algoritmo, finché la disposizione è tale, \emph{y} non potrà effettuare
 valutazioni sul tratto;
-\item mentre \emph{x} sta valutando la traiettoria da percorrere% e prima che abbia potuto segnare l'istante di arrivo sulle code di tutti i checkpoint, 
+\item mentre \emph{x} sta valutando la traiettoria da percorrere
+% e prima che abbia potuto segnare l'istante di arrivo sulle code di tutti i checkpoint, 
 si ha che $t_y$ < $t_x$ e \emph{y} inizia quindi a valutare;
 \end{itemize}
 \textbf{Condizione 2}:
@@ -254,8 +255,9 @@ Per arrivare a contraddire lo scenario presentato nella condizione 2, è necessa
 viene segnato sulla coda di un \textbf{Checkpoint}, non può accadere che possa essere aggiornato con un'istante antecedente. In questo modo
 non sarebbe possibile per \emph{y} aggiornare il tempo sulla coda \emph{n} in modo da finire prima di \emph{x}.
 \begin{proof} \textbf{Condizione 2}\\
-Assumiamo un circuito a \emph{S} checkpoint come istante di partenza per un concorrente generico \emph{y} $t_n$ al tratto \emph{n}. Il \textbf{Checkpoint} \emph{n} avrà quindi nella coda associata
-alla posizione dedicata a \emph{y} l'istante di tempo $t_n$. I checkpoint successivi avranno nella coda associata alla posizione per \emph{y}
+Assumiamo un circuito a \emph{S} checkpoint, con $t_n$ l'istante di partenza per un concorrente generico \emph{y} al tratto \emph{n}. Il \textbf{Checkpoint} \emph{n} avrà quindi nella coda associata
+alla posizione dedicata a \emph{y} l'istante di tempo $t_n$. La posizione associata a \emph{y}
+nelle code dei checkpoint successivi avrà segnato
 l'istante $t_n+\epsilon$ con $\epsilon$ monotonicamente crescente di checkpoint in checkpoint.
 Questo istante iniziale subirà le seguenti modifiche nel corso della competizione:
 \begin{itemize}
@@ -279,9 +281,9 @@ Si premette che un teletrasporto avviene al verificarsi di queste tre condizioni
 \item l'istante di entrata segnato al checkpoint successivo (che corrisponde all'uscita dalla traiettoria del checkpoint precedente) è
 rispettivamente \emph{$tx_{n+1}$} e \emph{$ty_{n+1}$} con \emph{$ty_{n+1}$} < \emph{$tx_{n+1}$};
 \end{itemize}
-In questo caso è chiaro che sia avvenuto un teletrasporto, in quanto il concorrente \emph{a}, stando all'ordine di entrata nella
-traiettoria, avrebbe dovuto arrivare per ragioni fisiche prima del concorrente \emph{b} al checkpoint successivo. Nella peggiore 
-delle ipotesi il concorrente \emph{b} avrebbe dovuto rallentare ed arrivare al checkpoint \emph{n+1} subito dopo \emph{a}. 
+In questo caso è chiaro che sia avvenuto un teletrasporto, in quanto il concorrente \emph{x}, stando all'ordine di entrata nella
+traiettoria, avrebbe dovuto arrivare per ragioni fisiche prima del concorrente \emph{y} al checkpoint successivo. Nella peggiore 
+delle ipotesi il concorrente \emph{y} avrebbe dovuto rallentare ed arrivare al checkpoint \emph{n+1} subito dopo \emph{x}. 
 % In caso i due concorrenti prendato due traiettorie differenti, non si possono verificare anomalie per quanto riguarda i tempi
 % segnati sul checkpoint di destinazione, poichè
 Dimostriamo che questa situazione non si può verificare. Definiamo prima di tutto i seguenti simboli aggiuntivi:
@@ -289,9 +291,9 @@ Dimostriamo che questa situazione non si può verificare. Definiamo prima di tut
 \item $CheckIn_{(x,n)}$ : tempo di arrivo effettivo di \emph{x} al checkpoint \emph{n};
 \item $CrossingTime_{(x,n,z)}$ : tempo di attraversamento della traiettoria \emph{n} per il concorrente \emph{x} supponendo usi la traiettoria
 \emph{z}; 
-\item $PathAvailableInstant_{(n,z)}$ : istante di liberazione della traiettoria \emph{z} al tratto \emph{n} dell'ultimo concorrente entrato;
+\item $PathAvailableInstant_{(n,z)}$ : istante di uscita dell'ultimo concorrente entrato della traiettoria \emph{z} al tratto \emph{n} ;
 \item $ExitInstant_{(x,n,z)}$ : istante di uscita di \emph{x} dalla traiettoria \emph{z} del tratto \emph{n};
-\item $t_c$ : è una costante che rappresenta il la distanza temporale minima fra due macchine per evitare tamponamento;
+\item $t_c$ : è una costante che rappresenta la distanza temporale minima fra due macchine per evitare tamponamento;
 \end{itemize}
 Assumiamo la presenza di due concorrenti \emph{x} e \emph{y}. Dimostriamo che non possono verificarsi teletrasporti se entrambi
 prendono la stessa traiettoria
@@ -314,7 +316,7 @@ $PathAvailableInstant_{(n,1)}$ = $CheckIn_{(x,n)}$ + $CrossingTime_{(x,n,1)}$;\\
 quindi avremo che\\
 $CheckIn_{(x,n)}$ < $CheckIn_{(x,n+1)}$ con $CheckIn_{(x,n+1)}$ == $PathAvailableInstant_{(n,1)}$
 \item come da algoritmo, \emph{x} aggiornerà tutte le code dei checkpoint da n+1 a n (passando per il checkpoint 1) con tempi $CheckIn_{(x,n+1)}$ + $\epsilon$ 
-crescente di checkpoint in checkpoint. Supponiamo che il tempi segnato sul checkpoint n sia sufficientemente alto da mandare \emph{x}
+con $\epsilon$ crescente di checkpoint in checkpoint. Supponiamo che il tempo segnato sul checkpoint n sia sufficientemente alto da mandare \emph{x}
 in una posizione posteriore a \emph{y}, così che \emph{y} possa effettuare l'attraversamento;
 \item dopo che \emph{y} avrà computato i calcoli necessari per l'attraversamento del tratto, si avrà che:\\
 $ExitInstant_{(y,n,1)}$ = \emph{max\{$PathAvailableInstant_{(n,1)}+t_c$,$CheckIn_{(y,n)}+CrossingTime_{(y,n,1)}$\}};\\
@@ -380,7 +382,7 @@ checkpoint \emph{n+1}.}\\
 	Se nella coda \emph{n+1} ci sono \emph{x} in testa seguito da \emph{y}, avremo che
 $t_{x,n+1}<t_{y,n+1}$, poich\`{e} l'ordine della coda \`{e} 
 	determinato dai tempi di arrivo segnati.
-	Se \emph{x} \`{e} in attesa sulla coda \emph{n+1}, vuol dire che all'iterazione precedente avr\`{a} aggiornato per
+	Se \emph{x} \`{e} in attesa sulla coda \emph{n+1}, vuol dire che all'iterazione precedente aveva aggiornato per
 ultimo l'istante segnato sulla coda del \textbf{Checkpoint} \emph{n} e di conseguenza $t_{x,n}>t_{x,n+1}$ (come visto precedentemente).
 	\emph{y} invece \`{e} in attesa effettiva sulla coda \emph{n}, quindi avr\`{a}
 aggiornato la coda del tratto successivo con un valore dato da $t_{y,n+1} + \delta_t$, 
@@ -405,7 +407,8 @@ che possono restare sul traiettoria in fila, può essere usato per capire se il 
 Queste informazioni salvate sul \textbf{Path}
 indicano agli altri concorrenti di valutare il livello di affollamento del tratto e valutare
 opportunamente i tempi di attraversamento. Maggiori dettagli riguardo all'entità tratto sono presenti nella sezione
-\ref{entita_circuito}.
+\ref{entita_circuito}. Inoltre i concorrenti hanno la possibilità di valutare i tempi di arrivo ai checkpoint degli altri
+ispezionando la coda associata ad ogni \textbf{Checkpoint}.
 \subsection{Entità box}
 L'entità Box è una delle componenti che si è scelto di distribuire nella rete.
 Il Box si occupa di gestire la configurazione e la corsa di un concorrente.
@@ -489,7 +492,7 @@ quindi sapere, per ogni checkpoint passato in un determinato giro,
      Per implementare, in parte, la soluzione proposta si è quindi pensato di
 salvare per ogni concorrente una lista di dati cronologicamente ordinata.
      Ogni posizione della lista mantiene informazioni legate ad un determinato
-istante di tempo. In questo modo è possibile all'idea discussa nella
+istante di tempo. In questo modo è possibile attuare discussa nella
      sezione \ref{analisi_istantanee}:\\
      \emph{[...]una volta richiesto lo snapshot di un istante temporale, lo
 stato di ogni entità (utile all'istantanea) in 
@@ -596,8 +599,8 @@ paragrafi. L'interazione che verrà analizzata è divisa in due tipologie:
 \item la
 prima riguarda l'osservazione della gara e la velocità di simulazione;
 \item la
-seconda invece parla di interventi sulla gara da parte di un utente esterno,
-evento che completa le funzionalità di "non determinismo" permesse nel sistema.
+seconda  riguarda interventi sulla gara da parte di un utente esterno,
+che completa le funzionalità di "non determinismo" permesse nei primi capitoli.
 \end{itemize}
 \subsubsection{Osservazione gara ( lato box, lato tv )}
 Per quanto riguarda l'osservazione della gara questa avviene in due modalità
@@ -643,14 +646,14 @@ l'interfaccia di configurazione (in java) della competizione.
 \clearpage
 Una volta avviato il main della competizione, per prima cosa vengono
 inizializzati tutti i server, vale a dire \textbf{CompetitionConfigurator},
-\textbf{RegistrationHandler} e \textbf{Competition\_Monitor\_Radio}. Viene
+\textbf{Registration\_Handler} e \textbf{Competition\_Monitor\_Radio}. Viene
 avviato
 un task \textbf{Starter} che rimane in attesa
 della configurazione e registrazione concorrenti avvenuti per dare lo
 \underline{Start} alla gara. Viene inoltre allocata una risorsa protetta di tipo
 \textbf{Synch\_Competition} pensata
 per agevolare la fase di init. Ne viene condivisa un'istanza fra
-\textbf{CompetitionConfigurator}, \textbf{RegistrationHandler} e
+\textbf{CompetitionConfigurator}, \textbf{Registration\_Handler} e
 \textbf{Starter}.
 Tale risorsa permette di regolare i vari step dell'inizializzazione. Finch\`{e}
 la competizione non viene configurata (dal passo \textbf{10} al passo
@@ -684,7 +687,7 @@ Lo stop del sistema avviene su 3 livelli: stop dei task, stop delle interfacce
 utente e stop dei server. Vediamo in dettaglio:
 \begin{description}
 \item{\textbf{Stop dei task}}:\\
-i task che devono essere fermati sono i \textbf{TaskCompetitor} lato
+i task che devono essere fermati sono i \textbf{Competitor\_Task} lato
 competizione e i task \textbf{Update\_Retriever} e \textbf{Strategy\_Updater}
 lato box.
 I primi si fermano in automatico quando le condizioni dell'auto non permettono
