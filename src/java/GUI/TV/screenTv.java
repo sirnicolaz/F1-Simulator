@@ -51,6 +51,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
     private int[] provaArray;
     private dati[] datiArray;
     private dati[] datiArrayDoppiati;
+    private oldArray[] history;
     
     private JFrame parent;
     private JPanel logPanel;
@@ -133,6 +134,10 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    for(int number = 0; number <numComp; number++){
 		endRace[number]= false;
 		ritRace[number]= false;
+	    }
+	    history = new oldArray[numLap];
+	    for(int index_old = 0; index_old<numLap; index_old++){
+		history[numLap]= new oldArray(numComp);
 	    }
 	}
 	catch(Exception eccIn){
@@ -382,11 +387,10 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
 							System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
 						    }
-						    else{
+						  else{
 							//if(datiArray[index].getLap()==datiArray[index-1].getLap()){
-							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-datiArray[index-1])});
-//qua bug
-							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime())});
+							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime()));
 							//}
 						    }
 						    posiz = posiz+1;
@@ -725,7 +729,15 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			try{
 			    datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]);
 			    System.out.println("posizione "+i+" del concorrente "+datiArray[i].getId()+" in tempo : "+convert(datiArray[i].getTime()));
+			    if(history[new Integer(getNode("lap", line)).intValue()] == null){
+				      System.out.println("HISTORY VUOTO");
+				      history[new Integer(getNode("lap", line)).intValue()]= new oldArray(numComp);
+				  }
+			    history[new Integer(getNode("lap", line)).intValue()].setElementIndex(i, new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]));//qua aggiorno anche lo storico
+			    //seleziono la posizione da aggiornare in base alla lap del concorrente e poi la salvo tramite il metodo.
+			    System.out.println("DOPO AGGIORNAMENTO HISTORY "+history[new Integer(getNode("lap", line)).intValue()].getElementIndex(i).getTime());
 			    j=j+1;
+			    
 			}
 			catch(Exception arrayBound){
 			    // 			    arrayBound.printStackTrace();
@@ -957,6 +969,21 @@ class dati{
 	id = idIn;
 	time = timeIn;
     }
+}
+
+class oldArray{
+private dati[] lapDati;
+public dati getElementIndex(int index){
+return lapDati[index];
+}
+public void setElementIndex(int index, dati newData){
+lapDati[index] = new dati(newData.getLap(), newData.getId(), newData.getTime());
+//lapDati[index] = newData;
+System.out.println("aggiornamento storico - "+index+" - newData "+lapDati[index].getTime());
+}
+public oldArray(int numComp){
+  lapDati = new dati[numComp];
+}
 }
 
 //oggetto tabella con classifiche

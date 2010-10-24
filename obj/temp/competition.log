@@ -1,10 +1,10 @@
 Retrieving ROOT_POA...
 Activating ROOT_POA...
-CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.1.1:40598//000000011Tf02c3b4011df5238'
-RegistrationHandler: 'corbaloc:iiop:1.2@127.0.1.1:40598//000000012Tf02c3b4011df5238'
-Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.1.1:40598//000000013Tf02c3b4011df5238'
-Initialising CORBA.ORB
+CompetitionConfiguration: 'corbaloc:iiop:1.2@127.0.1.1:53176//000000011Tbe7d596011df9317'
+RegistrationHandler: 'corbaloc:iiop:1.2@127.0.1.1:53176//000000012Tbe7d596011df9317'
+Competition Monitor Radio: 'corbaloc:iiop:1.2@127.0.1.1:53176//000000013Tbe7d596011df9317'
 Waiting for competitor to be ready...
+Initialising CORBA.ORB
 Race Length  1.01110E+03
 Box length  5.87000E+02
  3 competitors
@@ -44,10 +44,10 @@ Init Computer
 Adding min info
 Add obc
 Connecting to box
-init task
 Name : Pippo
 Setting laps
 ID int 2
+init task
 Ready box 2
  1 expected boxes
 Registering competitor
@@ -78,8 +78,6 @@ Starting competitors
 Competition started!!!!!!!!!
  1 connected succesfully
  1 saved
- 2 connected succesfully
- 2 saved
  1 1: SUMMURY lap :  0, actual time :  0.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME = -1.00000E+00
@@ -87,6 +85,11 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  3.02513E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.02513E+00
  1: evaluate done: length path  5.50000E+01 crossing time  3.02513E+00 speed  1.30903E+02
+ 3 connected succesfully
+ 3 saved
+ 3 3: SUMMURY lap :  0, actual time :  2.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
+ 2 connected succesfully
+ 2 saved
  2 2: SUMMURY lap :  0, actual time :  1.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  3.02513E+00
@@ -94,9 +97,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  2.90999E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.90999E+00
  2: evaluate done: length path  5.50000E+01 crossing time  2.90999E+00 speed  1.36083E+02
- 3 connected succesfully
- 3 saved
- 3 3: SUMMURY lap :  0, actual time :  2.00000E+00, gas  5.00000E+01, tyre  0.00000E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  3.90999E+00
 DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  3.02765E+00 COMPETITOR_ARRIVAL_TIME =  2.00000E+00 EXIT_INSTANT =  5.02765E+00 PATH_AVAILABLE_INSTANT =  3.90999E+00 SPEED_TEMP =  1.30794E+02 CHECKPOINT NUM =  5.50000E+01
@@ -161,10 +161,10 @@ SET_RELEASE_INSTANT : instant =  9.58984E+00
  2: evaluate done: length path  1.48000E+02 crossing time  1.44998E+00 speed  3.94914E+02
  2 2: SUMMURY lap :  0, actual time :  9.58984E+00, gas  4.96526E+01, tyre  3.98054E-01, pit stop done FALSE
  2 Connecting for strategy
- 2 connected succesfully
- 2 saved
  1 1: SUMMURY lap :  0, actual time :  8.92843E+00, gas  4.96526E+01, tyre  3.98054E-01, pit stop done FALSE
  1 Connecting for strategy
+ 2 connected succesfully
+ 2 saved
  1 connected succesfully
  1 saved
 Notifying
@@ -280,7 +280,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  6.68800E-01 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.83874E+01
  3: evaluate done: length path  5.50000E+01 crossing time  6.68800E-01 speed  2.96053E+02
- 3 3: SUMMURY lap :  1, actual time :  1.83874E+01, gas  4.92565E+01, tyre  8.79367E-01, pit stop done FALSE
  1 1: SUMMURY lap :  1, actual time :  1.81509E+01, gas  4.88942E+01, tyre  1.24232E+00, pit stop done FALSE
  1 Connecting for strategy
  1 connected succesfully
@@ -291,6 +290,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.53264E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.96836E+01
  1: evaluate done: length path  1.68000E+02 crossing time  1.53264E+00 speed  3.94614E+02
+ 3 3: SUMMURY lap :  1, actual time :  1.83874E+01, gas  4.92565E+01, tyre  8.79367E-01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  1.61093E+01
 DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.55654E+00 COMPETITOR_ARRIVAL_TIME =  1.83874E+01 EXIT_INSTANT =  1.99439E+01 PATH_AVAILABLE_INSTANT =  1.61093E+01 SPEED_TEMP =  2.96042E+02 CHECKPOINT NUM =  1.28000E+02
@@ -344,6 +344,9 @@ SET_RELEASE_INSTANT : instant =  2.35066E+01
  1: evaluate done: length path  5.50000E+01 crossing time  5.01932E-01 speed  3.94476E+02
  3 3: SUMMURY lap :  1, actual time :  2.35451E+01, gas  4.89596E+01, tyre  1.22925E+00, pit stop done FALSE
  3 Connecting for strategy
+ 3 connected succesfully
+ 3 saved
+ 2 2: SUMMURY lap :  2, actual time :  2.36639E+01, gas  4.84953E+01, tyre  1.68654E+00, pit stop done FALSE
  1 1: SUMMURY lap :  2, actual time :  2.35066E+01, gas  4.84540E+01, tyre  1.73247E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.99439E+01
@@ -351,9 +354,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.16817E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.46748E+01
  1: evaluate done: length path  1.28000E+02 crossing time  1.16817E+00 speed  3.94462E+02
- 2 2: SUMMURY lap :  2, actual time :  2.36639E+01, gas  4.84953E+01, tyre  1.68654E+00, pit stop done FALSE
- 3 connected succesfully
- 3 saved
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  2.03429E+01
 DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  2.04352E+00 COMPETITOR_ARRIVAL_TIME =  2.35451E+01 EXIT_INSTANT =  2.55886E+01 PATH_AVAILABLE_INSTANT =  2.03429E+01 SPEED_TEMP =  2.95959E+02 CHECKPOINT NUM =  1.68000E+02
@@ -398,6 +398,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  4.42813E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.00168E+01
  3: evaluate done: length path  3.64000E+02 crossing time  4.42813E+00 speed  2.95926E+02
+Copy false
+Copy false
  1 1: SUMMURY lap :  2, actual time :  2.60265E+01, gas  4.82469E+01, tyre  1.96301E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  2.35451E+01
@@ -405,8 +407,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.35095E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.73774E+01
  1: evaluate done: length path  1.48000E+02 crossing time  1.35095E+00 speed  3.94390E+02
-Copy false
-Copy false
 Copy false
 Copy false
  2 2: SUMMURY lap :  2, actual time :  2.66858E+01, gas  4.82469E+01, tyre  1.96301E+00, pit stop done FALSE
@@ -420,8 +420,6 @@ Copy false
 Copy false
  1 1: SUMMURY lap :  2, actual time :  2.73774E+01, gas  4.81359E+01, tyre  2.08659E+00, pit stop done FALSE
  1 Connecting for strategy
-Copy false
-Copy false
  1 connected succesfully
  1 saved
 Notifying
@@ -430,6 +428,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.53366E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.89111E+01
  1: evaluate done: length path  1.68000E+02 crossing time  1.53366E+00 speed  3.94352E+02
+Copy false
+Copy false
 Copy false
 Copy false
  2 2: SUMMURY lap :  2, actual time :  2.80367E+01, gas  4.81359E+01, tyre  2.08659E+00, pit stop done FALSE
@@ -442,8 +442,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  1.53366E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.95704E+01
  2: evaluate done: length path  1.68000E+02 crossing time  1.53366E+00 speed  3.94352E+02
-Copy false
-Copy false
  1 1: SUMMURY lap :  2, actual time :  2.89111E+01, gas  4.80099E+01, tyre  2.22687E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  3.00168E+01
@@ -462,8 +460,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  3.32329E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.28937E+01
  2: evaluate done: length path  3.64000E+02 crossing time  3.32329E+00 speed  3.94308E+02
-Copy false
-Copy false
 Copy false
 Copy false
  3 3: SUMMURY lap :  2, actual time :  3.00168E+01, gas  4.85872E+01, tyre  1.66815E+00, pit stop done FALSE
@@ -490,10 +486,6 @@ Copy false
 Copy false
 Copy false
 Copy false
-Copy false
-Copy false
-Copy false
-Copy false
  3 3: SUMMURY lap :  2, actual time :  3.22436E+01, gas  4.84591E+01, tyre  1.81912E+00, pit stop done FALSE
  1 1: SUMMURY lap :  3, actual time :  3.22344E+01, gas  4.77369E+01, tyre  2.53081E+00, pit stop done FALSE
 Notifying
@@ -508,7 +500,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.80231E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.40459E+01
  3: evaluate done: length path  1.48100E+02 crossing time  1.80231E+00 speed  2.95820E+02
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  3, actual time :  3.27367E+01, gas  4.76957E+01, tyre  2.57674E+00, pit stop done FALSE
@@ -527,8 +518,6 @@ SET_RELEASE_INSTANT : instant =  3.33959E+01
  2: evaluate done: length path  5.50000E+01 crossing time  5.02266E-01 speed  3.94214E+02
 Copy false
 Copy false
-Copy false
-Copy false
  2 2: SUMMURY lap :  3, actual time :  3.33959E+01, gas  4.76957E+01, tyre  2.57674E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  3.39056E+01
@@ -536,6 +525,9 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  1.16895E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.45649E+01
  2: evaluate done: length path  1.28000E+02 crossing time  1.16895E+00 speed  3.94200E+02
+Copy false
+Copy false
+Copy false
  1 1: SUMMURY lap :  3, actual time :  3.39056E+01, gas  4.75997E+01, tyre  2.68362E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  3.40459E+01
@@ -552,8 +544,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.80127E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.58472E+01
  3: evaluate done: length path  1.48000E+02 crossing time  1.80127E+00 speed  2.95791E+02
-Copy false
-Copy false
  2 2: SUMMURY lap :  3, actual time :  3.45649E+01, gas  4.75997E+01, tyre  2.68362E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  3.52582E+01
@@ -565,6 +555,7 @@ Copy false
 Copy false
 Copy false
 Copy false
+Copy false
  1 1: SUMMURY lap :  3, actual time :  3.52582E+01, gas  4.74886E+01, tyre  2.80728E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  3.58472E+01
@@ -572,6 +563,9 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.35184E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.66101E+01
  1: evaluate done: length path  1.48000E+02 crossing time  1.35184E+00 speed  3.94128E+02
+Copy false
+Copy false
+Copy false
  2 2: SUMMURY lap :  3, actual time :  3.59175E+01, gas  4.74886E+01, tyre  2.80728E+00, pit stop done FALSE
  3 3: SUMMURY lap :  2, actual time :  3.58472E+01, gas  4.82518E+01, tyre  2.06341E+00, pit stop done FALSE
  3 Connecting for strategy
@@ -605,8 +599,6 @@ SET_RELEASE_INSTANT : instant =  3.81447E+01
  1: evaluate done: length path  1.68000E+02 crossing time  1.53468E+00 speed  3.94090E+02
 Copy false
 Copy false
-Copy false
-Copy false
  2 2: SUMMURY lap :  3, actual time :  3.72694E+01, gas  4.73776E+01, tyre  2.93086E+00, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
@@ -617,6 +609,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  1.53468E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  3.88040E+01
  2: evaluate done: length path  1.68000E+02 crossing time  1.53468E+00 speed  3.94090E+02
+Copy false
+Copy false
  3 3: SUMMURY lap :  2, actual time :  3.78921E+01, gas  4.81342E+01, tyre  2.20201E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  3.28937E+01
@@ -624,8 +618,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  4.43108E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.23231E+01
  3: evaluate done: length path  3.64000E+02 crossing time  4.43108E+00 speed  2.95729E+02
-Copy false
-Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  3, actual time :  3.81447E+01, gas  4.72516E+01, tyre  3.07114E+00, pit stop done FALSE
@@ -642,6 +634,8 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  3.91912E+00 COMPETI
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.27231E+01
  2: evaluate done: length path  3.64000E+02 crossing time  3.91912E+00 speed  2.95729E+02
+Copy false
+Copy false
 Copy false
 Copy false
 Copy false
@@ -679,6 +673,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  6.37382E-01 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.33605E+01
  2: evaluate done: length path  5.50000E+01 crossing time  6.37382E-01 speed  3.25562E+02
+Copy false
+Copy false
  3 3: SUMMURY lap :  3, actual time :  4.29928E+01, gas  4.78409E+01, tyre  2.54768E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  3.45649E+01
@@ -686,9 +682,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.55861E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.45514E+01
  3: evaluate done: length path  1.28000E+02 crossing time  1.55861E+00 speed  2.95648E+02
-Copy false
-Copy false
-Copy false
 Copy false
 Copy false
 Copy false
@@ -717,6 +710,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.80352E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.63550E+01
  3: evaluate done: length path  1.48100E+02 crossing time  1.80352E+00 speed  2.95623E+02
+Copy false
+Copy false
  1 1: SUMMURY lap :  4, actual time :  4.47514E+01, gas  4.68660E+01, tyre  3.52296E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  4.63550E+01
@@ -731,6 +726,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  1.60057E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  4.65520E+01
  2: evaluate done: length path  1.48100E+02 crossing time  1.60057E+00 speed  3.70563E+02
+Copy false
 Copy false
 Copy false
 Copy false
@@ -766,12 +762,12 @@ Copy false
 Copy false
 Copy false
 Copy false
-Copy false
-Copy false
  3 3: SUMMURY lap :  3, actual time :  4.81574E+01, gas  4.75441E+01, tyre  2.89757E+00, pit stop done FALSE
  3 Connecting for strategy
  3 connected succesfully
  3 saved
+Copy false
+Copy false
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  3.88040E+01
 DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  2.04625E+00 COMPETITOR_ARRIVAL_TIME =  4.81574E+01 EXIT_INSTANT =  5.02037E+01 PATH_AVAILABLE_INSTANT =  3.88040E+01 SPEED_TEMP =  2.95565E+02 CHECKPOINT NUM =  1.68000E+02
@@ -806,6 +802,8 @@ Copy false
 Copy false
 Copy false
 Copy false
+Copy false
+Copy false
  3 3: SUMMURY lap :  3, actual time :  5.02037E+01, gas  4.74265E+01, tyre  3.03617E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  4.27231E+01
@@ -827,6 +825,8 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  4.43404E+00 COMPETI
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  5.50377E+01
  2: evaluate done: length path  3.64000E+02 crossing time  4.43404E+00 speed  2.95532E+02
+Copy false
+Copy false
 Copy false
 Copy false
 Copy false
@@ -951,8 +951,6 @@ Copy false
 Copy false
 Copy false
 Copy false
-Copy false
-Copy false
  3 3: SUMMURY lap :  4, actual time :  6.04759E+01, gas  4.68363E+01, tyre  3.73172E+00, pit stop done FALSE
  3 Connecting for strategy
  3 connected succesfully
@@ -973,6 +971,8 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.04762E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  6.27235E+01
  1: evaluate done: length path  1.68000E+02 crossing time  2.04762E+00 speed  2.95368E+02
+Copy false
+Copy false
  2 2: SUMMURY lap :  5, actual time :  6.08759E+01, gas  4.59334E+01, tyre  4.60492E+00, pit stop done FALSE
  2 Connecting for strategy
  2 connected succesfully
@@ -983,8 +983,6 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  2.04762E+00 COMPETI
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  6.29235E+01
  2: evaluate done: length path  1.68000E+02 crossing time  2.04762E+00 speed  2.95368E+02
-Copy false
-Copy false
 Copy false
 Copy false
 Copy false
@@ -1040,7 +1038,6 @@ Copy false
 Copy false
 Copy false
 Copy false
-Copy false
  1 1: SUMMURY lap :  6, actual time :  6.71605E+01, gas  4.55610E+01, tyre  5.04382E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  6.76311E+01
@@ -1069,6 +1066,9 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  1.59093E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  6.93918E+01
  1: evaluate done: length path  1.28000E+02 crossing time  1.59093E+00 speed  2.95253E+02
+Copy false
+Copy false
+Copy false
  2 2: SUMMURY lap :  6, actual time :  6.79987E+01, gas  4.55197E+01, tyre  5.08974E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  6.93918E+01
@@ -1096,8 +1096,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  1.61454E+00 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  7.10063E+01
  1: evaluate done: length path  1.48100E+02 crossing time  1.61454E+00 speed  3.65194E+02
-Copy false
-Copy false
  2 2: SUMMURY lap :  6, actual time :  6.95918E+01, gas  4.54301E+01, tyre  5.19534E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  7.10063E+01
@@ -1105,6 +1103,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  1.60226E+00 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  7.11941E+01
  2: evaluate done: length path  1.48100E+02 crossing time  1.60226E+00 speed  3.70257E+02
+Copy false
+Copy false
 Copy false
 Copy false
 Copy false
@@ -1136,10 +1136,10 @@ Copy false
 Copy false
 Copy false
 Copy false
+Copy false
+Copy false
  3 3: SUMMURY lap :  5, actual time :  7.28026E+01, gas  4.61285E+01, tyre  4.56588E+00, pit stop done FALSE
  3 Connecting for strategy
-Copy false
-Copy false
  3 connected succesfully
  3 saved
 Notifying
@@ -1185,6 +1185,8 @@ SET_RELEASE_INSTANT : instant =  7.92915E+01
  3: evaluate done: length path  3.64000E+02 crossing time  4.43996E+00 speed  2.95138E+02
 Copy false
 Copy false
+Copy false
+Copy false
  1 1: SUMMURY lap :  6, actual time :  7.50516E+01, gas  4.50978E+01, tyre  5.57970E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  7.92915E+01
@@ -1199,8 +1201,6 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  4.43996E+00 COMPETI
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  7.96915E+01
  2: evaluate done: length path  3.64000E+02 crossing time  4.43996E+00 speed  2.95138E+02
-Copy false
-Copy false
 Copy false
 Copy false
 Copy false
@@ -1298,7 +1298,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  7, actual time :  8.33397E+01, gas  4.46011E+01, tyre  6.15519E+00, pit stop done FALSE
  3 3: SUMMURY lap :  6, actual time :  8.33315E+01, gas  4.55244E+01, tyre  5.27794E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  7.32026E+01
@@ -1306,6 +1305,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.80609E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  8.51375E+01
  3: evaluate done: length path  1.48000E+02 crossing time  1.80609E+00 speed  2.95002E+02
+ 1 1: SUMMURY lap :  7, actual time :  8.33397E+01, gas  4.46011E+01, tyre  6.15519E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  8.51375E+01
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  1.99782E+00 COMPETITOR_ARRIVAL_TIME =  8.33397E+01 EXIT_INSTANT =  8.53375E+01 PATH_AVAILABLE_INSTANT =  8.51375E+01 SPEED_TEMP =  3.93078E+02 CHECKPOINT NUM =  1.48000E+02
@@ -1484,6 +1484,7 @@ Copy false
 Copy false
 Copy false
  1 1: SUMMURY lap :  8, actual time :  9.56814E+01, gas  4.38832E+01, tyre  6.99138E+00, pit stop done FALSE
+ 2 2: SUMMURY lap :  8, actual time :  9.58690E+01, gas  4.38832E+01, tyre  6.99138E+00, pit stop done FALSE
  3 3: SUMMURY lap :  7, actual time :  9.56734E+01, gas  4.48166E+01, tyre  6.11209E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  8.55375E+01
@@ -1497,7 +1498,6 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  1.99937E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  9.76807E+01
  1: evaluate done: length path  1.48000E+02 crossing time  1.99937E+00 speed  2.94805E+02
- 2 2: SUMMURY lap :  8, actual time :  9.58690E+01, gas  4.38832E+01, tyre  6.99138E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  9.76807E+01
 DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  2.01170E+00 COMPETITOR_ARRIVAL_TIME =  9.58690E+01 EXIT_INSTANT =  9.78807E+01 PATH_AVAILABLE_INSTANT =  9.76807E+01 SPEED_TEMP =  3.92815E+02 CHECKPOINT NUM =  1.48000E+02
@@ -1587,6 +1587,7 @@ Copy false
 Copy false
 Copy false
 Copy false
+ 2 2: SUMMURY lap :  9, actual time :  1.04378E+02, gas  4.34072E+01, tyre  7.55238E+00, pit stop done FALSE
  3 3: SUMMURY lap :  8, actual time :  1.03978E+02, gas  4.43406E+01, tyre  6.67309E+00, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  9.26697E+01
@@ -1607,7 +1608,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  1 CROSSING_TIME_TEMP =  6.41521E-01 COMPETITO
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.04820E+02
  1: evaluate done: length path  5.50000E+01 crossing time  6.41521E-01 speed  3.22539E+02
- 2 2: SUMMURY lap :  9, actual time :  1.04378E+02, gas  4.34072E+01, tyre  7.55238E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  1.04820E+02
 DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  6.39309E-01 COMPETITOR_ARRIVAL_TIME =  1.04378E+02 EXIT_INSTANT =  1.05018E+02 PATH_AVAILABLE_INSTANT =  1.04820E+02 SPEED_TEMP =  3.24676E+02 CHECKPOINT NUM =  5.50000E+01
@@ -1621,6 +1621,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.56383E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.06214E+02
  3: evaluate done: length path  1.28000E+02 crossing time  1.56383E+00 speed  2.94662E+02
+ 2 2: SUMMURY lap :  9, actual time :  1.05018E+02, gas  4.33659E+01, tyre  7.59831E+00, pit stop done FALSE
  1 1: SUMMURY lap :  9, actual time :  1.04820E+02, gas  4.33659E+01, tyre  7.59831E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.06214E+02
@@ -1628,15 +1629,14 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  1.59425E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.06414E+02
  1: evaluate done: length path  1.28000E+02 crossing time  1.59425E+00 speed  2.94662E+02
-Copy false
-Copy false
- 2 2: SUMMURY lap :  9, actual time :  1.05018E+02, gas  4.33659E+01, tyre  7.59831E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  1.06414E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  1.59646E+00 COMPETITOR_ARRIVAL_TIME =  1.05018E+02 EXIT_INSTANT =  1.06614E+02 PATH_AVAILABLE_INSTANT =  1.06414E+02 SPEED_TEMP =  3.85440E+02 CHECKPOINT NUM =  1.28000E+02
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.06614E+02
  2: evaluate done: length path  1.28000E+02 crossing time  1.59646E+00 speed  2.94662E+02
+Copy false
+Copy false
 Copy false
 Copy false
 Copy false
@@ -1679,6 +1679,7 @@ SET_RELEASE_INSTANT : instant =  1.09832E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.80851E+00 speed  2.94608E+02
 Copy false
 Copy false
+ 2 2: SUMMURY lap :  9, actual time :  1.08219E+02, gas  4.31653E+01, tyre  7.82757E+00, pit stop done FALSE
  1 1: SUMMURY lap :  9, actual time :  1.08031E+02, gas  4.31653E+01, tyre  7.82757E+00, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.09832E+02
@@ -1686,7 +1687,6 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.00092E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.10032E+02
  1: evaluate done: length path  1.48000E+02 crossing time  2.00092E+00 speed  2.94608E+02
- 2 2: SUMMURY lap :  9, actual time :  1.08219E+02, gas  4.31653E+01, tyre  7.82757E+00, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  1.10032E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  2.01326E+00 COMPETITOR_ARRIVAL_TIME =  1.08219E+02 EXIT_INSTANT =  1.10232E+02 PATH_AVAILABLE_INSTANT =  1.10032E+02 SPEED_TEMP =  3.92552E+02 CHECKPOINT NUM =  1.48000E+02
@@ -2599,7 +2599,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  14, actual time :  1.69905E+02, gas  3.95757E+01, tyre  1.20085E+01, pit stop done FALSE
  3 3: SUMMURY lap :  13, actual time :  1.69899E+02, gas  4.05700E+01, tyre  1.11170E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  1.59721E+02
@@ -2607,6 +2606,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.81458E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.71714E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.81458E+00 speed  2.93622E+02
+ 1 1: SUMMURY lap :  14, actual time :  1.69905E+02, gas  3.95757E+01, tyre  1.20085E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.71714E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.00874E+00 COMPETITOR_ARRIVAL_TIME =  1.69905E+02 EXIT_INSTANT =  1.71914E+02 PATH_AVAILABLE_INSTANT =  1.71714E+02 SPEED_TEMP =  3.91239E+02 CHECKPOINT NUM =  1.48000E+02
@@ -2788,7 +2788,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  15, actual time :  1.82305E+02, gas  3.88577E+01, tyre  1.28447E+01, pit stop done FALSE
  3 3: SUMMURY lap :  14, actual time :  1.82299E+02, gas  3.98622E+01, tyre  1.19512E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  1.72114E+02
@@ -2796,6 +2795,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.81580E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.84115E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.81580E+00 speed  2.93425E+02
+ 1 1: SUMMURY lap :  15, actual time :  1.82305E+02, gas  3.88577E+01, tyre  1.28447E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.84115E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.01031E+00 COMPETITOR_ARRIVAL_TIME =  1.82305E+02 EXIT_INSTANT =  1.84315E+02 PATH_AVAILABLE_INSTANT =  1.84115E+02 SPEED_TEMP =  3.90976E+02 CHECKPOINT NUM =  1.48000E+02
@@ -2819,10 +2819,6 @@ Copy false
 Copy false
  3 3: SUMMURY lap :  14, actual time :  1.84115E+02, gas  3.97586E+01, tyre  1.20733E+01, pit stop done FALSE
  3 Connecting for strategy
- 1 1: SUMMURY lap :  15, actual time :  1.84315E+02, gas  3.87541E+01, tyre  1.29668E+01, pit stop done FALSE
- 1 Connecting for strategy
- 2 2: SUMMURY lap :  15, actual time :  1.84515E+02, gas  3.87541E+01, tyre  1.29668E+01, pit stop done FALSE
- 2 Connecting for strategy
  3 connected succesfully
  3 saved
 Notifying
@@ -2831,6 +2827,8 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  2.06138E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.86176E+02
  3: evaluate done: length path  1.68000E+02 crossing time  2.06138E+00 speed  2.93396E+02
+ 1 1: SUMMURY lap :  15, actual time :  1.84315E+02, gas  3.87541E+01, tyre  1.29668E+01, pit stop done FALSE
+ 1 Connecting for strategy
  1 connected succesfully
  1 saved
 Notifying
@@ -2839,6 +2837,8 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.06137E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.86376E+02
  1: evaluate done: length path  1.68000E+02 crossing time  2.06137E+00 speed  2.93396E+02
+ 2 2: SUMMURY lap :  15, actual time :  1.84515E+02, gas  3.87541E+01, tyre  1.29668E+01, pit stop done FALSE
+ 2 Connecting for strategy
  2 connected succesfully
  2 saved
 Notifying
@@ -2919,8 +2919,6 @@ DATI DAL COMPETITOR :  RAMO IF ID  2 CROSSING_TIME_TEMP =  6.42024E-01 COMPETITO
  2DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.91685E+02
  2: evaluate done: length path  5.50000E+01 crossing time  6.42024E-01 speed  3.23436E+02
- 1 1: SUMMURY lap :  16, actual time :  1.91487E+02, gas  3.83405E+01, tyre  1.34516E+01, pit stop done FALSE
- 2 2: SUMMURY lap :  16, actual time :  1.91685E+02, gas  3.83405E+01, tyre  1.34516E+01, pit stop done FALSE
  3 3: SUMMURY lap :  15, actual time :  1.91318E+02, gas  3.93477E+01, tyre  1.25576E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  1.80882E+02
@@ -2928,12 +2926,14 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.57119E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.92889E+02
  3: evaluate done: length path  1.28000E+02 crossing time  1.57119E+00 speed  2.93282E+02
+ 1 1: SUMMURY lap :  16, actual time :  1.91487E+02, gas  3.83405E+01, tyre  1.34516E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.92889E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  1.60202E+00 COMPETITOR_ARRIVAL_TIME =  1.91487E+02 EXIT_INSTANT =  1.93089E+02 PATH_AVAILABLE_INSTANT =  1.92889E+02 SPEED_TEMP =  3.78390E+02 CHECKPOINT NUM =  1.28000E+02
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.93089E+02
  1: evaluate done: length path  1.28000E+02 crossing time  1.60202E+00 speed  2.93282E+02
+ 2 2: SUMMURY lap :  16, actual time :  1.91685E+02, gas  3.83405E+01, tyre  1.34516E+01, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  1.93089E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  1.60425E+00 COMPETITOR_ARRIVAL_TIME =  1.91685E+02 EXIT_INSTANT =  1.93289E+02 PATH_AVAILABLE_INSTANT =  1.93089E+02 SPEED_TEMP =  3.84422E+02 CHECKPOINT NUM =  1.28000E+02
@@ -2973,8 +2973,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  16, actual time :  1.94713E+02, gas  3.81398E+01, tyre  1.36809E+01, pit stop done FALSE
- 2 2: SUMMURY lap :  16, actual time :  1.94900E+02, gas  3.81398E+01, tyre  1.36809E+01, pit stop done FALSE
  3 3: SUMMURY lap :  15, actual time :  1.94707E+02, gas  3.91545E+01, tyre  1.27854E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  1.84515E+02
@@ -2982,12 +2980,14 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.81702E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.96524E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.81702E+00 speed  2.93228E+02
+ 1 1: SUMMURY lap :  16, actual time :  1.94713E+02, gas  3.81398E+01, tyre  1.36809E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  1.96524E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.01189E+00 COMPETITOR_ARRIVAL_TIME =  1.94713E+02 EXIT_INSTANT =  1.96724E+02 PATH_AVAILABLE_INSTANT =  1.96524E+02 SPEED_TEMP =  3.90714E+02 CHECKPOINT NUM =  1.48000E+02
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.96724E+02
  1: evaluate done: length path  1.48000E+02 crossing time  2.01189E+00 speed  2.93228E+02
+ 2 2: SUMMURY lap :  16, actual time :  1.94900E+02, gas  3.81398E+01, tyre  1.36809E+01, pit stop done FALSE
 Notifying
  2DEBUG NOTTURNO : PATH TIME =  1.96724E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  2 CROSSING_TIME_TEMP =  2.02437E+00 COMPETITOR_ARRIVAL_TIME =  1.94900E+02 EXIT_INSTANT =  1.96924E+02 PATH_AVAILABLE_INSTANT =  1.96724E+02 SPEED_TEMP =  3.90714E+02 CHECKPOINT NUM =  1.48000E+02
@@ -3014,8 +3014,6 @@ SET_RELEASE_INSTANT : instant =  1.98587E+02
  3: evaluate done: length path  1.68000E+02 crossing time  2.06276E+00 speed  2.93199E+02
  1 1: SUMMURY lap :  16, actual time :  1.96724E+02, gas  3.80362E+01, tyre  1.38030E+01, pit stop done FALSE
  1 Connecting for strategy
- 2 2: SUMMURY lap :  16, actual time :  1.96924E+02, gas  3.80362E+01, tyre  1.38030E+01, pit stop done FALSE
- 2 Connecting for strategy
  1 connected succesfully
  1 saved
 Notifying
@@ -3024,6 +3022,8 @@ DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.06276E+00 COMPETI
  1DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  1.98787E+02
  1: evaluate done: length path  1.68000E+02 crossing time  2.06276E+00 speed  2.93199E+02
+ 2 2: SUMMURY lap :  16, actual time :  1.96924E+02, gas  3.80362E+01, tyre  1.38030E+01, pit stop done FALSE
+ 2 Connecting for strategy
  2 connected succesfully
  2 saved
 Notifying
@@ -4093,7 +4093,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  22, actual time :  2.69336E+02, gas  3.38323E+01, tyre  1.86980E+01, pit stop done FALSE
  3 3: SUMMURY lap :  21, actual time :  2.69333E+02, gas  3.49079E+01, tyre  1.77903E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  2.59098E+02
@@ -4101,6 +4100,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.82438E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.71157E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.82438E+00 speed  2.92045E+02
+ 1 1: SUMMURY lap :  22, actual time :  2.69336E+02, gas  3.38323E+01, tyre  1.86980E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  2.71157E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.02139E+00 COMPETITOR_ARRIVAL_TIME =  2.69336E+02 EXIT_INSTANT =  2.71357E+02 PATH_AVAILABLE_INSTANT =  2.71157E+02 SPEED_TEMP =  3.89138E+02 CHECKPOINT NUM =  1.48000E+02
@@ -4467,7 +4467,6 @@ Copy false
 Copy false
 Copy false
 Copy false
- 1 1: SUMMURY lap :  24, actual time :  2.94278E+02, gas  3.23964E+01, tyre  2.03704E+01, pit stop done FALSE
  3 3: SUMMURY lap :  23, actual time :  2.94275E+02, gas  3.34923E+01, tyre  1.94586E+01, pit stop done FALSE
 Notifying
  3DEBUG NOTTURNO : PATH TIME =  2.84026E+02
@@ -4475,6 +4474,7 @@ DATI DAL COMPETITOR :  RAMO IF ID  3 CROSSING_TIME_TEMP =  1.82684E+00 COMPETITO
  3DEBUG NOTTURNO : WAITING TIME =  0.00000E+00
 SET_RELEASE_INSTANT : instant =  2.96102E+02
  3: evaluate done: length path  1.48000E+02 crossing time  1.82684E+00 speed  2.91650E+02
+ 1 1: SUMMURY lap :  24, actual time :  2.94278E+02, gas  3.23964E+01, tyre  2.03704E+01, pit stop done FALSE
 Notifying
  1DEBUG NOTTURNO : PATH TIME =  2.96102E+02
 DATI DAL COMPETITOR :  RAMO ELSE ID  1 CROSSING_TIME_TEMP =  2.02460E+00 COMPETITOR_ARRIVAL_TIME =  2.94278E+02 EXIT_INSTANT =  2.96302E+02 PATH_AVAILABLE_INSTANT =  2.96102E+02 SPEED_TEMP =  3.88612E+02 CHECKPOINT NUM =  1.48000E+02
