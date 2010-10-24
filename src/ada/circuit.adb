@@ -12,10 +12,10 @@ package body Circuit is
 
    --Racetrack methods implementation
 
-   procedure Initialize_Sector(Checkpoint_List : Node_List;
+   procedure Initialize_Sector(Checkpoint_List 	: Node_List;
                                Checkpoint_Index : out Integer_Point;
-                               Racetrack_In : out Racetrack_Point;
-                               Sector : Integer) is
+                               Racetrack_In 	: out Racetrack_Point;
+                               Sector 		: Integer) is
 
       -- We are sure that those parametres will have a value.
       --+ They are initialized in Initialize_Racetrack.
@@ -27,21 +27,21 @@ package body Circuit is
       CheckpointCounter : Integer := 0;
       Checkpoints_In_Sector : Integer := Node_Qty - (Node_Qty/2 + 1);
 
-      IsGoal_Attr : Attr;
-      IsGoal : BOOLEAN;
-      Is_Pre_Box_Attr : Attr;
-      Is_Pre_Box : BOOLEAN;
-      Is_Exit_Box_Attr : Attr;
-      Is_Exit_Box : BOOLEAN;
-      Is_Last_Of_The_Sector : BOOLEAN;
-      Is_First_Of_The_Sector : BOOLEAN;
-      Current_Length : Float;
-      Current_Mult : Integer;
-      Current_Angle : Angle_Grade;
-      Current_Grip : Float;
-      Checkpoint_Synch_Current : Checkpoint_Synch_Point;
-      Feature_List : Node_List;
-      Current_Node : Node;
+      IsGoal_Attr 		: Attr;
+      IsGoal 			: BOOLEAN;
+      Is_Pre_Box_Attr 		: Attr;
+      Is_Pre_Box 		: BOOLEAN;
+      Is_Exit_Box_Attr 		: Attr;
+      Is_Exit_Box 		: BOOLEAN;
+      Is_Last_Of_The_Sector	: BOOLEAN;
+      Is_First_Of_The_Sector	: BOOLEAN;
+      Current_Length 		: Float;
+      Current_Mult 		: Integer;
+      Current_Angle 		: Angle_Grade;
+      Current_Grip 		: Float;
+      Checkpoint_Synch_Current 	: Checkpoint_Synch_Point;
+      Feature_List 		: Node_List;
+      Current_Node 		: Node;
 
    begin
 
@@ -207,8 +207,6 @@ package body Circuit is
                               Checkpoint_Index,
                               Racetrack_In,
                               Sector => Index);
-
-
          end loop;
 	  Ada.Text_IO.Put_Line("Race Length " & Float'Image(Racetrack_Length));
       else
@@ -243,7 +241,7 @@ package body Circuit is
    end Get_Racetrack;
 
    procedure Set_Competitors(Racetrack_In : in out Racetrack_Point;
-                             Competitors : in Common.Competitor_List) is
+                             Competitors  : in Common.Competitor_List) is
       Race_Length : Integer;
       Race_It : Racetrack_Iterator := Get_Iterator(Racetrack_In);
       Times : Common.Float_ARRAY(1..Competitors'Length);
@@ -296,13 +294,13 @@ package body Circuit is
       return Iterator;
    end Get_Iterator;
 
-   procedure Get_CurrentCheckpoint(RaceIterator : in out Racetrack_Iterator;
-                                   CurrentCheckpoint : out Checkpoint_Synch_Point) is
+   procedure Get_CurrentCheckpoint(RaceIterator  	: in out Racetrack_Iterator;
+                                   CurrentCheckpoint 	: out Checkpoint_Synch_Point) is
    begin
       CurrentCheckpoint := RaceIterator.Race_Point(RaceIterator.Position);
    end Get_CurrentCheckpoint;
 
-   procedure Get_NextCheckpoint(RaceIterator : in out Racetrack_Iterator;
+   procedure Get_NextCheckpoint(RaceIterator   : in out Racetrack_Iterator;
                                 NextCheckpoint : out Checkpoint_Synch_Point) is
    begin
       --++++++Put_Line("Position " & Integer'Image(RaceIterator.Position));
@@ -324,8 +322,8 @@ package body Circuit is
       end if;
    end Get_NextCheckpoint;
 
-   procedure Get_ExitBoxCheckpoint(RaceIterator : in out Racetrack_Iterator;
-                                   ExitBoxCheckpoint : out Checkpoint_Synch_Point) is
+   procedure Get_ExitBoxCheckpoint(RaceIterator		: in out Racetrack_Iterator;
+                                   ExitBoxCheckpoint 	: out Checkpoint_Synch_Point) is
       Tmp_Checkpoint : Checkpoint_Synch_Point;
    begin
       loop
@@ -336,7 +334,7 @@ package body Circuit is
       ExitBoxCheckpoint := Tmp_Checkpoint;
    end Get_ExitBoxCheckpoint;
 
-   procedure Get_BoxCheckpoint(RaceIterator : in out Racetrack_Iterator;
+   procedure Get_BoxCheckpoint(RaceIterator  : in out Racetrack_Iterator;
                                BoxCheckpoint : out Checkpoint_Synch_Point) is
    begin
 
@@ -363,7 +361,7 @@ package body Circuit is
    end Get_IsFinished;
 
    function Get_Checkpoint(Racetrack_In : Racetrack;
-                           Position : Integer) return Checkpoint_Synch_Point is
+                           Position 	: Integer) return Checkpoint_Synch_Point is
    begin
       return Racetrack_In(Position);
    end Get_Checkpoint;

@@ -4,31 +4,31 @@ use Path_Handler;
 package body Checkpoint_Handler is
 
    --Checkpoint methods implementation
-   procedure Set_Values(Checkpoint_In : in out Checkpoint_Point;
-                        SectorID_In : INTEGER;
-                        IsGoal_In : BOOLEAN;
-                        Length_In : FLOAT; -- y
-                        Angle_In : ANGLE_GRADE; -- alpha
-                        Grip_In : GRIP_RANGE;
-                        Difficulty_In : DIFFICULTY_RANGE;
-                        PathsQty_In : POSITIVE; -- mult
-                        Competitors_Qty : POSITIVE;
-                        IsPreBox_In : BOOLEAN;
-                        IsExitBox : BOOLEAN;
-                        IsFirstOfTheSector : BOOLEAN;
-                        IsLastOfTheSector : BOOLEAN) is
+   procedure Set_Values(Checkpoint_In 		: in out Checkpoint_Point;
+                        SectorID_In 		: INTEGER;
+                        IsGoal_In 		: BOOLEAN;
+                        Length_In 		: FLOAT; -- y
+                        Angle_In 		: ANGLE_GRADE; -- alpha
+                        Grip_In 		: GRIP_RANGE;
+                        Difficulty_In 		: DIFFICULTY_RANGE;
+                        PathsQty_In	 	: POSITIVE; -- mult
+                        Competitors_Qty 	: POSITIVE;
+                        IsPreBox_In 		: BOOLEAN;
+                        IsExitBox 		: BOOLEAN;
+                        IsFirstOfTheSector 	: BOOLEAN;
+                        IsLastOfTheSector 	: BOOLEAN) is
 
       PathsCollection : Paths_Point;
 
    begin
-      Checkpoint_In.SectorID := SectorID_In;
-      Checkpoint_In.IsGoal := IsGoal_In;
-      Checkpoint_In.Multiplicity :=  PathsQty_In;
-      Checkpoint_In.Queue := new SORTED_QUEUE(1..Competitors_Qty);
-      Checkpoint_In.IsPreBox := IsPreBox_In;
-      Checkpoint_In.IsExitBox := IsExitBox;
-      Checkpoint_In.IsLastOfTheSector := IsLastOfTheSector;
-      Checkpoint_In.IsFirstOfTheSector := IsFirstOfTheSector;
+      Checkpoint_In.SectorID 		:= SectorID_In;
+      Checkpoint_In.IsGoal 		:= IsGoal_In;
+      Checkpoint_In.Multiplicity 	:=  PathsQty_In;
+      Checkpoint_In.Queue 		:= new SORTED_QUEUE(1..Competitors_Qty);
+      Checkpoint_In.IsPreBox 		:= IsPreBox_In;
+      Checkpoint_In.IsExitBox 		:= IsExitBox;
+      Checkpoint_In.IsLastOfTheSector 	:= IsLastOfTheSector;
+      Checkpoint_In.IsFirstOfTheSector 	:= IsFirstOfTheSector;
       Init_Queue(Checkpoint_In.Queue.all);
 
       Init_Paths(PathsCollection,
@@ -47,7 +47,7 @@ package body Checkpoint_Handler is
       Checkpoint_In.IsGoal := TRUE;
    end Set_Goal;
 
-   function Get_Time(Checkpoint_In : Checkpoint_Point;
+   function Get_Time(Checkpoint_In   : Checkpoint_Point;
                      CompetitorID_In : INTEGER) return FLOAT is
    begin
 
@@ -88,7 +88,7 @@ package body Checkpoint_Handler is
 
 
       procedure Set_Lower_Bound_Arrival_Instant(CompetitorID_In : INTEGER;
-                                                Time_In : FLOAT) is
+                                                Time_In		: FLOAT) is
       begin
          Add_Competitor2Queue(F_Checkpoint.Queue.all,CompetitorID_In,Time_In);
          -- If in the 1st position of the queue now there is a competitor who's
@@ -171,8 +171,8 @@ package body Checkpoint_Handler is
       --the 1st position in the checkpoint queue. Once one of them is first,
       --his Paths2Cross is initialized with the corresponding CROSSING_POINT,
       --in order to let it "cross" the segment.
-      procedure Get_Paths(Paths2Cross : out CROSSING_POINT;
-                          Go2Box : BOOLEAN) is
+      procedure Get_Paths(Paths2Cross 	: out CROSSING_POINT;
+                          Go2Box 	: BOOLEAN) is
       begin
 
          if ( Go2Box = true ) then
@@ -202,19 +202,19 @@ package body Checkpoint_Handler is
 
    end CHECKPOINT_SYNCH;
 
-   procedure Initialize_Checkpoint_Synch(Checkpoint_Synch_Out : out Checkpoint_Synch_Point;
-                                         Sector_ID : INTEGER;
-                                         Is_Goal : BOOLEAN;
-                                         Length : FLOAT; -- y
-                                         Angle : ANGLE_GRADE; -- alpha
-                                         Grip : GRIP_RANGE;
-                                         Difficulty : DIFFICULTY_RANGE;
-                                         Paths_Qty : POSITIVE; -- mult
-                                         Competitors_Qty : POSITIVE;
-                                         Is_Pre_Box : BOOLEAN;
-                                         Is_Exit_Box : BOOLEAN;
+   procedure Initialize_Checkpoint_Synch(Checkpoint_Synch_Out 	: out Checkpoint_Synch_Point;
+                                         Sector_ID 		: INTEGER;
+                                         Is_Goal 		: BOOLEAN;
+                                         Length 		: FLOAT; -- y
+                                         Angle 			: ANGLE_GRADE; -- alpha
+                                         Grip 			: GRIP_RANGE;
+                                         Difficulty 		: DIFFICULTY_RANGE;
+                                         Paths_Qty 		: POSITIVE; -- mult
+                                         Competitors_Qty 	: POSITIVE;
+                                         Is_Pre_Box 		: BOOLEAN;
+                                         Is_Exit_Box 		: BOOLEAN;
                                          Is_First_Of_The_Sector : BOOLEAN;
-                                         Is_Last_Of_The_Sector : BOOLEAN) is
+                                         Is_Last_Of_The_Sector 	: BOOLEAN) is
 
       Checkpoint_Temp : Checkpoint_Point;
 

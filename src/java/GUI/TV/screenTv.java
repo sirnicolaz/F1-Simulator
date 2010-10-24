@@ -277,19 +277,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 		    best.setClock("Time "+convertNoMill(updTime));
 		    // ho le tabelle completate , datiArray contiene i dati relativi alla classifica mentre datiArrayDoppiati contiene i dati dei doppiati.
 		    int index= 0;
-
-		    //DEBUG
-		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
-			System.out.println("VECTOR DEBUG : Vector_Competitor_Position ["+index_vector+"] = "+Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id());
-		    }
-
 		    //faccio un for di aggiornamento della situazione dei concorrenti prima / dopo di un certo concorrente
 		    for(int index_vector = 0; index_vector < Vector_Competitor_Position.size(); index_vector++){
 			//scorro tutti i concorrenti, quindi uso infos[index].setAfter e setBefore
 			String After = new String("");
 			String Before = new String(" ");
 			String Equal = new String("");
-			System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 0 : Vector_Competitor_Position.size() = "+Vector_Competitor_Position.size());
 			for(int index_other_position = 0; index_other_position<Vector_Competitor_Position.size(); index_other_position++){
 			    if(index_other_position > index_vector){
 				//se sta dopo devo vedere se è perchè è effettivamente dopo o se è sullo stesso tratto
@@ -303,14 +296,12 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				    }
 				}
 				else{
-				    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 1");
 				    if(After.equals("")){
 					After = After + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
 				    }
 				    else{
 					After = After + ","+ Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
 				    }
-				    System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 2");
 				}	
 			    }
 			    if(index_other_position < index_vector){
@@ -325,9 +316,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 				else{
 				    if(Before.equals(" ")){
-					System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 3");
 					Before = Before + Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id();
-					System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 4");
 				    }
 				    else{
 					Before = Before + ","+ Vector_Competitor_Position.elementAt(index_other_position).get_Competitor_Id(); 
@@ -335,8 +324,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 			    }
 			}
-			System.out.println(Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id() +" : DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 5 After = "+After+" Before = "+Before);
-		    
+			
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setAfter(After);
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setEqual(Equal);
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setBefore(Before);
@@ -347,17 +335,13 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			if(current_lap == 0 && datiArray[0].getLap()<=current_lap ){// fix per differenza tempi durante il cambio classifica
 			    timeArray = new float[datiArray.length];
 			    for(int indez= 0; indez <timeArray.length; indez++){
-				System.out.println("1 : LORY DEBUG : AGGIORNAMENTO TIME ARRAY - LAP "+current_lap);
 				timeArray[indez] = datiArray[indez].getTime();
 			    }
 			}
-			System.out.println("DATIARRAY[0].GETLAP() =" +datiArray[0].getLap());
 			if(datiArray[0].getLap()>current_lap){//sono in presenza di una nuova classifica da inserire, inserisco i doppiati in quella vecchia e poi inverto le classifiche, svuoto quella nuova e ci inserisco i dati giusti
-			    System.out.println("LORY DEBUG : NUOVA CLASSIFICA 1");
 			    int diff; 
 			    int posiz = modelClassific[current_index].getRowCount();
-			    System.out.println("LORY DEBUG : NUOVA CLASSIFICA 2 POSIZ = "+posiz);
-
+			
 			    try{
 				while(index < datiArray.length){//inserisco prima quelli che hanno un tempo nella lap prima, controllando che non ci siano già
 				    System.out.println("LORY DEBUG : AGGIORNAMENTO, CERCO SE CI SONO GIA OPPURE NO ");
@@ -387,7 +371,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert(datiArray[index].getTime())});
 							System.out.println("1 : SCREEN DEBUG LORY : "+convert(datiArray[index].getTime()));
 						    }
-						  else{
+						    else{
 							//if(datiArray[index].getLap()==datiArray[index-1].getLap()){
 							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime())});
 							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime()));
@@ -730,9 +714,9 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			    datiArray[i] = new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]);
 			    System.out.println("posizione "+i+" del concorrente "+datiArray[i].getId()+" in tempo : "+convert(datiArray[i].getTime()));
 			    if(history[new Integer(getNode("lap", line)).intValue()] == null){
-				      System.out.println("HISTORY VUOTO");
-				      history[new Integer(getNode("lap", line)).intValue()]= new oldArray(numComp);
-				  }
+				System.out.println("HISTORY VUOTO");
+				history[new Integer(getNode("lap", line)).intValue()]= new oldArray(numComp);
+			    }
 			    history[new Integer(getNode("lap", line)).intValue()].setElementIndex(i, new dati(new Integer(getNode("lap", line)).intValue(), new Integer(attributoComp.getNodeValue()).intValue(), arrayInfo[j]));//qua aggiorno anche lo storico
 			    //seleziono la posizione da aggiornare in base alla lap del concorrente e poi la salvo tramite il metodo.
 			    System.out.println("DOPO AGGIORNAMENTO HISTORY "+history[new Integer(getNode("lap", line)).intValue()].getElementIndex(i).getTime());
@@ -972,18 +956,18 @@ class dati{
 }
 
 class oldArray{
-private dati[] lapDati;
-public dati getElementIndex(int index){
-return lapDati[index];
-}
-public void setElementIndex(int index, dati newData){
-lapDati[index] = new dati(newData.getLap(), newData.getId(), newData.getTime());
-//lapDati[index] = newData;
-System.out.println("aggiornamento storico - "+index+" - newData "+lapDati[index].getTime());
-}
-public oldArray(int numComp){
-  lapDati = new dati[numComp];
-}
+    private dati[] lapDati;
+    public dati getElementIndex(int index){
+	return lapDati[index];
+    }
+    public void setElementIndex(int index, dati newData){
+	lapDati[index] = new dati(newData.getLap(), newData.getId(), newData.getTime());
+	//lapDati[index] = newData;
+	System.out.println("aggiornamento storico - "+index+" - newData "+lapDati[index].getTime());
+    }
+    public oldArray(int numComp){
+	lapDati = new dati[numComp];
+    }
 }
 
 //oggetto tabella con classifiche

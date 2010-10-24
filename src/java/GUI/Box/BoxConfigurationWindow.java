@@ -650,7 +650,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
 	}
 	catch (Exception e){
-	   // e.printStackTrace();
+	    // e.printStackTrace();
 	}
 
     }
