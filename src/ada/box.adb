@@ -6,9 +6,6 @@ with Ada.Exceptions;
 
 with Broker.Radio.Competition_Monitor_Radio;
 
---with PolyORB.Utils.Report;
---with Monitor_Radio;
-
 with Input_Sources.File;
 use Input_Sources.File;
 with Sax.Readers; use Sax.Readers;
@@ -45,8 +42,7 @@ package body Box is
    begin
 
       Laps := Laps_In;
-      --TODO: decide wheter to you km or m for the circuit length and
-      --+ keep this unit wherever.
+
       Circuit_Length := Circuit_Length_In/1000.00;
       Competitor_Id := Competitor_Id_In;
 
@@ -75,7 +71,6 @@ package body Box is
       Success : BOOLEAN := false;
    begin
 
-      --CORBA.ORB.Initialize("ORB");
       Corba.ORB.String_To_Object(CORBA.To_CORBA_String
                                  (Radio_Corba_Loc) , Radio);
 
@@ -84,11 +79,9 @@ package body Box is
 
       end if;
 
-
       Ada.Text_IO.Put_Line("Updater Starting");
 
       Success := Broker.Radio.Competition_Monitor_Radio.Ready(Radio,CORBA.Short(Competitor_Id));
-
 
       -- Test init values to avoid warnings DEL
       Info := new Competition_Update;
@@ -357,21 +350,14 @@ package body Box is
 
       Sector := Integer'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"sector"))));
 
---      Time := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"time"))));
-
---      Path_Length := Float'VALUE(Node_Value(First_Child(Common.Get_Feature_Node(Current_Node,"metres"))));
-
       Update.Max_Speed := Max_Speed;
 
       Update.Gas_Level := Gas_Level;
 
       Update.Tyre_Usury := Tyre_Usury;
 
---      Update.Time := Time;
       Update.Lap := Lap;
       Update.Sector := Sector;
---      Update.Path_Length := Path_Length;
-
 
       return Update;
    end XML2CompetitionUpdate;

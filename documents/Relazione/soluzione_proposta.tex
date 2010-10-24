@@ -302,7 +302,9 @@ in dettaglio in seguito, questa componente \`{e} in realt\`{a} costituita da due
 \end{figure}
 \end{center}
 La componente \emph{Screen} comunica con il \emph{Monitor} per ottenere informazioni utili da esporre graficamente all'utente. Tali
-informazioni possono riguardare la competizione in senso globale, oppure essere legate ai singoli concorrenti.
+informazioni possono riguardare la competizione in senso globale, oppure essere legate ai singoli concorrenti.\\
+Inoltre dagli \emph{Screen} è possibile intervenire sulla gara, accelerando o decelerando la velocità di simulazione e forzando un 
+concorrente a rientrare ai box.
 \subsubsection{Competitor-Box}
 \begin{center}
 \begin{figure}[h!]
@@ -905,11 +907,13 @@ a meno che per qualche motivo un thread relativo ad un \textbf{Competitor\_Task}
 non si interrompa inaspettatamente, bloccando il processo di aggiornamento delle statistiche e quindi la produzione di snapshot di gara.
 %"Distribuzione"
 \subsection{Distribuzione}
+\ref{distribuzione}
 Nella seguente sezione verranno spiegati dettagli fondamentali riguardanti la distribuzione nel sistema.
 	%. Elenco risorse distribuite
 	%. Interazione risorse distribuite
 	%. Misure di fault tolerance
 \subsubsection{Componenti distribuite}%Con motivazione
+\ref{comp_distribuite}
 Si \`{e} deciso di permettere la distribuzione delle seguenti componenti:
 \begin{itemize}
 \item\textbf{\emph{Box}}:\\

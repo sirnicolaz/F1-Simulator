@@ -57,7 +57,7 @@ coda il tempo di arrivo in base ai tempi accumulati per l'attraversamento dei
 tratti precedenti. Quindi si può dire che ogni
 concorrente aggiorni un proprio orologio relativo all'andamento della sua corsa.
 Inoltre ogni concorre segna
-un tempo ottimistico di arrivo sui checkpoint che (salvo squalifica) attraverserà.
+un tempo ottimistico di arrivo sui checkpoint che (salvo ritiro) attraverserà.
 Tale istante sarà di sicuro maggiore dell'istante segnato
 nel \textbf{Checkpoint} in cui il concorrente effettivamente è arrivato. Questo
 permette ad ogni concorrente di sapere, quindi, non solo
@@ -91,7 +91,7 @@ Quando un concorrente vuole iniziare a percorrere una traiettoria, di conseguenz
 che il suo tempo di arrivo sia maggiore almeno di uno dei tempi di liberazione segnati
 nella lista. Solo in questo caso potrà essere certo che la traiettoria può ospitare auto.
 Se tutte le traiettorie di un tratto sono sovraffollate, il concorrente dovrà
-uscire di pista per evitare una collisione e venire squalificato.\\
+uscire di pista per evitare una collisione e si dovrà quindi ritirare.\\
 Questo garantisce il realismo fisico
 concorrente-concorrenti descritto nella sezione \ref{analisi_realismo_fisico}.
 I tempi segnati nelle code invece mettono in pratica, in parte, il concetto di
@@ -171,7 +171,7 @@ corrisponderà all'istante di uscita della macchina entrata più di recente (ovv
 di arrivo del concorrente (significa che quell'istante è già passato e non è più utile ai fini della valutazione dell'affollamento
 della traiettoria);
 \end{itemize}
-\item Altrimenti l'utente deve uscire dal circuito per evitare collisioni, venendo così squalificato.
+\item Altrimenti l'utente deve uscire dal circuito per evitare collisioni, dovendo così ritirarsi.
 \end{itemize}
 \item{\textbf{Attraversamento tratto:}}\\
 \emph{Premessa}: un concorrente arrivato effettivamente su una coda ma non primo, si mette in attesa. 
@@ -428,7 +428,7 @@ non tengono in considerazione fattori che nella realtà possono incidere in modo
 negativo;
 \item Fool: nella realtà normalmente non si arriva a tanto, ma per fini di test
 è stato inserito anche un tipo di strategia che sovrastima le possibilità del
-concorrente, portandolo a squalifica quasi certa.
+concorrente, portandolo a ritiro quasi certa.
 \end{enumerate}
 \subsubsection{Interazione con il concorrente}
 L'entità box interagisce costantemente con il concorrente, anche se non in modo
@@ -471,7 +471,8 @@ dovuto al sistema distribuito, gestendo questi fault e garantendo la corretta e
 continua esecuzione della simulazione.
 Inoltre la consapevolezza di errori di rete porta alla presenza di componenti di
 "non determinismo" comunque controllato e gestito, come richiesto nel paragrafo
-\ref{componenti_non_determinismo}.
+\ref{componenti_non_determinismo}.\\
+Ulteriori dettagli relativi alla distribuzione possono essere reperiti in appendice alla seguente sezione \label{distribuzione}.
 \subsection{Gestione delle statistiche di gara}
 \label{statistiche}
 Come analizzato nella sezione \ref{analisi_istantanee}, per poter reperire
@@ -602,6 +603,9 @@ prima riguarda l'osservazione della gara e la velocità di simulazione;
 seconda  riguarda interventi sulla gara da parte di un utente esterno,
 che completa le funzionalità di "non determinismo" permesse nei primi capitoli.
 \end{itemize}
+L'interazione avviene da postazioni remote. Ovvero l'utente avrà TV e Box dislocati in nodi separati 
+rispetto alla competizione. Maggiori dettagli a riguardo possono essere trovati alla sezione in appendice
+\ref{comp_distribuite}.
 \subsubsection{Osservazione gara ( lato box, lato tv )}
 Per quanto riguarda l'osservazione della gara questa avviene in due modalità
 differenti. La prima è la visione della gara nel suo insieme, con la
