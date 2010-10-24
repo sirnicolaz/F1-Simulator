@@ -23,9 +23,11 @@ dai tempi accumulati nel corso
 della gara. Questi potrebbero essere il tempo di attraversamento di un tratto
 come il tempo necessario
 a effettuare un giro. I secondi, chiaramente, dipendono dai primi. 
-In un sistema simulato è necessario che per più simulazioni regolate dalle
-stesse condizioni, 
-gli intervalli temporali calcolati siano gli stessi. Questo potrebbe risultare
+Nel sistema simulato è quindi necessario che i tempi non presentino inconsistenze.
+Per esempio non deve risultare che un concorrente inizi la corsa all'istante 0,
+impieghi 4,5 e 15 secondi per percorrere i tre settori e poi il tempo di lap
+risulti essere 11.\\
+Questo potrebbe risultare
 problematico dal momento che
 lo scheduler non rispetta vincoli di tempo definiti o comunque conosciuti a
 priori.
@@ -92,7 +94,7 @@ possono pensare anche ai fattori che diano del non determinismo.
 Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente
 l'andamento della gara a priori. Questa componente pu\`{o} essere non
 desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore
-aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile
+aggiunto alla simulazione. Nel caso del simulatore di formula 1 \`{e} desiderabile
 riuscire a inserire componenti che introducano il non determinismo.
 Esempi di non determinismo che si possono trovare progettando un simulatore e
 che possono portare valore aggiunto sono ad esempio interazioni dell'utente
@@ -166,9 +168,9 @@ prerilascio, metà ad un istante
 aggiunge un ulteriore livello di complessità
 al problema, poiché il ritardo potrebbe essere causato non solo dallo scheduler,
 ma anche dalla rete.
-\subsection{Robustezza del sistema distribuito }
+\subsection{Problematiche di distribuzione}
 Progettando un sistema distribuito bisogna tenere in considerazione alcune
-problematiche che, se ben risolte, portano a un prodotto distribuito robusto.
+problematiche che, se risolte, portano a un prodotto distribuito robusto.
 I punti principali su cui focalizzare l'attenzione sono
 \begin{itemize}
 \item Apparenza all'utente di un sistema unitario e non l'insieme di pi\`{u}
@@ -177,7 +179,15 @@ elaboratori
 \item Scelta del livello di distribuzione
 \item Architettura invariata rispetto al sistema in locale
 \end{itemize}
-Simulando una competizione di formula uno bisognerà fare in modo che la comunicazione (ad esempio concorrente - box) sia sicura e robusta, in quanto, come nella realtà, può precludere il buon andamento della gara. Inoltre bisogna riuscire a fornire funzionalità adatte ad eventuali osservatori esterni (che non influiscono sulla gara) per coinvolgerli in prima persona con la gara, un po' come avviene nella realtà con le tv collegate direttamente dall'autodromo ma visibili in tutto il mondo. Tutto questo porta a possibili problemi dovuti alla presenza della rete; tali problemi vanno gestiti e considerati per dare robustezza al sistema in uscita, dando l'idea all'utente di avere la simulazione in locale.
+Simulando una competizione di formula uno bisognerà fare in modo che la comunicazione (ad esempio concorrente - box) sia robusta, 
+in quanto, come nella realtà, può precludere il buon andamento della gara. Inoltre bisogna riuscire a fornire funzionalità 
+adatte ad eventuali osservatori esterni (che non influiscono sulla gara) per coinvolgerli in prima persona con la gara, 
+un po' come avviene nella realtà con le tv collegate direttamente dall'autodromo ma visibili in tutto il mondo. \\
+La comunicazione remota fra componenti dislocati in diversi nodi nella rete, quindi, presenterà certamente delle
+specifiche problematiche da affrontare. La pi\`{u} critica riguarda, appunto, la robustezza. \`{E} difficile o addiritura utopico sperare
+nell'affidabilit\`{a} della rete. La rete presenta sempre dei fault, la cosa importante \`{e} gestirli e non farli propagare in errori. Sicuramente
+quindi bisogner\`{a} minimizzare la probabilit\`{a} che un nodo distribuito, perdendo il contatto con il resto del sistema, possa provocare un 
+malfunzionamento globale.
 % \subsection{Intelligenza artificiale}
 % Per poter rendere indipendente da controlli esterni l'esecuzione della
 % simulazione, è necessario fornire almeno un accenno
