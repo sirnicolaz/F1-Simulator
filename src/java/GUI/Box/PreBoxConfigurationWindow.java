@@ -87,7 +87,6 @@ public class PreBoxConfigurationWindow{
 			fileName = "configuration-competitors/competitor-1.xml";
 			uploadConfig=false;
 		    }
-		    System.out.println("FileName = "+fileName);
 		    BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, argument, uploadConfig, fileName);
 		    boxWindow.init(j);
 		    parent.dispose();
@@ -107,7 +106,6 @@ public class PreBoxConfigurationWindow{
 	contentPane.setBorder(BorderFactory.createTitledBorder(null, "Impostazioni generali", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 	GridBagConstraints c = new GridBagConstraints();	
 	//selezione file
-		
 	c.fill = GridBagConstraints.HORIZONTAL;
 	c.gridx = 0;
 	c.gridy = 0;
@@ -134,7 +132,6 @@ public class PreBoxConfigurationWindow{
 	buttonPane.add(startButton);
 	parent.add(contentPane, BorderLayout.PAGE_START);
 	parent.add(buttonPane, BorderLayout.PAGE_END);
-
     }
 
     public PreBoxConfigurationWindow(JFrame frame, String arg){

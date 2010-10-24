@@ -62,7 +62,6 @@ public class CompetitionConfigurationWindow {
 			try {
 			    fileRacetrack.setText(fc.getSelectedFile().getName());
 			    complete_path_file = fc.getSelectedFile().getCanonicalPath();
-			    System.out.println("canonical path : "+complete_path_file);
 			} catch(Exception ecc) {
 			    // 					    ecc.printStackTrace();
 			}
@@ -72,7 +71,6 @@ public class CompetitionConfigurationWindow {
 	startButton = new JButton("Avvia Competizione");
 	startButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-		    System.out.println("Competizione avviata");
 		    if(writexml()== true){
 			raceFileCreator();
 			parent.dispose();
@@ -144,18 +142,7 @@ public class CompetitionConfigurationWindow {
 	c.gridx = 1;
 	c.gridy = 3;
 	c.ipady = 5;
-	//		contentPane.add(labelSimulationTime, c);
-	// 		c.fill = GridBagConstraints.HORIZONTAL;
-	// 		c.gridx = 0;
-	// 		c.gridy = 4;
-	// 		c.ipady = 5;
 	contentPane.add(textName, c);
-	// 		c.fill = GridBagConstraints.HORIZONTAL;
-	// 		c.gridx = 1;
-	// 		c.gridy = 4;
-	// 		c.ipady = 5;
-	// 		contentPane.add(modelSpeed, c);
-	// 		
 	//BUTTON PANEL
 	buttonPane.setLayout(new FlowLayout());
 	buttonPane.add(resetButton);
@@ -168,30 +155,22 @@ public class CompetitionConfigurationWindow {
 	try{
 
 	    orb = org.omg.CORBA.ORB.init(args,null);
-
 	    String configCorbaLoc="";
 	    corbalocMonitor = "";
 	    try{
 		BufferedReader corbaLocFile = new BufferedReader(new FileReader("../temp/competition_corbaLoc.txt"));
 		configCorbaLoc = corbaLocFile.readLine() ;
-		System.out.println(configCorbaLoc);
 		corbalocMonitor= corbaLocFile.readLine();
-		System.out.println(corbalocMonitor);
 	    }catch(Exception e){
-		System.out.println("Eccezione leggendo il corbalocMonitor = "+corbalocMonitor);
+/*		System.out.println("Eccezione leggendo il corbalocMonitor = "+corbalocMonitor);*/
 	    }
 	    org.omg.CORBA.Object competition_obj = orb.string_to_object(configCorbaLoc);
-	    System.out.println("CompetitionConfigurationWindow : 1");
 	    conf = CompetitionConfiguratorHelper.narrow(competition_obj);
-	    System.out.println("CompetitionConfigurationWindow : 2");
 	    org.omg.CORBA.Object monitor_obj = orb.string_to_object(corbalocMonitor);
-	    System.out.println("CompetitionConfigurationWindow : 3");
 	    monitor = Competition_Monitor_RadioHelper.narrow(monitor_obj);
-	    System.out.println("CompetitionConfigurationWindow : 4");
 	    JFrame frame = new JFrame("Configure Competition");
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    init(frame);
-	    //      frame.getContentPane().add(p_label, BorderLayout.CENTER);
 	    frame.pack();
 	    frame.setVisible(true);
 	}
@@ -241,7 +220,6 @@ public class CompetitionConfigurationWindow {
 	    else {
 		out=new PrintWriter(f);
 	    }
-	    System.out.println("Start printing");
 	    while(raceTrackFile.ready()){
 		out.println(raceTrackFile.readLine());
 	    }
@@ -258,6 +236,3 @@ public class CompetitionConfigurationWindow {
 
     }
 }
-
-
-

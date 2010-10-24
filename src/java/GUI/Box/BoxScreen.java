@@ -30,7 +30,6 @@ public class BoxScreen extends Thread{
     private String id;
     private JFrame parent;
     private org.omg.CORBA.Object obj_radio;
-    // private JTextArea outArea;
 
     private JPanel outPanel;
     private JPanel meanPanel;
@@ -99,7 +98,6 @@ public class BoxScreen extends Thread{
 	parent = new JFrame("BoxMonitor n° "+id_In);
 	boxStrategyString = boxStrategyStringIn;
 	readXmlCompetitor(xmlCompetitor);
-	// init();
     }
 
     public void createBoxOutput(){
@@ -107,10 +105,6 @@ public class BoxScreen extends Thread{
 	outPanel = new JPanel(new BorderLayout());
 	outPanel.setLayout(new GridBagLayout());
 	outPanel.setBorder(BorderFactory.createTitledBorder(null, "Box Output", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-	// boxConfigurationGrid = new GridBagConstraints();
-	// outArea = new JTextArea(35,30);
-	// outArea = new JTextArea(20,35);
-	// outPanel.add(outArea);
 	outPanelGrid.fill = GridBagConstraints.HORIZONTAL;
 	outPanelGrid.gridx = 0;
 	outPanelGrid.gridy = 0;
@@ -196,7 +190,6 @@ public class BoxScreen extends Thread{
 	meanPanelGrid.gridy = 1;
 	meanPanelGrid.ipady = 5;
 	meanPanel.add(labelTyre, meanPanelGrid);
-
     }
 
     public void createTableOutput(){
@@ -219,7 +212,6 @@ public class BoxScreen extends Thread{
 
 	tablePanel.setVerticalScrollBar(new JScrollBar());
 	tablePanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
     }
 
     public void Force_Pitstop(){
@@ -246,30 +238,21 @@ public class BoxScreen extends Thread{
 	    labelInfo_8.setText("Box Strategy = "+boxStrategyString);
 
 	    org.omg.CORBA.Object obj = orb.string_to_object(configuratorCorbaLoc);
-	    // outArea.setText("Pre narrow");
 	    BoxConfigurator conf = BoxConfiguratorHelper.narrow(obj);
-	    // outArea.append("\nConf initialized, invoke configure");
 	    conf.Configure("boxConfig-"+id+".xml");
-	    // outArea.append("\nAfter configure");
-	    // outArea.append("\n pre string_to_object");
 	    obj_radio = orb.string_to_object(monitorBoxCorbaLoc);
-	    // outArea.append("\n pre narrow box_monitor");
 	    Box_Monitor_Radio comp_radio = Box_Monitor_RadioHelper.narrow(obj_radio);
 	    pitstopButton.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 			Force_Pitstop();
 		    }});
-
-	    // outArea.append("\npre getupdate");
 	    short i=1;
-	    short qee=1;
 	    org.omg.CORBA.FloatHolder j=new org.omg.CORBA.FloatHolder(0);
 	    org.omg.CORBA.FloatHolder pathLength=new org.omg.CORBA.FloatHolder(0);
 	    String temp;
 	    while(i<=(laps*3)){
 		temp = comp_radio.GetUpdate(i,j,pathLength);
 		readXml(temp);
-
 		double gas=(double)(gasLevelValue);
 		double tyre=(double)(tyreUsuryValue);
 		double speed=(double)(maxSpeedReachedValue);
@@ -291,15 +274,12 @@ public class BoxScreen extends Thread{
 		if( gas <= 0.0 || tyre >=100.0 ){
 		    model.insertRow(0,new Object[]{lapsValue,sectorValue,"RITIRED","RITIRED","RITIRED",time});
 		    ListSelectionModel selectionModel = outTable.getSelectionModel();
-		    // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		    selectionModel.setSelectionInterval(0,0);
 		    i=(short)((laps*3)+1);
 		}
 		else{model.insertRow(0,new Object[]{lapsValue, sectorValue, gasPrint,tyrePrint,speedPrint,time});//j.value});
 		    ListSelectionModel selectionModel = outTable.getSelectionModel();
-		    // outTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		    selectionModel.setSelectionInterval(0,0);
-		    System.out.println(temp);
 		    textBoxGas.setText(new Double(meanGasPrint).toString());//aggiorno consumo medio
 		    textBoxTyre.setText(new Double(meanTyrePrint).toString());//aggiorno velocità media
 		    if (pitstopLapValue !=null){
@@ -313,17 +293,13 @@ public class BoxScreen extends Thread{
 			labelInfo_3.setText("Tank capacity = "+gastankcapacityValue.toString()+ ", Tyre mixture = "+mixtureValue);
 			labelInfo_4.setText("Tyre usury = "+tyreUsuryCarValue.toString()+" , Fuel level = "+gasLevelCarValue.toString());
 			outPanel.updateUI();
-			
 		    }
-		    i=(short)(i+1);
-		    System.out.println("after run invoke");
-		    
+		    i=(short)(i+1);    
 		}
 	    }
 	    model.insertRow(0,new Object[]{"---", "---","---", "---", "---", "---"});
 	    ListSelectionModel selectionModel = outTable.getSelectionModel();
 	    selectionModel.setSelectionInterval(0,0);
-
 	}
 	catch(NullPointerException e){
 	}
@@ -333,7 +309,6 @@ public class BoxScreen extends Thread{
 
 
     public void init(String boxCorbaLocIn, String monitorBoxCorbaLocIn, String configuratorCorbaLocIn, String monitorCorbaLocIn, ORB orbIn, short lapsIn){
-	System.out.println("BoxMonitor.init");
 	boxCorbaLoc = boxCorbaLocIn;
 	monitorBoxCorbaLoc = monitorBoxCorbaLocIn;
 	configuratorCorbaLoc = configuratorCorbaLocIn;
@@ -352,58 +327,39 @@ public class BoxScreen extends Thread{
 	    is.setCharacterStream(new StringReader(xmlRecords));
 
 	    Document doc = db.parse(is);
-	    //         NodeList nodes3 = doc.getElementsByTagName("update");
 	    NodeList nodes = doc.getElementsByTagName("status");
-	    // 	Element element = (Element) nodes.item(i);
-
+	    
 	    int i=0;
 	    Element element = (Element) nodes.item(i);
 	    NodeList gasLevel = element.getElementsByTagName("gasLevel");
 	    Element line = (Element) gasLevel.item(0);
 	    gasLevelValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("gaslevelvalue : "+gasLevelValue);
-        
+	            
 	    NodeList tyreUsury = element.getElementsByTagName("tyreUsury");
 	    line = (Element) tyreUsury.item(0);
 	    tyreUsuryValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("tyre usury : "+tyreUsuryValue);
-
+	    
 	    NodeList lap = element.getElementsByTagName("lap");
 	    line = (Element) lap.item(0);
-	    System.out.println("lap: " + getCharacterDataFromElement(line));
 	    lapsValue = new Integer(getCharacterDataFromElement(line));
-	    System.out.println("laps : "+lapsValue);
-
+	    
 	    NodeList sector = element.getElementsByTagName("sector");
 	    line = (Element) sector.item(0);
 	    sectorValue = new Integer(getCharacterDataFromElement(line));
-	    System.out.println("sector : "+sectorValue);
-
-
-
-	    //NodeList metres = element.getElementsByTagName("metres");
-	    //line = (Element) metres.item(0);
-	    //metresValue = new Double(getCharacterDataFromElement(line));
-	    //System.out.println("metres : "+metresValue);
-
+	    
 	    NodeList meanTyreUsury = element.getElementsByTagName("meanTyreUsury");
 	    line = (Element) meanTyreUsury.item(0);
 	    meanTyreUsuryValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("meantyreusury : "+meanSpeedValue);
-
+	    
 	    NodeList meanGasConsumption = element.getElementsByTagName("meanGasConsumption");
 	    line = (Element) meanGasConsumption.item(0);
 	    meanGasConsumptionValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("meanGasConsumption :"+meanGasConsumptionValue);
 	    
 	    NodeList maxSpeedReached = element.getElementsByTagName("maxSpeed");
 	    line = (Element) maxSpeedReached.item(0);
 	    maxSpeedReachedValue = new Double(getCharacterDataFromElement(line));
-	    System.out.println("maxSpeed :"+maxSpeedReachedValue);
-
+	    
 	    try{
-		System.out.println("nel try della parte della strategia");
-
 		NodeList nodes2 = doc.getElementsByTagName("strategy");
 		Element element2 = (Element) nodes2.item(i);
 
@@ -439,39 +395,32 @@ public class BoxScreen extends Thread{
 
     public void readXmlCompetitor(String xmlRecords){
 	try {
-	    DocumentBuilderFactory dbf =
-		DocumentBuilderFactory.newInstance();
+	    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	    DocumentBuilder db = dbf.newDocumentBuilder();
 	    InputSource is = new InputSource();
 	    is.setCharacterStream(new StringReader(xmlRecords));
 
 	    Document doc = db.parse(is);
-	    //         NodeList nodes3 = doc.getElementsByTagName("update");
 	    NodeList nodes = doc.getElementsByTagName("driver");
-	    // nodes = doc.getElementsByTagName("car_driver");
-	    // 	Element element = (Element) nodes.item(i);
-
+	    
 	    int i=0;
 
 	    Element element = (Element) nodes.item(i);
 	    NodeList team = element.getElementsByTagName("team");
 	    Element line = (Element) team.item(0);
 	    teamValue = new String(getCharacterDataFromElement(line));
-	    System.out.println("team value "+ teamValue);
-
+	    
 	    element = (Element) nodes.item(i);
 	    NodeList firstname = element.getElementsByTagName("firstname");
 	    line = (Element) firstname.item(0);
 	    firstnameValue = new String(getCharacterDataFromElement(line));
-	    System.out.println("first "+firstnameValue);
-
+	    
 	    element = (Element) nodes.item(i);
 	    NodeList lastname = element.getElementsByTagName("lastname");
 	    line = (Element) lastname.item(0);
 	    lastnameValue = new String(getCharacterDataFromElement(line));
 
 	    nodes = doc.getElementsByTagName("car");
-	    System.out.println("in car");
 	    element = (Element) nodes.item(i);
 	    NodeList maxspeed = element.getElementsByTagName("maxspeed");
 	    line = (Element) maxspeed.item(0);
@@ -491,7 +440,6 @@ public class BoxScreen extends Thread{
 	    NodeList engine = element.getElementsByTagName("engine");
 	    line = (Element) engine.item(0);
 	    styleValue = new String(getCharacterDataFromElement(line));
-
 
 	    element = (Element) nodes.item(i);
 	    NodeList tyre = element.getElementsByTagName("tyreusury");
@@ -571,17 +519,4 @@ public class BoxScreen extends Thread{
 
 	return time;
     }
-
-    // public static void main(String[] args){
-    // BoxMonitor b = new BoxMonitor(args[0]);
-    // b.init();
-    // }
 }
-// class PitStop extends Thread{
-// private JPanel PitStopPanel = new JPanel("Forza PitStop");
-// private double Fuel_Qty = 0.0;
-// private int TypeTyre = 0;
-// PitStop(){
-// 
-// }
-// }

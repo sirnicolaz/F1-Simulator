@@ -37,7 +37,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private org.omg.CORBA.StringHolder monitorCorbaLoc = new org.omg.CORBA.StringHolder();
     private ORB orb;
     //sezione JSlider
-    //     private JSlider sliderTyreUsury;
     private JSlider sliderFuelTank;
     private JSlider sliderGasLevel;
     private JSlider sliderSpeed;
@@ -71,14 +70,11 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JComboBox comboBox;
     private JComboBox comboStrategypitstop;
 
-    //sezione spinner giro di fermata
-    //sezione spinner Quantità di benzina
     private Integer valueFuel; 
     private Integer minFuel;
     private Integer maxFuel; 
     private SpinnerNumberModel modelFuel;
-    //sezione spinner grandezza serbatoio
-    // private Integer valueSerbatorio = new Integer(12); 
+    
     private Integer minTank = new Integer(200);
     private Integer maxTank= new Integer(400); 
     private SpinnerNumberModel modelTank;
@@ -89,9 +85,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     private JPanel buttonPanel;
     private JPanel dataPanel;
     //sezione JSpinner
-    /* private JSpinner jsLap;
-       private JSpinner jsFuel;
-       private JSpinner jsVelocita;*/
     private JSpinner jsAcc;
     //sezione GridBagConstraints
     private GridBagConstraints carConfigurationGrid;
@@ -149,13 +142,10 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    //read boxRadioCorbaloc
 	    boxRadioCorbaLoc= bufRead.readLine();
 	    System.out.println("corbaloc boxRadio : "+ boxRadioCorbaLoc);
-
 	    //read monitorBoxCorbaloc
 	    monitorBoxCorbaLoc= bufRead.readLine();
 	    System.out.println("corbaloc monitorBox : "+monitorBoxCorbaLoc);
-
 	    bufRead.close();
-
 	}
 	catch (IOException e ){
 	    // System.out.println("costruttore : errore di apertura/chiusura del file");
@@ -211,8 +201,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    carConfigurationGrid.gridy = 1;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueLevelFuel, carConfigurationGrid);
-	    //sezione tipologia di gomme montate
-	    
 	    //sezione mescola delle gomme montate
 	    String[] tipoGomme = { "Soft", "Hard"};
 	    comboTypeTyre = new JComboBox(tipoGomme);
@@ -271,7 +259,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    carConfigurationGrid.gridy = 4;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueAcc, carConfigurationGrid);
-	    //slider max velocita 250 - 400
+	    //slider max velocita
 	    sliderSpeed = new JSlider(200,400);
 	    sliderSpeed.setValue(300);
 	    valueSpeed = new JLabel("300 km/h");
@@ -291,7 +279,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    carConfigurationGrid.gridy = 5;
 	    carConfigurationGrid.ipady = 5;
 	    panel.add(valueSpeed, carConfigurationGrid);
-
 
 	    carConfigurationGrid.fill = GridBagConstraints.HORIZONTAL;
 	    carConfigurationGrid.gridx = 0;
@@ -313,7 +300,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    }catch(Exception e){
 		// 		System.out.println("File non presente");
 	    }
-
 	}
 	public class MyChangeAction implements ChangeListener{
 	    private String simboloT;
@@ -334,10 +320,9 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		    gasolineString = new String("<gasolinelevel>"+value.toString()+".0</gasolinelevel>");
 		    gasolineStringBox = new String("<initialGasLevel>"+value.toString()+".0</initialGasLevel>");
 		    gasolineTankStringBox = new String("<gasTankCapacity>"+value.toString()+".0</gasTankCapacity>");
-
 		}
-		if(simboloT =="L(200-400)"){sliderGasLevel.setMaximum((Integer)sliderT.getValue());
- 	
+		if(simboloT =="L(200-400)"){
+		    sliderGasLevel.setMaximum((Integer)sliderT.getValue());
 		}
 	    }
 	}
@@ -396,7 +381,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 			String s = (String)cb.getSelectedItem();
 			s=s.toUpperCase();
 			stringStrategy = new String("<boxStrategy>"+s+"</boxStrategy>");
-			System.out.println(s);
 		    }
 		});
 	    
@@ -465,16 +449,10 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 			if (ret=true) {System.out.println("Scrittura riuscita");}
 			else {System.out.println("Scrittura non riuscita");}
 			String corbaLocValue = textCorbaloc.getText();
-			System.out.println(corbaLocValue);
-			System.out.println("textCorbaloc.getText() = "+textCorbaloc.getText()+"...");
 			if (corbaLocValue.equals("")){
-			    System.out.println("corbaloc vuoto");
 			    JOptionPane.showMessageDialog(parent, "Attention : you MUST write CorbaLoc", "Error", JOptionPane.ERROR_MESSAGE);
-			    System.out.println("corbaloc vuoto");
 			}
 			else{ //prendo il corbaloc impostato
-			    System.out.println(corbaLocValue);
-			    System.out.println("corbaloc non vuoto");
 			    connect(corbaLocValue);}			}
 		});
 	    resetButton = new JButton("Reset Field");
@@ -523,19 +501,17 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		String tempString = new String();
 		while((tempString = bufRead.readLine())!=null){
 		    competitorFile=competitorFile + tempString;
-		    System.out.println(competitorFile);
 		}
 		bufRead.close();
 	    }
 	    catch (IOException e ){
-		System.out.println("settaggio parametri : errore di apertura/chiusura del file");
+		//System.out.println("settaggio parametri : errore di apertura/chiusura del file");
 		//e.printStackTrace();
 	    }
 	    catch (Exception e){
-		System.out.println("settaggioparametri : problemi con la lettura del file");
-		e.printStackTrace();
+		//System.out.println("settaggioparametri : problemi con la lettura del file");
+		//e.printStackTrace();
 	    }
-	
 	    readXmlCompetitor(competitorFile);
 	}
 
@@ -569,32 +545,25 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    is.setCharacterStream(new StringReader(xmlRecords));
 
 	    Document doc = db.parse(is);
-	    //         NodeList nodes3 = doc.getElementsByTagName("update");
 	    NodeList nodes = doc.getElementsByTagName("driver");
-	    // nodes = doc.getElementsByTagName("car_driver");
-	    // 	Element element = (Element) nodes.item(i);
-
 	    int i=0;
 
 	    Element element = (Element) nodes.item(i);
 	    NodeList team = element.getElementsByTagName("team");
 	    Element line = (Element) team.item(0);
 	    textTeam.setText(new String(getCharacterDataFromElement(line)));
-	    // 	    System.out.println("team value "+ teamValue);
-
+	    
 	    element = (Element) nodes.item(i);
 	    NodeList firstname = element.getElementsByTagName("firstname");
 	    line = (Element) firstname.item(0);
 	    textName.setText(new String(getCharacterDataFromElement(line)));
-	    // 	    System.out.println("first "+firstnameValue);
-
+	    
 	    element = (Element) nodes.item(i);
 	    NodeList lastname = element.getElementsByTagName("lastname");
 	    line = (Element) lastname.item(0);
 	    textSurname.setText(new String(getCharacterDataFromElement(line)));
 
 	    nodes = doc.getElementsByTagName("car");
-	    System.out.println("in car");
 	    element = (Element) nodes.item(i);
 	    NodeList maxspeed = element.getElementsByTagName("maxspeed");
 	    line = (Element) maxspeed.item(0);
@@ -610,8 +579,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    line = (Element) gastank.item(0);
 	    Double sliderFuelTankInteger = new Double(getCharacterDataFromElement(line)); 
 	    sliderFuelTank.setValue(sliderFuelTankInteger.intValue());
-	    System.out.println("SliderFuelTank = "+sliderFuelTankInteger.intValue());
-
+	    
 	    element = (Element) nodes.item(i);
 	    NodeList engine = element.getElementsByTagName("engine");
 	    line = (Element) engine.item(0);
@@ -733,7 +701,6 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
     public void switchPanel(){
 	JOptionPane.showMessageDialog(parent,"File di configurazione salvato in obj/java/"+nameFile,"File saved", JOptionPane.INFORMATION_MESSAGE);
 	BoxScreen p = new BoxScreen(stringId, competitorXML, (String)comboBox.getSelectedItem());
-	System.out.println("id del BoxScreen : "+stringId);
 	parent.dispose();
 	p.init(boxRadioCorbaLoc, monitorBoxCorbaLoc, configuratorCorbaLoc, monitorCorbaLoc.value, orb, laps.value);
 	p.start();
@@ -741,12 +708,10 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
     public void connect(String corbaloc){
 	try {
-	    // RegistrationHandler comp = Connection.connectRH(corbaloc);
 	    System.out.println("Try to connect to Registration Handler");
 	    String[] temp = {"ORB"};
 	    orb = ORB.init(temp, null);
 	    System.out.println("ORB initialized");
-	    //Resolve MessageServer
 	    org.omg.CORBA.Object obj = orb.string_to_object(corbaloc);
 	    RegistrationHandler comp = RegistrationHandlerHelper.narrow(obj);
 	    System.out.println("Comp initialized");
@@ -765,9 +730,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 		org.omg.CORBA.Object conf_obj = orb.string_to_object(configuratorCorbaLoc);
 		System.out.println("chiamo ConfiguratorHelper.narrow");
 		//qua va effettuato lo switch panel.
-	        //comp.release();
-		switchPanel();
-
+	        switchPanel();
 	    }
 	    else {
 		System.out.println("Connessione con il RegistrationHandler rifiutata");
@@ -778,15 +741,4 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    e.printStackTrace();
 	}
     }
-    //   public void readXml(String nameFile){
-    // 
-    // 
-    //   }
-
-    //     public static void main(String[] args){
-    // 	JFrame j = new JFrame("Box Admin Window n° "+ args[0]);
-    // 	BoxConfigurationWindow boxWindow = new BoxConfigurationWindow(j, args[0]);
-    // 	boxWindow.init(j);
-    // 
-    //     }
 }
