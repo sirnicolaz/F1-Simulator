@@ -39,7 +39,7 @@ della competizione. In tal caso, l'interfaccia di configurazione dei box present
 alla competizione, il corbaloc della competizione caricato dal contesto locale. Se invece si volessero avviare i box in altri nodi, il corbaloc
 per la registrazione pu\`{o} essere trovato in \\
 \emph{competition\_registrationhandler\_corbaLoc.txt}\\
-a competi<ione configurata. 
+a competizione configurata. 
 \item \emph{./start\_tv.sh}\\
 inizializza una tv. Anche in questo caso, se il corbaloc della competizione \`{e} presente in locale, verr\`{a} impostato di default nel textbox
 dedicato. \`{E} comunque possibile reimpostarlo utilizzando il corbaloc salvato nel file\\
@@ -52,13 +52,13 @@ nodo distribuito ed eseguire lo starter.
 \subsection{Terminazione}
 Per terminare il programma (box, competizione o tv che sia) premere il tasto ``x'' in alto a destra sulla finestra.
 \subsection{Interfaccia box}
-Nella prima schermata che appare si può selezionare un file di configurazione da cui caricare i dati per i concorrenti. Se non si seleziona l'opzione si passa alla seconda schermata dove si possono impostare a mano, partendo dai valori di default. 
-I parametri impostabili sono:
+Nella prima schermata che appare si può selezionare un file di configurazione da cui caricare i dati per i concorrenti. Se non si seleziona l'opzione si passa alla seconda schermata dove si possono impostare i parametri a mano, partendo dai valori di default. 
+Le operazioni possibili sono:
 \begin{enumerate}
 \item Impostare il nome del concorrente
 \item Impostare il cognome del concorrente
 \item Impostare la scuderia del concorrente
-\item Impostare il livello di seriet\`{a} del box (come descritto da \ref{box})
+\item Impostare il livello di seriet\`{a} del box
 \item Impostare la massima capacit\`{a} del serbatoio
 \item Impostare il livello di benzina iniziale
 \item Impostare la mescola delle gomme montate (le gomme a mescola morbida si consumano pi\`{u} rapidamente)
@@ -66,9 +66,8 @@ I parametri impostabili sono:
 \item Impostare la massima accelerazione della macchina
 \item Impostare la massima velocit\`{a} raggiungibile
 \item Inserire il corbaloc che fa riferimento al Registration Hanlder
-\item Pulsante per avviare la competizione
-\item Pulsante per riportare la gui allo stato iniziale
 \end{enumerate}
+Inoltre sono presenti un pulsante per avviare la competizione e uno per riportare la gui allo stato di default,
 \begin{center}
 \begin{figure}[H]
 	\includegraphics[scale=0.75]{screenshotRelazione/box1.jpeg}
@@ -119,6 +118,7 @@ Il checkpoint pu\`{o} avere uno dei seguenti attributi:
 \item \textbf{prebox=``true''}: obbligatorio in massimo 1 checkpoint nel settore 3.
 \item \textbf{exitbox=``true''}: obbligatorio in massimo 1 checkpoint nel settore 1.
 \end{itemize}
+Un requisito per il corretto funzionamento è di avere almeno 2 checkpoint per ogni settore, e i settori devono essere esattamente 3.
 \item Numero di concorrenti richiesti
 \item Numero di giri previsti
 \item Nome del tracciato
@@ -126,7 +126,7 @@ Il checkpoint pu\`{o} avere uno dei seguenti attributi:
 Una volta settati i parameteri e schiacciato il pulsante \emph{Start Competition} verr\`{a} avviato una tv che presenta le informazioni sulle iscrizioni nella parte bassa della finestra. Ogni volta che un concorrente si iscrive compare nella gui e una volta raggiunto il numero di concorrenti stabiliti la gara si avvia e la gui comincia ad offrire i dati disponibili, come spiegato nel paragrafo \ref{interfacciaTv}
 \begin{center}
 \begin{figure}[H]
-	\includegraphics[scale=0.75]{img/ScreenshotRelazione/configureCompetition.jpg}
+	\includegraphics[scale=0.75]{screenshotRelazione/competition.jpeg}
 	\caption{Finestra di configurazione della competizione}
 \end{figure}
 \end{center}
