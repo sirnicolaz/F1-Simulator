@@ -137,7 +137,7 @@ package body Box_Data is
       begin
 
 
-         --TODO: verify whether to put <= or <
+         -- verify whether to put <= or <
          if Lap < History_size then
 
             New_Strategy := History.all(Lap);
@@ -203,7 +203,6 @@ package body Box_Data is
       end Add_Info;
 
    end Synch_All_Info_Buffer;
-
 
 
    function Get_Strategy_XML( Data : All_Info ) return Unbounded_String.Unbounded_String is
