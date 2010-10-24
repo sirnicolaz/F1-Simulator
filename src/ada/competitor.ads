@@ -63,25 +63,9 @@ package Competitor is
                            Model_In : Str.Unbounded_String;
                            Tyre_Type_In : Str.Unbounded_String);
 
-   function Calculate_Status(infoLastSeg : in Competitor_Details_Point) return BOOLEAN;
-   -- procedure Calculate_Status(infoLastSeg);
-   -- questo metodo controlla tyre usury e gasoline level
-   -- se sono sotto una soglia critica richiede l'intervento dei box
-   -- per ora metto parametri a caso (cioè bisogna definire di preciso
-   -- quale dev'essere il limite per richiamare i box, bisogna evitare che
-   --la macchina non riesca più a girare nel caso il box non sia tempestivo
-   --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
-   -- almeno 2 direi.
-
-   --type Competitor_Details_Access is Access Competitor_Details;
---task Competitor_Task(Car_In : Competitor_Details_Access);
-
    task type Competitor_Task(Car_Driver_In : Competitor_Details_Point) is
       entry Start;
    end Competitor_Task;
-   --type taskdebug is Access Competitor_Task;
---procedure Set_endWait(temp : in taskdebug);
-   -- subtype str is Strategy.STRATEGY;
 
    procedure Configure_Driver(Driver_In: in out Driver;
                               Team_In : Str.Unbounded_String;
@@ -110,13 +94,13 @@ private
     end record;
 
    type Competitor_Details is tagged record
-      Racing_Car   : Car;
-      Racing_Driver : Driver;
-      Current_Strategy : Common.Strategy;
-      Current_Circuit_Race_Iterator : Racetrack_Iterator;
-      Id: Integer;
-      On_Board_Computer : Computer_Point := new Computer;
-      Radio : Box_Connection;
+      Racing_Car   			: Car;
+      Racing_Driver 			: Driver;
+      Current_Strategy 			: Common.Strategy;
+      Current_Circuit_Race_Iterator 	: Racetrack_Iterator;
+      Id				: Integer;
+      On_Board_Computer 		: Computer_Point := new Computer;
+      Radio 				: Box_Connection;
    end record;
 
 end Competitor;

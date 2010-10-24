@@ -65,28 +65,6 @@ package body Competitor is
       Car_In.Last_Speed_Reached:= 0.0;
    end Configure_Car;
 
-   -- Function for Calculating Status
-   function Calculate_Status(infoLastSeg : in Competitor_Details_Point) return BOOLEAN is
-      --questa funzione ritorna un boolean che indica se il concorrente
-      --deve tornare o meno ai box
-   begin
-      if infoLastSeg.Racing_Car.Tyre_Usury <= 10.0 or infoLastSeg.Racing_Car.Gasoline_Level <= 10.0 then
-         -- i parametri si possono cambiare ovviamente
-         -- basta darci dei valori consistenti
-         return TRUE;
-      else return FALSE;
-      end if;
-
-   end Calculate_Status;
-   -- procedure Calculate_Status(infoLastSeg);
-   -- questo metodo controlla tyre usury e gasoline level
-   -- se sono sotto una soglia critica richiede l'intervento dei box
-   -- per ora metto parametri a caso (cio� bisogna definire di preciso
-   -- quale dev'essere il limite per richiamare i box, bisogna evitare che
-   --la macchina non riesca pi� a girare nel caso il box non sia tempestivo
-   --  nella risposta quindi bisogna che la soglia permetta ancora qualche giro,
-   -- almeno 2 direi
-
    procedure Configure_Driver(Driver_In: in out Driver;
                               Team_In :  Str.Unbounded_String;
                               First_Name_In :  Str.Unbounded_String;
@@ -106,17 +84,12 @@ package body Competitor is
       Doc : Document;
       Car_Driver_XML : Node_List;
       Car_Driver_Length : Integer;
-
-      --   Car_Driver_Out : Competitor_Details_Point;
       Car_Driver : Competitor_Details_Point := new Competitor_Details;
 
-
-      procedure Try_OpenFile is--(xml_file : String; Input : in out File_Input; Reader : in out Tree_Reader; Doc : in out Document;
-         --Car_Driver_XML : in out Node_List; Car_Driver_Length : in out Integer) is
+      procedure Try_OpenFile is
       begin
 
 	 Doc := Common.Get_Document(xml_file);
-
          Car_Driver_XML := Get_Elements_By_Tag_Name(Doc,"car_driver");
          Car_Driver_Length := Length(Car_Driver_XML);
       exception

@@ -529,7 +529,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 	    }
 	    catch (IOException e ){
 		System.out.println("settaggio parametri : errore di apertura/chiusura del file");
-		e.printStackTrace();
+		//e.printStackTrace();
 	    }
 	    catch (Exception e){
 		System.out.println("settaggioparametri : problemi con la lettura del file");
@@ -650,7 +650,7 @@ public class BoxConfigurationWindow implements AdminPanelInterface{
 
 	}
 	catch (Exception e){
-	    e.printStackTrace();
+	   // e.printStackTrace();
 	}
 
     }

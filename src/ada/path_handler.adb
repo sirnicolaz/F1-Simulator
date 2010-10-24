@@ -12,13 +12,13 @@ package body Path_Handler is
                         Difficulty_In : DIFFICULTY_RANGE;
                         Max_Cars : Integer) is
    begin
-      Path_In.Length := Length_In;
-      Path_In.Angle := Angle_In;
-      Path_In.Difficulty := Difficulty_In;
-      Path_In.Grip := Grip_In;
-      Path_In.Release_Instant := -1.0;
-      Path_In.Competitor_Exit_Times := new Float_Array(1..Max_Cars);
-      Path_In.Max_Speed := -1.0;
+      Path_In.Length 	 		:= Length_In;
+      Path_In.Angle 	 		:= Angle_In;
+      Path_In.Difficulty 		:= Difficulty_In;
+      Path_In.Grip 			:= Grip_In;
+      Path_In.Release_Instant 		:= -1.0;
+      Path_In.Competitor_Exit_Times 	:= new Float_Array(1..Max_Cars);
+      Path_In.Max_Speed 		:= -1.0;
    end Set_Values;
 
    function Get_Length(Path_In : PATH) return FLOAT is
@@ -49,7 +49,6 @@ package body Path_Handler is
    procedure Set_Release_Instant( Path_In : out Path;
                                 Instant : Float ) is
    begin
-      Ada.Text_IO.Put_Line("SET_RELEASE_INSTANT : instant = "&Float'Image(Instant));
       Path_In.Release_Instant := Instant;
    end Set_Release_Instant;
 
@@ -83,10 +82,8 @@ package body Path_Handler is
       end if;
       Current_Path_Length := (r * 1.0) * AlphaRad ;
       Paths_Collection_In := new Paths(1..Paths_Qty);
-
       --Calculate the number of cars that can stay together in the path
       Max_Cars := Integer(Float'Floor(Current_Path_Length / Minimum_Space));
-
       for Index in 1..Paths_Qty loop
          Current_Path_Length := (((FLOAT(Index)-1.0) * 1.6) + r ) * AlphaRad;
          Set_Values(Paths_Collection_In.all(index),
@@ -146,13 +143,11 @@ package body Path_Handler is
                                  Arriving_Time : Float) return Boolean is
          Path_To_Check : Path := F_Paths.all(PathIndex);
       begin
-
          for Index in Path_To_Check.Competitor_Exit_Times'Range loop
             if(Path_To_Check.Competitor_Exit_Times(Index) < Arriving_Time) then
                return True;
             end if;
          end loop;
-
          return False;
       end Is_Path_Available;
 
@@ -160,14 +155,11 @@ package body Path_Handler is
                       Exit_Instant     : Float;
                       Speed_In         : Float;
                       PathIndex        : Integer) is
-         --Path_To_Cross : Path := F_Paths.all(PathIndex);
       begin
          --Update the latest exit time
          Set_Release_Instant( F_Paths.all(PathIndex), Exit_Instant );
-
          --Update max speed reachable for the competitors running at the same time through the path
          Set_Max_Speed( F_Paths.all(PathIndex),Speed_In);
-
          --Find a position in the Competitor_Exit_Times array that refers to a competitor
          --+ who already left the path and save the new leaving time into it
          for Index in  F_Paths.all(PathIndex).Competitor_Exit_Times'Range loop
@@ -177,8 +169,6 @@ package body Path_Handler is
             end if;
          end loop;
       end Cross;
-
    end CROSSING;
-
 
 end Path_Handler;
