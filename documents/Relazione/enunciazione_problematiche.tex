@@ -93,11 +93,14 @@ Per non determinismo si intende la possibilit\`{a} di non prevedere precisamente
 l'andamento della gara a priori. Questa componente pu\`{o} essere non
 desiderabile per certi aspetti mentre, se gestita, pu\`{o} dare del valore
 aggiunto alla simulazione. Nel caso di \emph{F1\_Sim} \`{e} desiderabile
-riuscire a gestire il non determinismo, che da quindi valore aggiunto al
-progetto.
+riuscire a inserire componenti che introducano il non determinismo.
 Esempi di non determinismo che si possono trovare progettando un simulatore e
 che possono portare valore aggiunto sono ad esempio interazioni dell'utente
-esterno al sistema tramite azioni esplicite .
+esterno al sistema tramite azioni esplicite . Tali azioni non sono prevedibili
+a priori e provocano quindi una mutazione delle condizioni di esecuzione del 
+sistema. Se tali situazioni vengono gestite, e non precludono il proseguo
+della simulazione, il risultato finale sarà diverso da quello previsto (introducendo
+così il non determinismo) ma la correttezza del sistema sarà garantita.
 \subsection{Stalli }
 \label{stalli}
 In un sistema concorrente lo stallo è una delle problematiche pi\`{u} importanti
@@ -111,10 +114,12 @@ di azioni che opera sulla risorsa \`{e} detta sezione critica. Nel realizzare un
 simulatore di Formula 1 bisogner\`{a} fare in modo che prevedendo l'uso
 esclusivo di risorse, come ad esempio pezzi di tracciato, queste non
 pregiudichino il buon funzionamento del sistema.
-\item{Cumulazione di risorse (hold-and-wait) :} i processi possono accumulare
-risorse e trattenerle mentre attendono di acquisirne altre
+\item{Cumulazione di risorse :} i processi possono accumulare
+risorse e trattenerle mentre attendono di acquisirne altre. In un simulatore concorrente
+di una gara di Formula 1 bisognerà controllare che le risorse acquisite siano solo quelle
+strettamente necessarie all'esecuzione (ad esempio il pezzo di tracciato e non tutta la pista)
 \item{Assenza di prerilascio :} le risorse vengono rilasciate solo
-volontariamente
+volontariamente.
 \item{Attesa Circolare :} un processo attende almeno una risorsa in possesso del
 successivo processo in catena. Nella progettazione di un sistema distribuito
 bisogner\`{a} quindi evitare la formazione di catene chiuse di processi che
@@ -122,7 +127,10 @@ attendono una risorsa.
 \end{itemize}
 Nella progettazione e realizzazione del sistema si dovr\`{a} quindi fare
 attenzione per evitare il verificarsi delle quattro condizioni, impedendo
-cos\`{i} gli stalli.
+cos\`{i} gli stalli. Alcune condizioni dovranno essere permesse per il corretto
+svolgimento della competizione, ma in ogni istante bisognerà controllare che non si
+stiano verificando tutte e 4 insieme, impedendo cosi la presenza di una zona potenziale
+di stallo.
 \subsection{Realismo fisico}
 Il realismo fisico di un simulatore di formula uno è determinato principalmente
 da due fattori:
@@ -140,6 +148,7 @@ scelte dei singoli concorrenti
 devono poter influenzare i movimenti degli altri concorrenti.
 \end{itemize}
 \subsection{Gestione delle istantanee di gara}
+\label{enunciazione_istantanee}
 Requisito essenziale per poter presentare i dati relativi all'andamento della
 competizione è riuscire ad ottenere una
 snapshot della gara in un determinato istante. Ovvero, dato un istante di tempo

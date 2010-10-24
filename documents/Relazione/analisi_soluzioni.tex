@@ -48,8 +48,8 @@ tratto da parte di un concorrente).
 Questi eventi influenzano altri eventi (ad esempio
 l'attraversamento dello stesso tratto da un altro concorrente). 
 % Influenzano inoltre l'informazione che un osservatore esterno riceve (lo
-spettatore vede che un concorrente ha impiegato un tempo \emph{t} per
-attraversare un tratto di pista).
+% spettatore vede che un concorrente ha impiegato un tempo \emph{t} per
+% attraversare un tratto di pista).
 La gestione del tempo in modo relativo vuole, in questo caso, che l'istante in
 cui un tratto si libera sia dato
 non dall'istante reale in cui l'ultimo concorrente ha lasciato il tratto (o
@@ -178,12 +178,12 @@ opportunamente gestite
 La prima opzione prevede la mancanza di interazione dell'utente che sta
 visualizzando la simulazione oltre che la mancanza di parti non deterministiche,
 cioè zone del progetto dove non si ha la padronanza e non si prevede il
-comportamento. Ad esempio affidarsi a tecniche di sleep per far funzionare la
-simulazione porta inevitabilmente a problemi di non predicibilit\`{a}. La
+comportamento. Ad esempio affidarsi al metodo di gestione dei processi dello scheduler per far funzionare la
+simulazione porta inevitabilmente a problemi di non predicibilità. La
 seconda opzione permette zone del progetto non controllabili e verificabili
 mentre la terza opzione permette delle componenti che rendono l'esecuzione
-pi\`{u} reale e non verificabile a priori ma comunque gestita e controllata
-gi\`{a} a livello di progettazione. Un esempio di componente è quella che
+più reale e non verificabile a priori ma comunque gestita e controllata
+già a livello di progettazione. Un esempio di componente è quella che
 permette l'interazione di un utente che visualizza l'esecuzione del simulatore.
 Tale azione pu\`{o} provocare, ad esempio, il rientro ai box del concorrente e
 questo andr\`{a} certamente a influire in modo non prevedibile a priori
@@ -201,9 +201,9 @@ siano le condizioni perch\`{e} si verifichino. Le soluzioni da adottare sono,
 semplicemente, l'evitare che si presentino le 4 pre-condizioni simultaneamente
 non andando incontro, cos\`{i}, al verificarsi di uno stallo.
 Trattando nel progetto entit\`{a} attive e passive si possono creare situazioni
-che, se non controllate, portano a stalli. Le entit\`{a} attive in un sistema
-distribuito sono le parti che solitamente utilizzano le entit\`{a} passive. Uno
-degli esempi \`{e} gi\`{a} descritto nel paragrafo
+che, se non controllate, portano inevitabilmente al verificarsi di situazioni di stallo. 
+Le entità attive in un sistema distribuito sono le parti che solitamente utilizzano le 
+entità passive. Uno degli esempi \`{e} gi\`{a} descritto nel paragrafo
 \ref{sorpassi_impossibili_soluzioni}. e verr\`{a} qui approfondito. Se
 fornissimo la possibilit\`{a} a un concorrente  di accumulare risorse per
 evitare il problema del teletrasporto (segnalato nel paragrafo
@@ -217,7 +217,9 @@ la simulazione rimarrebbe ferma in una situazione di stallo. La soluzione \`{e}
 quindi di studiare e progettare un sistema che preveda la mancanza assoluta di
 comportamenti anomali (come sorpassi impossibili), dia la possibilit\`{a} di
 esecuzione simultanea a pi\`{u} concorrenti e non presenti per questo situazioni
-di stallo.
+di stallo. Impedire l'accumulo di tratti da parte di un concorrente ed evitare 
+situazioni di attesa circolare sono quindi le basi su cui fondare la soluzione
+al problema degli stalli.
 \subsection{Realismo fisico}
 \label{analisi_realismo_fisico}
 Come enunciato nella sezione precedente, il realismo fisico di un simulatore di
@@ -340,7 +342,7 @@ in fase di progettazione \`{e} quella del tipo di chiamate da effettuare, se
 sincrone o asincrone, considerandone i vantaggi e gli svantaggi. Per quanto
 riguarda questo simulatore di formula uno concorrente e distribuito le chiamate
 sincrone forniscono uno strumento adatto e semplice per la sincronizzazione fra
-oggetti remoti. Inoltre se opportunamente gestite l forniscono risultati senza
+oggetti remoti. Inoltre se opportunamente gestite forniscono risultati senza
 la presenza di polling o altri meccanismi di recupero dei parametri o dei valori
 di ritorno.
 \subsection{Avvio del sistema}
