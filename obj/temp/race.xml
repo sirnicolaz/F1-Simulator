@@ -22,7 +22,7 @@
 			<angle>0.0</angle>
 	        </checkpoint>
 		<checkpoint>
-	                <length>148.00</length>
+	                <length>148.10</length>
 	                <mult>1</mult>
 			<grip>6.0</grip>
 			<angle>0.0</angle>
@@ -37,7 +37,7 @@
 	        </checkpoint>
 	        <checkpoint> 
 	                <length>364.00</length>
-	                <mult>1</mult>
+	                <mult>2</mult>
 			<angle>0.00</angle>
 			<grip>9.0</grip>
 		 </checkpoint>
