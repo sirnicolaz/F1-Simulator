@@ -19,7 +19,7 @@ package Competition is
    package Unbounded_String renames Ada.Strings.Unbounded;
    use type Unbounded_String.Unbounded_String;
 
-   type CompetitorTask_Array is array(POSITIVE range <>) of access Competitor.TASKCOMPETITOR;
+   type CompetitorTask_Array is array(POSITIVE range <>) of access Competitor.Competitor_Task;
 
    protected type SYNCH_COMPETITION is
 

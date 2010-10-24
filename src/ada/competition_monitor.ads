@@ -38,7 +38,7 @@ package Competition_Monitor is
   --This method return the information related to the competitors (current checkpoint,
    --+ lap and sector, speed ecc ) at a given time
    procedure Get_CompetitionInfo( TimeInstant : FLOAT;
-                                 ClassificationTimes : out Common.FLOAT_ARRAY_POINT;
+                                 Placement_Times : out Common.FLOAT_ARRAY_POINT;
                                  XMLInfo : out Unbounded_String.Unbounded_String);
 
    procedure Get_CompetitorInfo(lap : INTEGER; sector : INTEGER ; id : INTEGER; time : out FLOAT; metres : out FLOAT; updString : out Unbounded_String.Unbounded_String);

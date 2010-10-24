@@ -1,8 +1,8 @@
 with Common;
 use Common;
 
-with Classification_Handler;
-use Classification_Handler;
+with Placement_Handler;
+use Placement_Handler;
 
 package Competition_Computer is
 
@@ -132,7 +132,7 @@ package Competition_Computer is
                                  Competitor_IDs : out INTEGER_ARRAY;
                                  Laps : out INTEGER_ARRAY);
 
-   procedure Get_Lap_Classification(Lap : INTEGER;
+   procedure Get_Lap_Placement(Lap : INTEGER;
                                     TimeInstant : FLOAT;
                                     CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
                                     Times_InClassific : out FLOAT_ARRAY_POINT;

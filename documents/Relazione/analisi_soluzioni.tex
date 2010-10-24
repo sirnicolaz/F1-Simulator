@@ -27,7 +27,7 @@ un thread è sulla coda dei pronti a quando gli viene assegnata la CPU.
 Di conseguenza un concorrente (che supponiamo essere rappresentato da un thread)
 che si annunci pronto ad attraversare un tratto all'istante
 \emph{t}, potrebbe (con alta probabilità) iniziare effettivamente ad
-attraverarlo ad un istante \emph{t+$\epsilon$}. In questo caso
+attraversarlo ad un istante \emph{t+$\epsilon$}. In questo caso
 il risultato della simulazione sarebbe errato. Il tempo di attraversamento di
 tale concorrente, cioè, sarebbe slittato di $\epsilon$.
 \item il flusso di un orologio assoluto è unico. Ovvero, l'orologio assoluto
@@ -61,7 +61,7 @@ Da questo esempio si evince che la competizione non possa essere regolata da un
 unico flusso temporale assoluto. Ogni risorsa il cui uso
 coinvolga fattori temporali (una traiettoria ad esempio), deve
 possedere un ``orologio'' interno che venga incrementato di un dato offset ogni
-volta un evento avvenuto su tale risorsa inluenzi i tempi
+volta un evento avvenuto su tale risorsa influenzi i tempi
 prodotti dai suoi futuri utilizzatori. L'orologio interno chiaramente ha un
 istante zero uguale a tutti gli orologi presenti nel sistema
 e non ha vita propria. Cambia cioè solo se qualcuno lo aggiorna.\\
@@ -119,7 +119,7 @@ Per gestire quindi il problema è necessario introdurre delle strutture che
 permettano di creare una certa dipendenza fra eventi. Più precisamente,
 bisogna garantire che ogni concorrente sappia quale sia il momento adatto per
 procedere alla richiesta del tratto successivo senza il rischio
-di teletrasportarsi davanti ad un altro concorrente o di craere incoerenza
+di teletrasportarsi davanti ad un altro concorrente o di creare incoerenza
 temporale. Allo stesso modo, il thread che rappresenta il concorrente
 deve poter essere prerilasciato senza che ciò implichi un potenziale problema.
 Come vedremo meglio nella sezione riguardante l'esplicazione
@@ -149,7 +149,7 @@ Per quanto riguarda invece i fault di connessione (ad esempio un nodo per
 qualche motivo smette di essere connesso al sistema), il problema 
 si potrebbe risolvere applicando ridondanza alle componenti remote, ovvero
 dislocando le stesse componenti su più nodi in modo da attivarne
-di alternative in caso di fault. Ma si è pensato che l'intorduzione di questa
+di alternative in caso di fault. Ma si è pensato che l'introduzione di questa
 caratteristica nel sistema avrebbe richiesto uno sforzo progettuale
 maggiore rispetto alle pianificazioni. Inoltre, questo tipo di problema potrebbe
 essere facilmente associato ad un problema esistente anche nella
@@ -159,7 +159,7 @@ la visione della gara. \`{E} plausibile che nella realtà una TV venga spenta
 (chiudendo il contatto con il sistema) o che un box perda
 il contatto radio con il proprio concorrente. In questi casi i fault vanno
 gestiti in modo che non risultino in errori durante la competizione.
-\subsection{Componenti di non determinismo (Lorenzo)}
+\subsection{Componenti di non determinismo }
 \label{componenti_non_determinismo}
 Come introdotto nel paragrafo \ref{non_determinismo} le componenti di non
 determinismo possono essere desiderabili se opportunamente gestite, o non
@@ -195,7 +195,7 @@ ad esempio permettendo di provocare un pitstop non previsto e di impedire
 determinismo al sistema, come ad esempio utilizzare le istruzioni di sleep per
 creare l'ordine di uscita da un tratto (cioè accodare i concorrenti man mano che
 vengono risvegliati).
-\subsection{Stalli (Lorenzo)}
+\subsection{Stalli }
 Per quanto riguarda gli stalli si \`{e} visto nel paragrafo \ref{stalli} quali
 siano le condizioni perch\`{e} si verifichino. Le soluzioni da adottare sono,
 semplicemente, l'evitare che si presentino le 4 pre-condizioni simultaneamente
@@ -248,7 +248,7 @@ Un livello di interattività fra concorrenti potrebbe essere raggiunto se
 un concorrente potesse controllare, una volta sul tratto, quali concorrenti
 siano contemporaneamente presenti sul tratto
 per poi valutare quale traiettoria scegliere in base all'``affollamento''.
-Eistono chiaramente vari modi di ottenere questo:
+Esistono chiaramente vari modi di ottenere questo:
 \begin{itemize}
 \item il concorrente interroga i diversi concorrenti per sapere quale sia la
 loro posizione sulla pista. In questo modo potrebbe
@@ -277,7 +277,7 @@ tempo di attraversamento. Il concorrente potrebbe quindi confrontare l'istante
 di tempo relativo
 al suo arrivo con quello di liberazione del tratto per poter poi effettuare una
 scelta.\\
-Questa idea è applicabile ad un sistema come quello dato poichè non necessita di
+Questa idea è applicabile ad un sistema come quello dato poiché non necessita di
 un orologio assoluto.
 \end{itemize}
 \end{description}
@@ -309,7 +309,7 @@ quell'istante sia disponibile o, alternativamente, l'unità richiedente si metta
 in attesa fino alla disponibilità completa dello stato richiesto. 
 Bisognerà tenere una storia della gara che permetta di risalire
 allo stato globale ad un dato istante.
-\subsection{Robustezza del sistema distribuito (Lorenzo)}
+\subsection{Robustezza del sistema distribuito }
 Per quanto riguarda la robustezza del sistema distribuito le soluzioni possibili
 variano in base alla scelta dello standard di comunicazione, della scelta del
 tipo di dati che viaggia nella rete e dal livello di distribuzione scelta per il
@@ -326,7 +326,7 @@ misura per la nostra applicazione.
 La scelta dei dati da trasferire fra i vari nodi della rete dipende fortemente
 dal tipo di sistema di comunicazione che si sceglie, anche se può comunque
 essere orientata verso un utilizzo prevalente delle stringhe o di tipi primitivi
-o di una combinazione dei due. Il livello di distribuizione va deciso in base
+o di una combinazione dei due. Il livello di distribuzione va deciso in base
 alle funzionalit\`{a} e alle caratteristiche che si vogliono dare al prodotto in
 uscita. Si può pensare di spingere al massimo la distribuzione mettendo ogni
 entit\`{a} in nodi separati oppure di ridurre al minimo la distribuzione
@@ -343,7 +343,6 @@ sincrone forniscono uno strumento adatto e semplice per la sincronizzazione fra
 oggetti remoti. Inoltre se opportunamente gestite l forniscono risultati senza
 la presenza di polling o altri meccanismi di recupero dei parametri o dei valori
 di ritorno.
-\subsection{Intelligenza artificiale}
 \subsection{Avvio del sistema}
 Indipendentemente da quali saranno, nel dettaglio dell'implementazione, le
 relazioni fra entità e il livello di distribuzione
@@ -385,7 +384,7 @@ l'indirizzo del nodo centrale e contattarlo. Così facendo, una volta
 che tutti i nodi necessari all'avvio della competizione saranno inizializzati,
 il nodo centrale avrà già a disposizione gli indirizzi per la comunicazione
 bidirezionale con la certezza che essi siano avviati. I nodi remoti potrebbero
-comunque dover effetture polling in attesa che il nodo centrale sia avviato.
+comunque dover effettuare polling in attesa che il nodo centrale sia avviato.
 \end{itemize}
 \item Per gestire l'avvio delle entità concorrenti, una soluzione plausibile è
 quella di organizzare l'inizializzazione del sistema a step.
@@ -401,11 +400,11 @@ si dovranno man mano avviare le risorse (o parti di risorse) che dipendono dai
 dati precedentemente inizializzati. Se un'entità attiva necessita
 di dati ottenibili in due o più step diversi per poter considerarsi pronta, sarà
 necessario che di step in step venga messa in attesa di tali dati.
-Questo può avvenire mettendo l'entità in attesa su una risorsa (finchè questa
+Questo può avvenire mettendo l'entità in attesa su una risorsa (finché questa
 non raggiunga uno stato adeguato per fornire i dati richiesi)
 oppure mettendo l'entità stessa in attesa di messaggi (che potrebbero contenere
 i dati richiesti o semplicemente segnalare che è possibile
-procedere). Come postcondizione alla fine dell'ultimo step è necessario che
+procedere). Come post-condizione alla fine dell'ultimo step è necessario che
 tutte le entità passive e reattive che verranno richieste dopo l'init
 siano disponibili e che le risorse attive siano pronte ad iniziare con la reale
 esecuzione.

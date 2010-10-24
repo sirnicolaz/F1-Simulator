@@ -1,8 +1,8 @@
 with Ada.Text_IO;
 use Ada.Text_IO;
 
-with Classification_Handler;
-use Classification_Handler;
+with Placement_Handler;
+use Placement_Handler;
 
 package body Competition_Computer is
 
@@ -452,7 +452,7 @@ package body Competition_Computer is
 
       Competitor_Statistics := Tmp_Collection;
 
-      Classification_Handler.Initialize(Laps,
+      Placement_Handler.Initialize(Laps,
                                         Competitor_Qty);
 
    end Initialize;
@@ -469,7 +469,7 @@ package body Competition_Computer is
       Competitor_Statistics.all(Competitor_ID).Last_Lap := Data.Lap;
       Competitor_Statistics.all(Competitor_ID).Competition_Finished := TRUE;
 
-      Classification_Handler.Decrease_Classification_Size_From_Lap(Lap);
+      Placement_Handler.Decrease_Placement_Size_From_Lap(Lap);
 
    end CompetitorOut;
 
@@ -481,16 +481,16 @@ package body Competition_Computer is
       --+ When a Competitor_Statistic is added, it might be that if someone
       --+ was waiting for it and it finds that a competitor has just finished
       --+ a lap, it may ask for the time instant (in order to fill the classific).
-      --+ So, to retrieve this time istant it will ask for the row in the classification
+      --+ So, to retrieve this time istant it will ask for the row in the PLACEMENT
       --+ table related to that event. This row has to be already filled with the value
       --+ That's why that operation is done before the update of the statistic.
 
-      --If the checkpoint is the last one of the circuit, update the classification table as well
+      --If the checkpoint is the last one of the circuit, update the PLACEMENT table as well
       if(Data.LastCheckInSect = true and Data.Sector = 3 and
            Data.Gas_Level > 0.0 and Data.Tyre_Usury < 100.0) then
 
 
-         Classification_Handler.Update_Classific(Competitor_ID,
+         Placement_Handler.Update_Classific(Competitor_ID,
                                                  Data.Lap+1,--Count starts from 1 in the table, lap are counted from 0 instead
                                                  Data.Time);
 
@@ -605,7 +605,7 @@ package body Competition_Computer is
       end;
    end Get_BestSectorTimes;
 
-   procedure Get_Lap_Classification(Lap : INTEGER;
+   procedure Get_Lap_Placement(Lap : INTEGER;
                                     TimeInstant : FLOAT;
                                     CompetitorID_InClassific : out INTEGER_ARRAY_POINT;
                                     Times_InClassific : out FLOAT_ARRAY_POINT;
@@ -615,7 +615,7 @@ package body Competition_Computer is
                                     LappedCompetitors_CurrentLap : out INTEGER_ARRAY_POINT) is
 
    begin
-      Classification_Handler.Get_Lap_Classification(Lap,
+      Placement_Handler.Get_Lap_Placement(Lap,
                                                     TimeInstant,
                                                     CompetitorID_InClassific,
                                                     Times_InClassific,
@@ -623,7 +623,7 @@ package body Competition_Computer is
                                                     Times_PreviousClassific,
                                                     LappedCompetitors_ID,
                                                     LappedCompetitors_CurrentLap);
-   end Get_Lap_Classification;
+   end Get_Lap_Placement;
 
    --The function takes the the latest time instant that every car passed
    function Get_Latest_Time_Instant return Float is

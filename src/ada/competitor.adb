@@ -432,7 +432,7 @@ package body Competitor is
    --TASK COMPETITOR IMPLEMENTATION --
    -----------------------------------
    -----------------------------------
-   task body TASKCOMPETITOR is
+   task body Competitor_Task is
       C_Checkpoint   	: CHECKPOINT_SYNCH_POINT;
       Predicted_Time  	: Float 			:= 0.0;
       Delay_Time      	: Float 			:= 1.0;
@@ -782,7 +782,7 @@ package body Competitor is
 
       CompetitorRadio.Close_BoxConnection(Radio => Car_Driver.Radio);
 
-   end TASKCOMPETITOR;
+   end Competitor_Task;
 
    function Get_Tyre_Usury(Competitor_In : Competitor_Details_Point) return Common.Percentage is
    begin
