@@ -373,8 +373,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 						    }
 						    else{
 							//if(datiArray[index].getLap()==datiArray[index-1].getLap()){
-							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime())});
-							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(index-1).getTime()));
+							modelClassific[current_index].addRow(new Object[]{posiz, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(0).getTime())});
+							System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff(datiArray[index].getTime()-history[datiArray[index].getLap()-1].getElementIndex(0).getTime()));
 							//}
 						    }
 						    posiz = posiz+1;
@@ -428,8 +428,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 				}
 				else{
 				    if(datiArray[index].getLap()== current_lap){
-					modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime()))});
-					System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[index-1].getTime())));
+					modelClassific[current_index].insertRow(index,new Object[]{index, datiArray[index].getId()+" : "+cognome[datiArray[index].getId()-1],convert_diff((datiArray[index].getTime()-datiArray[0].getTime()))});
+					System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[index].getTime()-datiArray[0].getTime())));
 					System.out.println("2.1 : SCREEN DEBUG LORY : datiArray["+index+"] = "+datiArray[index].getTime()+" time array "+timeArray[index-1]);
 				    }
 				    //index=index+1;
@@ -460,8 +460,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 					  
 					}
 					else{
-					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime()))});
-					    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[varCiclo-1].getTime())));
+					    modelClassific[current_index].addRow(new Object[]{varCiclo, datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert_diff((datiArray[varCiclo].getTime()-datiArray[0].getTime()))});
+					    System.out.println("1 : SCREEN DEBUG LORY : "+convert_diff((datiArray[varCiclo].getTime()-datiArray[0].getTime())));
 					  
 					}
 					// 					modelClassific[current_index].addRow(new Object[]{varCiclo,datiArray[varCiclo].getId()+" : "+cognome[datiArray[varCiclo].getId()-1],convert(datiArray[varCiclo].getTime())});
@@ -888,7 +888,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	//int decimi = (int)((timeIn - (minuti*60+ore*3600+secondi))*10);
 	String time;
 	if(minuti<10){
-	    if(secondi <10){
+ 	    if(secondi <10){
 		if(millesimi<10){
 		    if(minuti==0){time = new String( "+ "+secondi+":00"+millesimi);}
 		    else{time = new String( "+ "+minuti+":0"+secondi+":00"+millesimi);}}
@@ -902,11 +902,17 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	    }
 	    else{
 		if(millesimi<10){
-		    time = new String("+ "+minuti+":"+secondi+":00"+millesimi);}
+		    if(minuti==0){time = new String( "+ "+secondi+":00"+millesimi);}
+		    else{time = new String( "+ "+minuti+":"+secondi+":00"+millesimi);}
+		    }
 		else if(millesimi<100){
-		    time = new String("+ "+minuti+":"+secondi+":0"+millesimi);}
+		    if(minuti==0){time = new String( "+ "+secondi+":0"+millesimi);}
+		    else{time = new String( "+ "+minuti+":"+secondi+":0"+millesimi);}
+		    }
 		else{
-		    time = new String("+ "+minuti+":"+secondi+":"+millesimi);}
+		    if(minuti==0){time = new String( "+ "+secondi+":"+millesimi);}
+		    else{time = new String( "+ "+minuti+":"+secondi+":"+millesimi);}
+		    }
 	    }
 	}
 	else{
