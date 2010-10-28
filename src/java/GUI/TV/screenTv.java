@@ -169,7 +169,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	logPanel = new JPanel(new BorderLayout());
 	logPanel.setLayout(new GridBagLayout());
 	logPanel.setBorder(BorderFactory.createTitledBorder(null, "Log Competition", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-	logPanel.setPreferredSize(new Dimension(0,30+35*numComp));
+	logPanel.setPreferredSize(new Dimension(700,35+40*numComp));//30+35*numComp));
     }
 
 
@@ -182,6 +182,8 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 	parent.add(classTable.panel1, BorderLayout.CENTER);
 	parent.add(best.getInfoUp(), BorderLayout.NORTH);
 	parent.add(logPanel, BorderLayout.SOUTH);
+	classTable.panel1.updateUI();
+	logPanel.updateUI();
 	parent.pack();
 	parent.setVisible(true);
 	parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -328,6 +330,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setAfter(After);
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setEqual(Equal);
 			infos[Vector_Competitor_Position.elementAt(index_vector).get_Competitor_Id()-1].setBefore(Before);
+			logPanel.updateUI();
 			//System.out.println("DEBUG SORPASSI : AGGIORNAMENTO STRINGHE 6 After = "+After+" Before = "+Before);
 		    }
 
@@ -627,6 +630,7 @@ public class ScreenTv extends Thread implements TvPanelInterface{
 			}
 		    }
 		}
+	    logPanel.updateUI();
 	    }	
 	    System.out.println("bestTimes");
 	    NodeList bestT = doc.getElementsByTagName("bestTimes");
@@ -1024,11 +1028,11 @@ class classificationTable{
 	column2.setPreferredWidth(20);
 
 	panelCl_1 = new JScrollPane(classific_1);
-	panelCl_1.setPreferredSize(new Dimension(300, 70));
+	panelCl_1.setPreferredSize(new Dimension(310, 70));
 
 	panelCl_2 = new JScrollPane(classific_2);
 
-	panelCl_2.setPreferredSize(new Dimension(300, 70));
+	panelCl_2.setPreferredSize(new Dimension(310, 70));
 	panelCl_1.setVerticalScrollBar(new JScrollBar());
 	panelCl_1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
@@ -1044,7 +1048,7 @@ class classificationTable{
 	panelClass2.add(lap2, BorderLayout.NORTH);
 	panelClass2.add(panelCl_2, BorderLayout.CENTER);
 	panel1.setBorder(BorderFactory.createTitledBorder(null, "Classific", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION));
-	panel1.setPreferredSize(new Dimension(620  , 35+40*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
+	panel1.setPreferredSize(new Dimension(640  , 35+40*compNum));// TODO : 35 moltiplicato per il numero di concorrenti, farsi passare numero concorrenti
 	panel1.add(panelClass1, BorderLayout.CENTER);
 	panel1.add(panelClass2, BorderLayout.WEST);
 
