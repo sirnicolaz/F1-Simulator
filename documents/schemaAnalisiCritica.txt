@@ -3,11 +3,13 @@ FLUSSO PER IL PROGETTO
 - problematiche e soluzioni adottate
   - individuazione componenti da distribuire (la nostra scelta è stata di distribuire successivamente alla realizzazione dell'architettura . prima abbiamo progettato il sistema non distribuito per poi scegliere cosa distribuire su fattori di efficienza e di realismo. i delay della rete non sono controllabili. volendo avere un sistema totalmente deterministico e verificabile sul quale poi aggiungere componenti di non determinismo - a nostra scelta-. primo passo : ridurre non determinismo . 2 passo : introdurre componenti di non determinismo controllato.)
     - pregi e difetti della scelta
-      - la decisione delle componenti da distribuire per un simulatore conferisce valore aggiunto in termini di realismo ma non essendo le scelte architetturali di distribuzione 
+      - la decisione delle componenti da distribuire per un simulatore conferisce valore aggiunto in termini di realismo ma non essendo le scelte architetturali di distribuzione (COMPLETARE)
+      l'ipotesi di cosa distribuire nel sistema è stata formulata fin dalla fase di analisi per creare scenari e possibili problematiche. La scelta effettiva sulle componenti da distribuire è avvenuta solo dopo aver stabilito le ...;
+      ci rendiamo conto che in una soluzione come quella suggerita le problematiche di distribuzione vanno trattate nello stesso momento di quelle di concorrenza ma nel nostro caso si è cercata prima di formulare una soluzione che producesse una simulazione temporalmente coerente e completamente deterministica in modo indipendente anche dalle scelte di distribuzione. la distribuzione è diventata quindi un motivo di discussione di scenari worst case in fase di analisi ma una problematica da discutere in dettaglio in una seconda fase della progettazione. la distribuzione era supposta fornire maggior realismo alla soluzione (box distribuiti per problemi radio, tv perchè naturalmente dislocate in giro) ed eventualmente fornire maggiore efficienza (IA dislocata in nodi separati per scalare con l'aumento di complessità della stessa) e infine distribuire un single point of failure in più nodi in modo da rendere più robusta l'esecuzione della simulazione.
   - modello di concorrenza
     - scelta del modello (concorrenti = entità attive, circuito = entità passiva)
 	si è scelto di seguire la strada più intuitiva in termini di mappabilità fra sistema simulato e sistema reale assumendo che la concorrenza dei thread in un sistema potesse simulare la concorrenza dei piloti nella realtà. Inoltre fissando un circuito come entità passiva ad accesso multiplo si sarebbe rispecchiato il comportamento reale dei piloti nel momento in cui provano ad attraversare. 
-	Abbiamo pensato al concetto di task/thread nella maniera più language-indipendent possibile, senza pensare alle primitive presenti in un preciso linguaggio di programmazione. Così facendo non si sono fatte assunzioni sull'ambiente di esecuzione arrivando a progettare un sistema implementabile in ogni linguaggio che offra le funzionalità di thread/task.
+	Abbiamo pensato al concetto di task/thread nella maniera più language-indipendent possibile, senza pensare alle primitive presenti in un preciso linguaggio di programmazione o come esse vengano gestite . Così facendo non si sono fatte assunzioni sull'ambiente di esecuzione arrivando a progettare un sistema implementabile in ogni linguaggio che offra le funzionalità di thread/task.
 	Fatte queste assunzioni e volendo ottenere massimo determinismo dal comportamento del sistema per
 	  - comprenderlo
 	  - gestirlo
@@ -17,7 +19,7 @@ FLUSSO PER IL PROGETTO
       - task che valuta il pezzo di pista da seguire ed esegue
       - correttezza di esecuzione indipendente dai tempi di attesa.(language indipendent)
   - soluzione per correttezza temporale
-    - astrazione dal linguaggio 
+    - astrazione dal linguaggio (ASSUNZIONI FORTI CONSIDERATA LA CONOSCENZA DI LINGUAGGIO - abbiamo cercato di produrre una soluzione generale implementabile in qualsiasi piattaforma, sotto qualsiasi condizione di complessità del sistema.)
       - pensiero di entità attiva indipendente dal linguaggio -> pensiero più java oriented? Si.
 	  Essendo abituati al paradigma di programmazione e al modello di concorrenza "Java" il ragionamento sviluppato era worst-case driven. Presa coscienza della soluzione suggerita al colloquio ci rendiamo conto che il worst-case scenario usando il modello di concorrenza in Ada risulta essere molto più blando rispetto a quello pensato in fase di progettazione. Nel nostro caso il worst-case era il più catastrofistico possibile senza assunzioni di controllo sulle entità attive. Dopo aver valutato la bozza di soluzione durante il colloquio sicuramente il worst-case prospettato nella realtà si riduceva al risveglio di tutti le entità attive nel sistema nello stesso istante, fatto che nell'ambiente di esecuzione di Ada non influisce con ritardi significativi (tempi utilizzati nella simulazione = millisecondi, che rispetto al miliardesimo di secondo portano a ritardi non visibili da un osservatore.).
 	  All'inizio della fase di progettazione si era ipotizzato di affidarsi ad un tempo di riferimento assoluto. Dopo aver riscontrato i primi potenziali problemi nel sistema concorrente locale ( valutazione del nostro worst-case ) e costruiti possibili scenari distribuiti abbiamo riscontrato dal nostro punto di vista l'incontrollabilità del sistema se gestito con tempi assoluti. La soluzione progettata quindi utilizza tempi relativi, gestibili completamente da noi e portando a una simulazione completamente riproducibile e controllabile, anche con i delay e i problemi connessi alla rete.
@@ -28,12 +30,12 @@ FLUSSO PER IL PROGETTO
 	  Altro punto di divergenza che ci ha portato a scelte progettuali diverse è dovuta al fatto che abbiamo volutamente evitato di fare assunzioni sull'ambiente di esecuzione, chiedendo requisiti minimi (come polyorb, xmlada, ada e una installazione java) senza vincoli di processori o quant'altro. Quindi non sono stati effettuati calcoli riguardanti il numero (approssimato) di cicli di clock per l'esecuzione delle operazioni richieste alle entità attive (che non sono solamente attraversamento di tratti ma anche produzione di dati per la presentazione all'utente finale oltre che variazione a piacimento (e in modo scalabile) di un'eventuale intelligenza artificiale)).
 - più padronanza del sistema
       - nostra convinzione che gestendo code e tempi si ha precisa padronanza di quello che succede nel sistema
-    - snapshot del sistema semplificati
+    - snapshot della competizione semplificati
       - richiesta di snapshot (della competizione) in base ad istanti precisi della competizione risulta molto semplice
 	gli snapshot vengono richiesti (nella nostra progettazione) in base a istanti di tempo relativi. Se vengono richiesti istanti non ancora disponibili chi li ha richiesti si mette in attesa, altrimenti vengono prodotti con consistenza rispetto all'andamento della gara. La gestione di queste snapshot con la rete di mezzo risulta più elastica e quindi rende più semplice la presentazione dei dati.
     - correttezza di esecuzione anche velocizzata o senza delay. (quindi valorizzare esperienza utente con velocizzazione e rallentamento gui)
-
-  - soluzione per correttezza spaziale
+  
+- soluzione per correttezza spaziale
     - non avvengono sorpassi impossibili
     
   - dimostrabilità del sistema
