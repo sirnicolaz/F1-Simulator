@@ -1,0 +1,41 @@
+FLUSSO PER IL PROGETTO
+
+- problematiche e soluzioni adottate
+  - individuazione componenti da distribuire (la nostra scelta è stata di distribuire successivamente alla realizzazione dell'architettura . prima abbiamo progettato il sistema non distribuito per poi scegliere cosa distribuire su fattori di efficienza e di realismo. i delay della rete non sono controllabili. volendo avere un sistema totalmente deterministico e verificabile sul quale poi aggiungere componenti di non determinismo - a nostra scelta-. primo passo : ridurre non determinismo . 2 passo : introdurre componenti di non determinismo controllato.)
+    - pregi e difetti della scelta
+      - la decisione delle componenti da distribuire per un simulatore conferisce valore aggiunto in termini di realismo ma non essendo le scelte architetturali di distribuzione 
+  - modello di concorrenza
+    - scelta del modello (concorrenti = entità attive, circuito = entità passiva)
+	si è scelto di seguire la strada più intuitiva in termini di mappabilità fra sistema simulato e sistema reale assumendo che la concorrenza dei thread in un sistema potesse simulare la concorrenza dei piloti nella realtà. Inoltre fissando un circuito come entità passiva ad accesso multiplo si sarebbe rispecchiato il comportamento reale dei piloti nel momento in cui provano ad attraversare. 
+	Abbiamo pensato al concetto di task/thread nella maniera più language-indipendent possibile, senza pensare alle primitive presenti in un preciso linguaggio di programmazione. Così facendo non si sono fatte assunzioni sull'ambiente di esecuzione arrivando a progettare un sistema implementabile in ogni linguaggio che offra le funzionalità di thread/task.
+	Fatte queste assunzioni e volendo ottenere massimo determinismo dal comportamento del sistema per
+	  - comprenderlo
+	  - gestirlo
+	  - verificarlo
+	e solo successivamente aggiungere componenti per simulare il non determinismo.
+    - pregi e difetti
+      - task che valuta il pezzo di pista da seguire ed esegue
+      - correttezza di esecuzione indipendente dai tempi di attesa.(language indipendent)
+  - soluzione per correttezza temporale
+    - astrazione dal linguaggio 
+      - pensiero di entità attiva indipendente dal linguaggio -> pensiero più java oriented? Si.
+	  Essendo abituati al paradigma di programmazione e al modello di concorrenza "Java" il ragionamento sviluppato era worst-case driven. Presa coscienza della soluzione suggerita al colloquio ci rendiamo conto che il worst-case scenario usando il modello di concorrenza in Ada risulta essere molto più blando rispetto a quello pensato in fase di progettazione. Nel nostro caso il worst-case era il più catastrofistico possibile senza assunzioni di controllo sulle entità attive. Dopo aver valutato la bozza di soluzione durante il colloquio sicuramente il worst-case prospettato nella realtà si riduceva al risveglio di tutti le entità attive nel sistema nello stesso istante, fatto che nell'ambiente di esecuzione di Ada non influisce con ritardi significativi (tempi utilizzati nella simulazione = millisecondi, che rispetto al miliardesimo di secondo portano a ritardi non visibili da un osservatore.).
+	  All'inizio della fase di progettazione si era ipotizzato di affidarsi ad un tempo di riferimento assoluto. Dopo aver riscontrato i primi potenziali problemi nel sistema concorrente locale ( valutazione del nostro worst-case ) e costruiti possibili scenari distribuiti abbiamo riscontrato dal nostro punto di vista l'incontrollabilità del sistema se gestito con tempi assoluti. La soluzione progettata quindi utilizza tempi relativi, gestibili completamente da noi e portando a un sistema completamente riproducibile e controllabile, anche con i delay e i problemi connessi alla rete.
+	  La base di tutti questi ragionamenti è sicuramente l'assunzione di un worst-case che alla luce di quanto visto durante il colloquio orale è ben distante dalla realtà, in quanto non riproducibile nell'ambiente di esecuzione scelto. 
+	  L'idea della nostra progettazione comunque era di mantenersi volutamente distanti dal linguaggio (e dall'ambiente scelto) per progettare il sistema e quindi si è arrivati a una reingegnerizzazione di strutture e meccanismi già presenti poi nell'ambiente scelto. La scelta di riprogettare alcuni meccanismi è dovuta probabilmente al pensiero java oriented che abbiamo come bagaglio culturale.
+	  Inoltre certamente la scelta di passare a tempi relativi gestiti a codice è stata influenzata dalla scarsa padronanza del paradigma di programmazione Ada. 
+	  Forse questo passaggio ai tempi relativi ha compromesso la semplicità del prodotto finale anche se riteniamo che il funzionamento sia corretto e verificabile. Inoltre riteniamo che l'esperienza utente che può velocizzare / rallentare a suo piacimento la velocità di simulazione porti a dei benefici. La rappresentabilità del tempo "reale" non è stato ritenuto un vincolo importante, in quanto si tratta di una simulazione. Ci si è più concentrati sulla correttezza dell'andamento dell'esecuzione.
+- più padronanza del sistema
+      - nostra convinzione che gestendo code e tempi si ha precisa padronanza di quello che succede nel sistema
+    - snapshot del sistema semplificati
+      - richiesta di snapshot in base ad istanti precisi della competizione risulta molto semplice
+    - correttezza di esecuzione anche velocizzata o senza delay. (quindi valorizzare esperienza utente con velocizzazione e rallentamento gui)
+
+  - soluzione per correttezza spaziale
+    - non avvengono sorpassi impossibili
+    
+  - dimostrabilità del sistema
+
+- riscontro con prototipo
+  - possibilità di verifica tramite circuiti configurati appositamente
+  - varie configurazioni concorrente per verificare casi comuni
